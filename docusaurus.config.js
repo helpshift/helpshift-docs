@@ -99,6 +99,7 @@ async function createConfig() {
           },
         };
       },
+      require.resolve("./src/plugins/webChat.js"),
     ],
   };
 
