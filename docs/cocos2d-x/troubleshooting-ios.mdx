@@ -1,0 +1,51 @@
+---
+sidebar_position: 10
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+eywords: known issues, important notes
+
+# Troubleshooting {#troubleshoot}
+
+
+## SDK integration {#integration-issues}
+
+### 5.5.0 SDK Update {#5}
+
+We found a bug for the following scenario - for SDK 5.5.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
+
+**Action needed:**
+
+* If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
+* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [5.5.1 SDK](/cocos2d-x/release-notes-ios#v551).
+
+### Reply box hides behind smart intents in cocos2dx 2.x and iOS 12 {#cocos2dx-replybox-smartintents-ios12}
+
+![cocos-smart-intents-iOS12-issue.gif](/static/books/ios/cocos-smart-intents-iOS12-issue.gif
+ "cocos-smart-intents-iOS12-issue.gif")
+
+It is observed that reply box gets hidden on iOS 12.x devices and apps made from cocos2dx 2.x when smart intents are shown to the user. This is due to
+the OS not reporting the proper height for keyboard.
+
+This behaviour is not reproducible on other OS versions or on apps made from cocos2dx 3.x 
+
+### Letterbox mode on iPhone X
+
+If the app on runs in letterbox mode on iPhone X, the SDK will run in letterbox mode too. This is what the SDK screen looks like in this mode -
+
+<Image src="/static/books/ios/troubleshooting-iphonex-letterbox.png"  width="full" alt="troubleshooting-iphonex-letterbox.png" /> 
+
+To ensure that the SDK uses the full dimensions of the screen, you will need to add a Launch screen storyboard in the app. The launch screen can be empty. The only criterion is that it should be present in your app. To add the launch screen, perform the following steps in Xcode -
+
+* Create and add a new storyboard to your project.
+* Select the executable target for your app. Under "General > App Icons and Launch Images" and enter the name of this storyboard in "Launch Screen File".
+
+For more details on the issue, please [refer here](http://discuss.cocos2d-x.org/t/iphone-x-full-screen-support-for-old-projects/40025/20)
+
+### Using bitcode for cocos {#bitcode-cocos}
+
+To use the bitcode library, make sure all the thirdparty cocos2dx libraries are built with bitcode enabled.

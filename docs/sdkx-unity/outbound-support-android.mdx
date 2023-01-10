@@ -1,0 +1,155 @@
+---
+sidebar_position: 225
+title: Outbound Support
+description: "With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Outbound Support {#outbound-support}
+
+<Intro>
+
+
+With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
+
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.Install() API](/sdkx-unity/getting-started-android#initializing)
+
+
+</Admonition>
+
+
+The steps to use this feature are the following -
+
+To generate the link for outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+
+![](/static/books/helpshiftx/outbound-support.png)
+
+You should see a **Create link** button. Click on the Create link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
+
+<Image src="/static/books/helpshiftx/generate-link-box.png"  width="full" /> 
+
+At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
+
+YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp , myAppSupport, etc.
+
+<Image src="/static/books/helpshiftx/proactive-link.png"  width="full" /> 
+
+## Delegate push notification data to Helpshift SDK {#delegate-notification-data}
+
+To pass the outbound support data to Helpshift, follow these steps -
+
+1. Send push notification to the users you want to give proactive support using your app's existing push notification system.
+
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the outbound support link in your notification data to Helpshift SDK by calling `HelpshiftSdk.HandleProactiveLink(String link)`.
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
+
+For example:
+
+If you are using FCM plugin for Unity, then you can handle it in `OnMessageReceived` delegate.
+
+```java
+
+
+// Initialize Firebase as per FCM Unity plugin's documentation.
+void InitializeFirebase() {
+
+    .
+    .
+    .
+    .
+    // Firebase should be initialized before calling next steps.
+
+    // Firebase plugin receives push notification via this event.
+    Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+}
+
+public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+{
+    IDictionary<string, string> pushData = e.Message.Data;
+
+    /** You should check if the notification is for outbound support sent from your existing push notification system.
+     For example, say you sent push notification for outbound support with additional data key "outboundLink" containing the outbound support link generated from Helpshift dashboard.
+     FCM plugin works the following way:
+         If the app is in foreground:
+                FCM plugin does not post a notification on device's notification tray.
+                e.Message.NotificationOpened is false.
+                You are expected to handle this notification as per your use case.
+        If the app is in background:
+                FCM plugin will post a notification on device's notification tray.
+                OnMessageReceived event is not invoked.
+                When user taps on this notification, then OnMessageReceived event is invoked with e.Message.NotificationOpened as true
+    **/
+    if (pushData.ContainsKey("outboundLink")) {
+          string outboundLink = pushData["outboundLink"];
+          if (e.Message.NotificationOpened) {
+                // This means that the user has tapped on a notification posted by FCM plugin.
+                HelpshiftSdk.HandleProactiveLink(outboundLink)
+          } else {
+                // This means that app is in foreground and FCM plugin did not post any notification on device.
+                // It is expected to handle this notification as per your use case.
+                // You can post an internal in-app notification to keep the user engaged in the app.
+                // Do not call HelpshiftSdk.HandleProactiveLink(outboundLink) here since it will directly open Helpshift SDK Helpcenter or chat screen.
+                // The user should be first notified and only when user taps on the notification then call the HelpshiftSdk.HandleProactiveLink(outboundLink) function.
+                // You can also choose to show a notification on device, just like FCM plugin, but the code for it is to be written by you.
+                // When user taps the in-app or device notification you should call HelpshiftSdk.HandleProactiveLink(outboundLink)
+          }
+    }
+}
+```
+
+If you are going to handle notification click by the user in Unity's C# layer then you can use the `HelpshiftSdk.HandleProactiveLink(string proactiveLink)` function for handling Outbound support notification.
+
+## Passing configuration specific to the current user {#user-specific-config}
+
+You may want to add configuration specific to the current user in your app when they click on the notification.
+
+Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime. This local API config is exactly same as we would expect in other APIs like `ShowConversation()` or `ShowFAQs()`.
+
+We will use this configuration for current issue as well as next issue filed in same session.
+
+
+<Admonition type="info" title="Note">
+
+You need to call this API after [Helpshift Installation API](/sdkx-unity/getting-started-android#initializing) and before `HelpshiftSdk.HandleProactiveLink()`.
+
+
+</Admonition>
+
+
+1. Implement public interface `IHelpshiftProactiveAPIConfigCollector` in one of your classes and call `HelpshiftSdk.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())`  method to initialise the config collector delegate after the initializing the Helpshift SDK.
+
+2. You will have to implement the method `getLocalApiConfig()` where you can add any user-specific config provided by Helpshift in the same format as you add in other public APIs like `ShowConversation()` or `ShowFAQs()`.
+
+We will merge this config and the config embedded in the outbound support link. We will append data of config from outbound support link to local config like Tags, CIFs, etc. In case of conflicts, outbound support config will get the precedence.
+
+For example -
+
+```csharp
+// initialise proactiveConfig collector
+
+   public class ProactiveConfigCollector : IHelpshiftProactiveAPIConfigCollector
+    {
+        public Dictionary<string, object> getLocalApiConfig()
+        {
+            Dictionary<string, object> proactiveConfig = new Dictionary<string, object>();
+            proactiveConfig.Add("initialUserMessage", "Hi there!");
+            proactiveConfig.Add("fullPrivacy", true);
+            proactiveConfig.Add("tags", new string[] { "vip", "payment", "blocked", "renewal" });
+            ..
+            ..
+            return proactiveConfig;
+        }
+    }
+```

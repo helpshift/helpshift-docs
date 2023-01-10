@@ -1,0 +1,36 @@
+---
+sidebar_position: 10
+title: Upgrading to 3.4.x
+description: "The Helpshift SDK v3.4 is a major update and we have made some important changes. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Upgrading to 3.4.x {#upgrade-to-34x}
+
+<Intro>
+
+The Helpshift SDK v3.4 is a major update and we have made some important changes. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+## Manual Integration
+
+1. Add `Xamarin.iOS.SwiftRuntimeSupport` package to your app
+
+	* With version 3.4.0, Helpshift SDK has added support for Swift. In order to use plugin v3.4.x for your app, add the SwiftRuntimeSupport package to your project from the nuget package manager
+
+2. Remove the following Helpshift SDK related files from the project. These files will now be included in the dll -
+
+    * HsLocalization.bundle
+    * HelpshiftConfig.plist
+    * HelpshiftConfigDark.plist
+
+
+<Admonition type="info" title="Note">
+
+In case you have made changes to HelpshiftConfig.plist or HelpshiftConfigDark.plist, please rename the files to HelpshiftCustomConfig.plist and HelpshiftCustomConfigDark.plist respectively.
+
+</Admonition>

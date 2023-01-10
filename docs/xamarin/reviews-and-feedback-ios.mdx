@@ -1,0 +1,51 @@
+---
+sidebar_position: 10
+title: Reviews & Feedback iOS
+description: "Asking for reviews and feedback"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Reviews & Feedback <small>iOS</small> {#review-and-feedback}
+
+<Intro>
+
+Asking for reviews and feedback
+
+
+</Intro>
+
+
+## Manually show App Rating alertview {#app-rating-api}
+
+Starting with SDK version 2.5.0, this feature has been deprecated. An explanation of why we made this change can be found [here](#review-reminder-changes).
+
+## Configuring automatic review requests
+
+Starting with SDK version 2.5.0, this feature has been deprecated. An explanation of why we made this change can be found [here](#review-reminder-changes).
+
+## Changes in Automatic app ratings and Manual show app rating features {#review-reminder-changes}
+
+The new review API from Apple [(details)](https://developer.apple.com/documentation/storekit/skstorereviewcontroller/2851536-requestreview) lets end users leave app ratings on the App Store without leaving the app. However, it also caps the maximum amount of such requests to 3 per year. End users can in turn choose to disable app review requests from the app settings on their device.
+
+Recently, Apple has mandated the usage of this new API, and also discouraged the usage of custom app review request prompts. As a result of this change in Apple’s app store policy, Helpshift has deprecated its review request API HelpshiftSupport.ShowAlertToRateAppWithURL() in v2.5.0.
+
+If you plan to support the new Apple review API and would still like the option to request reviews after Issue resolutions, your developer can use our ["CSAT completed"](#csat) delegate and call the review API if an end user has given their conversation a rating of 4 or 5 stars.
+
+## Customer satisfaction survey {#csat}
+
+Customer satisfaction survey prompts your app users to rate their customer support experience with your agents. Enabling it, sends out a 5-star customer service rating request to your customers when an issue is resolved.
+
+To enable it, go to Settings in your agent dashboard, and then under app settings, select your app. You can enable `Customer satisfaction survey` from under SDK Configurations.
+
+![](/static/books/ios/csat-admin-enable.png)
+
+When an issue is resolved, and your customer accepts the resolution, then a Customer Satisfaction screen is shown.
+
+![](/static/books/ios/csat-iphone.png)
+
+Your customer can also (optionally) give feedback to help you improve the quality of your service.
+
+![](/static/books/ios/csat-service-rating.png)
+

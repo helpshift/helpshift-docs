@@ -1,0 +1,309 @@
+---
+sidebar_position: 100
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+
+</Intro>
+
+
+## Helpshift Support Delegates implementation {#helpshift-delegates-implementation}
+
+You have to define a class which implements Helpshift Support Delegates and then
+pass this to Helpshift using `[[HelpshiftSupport sharedInstance] setDelegate:delegate];` method.
+
+For example:
+
+Class Definition:
+
+
+```objc
+
+    #import <Foundation/Foundation.h>
+    #import "HelpshiftSupport.h"
+
+    @interface MyDelegates : NSObject <HelpshiftSupportDelegate>
+    @end
+
+```
+
+Class Implementation
+
+
+```objc
+
+    #import <Foundation/Foundation.h>
+    #import "HelpshiftSupport.h"
+    #import "MyDelegates.h"
+
+    @implementation MyDelegates {
+
+    }
+
+    - (void) helpshiftSupportSessionHasBegun {
+        // your code here
+    }
+
+    - (void) helpshiftSupportSessionHasEnded {
+        // your code here
+    }
+
+    - (void) newConversationStartedWithMessage:(NSString *)newConversationMessage {
+        // your code here
+    }
+
+    - (void) conversationEnded {
+        // your code here
+    }
+
+    - (void) userRepliedToConversationWithMessage:(NSString *)newMessage {
+        // your code here
+    }
+
+    - (void) userCompletedCustomerSatisfactionSurvey:(NSInteger)rating withFeedback:(NSString *)feedback {
+        // your code here
+    }
+
+    - (BOOL) displayAttachmentFileAtLocation:(NSURL *)fileLocation onViewController:(UIViewController *)parentViewController {
+        // your code here, reurn true or false based on your logic
+        return true;
+    }
+
+    - (void) didReceiveInAppNotificationWithMessageCount:(NSInteger)count {
+        // your code here
+    }
+
+    - (void) didCheckIfConversationActive:(BOOL)isActive {
+        // your code here
+    }
+
+    - (void)didReceiveUnreadMessagesCount:(NSInteger)count {
+        // your code here
+    }
+
+    - (void) authenticationFailedForUser:(HelpshiftUser *)user withReason:(HelpshiftAuthenticationFailureReason)reason {
+        // your code here
+    }
+
+    - (void) userDidClickOnActionWithType:(HelpshiftActionType)helpshiftAction withData:(NSString *)actionData {
+        // your code here
+    }
+
+    @end
+
+```
+
+Class Usage:
+
+
+```objc
+
+	@property (strong, nonatomic) MyDelegate *delegate;
+	.
+	.
+	.
+	.
+    delegate = [[MyDelegates alloc] init];
+    [[HelpshiftSupport sharedInstance] setDelegate:delegate];
+
+```
+
+Please make sure you call `setDelegate` method before calling any Helpshift FAQ
+or Conversation API so that they can callback your delegate methods.
+
+To know more about Delegate methods, see [Helpshift Session delegates](#session-delegates).
+
+## Helpshift Session delegates {#session-delegates}
+
+### Session begin {#session-began}
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+### Session end {#session-end}
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+### New conversation delegate {#delegate-new-conversation-started}
+
+If you want to keep a track of when your app users start a new conversation through Helpshift, you can implement this delegate callback.
+The delegate will get fired every time the user starts a new conversation.
+The delegate method will receive the conversation message in it's arguments.
+For issues filed via smart intents, the value newMessage will be "Root intent, label intent".
+
+
+<Admonition type="info" title="Note">
+
+As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
+
+</Admonition>
+
+
+For example:
+
+
+```objc
+
+    - (void) newConversationStartedWithMessage:(NSString *)newMessage {
+        // your code for tracking new conversation
+    }
+
+
+```
+
+### New message delegate {#delegate-user-replied-to-conversation}
+
+If you want to keep a track of when your app users send new messages to an ongoing conversation, you can implement this delegate.
+This delegates will get called every time a user replies to a conversation.
+The delegate method will receive the new message in it's arguments.
+There are four static string constants to check the type of the message that was filed.
+
+
+<Admonition type="info" title="Note">
+
+All the replies from end users to Bot (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
+
+</Admonition>
+
+
+
+```objc
+
+    static NSString *HelpshiftSupportUserAcceptedTheSolution = @"User accepted the solution";
+    static NSString *HelpshiftSupportUserRejectedTheSolution = @"User rejected the solution";
+    static NSString *HelpshiftSupportUserSentScreenShot = @"User sent a screenshot";
+    static NSString *HelpshiftSupportUserReviewedTheApp = @"User reviewed the app";
+
+```
+
+Example usage:
+
+
+```objc
+
+    - (void) userRepliedToConversationWithMessage:(NSString *)newMessage {
+      if ([newMessage isEqualToString:HelpshiftSupportUserAcceptedTheSolution]) {
+        // your code here
+      }
+    }
+
+```
+
+### Conversation ended delegate {#delegate-conversation-ended}
+
+This delegate is called whenever the ongoing Conversation is resolved, rejected from the Dashboard, timed out or archived.
+
+
+```objc
+
+    - (void) conversationEnded {
+        // your code here
+    }
+
+```
+
+### Customer satisfaction survey delegate {#csat-completed}
+
+If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The customer satisfaction survey is shown after an issue gets resolved.
+
+Example usage:
+
+
+```objc
+
+    - (void) userCompletedCustomerSatisfactionSurvey:(NSInteger)rating withFeedback:(NSString *)feedback {
+        // your code here
+    }
+
+```
+
+### New message received count delegate {#newmessage-recieved}
+
+This delegate is the response to the `requestUnreadMessagesCount:` method. It provides the number of unread messages in the current conversation. If `isRemote` set to `YES` the unread message count is retrieved from server else unread message count for locally stored messages is returned.
+
+Example usage:
+
+
+```objc
+
+    - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
+        // your code here
+    }
+
+```
+
+### New in-app message received count delegate {#newmessageinapp-recieved}
+
+This delegate method is called when a Helpshift in-app notification is received and displayed.
+In-app notifications are push notifications that are received when the app is in the foreground.
+
+Example usage:
+
+
+```objc
+
+    - (void) didReceiveInAppNotificationWithMessageCount:(NSInteger)count {
+        // your code here
+    }
+
+```
+
+### Display attachment delegate {#display-attachment}
+
+Agents can attach a wide variety of files when replying to users. This delegate is called when the user taps on downloaded attachment file to view it. If the app chooses to display the attachment file itself, you can implement this delegate.
+If the app does not wish to handle the attachment, and this delegate is not implemented , in this case, the SDK will display the attachment using Quicklook Framework.
+
+Example usage:
+
+
+```objc
+
+    - (void) displayAttachmentFileAtLocation:(NSURL *)fileLocation onViewController:(UIViewController *)parentViewController {
+        // your code here
+    }
+
+
+```
+
+### Authentication failure delegate {#authetication-failure}
+
+If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
+
+| Delegate | When it is called | How to use|
+|----------------|---------|---------------|
+|- (void) authenticationFailedForUser:(HelpshiftUser *)user withReason:(AuthenticationFailureReason) AuthTokenNotProvided| When no 'user authentication token' is provided| If you do not plan on sending an 'user authentication token' when implementing SDK 7.0.0, but plan on implementing it in the future, you can use this failure delegate to show your own alerts to the userm such as a prompt to update the app. You may want to use this if you are using the login API without the 'user authentication token', as these users will be considered unverified once Identity Verification is enabled on the Dashboard. Using this delegate is completely optional - Helpshift will prevent unverified users from being able to file Issues, as mentioned previously.|
+|- (void) authenticationFailedForUser:(HelpshiftUser *)user withReason:(AuthenticationFailureReason)InvalidAuthToken|<ul><li>When the 'user authentication token' is invalid</li></ul>|For SDK 7.0.0 and later, if the HMAC Digest being provided via LoginAPI is invalid, Helpshift will prevent the users from filing Issues. The 'user authentication token' can be invalid if:<ul><li>You made a programming error. [View](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification)</li></ul><ul><li>You regenerated the secret key on the Dashboard, but didn't update the 'user authentication token'.</li></ul><ul><li>A 3rd party is trying to make requests.</li></ul><ul><li>When the 'user authentication token' is invalid, end users are not able to file Issues and an error is shown to them, as mentioned previously. You can use this delegate if you want to show your own alerts or re-fetch the correct auth token from your server.</li></ul>|
+
+### Action card delegate {#action-card}
+
+This delegate method is called when user clicks on action card button.
+
+Example usage:
+
+
+```objc
+
+    - (void) userDidClickOnActionWithType:(HelpshiftActionType)helpshiftAction withData:(NSString *)actionData {
+        // your code here
+```
+
+    }

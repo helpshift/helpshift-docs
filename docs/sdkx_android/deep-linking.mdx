@@ -1,0 +1,99 @@
+---
+sidebar_position: 100
+title: Deep Linking in FAQs
+description: "Using custom URL schemes to support deep linking in your app"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+# Deep Linking in FAQs {#android-deep-links}
+
+<Intro>
+
+Using custom URL schemes to support deep linking in your app
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
+
+
+</Admonition>
+
+
+Use custom URL schemes to direct users to particular link in your app
+from Helpshift FAQs. You can use these schemes to provide a more
+seamless experience for the user. For example, if your android app has a
+registration screen, clicking on a registration link in an FAQ can
+directly take the user to that screen.
+
+## Insert custom URL schemes in FAQs {#custom-url-in-faqs}
+When editing your FAQ, select the text and then click on create a link.
+
+<Image src="/static/books/android/add-android-deep-link-1.png"  width="half" alt="add-android-deep-link-1.png" /> 
+
+
+In the dialog that pops up, enter your custom URL and save the FAQ.
+
+<Image src="/static/books/android/add-android-deep-link-2.png"  width="half" alt="add-android-deep-link-2.png" /> 
+
+## Handle deep links in your Android App {#handle-deep-link}
+
+Deep linking is a custom linking URL that gives the developers the
+freedom to decide what the URL can do when the user clicks on a Custom
+URL.
+
+In deep linking, you are allowed to set Custom URL schemes like `myscheme://example.com`.
+For example, the URL `myscheme://example.com/?faqid=95` (where faqid is the
+publish ID of an FAQ), will open up the relevant FAQ and the URL
+`myscheme://example.com/?sectionid=8` (where sectionid is the publish id
+of any Section), will open up relevant section.
+
+In order for the developers to handle myscheme, they will have to call
+`showSingleFAQ` and `showFAQSection` api with the corresponding FAQ ID
+and SECTION ID respectively.
+You will then need to implement following things in your app to handle and take the required action.
+
+For Example:
+
+```java
+//AndroidManifest.xml
+<activity android:name=".DeepLinkActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="myscheme" android:host="example.com"/>
+     </intent-filter>
+</activity>
+```
+```java
+//DeepLinkActivity.java
+public class DeepLinkActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.deep_link);
+
+    TextView deepLinkUrl = (TextView) findViewById(R.id.deep_link_url);
+
+    Intent intent = getIntent();
+    Uri data = intent.getData();
+
+    if (data.getQueryParameter("faqid") != null) {
+      Helpshift.showSingleFAQ(this, data.getQueryParameter("faqid"));
+      finish();
+    } else if (data.getQueryParameter("sectionid") != null) {
+      Helpshift.showFAQSection(this, data.getQueryParameter("sectionid"));
+      finish();
+    } else {
+      deepLinkUrl.setText("Deep link received - " + data);
+    }
+  }
+}
+```

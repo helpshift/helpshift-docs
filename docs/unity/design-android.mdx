@@ -1,0 +1,254 @@
+---
+sidebar_position: 10
+title: Skinning & Customization
+description: "Learn about Skinning the Helpshift SDK to match the look-n-feel of your app. Customize localizable strings to support multiple languages in the SDK UI."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Skinning & Customization {#design}
+
+<Intro>
+
+Learn about Skinning the Helpshift SDK to match the look-n-feel of your app. Customize localizable strings to support multiple languages in the SDK UI.
+
+
+</Intro>
+
+
+## Introduction {#intro}
+
+If you want to customize Helpshift SDK theme as per your app's theme,
+see [Theming and Skinning](#skinning)
+
+If you want to change strings used in the SDK's UI or want to translate them as per device language, see [String Customization](/unity/string-customization-android#string-customization).
+
+## Theming and Skinning {#skinning}
+
+**Before you begin**
+
+1. Integrate Helpshift Unity Android SDK as documented here: [Integration Guide](https://developers.helpshift.com/unity/getting-started-android/)
+1. Though optional, we recommend you to download and set up the Android Studio. [Android Studio Setup Guide](https://developer.android.com/studio)
+
+Helpshift Android SDK comes with following themes -
+
+* Helpshift.Theme.Light.DarkActionBar (default)
+* Helpshift.Theme.Light
+* Helpshift.Theme.Dark
+* Helpshift.Theme.HighContrast
+* Helpshift.Theme.DayNight.DarkActionBar
+* Helpshift.Theme.DayNight.Light
+* Helpshift.Theme.DayNight.HighContrast
+
+
+| ![](/static/books/android/android-theme-dark.png) | ![](/static/books/android/android-theme-highcontrast.png) | ![](/static/books/android/android-theme-light.png) | ![](/static/books/android/android-theme-light-darkactionbar.png) |
+|----|----|----|----|
+| Helpshift.Theme.Dark | Helpshift.Theme.HighContrast | Helpshift.Theme.Light | Helpshift.Theme.Light.DarkActionbar |
+
+
+The Helpshift Unity SDK zip folder includes the **HelpshiftUnityAndroidResources**, an open source android studio project, to customize theme and string resources according to your application.
+
+The Helpshift Unity SDK includes a default build of **HelpshiftUnityAndroidResources** project i.e **helpshift-plugin-resources.aar**. The default theme is *Helpshift.Theme.Light.DarkActionBar*.
+
+To customize the look and feel of the Helpshift SDK to match your app's style, please follow the steps given below -
+
+* Open the Android Studio and import the **HelpshiftUnityAndroidResources** project
+    * If Android Studio is launched for the first time, select **Open an existing Android Studio project** and navigate to the directory where you downloaded the Helpshift Unity SDK and select *HelpshiftUnityAndroidResources* directory.
+    * If Android Studio already has an open project, select from the menu **File** > **New** > **Import Project** and navigate to the directory where you downloaded the Helpshift Unity SDK and select *HelpshiftUnityAndroidResources* directory.
+* Navigate and open the **HelpshiftUnityAndroidResources/helpshift-plugin/src/main/res/values/styles.xml** styles file.
+* Define your custom Helpshift theme in your **styles.xml** and inherit it from one of the Helpshift themes mentioned above.
+    * You can customize a few attributes to match the look and feel of your app with Helpshift SDK.
+```xml
+<style name="MyCustomHelpshiftTheme" parent="Helpshift.Theme.Light">
+    <item name="colorAccent">@color/your_custom_color</item>
+    <item name="colorPrimary">@color/your_custom_color</item>
+    <item name="colorPrimaryDark">@color/your_custom_color</item>
+</style>
+```
+* Update Helpshift Unity activity as well as Unity dialog style parents to your custom Helpshift theme as mentioned below.
+```xml
+<style name="Helpshift.Theme.Unity.Activity" parent="MyCustomHelpshiftTheme"/>
+<style name="Helpshift.Theme.Unity.Dialog" parent="MyCustomHelpshiftTheme"/>
+```
+* Open the terminal window and run the following command: **./gradlew clean build**
+    * Once build is executed successfully, the `helpshift-plugin-resources.aar` file is generated in **HelpshiftUnityAndroidResources** directory.
+    * Output path: **[helpshift-sdk-download-path]/HelpshiftUnityAndroidResources/helpshift-plugin-resources.aar**
+* Copy the `helpshift-plugin-resources.aar` file and replace it with **[Unity project>]/Assets/Plugins/Android/helpshift-plugin-resources.aar** file.
+    * Build and run the Unity project to verify your design changes.
+
+In the custom theme, you can customize [Android's styleable](https://developer.android.com/reference/android/R.attr.html) attributes along with Helpshift's styleable attributes.
+
+Example:
+```xml
+<style name="MyCustomHelpshiftTheme" parent="Helpshift.Theme.Light">
+    <item name="colorAccent">@color/your_custom_color</item>
+    <item name="colorPrimary">@color/your_custom_color</item>
+    <item name="colorPrimaryDark">@color/your_custom_color</item>
+  
+    <item name="hs__chatBubbleAdminText">@color/your_custom_color_of_admin_text</item>
+    <item name="hs__chatBubbleUserText">@color/your_custom_color_of_user_text</item>
+</style>
+```
+
+### Helpshift styleable attributes {#styleable-attributes}
+
+|  Field             |  Summary          |
+|--------------------|-------------------|
+| colorPrimary | The primary branding color for the app. |
+| colorPrimaryDark | Dark variant of the primary branding color. |
+| colorAccent |  Bright complement to the primary branding color. |
+| titleTextColor | Color of the Toolbar title string. |
+| navigationIcon | Drawable to use for the navigation button located at the start of the Toolbar (back button). |
+| homeAsUpIndicator | Drawable to use for the 'home as up' (back button when SearchView is expanded) indicator. |
+| android:windowBackground | Drawable to use as the overall window background. |
+| android:textColorPrimary | The most prominent text color. |
+| android:textColorSecondary | Secondary text color. |
+| android:textColorHint | Color of hint text (displayed when the field is empty). |
+| hs__tabTextColor | Color of the text in a tab on FAQ section pager screen. |
+| hs__tabSelectedTextColor | Color of the text in the selected tab on FAQs section pager screen. |
+| hs__chatBubbleUserText | Color of user text in conversation. |
+| hs__chatBubbleUserLink | Color of links in user's text in conversation. |
+| hs__chatBubbleUserBackgroundColor | Color applied to the background of user message bubble |
+| hs__chatBubbleAdminText | Color of admin text in conversation. |
+| hs__chatBubbleAdminLink | Color of links in admin's text in conversation. |
+| hs__chatBubbleAdminBackgroundColor | Color applied to the background of admin message bubble |
+| hs__chatBubbleMediaBackgroundColor | Color of the background shown in the attachment message or QuickSearch Bot FAQs message bubble. |
+| hs__chatBubbleMediaBorderColor | Color of the border shown in the attachment message bubble. |
+| hs__composeBackgroundColor | Color of the active 'send' button on the conversation screen. Background color of the 'jump to latest message' button. |
+| hs__selectableOptionColor | Color of the text in the option pills of the QuickSearch Bot or 'skip' button. Color of the 'jump to latest message' icon. |
+| hs__typingIndicatorColor | Color of typing indicator shown in Conversation screen |
+| hs__attachmentBackgroundColor | Color used as background for attachment meta data info while filing new issue. |
+| hs__separatorColor | Color of horizontal or vertical separators in the SDK. |
+| hs__searchHighlightColor | Color the highlighted text in search results. |
+| hs__footerPromptBackground  |  Color of footer background in FAQ and Conversation screens. |
+| hs__expandedPickerIconColor | Color of collapse (down arrow), search, clear, back icons in the list picker's expanded mode. |
+| hs__collapsedPickerIconColor | Color of expand (up arrow) icon in the list picker's collapsed mode |
+| hs__messageSendIcon | Icon for button used to send a message in conversation screen. |
+| hs__searchOnNewConversationDoneActionButtonIcon | Icon for button used to close FAQ screen in form based search results flow. |
+| hs__startConversationActionButtonIcon | Icon for button used to start a new conversation in form based flow. |
+| hs__conversationActionButtonIcon | Icon for button used to open a conversation on the FAQ screen. |
+| hs__searchActionButtonIcon | Icon for button used to start a search in FAQ screen. |
+| hs__attachScreenshotActionButtonIcon | Icon for button used to attach an image on the conversation screen. |
+| hs__faqTextColorLink | Color of links in FAQ content. |
+
+
+### Styleable attributes in action {#styleable-illustrations}
+
+The following illustrates use of these styleable attributes over Helpshift SDK's UI:
+
+<Image src="/static/books/android/dc-faq-1.png"  width="full" /> 
+
+<Image src="/static/books/android/dc-faq-2.png"  width="full" /> 
+
+<Image src="/static/books/android/dc-faq-3.png"  width="full" /> 
+
+<Image src="/static/books/android/dc-faq-4.png"  width="full" /> 
+
+<Image src="/static/books/android/dc-conv-2.png"  width="full" /> 
+
+<Image src="/static/books/android/conversation-attachment.png"  width="full" /> 
+
+<Image src="/static/books/android/conversation-optionpill.png"  width="full" /> 
+
+<Image src="/static/books/android/Android_CSAT.png"  width="full" /> 
+
+<Image src="/static/books/android/Android_Date.png"  width="full" /> 
+
+<Image src="/static/books/android/Android_Loading.png"  width="full" /> 
+
+<Image src="/static/books/android/Android_QuickJump.png"  width="full" /> 
+
+<Image src="/static/books/android/dc-tablet.png"  width="full" /> 
+
+### Helpshift dimensions {#dimensions}
+
+You can use the following dimension to change certain aspect of the SDK. These dimensions are independent of the theme set for the SDK.
+
+For example:
+    
+
+```xml
+
+    <dimen name="DIMENSION_NAME">VALUE</dimen>
+
+```
+
+|  Dimension             |  Summary          |  Default value    |
+|------------------------|-------------------|-------------------|
+|`hs_support_recyclerview_item_vertical_padding` |Top and bottom padding of each item in the Recyclerview Item. Any value less than 16 is ignored and will have no effect. This affects the Recyclerview Item used for FAQ list, FAQ sections list and search results |16dp|
+|`hs__chatBubbleMargin`|Left and right margin on the message chat bubbles in conversation screen|16dp|
+
+
+### Changing theme at runtime {#change-theme-runtime}
+
+From version 5.2.0 onwards, the SDK provides the ability to set a theme for all Helpshift SDK screens at runtime. This theme needs to inherit one of the Helpshift themes. To set the theme, you need to pass a theme resource name as the parameter.
+
+For example:
+
+
+```csharp
+
+    HelpshiftSdk.getInstance().setTheme("MyCustomHelpshiftThemeName");
+
+```
+
+You can reset an existing theme to the default theme declared for the Helpshift activity by passing `null` as the theme resource name parameter.
+
+For example:
+
+
+```csharp
+
+    HelpshiftSdk.getInstance().setTheme(null);
+
+
+```
+
+### Dark Mode support {#dark-mode-support}
+
+From version 5.2.0 onwards, the SDK supports [dark mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) theming. To enable the dark mode switching feature, you need to create a theme by inheriting one of the `Helpshift.Theme.DayNight` themes in your app:
+
+* Helpshift.Theme.DayNight.DarkActionBar
+* Helpshift.Theme.DayNight.Light
+* Helpshift.Theme.DayNight.HighContrast
+
+#### Customizing the dark mode themes
+
+You can customize the dark mode theme just like you would customize any other Helpshift theme like below:
+
+
+```xml
+
+    <style name="MyCustomHelpshiftTheme" parent="Helpshift.Theme.DayNight.DarkActionBar">
+        <item name="colorAccent">@color/your_custom_color</item>
+        <item name="colorPrimary">@color/your_custom_color</item>
+        <item name="colorPrimaryDark">@color/your_custom_color</item>
+    </style>
+
+```
+
+Please refer [here](/unity/design-android#skinning) for how to modify and apply theme.
+
+#### Enable/disable dark mode switching at runtime
+
+To enable or disable dark mode switching at runtime programatically, use the Android API referred [here](https://developer.android.com/reference/androidx/appcompat/app/AppCompatDelegate.html#setDefaultNightMode).
+
+
+
+## Orientation support {#orientation-support}
+
+By default, the Android SDK will obey the orientation of the device.
+If the device rotates to landscape mode, the SDK will update its UI to landscape orientation.
+Rotating back to portrait mode will bring the UI back to portrait orientation.
+
+#### Lock the Helpshift SDK window to landscape/portrait mode :
+
+Use one of the following solutions to lock the Helpshift SDK window to landscape/portrait mode,
+irrespective of the app's orientation.
+
+#### Using screenOrientation config:
+
+You can programmatically set the orientation for the Helpshift SDK using the `screenOrientation` install configuration, documented [here](/unity/sdk-configuration-android#screenOrientation). This config takes precedence over the  orientation set in AndroidManifest.xml.

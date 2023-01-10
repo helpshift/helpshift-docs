@@ -1,0 +1,283 @@
+---
+sidebar_position: 10
+title: Tracking Android
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Tracking <small>Android</small> {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+
+</Intro>
+
+
+## Session delegates {#session-delegates}
+
+You can track the helpshift session end, using `registerDelegates` api call. For example:
+
+```.csharp
+helpshift.registerDelegates();
+```
+To get the helpshift session end event, you should implement the helpshiftSessionEnded message handler on the Unity Game object which you have registered at the time of install.
+```csharp
+    public void helpshiftSessionEnded () {
+        Debug.Log("Helpshift session ended");
+    }
+```
+
+## Name and email {#name-and-email}
+
+
+<Admonition type="info" title="Note">
+
+* This API is now deprecated with Unity SDK v4.0. 
+* It is expected that developers will pass the Name, Email or User Identifier using the [login API](/unity/users-android#user-identification) going forward.
+* Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual. 
+
+</Admonition>
+
+
+## User Identifier {#user-id}
+
+
+<Admonition type="info" title="Note">
+
+* This API is now deprecated with SDK v4.0. 
+* It is expected that developers will pass the Name, Email or User Identifier using the [login API](/unity/users-android#user-identification) going forward.
+* Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
+
+</Admonition>
+
+
+## Multi Login {#multi-login}
+
+
+<Admonition type="info" title="Note">
+
+Details on User management are available [here](/unity/users-android#user-identification).
+
+</Admonition>
+
+
+## App usage {#app-usage}
+
+Breadcrumbs will help you track events or user actions and when user
+starts a new conversation, these breadcrumbs can be seen along with the conversation in
+the admin site. To leave breadcrumbs can use `leaveBreadCrumb`. For example:
+
+```.csharp
+helpshift.leaveBreadCrumb("Went to Preferences Screen");
+```
+
+Breadcrumbs will be collected within the set breadcrumb limit. This is set in the **SDK Configurations** section for app settings in the agent dashboard.
+Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs queue, please use the `clearBreadCrumbs` API call. For example:
+
+```.csharp
+helpshift.clearBreadCrumbs();
+```
+
+## Attaching metadata to reported issues {#metadata}
+
+You can attach additional metadata to every new conversation started by the app user via two
+simple mechanisms provided by the SDK. This metadata can range from
+user-name, email etc to game scores, current game levels and any other
+data relevant to creating a suitable context to each new conversation.
+
+There are 2 ways in which this metadata can be attached to reported issues.
+
+1. Whenever the user enters the Help section of your app, the Helpshift sdk will send an "updateMetaData" message to the registered game object (Please refer to the install API for details). In response to this message, your script should immediately the updateMetaData API to update the metaData. The updated meta data will be sent with the next issue that the user files.
+
+1. In all the API calls which launch the Help section, you can add a meta-data dictionary
+in the config dictionary parameter using the HSCUSTOMMETADATAKEY key. This meta-data will be
+sent along with the next reported issue. When the user exits out of the Help section this meta-data will be dropped in favor of the meta-data sent in the next Helpshift API call.
+
+
+<Admonition type="info" title="Note">
+
+* While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
+* As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
+* Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+
+</Admonition>
+
+
+### Attaching tags with metadata {#metadatatags}
+
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+* Applicable to SDK v 2.8.0 & above.
+* Tags must be lowercase.
+* Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
+
+</Admonition>
+
+
+<Image src="/static/books/android/metadata-tags.png"  width="half" /> 
+
+Examples :
+
+1. You can attach tags with metadata to every reported issue via a reserved key constant
+`HelpshiftSdk.HSTAGSKEY`. This is used with `updateMetaData` as follows:
+
+    
+```csharp
+
+        HelpshiftSdk help = HelpshiftSdk.getInstance();
+        Dictionary<string, object> configMap = new Dictionary<string, object>();
+        configMap.Add("Level", "9");
+        configMap.Add("Spend", "46.55 USD");
+        configMap.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+        configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
+        help.updateMetaData(configMap);
+
+```
+
+2. You can attach tags with metadata to every reported issue via a reserved constant key
+`HSTAGSKEY`. This is used with the config dictionary as follows:
+
+    
+```csharp
+
+        HelpshiftSdk help = HelpshiftSdk.getInstance();
+        Dictionary<string, object> configD = new Dictionary<string, object>();
+        configD.Add("gotoConversationAfterContactUs", "yes");
+        configD.Add("enableContactUs", "yes");
+        Dictionary<string, object> configMap = new Dictionary<string, object>();
+        configMap.Add("Level", "91");
+        configMap.Add("Spend", "48.55 USD");
+        configMap.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+        configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
+        configD.Add(HelpshiftSdk.HSCUSTOMMETADATAKEY, configMap);
+        help.showFAQs(configD);
+
+```
+
+3. You can attach tags with metadata to every reported issue via a reserved constant key
+`HSTAGSKEY`. This is used with `customContactUsFlows` as follows:
+
+    
+```csharp
+
+        HelpshiftSdk help = HelpshiftSdk.getInstance();
+        Dictionary<string, object> customMeta = new Dictionary<string, object>();
+        customMeta.Add ("level", "A");
+        customMeta.Add (HelpshiftSdk.HSTAGSKEY, new String[] { "whale", "test" });
+        Dictionary<string, object> configMap = new Dictionary<string, object>();
+        configMap.Add (HelpshiftSdk.HSCUSTOMMETADATAKEY, customMeta);
+
+        Dictionary<string, object> faqSection = new Dictionary<string, object>();
+        faqSection.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeFaqSection);
+        faqSection.Add(HelpshiftSdk.HsFlowData, "50");
+        faqSection.Add(HelpshiftSdk.HsFlowTitle, "FAQ Section");
+        faqSection.Add(HelpshiftSdk.HSFlowConfig, configMap);
+
+        help.showDynamicForm("This is a dynamic form", new Dictionary<string, object>[] {faqSection});
+
+
+```
+
+## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+
+
+<Admonition type="info" title="Note">
+
+**On Custom Issue Fields keys & compatibility**
+
+* Applicable to SDK v2.9.0 & above.
+* Custom Issue Fields must be created in the Helpshift Dashboard (Settings -> Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
+
+</Admonition>
+
+
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a data type, and a value. The SDK allows the addition of a dictionary of Custom Issue Fields by using the `HelpshiftSdk.HSCUSTOMISSUEFIELDKEY` key to the config dictionary.
+
+These Custom Issue Fields would be sent whenever a new issue is created.
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts. 
+
+Possible datatypes to be passed into the config are:
+
+|  Type             |  Comments          |
+|--------------------|-------------------|
+| "sl" | Single line string with character limit of 255 |
+| "ml"   | Multi line string with character limit of 100,000 |
+| "n" |  String representation of number. For eg.  "12345" |
+| "dd"  | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt"  | String representation of epoch time in milliseconds. For eg. "1505927361535" |
+| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
+
+
+```csharp
+
+    HelpshiftSdk help = HelpshiftSdk.getInstance();
+    Dictionary<string, object> configD = new Dictionary<string, object>();
+
+    Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]> ();
+    customIssueFields.Add ("join_date", new string[]{ "dt", "1505927361535" });
+    customIssueFields.Add ("level", new String[]{"n", "42"});
+    customIssueFields.Add ("name", new String[]{"sl", "John Doe"});
+    customIssueFields.Add ("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+    customIssueFields.Add ("is_pro", new String[]{"b", "true"});
+    customIssueFields.Add ("currency", new String[]{"dd", "Dollar"});
+    configD.Add (HelpshiftSdk.HSCUSTOMISSUEFIELDKEY, customIssueFields);
+    help.showFAQs(configD);
+
+```
+
+## Debug logs {#debug-logs}
+
+If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can instantiate and use the **HelpshiftLog** class and its methods which will provide varying degress of logging.
+For example, if you want to attach debug level logs please add the following code
+
+```csharp
+this.logger = new HelpshiftLog();
+logger.d(<debug-tag>, <debug-message>);
+```
+
+## Check if an active Conversation exists. {#isConversationActive}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to Helpshift Unity plugin v2.8.0 & above.
+
+</Admonition>
+
+
+This API determines if there is currently an ongoing Conversation in the SDK. You can use Helpshift delegates and implement the [CheckIfConversationActive()](/unity/delegates-android/) method as shown below to get a string with value either "true" or "false". This string value indicates whether there is an active Conversation open for the user.
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+You can implement the "didCheckIfConversationActive" delegate method like in the following example:
+
+```csharp
+API:
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+help.checkIfConversationActive();
+
+Delegate:
+public void didCheckIfConversationActive(string isActive) {
+    if (isActive.Equals("true")) {
+        //Active Conversation
+    } else {
+        //No open Conversation
+    }
+}
+```

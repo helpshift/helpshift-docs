@@ -1,0 +1,90 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "This document illustrates the development of APIs for Helpshift Custom Bots.Following steps describe how to create and configure APIs for managing custom bots."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Getting Started {#getting-started}
+
+<Intro>
+
+
+This document illustrates the development of APIs for Helpshift Custom Bots.
+Following steps describe how to create and configure APIs for managing custom bots.
+
+
+</Intro>
+
+
+## Configuring APIs {#configure}
+
+1. Configure API Requests that can retrieve and update data on the external system. Navigate to the **External API Requests** section in the Helpshift Admin dashboard.
+    * Provide the [setup details](#setup-apis) and input parameters.
+    * Test the API with dummy values for the input parameters.
+    * View response and select the keys that you want to use in the Bot Builder. Valid JSON formats support the response.
+2. Configure the APIs in the Bot Builder to build the interactions that Bot will have with the end-user. **Make an API Request** enables you to consume the configured APIs.
+    * In the **Make an API** Request step, select an API that you want to use.
+    * Test the API to check the data transfer and whether the endpoint is working.
+    * During the Bot conversations, enter the values that you want to pass using the APIs (CIFs, user details, information from earlier bot steps, etc.)
+3. Use the API response via the Success branch of the Make an API Request step.
+    * Use the response to build Bot messages using placeholders wherein you can plug the API response.
+    * Branch a conversation by setting up rules, if the API response is of type Date, Number or Boolean.
+    * Generate a list of options (order list, for example) for the end-user to select from.
+
+## Types of HTTP Methods Supported {#supported-method-types}
+|  |                                                           |
+|---------|-----------------------------------------------------------------|
+| Retrive     | GET                        | retrieve multiple issues       |
+| Create/Update     |POST/PUT               | retrieve single issue         |
+
+## Setup APIs {#setup-apis}
+
+|                            |                                                 |                                              |
+|---------------------------------|------------------------------------------------------|---------------------------------------------------------|
+| Title                           | -                                                    | Mandatory                                               |
+| URL                             | -                                                    | Mandatory                                               |
+| Type                            | GET, POST, PUT                                       | Mandatory                                               |
+| Authentication                  | Basic HTTP, Custom                                   | Mandatory                                               |
+| Type of encoding for POST / PUT | application/x-www-form-urlencoded, application/json  | Mandatory                                               |
+| Parameters for the API          | -                                                    | Optional, advised to send at least one parameter        |
+| Format for GET                  | https://www.xyz.com/?param1=val&param2=value         | Key and value both will be sent in the request URL.     |
+| Request size                    | Upto 20 KB                                           | Strictly followed; if exceeded, error will be displayed.|
+| Response size                   | Upto 100 KB                                          | Strictly followed; if exceeded, error will be displayed.|
+
+## API Request and Response {#request-response-types}
+
+|                                |                                                                                                                                                               |
+|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| POST / PUT                             | For encoding ‘application/json’, values of keys will be sent as strings irrespective of actual data type.                                                             |
+| Authentication                         | If the customer endpoint has no authentication or the request contains incorrect credentials,<br /> the expected response is 401 (Unauthorized) or 403(Forbidden).          |
+| Timeout                                | 5 seconds                                                                                                                                                             |
+| Status Codes                           | <ul><li>Success - 2XX</li> <li>Failure - 3XX, 4XX, 5XX</li><li>Redirects are not supported</li></ul>                                                                  |
+| Response keys                          | Admin optionally has the flexibility of using specific keys (not all) from the API response.                                                                          |
+| Response format                        | Only valid JSON                                                                                                                                                       |
+| Date type                              | We will send date in the format  “yyyy-mm-dd” for Requests.<br /> For Responses, if a string follows the pattern “yyyy-mm-dd”,<br /> we will consider it to be of type ‘date’.|
+
+## API Requests during Bot executions {#api-request-bot-execution}
+|                                          |                                                                 |
+|------------------------------------------|-----------------------------------------------------------------|
+| Things to avoid                          | <ul><li>Multiple API calls in succession.</li><li>Requests to public APIs (like Google Maps) using Helpshift  Bots is not recommended;<br /> in such cases, it is advisable to call your endpoint and have your backend service make those public calls.</li></ul>|
+| Parameters                               | For parameters that have no value in the system, for example  CIF,<br /> the key will be passed with values in the following format.<br /><br />GET (Param1 has no value) <ul><li>url/param1=&amp;param2=some_value</li></ul>POST/PUT (Param 1 has no value) <ul><li>application/www-form-urlencoded</li><ul><li>param1=&amp;param2=some_value</li></ul><li>application/json<ul><li>{param1=NULL;}</li></ul></li></ul>|
+| Header                                   | X-hs-request-id (This should be used to de-duplicate requests)|
+| Response used for                        | <ul><li>Constructing Bot messages with data received in API response</li><li>Generating list of options from which a user can make a selection (SDK - v7.5.0 will introduce a new UI element - List Picker to show up to 500 options)</li></ul>|
+
+## Sample Responses {#sample-responses}
+|    |    |
+|----|----|
+|**Valid**||
+|Valid - Example 1 |<code> {<br />&nbsp;&nbsp;"balance": 500 <br />}</code>|
+|Valid - Example 2 |<code> {<br />&nbsp;&nbsp;"name": "John",<br />&nbsp;&nbsp;"age": 25,<br />&nbsp;&nbsp;"zip": 60616<br />}</code>|
+|Valid - Example 3 |<code> {<br />&nbsp;&nbsp;"orders":[<br />&nbsp;&nbsp;&nbsp;&nbsp;{ "order_id":212, "order_title":"Baa Baa Black Sheep" },<br />&nbsp;&nbsp;&nbsp;&nbsp;{ "order_id":333, "order_title":"Jingle Bells" },<br />&nbsp;&nbsp;&nbsp;&nbsp;{ "order_id":444, "order_title":"There's a hole in the bucket" }<br />&nbsp;&nbsp;]<br />}</code>|
+|Valid - Example 4 | <code>{<br />&nbsp;&nbsp;"abc": {<br />&nbsp;&nbsp;&nbsp;&nbsp;"a": {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"b": [ 1, 2, 3 ],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"c": true<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;}<br />}</code>|
+|Valid - Example 5 | <code>{<br />&nbsp;&nbsp;"issue_types": ["loyalty points", "loyalty privileges", "redeem points"]<br />}</code>|
+| **Invalid** | |
+| Invalid - Example 1 <br /> Response contains maps with separate structures.| <code>{<br />&nbsp;&nbsp;"xyz": [<br />&nbsp;&nbsp;&nbsp;&nbsp;{ <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"a": [ 1, 2, 3 ]<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;],<br />&nbsp;&nbsp;"pqr": [<br />&nbsp;&nbsp;&nbsp;&nbsp;[ 1, 2, 3 ],<br />&nbsp;&nbsp;&nbsp;&nbsp;[ 4, 5, 6 ]<br />&nbsp;&nbsp;]<br />}</code>|
+| Invalid - Example 2 <br /> Array contains values of different types. | <code>{<br />&nbsp;&nbsp;"a": [ 1, "hello", true ]<br />}</code>|
+| Invalid - Example 3 <br /> Array contains values of different types.<br />With Helpshift Bots, if strings have the format of “YYYY-MM-DD” it is considered type ‘date’. | <code>{<br />&nbsp;&nbsp;"a": [ "2019-01-17", "hello"]<br />}</code>|
+| Invalid keys containing nested array and maps values | <code>{<br />&nbsp;&nbsp;"xyz": [<br />&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />"a": [1, 2, 3], // invalid key as nested array is not allowed<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"b": "1",<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"c" :{"d": 1} // invalid as nested maps inside array is not allowed<br />&nbsp;&nbsp;&nbsp;&nbsp;}],<br />&nbsp;&nbsp;&nbsp;&nbsp;"pqr": [<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1, 2, 3],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[4, 5, 6]<br />&nbsp;&nbsp;&nbsp;&nbsp;], // invalid key again nested array is not allowed<br />&nbsp;&nbsp;&nbsp;&nbsp;"abc": {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"a": {<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"b": [1, 2, 3],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"c": true<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;}</code>|
