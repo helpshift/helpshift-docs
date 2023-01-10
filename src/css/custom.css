@@ -37,6 +37,47 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+/* Override some Docusaurus defaults */
+
+/* Hides empty headers caused due to the quill definition list -> Markdown migration */
+th:empty {
+  @apply hidden;
+}
+
+table p {
+  @apply m-0;
+}
+
+article .markdown img {
+  @apply py-4;
+}
+
+img {
+  max-height: 600px;
+  @apply object-contain;
+}
+
+.footer__bottom {
+  @apply mt-12;
+}
+
+footer .container {
+  @apply max-w-6xl;
+}
+
+.navbar__item:nth-child(1) {
+  @apply ml-12;
+}
+
+a.menu__link {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+[data-theme="dark"] a.menu__link--active,
+a.menu__link--active {
+  color: var(--ifm-menu-color-active);
+}
+
 /* Custom global styles */
 
 .full-bg {
@@ -52,4 +93,3 @@
 [data-theme="dark"] .full-bg {
   background: unset;
 }
-
