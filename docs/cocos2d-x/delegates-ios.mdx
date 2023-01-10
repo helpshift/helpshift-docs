@@ -1,0 +1,220 @@
+---
+sidebar_position: 10
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+
+</Intro>
+
+All delegate callbacks will be registered and called with function pointers with matching signatures.
+
+## Helpshift Session delegates
+
+### Session begin
+
+**helpshiftSessionBegan**
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+### Session end
+
+**helpshiftSessionEnded**
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+**For example:**
+
+
+```cpp
+
+    void hsSessionBegun() {
+      CCLOG("Helpshift Session began");
+    }
+    void hsSessionEnded() {
+      CCLOG("Helpshift Session ended");
+    }
+    .
+    .
+    .
+    HelpshiftCocos2dx::registerSessionDelegates(hsSessionBegun, hsSessionEnded);
+
+```
+
+## New conversation delegate {#delegate-new-conversation-started}
+
+**newConversationStarted**
+
+If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will get fired every time the user starts a new conversation. The delegate method will receive the conversation message in it's arguments.
+
+
+<Admonition type="info" title="Note">
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+</Admonition>
+
+
+
+## New message delegate {#delegate-user-replied-to-conversation}
+
+**userRepliedToConversation**
+
+If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
+
+
+```cpp
+
+    #define HS_USER_ACCEPTED_SOLUTION "User accepted the solution"
+    #define HS_USER_REJECTED_SOLUTION "User rejected the solution"
+    #define HS_USER_SENT_SCREENSHOT "User sent a screenshot"
+    #define HS_USER_REVIEWED_APP "User reviewed the app"
+
+```
+
+
+<Admonition type="info" title="Note">
+
+All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
+
+</Admonition>
+
+
+## Conversation ended delegate {#delegate-conversation-ended}
+
+This delegate is called whenever the ongoing Conversation is resolved, rejected from the Dashboard, timed out or archived. You need to implement a method for this action and then register it as the callback. For example you can implement a callback method called conversationEnded.
+
+## Customer satisfaction survey delegate {#csat-completed}
+
+**userCompletedCustomerSatisfactionSurvey**
+
+If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
+
+**For example:**
+
+
+```cpp
+
+    void newConversationHandler (const char *message) {
+      CCLOG("New conversation started with message : %s", message);
+    }
+
+    void newConversationMessageHandler (const char *message) {
+      CCLOG("New conversation message : %s", message);
+    }
+
+    void csatHandler (int rating, const char *feedback) {
+      CCLOG("CSAT with rating : %d and feedback %s", rating, feedback);
+    }
+
+	void helpshiftConversationEnded() {
+	  CCLOG("The conversation has ended");
+	}
+    .
+    .
+    .
+    HelpshiftCocos2dx::registerConversationDelegates(newConversationHandler, newConversationMessageHandler, csatHandler, helpshiftConversationEnded);
+
+
+```
+
+## Display attachment delegate {#display-attachment}
+
+Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
+
+* Video files (3gp, m4v)
+* Audio files (mp3, mp4, aac)
+* Image files (jpg, png, gif)
+
+After the attachment is downloaded, helpshift checks for any app which can open it. if no such app is found than we fall back to passing the file to the delegate handler in the app.
+
+If your application wants to handle a certain file type in a custom way, the application should register the file extension with Helpshift in the config dictionary passed to the install call.
+
+**For example:**
+
+
+<Tabs>
+
+<TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
+
+
+```cpp
+    ValueVector fileFormats;
+    fileFormats.push_back(Value("token"));
+    config["supportedFileFormats"] = fileFormats;
+
+    HelpshiftCocos2dx::install("apikey",
+                               "domain.helpshift.com",
+                               "appId",
+                               config);
+```
+
+
+</TabItem>
+<TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
+
+
+```cpp
+    cocos2d::CCArray *fileFormats = CCArray::create();
+    cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
+
+    fileFormats->addObject("token"));
+    config->setObject(fileFormats, "supportedFileFormats");
+
+    HelpshiftCocos2dx::install("apikey",
+                               "domain.helpshift.com",
+                               "appId",
+                               config);
+```
+
+</TabItem>
+
+</Tabs>
+
+
+The application also needs to register the function which will be called when the Helpshift SDK detects a file with the registered file extension.
+
+
+```cpp
+
+    static void registerDisplayAttachmentDelegate (void (*displayAttachmentListener)(const char *filePath));
+
+```
+
+### Authentication failure delegate {#authetication-failure}
+
+If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
+
+| Delegate | When it is called | How to use|
+|----------------|---------|---------------|
+|void authenticationFailure(HelpshiftCocosUser *user, HSAuthenticationFailureReason reason) HSAuthTokenNotProvided| When no 'user authentication token' is provided| If you do not plan on sending an 'user authentication token' when implementing SDK 5.0.0, but plan on implementing it in the future, you can use this failure delegate to show your own alerts to the userm such as a prompt to update the app. You may want to use this if you are using the login API without the 'user authentication token', as these users will be considered unverified once Identity Verification is enabled on the Dashboard. Using this delegate is completely optional - Helpshift will prevent unverified users from being able to file Issues, as mentioned previously.|
+|void authenticationFailure(HelpshiftCocosUser *user, HSAuthenticationFailureReason reason) HSInvalidAuthToken|When the 'user authentication token' is invalid|For SDK 5.0.0 and later, if the HMAC Digest being provided via LoginAPI is invalid, Helpshift will prevent the users from filing Issues. The 'user authentication token' can be invalid if:<ul><li>You made a programming error. [View](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification)</li></ul><ul><li>You regenerated the secret key on the Dashboard, but didn't update the 'user authentication token'.</li></ul><ul><li>A 3rd party is trying to make requests.</li></ul><ul><li>When the 'user authentication token' is invalid, end users are not able to file Issues and an error is shown to them, as mentioned previously. You can use this delegate if you want to show your own alerts or re-fetch the correct auth token from your server.</li></ul>|
+
+### Action card delegate {#action-card}
+
+This delegate method is called when user clicks on action card button. So, the application also has to register the function which would be called when Helpshift SDK detects that a user has clicked on action card button.
+
+**For example:**
+
+
+```cpp
+
+    void userClickedOnActionCard(HSActionType helpshiftAction, const char *actionData) {
+        // your code here    }
+    .
+    .
+    .
+```
+
+    HelpshiftCocos2dx::registerActionCardDelegate(userClickedOnActionCard);

@@ -1,0 +1,65 @@
+---
+sidebar_position: 170
+title: Sample Projects
+description: "Trying out a sample project is the easiest way to get started."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Sample Projects
+
+<Intro>
+
+Trying out a sample project is the easiest way to get started.
+
+
+</Intro>
+
+Examples for integrating and using the SDK can be found on
+**[Github](https://github.com/helpshift/helpshift-ios-sdk-examples)**.
+
+<div className="compact  text-sm">
+
+
+| | |
+|--|--|
+|[HelpshiftSupportApp](https://github.com/helpshift/helpshift-ios-sdk-examples/tree/master/HelpshiftSupportApp)| demonstrates different support screens in your app|
+|[NotificationCountApp](https://github.com/helpshift/helpshift-ios-sdk-examples/tree/master/NotificationCountApp)| updating notification count when support agents reply to your app users|
+|[APNApp](https://github.com/helpshift/helpshift-ios-sdk-examples/tree/master/APNApp)| handling customer support notifications via Apple Push Notification Service|
+</div>
+
+## Trying out HelpshiftSupportApp {#support-app}
+
+1. Open **HelpshiftSupportApp.xcodeproj** in Xcode
+
+1. In project explorer, navigate to **Full Support** and open `HSDAppDelegate.m`
+
+1. In `application:didFinishLaunchingWithOptions:` method, initialize Helpshift with your unique `API_KEY`, `DOMAIN` and `APP_ID`. To get them:
+
+    1. Navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section.
+
+    1. Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
+
+        <Image src="/static/books/common/settings-integration.png"  width="major" /> 
+
+1. See `btnSupportClick:` method in `HSDViewController.m` to show support screen & decomposed support screen.
+
+
+### Test your integration {#test-integration}
+
+1. Tap **Report Issue** button in the sample app, you should see the [New Conversation](/ios/support-tools#conversation-view) screen.
+
+    ![Full Support screenshot](/static/books/ios/sample-screenshot.png)
+
+1. File an issue, and watch it appear in your agent dashboard. Once you've resolved that issue, you should go ahead and [Integrate Helpshift in your app](/ios/getting-started/).
+
+It's time to talk to your users now!

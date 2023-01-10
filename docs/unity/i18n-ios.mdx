@@ -1,0 +1,128 @@
+---
+sidebar_position: 10
+title: Going International
+description: "Localizing & Internationalizing your in-app Support."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Going International {#going-international}
+
+<Intro>
+
+Localizing & Internationalizing your in-app Support.
+
+
+</Intro>
+
+
+## Internationalization {#i18n}
+Helpshift iOS SDK comes with support for **45** languages out of the box with English as the default. A bundle file named `HsLocalization.bundle` is included in the framework that consists of default localizations. If you need to include additional localized strings, add a bundle named `HelpshiftCustomLocalization.bundle` to the Copy Bundle Resources Phase with the localized strings from `HelpshiftCustomLocalizations` folder included in the package.
+
+
+<Admonition type="info" title="Note">
+
+On Unity 5.4, the default localization bundle `HsLocalization.bundle` does not get added to the Xcode project automatically. To include this to the Xcode project, change its platform to iOS in Unity platform inspector.
+
+</Admonition>
+
+
+The Helpshift SDK will be localized based on the user’s device language. This can be set by going to General → Language & Region → iPhone Language. If the user’s device language is not available, English will be used as default.
+
+
+
+
+<Admonition type="danger" title="Important">
+
+#### Add only required languages from HSLocalization
+
+If you are adding strings for a certain language, it enables that language in your app when submitted to the App store.
+This has app wide implications and may cause unwanted problems if not taken care of.
+Specifically, this can lead the App Store to detect that you support a particular language even
+though you have not specifically added that language to your application.
+Make sure to only add those languages that your app supports.
+
+
+</Admonition>
+
+
+### List of supported languages {#supported-languages}
+
+| Values | Language | Locale |
+|--------------------|-------------------|-------------------|
+| values  | English | en|
+| values-de| German | de|
+| values-es | Spanish | es|
+| values-fr | French | fr |
+| values-it| Italian | it|
+| values-ru| Russian | ru |
+| values-zh-rCN| Simplified-Chinese | zh-Hans|
+| value-zh-rTW| Traditional-Chinese | zh-Hant|
+| values-pt-rBR| Portuguese |  pt|
+| values-ko| Korean| ko|
+| values-ja| Japanese | ja |
+| values-tr|  Turkish| tr |
+| values-nl| Dutch | nl|
+| values-cs|  Czech| cs|
+| values-hu| Hungarian | hu |
+| values-in|  Indonesian| id|
+| values-th| Thai | th |
+| values-sl| Slovenian | sl |
+| values-vi| Vietnamese | vi |
+| values-ar| Arabic | ar |
+| values-pl| Polish | pl |
+| values-no| Norwegian | no |
+| values-sv| Swedish | sv |
+| values-fi| Finnish | fi |
+| values-ro| Romanian | ro |
+| values-el| Greek | el |
+| values-da| Danish | da |
+| values-ms| Malay | ms |
+| values-iw| Hebrew | iw |
+| values-sk| Slovak | sk |
+| values-uk| Ukrainian | uk |
+| values-ca| Catalan | ca |
+| values-hr| Croatian | hr |
+| values-bn| Bengali | bn |
+| values-bg| Bulgarian | bg |
+| values-gu| Gujarati | gu |
+| values-hi| Hindi | hi |
+| values-kn| Kannada | kn |
+| values-lv| Latvian | lv |
+| values-ml| Malayalam | ml |
+| values-mr| Marathi | mr |
+| values-pa| Punjabi | pa |
+| values-fa| Persian | fa |
+| values-ta| Tamil | ta |
+| values-te| Telugu | te |
+
+The Helpshift SDK will be localized based on the user’s device language. This can be set by going to General → Language & Region → iPhone Language. If the user’s device language is not available, English will be used as default.
+
+If the end-user has a language already set for their device (via
+Settings->General->International->Language) the correct language
+translations will be used. If the said language is not available English
+will be used as default.
+
+## Set SDK language {#set-language}
+
+
+<Admonition type="info" title="Note">
+
+For v4.11.0 and above
+
+</Admonition>
+
+
+You can set the SDK language using this API.
+By default, the device's prefered language is used by the SDK.
+
+For Example :
+
+
+```csharp
+
+	// Language Code is like "en" for English or "fr" for French
+	HelpshiftSdk.getInstance().setSDKLanguage("fr");
+```
+

@@ -1,0 +1,951 @@
+---
+sidebar_position: 10
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK.These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# SDK Configuration
+
+<Intro>
+
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc.
+
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.0.0 and above
+
+</Admonition>
+
+
+
+## Install time configurations {#install-config}
+
+### enableAutomaticThemeSwitching {#enableAutomaticThemeSwitching}
+
+Upon setting this option to YES, Helpshift SDK will switch between default light and dark themes based on the OS Appearance setting.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.ENABLE_AUTOMATIC_THEME_SWITCHING</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+var configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.ENABLE_AUTOMATIC_THEME_SWITCHING, "yes");
+help.install("apiKey","domainName","appId", configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+1. This configuration is only applicable to iOS 13 and above.
+2. Light and Dark Appearance switching works only if your app is built with Xcode 11 or above
+3. If you use [setTheme](/unity/design-ios#runtime-common) or [setThemes](/unity/design-ios#runtime-light-dark) API, this config takes no effect.
+
+</Admonition>
+
+
+### unityGameObject {#unity-game-object}
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.UNITY_GAME_OBJECT</code>|
+|Values| Non-empty String|
+
+</div>
+
+The `unityGameObject` option is used to tell the Helpshift SDK which Game object to send the Unity messages to. Callbacks such as `didReceiveInAppNotificationCount` and `didReceiveNotificationCount` will be called on the object specified via this option.
+
+For example
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+var configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.UNITY_GAME_OBJECT, "Cube");
+help.install("apiKey","domainName","appId", configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+This option will only work with the Helpshift's `install` API
+
+</Admonition>
+
+
+### enableInAppNotification {#enableInAppNotification}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `no`. The default value of this flag is `yes` i.e., in app notification will be enabled.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.ENABLE_IN_APP_NOTIFICATION</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+Example:
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.ENABLE_IN_APP_NOTIFICATION, "yes");
+help.install("apiKey","domainName","appId", configMap);
+```
+
+### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+
+
+<Admonition type="info" title="Note">
+
+Available from SDK version 1.3.0 and above
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.ENABLE_DEFAULT_FALLBACK_LANGUAGE</code>|
+|values| <code>"yes"</code> / <code>"no"</code>|
+|default| <code>"yes"</code>|
+
+</div>
+
+You can enable or disable the SDK default fallback language when showing FAQs using this flag. When set to false, the Helpshift SDK will not fallback to the default language that is English, when showing FAQs.
+
+Example:
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.ENABLE_DEFAULT_FALLBACK_LANGUAGE, "yes");
+help.install("apiKey","domainName","appId", configMap);
+```
+
+### disableEntryExitAnimations {#disableEntryExitAnimations}
+
+
+<Admonition type="info" title="Note">
+
+ Applicable to version 2.1.1 and above.
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.DISABLE_ENTRY_EXIT_ANIMATIONS</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+If you want to disable animations shown by the Helpshift SDK while entering and exit the Helpshift screens, please set this config option to `yes`.
+Default value is `no`, ie., Helpshift SDK **will show** animations if this value is not set.
+
+
+Example:
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.DISABLE_ENTRY_EXIT_ANIMATIONS, "yes");
+help.install("apiKey","domainName","appId", configMap);
+```
+
+
+### enableLogging {#enableLogging}
+
+Upon setting enableLogging to `yes`, Helpshift SDK logs will be generated in the Xcode console. Turning on logging can help developers resolve common integration issues.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.ENABLE_LOGGING</code>|
+|Values| <code>"yes"</code>/<code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+```csharp
+
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("enableLogging", "yes");
+help.install("apiKey","domainName","appId", configMap);
+
+```
+
+### disableErrorReporting{#disableErrorReporting}
+
+Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK will collect internal error level logs and report them to our systems to ensure that we become aware of runtime issues and we have enough information to fix them.
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| <code>HelpshiftSdk.DISABLE_ERROR_REPORTING</code>|
+|Values| <code>"yes"</code>/<code>"no"</code>|
+|Default| <code>no</code>.|
+
+</div>
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.DISABLE_ERROR_REPORTING, "yes");
+help.install("apiKey","domainName","appId", configMap);
+
+```
+
+## API options {#api-options}
+
+### enableContactUs {#enable-contact-us}
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableContactUs|
+|Values| <code>CONTACT_US_ALWAYS</code>/<code>CONTACT_US_NEVER</code>/<code>CONTACT_US_AFTER_VIEWING_FAQS</code>/<code>CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL</code>|
+|Default| <code>CONTACT_US_ALWAYS</code>|
+</div>
+
+The `enableContactUs` flag controls the visibility of `Contact Us` button -
+
+<div className=" compact text-sm">
+
+
+| | |
+|--|--|
+|CONTACT_US_ALWAYS| show in the navigation bar, search, and after marking an FAQ unhelpful. <code>"yes"</code> for SDK versions below 4.5.0|
+|CONTACT_US_AFTER_VIEWING_FAQS| show only while searching, on FAQ screen and after marking an FAQ unhelpful.|
+|CONTACT_US_NEVER| do not show "Contact Us" button anywhere in the SDK. <code>"no"</code> for SDK versions below 4.5.0|
+|CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL| do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful.|
+</div>
+
+To override the default value you can pass the arguments in the options dictionary.
+Example:
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("enableContactUs", CONTACT_US_AFTER_VIEWING_FAQS);
+help.showFAQs(configMap);
+```
+
+This flag has no effect for the `showConversation` API call, since there is no `Contact Us` button in the conversation screen.
+
+
+<Admonition type="info" title="Note">
+
+** AFTER_VIEWING_FAQS is applicable to Plugin version 4.5.0 and above **
+
+By using this option, you encourage users to read and search FAQs first instead of directly filing new tickets. This facilitates ticket avoidance.
+
+</Admonition>
+
+
+#### Best Practices
+
+* Provide tier-based support by setting enableContactUs to `CONTACT_US_ALWAYS` for paid users and `CONTACT_US_AFTER_VIEWING_FAQS` for unpaid ones.
+* Provide country based support by setting enableContactUs to `CONTACT_US_ALWAYS` for local users and `CONTACT_US_AFTER_VIEWING_FAQS` for foreign ones.
+
+### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| gotoConversationAfterContactUs|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+The `gotoConversationAfterContactUs` flag will determine whether the
+user lands up in the conversation screen after starting a new
+conversation via "Contact Us". This only makes sense if the
+`enableContactUs` flag takes on the default value.
+
+Example:
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("gotoConversationAfterContactUs", "yes");
+help.showConversation(configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+For `showFAQs`, `showFAQSection` and `showSingleFAQ`, setting `gotoConversationAfterContactUs` makes sense only if `enableContactUs` is `yes`.
+
+</Admonition>
+
+
+
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+
+</Admonition>
+
+
+### presentFullScreenOniPad {#presentFullScreenOniPad}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.2.0 and above
+
+</Admonition>
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Flag| presentFullScreenOniPad|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen`
+or `UIModalPresentationFormSheet` modal presentation style in iPad.
+
+The default value is `"no"`, which means support views will be presented as `UIModalPresentationFormSheet` by default.
+When the value is set to `"yes"`, support views will be presented in `UIModalPresentationFullScreen`.
+
+This flag only takes effect on iPad.
+
+
+### requireEmail {#requireEmail}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.6.0 and above
+
+</Admonition>
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Flag| requireEmail|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+The `requireEmail` flag will determine whether email is required or optional for starting a new conversation.
+
+When the flag is set to `yes` customer's email will be required. If set to `no` email will be optional.
+
+For example:
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("requireEmail", "no");
+help.showFAQs(configMap);
+```
+
+If "New Issue Forwarding" is ON or if "Allow anonymous issues" is ON in the agent dashboard, then this flag will be ignored.
+
+
+<Admonition type="info" title="Note">
+
+Once `requireEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+
+</Admonition>
+
+
+### hideNameAndEmail {#hideNameAndEmail}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.7.0 and above
+
+</Admonition>
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Flag| hideNameAndEmail|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
+
+When the flag is set to `yes` the name and email fields will be hidden. If set to `no` the default behaviour will resume.
+
+If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the *setNameAndEmail* API, to supply the SDK with name and email in this case.
+
+If "Allow anonymous issues" is ON, under app settings in the agent dashboard, then this flag will be ignored.
+
+Also, if the [`requireEmail`](#requireEmail) flag is set to `no` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
+
+
+For example:
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("hideNameAndEmail", "yes");
+help.showFAQs(configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+Once `hideNameAndEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+
+
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+
+</Admonition>
+
+
+### conversationPrefillText {#conversationPrefillText}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.7.0 and above
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| conversationPrefillText|
+|Values| Non-empty <code>string</code>|
+
+</div>
+
+The `conversationPrefillText` API option will prefill a new conversation description, with the supplied string.
+This is useful where you might want your users to send you diagnostic information in the conversation description, for example if the app hits an exception, etc.
+
+Example:
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+string preFillString = exceptionData;
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("conversationPrefillText", preFillString);
+help.showConversation(configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+The `conversationPrefillText` option takes effect only for the **showConversation** API
+
+</Admonition>
+
+
+### enableFullPrivacy {#enableFullPrivacy}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.9.1 and above
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableFullPrivacy|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+In scenarios where the user attaches objectionable content in the screenshots, it becomes a huge [`COPPA`](http://www.coppa.org/) concern. The enableFullPrivacy option will help solve this problem.
+
+If enableFullPrivacy option is set to YES, HS SDK does the following:
+
+1. Disables user-initiated screenshots - players cannot send images without being requested by an Agent.
+1. Does not collect any of the following personal information:
+    *    Mobile country code, mobile network code and carrier name.
+    *    Country code and country.
+    *    Custom meta-data that is labeled "private-data".
+
+To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this option is set to YES, this data will be removed when the user starts a new conversation.
+
+Example:
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("enableFullPrivacy", "yes");
+help.showConversation(configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+1. Once `enableFullPrivacy` flag is set, the SDK will use that value for all further sessions until it is changed again.
+2.  For plugin versions 2.7.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
+3.  For plugin versions 2.8.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
+
+</Admonition>
+
+
+
+### showSearchOnNewConversation {#showSearchOnNewConversation}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.9.1 and above
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showSearchOnNewConversation|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+
+If showSearchOnNewConversation flag is set to `yes`, the user will be taken to a view which shows the search results relevant to the conversation text that he has entered upon clicking the 'Send' button. This is to avoid tickets which are already answered in the FAQs. The user will still be able to start a new conversation with the same text. He can also go through one of the FAQs and find a solution to his query, and exit the session without submitting a ticket.
+
+Default value is `no`, ie., this feature will not be enabled unless you explicitly pass `yes` for this flag.
+
+For example
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("showSearchOnNewConversation", "yes");
+help.showConversation(configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+The `showSearchOnNewConversation` option takes effect only for the **showConversation** API.
+
+</Admonition>
+
+
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+
+</Admonition>
+
+
+### showConversationResolutionQuestion {#showConversationResolutionQuestion}
+
+
+<Admonition type="info" title="Note">
+
+ Applicable to version 1.3.0 and above.
+
+ For application version 1.2.0 and below the conversation resolution question for user confirmation will be shown by default. This default behaviour has changed for version 1.3.0 and above, where the conversation resolution question for user confirmation is not shown.
+
+</Admonition>
+
+
+#### For v4.0+
+
+This SDK configuration is deprecated with v4.0+ and default value will be treated as False.
+
+If you want to use this feature, you can turn the feature on and off  ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
+
+<Image src="/static/books/misc/resolution-question-app-setting.png"  width="full" /> 
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showConversationResolutionQuestion|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| Before version 5.3.0: <code>yes</code>.   From version 5.3.0: <code>no</code>|
+
+</div>
+
+#### For Older SDK versions 3.0 and below, please read the following:
+
+Flag showConversationResolutionQuestion Values "yes" / "no" Default "yes"
+
+By default the Helpshift SDK will not show the conversation resolution question to the user, to confirm if the conversation was resolved. On resolving the conversation from the admin dashboard will now take the user directly to the "Start a new conversation" state. If you want to enable the conversation resolution question, set `showConversationResolutionQuestion` to `yes`.
+
+Default value is `no`, ie., this feature will not be enabled unless you explicitly pass `yes` for this flag.
+
+Example :
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("showConversationResolutionQuestion", "yes");
+help.showConversation(configMap);
+```
+
+
+<Admonition type="info" title="Note">
+
+This SDK configuration is deprecated with v4.0+ and default value will be treated as False.
+
+If you want to use this feature, you can turn the feature on and off  ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
+
+</Admonition>
+
+
+### customContactUsFlows {#custom-contactus-flows}
+
+
+<Admonition type="info" title="Note">
+
+Available in version 2.3.0 and above. User can be directed to dynamic form only if no open issues exist.
+
+</Admonition>
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Flag| customContactUsFlows|
+|Values| Non-empty array of flow dictionaries. Refer [<code>Guided Issue Filing</code>](/unity/support-tools-ios#dynamic-forms) to know more about creating flow dictionaries.|
+|Default| There is no default value for this configuration.|
+
+</div>
+
+The `customContactUsFlows` option can be used to override the default behaviour of Contact Us button. Instead of taking user to new issue screen, you can show dynamic form as the action of button tap.
+The example shown below launches faqs screen with `customContactUsFlows` sdk configuration that consists of a conversation flow, faqs list flow, single faq section flow, single faq flow and a nested flow that takes user to associated dynamic form. As user taps `Contact Us` button in faqs list screen, instead of launching the default conversation view the app launches a dynamic form with aforementioned flows.
+
+```csharp
+using Helpshift;
+.
+.
+.
+
+public void onCustomContactUsClick() {
+
+    Dictionary<string, object> conversationFlow = new Dictionary<string, object>();
+    conversationFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeConversation);
+    conversationFlow.Add(HelpshiftSdk.HsFlowTitle, "Converse");
+    Dictionary<string, object> conversationConfig = new Dictionary<string, object>()
+    conversationConfig.Add("conversationPrefillText" , "This is from dynamic");
+    conversationFlow.Add(HelpshiftSdk.HsFlowConfig, conversationConfig);
+
+    Dictionary<string, object> faqsFlow = new Dictionary<string, object>();
+    faqsFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeFaqs);
+    faqsFlow.Add(HelpshiftSdk.HsFlowTitle, "FAQs");
+
+    Dictionary<string, object> faqSectionFlow = new Dictionary<string, object>();
+    faqSectionFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeFaqSection);
+    faqSectionFlow.Add(HelpshiftSdk.HsFlowTitle, "FAQ section");
+    faqSectionFlow.Add(HelpshiftSdk.HsFlowData, "1509");
+
+    Dictionary<string, object> faqFlow = new Dictionary<string, object>();
+    faqFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeSingleFaq);
+    faqFlow.Add(HelpshiftSdk.HsFlowTitle, "FAQ");
+    faqFlow.Add(HelpshiftSdk.HsFlowData, "2998");
+
+    Dictionary<string, object> nestedFlow = new Dictionary<string, object>();
+    nestedFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeNested);
+    nestedFlow.Add(HelpshiftSdk.HsFlowTitle, "Next form");
+    nestedFlow.Add(HelpshiftSdk.HsFlowData, new Dictionary<string, object>[] {conversationFlow, faqsFlow, faqSectionFlow, faqFlow});
+
+    Dictionary<string, object>[] flows =  new Dictionary<string, object>[] {
+    conversationFlow,
+    faqsFlow,
+    faqSectionFlow,
+    faqFlow,
+    nestedFlow
+    };
+
+    Dictionary<string, object> faqConfig = new Dictionary<string, object>();
+    faqConfig.Add(HelpshiftSdk.HsCustomContactUsFlows, flows);
+    _support.showFAQs (faqConfig);
+}
+
+```
+
+### showConversationInfoScreen {#showConversationInfoScreen}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 2.7.0 and above.
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showConversationInfoScreen|
+|Values| <code>"yes"</code>/<code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+The `showConversationInfoScreen` flag will determine if users can see the Conversation info screen for an ongoing Conversation. If set to `"yes"`, the Conversation info icon will be shown in the active Conversation screen. Clicking on it will show the Conversation info screen.
+
+Example :
+
+```csharp
+
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("showConversationInfoScreen", "yes");
+help.showConversation(configMap);
+
+```
+
+
+<Admonition type="info" title="Note">
+
+The info screen would only be visible when an QuickSearch Bot/Identity Bot (if configured) complete their tasks and Automations/Agents can act on the new conversation. 
+
+</Admonition>
+
+
+### enableTypingIndicator {#enableTypingIndicator}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 2.8.0 and above.
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableTypingIndicator|
+|Values| <code>"yes"</code>/<code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+A graphical typing indicator is shown to the end user if an Agent is currently replying to the same Conversation. The "enableTypingIndicator" flag will enable/disable the aforementioned indicator.
+
+This SDK configuration has been deprecated, since this configuration has shifted to the In-App SDK Configurations page. (Settings > App settings)
+
+For SDK v740 and above, the typing indicator configuration `Show Agent Typing Indicator` is a part of the In-app SDK Configurations page.
+
+If this configuration is turned ON from the configurations page OR if an SDK configuration is used, the typing indicator will shown to end users.
+
+
+<Image src="/static/books/misc/enable-typing-indicator-app-setting.png"  width="full" /> 
+
+Example :
+
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("enableTypingIndicator", "yes");
+help.showConversation(configMap);
+
+```
+
+
+<Admonition type="info" title="Note">
+
+ * This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
+ 
+ * For Unity SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
+ 
+ * If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will shown to the end users.
+
+</Admonition>
+
+
+## IssueDescriptionMinimumCharacterLength {#issue-description-minimum-length}
+
+To control the minimum number of characters that the users need to type before they can start a conversation, use this option and set it to an appropriate integer value.
+This option works both in Conversational issue-filing and Form-based issue-filing experience.
+Since this option is dependent on the language in which the user starts a conversation, developers are encouraged to set this value for each language as appropriate.
+
+
+<Admonition type="info" title="Note">
+
+This option is not an SDK API config but rather a **key in the HelpshiftLocalizable.strings** file.
+
+</Admonition>
+
+
+<Centered >
+
+![](/static/books/ios/iphone-min-chars-error.png)
+
+</Centered>
+
+## Configuration Summary {#config-summary}
+
+| Option / API                            | [showFAQs](#faqs-view)    | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
+|-----------------------------------------|-------------|----------------|---------------|------------------|
+| **enableContactUs**                   | Supported   | Supported      | Supported     | Not Supported     |
+| **gotoConversationAfterContactUs**    | Supported   | Supported      | Supported     | Supported        |
+| **presentFullScreenOniPad**           | Supported   | Supported      | Supported     | Supported        |
+| **requireEmail**                      | Supported   | Supported      | Supported     | Supported        |
+| **hideNameAndEmail**                  | Supported   | Supported      | Supported     | Supported        |
+| **conversationPrefillText**                       | No effect   | No effect      | No effect     | Supported        |
+| **enableFullPrivacy**                 | Supported   | Supported      | Supported     | Supported        |
+| **showSearchOnNewConversation**       | Supported   | Supported      | No effect     | Supported        |
+| **showConversationResolutionQuestion**| Supported   | Supported      | Supported     | Supported        |
+| **customContactUsFlows**              | Supported   | Supported      | Supported     | Not Supported    |
+| **showConversationInfoScreen**| Supported   | Supported      | Supported     | Supported        |
+| **enableTypingIndicator**| Supported   | Supported      | Supported     | Supported        |

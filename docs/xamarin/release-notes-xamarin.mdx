@@ -1,0 +1,710 @@
+---
+sidebar_position: 10
+title: Release Notes
+description: Read the Release Notes in detail
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Release Notes
+
+
+
+<Admonition type="danger" title="Important">
+
+With the transition to TLSv1.2 on Sep 20,2021, connections to a Helpshift SDK via any previous TLS version will not work as expected. Specifically, this means that:
+
+* Helpshift SDKs will not work or load on lower-end Android devices (meaning, Android 4.x and earlier), because these lower-end Android versions do not support TLSv1.2.
+* End-users on lower-end Android devices will not be able to access FAQs, raise new issues, or access their past support conversations.
+* On a lower-end Android device, the mobile app that embeds a Helpshift SDK will be prevented from communicating with the SDK for any purpose. However, this disconnect will not cause any malfunction or crash on the parent application.
+
+
+</Admonition>
+
+
+<LatestSdkVersion>
+
+## v3.6.1 
+<DownloadButton text="Download SDK" link="[% xamarin.ios.sdk_url %]" classes="mb-4" />
+
+_October 22, 2021_
+
+
+</LatestSdkVersion>
+
+** Release Notes **
+
+
+** Android **
+
+* Fixed a crash caused by PendingIntent flag requirements expected on apps targeting Android 12 (API level 31).
+
+
+## v3.6.0
+
+_October 12, 2021_
+
+** Release Notes **
+
+
+** iOS **
+
+* Updated to iOS SDK `7.11.1`. [View](/ios/release-notes#7111)
+* Removed non-bitcode version of SDK from Xamarin package. The bitcode version of SDK works for both bitcode and non-bitcode apps.
+
+** Android **
+
+* Updated to Android SDK `v7.11.0`. [View](/android/release-notes#v7110)
+
+
+## v3.5.1
+
+_November 5th, 2020_
+
+** Release Notes **
+
+** iOS **
+
+* Fixed an issue where option pills were not visible to end user when New Issue Automation (NIA) assigns to a Custom Bot and the first step is a Get Info from User with options.
+* Fixed a crash that would occur when app is opened through push notifications and the app’s rootViewController is nil.
+* The issue where publish ID is not visible until user closes and opens the chat screen had to be re-introduced. This bug was reproducible only when [showConversationInfoScreen](https://developers.helpshift.com/xamarin/sdk-configuration-ios#showConversationInfoScreen) custom config was set to true. It will be fixed in upcoming releases.
+
+** Android **
+
+* Updated to Android SDK `v7.9.1`  [View](/android/release-notes#v791)
+* Fixed an issue where option pills were not visible to end user when New Issue Automation (NIA) assigns to a Custom Bot and the first step is a Get Info from User with options.
+* Fixed an issue where the chat screen was not shown on clicking a notification, it was just opening the app.
+* The issue where publish ID is not visible until user closes and opens the chat screen had to be re-introduced. This bug was reproducible only when [showConversationInfoScreen](/xamarin/sdk-configuration-android#showConversationInfoScreen) custom config was set to true. It will be fixed in upcoming releases.
+
+
+
+## v3.5.0
+
+_October 28, 2020_
+
+
+<Admonition type="info" title="Note">
+
+3.5.0 Plugin Update
+
+We found a Bug in plugin release 3.5.0 - Bot Options don't show up to end users when the Bot is triggered via New Issue Automation (NIA)
+
+Note: The issue gets fixed when user closes and reopens the chat screen.
+
+**Action needed:**
+
+* If you are planning to integrate or are in the process of integrating SDK 3.5.0, we recommend integrating with 3.5.1 instead.
+* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to 3.5.1 SDK.
+
+</Admonition>
+
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS SDK version 7.9.0. [View](https://developers.helpshift.com/ios/release-notes#790)
+* Helpshift iOS SDK is now fully compatible with iOS 14. This will be the last SDK version to support iOS 10. We recommend you to use the latest SDK since apps using Older SDKs (< v7.9.0 ) will see the following degraded behavior for in-app support when run on iOS 14:
+
+    * Apps built with Xcode 12 will crash when user taps on a notification sent from Helpshift dashboard for agent/bot replies.
+    * Due to a [bug in Xcode 12](https://developer.apple.com/forums/thread/656524), close button on chat screen is not visible when a new conversation started and conversation history is OFF.
+    * End users will not be able to input dates when asked by custom bots.
+
+* Fixed a bug where conversation publish ID was not shown in chat screen unless user closed and reopened the chat screen. This bug was reproducible only when [showConversationInfoScreen](/xamarin/sdk-configuration-ios#showConversationInfoScreen) custom config was set to true.
+* Fixed a bug where custom font didn't get applied to some UI elements.
+* Fixed a bug where dark theme wasn't applied to SDK when app in killed state was opened through push notification.
+* Fixed a bug where throttling for the [requestUnreadMessagesCount API](/xamarin/notifications-ios#showing-notification-count) didn't work in a rare case.
+* Fixed a bug where option pills with brimful amount of text went out of the screen on notched devices.
+* Fixed a crash that would occur when user tapped on search results while simultaneously searching for FAQs in the search bar. Stack trace -
+
+       `[HsFaqSearchDb query:]_block_invoke [Line 96] Error is no more rows available`
+       `Terminating app due to uncaught exception 'NSRangeException', reason: '*** -[__NSArrayM objectAtIndexedSubscript:]: index 0 beyond bounds for empty array'`
+
+** Android **
+
+* Updated to Android SDK `v7.9.0`  [View](/android/release-notes#v790)
+* Helpshift Android SDK is now fully compatible with Android 11. We recommend you to use the latest SDK since apps using Older SDKs (<=3.4.0 version) will see the following degraded behavior for Helpshift messaging experience on Android 11 devices when the app’s targetSDKVersion is set to 30:
+  * App will crash when user starts a new conversation from a form-based experience.
+  * Image orientation changes on some Android 11 devices when the user uploads an image.
+  * If the issue filing flow is form-based then menu items are not clickable on the form when the app is in full screen mode. [View Impact](/android/troubleshooting#known-issues)
+  * The menu items on FAQ screens are not clickable in full screen mode. [View Impact](/android/troubleshooting#known-issues)
+  * Hyperlinks are broken in Action card, agent message and user message.
+* Fixed a bug in which custom config named [showConversationInfoScreen](/xamarin/sdk-configuration-android#showConversationInfoScreen) was set to true and conversation publish ID was not shown in chat feed unless user closed and reopened the chat screen. 
+* Fixed a bug in which image attachment was getting pixelated on the preview screen while attaching an image.
+
+
+## v3.4.0
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS SDK version 7.8.2 [View](/ios/release-notes#782)
+* Don’t allow user to respond to conversation resolution question or CSAT after a certain interval. The interval is configurable on admin dashboard. Learn more about re-open window [here](https://support.helpshift.com/kb/article/what-is-re-open-time-window-and-how-do-i-use-it/) and CSAT [here](https://support.helpshift.com/kb/article/what-are-csat-customer-satisfaction-surveys/).
+* Added support for showing agent and bot personalized avatar with their messages. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience).
+* Added support to change Title (Brand header text) for messaging experience from App Settings on Admin console instead of SDK string customization. The default value will be `<Company name> Support`, but you can change it to align the same with your current experience. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience/).
+* Added support for bot messages with a customizable link and title. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-deep-links-actions-using-custom-bots/).
+* Added a new delegate method that is invoked when the user clicks on the `Action` for a Rich actions Bot. [Refer here](/xamarin/delegates-ios#action-card).
+* Added a new design attribute for color of links in FAQ content [here](/xamarin/design-ios#attributes-footers).
+* Updated the release artifact from static library and supporting files to a single dynamic framework to reduce integration steps and make the process easier. [Migration guide](/xamarin/upgrade-3.4x-ios/)
+* Added check to ensure that Helpshift SDK fetches config at least once, before the user can see the conversation screen. This is done to avoid config mismatches which can lead to conversation behaviour different from the one the admins have configured.
+* Improved UI for conversation started using Smart Intents.
+* Added search icon and clear button to smart intent search field.
+* Disabled javascript execution in FAQ HTML body.
+* Fixed a bug where the username and user auth token was not updated on login for existing users.
+* Fixed a bug where none of the FAQs will be displayed if parsing fails for any FAQ.
+* Fixed a crash that would occur on iPad when a list picker item was selected while simultaneously scrolling the list.
+* Fixed a bug where Smart Intents message would get partially hidden behind the reply text box.
+* Fixed a bug where links inside FAQs were unreadable in dark mode.
+* Fixed a bug where cancel button was not shown on FAQ search screen in some cases.
+* Fixed a bug where attachment dialog was dismissed automatically after answering NO to resolution question.
+
+** Android **
+
+* Updated to Android SDK `v7.8.1`  [View](/android/release-notes#v781)
+* Don’t allow user to respond to conversation resolution question or CSAT after a certain interval. The interval is configurable on admin dashboard. Learn more about re-open window [here](https://support.helpshift.com/kb/article/what-is-re-open-time-window-and-how-do-i-use-it/) and CSAT [here](https://support.helpshift.com/kb/article/what-are-csat-customer-satisfaction-surveys/).
+* Added support for showing agent and bot personalized avatar with their messages. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience)
+* Added support to change title (Brand header text) for messaging experience from App Settings on Admin console instead of SDK string customization. The default value will be `<Company name> Support`, but you can change it to align the same with your current experience. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience/)
+* Added support for bot messages with a customizable link and title. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-send-deep-links-actions-using-custom-bots/)
+* Added a new delegate method that is invoked when user clicks on the action for a Rich Actions Bot. [Refer here](/xamarin/delegates-android#user-click-action). Please update your code to implement this method.
+* Added a new design attribute for color of links in FAQ content. [Refer here](/xamarin/design-android#styleable-attributes).
+* Improved UI for conversation started using Smart Intents.
+* Added search icon and clear button to smart intent search field.
+* Added check to ensure that Helpshift SDK fetches config at least once, before the user can see the conversation screen. This is done to avoid config mismatches which can lead to conversation behaviour different from the one the admins have configured.
+* Fix a crash that would occur when user launches the app from recents menu after the Android System has already killed it.
+* Handle conversation archival when user tries to upload an attachment on an archived conversation.
+* Fix a bug where the username was not updated on login for existing users.
+* Fixed a bug where toolbar title was overridden when using embeddable fragments.
+* Fixed a bug where styling for QuickSearch Bot suggestions was not working as expected.
+* Fixed an edge case bug where reply box was displayed along with resolution question.
+* Fixed a bug where FAQ screen used to flicker when Dark mode theme is selected.
+* Fixed a edge case crash which would occur when attachment upload and message sync would run at the same time.
+
+
+## v3.3.1
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS SDK version 7.7.1. [View](/ios/release-notes#771)
+* Fixed a bug where end-users would not receive the [in-app notifications](/xamarin/notifications-ios#in-app-notifications) if the push notifications are not enabled.
+
+## v3.3.0
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS SDK version 7.7.0. [View](/ios/release-notes#770)
+* Added support for suggesting AI-powered issue categories to your users during the start of a conversation. [Learn more](https://support.helpshift.com/kb/article/helpshift-smart-intents/)
+* Added ability for end-users to send files such as pdf, video, etc. during a conversation. [Learn more](https://support.helpshift.com/kb/article/how-do-i-restrict-file-types-and-attachments/)
+* Added support for sending files via Helpshift bots. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-attachments-in-bots/)
+* Added support for bots to display AI powered FAQ(s) depending on what a user types. [Learn more](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them#add-ai-powered-faqs-to-bot-conversations)
+* Added support for Helpshift error reporting. [Learn more](/xamarin/sdk-configuration-ios#disableErrorReporting)
+* Removed the deprecated “on_install” option for addFaqsToDeviceSearch install config.
+* The resolution question for a conversation would be assumed to be off until configuration set on Helpshift Admin console is fetched.
+* Removed the deprecated “disableAutomaticPushHandling” install config.
+* Fixed a bug where close button was not shown while filing issue through guided issue filing flow.
+* Fixed a bug where CJK keyboards did not show characters suggestions while using the issue form.
+* Fixed a bug where navigation bar was not styled in embeddable messaging experience.
+* Fixed a bug where FAQ filtering did not working on first launch.
+* Fixed a rare bug where input hint message and keyboard type were not changing on tapping new conversation button.
+* Fixed a bug keyboard went invisible if user dismissed the image preview by drag interaction.
+* Fixed rare crash which occurred when user opened the chat screen.
+* Fixed a bug where message body was shown thrice for FAQ list message.
+* Fixed a bug where attach screenshot message buttons were visible after conversation is resolved.
+
+** Upgrade guide **
+
+To upgrade to 3.3.0 please refer to the guide [here](/xamarin/upgrade-3.3x-ios/)
+
+** Android **
+
+* Updated to Android SDK version 7.7.2. [View](/android/release-notes#v772)
+* Added support for suggesting AI-powered issue categories to your users at the start of a conversation. [Learn more](https://support.helpshift.com/kb/article/helpshift-smart-intents/)
+* Added ability for end-users to send files such as pdf, video, etc. during a conversation. [Learn more](https://support.helpshift.com/kb/article/how-do-i-restrict-file-types-and-attachments/)
+* Added support for sending files via Helpshift bots. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-attachments-in-bots/)
+* Added support for bots to display AI powered FAQ(s) depending on the user message. [Learn more]( https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them#add-ai-powered-faqs-to-bot-conversations)
+* Added support for Helpshift error reporting. [Learn more](/xamarin/sdk-configuration-android#disableErrorReporting)
+* The resolution question for a conversation would be assumed to be off until configuration set on Helpshift Admin console is fetched.
+* Conversation screen now occupies full width on tablet devices. Please note that the existing keys for changing padding are deprecated and will not be functional moving forward.
+* Fixed jitters in loading the chat screen UI when multiple attachments are present in the conversation.
+* Removed support for linkifying selective map addresses in agent messages thus reducing the file descriptor count.
+* Fixed a crash when the user clicks on a link in agent message and there was no suitable app to handle it.
+* Fixed a bug where the pre-fill text in the reply box, configured via conversationPrefillText API config, wasn't being updated if the developer updates the prefill text in later sessions.
+* Fixed a bug where the skip label for list picker bot was not shown on some tablet devices.
+* Fixed a rare bug when an InstallException was thrown if the developer calls the `Core.install()` and other Helpshift API from different threads.
+* Fixed a rare crash which occurred when the user changes the time/timezone on the chat screen.
+* Fixed a bug where, if the app excludes the storage permission from the manifest and the user downloads an attachment, the file is incorrectly downloaded as a ".bin" file."
+* Fixed a bug where the user could reopen an Issue by retrying the last unsent reply to a bot.
+
+
+## v3.2.0
+
+_October 17, 2019_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to native iOS SDK version v7.6.3.
+    * [View release notes for 7.6.0](/ios/release-notes#760).
+    * [View release notes for 7.6.1](/ios/release-notes#761).
+    * [View release notes for 7.6.2](/ios/release-notes#762).
+    * [View release notes for 7.6.3](/ios/release-notes#763).
+* Helpshift iOS SDK is now fully compatible with iOS 13. We recommend you to use the latest SDK since apps using Older SDKs (<=3.1 version ) will see the following degraded behavior for in-app support when run on iOS 13:
+       * End-users will not be able to send attachment
+       * Inconsistent dark/light color elements in SDK, when you turn ON the OS level dark mode
+       * Difficulty in navigating or reading through FAQs because of the UX changes introduced in iOS 13
+       * Gestures to open and close the bot options in list picker UI will not work properly
+* Added support for Dark Mode on iOS 13.[View](/xamarin/design-ios#runtime-light-dark)
+* Added new high contrast theme for Dark Mode.
+* Added API for switching the Helpshift SDK theme at runtime. [View](/xamarin/design-ios#runtime-theming)
+* Added support for customizing the font and colors of the in-app notification banner elements. [View](/xamarin/design-ios#attributes-global)
+* Added support for messages and attachment redaction for SDKs. If you redact messages and attachments from Agent desktop, they will be redacted from the device too.
+* Added Voiceover support for FAQ search results in accessibility mode.
+* Added a character limit of 100,000 for every user message to ensure smooth user experience.
+* Removed CoreLocation framework dependency
+* Improved VoiceOver support for form based issue filing experience.
+* Improved the loading of large FAQs.
+* Updated the [rate limiting](/xamarin/notifications-ios#showing-notification-count) algorithm for getNotificationCount API. The API will allow one call when the user closes the conversation screen. This is to accommodate any custom requirements for showing the notification count in the app.
+* Deprecated the automatic handling of Helpshift push notifications via swizzling. Make sure that you follow the [guide](https://developers.helpshift.com/xamarin/notifications-ios#configure-helpshift-xamarin-sdk) for notification integration.
+* Disabled automatic detection of numbers as phone numbers in FAQ view. If you want to add telephone number links, please add URLs in the FAQ editor with tel: scheme.
+* Fixed a bug, where the user did not receive the agent response. It occurred when the user was on chat screen and device got locked, and after unlocking the device, intermittently the user did not receive the Agent messages. However, when you close and reopen the chat screen, user was able to receive all the Agent messages.
+* Fixed a bug, where sometimes, SDK configuration set on dashboard would not show on app launch.
+* Fixed a bug where map and filter named methods of NSArray category were conflicting with the host app's categories.
+* Fixed a bug where, in some network edge cases, the user was able to retry an older message which is not part of the running bot.
+* Fixed a bug where the user couldn't send the CSAT rating for a resolved conversation if conversation history was ON and if there was a login change between users.
+* Fixed a bug where the previously sent images were not shown on chat screen immediately after a login change. However if the user closed and revisited the chat screen, the images would load correctly.
+* Fixed a bug where, in some network edge cases, the user fails to send or receive messages if a bot was interrupted by another bot.
+* Fixed a bug, where conversationEnded delegate was not called for the agent rejected conversation unless user exits the chat screen.
+* Fixed a bug where the user message was sent twice in an edge case when Send button was tapped multiple times
+* Fixed a bug where the prefill text shown in the reply box via conversationPrefillText API config wasn't being updated if changed in conversational issue filing mode.   
+* Fixed a bug where Dynamic forms were not shown to the user if they try to contact support from the footer in the FAQ screen.
+* Fixed a bug where In-app notification for resolution request was shown twice to the user if the resolution question setting was turned off.
+* Fixed an edge case bug where duplicate issues were being created in bad network scenarios.
+* Fixed a rare crash that would occur sometimes when the user is loading conversation history and at the same time closes the chat screen
+* Fixed a bug where API config passed to showDynamicForms API was being ignored.
+* Fixed a bug which caused option pills to reload when navigated in VoiceOver mode.
+
+** Android **
+
+* Updated to native Android SDK version v7.6.3.
+    * [View release notes for 7.6.3](/android/release-notes#v763).
+    * [View release notes for 7.6.2](/android/release-notes#v762).
+    * [View release notes for 7.6.0](/android/release-notes#v760).
+* Added support for targeting Android Q which includes support for the new [scoped storage](https://developer.android.com/preview/privacy/scoped-storage) changes. Apps using Older SDKs (<3.2.0 version ) will see the following degraded behavior for Helpshift messaging experience when they target Android Q:
+    * End-users will not be able to send attachments.
+	* End-user will not be able to view attachments/files sent by Agents.
+* Added new themes to support [Dark Mode](/xamarin/design-android#dark-mode-support).
+* Added new [API](/xamarin/design-android#change-theme-runtime) for changing the Helpshift SDK theme at runtime.
+* Added support for customizing additional icons in the SDK. To view the updated list of customizable icons, refer [here](/xamarin/design-android#styleable-attributes).
+* Added support for messages and attachment redaction for SDKs. Messages and attachments which are redacted from the Agent dashboard will be removed from user's devices too.
+* Updated the [rate limiting](/xamarin/notifications-android#showing-notification-count) algorithm for RequestUnreadMessagesCount API. The API will allow one call when the user closes the conversation screen. This is to accommodate any custom requirements for showing the notification count in the app.
+* The delegate `HandleTapOnAttachmentFile` will now be triggered with a Uri object instead of a File on Android 10 & above. For more details, refer [here](/xamarin/delegates-android#display-attachment).
+* By default, hardware acceleration is now explicitly enabled in the manifest file for the SDK's ParentActivity. This prevents rendering issues of WebView on Android OS 5.1.
+* Added a character limit of 100,000 on user messages.
+* Added support for embedding SDK fragments inside a host fragment.
+* Fixed a crash which occurred when a user opens the chat screen containing an attachment message and hardware acceleration was explicitly disabled in the app.
+* Fixed a bug where a blank screen was shown instead of the FAQ content when opened through QuickSearch Bot for some languages.
+* Fixed a bug where the keyboard input type remains the same when a number/date input bot-message was interrupted by an agent.
+* Fixed a bug where the SDK UI was being displayed in the cutout area on some android phones with a notch.
+* Fixed an edge case crash which occurred when the user files an issue for the first time and user authentication failed.
+* Fixed a bug where the prefill text shown in the reply box via conversationPrefillText API config wasn't being updated if changed in conversational issue filing mode.
+* Fixed an edge case bug where duplicate issues were being created in bad network scenarios.
+* Fixed an edge case bug where the typing indicator was shown indefinitely when the user replies to a bot.
+* Fixed a bug where the QuickSearch Bot FAQ suggestions message wasn't shown as redacted while the user was on the chat screen.
+* Fixed an edge case crash that would occur when the chat screen is opened and an already downloaded attachment is not accessible by the SDK.
+* Fixed an edge case crash on opening any SDK screen when conflicting versions of support libraries are used.
+* Fixed an edge case crash which occurred on sending a message when both reply box and options pills would be visible at the same time.
+* Fixed an ANR which occurs in an edge case when searching through an FAQ which has a large number of media elements.
+* Fixed an edge case crash that would occur when user swipes through the FAQ sections view pager very quickly and "Don't keep activities" from Developer Options is turned ON.
+* Fixed a bug where the user incorrectly sees the authentication failure screen instead of the conversation if login API is used without email or userID and User Identity verification is enabled.
+* Fixed a bug where, in some network edge cases, the user wasn't able to send or receive messages if a bot was interrupted by another bot.
+* Fixed a bug where, in some network edge cases, user was not able to see the messages sent by the agent in the messaging experience.
+* Fixed a bug where the embedded media content was not visible in an FAQ on Android P and above.
+* Fixed a bug where the deep link to an FAQ was not working from another FAQ screen.
+* Fixed a bug where the image attachment wasn't visible on the chat screen when an issue is filed with an attachment via form based issue filing flow.
+* Fixed a bug where the user couldn't send the CSAT rating for a resolved conversation if conversation history was ON and if there was a login change between users.
+* Fixed a bug where the dot character at the end of a message (if present) would also be part of the link.
+* Fixed a bug where, in some network edge cases, the user was able to retry an older message which is not part of the running bot.
+
+## v3.1.0
+
+_May 22, 2019_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to native iOS SDK version v7.5.3.
+    * [View release notes for 7.5.0](/ios/release-notes#750).
+    * [View release notes for 7.4.0](/ios/release-notes#740).
+* Introduced a new rich element for automation bots to let users choose from a list of selectable options if the number of options is more than 5.
+* From this release, Helpshift SDK will work for users on iOS 10,11 and 12. [Here's](https://support.helpshift.com/kb/article/what-are-the-minimum-ios-versions-supported-by-helpshift/) how you could continue using Helpshift for your iOS 9 users.
+* Users can modify their CSAT rating during the Feedback phase before submitting them. For more details, see [here](/xamarin/reviews-and-feedback-ios#csat).
+* Added a configuration option, IssueMinimumDescriptionLength for setting the minimum number of characters required, before you can send a message in conversational experience. For more details, see the [documentation](/xamarin/sdk-configuration-ios#issue-description-minimum-length).
+* Added configuration option, conversationPrefillText, for pre-filling new conversation's description in the conversational issue filing experience. For more details, see [here](/xamarin/sdk-configuration-ios#conversationPrefillText).
+* Updated behavior of opening Links from the FAQ view inside of Helpshift. The Helpshift session will not close when opening external links.
+* Added a new API for closing the active Helpshift session. For more details, see [here](/xamarin/support-tools-ios#closeHelpshiftSupportSession).
+* Added new API "enableTestingMode". [View](/xamarin/support-tools-ios#enable-testing-mode)
+* When [testing mode](/xamarin/support-tools-ios#enable-testing-mode) is enabled, public APIs in HelpshiftSupport, HelpshiftCampaigns and HelpshiftCore will now throw `ExceptionInInitializerError` exception if the API is called before `HelpshiftCore:installForApiKey:domainName:appID:withConfig` API.
+* Added rate limiting in the getNotificationCount API which fetches the latest unread message count from Helpshift's servers. For more details, refer [here](/xamarin/notifications-ios#showing-notification-count).
+* Fixed a bug, where a user could attach a screenshot twice by quickly tapping the Send button in the Preview screen multiple times.
+* If there are no FAQs present in the SDK, FAQ search bar is disabled.
+* Fixed a bug where agent nickname showed up as (null) on the SDK chat screen if it wasn't set on the admin dashboard.
+* Fixed a bug where loading older messages would fail under an edge case.
+* Fixed a UI issue where calling UIAppearance proxy API to invoke setContentInsetAdjustmentBehavior from host app was affecting some of SDK's scroll views.
+* Fixed a bug where, under rare circumstances, retrying failed bot message could lead to user getting stuck on the chat screen with infinitely loading Typing Awareness Indicator.
+* Fixed a rare crash that occurred when the app was brought to foreground.
+* Deprecated the HsAddFaqsToDeviceSearchOnInstall enum value from the addFaqsToDeviceSearch option.
+* Fixed a bug where the conversation wasn't closed if the user clicked on NO in the resolution question and exited the chat screen in some cases.
+* Fixed a rare crash occurring due to resource deadlock during SDK initialization.
+* Fixed a bug where deep links which opened FAQ screens in Agent replies failed to open in the app.
+* Fixed a bug in the [checkIfConversationActive](/ios/tracking#check-if-conversation-active) API. If the conversation resolution question is off, this API would incorrectly return true until the chat screen is opened.
+* Fixed a bug where blank screen was sometimes shown if conversation creation failed.
+* Fixed a rare bug in the Form based issue filing experience in which the user was able to create multiple open conversations.
+* Fixed a crash that occurred due to nil device ID returned by iOS APIs. Stack trace of the crash :
+    * Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: [__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[0]
+    [HsCampaignsInboxSyncController getRequestData]
+* Fixed duplicate symbol linker errors when `-ObjC` linker flag is on.
+* Fixed a bug where failed analytics events requests were never retried.
+* Fixed a bug where close button was missing from nested dynamic form screens.
+* Fixed a bug where user's name was visible as author for "What else can we help you with?" agent message.
+
+** Android **
+
+* Updated to Android SDK version 7.5.0. [View](/android/release-notes#750)
+* Introduced a new rich element for automation bots to let users choose from a list of selectable options if the number of options is more than 5. For more details, refer [here](https://support.helpshift.com/kb/article/list-picker-for-bots-with-apis/)
+* Users can modify their CSAT rating during the Feedback phase before submitting them. For more details, refer [here](/xamarin/reviews-and-feedback-android#csat).
+* Added a configuration option, hs__issue_description_min_chars for setting the minimum number of characters required before you can send a message in conversational experience. For more details, refer [here](/xamarin/sdk-configuration-android#minimum-issue-desc-length).
+* In debug mode, public APIs in Support, Campaigns and Core would log an error if the API is called before Core#install API.
+* Fixed a bug where the enableContactUs configuration flag in the API config options wouldn't work correctly.
+* Fixed a bug where the RequestUnreadMessagesCount was not being called with -1 as the count when the user doesn't have any conversation created or an internal error occurred.
+* Fixed a crash which occurs when isConversationActive API was called when the conversation is resolved and the user rejected the conversation resolution question.
+* Prevented a crash due to Android OS 8.0 bug when using the screenOrientation configuration flag in the Install call.
+* Fixed a bug where, in some network edge cases, SDK fails to download an image.
+* Fixed a bug where the user could reply to a previously assigned bot in the conversation.
+* Fixed a bug where in some network edge cases, the user can reply to a conversation while waiting for the next bot message.
+* Fixed a bug where the "Message Deleted" message text was getting clipped off from the right when using a custom font.
+* Fixed a bug where sometimes other messages were shown incorrectly in italics, if a message was redacted.
+* Fixed a bug where the notificationSound configuration flag in the Install call wouldn't work correctly on Android OS 7.0 & above.
+* Fixed a bug, where in some rare scenarios, agent messages were not received by the SDK.
+* Fixed a bug, where in some rare scenarios, a user could not reply to a conversation if custom bot was assigned to it.
+* Fixed a bug, where in some scenarios, conversations weren't closed when the user rejected the resolution question and closed the conversation screen.
+* Fixed a bug, where sometimes, the getNotificationCount API would incorrectly return -1 when it should be 0.
+* Fixed a bug where the getNotificationCount API would incorrectly return 0 if Conversation History was enabled and conversation was resolved/rejected.
+* Fixed a bug where the isConversationActive API would incorrectly return true until the chat screen is opened if config for conversation resolution question is disabled.
+* Fixed a rare bug in the Form based issue filing experience in which the user was able to create multiple open conversations.
+* Fixed some memory leaks caused by launching of Conversation and FAQ UI.
+* Fixed a bug where the hyperlinks in CJK language messages were not showing correctly if the message text contained full-width parentheses.
+* Fixed a bug where an extra comma along side the date was displayed on the chat screen if agent name was empty.
+
+## v3.0.0
+
+_November 26, 2018_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to native iOS SDK version v7.3.0.
+    * [View release notes for 7.3.0](/ios/release-notes#730).
+    * [View release notes for 7.2.0](/ios/release-notes#720).
+    * [View release notes for 7.1.0](/ios/release-notes#710).
+    * [View release notes for 7.0.0](/ios/release-notes#700).
+* Added support for iOS 12.
+* Introduced new updates to the in-app messaging experience. Here's our guide on how to onboard to the new experience. [View](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up)
+* Introduced the [QuickSearch Bot](https://support.helpshift.com/kb/article/what-is-quicksearch-bot-and-how-does-it-work/) and [Identity Bot](https://support.helpshift.com/kb/article/what-is-the-identity-bot-and-how-does-it-work/) for in-app messaging SDKs.
+* Introduced support for [Custom Bots](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them).
+* Introduced a new and enhanced Login API for managing the name, email, and user identifiers for your end users. [View](/xamarin/users-ios#logged-in-users).
+* Introduced the ability to use the 'Email' field as a means of identifying users, so that email addresses don't have to be passed to the 'User ID' field.
+* Introduced 'user auth token', which is an HMAC Digest used to ensure that the requests are coming from an authentic source (and not a malicious 3rd party). [View](/xamarin/users-ios#configure-identity-verification)
+* Introduced functionality for end users to view their past conversations. This can be managed via an Admin toggle available in the Dashboard on the App settings > the In-app SDK configuration page. Review [this FAQ](https://support.helpshift.com/kb/article/how-do-i-allow-my-end-users-to-see-past-conversations) to get started.
+* Introduced functionality for Admins to prevent users from being able to attach files in conversations. This can be managed via an Admin toggle available in the Dashboard on the app settings > the In-app SDK configuration page.
+* Introduced functionality for end users to be able to tap on an attachment that they sent in order to view the image.
+* Added new APIs with ApiConfig and InstallConfig objects instead of Dictionary for passing SDK configuration.[View](/xamarin/upgrade-2x-ios)
+* Added Campaigns delegate callbacks for tracking when a Helpshift session begins and when a session ends.
+* Replaced the old Support and Campaign delegates with improved cross platform delegates. [View](/xamarin/upgrade-2x-ios/#removed-api)
+* Enhanced UI and support for voiceover.
+* SDK screens are not orientation locked anymore.
+* Chat bubble colors are now customizable.
+* Deprecated the setSDKLanguage API. Please use the new [setLanguage API](/xamarin/i18n-ios/#set-language)
+* Deprecated the `setNameAndEmail()`, `setUserIdentifier()` and the existing `loginWithIdentifier:` APIs. Please use the new [login API](/xamarin/users-ios#logged-in-users).
+* Deprecated the configurations `conversationPrefillText`, `requireEmail`, `hideNameAndEmail`, `goToConversationAfterContactUs`, `showSearchOnNewConversation` along with the Form-based Issue filing experience. All the details are mentioned [here]( https://support.helpshift.com/kb/article/april-2018-sdks/)
+* Dropped support for iOS 9.2 and below.
+* Added new customization keys:
+    * Selectable Option Text Color: The color of the text in option pills of the QuickSearch Bot or skip button.
+    * Selectable Option Background Color: The background color of the option pills of the QuickSearch Bot or skip button.
+    * Selectable Option Border Color: The border color of the option pills of the QuickSearch Bot or skip button.
+    * Field Background color: The background color of the reply field.
+    * Field border color: The border color of the reply field.
+* Removed the selectable option color customization key. Please use the latest plist with the updated keys if you plan to customize the Helpshift UI.
+* Fixed a bug where image attachments sent by the end user were uploaded twice when network timeout errors occurred.
+* Fixed a bug where the dark theme was incorrectly displayed on iPhoneX devices in the FAQ detail screen bottom view.
+* Fixed a bug where the status bar color property was not reflected correctly the first time that the screen was launched.
+* Fixed a bug where the SDK was not considering the current push permission status with regards to starting and stopping the poller.
+* Fixed a bug where FAQ search results were not being highlighted for CJK languages.
+* Fixed a bug where pending notifications for a closed Issue were taking the user to the chat screen of the closed Issue even after the user had already created a new Issue.
+* Fixed a crash that would occur in cases where a user replied to a Rejected conversation.
+* Fixed a bug where the 'didReceiveInAppNotification' delegate was not called in some cases.
+* Fixed a bug where the user would see a blank screen when calling the showConversation API.
+* Fixed cases where multiple Issues could be created or duplicate messages would be sent from the SDK in cases where client network errors occurred.
+* Fixed a bug where FAQ search keywords specified on the Dashboard were not picked up by the SDK if they contained capital letters.
+* Fixed a bug where users wouldn't receive push notifications if the push token syncing failed.
+* Fixed a bug where sometimes the SDK would keep making network requests if the host app is executing a background operation.
+* Fixed a bug where, on the Issue filing screen, a deleted description draft would reappear after attaching the screenshot.
+* Fixed a bug where the 'Contact Us' button was not visible if the FAQ or Section title was too large.
+* Fixed a bug where the bottom half of the in-app notification banner was not tappable on an iPhone X.
+* Fixed a bug where the background of the table view when presenting FAQ search results was not styled properly in Dark theme.
+* Fixed a bug where sometimes a chat screen will launch automatically when multiple in-app notifications were received at the same time.
+* Fixed a bug where sometime users were able to give a CSAT rating after they had rejected the resolution request.
+* Fixed a bug where the users' device was shown as an iPhone 7 instead of an iPhone 7 plus.
+* Fixed a bug where user engagement analytics were not properly captured for Campaigns push notifications.
+* Fixed a bug where rich push notification actions were not working in Campaigns push notifications if the UNNotification framework was used.
+* Fixed a bug where the badge count for unread messages on the FAQ screen was incorrect if the Issue was resolved and the app was killed and re-opened.
+* Fixed an issue where the SDK was throwing and catching exceptions while the device is offline, making the offline debugging harder for developers.
+* Fixed a crash in database operations.
+* Stacktrace: thread #4, queue = 'com.helpshift.HSIssuesPersistentStorage', stop reason = EXC_BAD_ACCESS (code=1, address=0x74786574)
+* Fixed a crash which would sometime occur when sanitizing the user name string.
+* Stacktrace: NSInvalidArgumentException
+* [HSProfile initWithServerIdentifier:identifier:name:email:userId:deviceId:andLastSeenAt:isSynced:]
+* Fixed a crash that would occur rarely while retrying the failed network requests:
+    * Stacktrace: objc_class::demangledName(bool) NSStringFromClass +[HSConstants queueNameForClass:]
+* Fixed a crash in database operations:
+    * Stacktrace: __hs_db_worker_queue
+               +[HsDbUtil pathForDatabaseName:]
+               +[HsDbUtil openDb:] + 4342041624
+* Fixed a crash which would occur when syncing device data for Campaigns:
+    * Stacktrace: NSInvalidArgumentException
+               [HsDeviceController makeHSRequestForProperties:]
+* Fixed a crash that would occur when accessing a dictionary in a multithreaded environment
+    * Stack trace:[__NSDictionaryM setObject:forKey:]
+      [HsIOSNetworkRequestDAO storeEtag:forRoute:]
+
+** Android **
+
+* Updated to native Android SDK version v7.3.0.
+    * [View release notes for 7.3.0](/android/release-notes#v730)
+    * [View release notes for 7.2.0](/android/release-notes#v720)
+    * [View release notes for 7.1.0](/android/release-notes#v710)
+    * [View release notes for 7.0.1](/android/release-notes#v701)
+    * [View release notes for 7.0.0](/android/release-notes#v700)
+    * [View release notes for 6.4.2](/android/release-notes#v642)
+    * [View release notes for 6.4.1](/android/release-notes#v641)
+* Introduced new updates to the in-app messaging experience. Here's our [guide](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/) on how to onboard to the new experience.
+* Introduced [QuickSearch Bot](https://support.helpshift.com/kb/article/what-is-quicksearch-bot-and-how-does-it-work/) and [Identity Bot](https://support.helpshift.com/kb/article/what-is-the-identity-bot-and-how-does-it-work/) for in-app messaging SDKs.
+* Introduced support for [Custom Bots](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them).
+* Introduced support for Android P.
+* Introduced a new and enhanced [Login API](/xamarin/users-android#logging-in-users) for name, email, user identifier for your end users.
+* Introduced the ability to use the 'Email' field as a means of identifying users, so that email addresses don't have to be passed to the 'UserID' field.
+* Introduced 'userauthtoken', which is an HMAC digest used to ensure that the requests are coming from an authentic source (and not a malicious 3rd party). Refer [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/).
+* Introduced functionality for end users to view their past conversations. This can be managed via an Admin toggle available in the Dashboard on the App settings > the In-app SDK configuration page. Review [this FAQ](https://support.helpshift.com/kb/article/how-do-i-allow-my-end-users-to-see-past-conversations) to get started.
+* Introduced functionality for Admins to prevent users from being able to attach files in conversations. This can be managed via an Admin toggle available in the Dashboard on the app settings > the In-app SDK configuration page.
+* Introduced functionality for end users to be able to tap on an attachment that they sent in order to view the image.
+* Added Campaigns delegate callbacks for tracking when a Helpshift campaigns session begins and when a session ends. Refer [Feature is redacted].
+* Added new APIs with ApiConfig and InstallConfig objects instead of Dictionary for passing SDK configuration.[View](/xamarin/upgrade-3x-android)
+* Enhanced support for voiceover.
+* Replaced the old Support and Campaign delegates with improved cross platform delegates. [View](/xamarin/upgrade-3x-android)
+* Deprecated the setSDKLanguage API. Please use the new [setLanguage API](/xamarin/i18n-android/#language-change-programatically)
+* Deprecated the `setNameAndEmail()`, `setUserIdentifier()` and the existing `login()` APIs. Please use the new Login API. [Link](/xamarin/users-android#logging-in-users)
+* Deprecated the configurations `conversationPrefillText`, `requireEmail`, `hideNameAndEmail`, `goToConversationAfterContactUs`, `showSearchOnNewConversation`, `enableTypingIndicator` along with the Form-based Issue filing experience. All the details are mentioned [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+* Changed the default value of `showConversationResolutionQuestion` to false and made it customizable from the app settings Dashboard.
+* Fixed an ANR error which would occur sometimes when the Campaigns' addProperty API was called after the login API.
+* Fixed a bug where MetadataCallable was being called twice whenever a new Issue was created.
+* Fixed a bug where the search icon was missing on the FAQ screen if "Don't keep activities" developer option is on.
+* Fixed a rare edge case where users were not able to send or receive messages if an SQLiteException occurred at least once while the user's data was being read from the database.
+
+## v2.6.0
+
+_January 04, 2018_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to native iOS SDK version v6.4.1.
+    * [View release notes for 6.4.1](/ios/release-notes#641).
+    * [View release notes for 6.4.0](/ios/release-notes#640).
+* Added support for iPhone X.
+* Applications are now required to build with Xcode 9 so that layouts work correctly across all supported iOS versions. If you have a project with Xcode version prior to Xcode 9, you could use the build mentioned [here].(https://support.helpshift.com/kb/article/can-i-install-an-older-version-of-the-helpshift-sdk#plugins).
+* Added support for UNNotifications framework for push notifications. [View](/xamarin/notifications-ios)
+
+## v2.5.0
+
+_December 01, 2017_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to native iOS SDK version v6.3.1.
+    * [View release notes for 6.3.1](/ios/release-notes#631).
+    * [View release notes for 6.3.0](/ios/release-notes#630).
+    * [View release notes for 6.2.0](/ios/release-notes#620).
+* Helpshift now supports iOS 11.
+* Added support for sending "Custom Issue Fields" when filing a new conversation. [View](/xamarin/tracking-ios#custom-issue-fields)
+* Added new Campaigns AddProperty() API to support 64 bit integer values.
+* Deprecated the following APIs. [View](/xamarin/upgrade-25x-ios)
+    * `int GetCountOfUnreadMessages()` in HelpshiftCampaigns class. For new api check [Feature is redacted]
+* Made improvements to the Campaign images downloading mechanism saving data for the user. For more details check the `CoverImage` api in `HelpshiftInboxMessage` interface [Feature is redacted].
+* Deprecated `ShowAlertToRateApp()` API. An explanation of why we made this change can be found here. [Link](/xamarin/reviews-and-feedback-ios#review-reminder-changes)
+* Automatic review reminder requests sent from the backend will now be ignored.
+* Updated the review action in Campaigns to have it redirect to the app store page of the app.
+
+** Android **
+
+* Updated to native Helpshift Android SDK version v6.4.0. [View release notes for 6.4.0](/android/release-notes#v640). [View release notes for 6.3.0](/android/release-notes#v630). [View release notes for 6.2.0](/android/release-notes#v620)
+* Added support for sending "Custom Issue Fields" when filing a new conversation. [View](/xamarin/tracking-android#custom-issue-fields)
+* Added new Campaigns AddProperty() API to support `Long` values.
+* Deprecated the following APIs.
+    * `int GetCountOfUnreadMessages()` in HelpshiftCampaigns class. For new api check [Feature is redacted]
+* Storage permission for user attachments is now optional. More details on storage permission usage [here](/xamarin/sdk-configuration-android#app-permissions)
+* Add support for notification channels introduced in Android Oreo. [View](/xamarin/sdk-configuration-android#notificationChannels)
+* Made improvements to the Campaign images downloading mechanism saving data for the user. For more details check the `CoverImage` api in `IHelpshiftInboxMessage` interface [Feature is redacted].
+* Added two new customizable color attributes for tab text on FAQ sections pager screen.
+* Use `title` parameter of the dynamic form API as the form title. [View](/xamarin/support-tools-android#dynamic-forms).
+
+## v2.4.0
+
+_September 6, 2017_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS API version : 6.1.0. [View release notes for 6.1.0](/ios/release-notes#610), [View release notes for 6.0.0](/ios/release-notes#600).
+* Added flag for showing a typing indicator on Conversation screen. [View](/xamarin/sdk-configuration-ios#enableTypingIndicator).
+* Renamed `HelpshiftApi.IOS.dll` to `HelpshiftApi.dll`.
+* Added an API to asynchronously check if an active Conversation exists. [View](/xamarin/tracking-ios#check-if-conversation-active)
+* Added an API to asynchronously request unread message count. [View](/xamarin/notifications-ios#showing-notification-count)
+* Added the following methods to the Helpshift delegate interface: [View](/xamarin/delegates-ios#helpshift-delegates-implementation)
+    * DidCheckIfConversationActive
+    * DidReceiveUnreadMessagesCount
+* Deprecated the following APIs within the `HelpshiftApi.HelpshiftSupport` class:
+    * IsConversationActive
+    * GetNotificationCount
+* Deprecated the method `DidReceiveNotificationCount` in Helpshift delegate interface.
+
+
+** Android **
+
+* Updated to Android API version : 6.1.0. [View release notes for 6.1.0](/android/release-notes#v610), [View release notes for 6.0.0](/android/release-notes#v600)
+* Added flag for showing a typing indicator on Conversation screen. [View](/xamarin/sdk-configuration-android#enableTypingIndicator).
+* Renamed `HelpshiftApi.Android.dll` to `HelpshiftApi.dll`.
+* Added an API to asynchronously check if an active Conversation exists. [View](/xamarin/tracking-android#checkifconversationactive)
+* Added an API to asynchronously request unread message count. [View](/xamarin/notifications-android#showing-notification-count)
+* Added the following methods to the Helpshift delegate interface: [View](/xamarin/delegates-android#helpshift-delegates-implementation)
+    * DidCheckIfConversationActive
+    * DidReceiveUnreadMessagesCount
+* Deprecated the following APIs within the HelpshiftApi.HelpshiftSupport class:
+    * IsConversationActive
+    * GetNotificationCount
+
+
+
+## v2.3.1
+
+_April 26, 2017_
+
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS API version : 5.10.1. [View release notes](/ios/release-notes#5101)
+* Added flag for showing Conversation info screen. [View](/xamarin/sdk-configuration-ios#showConversationInfoScreen)
+
+
+** Android **
+
+* Updated to Android API version : 4.9.1. [View release notes](/android/release-notes#v491)
+* Added flag for showing Conversation info screen. [View](/xamarin/sdk-configuration-android#showConversationInfoScreen)
+
+
+## v2.3.0
+
+_April 12, 2017_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS API version : 5.10.0. [View release notes](/ios/release-notes#5100)
+
+
+** Android **
+
+* Updated to Android API version : 4.9.0. [View release notes](/android/release-notes#v490)
+* Introduced an API to check if a Conversation is active. [View](/xamarin/tracking-android#isConversationActive)
+* Added a new delegate to notify when the Conversation has ended. [View](/xamarin/delegates-android#conversation-delegates)
+
+## v2.2.0
+
+_February 3, 2017_
+
+** Release Notes **
+
+** iOS **
+
+* Updated to iOS API version : 5.9.2. [View release notes](/ios/release-notes#590)
+* Renamed the HelpshiftSdk namespace to InternalHsApiDefinition.
+* Added Inbox Data APIs to retrieve expiry timestamp of a campaign message. [Feature is redacted]
+* Added Inbox Data APIs to retrieve action type and action data for action buttons of a campaign message. [Feature is redacted]
+* Fixed a crash which would occur on calling Dynamic Forms API.
+
+
+** Android **
+
+* Updated to Android API version : 4.8.1. [View release notes](/android/release-notes#v480)
+* Added Inbox Data APIs to retrieve expiry timestamp of a campaign message. [Feature is redacted]
+* Added Inbox Data APIs to retrieve action type and action data for action buttons of a campaign message. [Feature is redacted]
+
+## v2.1.0
+
+_November 21, 2016_
+
+** Release Notes **
+
+** iOS **
+
+* Added Inbox Data APIs. [Feature is redacted]
+* Added ShowMessage API for showing specific Campaigns messages. [Feature is redacted]
+
+
+** Android **
+
+* Added Inbox Data APIs. [Feature is redacted]
+* Added ShowMessage API for showing specific Campaigns messages. [Feature is redacted]
+
+
+## v2.0.0
+
+_November 7, 2016_
+
+
+** Release Notes **
+
+
+** iOS **
+
+* Updated to iOS API version : 5.8.0. [View release notes](/ios/release-notes#v580)
+* Added new support APIs. [View APIs](/xamarin/support-tools-ios/)
+* Added Campaigns feature. [Feature is redacted]
+
+** Android **
+
+* Updated to Android API version : 4.7.0. [View release notes](/android/release-notes#v470)
+* Added new support APIs. [View APIs](/xamarin/support-tools-android/)
+* Added Campaigns feature.  [Feature is redacted]
+
+
+## v1.0.0
+
+_August 11, 2015_
+
+* iOS API version : 4.12.1, Android API version : 3.9.1
