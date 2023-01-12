@@ -79,7 +79,7 @@ async function createConfig() {
         footer: {
           style: "light",
           links: footerLinks,
-          copyright: `Copyright © ${new Date().getFullYear()} Helpshift Technologies Pvt. Ltd. All Rights Reserved.`,
+          copyright: `Copyright © ${new Date().getFullYear()}, Helpshift Inc.`,
         },
         prism: {
           theme: lightCodeTheme,
