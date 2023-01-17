@@ -1,3 +1,8 @@
+/**
+ * Generic component, currently intended to provide easy links to specific books
+ * in the documentation.
+ */
+
 import React from "react";
 import Link from "@docusaurus/Link";
 import { sdkShape } from "../constants/propTypes";

@@ -1,3 +1,7 @@
+/**
+ * Used in the sidebar or collapsible accordion on the homepage to show announcements.
+ */
+
 import React, { useState } from "react";
 import Announcement from "./Announcement";
 

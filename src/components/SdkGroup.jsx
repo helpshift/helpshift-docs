@@ -1,3 +1,7 @@
+/**
+ * Generic component, used to group a bunch of "items" and render them in a grid
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 import SdkItem from "./SdkItem";

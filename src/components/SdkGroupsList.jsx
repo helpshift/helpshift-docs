@@ -1,3 +1,7 @@
+/**
+ * Loops over a bunch of Item groups and renders them
+ */
+
 import React from "react";
 import homeSections from "../data/homeSections.json";
 import SdkGroup from "./SdkGroup";
