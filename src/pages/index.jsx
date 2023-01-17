@@ -7,8 +7,7 @@ export default function Homepage() {
   return (
     <Layout
       title="All Guides"
-      description="Guides and references to help you integrate the Helpshift SDK into
-      your app"
+      description="Guides and references to help you integrate the Helpshift SDK into your app"
     >
       <div className="full-bg relative z-20 h-full">
         <div className="py-16 pb-4 md:py-24 md:pb-12 max-w-full text-left dark:from-zinc-900 dark:to-zinc-900">
