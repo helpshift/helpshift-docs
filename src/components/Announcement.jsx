@@ -1,3 +1,8 @@
+/**
+ * Component for showing a single announcement, to be used in conjunction
+ * with AnnouncementList.
+ */
+
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -20,9 +25,9 @@ export default function Announcement({ announcement }) {
 
 Announcement.propTypes = {
   announcement: PropTypes.shape({
-    date: PropTypes.string.isRequired,
+    date: PropTypes.string,
     title: PropTypes.string.isRequired,
-    info: PropTypes.string.isRequired,
+    info: PropTypes.string,
     link: PropTypes.string,
     linkTitle: PropTypes.string,
   }),
