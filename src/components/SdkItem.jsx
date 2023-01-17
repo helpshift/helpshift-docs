@@ -8,7 +8,7 @@ import Link from "@docusaurus/Link";
 import { sdkShape } from "../constants/propTypes";
 
 export default function SdkItem({ sdk }) {
-  const { link, color, image, title, description } = sdk;
+  const { link, color, image, title, description, alt } = sdk;
   return (
     <li className="col-span-6">
       <Link
@@ -19,7 +19,7 @@ export default function SdkItem({ sdk }) {
           <img
             className={`w-full h-full lg:p-4 p-3 rounded-l-lg bg-gradient-to-b ${color}`}
             src={image}
-            alt={`Logo for ${title}`}
+            alt={alt || `Logo for ${title}`}
           />
         </div>
         <div className="mt-1 p-2 basis-full">

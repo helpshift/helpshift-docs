@@ -5,6 +5,7 @@ export const sdkShape = PropTypes.shape({
   hide: PropTypes.bool,
   link: PropTypes.string,
   color: PropTypes.string,
+  alt: PropTypes.string,
   image: PropTypes.string,
   description: PropTypes.string,
 });
