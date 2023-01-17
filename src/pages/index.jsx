@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import AnnouncementList from "../components/AnnouncementList";
-import SdkGroupsList from "../components/SdkGroupsList";
+import BookGroupsList from "../components/BookGroupsList";
 
 export default function Homepage() {
   return (
@@ -37,7 +37,7 @@ export default function Homepage() {
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-8 mx-4 md:mx-6 xl:mx-20">
             <div className="col-span-12 lg:col-span-9 dark:border dark:border-gray-700 dark:border-solid p-4 lg:p-6 lg:pl-8 rounded-xl bg-white/60 backdrop-blur-sm dark:bg-white/0">
-              <SdkGroupsList />
+              <BookGroupsList />
             </div>
             <div className="hidden lg:block col-span-3">
               <AnnouncementList />

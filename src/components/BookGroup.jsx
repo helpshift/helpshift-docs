@@ -4,10 +4,10 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import SdkItem from "./SdkItem";
-import { sdkShape } from "../constants/propTypes";
+import Book from "./Book";
+import { bookShape } from "../constants/propTypes";
 
-export default function SdkGroup({ group, classes }) {
+export default function BookGroup({ group, classes }) {
   return (
     <section className={classes}>
       <h2 className="text-lg md:text-2xl mb-0">{group.title}</h2>
@@ -16,14 +16,14 @@ export default function SdkGroup({ group, classes }) {
         {group.sdkList
           .filter((sdk) => !sdk.hide)
           .map((sdk) => {
-            return <SdkItem sdk={sdk} key={sdk.title} />;
+            return <Book book={sdk} key={sdk.title} />;
           })}
       </ul>
     </section>
   );
 }
 
-SdkGroup.propTypes = {
-  group: sdkShape,
+BookGroup.propTypes = {
+  group: bookShape,
   classes: PropTypes.string,
 };

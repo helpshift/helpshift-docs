@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const sdkShape = PropTypes.shape({
+export const bookShape = PropTypes.shape({
   title: PropTypes.string,
   hide: PropTypes.bool,
   link: PropTypes.string,

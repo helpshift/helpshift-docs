@@ -5,10 +5,10 @@
 
 import React from "react";
 import Link from "@docusaurus/Link";
-import { sdkShape } from "../constants/propTypes";
+import { bookShape } from "../constants/propTypes";
 
-export default function SdkItem({ sdk }) {
-  const { link, color, image, title, description, alt } = sdk;
+export default function Book({ book }) {
+  const { link, color, image, title, description, alt } = book;
   return (
     <li className="col-span-6">
       <Link
@@ -41,4 +41,4 @@ export default function SdkItem({ sdk }) {
   );
 }
 
-SdkItem.propTypes = sdkShape.isRequired;
+Book.propTypes = bookShape.isRequired;
