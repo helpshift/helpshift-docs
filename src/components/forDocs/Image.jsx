@@ -4,11 +4,13 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import widths from "../../constants/widths";
+import htmlElementWidths from "../../constants/htmlElementWidths";
 
 export default function Image({ width, src, centered, alt }) {
   const widthClassToApply =
-    width && widths[width] ? widths[width] : widths.full;
+    width && htmlElementWidths[width]
+      ? htmlElementWidths[width]
+      : htmlElementWidths.full;
 
   return (
     <img
