@@ -1,0 +1,64 @@
+---
+sidebar_position: 190
+title: Upgrading to 7.10.0 and above
+description: "The Helpshift SDK v7.10.0 is a major update and we have made some important changes. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Upgrading to 7.10.0 and above {#upgrade-to-710}
+
+<Intro>
+
+The Helpshift SDK v7.10.0 is a major update and we have made some important changes. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## xcframework packaging for SDK {#xcframework-packaging}
+
+With version 7.10.0, Helpshift SDK is packaged as a xcframework rather than a single dynamic framework. Please follow the steps mentioned here if you are migrating from an older version of Helpshift SDK.
+
+### Manual Integration
+
+
+<Admonition type="info" title="Note">
+
+For SDK versions below 7.8.0, follow the steps mentioned in the “Manual integration” section [here.](https://developers.helpshift.com/ios/upgrade-to-78/#framework-packaging)   
+
+</Admonition>
+
+
+1. Remove all Helpshift SDK related files from the project. These include -
+    * Helpshift.framework
+    * Helpshift.framework from Copy Files section from the Build Phases of your app
+    * Remove the Helpshift specific `Run script` section referencing the `strip_frameworks.sh` script inside the Helpshift.framework.
+
+
+<Admonition type="info" title="Note">
+
+No changes are needed for custom theming plists and custom localization bundle when migrating. The old theming files and localization bundle will continue to work as expected.
+
+</Admonition>
+
+
+### Cocoapods Integration
+
+1. From 7.10.0, Helpshift will require Cocoapods v1.10.0 and above for supporting xcframework.
+
+
+<Admonition type="info" title="Note">
+
+For SDK versions below 7.8.0, follow the steps mentioned in the “cocopods integration” section [here.](https://developers.helpshift.com/ios/upgrade-to-78/#framework-packaging)   
+
+</Admonition>

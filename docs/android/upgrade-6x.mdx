@@ -1,0 +1,60 @@
+---
+sidebar_position: 190
+title: Upgrading from 6.x to 7.x
+description: "The Helpshift SDK v7.x is a major update; we have deprecated some APIs, which are replaced by newer APIs.If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Upgrading from 6.x to 7.x
+
+<Intro>
+
+The Helpshift SDK v7.x is a major update; we have deprecated some APIs, which are replaced by newer APIs.
+If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated APIs | New API |
+|---------|---------|
+| `Core.setNameAndEmail(String name, String email)` | `Core.login(HelpshiftUser user`) | 
+| `Support.setUserIdentifier(String userIdentifier)` | `Core.login(HelpshiftUser user`) | 
+| `Core.login(String userId, String name, String email)` | `Core.login(HelpshiftUser user`) | 
+
+
+<Admonition type="info" title="Note">
+
+* Users will be able to continue speaking on an open issue only if you were using the Login API. If you were using setUserIdentifier (now deprecated), if the user has an open Issue, using the login API will result in the creation of a new Issue. However, the previous Issue will be available to Agents under 'Other Issues'
+
+* Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox. However, the user will be able to see messages in the Campaigns Inbox when you call Logout (and if the anonymous user hasn't been cleared via the clearAnonymousUser API).
+
+</Admonition>
+
+
+## New Login API
+
+
+```java
+
+    HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.co")
+                                         .setName("John Doe")
+                                         .setAuthToken("generated-user-authentication-token")
+                                         .build();
+```
+
+  
+    Core.login(user);
+
