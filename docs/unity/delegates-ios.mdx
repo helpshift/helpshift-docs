@@ -1,0 +1,213 @@
+---
+sidebar_position: 10
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+
+</Intro>
+
+All delegate callbacks will be sent as Unity-messages on the *unityGameObject* that you configure.
+If you want to connect to any of the below callbacks, please implement a public void method with a string as the only argument.
+This method needs to be implemented in the script which is attached to the *unityGameObject* configured via install.
+
+Call the `HelpshiftSdk.registerDelegates()` API to start listening to the Helpshift delegates. Call this method as early in the lifecycle of your game as possible. We recommend calling it in the `Start()` method of your game's first `GameObject`. You might already have this method call in your `GameObject` if you are using our Android plugin as well. In that case, simply remove the `#if UNITY_ANDROID` and `#endif` surrounding this call.
+
+## Helpshift Session delegates
+
+### Session begin
+
+**helpshiftSessionBegan**
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+### Session end
+
+**helpshiftSessionEnded**
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+## New conversation delegate {#delegate-new-conversation-started}
+
+**newConversationStarted**
+
+If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will get fired every time the user starts a new conversation. The delegate method will receive the conversation message in it's arguments.
+
+For example:
+
+
+```csharp
+
+    public void newConversationStarted (string newConversationMessage) {
+      // your code here
+    }
+
+```
+
+
+<Admonition type="info" title="Note">
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+</Admonition>
+
+
+### Conversation ended delegate {#delegate-conversation-ended}
+
+This delegate receives a callback when an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved in the Dashboard, rejected, timed out or archived.
+
+```csharp
+
+public void conversationEnded() {
+// your code here
+}
+
+```
+
+## New message delegate {#delegate-user-replied-to-conversation}
+
+**userRepliedToConversation**
+
+If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
+
+
+```csharp
+
+    public const String HSUserAcceptedTheSolution = "User accepted the solution";
+    public const String HSUserRejectedTheSolution = "User rejected the solution";
+    public const String HSUserSentScreenShot = "User sent a screenshot";
+    public const String HSUserReviewedTheApp = "User reviewed the app";
+
+```
+
+For example:
+
+
+```csharp
+
+    public void userRepliedToConversation (string newMessage) {
+      if (newMessage.equals(HelpshiftSdk.HSUserAcceptedTheSolution)) {
+        // your code here
+      }
+    }
+
+```
+
+
+<Admonition type="info" title="Note">
+
+All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
+
+</Admonition>
+
+
+## Customer satisfaction survey delegate {#csat-completed}
+
+**userCompletedCustomerSatisfactionSurvey**
+
+If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
+
+For example:
+
+
+```csharp
+
+    public void userCompletedCustomerSatisfactionSurvey (string json) {
+      // deserialize the json to get dictionary with rating and feedback keys
+    }
+
+```
+
+## New message received count delegate {#newmessage-recieved}
+
+This delegate is the response to the `requestUnreadMessagesCount` method. It provides the number of unread messages in the current conversation. If `isRemote` set to `true` the unread message count is retrieved from server else unread message count for locally stored messages is returned.
+
+Example usage:
+
+
+```csharp
+
+    public void didReceiveUnreadMessagesCount(string count) {
+        // your code here
+    }
+
+```
+
+## Conversation active delegate {#didCheckIfConversationActive}
+This delegate responds to the `checkIfConversationActive` to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
+
+Example usage:
+
+
+```csharp
+
+	public void didCheckIfConversationActive(string isActive) {
+		if (isActive.Equals("true")) {
+			//Active Conversation
+		} else {
+			//No open Conversation
+		}
+	}
+
+```
+
+## Display attachment delegate {#display-attachment}
+
+Agents can attach a wide variety of files when replying to users. This delegate is called when the user taps on downloaded attachment file to view it. If the app chooses to display the attachment file itself, you can implement this delegate.
+If the app does not wish to handle the attachment, and this delegate is not implemented , in this case, the SDK will display the attachment using Quicklook Framework.
+
+Example usage:
+
+
+```csharp
+
+
+
+    private HelpshiftSdk help;
+
+    help = HelpshiftSdk.getInstance();
+    // If you want that all files with extension token should be handled by your app.
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    configMap.Add("supportedFileFormats",new string [] {"token"});
+    help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>",configMap);
+    public void displayAttachmentFile (string path) {
+        // your code here
+    }
+
+```
+
+## User click on Action delegate {#action-card}
+
+This delegate method is called when user clicks on an action in Action Card bot.
+HelpshiftUserAction holds the deserialzed data for the action type and data.
+
+`HelpshiftUserAction.actionType` : The type of action user clicked on. Can be one of: 
+
+- `ActionType.CALL`
+- `ActionType.LINK` 
+
+`HelpshiftUserAction.actionData`: The data associated with the action type. Can be a url link or a phone number.
+
+Example usage:
+
+
+```csharp
+
+    public void userClickOnAction(string serializedJSONUserActionData)
+    {
+        HelpshiftUserAction userAction = HelpshiftJSONUtility.getUserActionData(serializedJSONUserActionData);
+        Debug.Log("User clicked on action: Type: " + userAction.actionType + ", Data: " + userAction.actionData);
+    }
+```
+

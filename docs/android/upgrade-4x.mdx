@@ -1,0 +1,70 @@
+---
+sidebar_position: 180
+title: Upgrading from 4.x to 7.x
+description: "The Helpshift SDK v7.x is a major update; we have deprecated some APIs and removed the APIs deprecated in 4.x version of the SDK.If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Upgrading from 4.x to 7.x
+
+<Intro>
+
+The Helpshift SDK v7.x is a major update; we have deprecated some APIs and removed the APIs deprecated in 4.x version of the SDK.
+If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## List of deleted APIs {#removed-api}
+
+| Deleted APIs | New API |
+|---------|---------|
+| `Helpshift.install(...);` | `Core.init(Support.getInstance());`  <br /> `Core.install(...)` |
+| `Helpshift.showFAQs(...);` | `Support.showFAQs(...);` |
+| `Helpshift.showSingleFAQ(...);`	| `Support.showSingleFAQ(...);` |
+| `Helpshift.showFAQSection(...);` | `Support.showFAQSection(...);` |
+| `Helpshift.showConversation(...);` | `Support.showConversation(...);` |
+| `Helpshift.setNameAndEmail(String name, String email)` | `Core.login(HelpshiftUser user`) | 
+| `Helpshift.registerDeviceToken(...);` | `Core.registerDeviceToken(...);` |
+| `Helpshift.handlePush(...);` | `Core.handlePush(...);` |
+| `Helpshift.login(String userId, String name, String email)` | `Core.login(HelpshiftUser user`) | 
+| `Helpshift.logout(...);` | `Core.logout();` |
+| `Helpshift.clearBreadCrumbs();` | `Support.clearBreadCrumbs();` |
+| `Helpshift.getNotificationCount(...);` | `Support.getNotificationCount(...);` |
+| `Helpshift.leaveBreadCrumb();` | `Support.leaveBreadCrumb();` |
+| `Helpshift.setDelegate(...);` | `Support.setDelegate(...);` |
+| `Helpshift.setMetadataCallback(...);` | `Support.setMetadataCallback(...);` |
+| `Helpshift.setSDKLanguage(...);` | `Support.setSDKLanguage(...);` |
+| `Helpshift.setUserIdentifier(String userIdentifier)` | `Core.login(HelpshiftUser user`) | 
+| `Helpshift.showAlertToRateApp(...);` | `Support.showAlertToRateApp(...);` |
+| `Helpshift.HSTagsKey` | `Support.TagsKey` |
+| `Helpshift.HSCustomMetadataKey` | `Support.CustomMetadataKey` |
+
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated APIs | New API |
+|---------|---------|
+| `Core.install(Application application, String apiKey, String domain, String appId, Map<String, Object> config)` | `Core.install(Application application, String apiKey, String domain, String appId, InstallConfig config)` |
+| `Support.showFAQs(Activity activity, Map<String, Object> config)` | `Support.showFAQs(Activity activity, ApiConfig config)` |
+| `Support.showSingleFAQ(Activity activity, String questionPublishId, Map<String, Object> config)` | `Support.showSingleFAQ(Activity activity, String questionPublishId, ApiConfig config)` |
+| `Support.showFAQSection(Activity activity, String sectionPublishId, Map<String, Object> config);` | `Support.showFAQSection(Activity activity, String sectionPublishId, ApiConfig config)` |
+| `Helpshift.showConversation(Activity activity, Map<String, Object> config);` | `Support.showConversation(Activity activity, ApiConfig config);` |
+| `Helpshift.setMetadataCallback(Callable callable);` | `Support.setMetadataCallback(MetaDataCallable callable);` |
+| `Helpshift.setSDKLanguage(...);` | `Support.setSDKLanguage(...);` |
+| `Support.getFAQsFragment(Activity activity, Map<String, Object> config)` | `Support.getFAQsFragment(Activity activity, ApiConfig config)` |
+| `Support.getConversationFragment(Activity activity, Map<String, Object> config)` | `Support.getConversationFragment(Activity activity, ApiConfig config)` |
+| `Support.getFAQSectionFragment(Activity activity, String sectionPublishId, Map<String, Object> config)` | `Support.getFAQSectionFragment(Activity activity, String sectionPublishId, ApiConfig config)` |
+| `Support.getSingleFAQFragment(Activity activity, String questionPublishId, Map<String, Object> config)` | `Support.getSingleFAQFragment(Activity activity, String questionPublishId, ApiConfig config)` |
+| `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList, Map<String, Object> config)` | `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList, ApiConfig config)` |

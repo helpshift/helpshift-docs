@@ -1,15 +1,19 @@
+/**
+ * Loops over a bunch of Item groups and renders them
+ */
+
 import React from "react";
 import homeSections from "../data/homeSections.json";
-import SdkGroup from "./SdkGroup";
+import BookGroup from "./BookGroup";
 
-export default function SdkGroupsList() {
+export default function BookGroupsList() {
   const groups = homeSections;
 
   return (
     <div>
       {groups.map((group, idx) => {
         return (
-          <SdkGroup
+          <BookGroup
             group={group}
             key={group.title}
             classes={`${idx > 0 ? "mt-12" : ""}`}

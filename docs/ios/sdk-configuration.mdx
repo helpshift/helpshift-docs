@@ -1,0 +1,1475 @@
+---
+sidebar_position: 30
+title: API Options
+description: "Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/ios/support-tools/)."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# API Options
+
+<Intro>
+
+Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/ios/support-tools/).
+
+
+</Intro>
+
+
+## enableAutomaticThemeSwitching {#enableAutomaticThemeSwitching}
+
+Upon setting this option to YES, Helpshift SDK will switch between default light and dark themes based on the OS Appearance setting.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableAutomaticThemeSwitching</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v7.6.3|
+|Supported by| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+
+```objc
+
+    HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.enableAutomaticThemeSwitching = YES;
+
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableAutomaticThemeSwitching</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v7.6.3|
+|Supported by| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY"
+                         domainName:@"YOUR_DOMAIN_NAME"
+                              appID:@"YOUR_APP_ID"
+                        withOptions:@{@"enableAutomaticThemeSwitching" : @"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+1. This configuration is only applicable to iOS 13 and above.
+2. Light and Dark Appearance switching works only if your app is built with Xcode 11 or above
+3. If you use [setTheme](/ios/design#runtime-common) or [setLightTheme:DarkTheme](/ios/design#runtime-light-dark) API, this config takes no effect.
+
+</Admonition>
+
+
+## enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+
+This option enables or disables fallback to default language that is English for FAQs.
+
+This option enables or disables fallback to default language that is English for FAQs. In case you have FAQs in multiple languages but do not wish to fallback to English if localisation is missing, set this flag to ‘NO’.
+
+For example if the SDK language is set to French and this option is set to `YES`, then the FAQs for which french translation is available will be displayed in french and for the FAQs for which french translation is not available will be displayed in English.
+If the value of this option is set to `NO` then the FAQs for French translation will be displayed, and the FAQs for which the translation is not provided will not be displayed at all.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableDefaultFallbackLanguage</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"YES"</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+
+```objc
+
+	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+	installConfigBuilder.enableDefaultFallbackLanguage = NO;
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableDefaultFallbackLanguage</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"YES"</code>|
+|Min SDK| v4.15.0|
+|Supported by| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
+                        withOptions:@{@"enableDefaultFallbackLanguage" : @"NO"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+This configuration does not apply to the QuickSearch Bot suggested FAQs.
+
+</Admonition>
+
+
+## enableLogging {#enableLogging}
+
+Upon setting enableLogging to true, Helpshift SDK logs will be generated in the Xcode console. This will be useful for debugging the SDK during integration.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableLogging</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>NO</code>|
+|Min SDK| v5.10.0|
+|Supported by:| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+```
+    HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.enableLogging = YES;
+
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableLogging</code>|
+|Values:| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default:| <code>@"NO"</code>|
+|Min SDK| v5.10.0|
+|Supported by:| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+```
+    NSDictionary *installConfig = @{@"enableLogging" : @"yes"};
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:"<YOUR_API_KEY>"
+                         domainName:"<YOUR_COMPANY>.helpshift.com"
+                              appID:"<YOUR_APP_ID>"
+                        withOptions:installConfig];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+## disableEntryExitAnimations {#disableEntryExitAnimations}
+
+This option disables the iOS view transition animations when launching or closing a Helpshift Support session.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>disableEntryExitAnimations</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>installForApiKey</code>|
+Example:
+
+
+```objc
+
+    HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.disableEntryExitAnimations = YES;
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>disableEntryExitAnimations</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v5.2.0|
+|Supported by| <code>installForApiKey</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
+    withOptions:@{@"disableEntryExitAnimations" : @"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+When set to `"YES"` this option will disable the entry and exit animation. Note that this only applies to initial launch and the exit of the Helpshift Support session. Animations are still available within the Helpshift Support session.
+
+## disableAutomaticPushHandling {#disableAutomaticPushHandling}
+
+
+<Admonition type="info" title="Note">
+
+From SDK version 7.6.0 onwards, This configuration is deprecated along with the deprecation of automatic handling of Helpshift push notifications via swizzling.
+
+</Admonition>
+
+
+By default the Helpshift SDK tries to support Push notifications handling without the developer having to wire up additional APIs. In order to do this, the SDK will try to swizzle some APIs which are used for processing push notifications and passing them on to the Helpshift SDK's APIs.
+If you are using a 3rd party push plugin OR if you have already wired up the required [Helpshift APIs for Push handling](/ios/notifications#push-via-helpshift), please disable the swizzling used by the Helpshift SDK.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>disableAutomaticPushHandling</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v7.2.0|
+|Supported by| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+
+```objc
+
+	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+	installConfigBuilder.disableAutomaticPushHandling = YES;
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>disableAutomaticPushHandling</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v7.2.0|
+|Supported by| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
+                        withOptions:@{@"disableAutomaticPushHandling" : @"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+## disableErrorReporting{#disableErrorReporting}
+
+Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK will collect internal error level logs and report them to our systems to ensure that we become aware of runtime issues and we have enough information to fix them.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option:| <code>disableErrorReporting</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>NO</code>|
+|Min SDK| v7.7.0|
+|Supported by:| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+```
+ HelpshiftInstallConfigBuilder *installConfigBuilder = [HelpshiftInstallConfigBuilder new];
+ installConfigBuilder.disableErrorReporting = YES;
+
+ [HelpshiftCore installForApiKey:@"YOUR_APP_ID"
+                      domainName:@"YOUR_HELPSHIFT_DOMAIN"
+                           appID:@"YOUR_APP_ID"
+                      withConfig:installConfigBuilder.disableErrorReporting.build];
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option:| <code>disableErrorReporting</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>NO</code>|
+|Min SDK| v7.7.0|
+|Supported by:| <code>installForApiKey:domainName:appID:</code>|
+Example:
+
+```
+ NSDictionary *installConfig = @{@"disableErrorReporting":@"yes"};
+
+ [HelpshiftCore installForApiKey:@"YOUR_APP_ID"
+                      domainName:@"YOUR_HELPSHIFT_DOMAIN"
+                           appID:@"YOUR_APP_ID"
+                     withOptions:installConfig];
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+## enableContactUs {#enableContactUs}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableContactUs</code>|
+|Values:| <code>HsEnableContactUsAlways</code> / <code>HsEnableContactUsAfterViewingFAQs</code> / <code>HsEnableContactUsAfterMarkingAnswerUnhelpful</code> / <code>HsEnableContactUsNever</code>|
+|Default:| <code>HsEnableContactUsAlways</code>|
+|Min SDK| v5.8.0|
+|Supported by:| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+```
+HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+apiBuilder.enableContactUs = HsEnableContactUsNever;
+HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableContactUs</code>|
+|Values:| <code>@"ALWAYS"</code> / <code>@"AFTER_VIEWING_FAQS"</code> / <code>@"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>@"NEVER"</code>|
+|Default:| <code>@"ALWAYS"</code>|
+|Min SDK| v5.1.0|
+|Supported by:| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+```
+[HelpshiftSupport showFAQs:self
+               withOptions:@{@"enableContactUs":@"NEVER"}];
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+<div className=" compact text-sm">
+
+
+| | |
+|--|--|
+|@"ALWAYS" / HsEnableContactUsAlways| show in the navigation bar, search, and after marking an FAQ unhelpful. <code>@"YES"</code> for SDK versions below 4.5.0|
+|@"AFTER_VIEWING_FAQS" / HsEnableContactUsAfterViewingFAQs| show only while searching, on FAQ screen and after marking an FAQ unhelpful.|
+|@"AFTER_MARKING_ANSWER_UNHELPFUL" / HsEnableContactUsAfterMarkingAnswerUnhelpful| show only after user marks an FAQ unhelpful.|
+|@"NEVER" / HsEnableContactUsNever| do not show "Contact Us" button anywhere in the SDK. <code>@"NO"</code> for SDK versions below 4.5.0|
+</div>
+
+### Best Practices
+
+* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+
+    
+```objc
+
+        CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
+        CTCarrier *carrier = [netinfo subscriberCellularProvider];
+        HsEnableContactUs value = HsEnableContactUsAfterViewingFAQs;
+
+        if([[carrier mobileCountryCode] isEqualToString:@"<LOCAL_COUNTRY_CODE>"]) {
+            value = HsEnableContactUsAlways;
+        }
+
+        HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+        apiBuilder.enableContactUs = value;
+        [HelpshiftSupport showFAQs:self withConfig:apiBuilder.build];
+
+```
+
+## presentFullScreenOniPad {#presentFullScreenOniPad}
+
+The presentFullScreenOniPad flag will determine whether to present support views in UIModalPresentationFullScreen or UIModalPresentationFormSheet modal presentation style in iPad. Only takes effect on iPad.
+
+The default value is NO, presents support views as UIModalPresentationFormSheet. When the value is set to YES, support views are presented in UIModalPresentationFullScreen. Use this setting to show Helpshift in full-screen mode.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>presentFullScreenOniPad</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.presentFullScreenOniPad = YES;
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>presentFullScreenOniPad</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.2.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showFAQs:self
+                   withOptions:@{@"presentFullScreenOniPad":@"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+## enableFullPrivacy {#enableFullPrivacy}
+
+In scenarios where the user attaches objectionable content in the screenshots, it becomes a huge [COPPA](http://www.coppa.org/) concern. The enableFullPrivacy option will help solve this problem.
+
+Setting the enableFullPrivacy option to YES ensures full COPPA compliance by doing the following:
+
+1. Disable user-initiated screenshots - players cannot send images without being requested by an Agent.
+1. Do not collect any of the following personal information:
+    * Mobile country code, mobile network code and carrier name.
+    * Country code and country.
+    * Custom meta-data that is labeled "private-data".
+
+
+To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this option is set to YES, this data will be removed when the user starts a new conversation.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableFullPrivacy</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.enableFullPrivacy = YES;
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableFullPrivacy</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.9.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showFAQs:self
+                   withOptions:@{@"enableFullPrivacy":@"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+### Best Practices
+In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to YES. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
+
+
+<Admonition type="info" title="Note">
+
+1.  Once `enableFullPrivacy` flag is set, the SDK will use that value for all further sessions until it is changed again.
+2.  For SDK versions 6.0.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
+3.  For SDK versions 6.1.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
+4.  This flag is ignored in the flows created to show Dynamic forms. Following APIs do not honor this flag:
+    *    (id) flowToShowConversationWithDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;
+    *    (id) flowToShowFAQsWithDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;
+    *    (id) flowToShowFAQSectionForPublishId:(NSString *)sectionPublishId withDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;
+    *    (id) flowToShowSingleFAQForPublishId:(NSString *)FAQPublishId withDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;
+
+</Admonition>
+
+
+## showConversationResolutionQuestion {#showConversationResolutionQuestion}
+
+This option enables or disables the showing of `Conversation Resolution` view after an Agent marks an Issue resolved. `Conversation Resolution` is added to the bottom of the screen with a Yes and No button. If the user taps Yes, then this view is replaced with a `Start a new conversation` view. If the user taps No, then we dismiss the `Conversation Resolution` view and let them continue the conversation.
+
+### For v7.7 and above:
+
+The default value for this configuration will be set to `NO`.
+
+The final behavior of the `showConversationResolutionQuestion` flag will depend on both the Dashboard side config and the API config flag.
+It will be turned *ON* if any of the values is set to `YES`.
+
+### For v7.0 and above:
+
+This SDK configuration is deprecated with v7.0+ and default value will be treated as NO. However if YES value is passed, it will be respected.
+
+If you want to show the Resolution Question to your users when an issue is resolved, you can turn the feature `Resolution Question`, `ON` from the in-app configuration page on the Admin dashboard. `Settings > App settings`.
+
+Additionally, if you are passing this API config in any of the Helpshift APIs, make sure to either remove the flag or set it to `NO`.
+
+The final behavior of the `showConversationResolutionQuestion` flag will depend on both the Dashboard side config and the API config flag.
+It will be turned *ON* if any of the values is set to `YES`.
+
+
+<Image src="/static/books/misc/resolution-question-app-setting.png"  width="full" /> 
+
+### For older SDK versions between v3.11.0 to v7.0
+
+This option is set to YES by default, which means that the user will be presented with Conversation Resolution view. If you wish to skip this view then the option needs to be set to NO.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>showConversationResolutionQuestion</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+Example:
+
+
+```objc
+
+    HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.showConversationResolutionQuestion = YES;
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>showConversationResolutionQuestion</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.14.0|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showConversation:self
+                           withOptions:@{@"showConversationResolutionQuestion":@"NO"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+## customContactUsFlows {#customContactUsFlows}
+
+This configuration allows you to override the Contact Us buttons inside the Helpshift SDK and show Guided Issue Filing when a user taps on the Contact Us buttons.
+
+
+| | |
+|--|--|
+|Option| <code>customContactUsFlows</code>|
+|Value| <code>NSArray</code> of flows. Flows can be created by using the [Guided Issue Filing APIs](https://developers.helpshift.com/ios/support-tools#dynamic-forms)|
+
+
+| | |
+|--|--|
+|Default| There is no default value for this configuration.|
+|Min SDK| v5.5.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+Let's say you want the users to see a particular FAQ section, a single FAQ and 2 different Contact Us flows with different prefill texts when they tap the Contact Us buttons within the Helpshift SDK. In this case, you would configure the `showHelp` button (a button which triggers Helpshift SDK) in the following way :
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+```objc
+
+    - (IBAction) showHelp {
+        id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfig:configObject];
+        id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfig:configObject];
+        id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfig:configObject];
+        id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about in app purchases" andConfig:configObject];
+
+		HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+		apiBuilder.customContactUsFlows = @[faqSectionFlow, singleFAQFlow, showConversationFlow1, showConversationFlow2];
+		HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+		[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+    }
+
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+```objc
+
+    - (IBAction) showHelp {
+        id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfigOptions:yourConfigOptions];
+        id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfigOptions:yourConfigOptions];
+        id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfigOptions:yourConfigOptions];
+        id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about in app purchases" andConfigOptions:yourConfigOptions];
+
+        NSDictionary *customContactUsOptions = @ {@"customContactUsFlows" : @[faqSectionFlow, singleFAQFlow, showConversationFlow1, showConversationFlow2]};
+        [HelpshiftSupport showFAQs:self withOptions:customContactUsOptions];
+    }
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+Anytime the Helpshift SDK is presented via `showHelp` with this configuration, the Contact Us buttons in the SDK will redirect to Guided Issue Filing with the flows provided in the `customContactUsOptions` dictionary.
+
+Once a particular flow is selected, the subsequent Contact Us buttons will not redirect to Guided Issue Filing again. They will function as normal Contact Us buttons. This is to avoid an infinite loop of Guided Issue Filing screens.
+
+Custom flows can be nested by passing another custom flows configuration while creating a flow.
+
+Example:
+
+Let's say you want to configure `singleFAQFlow` in the above example to show `showConversationFlow1` and `showConversationFlow2` through the Contact Us buttons inside it. In this case, you would configure the `showHelp` button (a button which triggers Helpshift SDK) in the following way :
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+```objc
+
+    - (IBAction) showHelp {
+        id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfig:configOptions];
+        id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our in app purchases" andConfig:configObject];
+        id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfig:configObject];
+
+		HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+		apiBuilder.customContactUsFlows = @[showConversationFlow1, showConversationFlow2];
+		HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+
+        id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfig:apiConfigObject];
+
+    	apiBuilder.customContactUsFlows = @[faqSectionFlow, singleFAQFlow, showConversationFlow1, showConversationFlow2];
+		apiConfigObject = [apiBuilder build];
+
+		[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+    }
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+```objc
+
+    - (IBAction) showHelp {
+        id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfigOptions:yourConfigOptions];
+        id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our in app purchases" andConfigOptions:yourConfigOptions];
+        id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfigOptions:yourConfigOptions];
+
+        NSDictionary *nestedCustomContactUsOptions = @{@"customContactUsFlows":@[showConversationFlow1, showConversationFlow2]};
+
+        id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfigOptions:nestedCustomContactUsOptions];
+
+        NSDictionary *customContactUsOptions = @ {@"customContactUsFlows" : @[faqSectionFlow, singleFAQFlow, showConversationFlow1, showConversationFlow2]};
+        [HelpshiftSupport showFAQs:self withOptions:customContactUsOptions];
+    }
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+With this configuration, the Contact Us buttons in `singleFAQFlow` view controller will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
+
+
+<Admonition type="info" title="Note">
+
+This configuration will work only when there is no open conversation for the user, otherwise every Contact Us button will transition to the chat screen.
+
+</Admonition>
+
+
+## showConversationInfoScreen {#showConversationInfoScreen}
+
+The showConversationInfoScreen flag will determine if the user can see the Conversation info on the conversation feed. If set to true, the Conversation ID (Issue ID) will be shown in conversation feed.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option:| <code>showConversationInfoScreen</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>NO</code>|
+|Min SDK| v5.10.1|
+|Supported by:| <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+
+```objc
+
+```
+
+   	HelpshiftAPIConfigBuilder *apiConfigBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+	apiConfigBuilder.showConversationInfoScreen = YES;
+	HelpshiftAPIConfig *builder = [apiConfigBuilder build];
+	[HelpshiftSupport showConversation:self withConfig:builder];
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option:| <code>showConversationInfoScreen</code>|
+|Values:| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default:| <code>@"NO"</code>|
+|Min SDK| v5.10.1|
+|Supported by:| <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+
+```objc
+
+    NSDictionary *config = @{@"showConversationInfoScreen":@"yes"};
+    [HelpshiftSupport showFAQs:self withOptions:config];
+
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+The Conversation ID (Issue ID) will only be visible when a conversation is actually created for support teams and Automations / Agents can act on it. (This is after QuickSearch Bot (if configured) and Identity Bot (if configured) complete their tasks.)
+
+</Admonition>
+
+
+## enableTypingIndicator {#enableTypingIndicator}
+
+A graphical indicator is shown to the end user if an agent is currently replying to the same conversation. The "enableTypingIndicator" flag will enable/disable this indicator.
+
+This SDK configuration has been deprecated, since this configuration has shifted to the In-App SDK Configurations page. (Settings > App settings)
+
+For SDK v7.0 and above, the typing indicator configuration `Show Agent Typing Indicator` is a part of the In-app SDK Configurations page.
+
+If this configuration is turned ON from the configurations page OR if an SDK configuration is used, the typing indicator will shown to end users.
+
+<Image src="/static/books/misc/enable-typing-indicator-app-setting.png"  width="full" /> 
+
+<Centered width="quarter">
+
+![](/static/books/ios/TAI_in_Conversation_feed.png)
+
+</Centered>
+
+Older SDKs will keep on working with the expectations mentioned below:
+
+For older SDK versions between v6.0.0 to v7.0, please read the following:
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableTypingIndicator</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>NO</code>|
+|Min SDK| v6.0.0|
+|Supported by:| <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+
+```objc
+
+    HelpshiftAPIConfigBuilder *apiConfigBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiConfigBuilder.enableTypingIndicator = YES;
+    HelpshiftAPIConfig *builder = [apiConfigBuilder build];
+    [HelpshiftSupport showConversation:self withConfig:builder];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableTypingIndicator</code>|
+|Values:| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default:| <code>@"NO"</code>|
+|Min SDK| v6.0.0|
+|Supported by:| <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+Example:
+
+
+```objc
+
+    NSDictionary *config = @{@"enableTypingIndicator":@"yes"};
+    [HelpshiftSupport showFAQs:self withOptions:config];
+
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+The typing indicator will be visible to end users who file new issues using v6.0+ SDKs
+
+</Admonition>
+
+
+## gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v7.0.
+
+</Admonition>
+
+
+Determines which screen a user sees after filing an issue via "Contact Us".
+
+<Centered width="quarter">
+
+![](/static/books/ios/gotoConv.png)
+
+</Centered>
+
+<iframe src="https://docs.google.com/a/helpshift.com/file/d/0Bx_UqnKHIJWxV18xaklyTDNGaXc/preview" width="640" height="420"></iframe>
+
+Set the value to YES to go directly to the Conversation view. Use this option when you want to send replies to users immediately after they file issues. This is helpful when you provide 24-hour support or are using [New Issue Automations](https://www.helpshift.com/blog/new-issue-automations-part-2-automations-based-keyword-search/)
+
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>gotoConversationAfterContactUs</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+	apiBuilder.gotoConversationAfterContactUs = YES;
+	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+	[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>gotoConversationAfterContactUs</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.0.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showConversation:self
+                           withOptions:@{@"gotoConversationAfterContactUs":@"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+Set the value to NO to avoid entering the Conversation view. A "Thanks for contacting us" alert will appear briefly for your user then disappear. Most teams use this default option to acknowledge that an issue has been received, but not give the impression that there is a support Agent will reply immediately.
+
+### Best Practices
+
+* Set gotoConversationAfterContactUs to YES and send an autoresponse to your users using a New Issue Automation. In your reply, you can link to your FAQs and provide a timeframe for when you will reply to their issue.
+
+## requireEmail {#requireEmail}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v7.0.
+
+</Admonition>
+
+
+The requireEmail option determines whether email is required or optional for starting a new conversation.
+
+Set the value to YES to require the user to fill out a valid email address when filing an issue. Set the value to NO to make email address optional.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| requireEmail|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.requireEmail = YES;
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| requireEmail|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.6.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showConversation:self
+                           withOptions:@{@"requireEmail":@"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+### Best Practices
+
+* The requireEmail option will be ignored if any of the following are true:
+** "New Issue Forwarding" is turned ON in Helpshift Dashboard.
+** "Closed Issues Transcript Archiving" is turned ON in Helpshift Dashboard.
+** "Allow anonymous issues" is turned ON in Helpshift Dashboard.
+** "enableFullPrivacy" option is set to true
+* Once requireEmail option is set, the SDK will use that value for all new conversations until it is changed again.
+
+## hideNameAndEmail {#hideNameAndEmail}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v7.0.
+
+</Admonition>
+
+
+The hideNameAndEmail flag will hide the name and email fields when the user starts a new conversation.
+
+<iframe src="https://docs.google.com/a/helpshift.com/file/d/0Bx_UqnKHIJWxMWF3cHBPcERQSjg/preview" width="640" height="420"></iframe>
+
+When the flag is set to YES the name and email fields will be hidden. Use this option when you do not need to collect your user's name or email address.
+
+Set this flag to NO to make Name and Email fields visible when a user files an issue. This is helpful if you need name and/or email to identify your users.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>hideNameAndEmail</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.hideNameAndEmail = YES;
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>hideNameAndEmail</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.7.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>, <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showConversation:self
+                           withOptions:@{@"hideNameAndEmail":@"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+### Best Practices
+
+* Simplify issue filing by setting the hideNameAndEmail to YES. This will make it easier for your users to contact you.
+* You can use the [setName:andEmail:](/ios/tracking#name-and-email) API to supply the SDK with name and email. Set hideNameAndEmail to YES and you can avoid potential mismatches between User ID and Name/Email.
+* You can use the [loginWithIdentifier:withName: andEmail:](/ios/tracking#user-id) API to supply the SDK with a unique User ID
+
+
+<Admonition type="info" title="Note">
+
+* The hideNameAndEmail option will be set to YES if any of the following are true:
+** "Allow anonymous issues" is turned ON in Helpshift Dashboard
+** enableFullPrivacy is set to true.
+* The hideNameAndEmail option will be set to NO if any of the following are true:
+** "New Issue Forwarding" is ON and name and email are not available to the SDK
+** "Closed Issues Transcript Archiving" is ON and name and email are not available to the SDK
+** The requireEmail option is set to YES and email is not available to the SDK
+* Once hideNameAndEmail option is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+
+## conversationPrefillText {#conversationPrefillText}
+
+
+<Admonition type="info" title="Note">
+
+This API option only works with the `[HelpshiftSupport showConversation:withOptions:]` and `[HelpshiftSupport showConversation:withConfig:]` APIs
+
+</Admonition>
+
+
+The conversationPrefillText API option prefills a new conversation with the supplied string. You can use this option to add crash logs to a new conversation and prompt the user to send those logs as a support ticket. You can also use this option to set context depending on where and when in the app showConversation is being launched from.
+
+<iframe src="https://docs.google.com/a/helpshift.com/file/d/0Bx_UqnKHIJWxZzRwQV8tbTF3ZkU/preview" width="640" height="420"></iframe>
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>conversationPrefillText</code>|
+|Values| Non-empty <code>NSString</code>|
+|Default| Empty string|
+|Min SDK| v5.8.0|
+|Supported by| <code>showConversation</code>|
+Example:
+
+
+```objc
+
+	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.conversationPrefillText = @"preFillString";
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showConversation:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>conversationPrefillText</code>|
+|Values| Non-empty <code>NSString</code>|
+|Default| Empty string|
+|Min SDK| v4.7.0|
+|Supported by| <code>showConversation</code>|
+Example:
+
+
+```objc
+
+    NSString *preFillString = [MyApp getExceptionData];
+    [HelpshiftSupport showConversation:self
+                           withOptions:@{@"conversationPrefillText":preFillString}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+To prefill a user's name and email address follow the instructions [here](/ios/tracking#name-and-email).
+
+## showSearchOnNewConversation {#showSearchOnNewConversation}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v7.0.
+
+</Admonition>
+
+
+Use this option to provide better ticket deflection.
+
+<iframe src="https://docs.google.com/a/helpshift.com/file/d/0Bx_UqnKHIJWxYUdYNXhGYUdEVWs/preview" width="640" height="420"></iframe>
+
+Set showSearchOnNewConversation to YES to show relevant FAQs to a user's issue before it is filed. This helps answer tickets with FAQs before they reach your support team. If there are no relevant FAQs, the user can continue filing a new conversation with his original text by pressing the "Send Anyway" button.
+
+From v4.13.0 and above, the showSearchOnNewConversation flag is also effective in the showFAQs API. In this case if the user starts a conversation from an FAQ page, he is not redirected to search results or if the user has already performed a search in the current session, he will not be taken through search again. If the user wishes to leave a feedback (via Rate our app alert), he will not be taken through search.
+
+<Centered width="quarter">
+
+![](/static/books/ios/showSearch.png)
+
+</Centered>
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>showSearchOnNewConversation</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v5.8.0|
+|Supported by| <code>showConversation</code>,<code>showFAQs</code>.<code>showFAQSection</code>|
+Example:
+
+
+```objc
+
+    HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+    apiBuilder.showSearchOnNewConversation = YES;
+    HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+    [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>showSearchOnNewConversation</code>|
+|Values| <code>@"YES"</code> / <code>@"NO"</code>|
+|Default| <code>@"NO"</code>|
+|Min SDK| v4.9.0|
+|Supported by| <code>showConversation</code>,<code>showFAQs</code>.<code>showFAQSection</code>|
+Example:
+
+
+```objc
+
+    [HelpshiftSupport showConversation:self
+                                 withOptions:@{@"showSearchOnNewConversation":@"YES"}];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+## IssueDescriptionMinimumCharacterLength {#issue-description-minimum-length}
+
+To control the minimum number of characters that the users need to type before they can start a conversation, use this option and set it to an appropriate integer value.
+This option works both in Conversational issue-filing and Form-based issue-filing experience.
+Since this option is dependent on the language in which the user starts a conversation, developers are encouraged to set this value for each language as appropriate.
+
+
+<Admonition type="info" title="Note">
+
+This option is not an SDK API config but rather a **key in the HelpshiftLocalizable.strings** file.
+
+</Admonition>
+
+
+<Centered >
+
+![](/static/books/ios/iphone-min-chars-error.png)
+
+</Centered>

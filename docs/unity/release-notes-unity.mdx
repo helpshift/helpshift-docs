@@ -1,0 +1,1365 @@
+---
+sidebar_position: 10
+title: Release Notes
+description: Read the Release Notes in detail
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Release Notes
+
+
+
+<Admonition type="danger" title="Important">
+
+With the transition to TLSv1.2 on Sep 20,2021, connections to a Helpshift SDK via any previous TLS version will not work as expected. Specifically, this means that:
+
+* Helpshift SDKs will not work or load on lower-end Android devices (meaning, Android 4.x and earlier), because these lower-end Android versions do not support TLSv1.2.
+* End-users on lower-end Android devices will not be able to access FAQs, raise new issues, or access their past support conversations.
+* On a lower-end Android device, the mobile app that embeds a Helpshift SDK will be prevented from communicating with the SDK for any purpose. However, this disconnect will not cause any malfunction or crash on the parent application.
+
+
+</Admonition>
+
+
+
+<Admonition type="danger" title="Important">
+
+* If you have released your App with `5.5.0` version, we highly recommend that you upgrade to `5.5.1` which fixes an important bug. Refer [here](/unity/release-notes-unity#v551).
+
+
+</Admonition>
+
+
+
+<LatestSdkVersion>
+
+## v5.6.2
+
+_November 18, 2022_
+
+
+</LatestSdkVersion>
+
+** Release Notes **
+
+**Android**
+
+* As part of Android 13 updates:
+	* Added Support for `App level language introduced in Android 13`. Preference will be given to App level language, if set, over the device level language. [Read more](https://developer.android.com/guide/topics/resources/app-languages).
+	* SDK will post notifications only when end user has allowed the `POST_NOTIFICATIONS` permission. [Read more](https://developer.android.com/develop/ui/views/notifications/notification-permission).
+	* Added support for `READ_MEDIA_IMAGES`, `READ_MEDIA_AUDIO` and `READ_MEDIA_VIDEO` permissions introduced in Android 13 for attachments. [Read more](https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions).
+* Removed collection of `ANDROID_ID`, used earlier for internal analytics.
+
+
+<Admonition type="info" title="Note">
+
+SDK will not ask for Notification permission, it will show notification only when end user has allowed the permission asked by the client's app
+
+</Admonition>
+
+
+## v5.6.1
+
+_October 19, 2021_
+
+** Release Notes **
+
+**Android**
+
+* Fixed a crash caused by PendingIntent flag requirements expected on apps targeting Android 12 (API level 31).
+
+
+## v5.6.0
+
+_September 15, 2021_
+
+
+** Release Notes **
+
+**iOS**
+
+* Updated to iOS SDK `v7.11.0`. [View](/ios/release-notes#7110)
+* Added support for customized feedback survey upon issue resolution. [Learn more](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/580-user-support-workflow-procedures-configure-the-issue-resolution-experience/?p=all).
+* Added support for iOS 15 beta 6.
+* Fixed a bug where custom metadata was not cleared if nil argument was passed to [initWithMetaData](/unity/tracking-ios#metadata) API.
+* Fixed a bug where FAQ search didn't work properly for non-alphanumeric characters.
+* Fixed a bug where word break logic was incorrect for CJK languages in FAQ pages.
+* Fixed a bug where cell selection colour was not completely applied to selected cell in dynamic forms.
+* Fixed a bug where placeholder text was truncated for chat screen's reply box for some custom fonts.
+* Fixed a bug where config would not get updated if a new language was set using [setLanguage](/unity/i18n-ios/#set-language) API.
+
+**Android**
+
+* Updated to Android SDK `v7.11.0`. [View](/android/release-notes#7110)
+* Added support for customized feedback survey upon issue resolution. [Learn more](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/580-user-support-workflow-procedures-configure-the-issue-resolution-experience/?p=all)
+* Helpshift SDK is now fully compatible with Android 12. 
+* Fixed runtime storage permission request flow issue according to Google guidelines.
+* Fixed updating the app header title accordingly when SDK language is changed.
+* Fixed FAQ search for non-alphaneumeric characters.
+* Fixed exception when Search Button on FAQs is clicked on first app launch.
+* Fixed downloading of attachments sent with bots when storage permissions are not given.
+* Fixed Portuguese translation for resolution question string.
+
+## v5.5.5
+
+_July 19, 2021_
+
+** Release Notes **
+
+**iOS**
+
+* Fixed a bug where Helpshift theming plist files were added incorrectly to generated Xcode project, causing errors when the Xcode project was built after moving it to a different location.
+* Removed non-bitcode version of SDK from unitypackage. The bitcode version of SDK works for both bitcode and non-bitcode apps.
+
+**Android**
+
+* No changes.
+
+## v5.5.4
+
+_June 23, 2021_
+
+** Release Notes **
+
+**iOS**
+
+* Updated to iOS SDK `v7.10.1`. [View](/ios/release-notes#7101)
+* Fixed an issue on the Smart Intents screen (when presented in modal view with the pageSheet style) where the keyboard overlaps the reply box.
+* Fixed an issue where custom fonts were not applied to [dynamic forms](/unity/support-tools-ios#dynamic-forms).
+* Fixed an error when building from Xcode 12.3 & above.
+
+    * Building for iOS, but the embedded framework ‘Helpshift.framework’ was built for iOS + iOS Simulator.
+
+* Fixed a bug where code signing framework files would fail if the Xcode project was generated on Windows and then copied to macOS.
+
+**Android**
+
+* No changes.
+
+## v5.5.2
+
+_February 17, 2021_
+
+** Release Notes **
+
+**iOS**
+
+* Updated to iOS SDK `v7.10.0`. [View](/ios/release-notes#7100)
+
+    * Unity SDK has not been updated to xcframework since Unity IDE does not officially support xcframeworks.
+
+* Fixed an issue where set theme APIs did not work for Helpshift’s default themes.
+
+**Android**
+
+* Updated to Android SDK `v7.9.2`.  [View](/android/release-notes#v792)
+* Fixed a bug where accessing user data from the database led to App crash in rare scenarios.
+
+## v5.5.1
+
+_November 5th, 2020_
+
+** Release Notes **
+
+**iOS**
+
+* Fixed an issue where option pills were not visible to end user when New Issue Automation (NIA) assigns to a Custom Bot and the first step is a Get Info from User with options.
+* Fixed a crash that would occur when app is opened through push notifications and the app’s rootViewController is nil.
+* The issue where publish ID is not visible until user closes and opens the chat screen had to be re-introduced. This bug was reproducible only when [showConversationInfoScreen](https://developers.helpshift.com/unity/sdk-configuration-ios#showConversationInfoScreen) custom config was set to true. It will be fixed in upcoming releases.
+
+**Android**
+
+* Updated to Android SDK `v7.9.1`  [View](/android/release-notes#v791)
+* Fixed an issue where option pills were not visible to end user when New Issue Automation (NIA) assigns to a Custom Bot and the first step is a Get Info from User with options.
+* Fixed an issue where the chat screen was not shown on clicking a notification, it was just opening the app.
+* The issue where publish ID is not visible until user closes and opens the chat screen had to be re-introduced. This bug was reproducible only when [showConversationInfoScreen](/unity/sdk-configuration-ios#showConversationInfoScreen) custom config was set to true. It will be fixed in upcoming releases.
+
+
+## v5.5.0
+
+_October 14th, 2020_
+
+
+<Admonition type="info" title="Note">
+
+5.5.0 Plugin Update
+
+We found a Bug in plugin release 5.5.0 - Bot Options don't show up to end users when the Bot is triggered via New Issue Automation (NIA)
+
+Note: The issue gets fixed when user closes and reopens the chat screen.
+
+**Action needed:**
+
+* If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
+* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to 5.5.1 SDK.
+
+</Admonition>
+
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS SDK version 7.9.0. [View](https://developers.helpshift.com/ios/release-notes#790)
+* Helpshift iOS SDK is now fully compatible with iOS 14. This will be the last SDK version to support iOS 10. We recommend you to use the latest SDK since apps using Older SDKs (< v7.9.0 ) will see the following degraded behavior for in-app support when run on iOS 14:
+
+    * Apps built with Xcode 12 will crash when user taps on a notification sent from Helpshift dashboard for agent/bot replies.
+    * Due to a [bug in Xcode 12](https://developer.apple.com/forums/thread/656524), close button on chat screen is not visible when a new conversation started and conversation history is OFF.
+    * End users will not be able to input dates when asked by custom bots.
+
+* Fixed a bug where run script build phase was getting added multiple times after doing subsequent "Append" builds from Unity.
+* Fixed a bug where conversation publish ID was not shown in chat screen unless user closed and reopened the chat screen. This bug was reproducible only when [showConversationInfoScreen](/unity/sdk-configuration-ios#showConversationInfoScreen) custom config was set to true.
+* Fixed a bug where custom font didn't get applied to some UI elements.
+* Fixed a bug where dark theme wasn't applied to SDK when app in killed state was opened through push notification.
+* Fixed a bug where throttling for the [requestUnreadMessagesCount API](/unity/notifications-ios#notification-badges) didn't work in a rare case.
+* Fixed a bug where option pills with brimful amount of text went out of the screen on notched devices.
+* Fixed a crash that would occur when user tapped on search results while simultaneously searching for FAQs in the search bar. Stack trace -
+
+       `[HsFaqSearchDb query:]_block_invoke [Line 96] Error is no more rows available`
+       `Terminating app due to uncaught exception 'NSRangeException', reason: '*** -[__NSArrayM objectAtIndexedSubscript:]: index 0 beyond bounds for empty array'`
+
+**Android**
+
+* Updated to Android SDK `v7.9.0`  [View](/android/release-notes#v790)
+* Helpshift Android SDK is now fully compatible with Android 11. We recommend you to use the latest SDK since apps using Older SDKs (<=7.8.1 version) will see the following degraded behavior for Helpshift messaging experience on Android 11 devices when the app’s targetSDKVersion is set to 30:
+	* App will crash when user starts a new conversation from a form-based experience.
+	* Image orientation changes on some Android 11 devices when the user uploads an image.
+	* If the issue filing flow is form-based then menu items are not clickable on the form when the app is in full screen mode. [View Impact](/android/troubleshooting#known-issues)
+	* The menu items on FAQ screens are not clickable in full screen mode. [View Impact](/android/troubleshooting#known-issues)
+	* Hyperlinks are broken in Action card, agent message and user message.
+* Fixed a bug in which custom config named [showConversationInfoScreen](/android/sdk-configuration#showConversationInfoScreen) was set to true and conversation publish ID was not shown in chat feed unless user closed and reopened the chat screen.	
+* Fixed a bug in which image attachment was getting pixelated on the preview screen while attaching an image.
+* Fixed a crash with [embeddable fragments](/android/support-tools#embeddable-fragments) that would occur when user launches the app from recents menu after the Android System has already killed it.
+
+## v5.4.1
+
+_August 12th, 2020_
+
+** Release Notes: **
+
+**iOS**
+
+* Fixed a crash that would occur when custom font was set in SDK's theming plist files.
+
+** Upgrade guide **
+
+To upgrade to 5.4.X please refer to the guide [here](/unity/upgrade-54x-ios/)
+
+**Android**
+
+* Updated to Android SDK `v7.8.1`  [View](/android/release-notes#v781)
+* Fix a bug where Bots with Action card were not rendered on migrating from older versions of the SDK.
+
+## v5.4.0
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS SDK v7.8.1 [View](/ios/release-notes#v781)
+* Added support for Unity IDE 2019.3 and above
+* Don’t allow user to respond to conversation resolution question or CSAT after a certain interval. The interval is configurable on admin dashboard. Learn more about re-open window [here](https://support.helpshift.com/kb/article/what-is-re-open-time-window-and-how-do-i-use-it/) and CSAT [here](https://support.helpshift.com/kb/article/what-are-csat-customer-satisfaction-surveys/).
+* Added support for showing agent and bot personalized avatar with their messages. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience)
+* Added support to change title (Brand header text) for messaging experience from App Settings on Admin console instead of SDK string customization. The default value will be `<Company name> Support`, but you can change it to align the same with your current experience. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience/)
+* Added support for bot messages with a customizable link and title. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-send-deep-links-actions-using-custom-bots/)
+* Added a new delegate method that is invoked when user clicks on the action for a Rich Actions Bot. [Refer here](/unity/delegates-ios#action-card). Please update your code to implement this method.
+* Added a new design attribute for color of links in FAQ content. [Refer here](/unity/design-ios#attributes-footers).
+* Updated the native SDK release artifact from static library and supporting files to a single dynamic framework to reduce integration steps and make the process easier. [Migration guide](/unity/upgrade-54x-ios/)
+* Improved UI for conversation started using Smart Intents.
+* Added search icon and clear button to smart intent search field.
+* Added check to ensure that Helpshift SDK fetches config at least once, before the user can see the conversation screen. This is done to avoid config mismatches which can lead to conversation behaviour different from the one the admins have configured.
+* Disabled javascript execution in FAQ HTML body.
+* Fix a bug where the username was not updated on login for existing users.
+* Fixed a bug where none of the FAQs will be displayed if parsing fails for any FAQ.
+* Fixed a crash that would occur on iPad when a list picker item was selected while simultaneously scrolling the list.
+* Fixed a bug where Smart Intents message would get partially hidden behind the reply text box.
+* Fixed a bug where cancel button was not shown of FAQ search screen in some cases.
+* Fixed a bug where attachment dialog was dismissed automatically after answering NO to resolution question.
+
+** Upgrade guide **
+
+To upgrade to 5.4.0 please refer to the guide [here](/unity/upgrade-54x-ios/)
+
+**Android**
+
+* Updated to Android SDK `v7.8.0`  [View](/android/release-notes#v780)
+* Don’t allow user to respond to conversation resolution question or CSAT after a certain interval. The interval is configurable on admin dashboard. Learn more about re-open window [here](https://support.helpshift.com/kb/article/what-is-re-open-time-window-and-how-do-i-use-it/) and CSAT [here](https://support.helpshift.com/kb/article/what-are-csat-customer-satisfaction-surveys/).
+* Added support for showing agent and bot personalized avatar with their messages. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience)
+* Added support to change title (Brand header text) for messaging experience from App Settings on Admin console instead of SDK string customization. The default value will be `<Company name> Support`, but you can change it to align the same with your current experience. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience/)
+* Added support for bot messages with a customizable link and title. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-send-deep-links-actions-using-custom-bots/)
+* Added a new delegate method that is invoked when user clicks on the action for a Rich Actions Bot. [Refer here](/unity/delegates-android#user-click-action). Please update your code to implement this method.
+* Added a new design attribute for color of links in FAQ content. [Refer here](/unity/design-android#styleable-attributes).
+* Improved UI for conversation started using Smart Intents.
+* Added search icon and clear button to smart intent search field.
+* Added check to ensure that Helpshift SDK fetches config at least once, before the user can see the conversation screen. This is done to avoid config mismatches which can lead to conversation behaviour different from the one the admins have configured.
+* Fix a crash that would occur when user launches the app from recents menu after the Android System has already killed it.
+* Handle conversation archival when user tries to upload an attachment on an archived conversation.
+* Fix a bug where the username was not updated on login for existing users.
+* Fixed a bug where toolbar title was overridden when using embeddable fragments.
+* Fixed a bug where styling for QuickSearch Bot suggestions was not working as expected.
+* Fixed an edge case bug where reply box was displayed along with resolution question.
+* Fixed a bug where FAQ screen used to flicker when Dark mode theme is selected.
+* Fixed a edge case crash which would occur when attachment upload and message sync would run at the same time.
+
+
+## v5.3.2
+
+_April 3rd, 2020_
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS sdk `v7.7.1`  [View](/ios/release-notes#771)
+* Fixed a bug where end-users would not receive the [in-app notifications](/unity/notifications-ios#in-app-notifications) if the push notifications are not enabled.
+* Fixed the library search path for swift support
+
+
+## v5.3.1
+
+_February 25th, 2020_
+
+
+** Release Notes: **
+
+**iOS**
+
+* Fixed a bug where archiving a bitcode enabled project was failing.
+      * Error message: (bitcode bundle could not be generated because '/build/Libraries/Helpshift/Plugins/iOS/libSupport.a(HsSdkVersion.o)' was built without full bitcode
+
+
+
+## v5.3.0
+
+_February 18th, 2020_
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS sdk `v7.7.0`  [View](/ios/release-notes#770)
+* Added support for suggesting AI-powered issue categories to your users during the start of a conversation. [Learn more](https://support.helpshift.com/kb/article/helpshift-smart-intents/)
+* Added ability for end-users to send files such as pdf, video, etc. during a conversation. [Learn more](https://support.helpshift.com/kb/article/how-do-i-restrict-file-types-and-attachments/)
+* Added support for sending files via Helpshift bots. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-attachments-in-bots/)
+* Added support for bots to display AI powered FAQ(s) depending on what a user types. [Learn more](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them#add-ai-powered-faqs-to-bot-conversations)
+* Added support for Helpshift error reporting. [Learn more](/unity/sdk-configuration-ios#disableErrorReporting)
+* Added Swift code to Helpshift SDK. [Learn more about the impact on your project](/unity/upgrade-5.3.x-ios/#support-for-swift)
+* Removed the deprecated “on_install” option for addFaqsToDeviceSearch install config.
+* The resolution question for a conversation would be assumed to be off until configuration set on Helpshift Admin console is fetched.
+* Removed the deprecated “disableAutomaticPushHandling” install config.
+* Fixed a bug where close button was not shown while filing issue through guided issue filing flow.
+* Fixed a bug where CJK keyboards did not show characters suggestions while using the issue form.
+* Fixed a bug where navigation bar was not styled in embeddable messaging experience.
+* Fixed a bug where FAQ filtering did not working on first launch.
+* Fixed a rare bug where input hint message and keyboard type were not changing on tapping new conversation button.
+* Fixed a bug keyboard went invisible if user dismissed the image preview by drag interaction.
+* Fixed rare crash which occurred when user opened the chat screen.
+* Fixed a bug where message body was shown thrice for FAQ list message.
+* Fixed a bug where attach screenshot message buttons were visible after conversation is resolved.
+
+** Upgrade guide **
+
+To upgrade to 5.3.0 please refer to the guide [here](/unity/upgrade-5.3.x-ios/)
+
+
+**Android**
+
+* Updated to Android SDK `v7.7.2`  [View](/android/release-notes#772)
+* Added support for suggesting AI-powered issue categories to your users at the start of a conversation. [Learn more](https://support.helpshift.com/kb/article/helpshift-smart-intents/)
+* Added ability for end-users to send files such as pdf, video, etc. during a conversation. [Learn more](https://support.helpshift.com/kb/article/how-do-i-restrict-file-types-and-attachments/)
+* Added support for sending files via Helpshift bots. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-attachments-in-bots/)
+* Added support for bots to display AI powered FAQ(s) depending on the user message. [Learn more]( https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them#add-ai-powered-faqs-to-bot-conversations)
+* Added support for Helpshift error reporting. [Learn more](/unity/sdk-configuration-android#disableErrorReporting)
+* The resolution question for a conversation would be assumed to be off until configuration set on Helpshift Admin console is fetched.
+* Conversation screen now occupies full width on tablet devices. Please note that the existing keys for changing padding are deprecated and will not be functional moving forward.
+* Fixed jitters in loading the chat screen UI when multiple attachments are present in the conversation.
+* Removed support for linkifying selective map addresses in agent messages thus reducing the file descriptor count.
+* Fixed a crash when the user clicks on a link in agent message and there was no suitable app to handle it.
+* Fixed a bug where the pre-fill text in the reply box, configured via conversationPrefillText API config, wasn't being updated if the developer updates the prefill text in later sessions.
+* Fixed a bug where the skip label for list picker bot was not shown on some tablet devices.
+* Fixed a rare bug when an InstallException was thrown if the developer calls the `Core.install()` and other Helpshift API from different threads.
+* Fixed a rare crash which occurred when the user changes the time/timezone on the chat screen.
+* Fixed a bug where, if the app excludes the storage permission from the manifest and the user downloads an attachment, the file is incorrectly downloaded as a ".bin" file."
+* Fixed a bug where the user could reopen an Issue by retrying the last unsent reply to a bot.
+
+## v5.2.0
+
+_October 24th, 2019_
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS SDK version 7.6.3. [View](/ios/release-notes#763)
+* Helpshift iOS SDK is now fully compatible with iOS 13. We recommend you to use the latest SDK since apps using Older SDKs (<=5.0 version ) will see the following degraded behavior for in-app support when run on iOS 13:
+       * End-users will not be able to send attachment
+       * Inconsistent dark/light color elements in SDK, when you turn ON the OS level dark mode
+       * Difficulty in navigating or reading through FAQs because of the UX changes introduced in iOS 13
+       * Gestures to open and close the bot options in list picker UI will not work properly
+* Added Dark Mode support for apps running on iOS 13. [View](/unity/design-ios#runtime-light-dark)
+* Added API for switching the Helpshift SDK theme at runtime. [View](unity/design-ios#runtime-theming)
+* Added a new high contrast theme for Dark Mode.
+* Added support for customizing the font and colors of the in-app notification banner elements. [View](/unity/design-ios#attributes-global)
+* Added Voice-over support for FAQ search results and Form based issue filing.
+* Added a character limit of 100,000 for every user message to ensure a smooth user experience.
+* Changed the rate-limiting algorithm for requestUnreadMessagesCount API to fetch the latest count from Helpshift servers, to handle the case of the delayed push being received in the app.
+* Disabled automatic detection of numbers as phone numbers in FAQ view. If you want to add telephone number links, please add URLs in the FAQ editor with `tel:`
+* Fixed a bug where the prefill text shown in the reply box via conversationPrefillText API config fails to update if changed in conversational issue filing mode.
+* Fixed a bug where the user fails to view customContactUs flows if they try to contact support from the footer in the FAQ screen.
+* Fixed a bug where In-app notification for resolution request was shown twice to the user if the resolution question setting was turned off.
+* Fixed a bug where duplicate issues were being created in some network edge cases.
+* Fixed a bug where push notifications fail to deliver to iOS 13 devices if the host app is built with Xcode 11.
+* Fixed a crash that would occur if New Issue Automation assigns the issue to a custom bot, and the first bot step presents more than 5 options to the end-user.
+* Fixed a rare crash that would occur sometimes when a user loads conversation history and at the same time closes the chat screen.
+* Fixed a bug where the Dynamic Forms screen fails to open as a full screen on iOS 13 devices.
+* Fixed a bug where API config passed to showDynamicForms API was being ignored.
+* Fixed a bug which caused option pills to reload when navigated in VoiceOver mode.
+* Fixed a bug where QuickSearch Bot messages were not redacted in the current open conversation screen but were updated on re-opening the conversation.
+
+**Android**
+
+* Updated to Android SDK version: v7.6.3
+* The delegate `displayAttachmentFile` will now be triggered with a Uri file path instead of a normal file path on Android 10 & above. For more details, refer [here](/unity/delegates-android#display-attachment).
+* Added new themes to support [Dark Mode](/unity/design-android#dark-mode-support).
+* Added new [API](/unity/design-android#change-theme-runtime) for changing the Helpshift SDK theme at runtime.
+* Added support for customizing additional icons in the SDK. To view the updated list of customizable icons, refer [here](/unity/design-android#styleable-attributes).
+* Added a character limit of 100,000 on user messages.
+* Fixed a crash which occurred when a user opens the chat screen containing an attachment message and hardware acceleration was explicitly disabled in the app.
+* Fixed a bug where a blank screen was shown instead of the FAQ content when opened through QuickSearch Bot for some languages.
+* Fixed a bug where the keyboard input type remains the same when a number/date input bot-message was interrupted by an agent.
+* Fixed a bug where the SDK UI was being displayed in the cutout area on some android phones with a notch.
+* Updated the [rate limiting](/unity/notifications-android#showing-notification-count) algorithm for getNotificationCount API. The API will allow one call when the user closes the conversation screen. This is to accommodate any custom requirements for showing the notification count in the app.
+* By default, hardware acceleration is now explicitly enabled in the manifest file for the SDK's ParentActivity. This prevents rendering issues of WebView on Android OS 5.1.
+* Fixed an edge case crash which occurred when the user files an issue for the first time and user authentication failed.
+* Fixed a bug where the prefill text shown in the reply box via `conversationPrefillText` API config wasn't being updated if changed in conversational issue filing mode.
+* Fixed an edge case bug where duplicate issues were being created in bad network scenarios.
+* Fixed an edge case bug where the typing indicator was shown indefinitely when the user replies to a bot.
+* Fixed a bug where the QuickSearch Bot FAQ suggestions message wasn't shown as redacted while the user was on the chat screen.
+
+## v5.1.0
+
+_August 26th, 2019_
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS SDK version 7.6.1. [View](/ios/release-notes#761)
+* Added support for iOS 13 Beta 4 and Xcode 11. Apps using Older SDKs (version <=5.0 version ) will see the following degraded behavior for in-app support when run on iOS 13 beta:
+       * End-users will not be able to send attachment
+       * Inconsistent dark/light color elements in SDK, when you turn ON the OS level dark mode
+       * Difficulty in navigating or reading through FAQs because of the UX changes introduced in iOS 13
+       * Gestures to open and close the bot options in list picker UI will not work properly
+* Removed CoreLocation framework dependency
+* Added support for messages and attachment redaction for SDKs. If you redact messages and attachments from Agent desktop, they will be redacted from the device too.
+* Fixed a bug, where the user did not receive the agent response. It occurred when the user was on chat screen and device got locked, and after unlocking the device, intermittently the user did not receive the Agent messages. However, when you close and reopen the chat screen, user was able to receive all the Agent messages.
+* Fixed a bug, where sometimes, SDK configuration set on dashboard would not show on app launch.
+* Fixed a bug where map and filter named methods of NSArray category were conflicting with the host app's categories.
+* Fixed a bug where, in some network edge cases, the user was able to retry an older message which is not part of the running bot.
+* Fixed a bug where the user couldn't send the CSAT rating for a resolved conversation if conversation history was ON and if there was a login change between users.
+* Fixed a bug where the previously sent images were not shown on chat screen immediately after a login change. However if the user closed and revisited the chat screen, the images would load correctly.
+* Fixed a bug where, in some network edge cases, the user fails to send or receive messages if a bot was interrupted by another bot.
+* Fixed a bug, where conversationEnded delegate was not called for the agent rejected conversation unless user exits the chat screen.
+* Fixed a bug where the user message was sent twice in an edge case when Send button was tapped multiple times
+* Improved the loading of large FAQs.
+* Fixed a crash which occurred when Photo gallery was opened in Landscape only orientation.
+
+**Android**
+
+* Updated to Android SDK version 7.6.0. [View](/android/release-notes#v760)
+* Added support for targeting Android Q Beta 5 which includes support for the new [scoped storage](https://developer.android.com/preview/privacy/scoped-storage) changes.
+Apps using Older SDKs (<=7.5 version ) will see the following degraded behavior for Helpshift messaging experience when they target Android Q beta:
+    * End-users will not be able to send attachments.
+    * End-user will not be able to view attachments/files sent by Agents.
+* Added support for messages and attachment redaction for SDKs. Messages and attachments which are redacted from the Agent dashboard will be removed from user's devices too.
+* Fixed an edge case crash that would occur when the chat screen is opened and an already downloaded attachment is not accessible by the SDK.
+* Fixed an edge case crash on opening any SDK screen when conflicting versions of support libraries are used.
+* Fixed an edge case crash which occurred on sending a message when both reply box and options pills would be visible at the same time.
+* Fixed an ANR which occurs in an edge case when searching through an FAQ which has a large number of media elements.
+* Fixed an edge case crash that would occur when user swipes through the FAQ sections view pager very quickly and "Don't keep activities" from Developer Options is turned ON.
+* Fixed a bug where the user incorrectly sees the authentication failure screen instead of the conversation if login API is used without email or userID and User Identity verification is enabled.
+* Fixed a bug where, in some network edge cases, the user wasn't able to send or receive messages if a bot was interrupted by another bot.
+* Fixed a bug where, in some network edge cases, user was not able to see the messages sent by the agent in the messaging experience.
+* Fixed a bug where the embedded media content was not visible in an FAQ on Android P and above.
+* Fixed a bug where the deep link to an FAQ was not working from another FAQ screen.
+* Fixed a bug where the image attachment wasn't visible on the chat screen when an issue is filed with an attachment via Form based issue filing flow.
+* Fixed a bug where the user couldn't send the CSAT rating for a resolved conversation if conversation history was ON and if there was a login change between users.
+* Fixed a bug where the dot character at the end of a message (if present) would also be part of the link.
+* Fixed a bug where, in some network edge cases, the user was able to retry an older message which is not part of the running bot.
+* Fixed a bug where updateMetaData delegate was called instead of didReceiveInAppNotificationCount delegate.
+* Fixed a bug where requestUnreadMessagesCount delegate was not called in case of failure.
+* Fixed a crash where an app was showing a notification after upgrade without opening the app.
+* Fixes an edge case crash that would occur on authentication failure.
+* Removed targetSdkVersion from Helpshift SDK.
+
+## v5.0.2
+
+_May 17th, 2019_
+
+** Release Notes: **
+
+**iOS**
+
+* Updated to iOS SDK version 7.5.3. [View](/ios/release-notes#753)
+
+## v5.0.1
+
+_May 8th, 2019_
+
+** Release Notes: **
+
+**iOS**
+
+* Fixed a crash that occurs when you use the [closeHelpshiftSupportSession](/unity/support-tools-ios#closeHelpshiftSupportSession) API
+
+## v5.0.0
+
+_April 25th, 2019_
+
+** Release Notes: **
+
+** Common Updates **
+
+* Introduced a new rich element for automation bots to let users choose from a list of selectable options if the number of options is more than 5.
+* Users can modify their CSAT rating during the Feedback phase before submitting them. For more details, [see here](/unity/reviews-and-feedback-ios#csat).
+* Added a configuration option for setting the minimum number of characters required, before you can send a message in conversational experience. For more details, see the android and iOS release notes.
+* Added configuration option, conversationPrefillText, for pre-filling new conversation's description in the conversational issue filing experience. For more details, [see here](/unity/sdk-configuration-ios#conversationPrefillText).
+* Removed GUI Editor for install keys and SDK configurations. For more details, refer [migration guilde for iOS](/unity/upgrade-5x-ios/#gui-editor-to-c#) and [migration guide for android](/unity/upgrade-4x-android/)
+* Changed the rate-limiting algorithm for requestUnreadMessagesCount API to fetch the latest count from Helpshift servers, to handle the case of the delayed push being received in the app.
+
+
+**iOS**
+
+* Updated to iOS SDK version 7.5.2. [View](/ios/release-notes#750)
+* Added a new API enableTestingMode to enable testing mode in the SDK. For more details, [see](/unity/support-tools-ios#enable-testing-mode)
+* When testing mode is enabled, public APIs in HelpshiftSdk and HelpshiftCampaigns will now throw ExceptionInInitializerError exception if the API is called before HelpshiftSdk.Install API.
+* Updated behavior of opening Links from the FAQ view inside of Helpshift. The Helpshift session will not close when opening external links.
+* Added a new API for closing the active Helpshift session which now accepts a completion handler. For more details, see [here](/unity/support-tools-ios#closeHelpshiftSupportSession).
+* Added a configuration option, IssueMinimumDescriptionLength for setting the minimum number of characters required, before you can send a message in conversational experience. For more details, see [the documentation](/unity/sdk-configuration-ios#issue-description-minimum-length)
+* From this release, Helpshift SDK will work for users on iOS 10,11 and 12. Here's how you could continue using Helpshift for your iOS 9 users. [View](https://support.helpshift.com/kb/article/can-i-install-an-older-version-of-the-helpshift-sdk/)
+* Fixed a bug where tapping on attachment file in chat screen would crash the application if supportedFileFormats was set empty.
+* Fixed a bug where the conversation wasn't closed if the user clicked on NO in the resolution question and exited the chat screen in some cases.
+* Fixed a rare crash occurring due to resource deadlock during SDK initialization.
+* Fixed a bug where deep links which opened FAQ screens in Agent replies failed to open in the app.
+* Fixed a bug in the checkIfConversationActive API. If the conversation resolution question is off, this API would incorrectly return true until the chat screen is opened.
+* Fixed a bug where blank screen was sometimes shown if conversation creation failed.
+* Fixed a rare bug in the Form based issue filing experience in which the user was able to create multiple open conversations.
+* Fixed a crash that occurred due to nil device ID returned by iOS APIs. Stack trace of the crash :
+* Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: [__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[0] [HsCampaignsInboxSyncController getRequestData]
+* Fixed duplicate symbol linker errors when -ObjC linker flag is on.
+* Fixed a bug where failed analytics events requests were never retried.
+* Fixed a bug where close button was missing from nested dynamic form screens.
+* Fixed a bug where user's name was visible as author for "What else can we help you with?" agent message.
+* Fixed a bug, where a user could attach a screenshot twice by quickly tapping the Send button in the Preview screen multiple times.
+* If there are no FAQs present in the SDK, FAQ search bar is disabled.
+* Fixed a bug where agent nickname showed up as (null) on the SDK chat screen if it wasn't set on the admin dashboard.
+* Fixed a bug where loading older messages would fail under an edge case.
+* Fixed a UI issue where calling UIAppearance proxy API to invoke setContentInsetAdjustmentBehavior from host app was affecting some of SDK's scroll views.
+* Fixed a bug where, under rare circumstances, retrying failed bot message could lead to user getting stuck on the chat screen with infinitely loading Typing Awareness Indicator.
+* Fixed a rare crash that occurred when the app was brought to foreground.
+* Deprecated the HsAddFaqsToDeviceSearchOnInstall enum value from the addFaqsToDeviceSearch option.
+
+**Android**
+
+* Updated to Android SDK version 7.5.0. [View](/android/release-notes#v750)
+* Added a configuration option, hs__issue_description_min_chars for setting the minimum number of characters required before you can send a message in conversational experience. For more details, [refer here](/unity/sdk-configuration-android#minimum-issue-desc-length).
+* In debug mode, public APIs in Support, Campaigns and Core would log an error if the API is called before Core#install API.
+* Removed in-built dex support. Check out the [migration guide](/unity/upgrade-4x-android/).
+* Removed in-built GCM push notification support. Check out the [migration guide](/unity/upgrade-4x-android/).
+* Fixed a crash which occurs when isConversationActive API was called when the conversation is resolved and the user rejected the conversation resolution question.
+* Prevented a crash due to Android OS 8.0 bug when using the screenOrientation configuration flag in the Install call.
+* Fixed a bug where, in some network edge cases, SDK fails to download an image.
+* Fixed a bug where the user could reply to a previously assigned bot in the conversation.
+* Fixed a bug where in some network edge cases, the user can reply to a conversation while waiting for the next bot message.
+* Fixed a bug where the "Message Deleted" message text was getting clipped off from the right when using a custom font.
+* Fixed a bug where sometimes other messages were shown incorrectly in italics, if a message was redacted.
+* Fixed a bug where the notificationSound configuration flag in the Install call wouldn't work correctly on Android OS 7.0 & above.
+* Fixed a bug, where in some rare scenarios, agent messages were not received by the SDK.
+* Fixed a bug, where in some rare scenarios, a user could not reply to a conversation if custom bot was assigned to it.
+* Fixed a bug, where in some scenarios, conversations weren't closed when the user rejected the resolution question and closed the conversation screen.
+* Fixed a bug, where sometimes, the getNotificationCount API would incorrectly return -1 when it should be 0.
+* Fixed a bug where the getNotificationCount API would incorrectly return 0 if Conversation History was enabled and conversation was resolved/rejected.
+* Fixed a bug where the isConversationActive API would incorrectly return true until the chat screen is opened if config for conversation resolution question is disabled.
+* Fixed a rare bug in the Form based issue filing experience in which the user was able to create multiple open conversations.
+* Fixed some memory leaks caused by launching of Conversation and FAQ UI.
+* Fixed a bug where the hyperlinks in CJK language messages were not showing correctly if the message text contained full-width parentheses.
+* Fixed a bug where an extra comma along side the date was displayed on the chat screen if agent name was empty.
+
+## v4.1.0
+
+_October 22, 2018_
+
+** Release Notes: **
+
+** Common Updates **
+
+* Introduced support for [Custom Bots](https://support.helpshift.com/kb/article
+/what-are-custom-bots-and-how-do-i-use-them).
+* Introduced functionality for end users to view their past conversations. This can be managed via an Admin toggle available in the Dashboard on the App settings > In-app SDK configuration page. Review Review [this FAQ](https://support.helpshift.com/kb/article/how-do-i-allow-my-end-users-to-see-past-conversations) to get started. to get started. 
+* Introduced functionality for Admins to prevent users from being able to attach files in conversations. This can be managed via an Admin toggle available in the Dashboard on the app settings > the In-app SDK configuration page. 
+* Introduced functionality for end users to be able to tap on an attachment that they sent in order to view the image.
+* Added Campaigns delegate callbacks for tracking when a Helpshift campaigns session begins and when a session ends. Refer here (/unity/campaigns-android#helpshift-campaigns-delegate)
+* Fixed a bug where Form based Issue filing was not considered the default until the app configuration was received.
+
+**iOS**
+
+* Added iOS 12 support.
+* Updated to iOS SDK version v7.3.0 [View](/ios/release-notes#730)
+* Added new customization keys:  Details are available [here](/unity/design-ios#attributes-footers)
+    * Selectable Option Text Color: The color of the text in option pills of the QuickSearch Bot or skip button.
+    * Selectable Option Background Color: The background color of the option pills of the QuickSearch Bot or skip button.
+    * Selectable Option Border Color: The border color of the option pills of the QuickSearch Bot or skip button.
+    * Field Background color: The background color of the reply field.
+    * Field border color: The border color of the reply field.
+* Removed the selectable option color customization key. Please use the latest plist with the updated keys if you plan to customize the Helpshift UI.
+* Fixed a bug where Custom Bot options were only partially rendered in the chat screen.
+* Fixed a bug where the new conversation button was shown along with the reply box.
+* Fixed a bug where the conversation screen was not scrolling to the bottom when the option pills were rendered.
+* Fixed a bug where the conversation would be closed when the chat screen was partially slid from the left.
+* Fixed a bug where the greeting message text was appended whenever the chat screen was partially slid from the left.
+* Fixed a bug where the app would crash when the chat screen was partially slid from the left after the user had tapped on the new conversation button.
+* Fixed a bug where some Custom Bots pills were not rendered on migration.
+* Fixed a bug where the reply box was not shown when a New Issue Automation was enabled with Custom Bots and an action set to resolve the Issue.
+* Fixed a bug where the new conversation button was not shown after the user had selected one of the options offered by QuickSearch Bot.
+* Fixed a bug where the app would crash after the chat screen was scrolled while the user was in the process of selecting a Custom Bot option pill.
+* Fixed a bug where Admin attachments were not displayed in the chat screen when a screenshot request was sent with an attachment.
+* Fixed a bug where the app would crash after the user had tapped on the new conversation button when conversations history and a greeting message were both disabled.
+* Improved the alignment of the pill options and the skip button.
+* Fixed a bug where the QuickSearch Bot option pills were still visible when they weren't supposed to be in some edge cases.
+* Fixed a bug where the user attachment button was not showing in the chat screen after a user had rejected the resolution question.
+* Fixed bug where the new conversation button would jump up when the orientation was changed from landscape to portrait.
+* Fixed an edge case bug where, if the end user sent an image attachment at the same time that the Agent rejected the Issue, the Issue would* remain open on the end user side.
+* Fixed a crash that would occur on 32 bit devices when the user selected a date in response to a Custom Bot.
+* Fixed a crash that would occur when accessing a dictionary in a multithreaded environment:
+    * Stack trace: [__NSDictionaryM setObject:forKey:] 
+                            [HsIOSNetworkRequestDAO storeEtag:forRoute:]
+* Fixed a bug where the system kept the form-based Issue filing experience as the default if the Conversational Filing configuration from the  Dashboard was not known to the SDK yet.
+* Fixed a bug where the SDK was incorrectly reporting the build number as the application version while filing the Issue.
+* Fixed a bug where image attachments sent by an end user were not re-fetched after they had logged out and logged back in.
+* Fixed a bug where image drafts were lost in the form-based Issue filing experience when the user visited suggested FAQs.
+* Fixed a bug where image attachments sent by the end user were uploaded twice when network timeout errors occurred.
+* Fixed a bug where the SDK was not throwing the InstallException in cases where wrong install credentials were provided.
+* Fixed a bug where the name field was not being updated when the same user logged in with a different name.
+* Fixed a bug where the dark theme was incorrectly displayed on iPhoneX devices in the FAQ detail screen bottom view.
+* Fixed a bug where the status bar color property was not reflected correctly the first time that the screen was launched.
+* Fixed a bug where the send button image theme could not be edited.
+* Fixed a bug where the SDK was not considering the current push permission status with regards to starting and stopping the poller.
+* Fixed a bug where FAQ search results were not being highlighted for CJK languages.
+* Fixed a bug where pending notifications for a closed Issue were taking the user to the chat screen of the closed Issue even after the user had already created a new Issue.
+* Fixed a crash that would occur occasionally while retrying the failed network requests:
+                          Stacktrace:   objc_class::demangledName(bool) 
+                                               NSStringFromClass
+                                               +[HSConstants queueNameForClass:] 
+* Fixed a crash in database operations:
+                        Stacktrace: __hs_db_worker_queue
+                                           +[HsDbUtil pathForDatabaseName:]
+                                           +[HsDbUtil openDb:] + 4342041624
+* Fixed a bug where not all of the options in an options list submitted by Custom Bot would appear the first time if the app was in landscape mode. Selecting an option in this partially rendered list would crash the application.
+
+
+**Android**
+
+* Updated to Android SDK version: v7.3.0
+* Introduced support for Android P.
+* Fix a crash happening when trying to send metadata in a Helpshift FAQs or conversation API.
+* Fixed a bug where the Campaigns poller was not stopped when the app is in the background.
+* Fixed a bug where a duplicate attachment was sent again if the user turned off the internet while sending was in progress.
+* Fixed a bug where the name field was not updated if the same user logged in again with a different name.
+* Fixed a bug where multiple taps on a button would open up multiple FAQ screens.
+* Fixed an edge case bug where the typing indicator was shown indefinitely during network connectivity problems.
+* Fixed an edge case bug where, if the end user sent an image attachment at the same time that the Agent rejected the Issue, the Issue would remain open on the end user side.
+* Fixed a bug where MetadataCallable was being called twice whenever an Issue was created.
+* Fixed a bug where the typing indicator would show infinitely and the user was unable to send new messages on the chat screen. 
+* Fixed an ANR error which would occur sometimes when the Campaigns' addProperty API was called after the login API. 
+* Fixed a NullPointerException crash that would occur when the user tried to access the Android System Services. 
+* Fixed an edge case where a NullPointerException crash would occur when an end user tried to exit the chat screen while a view animation was running. 
+* Fixed a bug where the date header view would show up multiple times in the chat screen when the device was in daylight savings mode.
+* Fixed an edge case bug where the typing indicator would not show when a Bot was running.
+* Fixed a bug where the search icon would be missing on the FAQ screen if the "Don't keep activities" developer option was on.
+* Fixed a bug where [enableTypingIndicator](/unity/sdk-configuration-android#enableTypingIndicator) config was not working when starting Conversation screen with *HelpshiftSdk.showConversation(configDictionary)* api.
+
+
+## v4.0.1
+
+_July 17, 2018_
+
+** Release Notes: **
+
+** Android **
+
+* Fixed an edge case crash that would occur due to ConcurrentModificationException when initializing the Helpshift SDK.
+* Fixed a crash that would occur on receiving a push notification when application is not running.
+
+
+## v4.0.0
+
+_May 24, 2018_
+
+** Release Notes: **
+
+** Common Updates **
+
+* Applications are now required to build with Unity 5.5 or above.
+* Introduced new updates to the in-app messaging experience. Here's our [guide](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/) on how to onboard to the new experience.
+* Introduced a new and enhanced [Login API](/unity/users-android#logging-in-users) for name, email, user identifier for your end users.
+* Introduced the ability to use the 'Email' field as a means of identifying users, so that email addresses don't have to be passed to the 'UserID' field.
+* Introduced 'userauthtoken', which is an HMAC digest used to ensure that the requests are coming from an authentic source (and not a malicious 3rd party). Refer [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/).
+* Introduced [QuickSearch Bot](https://support.helpshift.com/kb/article/what-is-quicksearch-bot-and-how-does-it-work/) and [Identity Bot](https://support.helpshift.com/kb/article/what-is-the-identity-bot-and-how-does-it-work/) for in-app messaging SDKs.
+* Deprecated the `setNameAndEmail()`, `setUserIdentifier()` and the existing `login()` APIs. Please use the new Login API. [Link](/unity/users-android#logging-in-users)
+* Deprecated the configurations `conversationPrefillText`, `requireEmail`, `hideNameAndEmail`, `goToConversationAfterContactUs`, `showSearchOnNewConversation`, `enableTypingIndicator` along with the Form-based Issue filing experience. All the details are mentioned [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+* Changed the default value of `showConversationResolutionQuestion` to false and made it customizable from the app settings Dashboard.
+* Fixed cases where multiple Issues can be created or duplicate messages can be sent from the SDK in case of client network errors.
+
+** iOS**
+
+*   Updated to iOS SDK version: v7.0.1
+*   Fixed a bug where automatic retry of network requests was not working in case of failures.
+*   Fixed a bug where FAQs did not load for some users upgrading to 7.0.0.
+*   Fixed a crash in case a user replies to a Rejected conversation.
+*   Fixed a rare bug where user might get stuck in pre-issue state.
+*   Fixed a bug where 'didReceiveInAppNotification' delegate was not called in some cases.
+*   Fixed a bug where user would see a blank screen when calling showConversation API.
+*   Fixed CFBundleExecutable key issue in bundles.
+*   Fixed a bug where pre-issue might be reset in case of app reinstall.
+*   Fixed a bug where in some cases badge count did not update on FAQ screens.
+*   Fixed cases where multiple Issues can be created or duplicate messages can be sent from the SDK in case of client network errors.
+*   Fixed a bug where FAQ search keywords specified on the Dashboard were not picked up by the SDK if they contained capital letters.
+*   Fixed a bug where users wouldn't receive push notifications if the push token syncing failed.
+*   Fixed a bug where sometimes the SDK would keep making network requests if the host app is executing a background operation.
+*   Fixed a bug where, on the Issue filing screen, a deleted description draft would reappear after attaching the screenshot.
+*   Fixed a bug where the 'Contact Us' button was not visible if the FAQ or Section title was too large.
+*   Fixed a bug where the bottom half of the in-app notification banner was not tappable on an iPhone X.
+*   Fixed a bug where the background of the table view when presenting FAQ search results was not styled properly in Dark theme.
+*   Fixed a bug where sometimes a chat screen will launch automatically when multiple in-app notifications were received at the same time.
+*   Fixed a bug where sometime users were able to give a CSAT rating after they had reject the resolution request.
+*   Fixed a bug where the users' device was shown as an iPhone 7 instead of an iPhone 7 plus.
+*   Fixed a bug where user engagement analytics were not properly captured for Campaigns push notifications.
+*   Fixed a bug where rich push notification actions were not working in Campaigns push notifications if the UNNotification framework was used.
+*   Fixed a bug where the badge count for unread messages on the FAQ screen was incorrect if the Issue was resolved and the app was killed and re-opened.
+*   Fixed an issue where the SDK was throwing and catching exceptions while the device is offline, making the offline debugging harder for developers.
+*   Fixed a crash in database operations.
+*   Stacktrace: thread #4, queue = 'com.helpshift.HSIssuesPersistentStorage', stop reason = EXC_BAD_ACCESS (code=1, address=0x74786574)
+*   Fixed a crash which would sometime occur when sanitizing the user name string.
+*   Stacktrace:  NSInvalidArgumentException
+    *   [HSProfile initWithServerIdentifier:identifier:name:email:userId:deviceId:andLastSeenAt:isSynced:]
+*   Fixed a crash which would occur when syncing device data for Campaigns:
+    *   Stacktrace: NSInvalidArgumentException
+                [HsDeviceController makeHSRequestForProperties:]
+				
+** Android **
+
+* Enhanced UI and support for voiceover.
+* Fixed multiple SQLite database access errors by optimizing our data reads and writes.
+* Fixed a NullPointerException when clicked on “Done" from a FAQ from search suggestions and if conversationPrefillText was also set.
+* Fixed an edge case where messages were not being sent in Issues from the SDK.
+* Fixed a bug where the badge count for unread messages on the FAQ screen was incorrect if the Issue was resolved and the app was killed & re-opened.
+* Fixed a bug where image attachment does not work when the app doesn’t have READ_EXTERNAL_STORAGE permission and when the user tries attaching an image and clicks on the 'cancel' button.
+* Fixed a rare bug where the user is stuck on a conversation due to race condition in network calls.
+* `customContactUsFlows` is now an unsupported config for the showConversation() & getConversationFragment() APIs.
+
+## v3.0.0
+
+_December 6, 2017_
+
+
+** Release Notes: **
+
+**Common Updates **
+
+* Applications are now required to build with Unity 5.3 or above. If you have a project with Unity version prior to 5.3, you could use the build mentioned [here](https://support.helpshift.com/kb/article/can-i-install-an-older-version-of-the-helpshift-sdk#unity).
+
+
+** iOS **
+
+*   Updated to iOS SDK version: v6.4.0
+*   Added support for iPhone X.
+*   Applications are now required to build with Xcode 9 so that layouts work correctly across all supported iOS versions. If you have a project with Unity version prior to 5.3 or Xcode 8, you could use the build mentioned [here](https://support.helpshift.com/kb/article/can-i-install-an-older-version-of-the-helpshift-sdk#unity).
+*   Added support for UNNotifications framework for push notifications. [View](/unity/notifications-ios/)
+*   Improved the accessibility behavior for the following UI elements:
+    *   Resolution Request view
+    *   "Start a new conversation" button
+    *   Customer Satisfaction Survey flow
+    *   Failed message indicator view
+    *   "Screenshot Request" message
+    *   "Review Request" message
+    *   Automation reply message
+    *   Attachment message
+*   Improved Italian translation for "Email (optional)" string.
+*   Fixed a crash in the Campaigns login API .
+    *   Stack trace: [HsSwitchUserController getRequestData] setObjectForKey - object cannot be nil (key: uid)
+*   Fixed a crash in the SDK migration flow.
+    *   Stack trace: setObjectForKey: object cannot be nil (key: profile-id)
+*   Fixed a crash in the Campaigns property syncing.
+    *   Stack trace: Exception: NSInvalidArgumentException in -[HsUserModel setSyncStatus:forProperties:]
+*   Fixed a crash which would occur when the showDynamicFormOnViewController:withTitle:andFlows:withConfig: API was called.
+*   Fixed a bug where the chat screen would automatically open if the control center or notification tray was open at the time of push notification arrival.
+*   Fixed an edge case bug where users would see a blank chat screen if they filed a new conversation while the SDK was migrating to a new SDK version.
+*   Fixed a bug where the image attachment would flicker after being sent successfully.
+*   Fixed a bug where the typing indicator animation was not smooth on iOS 11 devices.
+*   Fixed a bug where the "Contact Us" button in the search footer was not localized for VO users.
+*   Fixed a bug where focusing on the tableview in VO mode would shift the tableview down and show some empty space on top.
+*   Fixed a bug where Bar button font name was not getting applied from the HelpshiftConfigDark.plist.
+*   Fixed a bug where font size in Table Section Header was not getting applied.
+
+## v2.9.1
+
+_November 28, 2017_
+
+
+** Release Notes: **
+
+**Common Updates **
+
+* Fixed a bug where providing no config for [supportFileFormats](/unity/delegates-android#display-attachment) in install would cause a crash when attachment with unknown file format is opened.
+
+** Android **
+
+* Updated to Android SDK version: v6.4.0
+* Fixed some variants of a database SQLiteException occurring majorly on Android 4.x devices.
+* Fixed a bug where the dynamic form flow wouldn’t launch from a deep link on the FAQ screen.
+* Fixed a bug where an attachment sent from the Agent wasn’t visible if it was attached with a Request Screenshot message.
+* Fixed a bug where the resource integer value for `hs__issue_description_min_chars` did not change upon changing the language.
+
+** iOS **
+
+* Updated to iOS SDK version: v6.3.1
+* Fixed a UX issue for apps built with Xcode8 or prior and running on iOS11 where the beginning of the tableviews was shifted down.
+* Fixed a bug where CSAT view was overlapping with navigation bar when status bar is hidden.
+* Fixed a bug where custom issue fields were not getting sent if HSCUSTOMISSUEFIELDKEY key was used.
+
+## v2.9.0
+
+_October 27, 2017_
+
+
+** Release Notes: **
+
+**Common Updates **
+
+* Added support for sending "Custom Issue Fields" when filing a new conversation. [Android](/unity/tracking-android#custom-issue-fields). [iOS](/unity/tracking-ios#custom-issue-fields).
+* Added new Campaigns addProperty() API to support 64 bit integer values. [Feature is redacted].
+* Deprecated the following APIs. [Feature is redacted].
+	* int GetCountOfUnreadMessages() in HelpshiftCampaigns class
+
+** Android **
+
+* Updated to Android SDK version: v6.3.0
+* Storage permission for user attachments is now optional. For more details on storage permission usage, [click here](/unity/sdk-configuration-android#app-permissions).
+* Add support for notification channels introduced in Android Oreo. [Click here](/unity/sdk-configuration-android#notificationChannels)
+* Made improvements to the Campaign images downloading mechanism saving data for the user.
+* Added two new customizable color attributes for tab text on FAQ sections pager screen.
+* Fixed a crash that would occur in some specific devices with missing internet permission error.
+* Fixed some ExceptionInInitializerError exceptions occurring when running in a multi-process environment.
+* Fixed a crash that would occur with support library v26 when navigating to a deep link from an FAQ and pressing back.
+* Fixed a crash where downloading attachments would result in NullPointerException.
+* Fixed a crash caused due to Package Manager runtime errors.
+* Fixed a crash that would occur when clicking on push notification after app's data is cleared.
+* Fixed a rare NullPointerException crash caused when sending a text message.
+* Fixed a rare crash that would occur when starting the attachment picking flow in some specific devices.
+* Fixed a rare crash that would occur while trying to restore a backup in a re-install case.
+* Fixed a bug where title of the [dynamic form](/unity/support-tools-android#dynamic-forms) was not displayed.
+* Fixed a bug where the button to enter full screen mode in embedded videos wasn’t visible on the FAQ screen.
+* Fixed a bug where the user could reopen an Issue in cases where the conversation screen was opened from a notification within gallery.
+* Fixed a bug where Agent messages stopped appearing on the conversation screen in an edge case.
+* Fixed a bug where on passing null or empty values in the [setNameAndEmail()](/unity/tracking-android#name-and-email) API didn’t clear the name & email fields on the Issue filing screen if a user draft was present.
+* Fixed a bug where the clicks on the attachment draft of the Issue filing screen were not getting disabled while Issue creation was in-progress.
+* Fixed a bug where two conversation screens could open up when launching from a notification in a case with support library v26.
+* Fixed a bug where the attachment icon was incorrectly visible on the information screen in an edge case.
+* Fixed a bug where passing null as the failure callback in the getNotificationCount API was leading to some errors.
+* Fixed a bug where passing the enableContactUs flag as Never, enabling [showSearchOnNewConversation](/unity/sdk-configuration-android#showSearchOnNewConversation) flag, and using [showConversation()](/unity/support-tools-android#conversation-view) API resulted in the Send Anyway button being invisible.
+* Fixed a bug where embedded videos in FAQs would not fit on screen.
+* Fixed a bug where a Campaign notification with an open conversation action would do nothing if the user is on the Helpshift Support screen.
+* Fixed a bug where the conversation resolution question was not shown if the user was on the conversation info screen when the message was received.
+* Fixed a bug where subsequent [conversationPrefillText](/unity/sdk-configuration-android#conversationPrefillText) updates were ignored after setting it once.
+* Fixed a bug where updating the app and then using the [showConversation()](/unity/support-tools-android#conversation-view) API would show the user's previous conversations (open or closed) instead of showing new conversation screen.
+* Fixed a bug where clicking NO in the conversation resolution question would not show the new conversation button sometimes.
+* Fixed a bug where [sdkSDKLanguage()](/unity/i18n-android/#language-change-programatically) was ineffective on Android Oreo.
+* Fixed a bug where the attachment icon in ActionBar would not disappear if 'Do not keep activities' in Android's developer settings was enabled.
+* Fixed an edge case bug where the user's attachment showed up as blank on the conversation screen if the user revoked storage permission while the attachment is uploading.
+
+** iOS **
+
+* Updated to iOS SDK version : v6.3.0
+* Helpshift now supports iOS 11
+* Added a new delegate to provide unread campaign message count. [Feature is redacted]
+* SDK now requires -ObjC flag to be present in the "Other Linker Flags" under Build Settings section.
+* Made improvements to the Campaign images downloading mechanism.
+* Changed the way licucore lib is added to the project.
+* Fixed config JSON files getting added even when GUI inspector is not used.
+* Fixed an intermittent crash on conversation filing screen when network is unavailable.
+* Fixed a bug where links were not working in Screenshot Request messages.
+* Fixed a UI issue where calling UIAppearance proxy API to invoke setContentInsetAdjustmentBehavior from host app was affecting SDK's scroll views.
+* Fixed a bug where Application state was being read from background thread instead of main thread.
+* Fixed an accessibility bug where VO would navigate to "Describe your problem" text view and its placeholder in the text input area.
+* Fixed a rare case where failing to read metadata of a message from disk could cause the app to crash.
+* Improved accessibility VO label for "Send" button on Conversation Filing Screen.
+* Improved handling of the rare case where Conversation DB could go in an undesirable state.
+* Deprecated ShowAlertToRateAppWithURL() API. An explanation of why we made this change can be found [here](/unity/reviews-and-feedback-ios#review-reminder-changes).
+* Automatic review reminder requests sent from the backend will now be ignored.
+* Updated the review action in Campaigns to have it redirect to the app store page of the app.
+* Fixed some code comments.
+* Fixed a bug where the color set using "Rating star color" was not being applied to stars on feedback screen.
+* Fixed Hindi translation for "You found this helpful" string.
+* Fixed a rare crash in signature generation while making a network request.
+* Fixed a bug where the retry button for text messages would not work even after reconnecting to the network.
+
+
+## v2.8.1
+
+_September 12, 2017_
+
+
+** Release Notes: **
+
+** Android **
+
+* Fixed a crash that would occur when `requestUnreadMessagesCount` API is called immediately after `install` API.
+
+
+## v2.8.0
+
+_September 06, 2017_
+
+
+** Release Notes: **
+
+** Android **
+
+* Updated to Android SDK version : v6.1.0
+* Added support for Android O developer preview 4
+* Added flag for showing a typing indicator on Conversation screen [View](/unity/sdk-configuration-android#enableTypingIndicator)
+* Added a new High Contrast theme [View](/unity/design-android#skinning)
+* Added new key for customizing the typing indicator color [View](/unity/design-android#styleable-attributes)
+* Added an API to asynchronously check if an active Conversation exists [View](/unity/tracking-android#isConversationActive)
+* Added an API to asynchronously request the unread message count [View](/unity/notifications-android#showing-notification-count)
+* Added the following methods to the Helpshift delegate interface: [View](/unity/delegates-android/)
+    *    (void) didCheckIfConversationActive
+    *    (void) didReceiveUnreadMessagesCount
+* Setting enableFullPrivacy API configuration to true will now hide name and email address fields.
+* Updated design for Conversation screen [View](/unity/design-android/)
+* Fixed a crash that would occur when using Android support library v25.4.0
+* Fixed a crash that would occur when generating a signature for network requests
+* Fixed a crash that would occur when attaching a screenshot and disabling storage permission from the background
+* Fixed a bug where search results on new Conversations did not clear if the end user accepted the FAQ
+* Fixed a bug where the FAQ search would not work after screen rotation on Android support library v25.4.0
+* Fixed a bug where image attachment did not work with Android support library v25.4.0
+* Fixed a bug where the error snackbar view didn’t get hidden in some cases after pressing back from a screen
+* Fixed an edge case where the user might see multiple chat screens after clicking the notification
+* Fixed a bug where the image was not getting cleared on tap of the Remove button in preview screen
+* Fixed an edge case where the previous image draft was not getting cleared on enabling full privacy
+* Fixed an edge case where the image draft was not getting cleared if the user left the new Conversation screen while the Issue was getting filed
+* Fixed a bug where the message timestamp in the chat screen was not updated upon a change in the SDK language
+* Fixed a bug where the image was always shown in sending state if the app was killed during image upload
+* Fixed some crashes due to SQLiteDatabase errors
+* Fixed I/O streams leak in network call in some cases
+* Fixed crash on using single quotes in login identifier
+* Fixed RejectedExecutionException occurring in some cases
+* Deprecated the following APIs within the HelpshiftSupport class:
+    *    IsConversationActive
+    *    GetNotificationCount
+* Deprecated the method didReceiveNotificationCount in Helpshift delegate interface
+
+** iOS **
+
+* Updated to iOS SDK version : v6.1.0
+* Added support for iOS-11 beta-5
+* Added support to show an animated indication on the Conversation screen when an Agent is replying to the Conversation [View](/unity/sdk-configuration-ios#enableTypingIndicator)
+* Added a new High Contrast theme  [View](/unity/design-ios#skinning)
+* Added two new keys for customizing the text color of the user chat bubble and the Agent chat bubble [View](/unity/design-ios#styleable-attributes)
+* Added a new key for customizing the typing indicator color.  [View](/unity/design-ios#attributes-global)
+* Added new keys for customizing the Secondary text color, Placeholder text color, and Timestamp text color  [View](/unity/design-ios#attributes-global)
+* Added an API to asynchronously check if an active Conversation exists [View](/unity/tracking-ios#isConversationActive)
+* Added an API to asynchronously request unread message count [View](/unity/notifications-ios#showing-notification-count)
+* Added the following methods to the HelpshiftSupportDelegate protocol:
+	*    (void) didCheckIfConversationActive:(BOOL)isActive
+    *    (void) didReceiveUnreadMessagesCount:(NSInteger)count
+* Setting enableFullPrivacy API configuration to true will now hide the name and email address fields  [View](/unity/sdk-configuration-ios#enableFullPrivacy)
+* Fixed a bug where the SDK would crash when the user pressed the back button after attaching a second screenshot while the first screenshot upload was still in-progress
+* Fixed a bug where the SDK would crash if the Issue was filed with a corrupt image
+* Fixed a bug where the search title text was not highlighted in search results
+* Fixed a bug where the FAQ footer text got clipped if the font size was increased in the device's accessibility settings
+* Fixed a bug where follow-up was successful if sent while the user was typing
+* Fixed a UI glitch where extra padding was added to the table view search controller if the translucency of the navigation bar was disabled
+* Fixed a bug where a crash would occur when multi-character UTF-16 encoded characters were found in the FAQ body of search results
+* Fixed a bug where the Contact Us button in the FAQ search results list was not accessible via the accessibility identifier
+* Fixed a bug where the badge count was not updated when the Issue was resolved
+* Fixed a bug where notification count APIs were returning incorrect values
+* Fixed a bug where the app was not suspended immediately after being backgrounded
+* Fixed a bug where a crash would occur on iOS 11 beta 3 while attaching a screenshot in a new Conversation
+* Fixed a bug where a crash would occur in rare cases while creating a new Issue
+* Fixed a rare bug where a crash would occur during syncing sessions on iOS 10
+* Fixed a rare crash on app launch
+* Fixed a bug where blank cells appeared upon searching for FAQs in the FAQ section view
+* Fixed a bug on iOS 11-beta where the text view to enter CSAT review text was not visible in the review rating screen
+* Fixed a bug where the compilation would fail if the Socket Rocket library was integrated with the app through source code
+* Fixed a bug where tags were not added to a new Issue if the tags were added without metadata
+* Fixed a bug where "Bold font name" config was not applied to FAQ title
+* Fixed a bug where the applications that use Google Cast SDK would crash while filing a new Conversation
+* Fixed the warnings reported by Xcode 9 where some of the UIKit APIs were called from a secondary thread
+* Fixed a bug where database connections were not closed before removing the database during migration
+* Fixed a bug on iOS 11 where the back button title would not appear in single FAQ and Conversation screens
+* Deprecated the following APIs within the HelpshiftSupport class: [view](/unity/upgrade-2.7.0-ios/)
+	*     (BOOL) isConversationActive
+	*     (NSInteger) getNotificationCountFromRemote:(BOOL)isRemote
+* Deprecated the method (void) didReceiveNotificationCount:(NSInteger)count in HelphisftSupportMetadata protocol [add link]
+* Improved syncing server configurations
+* Improved handling for failed network requests
+
+## v2.7.0
+
+_April 26, 2017_
+
+** Release Notes: **
+
+** Common Updates **
+
+* Added Inbox Data API's support. [Feature is redacted].
+
+
+** Android **
+
+* Removed `Assets/Plugin/Android/AndroidManifest.xml` from the SDK package.
+* Added support for programmatically setting screen orientation for the SDK. [View](/unity/sdk-configuration-android#screenOrientation)
+* Users can now view the Issue ID for an ongoing Issue by navigating to the Issue Information screen by tapping the icon on the top right of the Conversation screen.
+* SDK now supports logging to console. [View](/unity/sdk-configuration-android#enableLogging)
+* Added support of Gradle build replacable ${applicationId} placeholder in the helpshift/AndroidManifest.xml file
+* Added support for customizing FAQ list item height.
+* Messages that fail to deliver can now be tapped to retry.
+* Introduced an API to check if a Conversation is active. [View](/unity/tracking-android#isConversationActive)
+* Added a new delegate to notify when the Conversation has ended. [View](/unity/delegates-android#delegate-conversation-ended)
+* Made image attachment upload functionality more network-efficient.
+* Enabled TLS 1.2 as the default protocol for transferring data over internet for Android API levels 16 (4.1.x) to 19 (4.4.x).
+* Screenshot messages in Conversations now have timestamps.
+* Set max line limit to 3 for FAQ and sections list items.
+* The default value for enableInboxPolling is now true. [View](/unity/sdk-configuration-android#enableInboxPolling)
+* Fixed a bug where Issue resolve requests could be bypassed because of failed messages.
+* Fixed a bug where 'Suggestions' title in Toolbar for FAQ search results for new Conversations was not shown.
+* Fixed a crash in the image attachment flow when "Don't keep activities" is enabled.
+* Fixed an edge-case bug where duplicate Issues could be filed by the user.
+* Fixed a bug where strings in the FAQ view were not being translated on Android N devices.
+* Fixed minor memory leaks.
+* Fixed a bug where sometimes the breadcrumbs and Issue logs were not sent to the server.
+* Fixed a bug where the cursor for a multi-line EditText was positioned incorrectly.
+* Fixed a bug with filing new Issues when Proguard is enabled.
+* Fixed a bug where Conversations with resolution questions delivered could be rejected multiple times.
+* Fixed a bug where the toolbar is hidden at times on the Conversation screen when the keyboard is visible.
+* Fixed a bug where the default value for enableDefaultLanguage was set to false instead of true.
+* Fixed an edge case that caused Agent messages to sometimes not load for users.
+* Fixed a bug where on some devices, "Was this question Helpful?" footer was shown after tapping on "Yes/No".
+* Improved handling of random database crashes.
+* Fixed an NPE in Campaigns for certain network failures.
+* Fixed a bug where multiple instances of Campaigns Inbox UI were being created.
+* Fixed a bug where push notifications for a Campaign were sometimes shown more than once.
+
+** iOS **
+
+* Added new SDK configuration for showing conversation info screen. [View](/unity/sdk-configuration-ios#showConversationInfoScreen)
+* Added new SDK configuration debug logging in the SDK for solving Issues during integration. [View](/unity/sdk-configuration-ios#enableLogging)
+* Added an API to check if there is an active conversation. [View](/unity/tracking-ios#isConversationActive)
+* Added a delegate method that lets the app know when a Conversation has ended. [View](/unity/delegates-ios#delegate-conversation-ended)
+* Made image attachment upload more network-efficient, also added support for GIF type images.
+* Added validation to guard against malformed FAQ and Section IDs.
+* Users can now view their Issue ID for an ongoing Issue by navigating to the Issue Information Screen by tapping the icon on the top-right of the Conversation screen.
+* Added a configuration in HelpshiftConfig.plist to specify extra vertical padding for table view cells.
+* Added a configuration in HelpshiftConfig.plist to hide the label of the back button while Helpshift session is active.
+* Added a configuration in HelpshiftConfig.plist to specify file name for custom font for FAQ body and custom bold font for FAQ title.
+* Added translations for the screenshot tutorial.
+* Replaced UIWebView implementation with WKWebView to display HTML content of an FAQ.
+* Improvements to voice over support.
+* Fixed a bug where row height was not being calculated correctly for FAQ tables.
+* Fixed a bug where a failed message delivery could be re-sent multiple times.
+* Fixed all memory leaks.
+* Fixed an edge case where in some rare cases an Agent message was not visible to the user.
+* Fixed a bug where a user's keyboard was dismissed after 'report new Issue view controller' is dismissed.
+* Fixed a bug where the FAQ view did not use the system default font.
+* Fixed a bug where chat bubble for landscape images was not on the same aspect ratio.
+* Fixed a UI issue where description text could overlap a button in certain cases.
+* Fixed a UI issue where the Helpshift SDK would hide the status bar even if the app displays it.
+* Fixed an issue with the loading spinner for image downloads being shown indefinitely in cases of no network detection.
+* Added missing device names to the device map dictionary.
+* Fixed bug where in some rare cases, conversation resolution question is displayed when an agent sends a follow up request.
+* Fixed a bug that prevented the Close button from functioning correctly in some cases.
+* Fixed a bug where some alert popups could move to a buggy position on screen in cases when SDK was launched on push notifications. 
+* Fixed a bug in follow up feature where a follow up request from Agent fails in some valid cases.
+* Fixed a bug where customer could reopen a resolved issue by attaching an image.
+* Fixed a bug where some UI elements were not correctly using the theming options.
+* Fixed an issue where user could launch multiple conversation screens by tapping repeatedly on Contact Us buttons. 
+* Fixed a bug where conversation text typed by customer could get deleted in some cases where he attempts to attach an image with it. 
+* Fixed a bug where agent name is not shown for follow up request message.
+* Fixed a bug where a user can accept or reject issue resolution multiple times in some cases.
+* Fixed a case where chat screen was relaunched if the user was previously on chat screen and received a support push notification.
+* Fixed a bug where in some rare cases the “Ok, Attach” button was still visible after user attaches a screenshot.
+
+
+
+## v2.6.1
+
+_Feb 9, 2017_
+
+** Release Notes: **
+
+** iOS **
+
+* Fixed a bug where in rare circumstances FAQs would not load.
+* Updated iOS native SDK to v5.9.3.
+* Fixed a crash when Send Feedback button is tapped on the periodic review reminder alert view.
+* Fixed bug where an empty view controller was shown after quickly tapping the back button twice on the report issue screen or the chat screen.
+* fixed a rare issue where hmac generation would fail while initializing the SDK leading to an app crash.
+
+## v2.6.0
+
+_January 23, 2017_
+
+
+
+** Release Notes: **
+
+** Common Updates **
+
+* Added support for setting expiry time to campaign messages.
+* Improved in-app FAQ search by making it faster and memory efficient.
+* Changed the logic for handling http failures from the helpshift servers.
+* Improved Syncing strategy for campaigns data.
+* Added support for Unity 5.5.
+
+** Android **
+
+* Updated android native SDK to v4.8.1.
+* Improved translations for SDK strings.
+* Improved Helpshift Log API to make it thread safe.
+* Improved SDK start-up time.
+* Reply box in chat screen now can be expanded up to four lines.
+* Added support for large icon in Helpshift notifications.
+* Fixed a bug where search keyword highlighting did not work on some devices.
+* Fixed a crash on Android N devices when opening attachments sent from agent dashboard.
+* Fixed a rare crash which occurred due to null arguments on launching the Helpshift screen.
+* Fixed a rare crash which occurred due to unexpected service wake-up on some devices.
+* Fixed a UI glitch in single question view on tablet devices where an unexpected vertical line was visible to user.
+* Fixed a bug where clicking on campaign notification did not launch the app in some cases.
+* Fixed a bug where videos in FAQs could not play on some devices.
+* Fixed a bug where webviews inside the app were unresponsive in some cases.
+
+** iOS **
+
+
+* Updated iOS native SDK to v5.9.1.
+* Implemented custom logger to support debug logs.
+* Helpshift SDK now supports iOS accessibility features for dynamic type sizes.
+* Fixed a bug where FAQ with search tags were not prioritised correctly in the search results.
+* Improved translations for SDK strings.
+* Helpshift SDK now supports two more Chinese dialects: 'Chinese - Hong Kong' and 'Chinese - Singapore'.
+* Fixed a bug where in-app notifications were received for issue resolution.
+* Fixed a bug where in-app notifications were not supporting orientations of the topmost view controller onto which they were shown.
+* Fixed a bug where in-app notifications were rotating even if the app did not support rotation.
+* Fixed a bug where application version was not retrieved from the main bundle.
+* Fixed a bug where app crashed after attempting to attach a file with no extension.
+* Fixed a bug where an UIAlertView with textfield was presented with the app in the landscape mode, it used to go beneath the onscreen keyboard.
+* Fixed a bug where on entering a very long name into the conversation page, the name starts to overrun the email section before it gets truncated.
+* Fixed a bug where campaigns were fetched after a delay if a campaign was pushed through push notification but and user launches the app manually.
+* Fixed a bug where top level domain of the e-mail address (Issue reporter email) couldn't take more than 4 letters.
+* Fixed a bug where SDK asked for push permissions on behalf of the app even if app is registered for silent push.
+* Fixed a bug where Helpshift SDK used to poll even when push was enabled.
+* Fixed a bug where FAQs were not getting added to Core Spotlight if the configuration is changed from HsAddFaqsToDeviceSearchNever to HsAddFaqsToDeviceSearchOnInstall.
+
+
+## v2.5.0
+
+_October 7, 2016_
+
+
+
+** Release Notes: **
+
+** Common Updates **
+
+* SDK no longer includes the 'carrier name' in metaData if 'enableFullPrivacy' flag is set to true.
+
+** Android **
+
+* Update Android native SDK to v4.7.0
+* Add compatibility for Android Nougat.
+* Add support for custom fonts in SDK.
+* Helpshift SDK now supports two more Chinese dialects: 'Chinese - Hong Kong' and 'Chinese - Singapore'.
+* Improve search algorithm where some results would not show up for important keywords.
+* Improve translations for the message string shown to user when issue is archived.
+* Fix a bug where sometimes clicking on notification would show "new conversation form" instead of the ongoing conversation.
+* Fix a crash in FAQ screen when an image is used as window background in Helpshift theme.
+* Fix intermittent database crash due to KeyValueStorage db locking.
+* Fix a crash in issue reporting with hideNameAndEmail and login api for the following cases :
+    1. Use login api with valid name and empty email. / Use login api with empty name and valid email.
+    2. Set hideNameAndEmail flag to true.
+    3. Click on send button to file an issue, SDK crashes.
+* Fix a crash in SDK with android support library 24 for the following case :
+    1. Integrate Helpshift SDK with support library 24.
+    2. Launch any Helpshift Support screen (Faqs screen, Conversation screen, etc.)
+    3. Rotate the device, SDK crashes.
+
+** iOS **
+
+* Update iOS native SDK to v5.8.0
+* Fix for iOS 10: An issue where the App Rating popup presented by Helpshift could move to an incorrect position.
+* Push campaigns are now registered on first launch.
+* Fix automatically close Helpshift’s campaign UI in case a deeplink action links back to the same app.
+* Fix an issue with Guided Ticket Filing where pressing back button would sometimes take the user to a blank screen.
+* Fix an issue where if an FAQ contains an animated GIF, sometimes the user will get multiple failed messages error.
+* Change the name of campaigns inbox delegate (from notificationDelegate to hsInboxNotificationDelegate) to avoid name conflict with Apple’s private API.
+* Fix an issue where the table row text for a FAQs could be truncated with ‘…’ for some languages.
+* Updated voice over labels on Single FAQ screen.
+* Fix preferred status bar option in single faq is not taken from presenting view controller.
+
+
+## v2.4.0
+
+_September 16, 2016_
+
+** Release Notes: **
+
+* iOS 10 compatibility.
+* Fixed a bug that caused chat screen to go blank in some cases.
+* Fixed a bug that sometimes caused the Helpshift Logo to be visible on conversation screen.
+* Fixed strong reference to presenting view controller is not released when support session is closed.
+* Fix missing debug logs in issue metadata.
+* Add strict validation for HelpshiftCore’s installForApiKey:domainName:appID: API. This API will now throw Install Exception if there are validation issues in the key information.
+* Move the Helpshift’s localization files to HsLocalization.bundle file.
+* Add support for customizing Helpshift themes using a HelpshiftCustomConfig.plist file. For more details, please visit https://developers.helpshift.com/ios/design/
+* Fix resource deadlocks in Campaigns code.
+* Fix warnings in Helpshift header files.
+* Fix a bug where user was able to say Yes/No to resolution request multiples times on SDK upgrade.
+* Support Issue Archival feature which will automatically archive issues which are in Resolved or Rejected state for more than 12 months.
+* Add strict validation for HelpshiftSdk's' install(application, apiKey, domain, appId) API. This API will now throw Install Exception if there are validation issues in the key information.
+* Handle corrupt or unsupported file formats in In-App Campaigns.
+* Handle runtime revocation of storage permission for Campaigns.
+* Improve few string translations for German, Dutch, Chinese, French and Korean languages.
+* Support HTML entities in FAQs search.
+* Fix a bug where FAQ filtering did not work with embeddable fragments.
+* Fix a bug where image attachment orientation was getting changed on some devices.
+* Fix a memory leak in case of device orientation change.
+* Fix a stackoverflow crash caused by campaigns poller.
+* Fix a bug where custom deeplinks in agent's replies were not working on chat screen.
+* Fix a theme issue where "Send" button was not themed correctly.
+* Fix a bug where FAQs UI was not getting updated immediately with new data.
+* Add primitive data types support in custom meta data values.
+* Fix crash on notification click on some older devices caused by dynamic dex loading.
+* Fix the broken feature for custom notification icon and sound.
+
+
+
+## v2.3.2
+
+_June 29, 2016_
+
+* Fix a crash caused by migration from 3.x to 4.5.0 when the application is using Helpshift's Login API.
+* Fix the GetNotificationCount api to wait for queue execution.
+* Add an API for callback to SDK when forcefully quitting the application.
+* Fix the broken GetCountOfUnreadMessages API.
+* Impact Analysis for `2.3.2` remains the same as `2.3.1`.
+
+
+
+## v2.3.1
+
+
+
+_June 3, 2016_
+
+* Fix ClassNotFoundException thrown when notifications are received and the application has been killed.
+* Add API for handling push notification dictionary.
+* Deprecate `handlePushNotification` API which accepts `issue-id`.
+* Impact Analysis for `2.3.1` remains the same as `2.3.0`
+
+---
+
+## 2.3.0
+
+_May 27, 2016_
+
+* Add support for Inbox functionality and rich in-app campaign messages.
+* Added support for dynamic loading of the Helpshift dex file to fix the dex count increase issue.
+* Add config option for supporting `Guided Issue Filing` when user clicks on `Contact Us` from inside the SDK screens.
+* Updated the native iOS SDK to [5.6.0](/ios/release-notes#v560)
+* Updated the native Android SDK to [4.5.0](/android/release-notes#v450))
+
+* [Impact Analysis Android](/unity/impact-analysis-android/)
+* [Impact Analysis iOS](/unity/impact-analysis-ios/)
+
+## v2.2.0-support
+
+_January 15, 2016_
+
+* Fix the missing appcompat lib dependencies.
+* Add support for nested dynamic forms.
+
+
+## v2.1.2-support
+
+_January 7, 2016_
+
+* Fix the name of the `registerDelegates` API for Android plugin.
+* Fix thread leaks in the unity Android plugin.
+* Update iOS SDK to version 5.3.1 to fix the showSingleFaq API.
+
+## v2.1.1-support
+
+_December 21, 2015_
+
+* iOS API version 5.3.0, Android API version 4.2.0
+* Added support for enableContactUs option set to `after_marking_answer_unhelpful`
+* Added support for disabling entry and exit animations for iOS platform.
+
+
+## v1.3.0
+
+_September 29, 2015_
+
+* iOS API version : 4.15.0, Android API version : 3.12.0
+* Added support for display attachment delegate for both android and iOS.
+* Added support for iOS 9.
+* Added a flag for toggling fallback languages in FAQs to english.
+* Added API configuration option for Conversation Resolution Question.
+* Filter FAQs by category tags.
+
+
+## v1.2.0
+
+_August 6, 2015_
+
+* iOS API version : 4.12.1, Android API version : 3.9.1
+* Added integer and double datatype support for custom metadata.
+* Added support for other push notification plugins.
+* Bug fixes.
+
+## v1.1.0
+
+_April 2, 2015_
+
+* Update the example script for Unity 4.6 and above.
+* Compilation fix for non-mobile platforms.
+
+
+## v1.0.1
+
+_April 1, 2015_
+
+* Remove the compilation warning in example script.
+* Bug fixes
+
+## v1.0.0
+
+_March 26, 2015_
+
+* iOS API version : 4.10.2, Android API version : 3.8.0
+* Single unity package for iOS and Android to easy integration.
+* Added GUI component for configuring the Helpshift SDK.
+* Unity 5 compliance.
+* Added an example Unity scene for basic API usage.
+* Combined API for iOS and Android into a single HelpshiftSdk API.
+* Added default push notification handling for Helpshift notifications.
+* Added default handling for Helpshift related Deep links.
+* Bug fixes
+* UI fixes
+
+***

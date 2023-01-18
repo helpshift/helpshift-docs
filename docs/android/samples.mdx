@@ -1,0 +1,75 @@
+---
+sidebar_position: 150
+title: Sample Projects
+description: "Trying out a sample project is the easiest way to get started."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Sample Projects {#sample-projects}
+
+<Intro>
+
+Trying out a sample project is the easiest way to get started.
+
+
+</Intro>
+
+Examples for integrating and using the SDK can be found on
+**[Github](https://github.com/helpshift/helpshift-android-sdk-examples)**.
+
+<div className="compact  text-sm">
+
+
+| | |
+|--|--|
+|[HelpshiftDemo](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/HelpshiftDemo)| show different support screens in your app.|
+|[FCMClient](https://github.com/helpshift/helpshift-android-sdk-examples/tree/master/FCMClient)| implement FCM Push in your app along with helpshift support.|
+|[GcmClient](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/GcmClient)| implement GCM Push (using Google Play Services) in your app along with helpshift support. This is a port of [GcmClient project](https://code.google.com/p/gcm/) from Gradle to Ant build system.|
+|[GCMApp (Deprecated)](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/GCMApp)| implement GCM Push in your app along with helpshift support.|
+|[HSThemeApp](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/HSThemeApp)| show theming capabilities of the helpshift android sdk.|
+|[HelpshiftDemoMaven](https://github.com/helpshift/helpshift-android-sdk-examples/tree/master/HelpshiftDemoMaven)| HelpshiftDemo project using maven instead of Ant|
+|[HelpshiftDemoGradle](https://github.com/helpshift/helpshift-android-sdk-examples/tree/master/HelpshiftDemoGradle)| HelpshiftDemo project using Gradle instead of Ant|
+
+</div>
+
+## Trying out HelpshiftDemo {#support-app}
+
+1. In `HelpshiftDemoActivity.java` initialize Helpshift with your unique `API_KEY`, `DOMAIN` and `APP_ID`. To get them:
+
+    1. Navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section.
+
+    1. Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
+
+        <Image src="/static/books/common/settings-integration.png"  width="major" /> 
+
+
+    Update `hs.install` call in your activity's `onCreate` method with these tokens.
+
+1. Run the following inside the `/HelpshiftDemo` directory to start:
+
+    
+```text
+
+        $ android update project -t android-17 -p .
+
+```
+
+### Test your integration {#test-integration}
+
+1. Tap **Contact Us** button in the sample app, you should see the [New Conversation](/android/support-tools#conversation-view) screen.
+
+    ![HelpshiftDemo](/static/books/android/sample-app.png)
+
+1. File an issue, and watch it appear in your agent dashboard. Once you've resolved that issue, you should go ahead and [Integrate Helpshift in your app](/android/getting-started/).
+
+It's time to talk to your users now!

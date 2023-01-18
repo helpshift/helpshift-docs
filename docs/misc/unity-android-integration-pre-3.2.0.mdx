@@ -1,0 +1,94 @@
+---
+sidebar_position: 10
+title: Getting Started For Android
+description: "You're 3 steps away from adding great in-app support to your Unity game."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Getting Started For Android{#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your Unity game.
+
+
+</Intro>
+
+
+Guide to integrating the Unity plugin for the Helpshift SDK which you can call from your C# and Javascript game scripts.
+
+## Get the latest stable Helpshift Unity SDK for Android {#getting-sdk}
+
+
+<DownloadButton text="Download SDK" link="[% misc.android_31x.sdk_url %]" classes="mb-4" />
+
+The Helpshift SDK plugin contains the following files
+
+<div className="text-sm compact ">
+
+
+| | |
+|--|--|
+|sdk/Helpshift.jar| The SDK jar file|
+|sdk/res/| Folder containing the layouts, strings, resources, themes and images required by the library|
+|sdk/AndroidManifest.xml| The manifest file for the Helpshift plugin|
+|sdk/Helpshift-android.dll| A dll which exposes the Helpshift API to the Unity C# scripts.|
+|repackage_unity_plugin.sh| A shell script which combines the v7/appcompat and its resources with the Helpshift plugin|
+|HSBuild/| Build tools folder which will create apk from your Unity project|
+</div>
+
+## **Step 2:** Add Helpshift to your Unity project  
+
+1. Navigate to the **helpshift-unity-sdk-android-x.x.x/** folder on your terminal and run the repackaging script:
+
+    
+```text
+
+        sh repackage_unity_plugin.sh <path-to-v7/appcompat-directory>
+
+
+```
+
+1. Drag and drop the contents of the **helpshift-unity-sdk-android-x.x.x/sdk/** folder to the `Assets/Plugins/Android` folder of your Unity project.
+
+
+## **Step 3:** Build Integration  
+
+### If you're not already exporting an Android project out of your Unity game, follow this step. / .unspaced-header /
+
+The way Unity builds an Android apk, it purges files required by Helpshift multilingual on-device search. This leads to **runtime crashes**. To avoid this you should create the game's apk using the build tools provided by the Helpshift plugin:
+
+**For Pro users**  (via Unity BuildPipeline)
+
+1. Copy the **HSBuild/** folder into the **Assets/External/** folder in your Unity project.
+1. Open the **HSBuild/Editor/Build.cs** file and add the list of scenes which you want to build in the scenes array.
+1. Open the **HSBuild/Editor/AppInfo.cs** file and update the relevant fields such as andriodHome, getAppPath, longName etc.
+1. In the Unity IDE, you will now see a Build/Android menu option in the Tools menu.
+
+    <Image src="/static/books/unity/unity-android-build-menu.png"  width="major" alt="title" /> 
+
+1. Click on it and wait for the build to complete.
+1. Your android project will be created in the **build/** directory of the Unity project.
+1. The name of the debug apk will be &lt;longName&gt;-debug.apk and it will be installed directly to your test device connected via adb.
+
+**For Free users**
+
+1. From the **Build and Run** menu, please select the 'Google Android Project' option and click **Export**.
+1. This will create the android project in the path that you select.
+1. Run the **build.sh** script provided in the **HSBuild/Editor/** folder as follows:
+
+    
+```text
+
+        $ sh build.sh <android-project-path> <project-name> <android-sdk-path>
+
+
+    * **android-project-path**: path of the created android project
+    * **project-name**: project name (This will be the name of the debug APK which will be created)
+    * **android-sdk-path**: path of the android SDK
+```
+
