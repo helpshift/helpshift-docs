@@ -1,9 +1,14 @@
+/**
+ * Generic component, currently intended to provide easy links to specific books
+ * in the documentation.
+ */
+
 import React from "react";
 import Link from "@docusaurus/Link";
-import { sdkShape } from "../constants/propTypes";
+import { bookShape } from "../constants/propTypes";
 
-export default function SdkItem({ sdk }) {
-  const { link, color, image, title, description } = sdk;
+export default function Book({ book }) {
+  const { link, color, image, title, description, alt } = book;
   return (
     <li className="col-span-6">
       <Link
@@ -14,7 +19,7 @@ export default function SdkItem({ sdk }) {
           <img
             className={`w-full h-full lg:p-4 p-3 rounded-l-lg bg-gradient-to-b ${color}`}
             src={image}
-            alt={`Logo for ${title}`}
+            alt={alt || `Logo for ${title}`}
           />
         </div>
         <div className="mt-1 p-2 basis-full">
@@ -36,4 +41,4 @@ export default function SdkItem({ sdk }) {
   );
 }
 
-SdkItem.propTypes = sdkShape.isRequired;
+Book.propTypes = bookShape.isRequired;

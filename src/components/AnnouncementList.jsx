@@ -1,3 +1,7 @@
+/**
+ * Used in the sidebar or collapsible accordion on the homepage to show announcements.
+ */
+
 import React, { useState } from "react";
 import Announcement from "./Announcement";
 
@@ -25,6 +29,7 @@ const announcements = [
 
 export default function AnnouncementList() {
   const [expanded, setExpanded] = useState(false);
+
   const _handleExpandedClick = () => {
     setExpanded(!expanded);
   };
@@ -32,6 +37,8 @@ export default function AnnouncementList() {
   if (!announcements.length) {
     return null;
   }
+
+  const expandButtonText = !expanded ? "Show" : "Hide";
 
   return (
     <section
@@ -46,7 +53,7 @@ export default function AnnouncementList() {
           onClick={_handleExpandedClick}
           className="py-2 px-4 rounded-md text-xs bg-transparent text-gray-800 dark:text-gray-100 border border-solid border-gray-700 dark:border-gray-600 shadow cursor-pointer lg:hidden"
         >
-          {!expanded ? "Show" : "Hide"}
+          {expandButtonText}
         </button>
       </div>
       <div className={`${expanded ? "block" : "hidden lg:block"}`}>
