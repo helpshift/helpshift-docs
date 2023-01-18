@@ -1,0 +1,73 @@
+---
+sidebar_position: 140
+title: Using Helpshift via Cocoapods
+description: "Using Helpshift iOS SDK via [Cocoapods](http://cocoapods.org/)"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Using Helpshift via Cocoapods {#cocoapods}
+
+<Intro>
+
+Using Helpshift iOS SDK via [Cocoapods](http://cocoapods.org/)
+
+
+</Intro>
+
+
+## Adding Helpshift to your Podfile
+To use the [% ios.sdk_version  %] version of the Helpshift support SDK, please add the following line to your podspec file.
+**Step 1:** `pod 'Helpshift',  '[% ios.sdk_version  %]'`
+
+
+
+<Admonition type="info" title="Note">
+
+Do not prefix the version with the `~>` (Optimistic operator).
+
+</Admonition>
+
+
+
+**Step 2:**  Run `pod install` or `pod update` to refresh cocoapods dependencies
+
+
+**Step 3:** Follow the [initialization steps](/ios/getting-started#initializing) to start using Helpshift SDK
+
+
+
+## Managing Helpshift with cocoapods
+
+1. Navigate to the Pods/ folder in your project directory. Add the `HelpshiftConfig.plist` from `Pods/Helpshift/helpshift-ios-x.x.x/HSThemes/` to your project.
+
+    <Image src="/static/books/ios-3x/pod-folder.png"  width="full" /> 
+
+    **If values are already customized in the existing plist file**, note that, on the next SDK release they will be overwritten, due to the nature of Cocoapods update. Make sure you backup the old plist file, so you can migrate the values back into the overwritten plist file.
+<br /><br />
+
+2. From version 4.11.x and above, the `HSLocalization` folder will get added automatically to your Xcode project via Cocoapods.
+For version 5.7.0 and above, `HsLocalization.bundle` will be used.
+
+
+<Admonition type="info" title="Note">
+
+If you are using Helpshift version 4.10.x or previous, you will need to add the `HSLocalization` folder to your app in order for the Helpshift SDK to work correctly. To do this, navigate to the Pods/ folder in your project directory. Add the languages you want to support from `HSLocalization` folder, in `Pods/Helpshift/helpshift-ios-x.x.x/`, to your project.
+
+Due to the way Cocoapods handles version updates, if you have your own **custom localized strings**, note that, on the next SDK release they will be overwritten. Make sure you backup your translations, so you can migrate the values back into the new string files. One way of doing that might be to add these customizations in the version control system. That way when you upgrade Helpshift, you can see the `diff` of the changes that you made and reinstate them as you require.
+
+We recommend you add only those languages which are supported by your app from `HSLocalization` folder.
+
+</Admonition>
+

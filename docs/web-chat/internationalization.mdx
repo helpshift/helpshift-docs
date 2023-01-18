@@ -1,0 +1,116 @@
+---
+sidebar_position: 60
+title: Internationalization
+description: Learn more about Internationalization
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Internationalization
+
+<Intro>
+
+
+
+
+</Intro>
+
+
+Helpshift Web Chat currently supports 47 languages out-of-the-box (with English as the default).
+
+## Supported languages {#supported-languages}
+| Language | Code |
+|--------------------|-------------------|
+| English | en|
+| German | de|
+| Spanish | es|
+| French | fr |
+| Italian | it|
+| Russian | ru |
+| Simplified-Chinese | zh-Hans|
+| Traditional-Chinese | zh-Hant|
+| Hong Kong-Chinese | zh-HK|
+| Hong Kong-Chinese (Traditional) | zh-Hant-HK|
+| Singapore-Chinese | zh-SG|
+| Singapore-Chinese (Traditional) | zh-Hant-SG|
+| Portuguese |  pt|
+| Korean| ko|
+| Japanese | ja |
+| Turkish| tr |
+| Dutch | nl|
+| Czech| cs|
+| Hungarian | hu |
+| Indonesian| id|
+| Thai | th |
+| Slovenian | sl |
+| Vietnamese | vi |
+| Arabic | ar |
+| Polish | pl |
+| Norwegian | no |
+| Swedish | sv |
+| Finnish | fi |
+| Romanian | ro |
+| Greek | el |
+| Danish | da |
+| Malay | ms |
+| Hebrew | iw |
+| Slovak | sk |
+| Ukrainian | uk |
+| Catalan | ca |
+| Croatian | hr |
+| Bengali | bn |
+| Bulgarian | bg |
+| Gujarati | gu |
+| Hindi | hi |
+| Kannada | kn |
+| Latvian | lv |
+| Malayalam | ml |
+| Marathi | mr |
+| Punjabi | pa |
+| Persian | fa |
+| Tamil | ta |
+| Telugu | te |
+
+## Setting a Language {#setting-a-language}
+You can set the code of the language to be used by Web Chat in the `helpshiftConfig` object.
+
+###Example Embed Code
+```
+var PLATFORM_ID = "foo",
+    DOMAIN = "bar";
+
+window.helpshiftConfig = {
+  platformId: PLATFORM_ID,
+  domain: DOMAIN,
+  // other options, if applicable
+  // Set language to French ("fr")
+  language: "de"
+};
+```
+
+Alternatively, you can call the `setLanguage` API to set the language after the initialization code.
+
+```javascript
+Helpshift ("setLanguage", "fr");
+```
+
+
+<Admonition type="info" title="Note">
+
+The preferred way to set the language is to use the `helpshiftConfig` object over the `setLanguage` API.
+
+</Admonition>
+
+
+Here's a screenshot of how Web Chat will look after setting the language to French.
+
+![](/static/books/web-chat/wc-i18n-french.png)
+
+
+<Admonition type="info" title="Note">
+
+In order to ensure a smooth migration for existing users, the default language is set to English (`en`) i.e. if you don't set the `language` option in the `helpshiftConfig` object, Web Chat will use English as the language. You can set it to `browserDefault` in case you want your Web Chat widget experience to be in the browser's language.
+
+
+</Admonition>

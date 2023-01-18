@@ -1,0 +1,1398 @@
+---
+sidebar_position: 10
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# SDK Configuration
+
+<Intro>
+
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+
+
+
+</Intro>
+
+
+## Install time configurations {#install-config}
+
+## enableAutomaticThemeSwitching {#enableAutomaticThemeSwitching}
+
+Upon setting this option to true, Helpshift SDK will switch between default light and dark themes based on the OS Appearance setting.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableAutomaticThemeSwitching</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+|Min SDK| v3.2.0|
+Example:
+
+
+```csharp
+
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftInstallConfig.Builder builder = new HelpshiftInstallConfig.Builder()
+    .SetEnableAutomaticThemeSwitching(true);
+    HelpshiftCore.Install("YOU_API_KEY", "YOUR_DOMAIN_NAME", "YOUR_APP_ID", builder.Build());
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableAutomaticThemeSwitching</code>|
+|Values| <code>@"yes"</code> / <code>@"no"</code>|
+|Default| <code>@"no"</code>|
+|Min SDK| v3.2.0|
+Example:
+
+
+```csharp
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    config.Add("enableAutomaticThemeSwitching", "yes");
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
+                                       "<YOUR_COMPANY>.helpshift.com",
+                                       "<YOUR_APP_ID>",
+                                       config);
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+1. This configuration is only applicable to iOS 13 and above.
+2. Light and Dark Appearance switching works only if your app is built with Xcode 11 or above
+3. If you use [SetTheme](/xamarin/design-ios#runtime-common) or [SetThemes](/xamarin/design-ios#runtime-light-dark) API, this config takes no effect.
+
+</Admonition>
+
+
+### enableInAppNotification {#enableInAppNotification}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableInAppNotification|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+</div>
+
+Example:
+```csharp
+HelpshiftInstallConfig installConfig = new HelpshiftInstallConfig.Builder()
+                                         .SetEnableInAppNotifications(true)
+                                         .Build();
+HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
+                                   "<YOUR_COMPANY>.helpshift.com",
+                                   "<YOUR_APP_ID>",
+                                   installConfig);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableInAppNotification|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+</div>
+
+Example:
+
+
+```csharp
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    config.Add("enableInAppNotification", "yes");
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
+                                       "<YOUR_COMPANY>.helpshift.com",
+                                       "<YOUR_APP_ID>",
+                                       config);
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+
+This option enables or disables fallback to default language that is English for FAQs.
+
+This option enables or disables fallback to default language that is English for FAQs. In case you have FAQs in multiple languages but do not wish to fallback to English if localisation is missing, set this flag to 'false’.
+
+For example if the SDK language is set to French and this option is set to `true`, then the FAQs for which french translation is available will be displayed in french and for the FAQs for which french translation is not available will be displayed in English.
+If the value of this option is set to `false` then the FAQs for French translation will be displayed, and the FAQs for which the translation is not provided will not be displayed at all.
+
+
+<Tabs>
+
+<TabItem value="Using InstallConfig object" label="Using InstallConfig object">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableDefaultFallbackLanguage</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>true</code>|
+Example:
+
+```csharp
+HelpshiftInstallConfig installConfig = new HelpshiftInstallConfig.Builder()
+                                         .SetEnableDefaultFallbackLanguage(true)
+                                         .Build();
+HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
+                                   "<YOUR_COMPANY>.helpshift.com",
+                                   "<YOUR_APP_ID>",
+                                   installConfig);
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableDefaultFallbackLanguage</code>|
+|Values| <code>@"yes"</code> / <code>@"no"</code>|
+|Default| <code>@"yes"</code>|
+Example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("enableDefaultFallbackLanguage", "no");
+
+HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+HelpshiftApi.HelpshiftCore.Install("YOUR_API_KEY",
+                                    "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                                    "YOUR_APP_ID",
+                                    config);
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+This configuration does not apply to the QuickSearch Bot suggested FAQs.
+
+</Admonition>
+
+
+### enableLogging {#enableLogging}
+
+Upon setting enableLogging to true, Helpshift SDK logs will be generated in the console. This will be useful for debugging the SDK during integration.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>enableLogging</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>true</code>|
+
+</div>
+
+Example :
+
+
+```csharp
+
+    HelpshiftInstallConfig installConfig = new HelpshiftInstallConfig.Builder()
+                                               .SetEnableLogging(true)
+                                               .Build();
+    HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
+                                   "<YOUR_COMPANY>.helpshift.com",
+                                   "<YOUR_APP_ID>",
+                                   installConfig);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>enableLogging</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"yes"</code>|
+
+</div>
+
+Example :
+
+
+```csharp
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    config.Add("enableLogging", "yes");
+
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftApi.HelpshiftCore.Install("YOUR_API_KEY",
+                                       "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                                       "YOUR_APP_ID",
+                                       config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+### disableErrorReporting {#disableErrorReporting}
+
+Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK will collect internal error logs and report them to our systems to ensure that we become aware of runtime crashes and we have enough information to fix them.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>disableErrorReporting</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>true</code>|
+
+</div>
+
+Example :
+
+
+```csharp
+
+    HelpshiftInstallConfig installConfig = new HelpshiftInstallConfig.Builder()
+                                               .SetDisableErrorReporting(true)
+                                               .Build();
+    HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
+                                   "<YOUR_COMPANY>.helpshift.com",
+                                   "<YOUR_APP_ID>",
+                                   installConfig);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>disableErrorReporting</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"yes"</code>|
+
+</div>
+
+Example :
+
+
+```csharp
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    config.Add("disableErrorReporting", "yes");
+
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftApi.HelpshiftCore.Install("YOUR_API_KEY",
+                                       "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                                       "YOUR_APP_ID",
+                                       config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 3.3.0 and above.
+
+</Admonition>
+
+
+## API options {#api-options}
+
+### enableContactUs {#enable-contact-us}
+
+The `enableContactUs` flag controls the visibility of `Contact Us` button -
+
+<div className=" compact text-sm">
+
+
+| | |
+|--|--|
+|Always| show in the navigation bar, search, and after marking an FAQ unhelpful.|
+|AfterViewingFaqs| show only while searching, and after marking an FAQ unhelpful.|
+|Never| do not show "Contact Us" button anywhere in the SDK.|
+</div>
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option:| <code>enableContactUs</code>|
+|Values:| <code>HsEnableContactUs.Always</code> / <code>HsEnableContactUs.AfterViewingFAQs</code> / <code>HsEnableContactUs.Never</code>|
+|Default:| <code>HsEnableContactUs.Always</code>|
+|Supported by:| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+
+</div>
+
+Example:
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetEnableContactUs(HsEnableContactUs.AfterViewingFAQs)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option:| <code>enableContactUs</code>|
+|Values:| <code>"always"</code> / <code>"after_viewing_faqs"</code> / <code>"never"</code>|
+|Default:| <code>"always"</code>|
+|Supported by:| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+
+</div>
+
+Example:
+
+
+```csharp
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    config.Add("enableContactUs", "always");
+    Helpshift.ShowFAQs(uiViewController, config);
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+This flag has no effect for the `ShowConversation` API call, since there is no `Contact Us` button in the conversation screen.
+
+### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v3.0.
+
+</Admonition>
+
+
+The `gotoConversationAfterContactUs` flag will determine whether the
+user lands up in the conversation screen after starting a new
+conversation via "Contact Us". This only makes sense if the
+`enableContactUs` flag takes on the default value.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>gotoConversationAfterContactUs</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+Example:
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetGotoConversationAfterContactUs(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+<Admonition type="info" title="Note">
+
+For `ShowFAQs`, `ShowFAQSection` and `ShowSingleFAQ`, setting `gotoConversationAfterContactUs` makes sense only if `enableContactUs` is `yes`.
+
+</Admonition>
+
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>gotoConversationAfterContactUs</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+Example:
+
+
+```csharp
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    config.Add("gotoConversationAfterContactUs", "yes");
+    HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, config);
+
+```
+
+
+<Admonition type="info" title="Note">
+
+For `ShowFAQs`, `ShowFAQSection` and `ShowSingleFAQ`, setting `gotoConversationAfterContactUs` makes sense only if `enableContactUs` is `yes`.
+
+</Admonition>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+### requireEmail {#requireEmail}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v3.0.
+
+</Admonition>
+
+
+The `requireEmail` flag will determine whether email is required or optional for starting a new conversation.
+
+When the flag is set to `true`, customer's email will be required. If set to `false`, email will be optional.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Option| requireEmail|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetRequireEmail(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Option| requireEmail|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("requireEmail", "yes");
+HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+If "New Issue Forwarding" is ON or if "Allow anonymous issues" is ON in the agent dashboard, then this flag will be ignored.
+
+
+<Admonition type="info" title="Note">
+
+Once `requireEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+
+
+### hideNameAndEmail {#hideNameAndEmail}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v3.0.
+
+</Admonition>
+
+
+The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
+
+When the flag is set to `true` the name and email fields will be hidden. If set to `no` the default behaviour will resume.
+
+If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the *SetNameAndEmail* API, to supply the SDK with name and email in this case.
+
+If "Allow anonymous issues" is ON, under app settings in the agent dashboard, then this flag will be ignored.
+
+Also, if the [`requireEmail`](#requireEmail) flag is set to `false` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Option| <code>hideNameAndEmail</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetHideNameAndEmail(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|Option| <code>hideNameAndEmail</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("hideNameAndEmail", "yes");
+HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+Once `hideNameAndEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+
+### conversationPrefillText {#conversationPrefillText}
+
+The `conversationPrefillText` API option will prefill a new conversation description, with the supplied string.
+This is useful where you might want your users to send you diagnostic information in the conversation description, for example if the app hits an exception, etc.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>conversationPrefillText</code>|
+|Values| Non-empty <code>string</code>|
+|Default| Empty string|
+|Supported by| <code>ShowConversation</code>|
+</div>
+
+Example:
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetConversationPrefillText("Pre fill text")
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>conversationPrefillText</code>|
+|Values| Non-empty <code>string</code>|
+|Default| Empty string|
+|Supported by| <code>ShowConversation</code>|
+</div>
+
+Example:
+
+```csharp
+string preFillString = "Pre fill text";
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("conversationPrefillText", preFillString);
+HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+The `conversationPrefillText` option takes effect only for the **ShowConversation** API
+
+</Admonition>
+
+
+### enableFullPrivacy {#enableFullPrivacy}
+
+In scenarios where the user attaches objectionable content in the screenshots, it becomes a huge [`COPPA`](http://www.coppa.org/) concern. The enableFullPrivacy flag will help solve this problem.
+
+If this flag is set to `true`, it enables full privacy controls for the SDK. The user can be disabled from attaching screenshots and sending personally identifiable information in meta-data. This helps developers ensure full [`COPPA`](http://www.coppa.org/) compliance.
+
+To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this flag is set to `true`, this data will be removed when the user starts a new conversation.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>enableFullPrivacy</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+Example:
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetEnableFullPrivacy(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>enableFullPrivacy</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+Example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("enableFullPrivacy", "yes");
+HelpshiftApi.HelpshiftSupport.ShowFAQs(uiViewController, config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+1. Once the `enableFullPrivacy` flag is set, the SDK will use that value for all further sessions until it is changed again.
+1. If the `enableFullPrivacy` flag is set, for SDK versions 2.3.1 or earlier, the email requirement is always set to optional. i.e. even if requiredEmail is true; enableFullPrivacy will override it and set email requirement as optional.
+1. If the `enableFullPrivacy` flag is set, for SDK versions 2.4.0 or later, the user's 'email and name will not be collected and the fields will be hidden. `enableFullPrivacy` flag will override all other flags pertaining to name and email field.
+1. For Xamarin SDK v3.0.0 and above, this flag is ignored in the flows created to show Dynamic forms. The following flows do not honor this flag
+    *    ConversationFlow
+    *    FAQsFlow
+    *    SingleFAQFlow
+    *    FAQSectionFlow
+
+
+</Admonition>
+
+
+### showSearchOnNewConversation {#showSearchOnNewConversation}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v3.0.
+
+</Admonition>
+
+
+If showSearchOnNewConversation flag is set to `true`, the user will be taken to a view which shows the search results relevant to the conversation text that he has entered upon clicking the 'Send' button. This is to avoid tickets which are already answered in the FAQs. The user will still be able to start a new conversation with the same text. He can also go through one of the FAQs and find a solution to his query, and exit the session without submitting a ticket.
+
+Default value is `false`, ie., this feature will not be enabled unless you explicitly pass `true` for this flag.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>showSearchOnNewConversation</code>|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+For example:
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetShowSearchOnNewConversation(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Option| <code>showSearchOnNewConversation</code>|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+|Supported by| <code>ShowFAQs</code>, <code>ShowFAQSection</code>, <code>ShowSingleFAQ</code>, <code>ShowConversation</code>|
+</div>
+
+For example
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("showSearchOnNewConversation", "yes");
+HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+The `showSearchOnNewConversation` option takes effect only for the **showConversation** API.
+
+</Admonition>
+
+
+### showConversationResolutionQuestion {#showConversationResolutionQuestion}
+
+
+<Admonition type="info" title="Note">
+
+This API configuration is now deprecated with SDK v3.0.
+
+</Admonition>
+
+
+This option enables or disables the showing of the `Conversation Resolution` view after an Agent has marked an Issue resolved. `Conversation Resolution` is added to the bottom of the screen with a Yes and No button. If the user taps Yes, then this view is replaced with a `Start a new conversation` view. If the user taps No, then we dismiss the `Conversation Resolution` view and let them continue the conversation.
+
+For v3.0 and above:
+
+This SDK configuration is deprecated with v3.0+ and default value will be treated as `false`.
+
+If you want to use this feature, you can turn the feature on and off `Resolution Question` from the in-app configuration page. `Settings > App settings`
+
+<Image src="/static/books/misc/resolution-question-app-setting.png"  width="full" /> 
+
+Older SDKs will keep on working with the expectations mentioned below:
+
+For older SDK versions v2.x and below, please read the following:
+
+This option is set to `true` by default, which means that the user will be presented with Conversation Resolution view. If you wish to skip this view then the option needs to be set to `false`.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showConversationResolutionQuestion|
+|Values| <code>true</code> / <code>false</code>|
+|Default| <code>false</code>|
+
+</div>
+
+Example :
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetShowConversationResolutionQuestion(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showConversationResolutionQuestion|
+|Values| <code>"yes"</code> / <code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+Example :
+
+```csharp
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("showConversationResolutionQuestion", "yes");
+HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, configMap);
+```
+
+</TabItem>
+
+</Tabs>
+
+
+### customContactUsFlows {#customContactUsFlows}
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| customContactUsFlows|
+|Values| List of Flows. See the example below to create flows.|
+|Default| There is no default value for this configuration.|
+
+</div>
+
+This configuration allows you to override the Contact Us buttons inside the Helpshift SDK
+and show Guided Issue Filing when a user taps on the Contact Us buttons.
+
+Example :
+
+Let’s say you want the users to see a particular FAQ section, a single FAQ and 2 different Contact Us flows with different prefill texts when
+they tap the Contact Us buttons within the Helpshift SDK. In this case, you would configure the `showHelp` button (a button which triggers Helpshift SDK) in the following way :
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+```csharp
+FAQSectionFlow faqSectionFlow = new FAQSectionFlow("1509", "FAQ section");
+SingleFAQFlow singleFAQFlow = new SingleFAQFlow("2998", "FAQ");
+HelpshiftAPIConfig conversationConfig1 = new HelpshiftAPIConfig.Builder()
+                                          .SetConversationPrefillText("Contact Us about our app")
+                                          .Build();
+ConversationFlow conversationFlow1 = new ConversationFlow("Converse 1", conversationConfig1);
+HelpshiftAPIConfig conversationConfig2 = new HelpshiftAPIConfig.Builder()
+                                 .SetConversationPrefillText("Contact Us about in-app purchases")
+                                 .Build();
+ConversationFlow conversationFlow2 = new ConversationFlow("Converse 2", conversationConfig2);
+IList<Flow> flows = new List<Flow>() { faqSectionFlow, singleFAQFlow, conversationFlow1, 
+                                       conversationFlow2 };
+
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetCustomContactUsFlows(flows)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+```csharp
+public void showHelp() {
+
+Dictionary<string, object> faqSectionFlow = new Dictionary<string, object>();
+faqSectionFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeFaqSection);
+faqSectionFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "FAQ section");
+faqSectionFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowData, "1509");
+
+Dictionary<string, object> faqFlow = new Dictionary<string, object>();
+faqFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeSingleFaq);
+faqFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "FAQ");
+faqFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowData, "2998");
+
+Dictionary<string, object> showConversationFlow1 = new Dictionary<string, object>();
+showConversationFlow1.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeConversation);
+showConversationFlow1.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "Converse 1");
+
+Dictionary<string, object> conversationConfig1 = new Dictionary<string, object>() { {"conversationPrefillText" , "Contact Us about our app"} };
+
+showConversationFlow1.Add(HelpshiftApi.HelpshiftSupport.HsFlowConfig, conversationConfig1);
+
+Dictionary<string, object> showConversationFlow2 = new Dictionary<string, object>();
+showConversationFlow2.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeConversation);
+showConversationFlow2.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "Converse 2");
+
+Dictionary<string, object> conversationConfig2 = new Dictionary<string, object>() { {"conversationPrefillText" , "Contact Us about in-app purchases"} };
+
+showConversationFlow2.Add(HelpshiftApi.HelpshiftSupport.HsFlowConfig, conversationConfig2);
+
+Dictionary<string, object>[] flows =  new Dictionary<string, object>[] {
+faqSectionFlow,
+faqFlow,
+showConversationFlow1,
+showConversationFlow2
+};
+
+Dictionary<string, object> faqConfig = new Dictionary<string, object>();
+
+faqConfig.Add(HelpshiftApi.HelpshiftSupport.HsCustomContactUsFlows, flows);
+HelpshiftApi.HelpshiftSupport.ShowFAQs (uiViewController, faqConfig);
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+
+Anytime the Helpshift SDK is presented via `showHelp` with this configuration, the Contact Us buttons in the SDK will redirect to Guided Issue Filing with the flows provided in the `customContactUsOptions` list.
+
+Once a particular flow is selected, the subsequent Contact Us buttons will redirect to nested customContactUsFlow if configured else to default contact us screen.
+
+Custom flows can be nested by passing another custom flows configuration while creating a flow.
+
+Example :
+
+Let’s say you want to configure `singleFAQFlow` in the above example to show `showConversationFlow1` and `showConversationFlow2` through the Contact Us buttons inside it. In this case, you would configure the showHelp button (a button which triggers Helpshift SDK) in the following way :
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+```csharp
+HelpshiftAPIConfig conversationConfig1 = new HelpshiftAPIConfig.Builder()
+                                          .SetConversationPrefillText("Contact Us about our app")
+                                          .Build();
+ConversationFlow showConversationFlow1 = new ConversationFlow("Converse 1", conversationConfig1);
+HelpshiftAPIConfig conversationConfig2 = new HelpshiftAPIConfig.Builder()
+                                 .SetConversationPrefillText("Contact Us about in-app purchases")
+                                 .Build();
+ConversationFlow showConversationFlow2 = new ConversationFlow("Converse 2", conversationConfig2);
+IList<Flow> nestedFlows = new List<Flow>() { showConversationFlow1, showConversationFlow2 };
+HelpshiftAPIConfig singleFAQConfig = new HelpshiftAPIConfig.Builder()
+                                         .SetCustomContactUsFlows(nestedFlows)
+                                         .Build();
+SingleFAQFlow singleFAQFlow = new SingleFAQFlow("2998", "FAQ", singleFAQConfig);
+FAQSectionFlow faqSectionFlow = new FAQSectionFlow("1", "FAQ Section");
+IList<Flow> flows = new List<Flow>() { singleFAQFlow, faqSectionFlow };
+
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetCustomContactUsFlows(flows)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+```csharp
+
+public void showHelp() {
+
+Dictionary<string, object> showConversationFlow1 = new Dictionary<string, object>();
+showConversationFlow1.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeConversation);
+showConversationFlow1.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "Converse 1");
+Dictionary<string, object> conversationConfig1 = new Dictionary<string, object>() { {"conversationPrefillText" , "Contact Us about our app"} };
+showConversationFlow1.Add(HelpshiftApi.HelpshiftSupport.HsFlowConfig, conversationConfig1);
+
+Dictionary<string, object> showConversationFlow2 = new Dictionary<string, object>();
+showConversationFlow2.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeConversation);
+showConversationFlow2.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "Converse 2");
+Dictionary<string, object> conversationConfig2 = new Dictionary<string, object>() { {"conversationPrefillText" , "Contact Us about in-app purchases"} };
+showConversationFlow2.Add(HelpshiftApi.HelpshiftSupport.HsFlowConfig, conversationConfig2);
+
+Dictionary<string, object> faqFlow = new Dictionary<string, object>();
+faqFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowType, HelpshiftApi.HelpshiftSupport.HsFlowTypeSingleFaq);
+faqFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowTitle, "FAQ");
+faqFlow.Add(HelpshiftApi.HelpshiftSupport.HsFlowData, "2998");
+faqFlow.Add((HelpshiftApi.HelpshiftSupport.HsCustomContactUsFlows,, new Dictionary<string, object>[] {showConversationFlow1, showConversationFlow2});
+
+HelpshiftApi.HelpshiftSupport.showFAQs (uiViewController, faqFlow);
+
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+
+With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
+
+### showConversationInfoScreen {#showConversationInfoScreen}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 2.3.1 and above.
+
+</Admonition>
+
+
+The `showConversationInfoScreen` flag will determine if the user can see the Conversation info on the conversation feed. If set to `true`, the Conversation ID (Issue ID) will be shown in conversation feed.
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showConversationInfoScreen|
+|Values| <code>true</code>/<code>false</code>|
+|Default| <code>false</code>|
+
+</div>
+
+Example :
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetShowConversationInfoScreen(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| showConversationInfoScreen|
+|Values| <code>"yes"</code>/<code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+Example :
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("showConversationInfoScreen", "yes");
+HelpshiftApi.HelpshiftSupport.ShowConversation(activity, config);
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+The Conversation ID (Issue ID) will only be visible when a conversation is actually created for support teams and Automations / Agents can act on it. (This is after QuickSearch Bot (if configured) and Identity Bot (if configured) complete their tasks.)
+
+</Admonition>
+
+
+### enableTypingIndicator {#enableTypingIndicator}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 2.4.0 and above.
+
+</Admonition>
+
+
+A graphical indicator is shown to the end user if an agent is currently replying to the same conversation. The "enableTypingIndicator" flag will enable/disable this indicator.
+
+This SDK configuration has been deprecated, since this configuration has shifted to the In-App SDK Configurations page. (Settings > App settings)
+
+For SDK v3.0 and above, the typing indicator configuration `Show Agent Typing Indicator` is now part of the In-app SDK Configurations page.
+
+If this configuration is turned ON from the configurations page OR if the SDK configuration is used, then the typing indicator will shown to end users.
+
+<Image src="/static/books/misc/enable-typing-indicator-app-setting.png"  width="full" /> 
+
+<Centered width="quarter">
+
+![](/static/books/ios/TAI_in_Conversation_feed.png)
+
+</Centered>
+
+Older SDKs will keep on working with the expectations mentioned below:
+
+For older SDK versions between v2.4.0 to v2.6.0, please read the following:
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftApiConfig" label="Using HelpshiftApiConfig">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableTypingIndicator|
+|Values| <code>true</code>/<code>false</code>|
+|Default| <code>false</code>|
+
+</div>
+
+Example :
+
+```csharp
+HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
+                                         .SetEnableTypingIndicator(true)
+                                         .Build();
+HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableTypingIndicator|
+|Values| <code>"yes"</code>/<code>"no"</code>|
+|Default| <code>"no"</code>|
+
+</div>
+
+Example :
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("enableTypingIndicator", "yes");
+HelpshiftApi.HelpshiftSupport.ShowConversation(viewController, config);
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+The typing indicator will be visible to end users who file new issues using v2.4+ SDKs
+
+</Admonition>
+
+
+## IssueDescriptionMinimumCharacterLength {#issue-description-minimum-length}
+
+To control the minimum number of characters that the users need to type before they can start a conversation, use this option and set it to an appropriate integer value.
+This option works both in Conversational issue-filing and Form-based issue-filing experience.
+Since this option is dependent on the language in which the user starts a conversation, developers are encouraged to set this value for each language as appropriate.
+
+
+<Admonition type="info" title="Note">
+
+This option is not an SDK API config but rather a **key in the HelpshiftLocalizable.strings** file.
+
+</Admonition>
+
+
+<Centered >
+
+![](/static/books/ios/iphone-min-chars-error.png)
+
+</Centered>
+
+
+## Configuration Summary {#config-summary}
+
+| Configuration / API                            | [showFAQs](/xamarin/support-tools-ios#faqs-view)    | [showFAQSection](/xamarin/support-tools-ios#faq-section-view) | [showSingleFAQ](/xamarin/support-tools-ios#faq-question-view) | [showConversation](/xamarin/support-tools-ios#conversation-view) |
+|-----------------------------------------|-------------|----------------|---------------|------------------|
+| **enableContactUs**                   | Supported   | Supported      | Supported     | Not Supported     |
+| **gotoConversationAfterContactUs**    | Supported   | Supported      | Supported     | Supported        |
+| **presentFullScreenOniPad**           | Supported   | Supported      | Supported     | Supported        |
+| **requireEmail**                      | Supported   | Supported      | Supported     | Supported        |
+| **hideNameAndEmail**                  | Supported   | Supported      | Supported     | Supported        |
+| **conversationPrefillText**           | No effect   | No effect      | No effect     | Supported        |
+| **enableFullPrivacy**                 | Supported   | Supported      | Supported     | Supported        |
+| **showSearchOnNewConversation**       | Supported   | Supported      | No effect     | Supported        |
+| **showConversationResolutionQuestion**| Supported   | Supported      | Supported     | Supported        |
+| **customContactUsFlows**              | Supported   | Supported      | Supported     | Not Supported    |
+| **showConversationInfoScreen**        | Supported   | Supported      | Supported     | Supported        |
+| **enableTypingIndicator**             | Supported   | Supported      | Supported     | Supported        |
+

@@ -1,0 +1,119 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "You're 3 steps away from adding great in-app support to your Unreal Engine game."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Getting Started {#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your Unreal Engine game.
+
+
+</Intro>
+
+
+Guide to integrating the Unreal Engine plugin for the Helpshift SDK X.
+
+## Requirements {#version-requirements}
+*   Unreal 4.18 and above.
+*   Supported Android OS versions: 16 and above
+*   Supported iOS versions: iOS 15, 14, 13, 12 and 11
+
+
+## Download Helpshift Unreal SDK  {#getting-sdk}
+
+
+#### SDK X - In-app Customer Service {#standard-sdk}
+
+
+<DownloadButton text="Download SDK" link="[% sdkx-unreal.sdk_url %]" classes="mb-4" />
+
+Helpshift SDK *.zip* folder includes:
+
+<div className="text-sm compact ">
+
+
+| | |
+|--|--|
+|HelpshiftSDK| Unreal Engine plugin package of Helpshift SDK X|
+</div>
+
+
+## Add Helpshift to your Unreal project {#adding-to-project}
+
+* Unzip the Helpshift Unreal SDK package.
+* Copy the `plugin` (HelpshiftSDK) directory into `[YOUR_PROJECT]/Plugins` directory
+* After that, once you reopen your project, the plugin should appear in the Plugins section 
+
+<Image src="/static/books/unreal/plugin_section.png"  width="full" />  
+
+
+## Initializing Helpshift in your app {#initializing}
+
+1. First, create an app on the Helpshift Dashboard 
+<Image src="/static/books/helpshiftx/add_app.png"  width="full" /> 
+
+2. Create an app with **Android** and **iOS** as selected `Platform`s
+<Image src="/static/books/helpshiftx/create_app_with_android_platform.png"  width="full" /> 
+
+Helpshift uniquely identifies each registered App with a combination of 2 tokens:
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|<code>Domain Name</code>|  Your Helpshift domain. E.g. _happyapps.helpshift.com_|
+|<code>Platform ID</code>| Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
+</div>
+You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
+Select your App and _check Android as a platform_ from the dropdowns and copy
+the 2 tokens to be passed when initializing Helpshift.
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" /> 
+
+
+
+You should now go to the Project Settings -> Helpshift SDK and configure your specific project fields. Copy the `domain` and `platformId` from the dashboard.
+__<Image src="/static/books/unreal/plugin_settings.png"  width="full" />  
+
+The Drawable Path and Sound Path settings are used if you want to customize the notification icons and/or sound on Android. The contents of those folders will be copied for use as android resource files.
+
+Call the `Init` function before any other interaction with the Helpshift SDK (preferably in the EventConstruct call)
+
+__<Image src="/static/books/unreal/init_call.png"  width="full" />  
+
+
+The `Init` call takes a map of the additional parameters. All of the parameters are optional, which means you can pass an empty map. The meaning of different keys and their possible values for Android can be found [here](/sdkx-unreal/sdk-configuration)
+
+
+
+<Admonition type="danger" title="Important">
+
+*Android OS version Support*
+
+Calling `Init` below android SDK version 21 will not work. All the APIs will be non operable.
+
+
+</Admonition>
+
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app. You should now use the support APIs for [conversation screens](/sdkx-unreal/support-tools#conversation-view) inside your app.
+
+
+<Admonition type="info" title="Note">
+
+Since the Helpshift plugin is meant for mobile devices only, you should put all Helpshift calls inside conditional checks to make sure they are only called when running on a device.
+
+</Admonition>
+
+
+

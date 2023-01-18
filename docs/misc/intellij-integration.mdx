@@ -1,0 +1,59 @@
+---
+sidebar_position: 10
+title: Integrating Helpshift SDK for Android with your IntelliJ Project
+description: Learn more about Integrating Helpshift SDK for Android with your IntelliJ Project
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Integrating Helpshift SDK for Android with your IntelliJ Project {#integrate-intellij}
+
+Applicable to version 3.12.0 and below. Use [Gradle](/android/getting-started#gradle-support) for versions above 3.12.0.
+/.notes/
+
+
+## Adding the latest stable release {#add-to-project}
+
+To add the Helpshift SDK to your **Android Application Project** just unzip the zip file you
+have downloaded, and import it in IntelliJ :
+
+1. Select  **File > Import Module**
+1. Select path to `helpshift-android-sdk` > **OK**.
+
+    <Image src="/static/books/android/intellij-helpshift-sdk.png"  width="major" alt="Project import wizard" /> 
+
+## Enable the flag for manifest merge {#enable-manifest}
+
+1. Open the Project Structure dialog box by choosing **File > Project Structure**
+1. In the left-hand pane, choose **Modules**, then in the central pane click the **Android facet** under the application module
+1. In the right-hand pane, that shows the Android Facet Page, switch to
+   the **Packaging** tab and select the **Enable manifest merging** check box. Click **Apply > OK**
+
+    <Image src="/static/books/android/intellij-merging-flag.png"  width="full" alt="Enable manifest Merging setting" /> 
+
+## Import v4 support library {#import-v4}
+
+The Helpshift SDK depends on [v4 support library](http://developer.android.com/tools/support-library/features.html#v4) which includes backward compatibility support for many features including application components, user interface features, accessibility, data handling, network connectivity, and programming utilities. So import the `v4 support library` in IntelliJ :
+
+1. Open the Project Structure dialog box by choosing **File > Project Structure**
+1. In the left-hand pane, choose **Modules**,then in the central pane click on your project
+1. In the right-hand pane, select **Dependencies** Tab. Then click on **"+"** icon and add `android-support-v4.jar` as **jars** and click **OK**
+
+    <Image src="/static/books/android/intellij-import-v4.png"  width="full" alt="Project import wizard" /> 
+
+
+## Add reference of the Helpshift SDK {#add-reference}
+
+To add reference to Helpshift SDK in your project:
+
+1. Open the Project Structure dialog box by choosing **File > Project Structure** .
+1. In the left-hand pane, choose **Modules**,then in the central pane click on your project
+1. In the right-hand pane, select **Dependencies** Tab. Then click on **"+"** icon and add `helpshift-sdk-android` as **module dependency** & `Helpshift.jar` as **Library**
+
+
+    <Image src="/static/books/android/intellij-helpshiftsdk-reference.png"  width="full" alt="Project Structure wizard to add library references" /> 
+
+Your IntelliJ project is now integrated with Helpshift SDK for Android.
+
+Proceed further with **[initializing helpshift SDK in your app](/android/getting-started#initializing)**.

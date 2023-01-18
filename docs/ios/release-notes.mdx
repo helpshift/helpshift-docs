@@ -1,0 +1,728 @@
+---
+sidebar_position: 150
+title: Release Notes
+description: Read the Release Notes in detail
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Release Notes
+
+
+
+<LatestSdkVersion>
+
+## 7.11.2 
+<DownloadButton text="Download SDK" link="[% ios.sdk_url %]" classes="mb-4" />
+
+_December 10, 2021_
+
+
+</LatestSdkVersion>
+
+** Release Notes **
+
+* Fixed a bug in the CSAT message shown in Feedback Bots where longer star rating labels were ellipsized.
+
+
+## 7.11.1
+
+_September 9, 2021_
+
+** Release Notes **
+
+* Fixed a bug where in-app notifications were not shown and push notifications did not redirect to chat screen when SDK was opened using [pushDynamicForm](/ios/support-tools#dynamic-forms) API.
+
+
+## 7.11.0
+
+_September 2, 2021_
+
+** Release Notes **
+
+* Added support for customized feedback survey upon issue resolution. [Learn more](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/580-user-support-workflow-procedures-configure-the-issue-resolution-experience/?p=all).
+* Added support for iOS 15 beta 6.
+* Fixed a bug where custom metadata was not cleared if nil argument was passed to [initWithMetaData](/ios/tracking#metadata-api-options) API.
+* Fixed a bug where FAQ search didn't work properly for non-alphanumeric characters.
+* Fixed a bug where word break logic was incorrect for CJK languages in FAQ pages.
+* Fixed a bug where cell selection colour was not completely applied to selected cell in dynamic forms.
+* Fixed a bug where placeholder text was truncated for chat screen's reply box for some custom fonts.
+* Fixed a bug where config would not get updated if a new language was set using [setLanguage](/ios/i18n/#set-language) API.
+
+## 7.10.2
+
+_August 16, 2021_
+
+** Release Notes **
+
+* Fixed a bug where end user faced infinite loading spinner on opening chat screen.
+
+## 7.10.1
+
+_April 22, 2021_
+
+** Release Notes **
+
+* Fixed an issue on the Smart Intents screen (when presented in modal view with the pageSheet style) where the keyboard overlaps the reply box.
+* Fixed an issue where custom fonts were not applied to [dynamic forms](/ios/support-tools#dynamic-forms).
+
+## 7.10.0
+
+_February 2, 2021_
+
+** Release Notes **
+
+* Updated the release artifact from a single dynamic framework to a xcframework. This gives Helpshift’s SDK the following advantages:
+
+       * Support the latest macs with M1 processors.
+       * Support new Xcode versions.
+       * Lesser integration steps.
+
+* Fixed an issue where set theme APIs did not work for Helpshift’s default themes.
+
+** Upgrade guide **
+
+To upgrade to 7.10.0 please refer to the guide [here](/ios/upgrade-to-710/)
+
+
+## 7.9.1
+
+_November 3, 2020_
+
+** Release Notes **
+
+* Fixed an issue where option pills were not visible to end user when New Issue Automation (NIA) assigns to a Custom Bot and the first step is a Get Info from User with options.
+* Fixed a crash that would occur when app is opened through push notifications and the app’s rootViewController is nil.
+* The issue where publish ID is not visible until user closes and opens the chat screen had to be re-introduced. This bug was reproducible only when [showConversationInfoScreen](https://developers.helpshift.com/ios/sdk-configuration#showConversationInfoScreen) custom config was set to true. It will be fixed in upcoming releases.
+
+
+## 7.9.0
+
+
+<Admonition type="info" title="Note">
+
+7.9.0 SDK Update
+
+We found a Bug in SDK release 7.9.0 - Bot Options don't show up to end users when the Bot is triggered via New Issue Automation (NIA)
+
+Note: The issue gets fixed when user closes and reopens the chat screen.
+
+**Action needed:**
+
+* If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
+* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to 7.9.1 SDK.
+
+</Admonition>
+
+
+_October 7, 2020_
+
+** Release Notes **
+
+* Helpshift iOS SDK is now fully compatible with iOS 14. This will be the last SDK version to support iOS 10. We recommend you to use the latest SDK since apps using Older SDKs (< v7.9.0 ) will see the following degraded behavior for in-app support when run on iOS 14:
+
+       * Apps built with Xcode 12 will crash when user taps on a notification sent from Helpshift dashboard for agent/bot replies.
+       * Due to a [bug in Xcode 12](https://developer.apple.com/forums/thread/656524), close button on chat screen is not visible when a new conversation started and conversation history is OFF.
+       * End users will not be able to input dates when asked by custom bots.
+
+* Fixed a bug where conversation publish ID was not shown in chat screen unless user closed and reopened the chat screen. This bug was reproducible only when [showConversationInfoScreen](https://developers.helpshift.com/ios/sdk-configuration#showConversationInfoScreen) custom config was set to true.
+* Fixed a bug where custom font didn't get applied to some UI elements.
+* Fixed a bug where dark theme wasn't applied to SDK when app in killed state was opened through push notification.
+* Fixed a bug where throttling for the [requestUnreadMessagesCount API](/ios/notifications#notification-badges) didn't work in a rare case.
+* Fixed a bug where option pills with brimful amount of text went out of the screen on notched devices.
+* Fixed a crash that would occur when user tapped on search results while simultaneously searching for FAQs in the search bar. Stack trace -
+
+       `[HsFaqSearchDb query:]_block_invoke [Line 96] Error is no more rows available`
+       `Terminating app due to uncaught exception 'NSRangeException', reason: '*** -[__NSArrayM objectAtIndexedSubscript:]: index 0 beyond bounds for empty array'`
+
+## 7.8.2
+
+_August 10, 2020_
+
+** Release Notes **
+
+* Fixed a crash that would occur when custom font was set in SDK's theming plist files.
+
+** Upgrade guide **
+
+To upgrade to 7.8.2 please refer to the guide [here](/ios/upgrade-to-78/)
+
+
+## 7.8.1
+
+_July 17, 2020_
+
+** Release Notes **
+
+* Fixed a bug where agent avatars, header image and header title were not shown when migrating from SDK version 7.7.x to 7.8.0. If you are using the SDK version 7.7.x and want to upgrade to 7.8 or if you have already upgraded to 7.8.0, **we highly recommend that you upgrade to 7.8.1.**
+* Fixed build time nullability warnings in `HelpshiftSupport.h` header file. The warnings looked like this:
+    * Pointer is missing a nullability type specifier (_Nonnull, _Nullable, or _Null_unspecified)
+
+** Upgrade guide **
+
+To upgrade to 7.8.1 please refer to the guide [here](/ios/upgrade-to-78/)
+
+## 7.8.0
+
+_July 8, 2020_
+
+** Release Notes **
+
+* Don’t allow user to respond to conversation resolution question or CSAT after a certain interval. The interval is configurable on admin dashboard. Learn more about re-open window [here](https://support.helpshift.com/kb/article/what-is-re-open-time-window-and-how-do-i-use-it/) and CSAT [here](https://support.helpshift.com/kb/article/what-are-csat-customer-satisfaction-surveys/).
+* Added support for showing agent and bot personalized avatar with their messages. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience).
+* Added support to change Title (Brand header text) for messaging experience from App Settings on Admin console instead of SDK string customization. The default value will be `<Company name> Support`, but you can change it to align the same with your current experience. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience/).
+* Added support for bot messages with a customizable link and title. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-deep-links-actions-using-custom-bots/).
+* Added a new delegate method that is invoked when the user clicks on the `Action` for a Rich actions Bot. [Refer here](/ios/delegates#action-card).
+* Added a new design attribute for color of links in FAQ content.
+* Updated the release artifact from static library and supporting files to a single dynamic framework to reduce integration steps and make the process easier.. [Migration guide](/ios/upgrade-to-78/).
+* Added check to ensure that Helpshift SDK fetches config at least once, before the user can see the conversation screen. This is done to avoid config mismatches which can lead to conversation behaviour different from the one the admins have configured.
+* Improved UI for conversation started using Smart Intents.
+* Added search icon and clear button to smart intent search field.
+* Disabled javascript execution in FAQ HTML body.
+* Fixed a bug where the username and user auth token was not updated on login for existing users.
+* Fixed a bug where none of the FAQs will be displayed if parsing fails for any FAQ.
+* Fixed a crash that would occur on iPad when a list picker item was selected while simultaneously scrolling the list.
+* Fixed a bug where Smart Intents message would get partially hidden behind the reply text box.
+* Fixed a bug where links inside FAQs were unreadable in dark mode.
+* Fixed a bug where cancel button was not shown on FAQ search screen in some cases.
+* Fixed a bug where attachment dialog was dismissed automatically after answering NO to resolution question.
+
+** Upgrade guide **
+
+To upgrade to 7.8.0 please refer to the guide [here](/ios/upgrade-to-78/)
+
+## 7.7.1
+
+_April 1, 2020_
+
+** Release Notes **
+
+* Fixed a bug where end-users would not receive the [in-app notifications](/ios/notifications#in-app-notifications) if the push notifications are not enabled.
+
+## 7.7.0
+
+_February 10, 2020_
+
+** Release Notes **
+
+* Added support for suggesting AI-powered issue categories to your users during the start of a conversation. [Learn more](https://support.helpshift.com/kb/article/helpshift-smart-intents/)
+* Added ability for end-users to send files such as pdf, video, etc. during a conversation. [Learn more](https://support.helpshift.com/kb/article/how-do-i-restrict-file-types-and-attachments/)
+* Added support for sending files via Helpshift bots. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-attachments-in-bots/)
+* Added support for bots to display AI powered FAQ(s) depending on what a user types. [Learn more](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them#add-ai-powered-faqs-to-bot-conversations)
+* Added support for Helpshift error reporting. [Learn more](/ios/sdk-configuration#disableErrorReporting)
+* Added Swift code to Helpshift SDK. [Learn more about the impact on your project](/ios/upgrade-to-77/#support-for-swift)
+* Removed the deprecated “on_install” option for addFaqsToDeviceSearch install config.
+* The resolution question for a conversation would be assumed to be off until configuration set on Helpshift Admin console is fetched.
+* Removed the deprecated “disableAutomaticPushHandling” install config.
+* Fixed a bug where close button was not shown while filing issue through guided issue filing flow.
+* Fixed a bug where CJK keyboards did not show characters suggestions while using the issue form.
+* Fixed a bug where navigation bar was not styled in embeddable messaging experience.
+* Fixed a bug where FAQ filtering did not working on first launch.
+* Fixed a rare bug where input hint message and keyboard type were not changing on tapping new conversation button.
+* Fixed a bug keyboard went invisible if user dismissed the image preview by drag interaction.
+* Fixed rare crash which occurred when user opened the chat screen.
+* Fixed a bug where message body was shown thrice for FAQ list message.
+* Fixed a bug where attach screenshot message buttons were visible after conversation is resolved.
+
+** Upgrade guide **
+
+To upgrade to 7.7.0 please refer to the guide [here](/ios/upgrade-to-77/)
+
+## 7.6.3
+
+_October 10, 2019_
+
+** Release Notes **
+
+* Helpshift iOS SDK is now fully compatible with iOS 13. We recommend you to use the latest SDK since apps using Older SDKs (<=7.5 version ) will see the following degraded behavior for in-app support when run on iOS 13:
+       * End-users will not be able to send attachment
+       * Inconsistent dark/light color elements in SDK, when you turn ON the OS level dark mode
+       * Difficulty in navigating or reading through FAQs because of the UX changes introduced in iOS 13
+       * Gestures to open and close the bot options in list picker UI will not work properly
+* Added support for Dark Mode on iOS 13.[View](/ios/design#runtime-light-dark)
+* Added API for switching the Helpshift SDK theme at runtime. [View](/ios/design#runtime-theming)
+* Added new high contrast theme for Dark Mode.
+* Added Voiceover support for FAQ search results in accessibility mode.
+* Added a character limit of 100,000 for every user message to ensure smooth user experience.
+* Fixed a bug where push notifications were not delivered to iOS 13 devices if the host app is built with Xcode 11
+* Fixed a crash that would occur if New Issue Automation assigns the issue to a custom bot and the first bot step presents more than 5 options to the end user.
+* Fixed a rare crash that would occur sometimes when the user is loading conversation history and at the same time closes the chat screen
+* Fixed a bug where Dynamic Forms screen was not presented as full screen on iOS 13 devices
+* Fixed a bug where API config passed to showDynamicForms API was being ignored.
+* Fixed a bug which caused option pills to reload when navigated in VoiceOver mode.
+* Fixed a bug where QuickSearch Bot messages were not redacted in the current open conversation screen but were updated on re-opening the conversation.
+
+## 7.6.2
+
+_September 6, 2019_
+
+** Release Notes **
+
+* Updated the [rate limiting](/ios/notifications#notification-badges) algorithm for getNotificationCount API. The API will allow one call when the user closes the conversation screen. This is to accommodate any custom requirements for showing the notification count in the app.
+* Added support for customizing the font and colors of the in-app notification banner elements. [View](/ios/design#attributes-global)
+* Improved VoiceOver support for form based issue filing experience.
+* Disabled automatic detection of numbers as phone numbers in FAQ view. If you want to add telephone number links, please add URLs in the FAQ editor with tel: scheme.
+* Fixed a bug where the prefill text shown in the reply box via conversationPrefillText API config wasn't being updated if changed in conversational issue filing mode.   
+* Fixed a bug where Dynamic forms were not shown to the user if they try to contact support from the footer in the FAQ screen.
+* Fixed a bug where In-app notification for resolution request was shown twice to the user if the resolution question setting was turned off.
+* Fixed an edge case bug where duplicate issues were being created in bad network scenarios.
+
+## 7.6.1
+
+_August 21, 2019_
+
+** Release Notes **
+
+* Fixed a crash that could occur if the migration from SDK version 7.2.0 or above to 7.6.0 version fails due to database error.
+
+## 7.6.0 
+
+
+
+_July 30, 2019_
+
+** Release Notes **
+
+* Added support for iOS 13 Beta 4 and Xcode 11. Apps using Older SDKs (<=7.5 version ) will see the following degraded behavior for in-app support when run on iOS 13 beta:
+       * End-users will not be able to send attachment
+       * Inconsistent dark/light color elements in SDK, when you turn ON the OS level dark mode
+       * Difficulty in navigating or reading through FAQs because of the UX changes introduced in iOS 13
+       * Gestures to open and close the bot options in list picker UI will not work properly
+* Removed CoreLocation framework dependency
+* Added support for messages and attachment redaction for SDKs. If you redact messages and attachments from Agent desktop, they will be redacted from the device too.
+* Deprecated the automatic handling of Helpshift push notifications via swizzling. Make sure that you follow the [guide](https://developers.helpshift.com/ios/notifications#configure-helpshift-sdk) for notification integration.
+* Fixed a bug, where the user did not receive the agent response. It occurred when the user was on chat screen and device got locked, and after unlocking the device, intermittently the user did not receive the Agent messages. However, when you close and reopen the chat screen, user was able to receive all the Agent messages.
+* Fixed a bug, where sometimes, SDK configuration set on dashboard would not show on app launch.
+* Fixed a bug where map and filter named methods of NSArray category were conflicting with the host app's categories.
+* Fixed a bug where, in some network edge cases, the user was able to retry an older message which is not part of the running bot.
+* Fixed a bug where the user couldn't send the CSAT rating for a resolved conversation if conversation history was ON and if there was a login change between users.
+* Fixed a bug where the previously sent images were not shown on chat screen immediately after a login change. However if the user closed and revisited the chat screen, the images would load correctly.
+* Fixed a bug where, in some network edge cases, the user fails to send or receive messages if a bot was interrupted by another bot.
+* Fixed a bug, where conversationEnded delegate was not called for the agent rejected conversation unless user exits the chat screen.
+* Fixed a bug where the user message was sent twice in an edge case when Send button was tapped multiple times
+* Improved the loading of large FAQs.
+
+## 7.5.3
+
+_May 14, 2019_
+
+** Release Notes **
+
+* Fixed a bug which resulted in in-app notifications not working for some cases on the Standard SDK.
+* Fixed a crash that would occur in a rare db write failure scenario.
+    *   Stack trace: [HsSQLDbHelper runQuery:withBlobData:doesReturnData:withError:] + 236 
+              0x0000000105efaeac -[HsSQLDbHelper runExcecutableQuery:withParameters:useBlobType:withError:] + 80 
+              0x0000000105eec7c4 -[HsKVStoreProvider insertQueryWithParameters:domain:withError:] + 220 
+              0x0000000105eebda4 -[HsKVStoreProvider setLongValue:forKey:domain:withError:] + 200 
+              0x0000000105f181c0 -[HsSDKConfigurationDM updateLastSuccessfulConfigFetchTime] + 96 
+              0x0000000105f164e4 -[HsSDKConfigurationDM fetchServerConfig:] + 912 
+              0x0000000105e8b65c -[HsCocoaCore fetchServerConfig] + 136
+
+
+## 7.5.2
+
+_March 28, 2019_
+
+** Release Notes **
+
+* Fixed a bug, where the application crashes, when a developer imports Helpshift header files and starts the application on iOS 9.
+
+## 7.5.1
+
+_March 25, 2019_
+
+* Fix the linker warning about duplicate usage of the `pullUpControllerDismissalHandlers`
+
+## 7.5.0
+
+_March 25, 2019_
+
+** Release Notes **
+
+* Introduced a new rich element for automation bots to let users choose from a list of selectable options if the number of options is more than 5.
+* From this release, Helpshift SDK will work for users on iOS 10,11 and 12. [Here's](https://support.helpshift.com/kb/article/what-are-the-minimum-ios-versions-supported-by-helpshift/) how you could continue using Helpshift for your iOS 9 users.
+* Users can modify their CSAT rating during the Feedback phase before submitting them. For more details, see [here](https://developers.helpshift.com/ios/reviews-and-feedback#csat).
+* Added a configuration option, `IssueMinimumDescriptionLength` for setting the minimum number of characters required, before you can send a message in conversational experience. For more details, see [the documentation](https://developers.helpshift.com/ios/sdk-configuration#issue-description-minimum-length).
+* Added configuration option, `conversationPrefillText`, for pre-filling new conversation's description in the conversational issue filing experience. For more details, see [here](https://developers.helpshift.com/ios/sdk-configuration#conversationPrefillText).
+* Updated behavior of opening Links from the FAQ view inside of Helpshift. The Helpshift session will not close when opening external links.
+* Added a new API for closing the active Helpshift session which now accepts a completion handler. For more details, see [here](https://developers.helpshift.com/ios/support-tools#closeHelpshiftSupportSession).
+* Fixed a bug, where a user could attach a screenshot twice by quickly tapping the `Send` button in the Preview screen multiple times.
+* If there are no FAQs present in the SDK, FAQ search bar is disabled.
+* Fixed a bug where agent nickname showed up as **(null)** on the SDK chat screen if it wasn't set on the admin dashboard.
+* Fixed a bug where loading older messages would fail under an edge case.
+* Fixed a UI issue where calling `UIAppearance` proxy API to invoke `setContentInsetAdjustmentBehavior` from host app was affecting some of SDK's scroll views.
+* Fixed a bug where, under rare circumstances, retrying failed bot message could lead to user getting stuck on the chat screen with infinitely loading Typing Awareness Indicator.
+* Fixed a rare crash that occurred when the app was brought to foreground.
+* Deprecated the `HsAddFaqsToDeviceSearchOnInstall` enum value from the `addFaqsToDeviceSearch` option.
+* Fixed a bug introduced in version `7.4.0`, where default values of InstallConfig were not being respected in the `[HelpshiftSupport installForApiKey:domainName:appID:]` API
+
+** Upgrade guide **
+
+To upgrade to 7.5.1 please refer to the guide [here](/ios/upgrade-to-75)
+
+## 7.4.0
+
+_January 29, 2019_
+
+** Release Notes **
+
+* Added a new API `enableTestingMode` to enable testing mode in the SDK. For more details, see [here](/ios/support-tools#enable-testing-mode).
+* When [testing mode](/ios/support-tools#enable-testing-mode) is enabled, public APIs in HelpshiftSupport, HelpshiftCampaigns and HelpshiftCore will now throw `ExceptionInInitializerError` exception if the API is called before `HelpshiftCore:installForApiKey:domainName:appID:withConfig` API.
+* Added rate limiting in the getNotificationCount API which fetches the latest unread message count from Helpshift's servers. For more details, refer [here](/ios/notifications#notification-badges).
+* Fixed a bug where the conversation wasn't closed if the user clicked on NO in the resolution question and exited the chat screen in some cases.
+* Fixed a rare crash occurring due to resource deadlock during SDK initialization.
+* Fixed a bug where deep links which opened FAQ screens in Agent replies failed to open in the app.
+* Fixed a bug in the [checkIfConversationActive](/ios/tracking#check-if-conversation-active) API. If the conversation resolution question is off, this API would incorrectly return true until the chat screen is opened.
+* Fixed a bug where blank screen was sometimes shown if conversation creation failed.
+* Fixed a rare bug in the Form based issue filing experience in which the user was able to create multiple open conversations.
+* Fixed a crash that occurred due to nil device ID returned by iOS APIs. Stack trace of the crash :
+    * Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: [__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[0]
+    [HsCampaignsInboxSyncController getRequestData]
+* Fixed duplicate symbol linker errors when `-ObjC` linker flag is on.
+* Fixed a bug where failed analytics events requests were never retried.
+* Fixed a bug where close button was missing from nested dynamic form screens.
+* Fixed a bug where user's name was visible as author for "What else can we help you with?" agent message.
+
+## 7.3.0
+
+_October 3, 2018_
+
+** Release Notes **
+
+*    Added iOS 12 support.
+*    Applications are now required to build with Xcode 10.0 and above.
+*    Added Campaigns delegate callbacks for tracking when a Helpshift session begins and when a session ends. Details are available [Feature is redacted]
+*    Added new customization keys. Details are available [here](/ios/design#attributes-footers)
+	 *    Selectable Option Text Color: The color of the text in option pills of the QuickSearch Bot or skip button.
+	 *	  Selectable Option Background Color: The background color of the option pills of the QuickSearch Bot or skip button.
+	 *	  Selectable Option Border Color: The border color of the option pills of the QuickSearch Bot or skip button.
+     *    Field Background color: The background color of the reply field.
+     *    Field border color: The border color of the reply field.
+*    Removed the selectable option color customization key. Please use the latest plist with the updated keys if you plan to customize the Helpshift UI.
+*    Introduced the ability for users to open user-sent attachments.
+*    Fixed a bug where Custom Bot options were only partially rendered in the chat screen.
+*    Fixed a bug where the new conversation button was shown along with the reply box.
+*    Fixed a bug where the conversation screen was not scrolling to the bottom when the option pills were rendered.
+*    Fixed a bug where the conversation would get closed when the chat screen was partially slid from the left.
+*    Fixed a bug where the greeting message text was appended whenever the chat screen was partially slid from the left.
+*    Fixed a bug where the app would crash when the chat screen was partially slid from the left after the user had tapped on the new conversation button.
+*    Fixed a bug where Custom Bots pills were not rendered on migration,
+*    Fixed a bug where the reply box was not shown when a New Issue Automation was enabled with Custom Bots and an action set to resolve the Issue.
+*    Fixed a bug where the new conversation button was not shown after the user had selected one of the options offered by QuickSearch Bot.
+*    Fixed a bug where the app would crash after the chat screen was scrolled while the user was in the process of selecting a Custom Bot option pill.
+*    Fixed a bug where Admin attachments were not displayed in the chat screen when a screenshot request was sent with an attachment.
+*    Fixed a bug where the app would crash after the user had tapped on the New Conversation button when conversations history and a greeting message were both disabled.
+*    Fixed the alignment of the pill options and the skip button.
+*    Fixed a bug where QuickSearch Bot option pills were still visible when they weren't supposed to be in some edge cases.
+*    Fixed a bug where the user attachment button was not showing in the chat screen after a user had rejected the resolution question.
+*    Fixed bug where the new conversation button would jump up when the orientation was changed from landscape to portrait.
+
+## 7.2.0
+
+_August 21, 2018_
+
+** Release Notes **
+
+*   Introduced functionality for end users to view their past conversations. This can be managed via an Admin toggle available in the Dashboard on the App settings > the In-app SDK configuration page. Review [this FAQ](https://support.helpshift.com/kb/article/how-do-i-allow-my-end-users-to-see-past-conversations) to get started.
+*   Introduced functionality for Admins to prevent users from being able to attach files in conversations. This can be managed via an Admin toggle available in the Dashboard on the app settings > the In-app SDK configuration page.
+*   Introduced a new way to embed messaging experience in your iOS app. Details are available [here](/ios/support-tools#embed-messaging).
+*   Fixed an edge case bug where, if the end user sent an image attachment at the same time that the Agent rejected the Issue, the Issue would remain open on the end user side.
+*   Fixed a crash that would occur on 32 bit devices when the user selected a date in response to a Custom Bot.
+*   Fixed a crash that would occur when accessing a dictionary in a multithreaded environment
+    *   Stack trace: [__NSDictionaryM setObject:forKey:]
+                     [HsIOSNetworkRequestDAO storeEtag:forRoute:]
+
+## 7.1.1
+
+_July 25, 2018_
+
+** Release Notes **
+
+*   Fixed a bug wherein all the options in an options list sent by Custom bot would not be rendered the first time it appeared when the app was in landscape mode. Selecting an option in this partially rendered list would crash the application.
+
+## 7.1.0
+
+_July 10, 2018_
+
+** Release Notes **
+
+*   Introduced support for [Custom Bots](https://support.helpshift.com/kb/article
+/what-are-custom-bots-and-how-do-i-use-them).
+*   Fixed a bug where the system kept the form-based Issue filing experience as the default if the Conversational Filing configuration from the Dashboard was not known to the SDK yet.
+*   Fixed a bug where the SDK was incorrectly reporting the build number as the application version while filing the issue.
+*   Fixed a bug where image attachments sent by an end user were not re-fetched after they had logged out and logged back in.
+*   Fixed a bug where image drafts were lost in the form-based Issue filing experience when the user visited suggested FAQs.
+*   Fixed a bug where image attachments sent by the end user were uploaded twice when network timeout errors occurred.
+*   Fixed a bug where the SDK was not throwing the InstallException in cases where wrong install credentials were provided.
+*   Fixed a bug where the name field was not being updated when the same user logged in with a different name.
+*   Fixed a bug where the dark theme was incorrectly displayed on iPhoneX devices in the FAQ detail screen bottom view.
+*   Fixed a bug where the status bar color property was not reflected correctly the first time that the screen was launched.
+*   Fixed a bug where the send button image theme could not be edited.
+*   Fixed a bug where the SDK was not considering the current push permission status with regards to starting and stopping the poller.
+*   Fixed a bug where FAQ search results were not being highlighted for CJK languages.
+*   Fixed a bug where pending notifications for a closed Issue were taking the user to the chat screen of the closed Issue even after the user had already created a new Issue.
+*   Fixed a crash that would occur rarely while retrying the failed network requests:
+    *   Stacktrace: objc_class::demangledName(bool)
+                    NSStringFromClass
+                    +[HSConstants queueNameForClass:]
+*   Fixed a crash in database operations:
+    *   Stacktrace: __hs_db_worker_queue
+                    +[HsDbUtil pathForDatabaseName:]
+                    +[HsDbUtil openDb:] + 4342041624
+
+## 7.0.1
+
+_May 9, 2018_
+
+** Release Notes **
+
+*   Fixed a bug where network requests were not automatically retried when failures occurred.
+*   Fixed a bug where FAQs did not load for some users when upgrading to 7.0.0.
+*   Fixed a crash that would occur in cases where a user replied to a Rejected conversation.
+*   Fixed a rare bug where a user might get stuck in pre-issue state.
+*   Fixed a bug where the 'didReceiveInAppNotification' delegate was not called in some cases.
+*   Fixed a bug where a user would see a blank screen when the showConversation API was called.
+*   Fixed a CFBundleExecutable key Issue in bundles.
+*   Fixed a bug where the pre-Issue state might be reset when an app reinstall occurred.
+*   Fixed a bug where in some cases, the badge count would not update on FAQ screens.
+
+
+## 7.0.0
+
+
+
+_April 23, 2018_
+
+** Release Notes **
+
+*   Introduced new updates to the in-app messaging experience. Here's our guide on how to onboard to the new experience. [View](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up)
+*   Introduced a new and enhanced Login API for managing the name, email, and user identifiers for your end users. [View](/ios/users#logged-in-users).
+*   Introduced the ability to use the 'Email' field as a means of identifying users, so that email addresses don't have to be passed to the 'User ID' field.
+*   Introduced 'user auth token', which is an HMAC Digest used to ensure that the requests are coming from an authentic source (and not a malicious 3rd party). [View](/ios/users#configure-identity-verification)
+*   Introduced the [QuickSearch Bot](https://support.helpshift.com/kb/article/what-is-quicksearch-bot-and-how-does-it-work/) and [Identity Bot](https://support.helpshift.com/kb/article/what-is-the-identity-bot-and-how-does-it-work/) for in-app messaging SDKs.
+*   Enhanced UI and support for voiceover.
+*   SDK screens are not orientation locked anymore.
+*   Chat bubble colors are customizable now.
+*   Deprecated the `setNameAndEmail()`, `setUserIdentifier()` and the existing `loginWithIdentifier:` APIs. Please use the new [login API](/ios/users#logged-in-users).
+*   Deprecated the configurations `conversationPrefillText`, `requireEmail`, `hideNameAndEmail`, `goToConversationAfterContactUs`, `showSearchOnNewConversation` along with the Form-based Issue filing experience. All the details are mentioned [here]( https://support.helpshift.com/kb/article/april-2018-sdks/)
+*   Dropped support for iOS8 and below.
+*   Fixed cases where multiple Issues can be created or duplicate messages can be sent from the SDK in case of client network errors.
+*   Fixed a bug where FAQ search keywords specified on the Dashboard were not picked up by the SDK if they contained capital letters.
+*   Fixed a bug where users wouldn't receive push notifications if the push token syncing failed.
+*   Fixed a bug where sometimes the SDK would keep making network requests if the host app is executing a background operation.
+*   Fixed a bug where, on the Issue filing screen, a deleted description draft would reappear after attaching the screenshot.
+*   Fixed a bug where the 'Contact Us' button was not visible if the FAQ or Section title was too large.
+*   Fixed a bug where the bottom half of the in-app notification banner was not tappable on an iPhone X.
+*   Fixed a bug where the background of the table view when presenting FAQ search results was not styled properly in Dark theme.
+*   Fixed a bug where sometimes a chat screen will launch automatically when multiple in-app notifications were received at the same time.
+*   Fixed a bug where sometime users were able to give a CSAT rating after they had reject the resolution request.
+*   Fixed a bug where the users' device was shown as an iPhone 7 instead of an iPhone 7 plus.
+*   Fixed a bug where user engagement analytics were not properly captured for Campaigns push notifications.
+*   Fixed a bug where rich push notification actions were not working in Campaigns push notifications if the UNNotification framework was used.
+*   Fixed a bug where the badge count for unread messages on the FAQ screen was incorrect if the Issue was resolved and the app was killed and re-opened.
+*   Fixed an issue where the SDK was throwing and catching exceptions while the device is offline, making the offline debugging harder for developers.
+*   Fixed a crash in database operations.
+*   Stacktrace: thread #4, queue = 'com.helpshift.HSIssuesPersistentStorage', stop reason = EXC_BAD_ACCESS (code=1, address=0x74786574)
+*   Fixed a crash which would sometime occur when sanitizing the user name string.
+*   Stacktrace:  NSInvalidArgumentException
+    *   [HSProfile initWithServerIdentifier:identifier:name:email:userId:deviceId:andLastSeenAt:isSynced:]
+*   Fixed a crash which would occur when syncing device data for Campaigns:
+    *   Stacktrace: NSInvalidArgumentException
+                [HsDeviceController makeHSRequestForProperties:]
+
+## 6.4.3
+
+_February 13, 2018_
+
+** Release Notes **
+
+*   Fixed a rare edge case where users were not able to send or receive messages.
+*   Improved Helpshift's podspecs to address an issue where test targets were not building after Helpshift's pod integration.
+
+## 6.4.2
+
+_January 16, 2018_
+
+** Release Notes **
+
+*   Fixed a rare crash that would occur when the SDK configuration was being fetched for the first time.
+    *   Stack trace: 0x00000001903ae2d0 -[__NSDictionaryM setObject:forKey:] + 320
+                     0x0000000100157ee8 -[HsSdkInfoModel addEtag:forRoute:] + 136
+
+
+## 6.4.1
+
+_December 21, 2017_
+
+** Release Notes **
+
+*   Fixed a bug where symbols were conflicting with SocketRocket while using -all_load linker flag.
+*   Fixed a race condition where the SDK stopped fetching new messages after navigating to the chat screen from FAQs.
+*   Fixed a rare bug where agent typing indicator would not be visible to the user.
+*   Fixed a rare crash while storing campaigns sessions.
+    *   Stack trace:Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[__NSPlaceholderArray initWithObjects:count:]: attempt to insert nil object from objects[1]'
+*   Fixed a crash when the entered text in FAQs Search Controller was in auto-correct/suggestion mode and user pressed cancel.
+    *   Stack trace: -[__NSPlaceholderDictionary initWithObjects:forKeys:count:]: attempt to insert nil object from objects[0] in method -[HsFaqSearchUIControllerImpl addFAQAnalyticEvent:]
+
+## 6.4.0
+
+_November 20, 2017_
+
+** Release Notes **
+
+*   Added support for iPhoneX.
+*   Applications are now required to build with Xcode 9 so that layouts work correctly across all supported iOS versions. If you have an XCode 8 project, you could use the build mentioned [here](https://support.helpshift.com/kb/article/can-i-install-an-older-version-of-the-helpshift-sdk/).
+*   Added support for UNNotifications framework for push notifications. [View](/ios/notifications)
+*   Improved the accessibility behavior for the following UI elements:
+    *   Resolution Request view
+    *   "Start a new conversation" button
+    *   Customer Satisfaction Survey flow
+    *   Failed message indicator view
+    *   "Screenshot Request" message
+    *   "Review Request" message
+    *   Automation reply message
+    *   Attachment message
+*   Improved Italian translation for "Email (optional)" string.
+*   Fixed a crash in the Campaigns login API .
+    *   Stack trace: [HsSwitchUserController getRequestData] setObjectForKey - object cannot be nil (key: uid)
+*   Fixed a crash in the SDK migration flow.
+    *   Stack trace: setObjectForKey: object cannot be nil (key: profile-id)
+*   Fixed a crash in the Campaigns property syncing.
+    *   Stack trace: Exception: NSInvalidArgumentException in -[HsUserModel setSyncStatus:forProperties:]
+*   Fixed a crash which would occur when the showDynamicFormOnViewController:withTitle:andFlows:withConfig: API was called.
+*   Fixed a bug where the chat screen would automatically open if the control center or notification tray was open at the time of push notification arrival.
+*   Fixed an edge case bug where users would see a blank chat screen if they filed a new conversation while the SDK was migrating to a new SDK version.
+*   Fixed a bug where the image attachment would flicker after being sent successfully.
+*   Fixed a bug where the typing indicator animation was not smooth on iOS 11 devices.
+*   Fixed a bug where the "Contact Us" button in the search footer was not localized for VO users.
+*   Fixed a bug where focusing on the tableview in VO mode would shift the tableview down and show some empty space on top.
+*   Fixed a bug where Bar button font name was not getting applied from the HelpshiftConfigDark.plist.
+*   Fixed a bug where font size in Table Section Header was not getting applied.
+
+## 6.3.1
+
+_November 13, 2017_
+
+** Release Notes **
+
+*   Fixed a UX issue for apps built with Xcode8 or prior and running on iOS11 where the beginning of the tableviews was shifted down.
+
+## 6.3.0
+
+_October 13, 2017_
+
+** Release Notes **
+
+*   Added support for sending "Custom Issue Fields" when filing a new conversation. [View](/ios/tracking#custom-issue-fields)
+*   Added a Swift compatible API to send logs when filing a new conversation. [View](/ios/tracking#debug-logs)
+*   Added support for passing 64 bit integers in campaigns user properties. [Feature is redacted]
+*   Added an API to asynchronously request unread campaigns message count. [Feature is redacted]
+*   Added a new delegate to provide unread campaign message count. [Feature is redacted]
+*   SDK now requires -ObjC flag to be present in the "Other Linker Flags" under Build Settings section. [View](/ios/getting-started#add-to-project)
+*   Made improvements to the Campaign images downloading mechanism.
+*   Fixed an intermittent crash on conversation filing screen when network is unavailable.
+*   Fixed a bug where links were not working in Screenshot Request messages.
+*   Fixed a UI issue where calling UIAppearance proxy API to invoke setContentInsetAdjustmentBehavior from host app was affecting SDK's scroll views.
+*   Fixed a bug where Application state was being read from background thread instead of main thread.
+*   Fixed an accessibility bug where VO would navigate to "Describe your problem" text view and its placeholder in the text input area.
+*   Fixed a rare case where failing to read metadata of a message from disk could cause the app to crash.
+*   Improve accessibility VO label for "Send" button on Conversation Filing Screen.
+*   Improved handling of the rare case where Conversation DB could go in undesirable state.
+*   Deprecated the following APIs. [View](/ios/upgrade-62/)
+    *   (void) log:(NSString *)format, ...; in HelpshiftSupport class
+    *   (NSInteger) getCountOfUnreadMessages in HelpshiftCampaigns class
+
+## 6.2.0
+
+_September 22, 2017_
+
+** Release Notes **
+
+*   Helpshift now supports iOS 11
+*   Deprecated `showAlertToRateAppWithURL:withCompletionBlock:` API. An explanation of why we made this change can be found [here](/ios/reviews-and-feedback#review-reminder-changes).
+*   Automatic review reminder requests sent from the backend will now be ignored.
+*   Updated the review action in Campaigns to have it redirect to the app store page of the app.
+*   Fixed some code comments.
+*   Make method `didReceiveNotificationCount` in `HelpshiftSupportDelegate` optional. Use the newer [`requestUnreadMessagesCount`/`didReceiveUnreadMessagesCount` APIs](/ios/notifications#notification-badges) instead.
+*   Fixed a bug where the color set using "Rating star color" was not being applied to stars on feedback screen.
+*   Fixed Hindi translation for "You found this helpful" string.
+*   Fixed a rare crash in signature generation while making a network request.
+*   Fixed a bug where the retry button for text messages would not work even after reconnecting to the network.
+
+## 6.1.0
+
+_August 21, 2017_
+
+** Release Notes: **
+
+*   Added support for iOS-11 beta-5
+*   Added a new API to set the SDK language asynchronously. [View](/ios/upgrade-60/#set-sdk-language )
+*   Added an API to asynchronously check if an active Conversation exists. [View](/ios/upgrade-60/#check-active-conversation)
+*   Added an API to asynchronously request unread message count. [View](/ios/upgrade-60/#unread-count-saved-locally-example-snippet)
+*   Added an API to asynchronously create and return dynamic form for given flows. [View](/ios/upgrade-60/#show-dynamic-form)
+*   Added the following methods to the HelpshiftSupportDelegate protocol:
+    *   (void) didCheckIfConversationActive:(BOOL)isActive
+    *   (void) didReceiveUnreadMessagesCount:(NSInteger)count
+    *   (void) didCreateDynamicForm:(UINavigationController *)form
+*   Setting enableFullPrivacy API configuration to true will now hide name and email address fields. [View](/ios/sdk-configuration#enableFullPrivacy)
+*   Fixed a bug where blank cells appeared upon searching for FAQs in FAQ section view.
+*   Fixed a bug on iOS 11-beta where the text view to enter CSAT review text was not visible in review rating screen.
+*   Fixed a bug where compilation would fail if Socket Rocket library was integrated with the app through source code.
+*   Fixed a bug where tags were not added to the new issue if added without metadata.
+*   Fixed a bug where "Bold font name" config was not applied to FAQ title.
+*   Fixed a bug where the applications that use Google Cast SDK would crash while filing a new Conversation.
+*   Fixed the warnings reported by Xcode 9 where some of the UIKit APIs were called from secondary thread.
+*   Fixed a bug where database connections were not closed before removing the database during migration.
+*   Fixed a bug on iOS 11 where back button title would not appear in single FAQ and Conversation screens.
+*   Deprecated the following APIs within the HelpshiftSupport class: [View](/ios/upgrade-60/#deprecated-api)
+    *   (BOOL) isConversationActive
+    *   (NSInteger) getNotificationCountFromRemote:(BOOL)isRemote
+    *   (UINavigationController *) dynamicFormWithTitle:(NSString *)title andFlows:(NSArray *)flows
+    *   setSDKLanguage:(NSString *)languageCode
+*   Deprecated the method (void) didReceiveNotificationCount:(NSInteger)count in HelpshiftSupportMetadata protocol. [View](/ios/upgrade-60/#deprecated-api)
+
+
+## 6.0.0
+
+_July 18, 2017_
+
+** Release Notes: **
+
+*   Added compatibility for iOS 11 beta 3.
+*   Added support to show an animated indication on the Conversation screen when an Agent is replying to the Conversation.[View](/ios/sdk-configuration#enableTypingIndicator)
+*   Added a new High Contrast theme.[View](/ios/design#default-skins)
+*   Added two new keys for customizing text color of the user chat bubble and Agent chat bubble.[View](/ios/design#attributes-footers)
+*   Added new key for customizing Typing indicator color.[View](/ios/design#attributes-footers)
+*   Added new keys for customizing Secondary text color, Placeholder text color and Timestamp text color.[View](/ios/design#attributes-global)
+*   Removed Helpshift class and all its member methods that were deprecated in SDK version 5.0.0.[View](/ios/upgrade-5x/#removed-api)
+*   Deprecated APIs that take install and API configurations as NSDictionary.[View](/ios/upgrade-5x/#deprecated-api)
+*   Fixed a bug where the SDK would crash upon pressing the back button after attaching a second screenshot while the first screenshot upload was still in-progress.
+*   Fixed a bug where the SDK would crash if the Issue was filed with a corrupt image.
+*   Fixed a bug where the SDK would crash upon calling setMetadataObjectBlock API.
+*   Fixed a bug where the search title text was not highlighted in search results.
+*   Fixed a bug where the FAQ footer text got clipped if the font size was increased in the device's accessibility settings.
+*   Fixed a bug where follow-up was successful if sent while the user was typing.
+*   Fixed a UI glitch where extra padding was added to the table view search controller if the translucency of the navigation bar was disabled.
+*   Fixed bug where a crash would occur when multi-character UTF-16 encoded characters were found in the FAQ body of search results.
+*   Fixed a bug where the Contact Us button in FAQ search results list was not accessible via the accessibility identifier.
+*   Fixed a bug where the badge count was not updated when the Issue was resolved.
+*   Fixed a bug where notification count APIs were returning incorrect values.
+*   Fixed a bug where the app was not suspended immediately after being backgrounded.
+*   Fixed a bug where a crash would occur on iOS 11 beta 3 while attaching a screenshot in new Conversation.
+*   Fixed crash on some devices in rare cases while creating a new issue.
+*   Fixed a rare bug where a crash would occur on syncing sessions on iOS 10.
+*   Fixed a rare crash on app launch.
+*   Improved syncing server configurations.
+*   Improved handling for failed network requests.
+

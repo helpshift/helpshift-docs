@@ -1,0 +1,78 @@
+---
+sidebar_position: 230
+title: Upgrading from 2.x to 3.x
+description: "The Helpshift SDK v3.x is a major update that unifies the Report an Issue and Issues Inbox into a single Conversation interface. We've also cleaned up our API calls. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Upgrading from 2.x to 3.x {#upgrade-to-3x}
+
+<Intro>
+
+The Helpshift SDK v3.x is a major update that unifies the Report an Issue and Issues Inbox into a single Conversation interface. We've also cleaned up our API calls. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## Upgrading {#upgrading}
+
+1. Download the latest Helpshift SDK [here](https://d3e51fp79zp4el.cloudfront.net/library/latest/android/helpshift-android-sdk.zip).
+1. Follow the instructions on [Adding the latest stable release of the SDK to your project](/android/getting-started#add-to-project)
+1. **Important Note**: **From v3.x, all Helpshift calls are now static.**
+   You no longer need to initialize the helpshift object. You can directly use `Helpshift.install(...);`. `Helpshift.showFAQs(...);` now presents the full support screen. **hs.showReportIssue(...);** is no longer available. Use `Helpshift.showConversation(...);` instead.
+1. Replace any other API calls which are no longer available with the new ones below.
+1. You're now good to go with Helpshift SDK v3.x.
+
+
+## What changed {#what-changed}
+
+* We've cleaned up our API calls to be more descriptive and more
+  consistent across our iOS and Android SDKs. Basic implementation has
+  been simplified to Contact Us and FAQ use cases
+  (`Helpshift.showConversation(...);` and `Helpshift.showFAQs(...);` respectively).
+
+* Make it easier for your app users to contact you when they are in
+  trouble. There's a flag to persist Contact Us across all FAQ screens
+
+* No more issue inbox, we've unified the conversation interface into a
+  single channel. The UI is simpler for app users. They always know
+  where to get in touch with you or continue the conversation.
+
+* If app users find your FAQ not helpful, they can contact you to tell
+  you why.
+
+* Updated strings and translations.
+
+
+
+## List of API changes {#api-changes}
+
+| 2.x API | new API |
+|----------------|---------|
+| hs.install(...); | `Helpshift.install(...);`
+| hs.showSupport(...); | `Helpshift.showFAQs(...);`
+| hs.showQuestion(...); | `Helpshift.showSingleFAQ(...);`
+| hs.showSection(...); | `Helpshift.showFAQSection(...);`
+| hs.showReportIssue(...); and hs.showInbox(...); | `Helpshift.showConversation(...);`
+| hs.setUsername(...); and hs.setUseremail(); | `Helpshift.setNameAndEmail(...);`
+| hs.setDeviceToken(...); | `Helpshift.registerDeviceToken(...);`
+| hs.clearUserData(); | Now removed |
+
+
+<Admonition type="info" title="Note">
+
+All support screen API calls now have [API options](/android/support-tools#api-options).
+
+</Admonition>
+

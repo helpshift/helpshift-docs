@@ -1,0 +1,373 @@
+---
+sidebar_position: 30
+title: API Options
+description: "Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/sdkx_ios/support-tools/)."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# API Options
+
+<Intro>
+
+Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/sdkx_ios/support-tools/).
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
+
+
+</Admonition>
+
+
+## enableLogging {#enableLogging}
+
+Upon setting `enableLogging` to `YES`, Helpshift SDK logs will be generated in the Xcode console. This will be useful for debugging the SDK during integration.
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableLogging</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>NO</code>|
+|Min SDK| v10.0.0|
+|Supported by:| <code>installWithPlatformId:domain:config:</code>|
+Example:
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *config = @{ @"enableLogging":@YES };
+                        
+[Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" 
+                          domain:@"YOUR_DOMAIN_NAME"
+                          config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["enableLogging": true]
+Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+## enableContactUs {#enableContactUs}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableContactUs</code>|
+|Values| <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code>|
+|Default| <code>nil</code>|
+|Min SDK| v10.0.0|
+|Supported by| <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>|
+
+</TabItem>
+
+</Tabs>
+
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *config = @{ @"enableContactUs": @"AFTER_VIEWING_FAQS" };
+[Helpshift showFAQs:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["enableContactUs": "AFTER_VIEWING_FAQS"]
+Helpshift.showFAQs(self, config: config)
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+### Best Practices
+
+* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+
+    
+```objc
+
+        CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
+        CTCarrier *carrier = [netinfo subscriberCellularProvider];
+        NSString *enableContactUsValue = @"AFTER_VIEWING_FAQS";
+
+        if([[carrier mobileCountryCode] isEqualToString:@"<LOCAL_COUNTRY_CODE>"]) {
+            enableContactUsValue = @"ALWAYS";
+        }
+
+        NSDictionary *config = @{ @"enableContactUs": enableContactUsValue };
+        [Helpshift showFAQs:self config:config];
+
+```
+
+## enableInAppNotification {#enableInAppNotification}
+
+If you do not want the in-app notifications support provided by the Helpshift SDK, set this flag to `NO`.
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+| | |
+|--|--|
+|Option:| <code>enableInAppNotification</code>|
+|Values:| <code>YES</code> / <code>NO</code>|
+|Default:| <code>YES</code>|
+|Min SDK| v10.0.0|
+|Supported by:| <code>installWithPlatformId:domain:config:</code>|
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *config = @{ @"enableInAppNotification":@YES };
+                        
+[Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" 
+                          domain:@"YOUR_DOMAIN_NAME"
+                          config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["enableInAppNotification": true]
+Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+## inAppNotificationAppearance {#inAppNotificationAppearance}
+
+This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+| | |
+|--|--|
+|Option:| <code>inAppNotificationAppearance</code>|
+|Sub-Options:| <code>bannerBackgroundColor</code> / <code>textColor</code>|
+|Min SDK| v10.0.0|
+|Supported by:| <code>installWithPlatformId:domain:config:</code>|
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *config = @{ @"inAppNotificationAppearance": @{
+                            @"bannerBackgroundColor": @"000000",
+                            @"textColor": @"FFFFFF"
+                            } 
+                        };
+                        
+[Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" 
+                          domain:@"YOUR_DOMAIN_NAME"
+                          config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["inAppNotificationAppearance": ["bannerBackgroundColor":"000000", "textColor":"FFFFFF"]]
+Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+## presentFullScreenOniPad {#presentFullScreenOniPad}
+
+The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
+
+The default value is NO, presents support views as `UIModalPresentationFormSheet`. When the value is set to `YES`, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+| | |
+|--|--|
+|Option| <code>presentFullScreenOniPad</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v10.0.0|
+|Supported by| <code>showConversation</code>|
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *config = @{ @"presentFullScreenOniPad": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["presentFullScreenOniPad": true]
+Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+## enableFullPrivacy {#enableFullPrivacy}
+
+In scenarios where the user attaches objectionable content in the screenshots, it becomes a huge [COPPA](http://www.coppa.org/) concern. The enableFullPrivacy option will help solve this problem.
+
+Setting the enableFullPrivacy option to YES ensures full COPPA compliance by doing the following:
+
+1. Disable user-initiated screenshots - players cannot send images without being requested by an Agent.
+2. Do not collect any of the following personal information:
+    * Mobile country code, mobile network code and carrier name.
+    * Country code and country.
+    * Custom meta-data that is labeled "private-data".
+
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+| | |
+|--|--|
+|Option| <code>enableFullPrivacy</code>|
+|Values| <code>YES</code> / <code>NO</code>|
+|Default| <code>NO</code>|
+|Min SDK| v10.0.0|
+|Supported by| <code>showConversation</code>, <code>showFAQs</code>|
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *config = @{ @"fullPrivacy": @YES };
+[Helpshift showConversationWith:self config:config]; 
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["fullPrivacy": true]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+### Best Practices
+In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to YES. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
+
+## Theming the SDK {#theming}
+
+Please check [design](/sdkx_ios/design) page to apply your styles and theming to the SDK.
+
+## Tracking {#tracking}
+
+This config represents the tracking of user actions. For more information, please check [tracking](/sdkx_ios/tracking).
