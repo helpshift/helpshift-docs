@@ -1,0 +1,320 @@
+---
+sidebar_position: 80
+title: Tracking
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Tracking {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
+
+
+</Admonition>
+
+
+## Multi Login {#multi-login}
+
+Details on user management are available [here](/sdkx_ios/users/).
+
+
+## Attaching tags with conversation {#conversationtags}
+
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+* HSTags must be created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+* HSTags must be lowercase since the dashboard automatically converts tags to lowercase. The tags present on the dashboard must exactly match the HSTags.
+
+
+</Admonition>
+
+
+<Image src="/static/books/ios/metadata-tags.png"  width="half" /> 
+
+You can attach tags to every new conversation in the config object while calling the showConversation API. The passed tags get intepreted at server and added as Tags for the every new conversation.
+
+If an object in `NSArray` is not of type `NSString` then the object will be removed from Tags and
+will not be added for the new conversation.
+
+
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSArray *tags = @[@"Hello", @"iOS"];
+NSDictionary *config = @{@"tags":tags};
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let tags = ["Hello", "iOS"]
+let config = ["tags":tags]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+## Attaching Custom Metadata to conversations {#custom-meta-data}
+
+You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation. You can attach custom metadata passing it to the `config` dictionary at the time of calling any of the SDK X APIs (`showConversation`, `showFAQs`, `showSingleFAQ`, `showFAQSection`).
+
+Example:-
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *customMetadata = @{ @"usertype": @"paid",
+                                  @"level": @"7",
+                                  @"score": @"12345"
+ };
+
+NSDictionary *config = @{ @"customMetadata" : customMetadata };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let customMetadata = [ "usertype": "paid",
+                       "level": "7",
+                       "score": "12345" ];
+let config = ["customMetadata":customMetadata]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+Metadata should only be sent as String key-value pairs.
+
+* Once customMetadata is set, if you want to reset it, then you’ll have to call the SDK X API with an empty dictionary, i.e.,
+
+```swift
+let customMetadata = [String: String]();
+let config = ["customMetadata":customMetadata]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</Admonition>
+
+
+## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+
+
+<Admonition type="info" title="Note">
+
+**On Custom Issue Fields keys & compatibility**
+
+* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+
+</Admonition>
+
+
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` method in the ApiConfig object.
+These Custom Issue Fields would be sent whenever a new conversation is started by the end user.
+
+As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
+All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts. 
+
+Possible datatypes to be passed into the config are:
+
+
+|  Type             | value |  Comments          |
+|-------------------|-------|--------------------|
+| "singleline" | string | Single line string with character limit of 255 |
+| "multiline"   | string | Multi line string with character limit of 100,000 |
+| "number" | string |  String representation of number. For eg.  "12345" |
+| "dropdown"  | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "date"  | long long int | Epoch time in milliseconds. For eg. `1505927361535` |
+| "checkbox"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
+
+
+Example:-
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+NSDictionary *cifs = @{ @"joining_date": @{ @"type":@"date", @"value":@1505927361535 },
+                         @"stock_level": @{ @"type":@"number", @"value":@"1505" },
+                       @"employee_name": @{ @"type":@"singleline", @"value":@"ABC" },
+                    @"employee_address": @{ @"type":@"multiline", @"value":@"303,Joy plaza,Park street,Viman nagar.Pune-432123" },
+                     @"salary_currency": @{ @"type":@"dropdown", @"value":@"Dollars" } };
+
+NSDictionary *config = @{ @"customIssueFields" : cifs };
+[Helpshift showConversationWith:self config:config]; 
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let cifs = [ "joining_date": [ "type":"date", "value":1505927361535 ],
+                                 "stock_level": [ "type":"number", "value":"1505" ],
+                               "employee_name": [ "type":"singleline", "value":"ABC" ],
+                            "employee_address": [ "type":"multiline", "value":"303,Joy plaza,Park street,Viman nagar.Pune-432123" ],
+                             "salary_currency": [ "type":"dropdown", "value":"Dollars" ] ];
+let config = ["customIssueFields":cifs]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+## Breadcrumbs
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK X v10.1.0 & above.
+
+</Admonition>
+
+Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs, use `leaveBreadcrumb:` API —
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+[Helpshift leaveBreadcrumb:@"any breadcrumb string"];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.leaveBreadcrumb("any breadcrumb string")
+```
+
+</TabItem>
+
+</Tabs>
+
+
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the **SDK Configurations** section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `clearBreadcrumbs` API —
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+[Helpshift clearBreadcrumbs];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.clearBreadcrumbs()
+```
+
+</TabItem>
+
+</Tabs>
+
+
+## Debug Logs
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK X v10.1.0 & above.
+
+</Admonition>
+
+You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. This can be achieved using `addLog:` API —
+
+
+<Tabs>
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```
+[Helpshift addLog:@"any debug log string"];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.addLog("any debug log string")
+```
+
+</TabItem>
+
+</Tabs>
+
+
+Debug logs are collected within the set debug logs limit. The limit is set under the **SDK Configurations** section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.

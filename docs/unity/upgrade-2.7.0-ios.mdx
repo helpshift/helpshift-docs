@@ -1,0 +1,127 @@
+---
+sidebar_position: 10
+title: Upgrading from 2.7.0 to 2.8.0 / #upgrade-to-2.8.0 /
+description: "The Helpshift plugin v2.8.0 is a major update. Please note that we have deprecated some APIs. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Upgrading from 2.7.0 to 2.8.0 {#upgrade-to-2}
+
+<Intro>
+
+The Helpshift plugin v2.8.0 is a major update. Please note that we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## List of deprecated APIs {#deprecated-api}
+| Deprecated API | New API |
+|----------------|---------|
+| `HelpshiftSdk.isConversationActive`   | `HelpshiftSdk.checkIfConversationActive`  |
+| `HelpshiftSdk.getNotificationCount`   | `HelpshiftSdk.requestUnreadMessagesCount` |
+| `Helpshift Delegate API "didReceiveNotificationCount"` | `Helpshift delegate API "didReceiveUnreadMessagesCount"`   |
+
+## Check active Conversation {#check-active-conversation}
+
+On Plugin version 2.7.0 or below, you can check if an active Conversation exists as shown below:
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+boolean isActive = help.isConversationActive();
+```
+
+On Plugin version 2.8.0, a new API and a delegate method is introduced to check if an active Conversation exists. The example code is shown below:
+
+```csharp
+API:
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+help.checkIfConversationActive();
+ 
+Delegate:
+public void didCheckIfConversationActive(string isActive) {
+    if (isActive == "true") {
+        //Active Conversation
+    } else {
+        //No open Conversation
+    }
+}
+```
+
+## Show count of unread messages saved locally {#unread-count-saved-locally-example-snippet}
+
+On plugin version 2.7.0 or below, unread messages count can be obtained both synchronously and asynchronously. This is changed in Plugin version 2.8.0 and unread message count is always obtained asynchronously.
+As an example, if you want to get the locally saved unread messages in the game object and you're on plugin 2.7.0 or earlier versions, you would use the "getNotificationCount" API like :
+```csharp
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+int messageCount = help.getNotificationCount(false);
+```
+
+On Plugin version 2.8.0, you can retrieve the locally stored unread messages and display the count as shown below:
+```csharp
+API:
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+help.requestUnreadMessagesCount(false);
+ 
+Delegate:
+public void didReceiveUnreadMessagesCount(string count) {
+    // your code here
+}
+```
+
+## Show count of unread messages from server {#unread-count-remote-example-snippet}
+
+As an example, if you want to get the unread messages from server and display the count in the game object and you're on plugin 2.7.0 or earlier versions, you would use the "getNotificationCount" API like :
+```csharp
+API:
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+help.getNotificationCount(true);
+ 
+Delegate:
+public void didReceiveNotificationCount(string count) {
+    // your code here
+}
+```
+
+On plugin version 2.8.0, you can retrieve unread messages from the server and display the count, as shown below:
+```csharp
+API:
+using Helpshift;
+.
+.
+.
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.getInstance();
+help.requestUnreadMessagesCount(true);
+ 
+Delegate:
+public void didReceiveUnreadMessagesCount(string count) {
+    // your code here
+}
+```

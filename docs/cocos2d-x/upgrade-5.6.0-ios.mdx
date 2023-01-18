@@ -1,0 +1,49 @@
+---
+sidebar_position: 10
+title: Upgrading to 5.6.0 and above
+description: "The Helpshift SDK v5.6.0 is a major update and we have made some important changes. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Upgrading to 5.6.0 and above {#upgrade-to-560}
+
+<Intro>
+
+The Helpshift SDK v5.6.0 is a major update and we have made some important changes. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## xcframework packaging for SDK {#xcframework-packaging}
+
+With version 5.6.0, Helpshift SDK is packaged as a xcframework rather than a single dynamic framework. Please follow the steps mentioned here if you are migrating from an older version of Helpshift SDK.
+
+### Manual Integration
+
+
+<Admonition type="info" title="Note">
+
+For SDK versions below 5.4.0, follow the steps mentioned in the "Manual integration" section on [here.](/cocos2d-x/upgrade-5.4.0-ios/#framework-packaging)   
+
+</Admonition>
+
+
+1. Remove all Helpshift SDK related files from the project. These include -
+    * Helpshift.framework
+    * Helpshift.framework from Copy Files section from the Build Phases of your app
+    * Remove the Helpshift specific `Run script` section referencing the `strip_frameworks.sh` script inside the Helpshift.framework.
+    * Remove all wrapper files for Helpshift SDK from the project, which are added from `ios/Classes` folder present in Helpshift Cocos2d-x package.
+2. Remove `@loader_path/Frameworks` from Runpath Search Paths section in the build settings, if other SDKs in your app don’t need it. 
+
+
+<Admonition type="info" title="Note">
+
+No changes are needed for custom theming plists and custom localization bundle when migrating. The old theming files and localization bundle will continue to work as expected.
+
+</Admonition>
+
+
+After completing the above steps, please follow the steps [here](/cocos2d-x/getting-started-ios#adding-ios) to integrate the xcframework version of Helpshift SDK.

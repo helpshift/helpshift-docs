@@ -1,0 +1,55 @@
+---
+sidebar_position: 70
+title: Impact Analysis
+description: "For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Impact Analysis {#performance}
+
+<Intro>
+
+For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application.
+
+
+</Intro>
+
+
+
+
+<Admonition type="info" title="Note">
+
+**App Launch Time**
+
+Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
+
+</Admonition>
+
+
+## 10.1.0
+
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2019.4.11f1, on macOS 12.1, with Xcode 13.2 built demo app on iOS 15.1 (iPhone X). Memory Usage will increase with number of messages in a conversation.
+
+</Admonition>
+
+
+### Disk space
+
+When an Unity iOS app is integrated with `HelpshiftX.framework`, the increase in the size of IPA file is around `240` KB.
+
+### Ram usage
+
+The following is the memory usage of Helpshift APIs in debug mode. (Values are approximate)
+
+
+| | |
+|--|--|
+|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>10.3</code> MB (This depends on number of messages on the chat screen).|
+|**Helpshift's FAQs screen (<code>showFAQs:</code>)**| adds <code>10.1</code> MB. |

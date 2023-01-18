@@ -86,6 +86,15 @@ async function createConfig() {
           darkTheme: darkCodeTheme,
           additionalLanguages: ["swift", "java", "csharp", "groovy", "kotlin"],
         },
+        metadata: [
+          {
+            name: "robots",
+            content:
+              process.env.AWS_BRANCH === "main"
+                ? "index,follow"
+                : "noindex,nofollow",
+          },
+        ],
       }),
     plugins: [
       async function tailwindPlugin() {
@@ -99,6 +108,7 @@ async function createConfig() {
           },
         };
       },
+      require.resolve("./src/plugins/webChat.js"),
     ],
   };
 

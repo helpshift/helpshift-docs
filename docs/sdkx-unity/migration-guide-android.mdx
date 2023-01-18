@@ -1,0 +1,456 @@
+---
+sidebar_position: 270
+title: Migration Guide
+description: "SDK X Unity plugin is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end-users without any downtime or app updates. This migration guide will walk you through the steps you need to take to migrate from the Helpshift legacy SDK Unity plugin to the SDK X Unity plugin."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Migration Guide
+
+<Intro>
+
+SDK X Unity plugin is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end-users without any downtime or app updates. This migration guide will walk you through the steps you need to take to migrate from the Helpshift legacy SDK Unity plugin to the SDK X Unity plugin.
+
+
+</Intro>
+
+
+## Steps to migrate to SDK X Unity plugin {#steps-to-migrate}
+
+<Steps title="Migrate from legacy SDK Unity plugin to SDK X Unity plugin">
+    <Step number="1" title="Check migration support" subtitle="Go through migration guide" link="/sdkx-unity/migration-guide-android/#unsupported-features" newTab={true} />
+    <Step number="2" title="Update to SDK X Unity plugin" subtitle="Migrate code/features step by step" link="/sdkx-unity/migration-guide-android#update-helpshift-dependencies" newTab={true} />
+    <Step number="3" title="Test the migration" subtitle="Validate the functionality" />
+</Steps>
+
+## Unsupported features {#unsupported-features}
+
+We recommend to hold off on SDK X migration if you are currently using the following APIs/features -
+
+* [Guided issue filing](/unity/support-tools-android#dynamic-forms)
+* [FAQ filtering by tags](/unity/support-tools-android#faq-filtering)
+* [Minimum Issue description length](/unity/sdk-configuration-android#issue-description-minimum-length)
+* [Conversation pre-fill text](/unity/sdk-configuration-android#conversationPrefillText)
+* [SDK UI strings customization](/unity/string-customization-android/)
+* [Switching between light and dark themes](/unity/design-android#skinning)
+
+These features are yet to be developed, and we may add them to our 2022 roadmap. You can reach out to [support@helpshift.com](mailto:support@helpshift.com) to raise any query for the above.
+
+## Supported SDK Versions {#supported-sdk-versions}
+
+A successful migration indicates maintaining users’ data and chat history when they move from one SDK version to another. We support the migration of the SDK Unity plugin from version 4+ to the SDK X Unity plugin.
+
+
+<Admonition type="info" title="Note">
+
+** Migration from SDK Unity plugin version < 3.x **
+
+We don’t support the migration from SDK Unity plugin version < 3.x. If you move to SDK X Unity plugin from version < 3.x, SDK X will function correctly, but the logged-in user information will be lost, and a new default user will be created. You can log the current user in again, but the corresponding data for that user will not be migrated. It will be treated as a new user in the Helpshift system.
+
+</Admonition>
+
+
+## Update Helpshift dependencies {#update-helpshift-dependencies}
+
+### Requirements
+
+* Unity 5.5.6 and above.
+* Supported Android OS version: 16 and above
+
+### Integration
+
+* Remove the existing Helpshift `unitypackage` content from your project.
+* Make sure the following directories are removed from your project before you import the Unity SDK X Support package -
+    - Assets/Helpshift/
+    - Assets/Plugins/Android/helpshift-plugin-resources.aar
+    - Assets/Plugins/Android/helpshift-plugin-wrapper
+    - Assets/Plugins/Android/Helpshift.aar
+* Follow the instructions [here](/sdkx-unity/getting-started-android#adding-to-project) to add Helpshift SDK X to your project.
+
+## Code Changes {#code-changes}
+
+If you try to build an Xcode project from Unity after updating the Helpshift dependency, you will get compilation errors. This is because some API method names and signatures have changed between legacy SDK and SDK X.
+
+### Helpshift `install` call
+Remove the existing Helpshift install call and replace it with the following -
+```
+using Helpshift;
+...
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk _support;
+    ...
+    void Awake() {
+        _support = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>();
+        _support.Install(platformId, domainName, configMap);
+    }
+    ...
+}
+```
+
+Refer to SDK X Unity plugin’s [Getting Started](/sdkx-unity/getting-started-android/) guide for more information.
+
+### Helpshift install call configuration
+The mapping of install config dictionary keys are -
+
+| Legacy SDK Unity plugin install config dictionary key | SDK X Unity plugin install config dictionary key |
+|-------------------------------------------------------|--------------------------------------------------|
+| `HelpshiftSdk.ENABLE_LOGGING`                         | `HelpshiftSdk.ENABLE_LOGGING`                    |
+| `HelpshiftSdk.ENABLE_IN_APP_NOTIFICATION`             | `HelpshiftSdk.ENABLE_INAPP_NOTIFICATION`         |
+
+All other deprecated configurations have been removed and are not supported anymore. For more information about install configurations, check the [configuration](/sdkx-unity/sdk-configuration-android/) guide.
+
+### Helpshift Conversation and FAQ APIs
+
+The API signatures have changed. Update existing API calls with new ones as follows -
+
+| Legacy SDK Unity plugin API                               | SDK X Unity plugin API                      |
+|-----------------------------------------------------------|---------------------------------------------|
+| `showConversation(configMap)`                             | `ShowConversation(configMap)`               |
+| `showFAQs(configMap)`                                     | `ShowFAQs(configMap)`                       |
+| `showFAQSection(sectionPublishId, configMap)`             | `ShowFAQSection(sectionId,configMap)`       |
+| `showSingleFAQ(questionPublishId, configMap)`             | `ShowSingleFAQ(faqId,configMap)`            |
+| FAQ Filtering by tags                                     | Currently not supported                     |
+| Guided issue filing                                       | Currently not supported                     |
+
+For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-unity/support-tools-android/) guide.
+
+### Conversation and FAQ API Configuration
+
+The mapping of config dictionary keys are -
+
+| Legacy SDK Unity plugin config dictionary key | SDK X Unity plugin config dictionary key | Notes                                                                                                 |
+|-----------------------------------------------|------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| `enableFullPrivacy`                           | `fullPrivacy`                            | -                                                                                                     |
+| `enableTypingIndicator`                       | -                                        | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
+| `showConversationResolutionQuestion`          | -                                        | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
+
+All other configurations have been deprecated and are no longer supported. For more information about API configurations, check the [configuration](/sdkx-unity/sdk-configuration-android/) guide.
+
+### Helpshift User Management APIs
+
+Replace the following APIs for user login/logout -
+
+#### Login
+ 
+Replace legacy SDK login code -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+HelpshiftUser user = new HelpshiftUser.Builder ("unique-user-id-746501", "john.doe@app.com")
+                                      .setName ("John Doe")
+                                      .build ();
+_support.login(user);
+```
+
+ with SDK X login code -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.GetInstance();
+...
+Dictionary<string, string> userDetails = new Dictionary<string, string>
+                                          {
+                                              { "userId", "unique-user-id-746501" },
+                                              { "userEmail", "john.doe@app.com" },
+                                              { "userName", "John Doe" },
+                                              { "userAuthToken", "generated-user-authentication-token"}
+                                          };
+_support.Login(userDetails);
+
+```
+
+
+<Admonition type="info" title="Note">
+
+We recommend that on migration to SDK X Unity plugin, you should login the active user again to avoid potential inconsistencies.
+
+</Admonition>
+
+
+Other user management APIs have also changed -
+
+| Action               | Legacy SDK Unity plugin API                        | SDK X Unity plugin API                                |
+|----------------------|----------------------------------------------------|-------------------------------------------------------|
+| Logout               | `logout()`                                         | `Logout()`                                            |
+| Clear anonymous user | `clearAnonymousUser()`                             | `ClearAnonymousUser()`                                |
+
+For more information on User management in the SDK X Unity plugin, refer to [Users](/sdkx-unity/users-android/) guide.
+
+### Design and Theming
+
+SDK’s design and theming have been completely moved to the admin dashboard in SDK X. Please remove all calls to theming APIs and all theming-related files from your project. Removed APIs -
+
+* `setThemes(lightThemeFileName, darkThemeFileName)`
+
+* `setTheme(themeName)`
+
+Theming can be configured from the admin dashboard. You can find more details in the [SDK X theming](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/) guide.
+
+### String Customization
+
+String customization is yet to be supported. It will move to Helpshift Dashboard. Remove all Helpshift SDK related string customizations done in your project as they will no longer reflect in SDK X.
+
+### Notification APIs
+
+The API signatures have changed. Update existing API calls with new ones as mentioned -
+
+| Action                       | Legacy SDK Unity plugin API                                            | SDK X Unity plugin API                                          |
+|------------------------------|------------------------------------------------------------------------|-----------------------------------------------------------------|
+| Register device token        | `HelpshiftSdk.GetInstance().registerDeviceToken ("fcm-token");`                      | `HelpshiftSdk.GetInstance().RegisterDeviceToken ("fcm-token");`                   |
+| Request unread message count | `requestUnreadMessagesCount(isAsync)`                                 | `RequestUnreadMessageCount(shouldFetchFromServer)`              |
+
+The delegate method that receives the unread message count has also changed, Legacy SDK Code -
+
+```
+using Helpshift;
+...
+private HelpshiftSdk _support;
+this._support = HelpshiftSdk.getInstance();
+_support.requestUnreadMessagesCount(true);
+
+// Delegate:
+public void didReceiveUnreadMessagesCount(string count) {
+    // your code here
+}
+```
+
+SDK X code -
+
+```
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT)) {
+          Debug.Log("Unread count: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE)) {
+          Debug.Log("Is Unread count from cache: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]);
+        }
+      }
+    }
+}    
+```
+
+#### Handle notification
+
+To handle notification clicks, replace legacy SDK code -
+
+```
+public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+        IDictionary<string, string> pushData = e.Message.Data;
+        if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
+                Dictionary<string, object> hsPushData = new Dictionary<string, object>();
+                foreach (string key in pushData.Keys) {
+                hsPushData.Add (key, pushData [key]);
+            }
+            HelpshiftSdk.getInstance().handlePushNotification (hsPushData);
+        }
+    }
+```
+
+with SDK X code -
+
+```
+public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+    IDictionary<string, string> pushData = e.Message.Data;
+    if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
+            Dictionary<string, object> hsPushData = new Dictionary<string, object>();
+            foreach (string key in pushData.Keys) {
+            hsPushData.Add (key, pushData [key]);
+        }
+        HelpshiftSdk.GetInstance().HandlePushNotification (hsPushData);
+    }
+}
+```
+
+
+<Admonition type="info" title="Note">
+
+If you are using push notifications, we recommend that you register the push token again with SDK X after your app has been upgraded to avoid potential inconsistencies.
+
+</Admonition>
+
+
+For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-unity/notifications-android/) guide. For more information on delegates in SDK X, refer to [Delegates](/sdkx-unity/delegates-android/) guide.
+
+### Internationalization
+
+The API to set SDK language has changed -
+
+| Legacy SDK Unity plugin API                       | SDK X Unity plugin API                       |
+|---------------------------------------------------|----------------------------------------------|
+| `setSDKLanguage(locale)`                          | `SetSDKLanguage(locale)`                     |
+
+
+<Admonition type="info" title="Note">
+
+We recommend that you set the SDK language again on upgrading your app with SDK X to avoid potential inconsistencies.
+
+</Admonition>
+
+
+For more information on internationalization in SDK X and a list of supported languages, refer [Internationalization](/sdkx-unity/i18n-android/) guide.
+
+### Tracking
+
+Replace the following APIs from the legacy SDK Unity plugin -
+
+#### Metadata
+
+Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/unity/tracking-android#metadata)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, string> customMetadataDictionary = new Dictionary<string, string>();
+customMetadataDictionary.Add("Level", "9");
+customMetadataDictionary.Add("Spend", "46.55 USD");
+customMetadataDictionary.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+
+configMap.Add("customMetadata", customMetadataDictionary)
+_support.ShowFAQs(configMap);
+```
+
+#### Tags
+
+Legacy SDK leveraged metadata APIs to attach tags to the conversation. SDK X does not support metadata but supports attaching tags. Replace legacy SDK code for attaching tags -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> configD = new Dictionary<string, object>();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
+configD.Add(HelpshiftSdk.HSCUSTOMMETADATAKEY, configMap);
+_support.showFAQs(configD);
+```
+
+with equivalent SDK X code -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("tags", new String[] {"Whale"})
+_support.ShowFAQs(configMap);
+```
+
+#### Custom Issue Fields
+
+Replace legacy SDK code -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> configD = new Dictionary<string, object>();
+Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]> ();
+
+customIssueFields.Add("join_date", new string[]{ "dt", "1505927361535" });
+customIssueFields.Add("level", new String[]{"n", "42"});
+customIssueFields.Add("name", new String[]{"sl", "John Doe"});
+customIssueFields.Add("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+customIssueFields.Add("is_pro", new String[]{"b", "true"});
+customIssueFields.Add("currency", new String[]{"dd", "Dollar"});
+
+configD.Add (Helpshift.HSCUSTOMISSUEFIELDKEY, customIssueFields);
+_support.showFAQs(configD);
+```
+
+with SDK X code -
+
+```
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+joiningDate.Add("type", "date");
+joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+stockLevel.Add("type", "number");
+stockLevel.Add("value", "42");
+
+Dictionary<string, string> employeeName = new Dictionary<string, string>();
+employeeName.Add("type", "singleline");
+employeeName.Add("value", "John Doe");
+
+Dictionary<string, string> address = new Dictionary<string, string>();
+address.Add("type", "multiline");
+address.Add("value", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128");
+
+Dictionary<string, string> isPro = new Dictionary<string, string>();
+isPro.Add("type", "boolean");
+isPro.Add("value", "true");
+
+Dictionary<string, string> currency = new Dictionary<string, string>();
+isPro.Add("type", "dropdown");
+isPro.Add("value", "Dollar");
+
+Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
+cifDictionary.Add("join_date", joiningDate);
+cifDictionary.Add("level", stockLevel);
+cifDictionary.Add("name", employeeName);
+cifDictionary.Add("address", address);
+cifDictionary.Add("is_pro", isPro);
+cifDictionary.Add("currency", currency);
+
+Map<String, Object> config = new HashMap<>();
+config.put("customIssueFields", cifMap);
+_support.ShowFAQs(MainActivity.this, config);
+```
+
+#### Breadcrumbs
+
+The APIs for breadcrumbs have changed -
+
+| Action            | Legacy SDK Unity plugin API                                         | SDK X Unity plugin API                                       |
+|-------------------|---------------------------------------------------------------------|--------------------------------------------------------------|
+| Leave breadcrumbs | `leaveBreadCrumb(breadCrumb)`                                       | `LeaveBreadcrumb(breadcrumb)`                                |
+| Clear breadcrumbs | `clearBreadCrumbs()`                                                | `ClearBreadcrumbs()`                                         |
+
+#### Debug Logs
+
+The API signature for adding debug log hasn’t changed. We have the same class named as `HelpshiftLog` in SDK X Unity plugin for adding logs. You can use its methods for adding logs.
+You can find more details in the [Tracking](/sdkx-unity/tracking-android/) guide.
+
+### Helpshift Delegates
+
+The API to register Helpshift delegate has been changed -
+
+| Legacy SDK Unity plugin API                                              | SDK X Unity plugin API                                            |
+|--------------------------------------------------------------------------|-------------------------------------------------------------------|
+| `registerDelegates()`                                                    | `SetHelpshiftEventsListener(eventsListener)`                      |
+
+Each SDK event had a separate method in the legacy SDK Unity plugin. In SDK X Unity plugin, all events are received in the delegate’s `HandleHelpshiftEvent(eventName,eventData)` method. For a list of events, refer to [this guide](/sdkx-unity/delegates-android#helpshift-events).
+
+Legacy SDK Unity plugin methods that are unsupported in SDK X Unity plugin and don't have a corresponding event are -
+
+* `userClickOnAction(serializedJSONUserActionData)`
+
+* `displayAttachmentFile(path)`
+
+* `didCheckIfConversationActive(isActive)`
+
+### Reviews & Feedback
+
+Review & feedback related APIs are currently not supported in SDK X.
+
+## Troubleshooting
+
+** Compilation errors after upgrading to SDK X Unity plugin **
+
+* For supported APIs or configurations, make sure you have replaced all legacy SDK Unity plugin code with the corresponding SDK X Unity plugin code as mentioned in this guide.
+
+* For unsupported APIs or configurations, make sure you have removed all legacy SDK Unity plugin code as mentioned in this guide.
+
+## Contact Us
+If you face any issues regarding the migration from the legacy SDK Unity plugin to the SDK X Unity plugin, please contact us at [support@helpshift.com](mailto:support@helpshift.com).

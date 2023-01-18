@@ -1,0 +1,597 @@
+---
+sidebar_position: 30
+title: Using Helpshift API's in Various Scenarios
+description: "We will highlight the various parameters available when Fetching Data using the Helpshift REST API"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Using Helpshift API's in Various Scenarios {#scenarios}
+
+<Intro>
+
+
+We will highlight the various parameters available when Fetching Data using the Helpshift REST API
+
+
+
+</Intro>
+
+
+## Getting Issues
+
+### Sample Retrieval of a Single Issue (GET)
+
+Using the /issues/`{issue-id}` request, developers are able to extract a single issue by passing the issue-id into the path of the request.
+
+| Command  | Request URL                                             |
+|----------|---------------------------------------------------------|
+| GET      | https://api.helpshift.com/v1 /`<domain>`/issues/`{issue-id}`|
+
+Response Body:
+
+
+```json
+
+        {
+           "page": 1,
+           "page-size": 100,
+           "issues": [
+               {
+           "tags": [
+               "b2c"
+               ],
+           "meta": {},
+           "assignee_name": null,
+           "app_id": "zatori_app_20170712203132970-1370923e4e06ab6",
+           "title": "Coupon Code",
+           "messages": [
+               {
+                   "body": "What happened to my coupon code? It showed up in my cart but then after editing an item I can no longer enter in the code. Boooo! ",
+                   "created_at": 1501869101896,
+                   "author": {
+                       "name": "doctor.awesome",
+                       "id": "zatori_profile_20170804173640732-9e0ce257391bdbc",
+                       "emails": [
+                           "doctor.awesome@starlabs.com"
+                       ]
+                   }
+               }
+           ],
+           "assignee_id": "unassigned",
+           "id": 12,
+           "author_name": "doctor.awesome",
+           "author_email": "doctor.awesome@starlabs.com",
+           "domain": "zatori",
+           "state_data": {
+               "state": "new",
+               "changed_at": 1501869101896
+           },
+           "created_at": 1501869101896
+           }
+       ],
+           "total-hits": 1,
+           "total-pages": 1
+    }
+
+
+```
+
+### Sample Filtering of issues in date range (GET)
+
+Developers can retrieve issues based on Unix timestamps by filtering with the created-since and created-until parameters.
+For a full description of how these and other filter parameters work visit the [API Docs tool](https://apidocs.helpshift.com).
+This is a powerful facet of the API that allows for customized data selection based on a date range.
+
+
+| Command  | Request URL                                             |
+|----------|---------------------------------------------------------|
+| GET      | https://api.helpshift.com/v1 /`<domain>`/issues/`{issue-id}?created-since=1501716189000&created-until=1502717189000`|
+
+Response Body:
+
+
+```json
+
+        {
+          "page":1,
+          "page-size":100,
+          "issues":[
+            {
+              "tags":[
+
+              ],
+              "assignee_name":null,
+              "app_id":"zatori_app_20170712203132970-1370923e4e06ab6",
+              "title":"returns",
+              "messages":[
+                {
+                  "body":"[&quot;Technical&quot;]",
+                  "created_at":1502222264465,
+                  "author":{
+                    "name":"big_shopper",
+                    "id":"zatori_profile_20170804180044022-807edba7bf86b2b",
+                    "emails":[
+                      "big_shopper@yahoo.co"
+                    ]
+                  }
+                }
+              ],
+              "assignee_id":"unassigned",
+              "id":21,
+              "author_name":"big_shopper",
+              "author_email":"big_shopper@yahoo.co",
+              "domain":"zatori",
+              "state_data":{
+                "state":"new",
+                "changed_at":1502222264465
+              },
+              "created_at":1502222264465
+            },
+            {
+              "tags":[
+                "b2c",
+                "technical"
+              ],
+              "assignee_name":null,
+              "app_id":"zatori_app_20170712203132970-1370923e4e06ab6",
+              "title":"We hear you! Give us 1-2 hours to reply!",
+              "messages":[
+                {
+                  "body":"We hear you! Give us 1-2 hours to reply!",
+                  "created_at":1502217904515,
+                  "author":{
+                    "name":"Brian",
+                    "id":"zatori_profile_20170712203130397-2e3e228632ec439",
+                    "emails":[
+                      "brian@helpshift.com"
+                    ]
+                  }
+                }
+              ],
+              "assignee_id":"unassigned",
+              "id":20,
+              "author_name":"Brian",
+              "author_email":"brian@helpshift.com",
+              "domain":"zatori",
+              "state_data":{
+                "state":"new",
+                "changed_at":1502217904515
+              },
+              "created_at":1502217904515
+            },
+            {
+              "tags":[
+
+              ],
+              "assignee_name":null,
+              "app_id":"zatori_app_20170712203132970-1370923e4e06ab6",
+              "title":"We hear you! Give us 1-2 hours to reply!",
+              "messages":[
+                {
+                  "body":"We hear you! Give us 1-2 hours to reply!",
+                  "created_at":1502150462893,
+                  "author":{
+                    "name":"Brian",
+                    "id":"zatori_profile_20170712203130397-2e3e228632ec439",
+                    "emails":[
+                      "brian@helpshift.com"
+                    ]
+                  }
+                }
+              ],
+              "assignee_id":"unassigned",
+              "id":19,
+              "author_name":"Brian",
+              "author_email":"brian@helpshift.com",
+              "domain":"zatori",
+              "state_data":{
+                "state":"new",
+                "changed_at":1502150462893
+              },
+              "created_at":1502150462893
+            }
+          ],
+          "total-hits":3,
+          "total-pages":1
+        }
+
+```
+
+### Sample Filtering of Only New Issues (GET)
+
+The ability to filter based on state of issue (ie. new issues, open issues, etc...) is available by passing parameters and state values.
+Below is an example which filters the http response by returning only issues that are in a "new-for-agent" state.
+For a full description of these parameters, head over to the [API Docs](https://apidocs.helpshift.com) to read in full.
+
+| Command  | Request URL                                             |
+|----------|---------------------------------------------------------|
+| GET      | https://api.helpshift.com/v1 /`<domain>`/`issues?state=new-for-agent` |
+
+Response Body:
+
+
+```json
+
+        {
+          "page": 1,
+          "page-size": 100,
+          "issues": [
+            {
+              "tags": [
+                "b2c"
+              ],
+              "assignee_name": "Brian",
+              "app_id": "zatori_app_20170712203132970-1370923e4e06ab6",
+              "title": "Out of the Black Gold",
+              "messages": [
+                {
+                  "body": "<strong>Out of the Black Gold</strong><br/><br/>What to do when your well of black gold dries up? Prepare a new well. Drill then enjoy.",
+                  "created_at": 1502140662363,
+                  "author": {
+                    "name": "Joe",
+                    "id": "zatori_profile_20170807211742332-f0e1da64345522d",
+                    "emails": [
+                      "j@javare.com"
+                    ]
+                  }
+                }
+              ],
+              "assignee_id": "zatori_profile_20170712203130397-2e3e228632ec439",
+              "id": 18,
+              "author_name": "Joe",
+              "author_email": "j@javare.com",
+              "domain": "zatori",
+              "state_data": {
+                "state": "new-for-agent",
+                "changed_at": 1502140662349
+              },
+              "created_at": 1502140662349
+            },
+            {
+              "tags": [],
+              "assignee_name": "Brian",
+              "app_id": "zatori_app_20170712203132970-1370923e4e06ab6",
+              "title": "Still seeing ads?!?!?!?!",
+              "messages": [
+                {
+                  "body": "<strong>Still seeing ads?!?!?!?!</strong><br/><br/>Hi, I paid for premium service to avoid the ads but I am still seeing banners when I flip through to the second page of news. Please fix this! I love the exclusive media content but just hate the ads and will cancel my monthly subscription if this isn't remedied.",
+                  "created_at": 1501818209679,
+                  "author": {
+                    "name": "Partha S.",
+                    "id": "zatori_profile_20170804034329614-89891822324593b",
+                    "emails": [
+                      "p@g.co"
+                    ]
+                  }
+                }
+              ],
+              "assignee_id": "zatori_profile_20170712203130397-2e3e228632ec439",
+              "id": 10,
+              "author_name": "Partha S.",
+              "author_email": "p@g.co",
+              "domain": "zatori",
+              "state_data": {
+                "state": "new-for-agent",
+                "changed_at": 1501818209658
+              },
+              "created_at": 1501818209658
+            }
+          ],
+          "total-hits": 2,
+          "total-pages": 1
+        }
+
+
+```
+
+### Sample Filtering on CSAT Feedback (GET)
+
+Filtering responses for CSAT Feedback is achievable by passing a JSON Object. It is highly recommended that developers review [API Docs](https://apidocs.helpshift.com) for a more detailed description of the JSON Object structure and syntax.
+This parameter is a bit complex due to the data structure and syntax. Below we've filtered issues with ratings that are greater than 3.
+The parameter for feedback-rating is as follows: `{"and":[{"is_greater_than":"3"}]}`. In this example, our result set is empty because we do not have any data for feedback-rating above a 3.
+In the second examples we've passed `["feedback"]` as our parameter to include any data from CSAT feeback fields. Feedback is available in the response under two fields, `feedback_rating` and `feedback_comment`.
+
+| Command  | Request URL                                             |
+|----------|---------------------------------------------------------|
+| GET      | https://api.helpshift.com/v1 /`<domain>`/`issues?feedback-rating=%7B%22and%22%3A%5B%7B%22is_greater_than%22%3A%223%22%7D%5D%7D` |
+
+
+Response Body:
+
+
+```json
+
+        {
+          "page": 1,
+          "page-size": 100,
+          "issues": [],
+          "total-hits": 0,
+          "total-pages": 1
+        }
+
+
+```
+
+| Command  | Request URL                                             |
+|----------|---------------------------------------------------------|
+| GET      | https://api.helpshift.com/v1 /`<domain>`/`issues?includes=%5B%22feedback%22%5D` |
+
+
+Response Body:
+
+
+```json
+
+        {
+          "page": 1,
+          "page-size": 100,
+          "issues": [
+            {
+              "tags": [],
+              "meta": {
+                "timestamp": "on Oct 02 at 12:02:10.",
+                "application": {
+                  "application-version": "1.0",
+                  "application-identifier": "com.example.qotdapp",
+                  "application-name": "Helpshift Demo"
+                },
+                "hardware": {
+                  "device-model": "ONEPLUS A5000",
+                  "battery-level": "57%",
+                  "battery-status": "Not charging",
+                  "free-space-phone": "95.55 GB",
+                  "total-space-phone": "111.31 GB"
+                },
+                "other": {
+                  "os-version": "7.1.1",
+                  "platform": "Android",
+                  "network-type": "WIFI",
+                  "carrier-name": "Jio 4G",
+                  "country-code": "in",
+                  "library-version": "4.9.1",
+                  "language": "English"
+                }
+              },
+              "custom_fields": {},
+              "feedback_rating": 5,
+              "assignee_name": "tushar",
+              "app_id": "lenote_app_20120731055743208-b44bd7a4f9431b6",
+              "feedback_comment": "great",
+              "title": "hi",
+              "messages": [
+                {
+                  "body": "hi",
+                  "created_at": 1506925931287,
+                  "author": {
+                    "name": "din",
+                    "id": "lenote_profile_20171002063209991-113d007dcbabf33",
+                    "emails": [
+                      "abc@gmaim.com"
+                    ]
+                  }
+                },
+                {
+                  "body": "Please look into this on priority",
+                  "created_at": 1506925931514,
+                  "author": {
+                    "name": "Automations",
+                    "id": "lenote_profile_20170125141056623-496ec4dd6e89afc",
+                    "emails": [
+                      "queue-bot@lenote.mail.helpshift.com"
+                    ]
+                  }
+                },
+                {
+                  "body": "llk",
+                  "created_at": 1506925991404,
+                  "author": {
+                    "name": "tushar",
+                    "id": "lenote_profile_20120828025138536-b5896304ca06ecc",
+                    "emails": [
+                      "tmakhija@gmail.com",
+                      "rubyjabbal@gmail.com"
+                    ]
+                  }
+                },
+                {
+                  "body": "ok",
+                  "created_at": 1506926001346,
+                  "author": {
+                    "name": "din",
+                    "id": "lenote_profile_20171002063209991-113d007dcbabf33",
+                    "emails": [
+                      "abc@gmaim.com"
+                    ]
+                  }
+                },
+                {
+                  "body": "wf",
+                  "created_at": 1506926204825,
+                  "author": {
+                    "name": "tushar",
+                    "id": "lenote_profile_20120828025138536-b5896304ca06ecc",
+                    "emails": [
+                      "tmakhija@gmail.com",
+                      "rubyjabbal@gmail.com"
+                    ]
+                  }
+                },
+                {
+                  "body": "Accepted the solution",
+                  "created_at": 1506926210060,
+                  "author": {
+                    "name": "din",
+                    "id": "lenote_profile_20171002063209991-113d007dcbabf33",
+                    "emails": [
+                      "abc@gmaim.com"
+                    ]
+                  }
+                }
+              ],
+              "assignee_id": "lenote_profile_20120828025138536-b5896304ca06ecc",
+              "id": 5696,
+              "author_name": "din",
+              "author_email": "abc@gmaim.com",
+              "domain": "lenote",
+              "state_data": {
+                "state": "resolved",
+                "changed_at": 1506926210060
+              },
+              "created_at": 1506925931287
+            }
+          ],
+          "total-hits": 1,
+          "total-pages": 1
+        }
+
+```
+
+## Pagination and the API
+
+
+When querying the Helpshift API users will often find large data sets that have accumulated in the form of issue or faq data.
+There will be a lot of results to return and for that reason we have paginated the results to make sure responses are easier to handle.
+Let's say your initial call is asking for a list of all the issues assigned to an app; the results could be a massive response with hundreds or thousands of pages. That's not a great place to start.
+
+
+Rather than brute forcing it, we've built in a default limit on all results. We've tailored the default result set for each page to serve up 100 issues per page with a potential return set of 100 pages.
+Information about pagination is provided in the Link header of an API call.
+
+### Envelope Response
+
+The Helpshift API wraps the output response in an envelope (reference response body below).
+There are a couple of justifications for doing this, making it easier to include additional metadata or pagination information.
+
+| Command  | Request URL                                              |
+|----------|----------------------------------------------------------|
+| GET      | https://api.helpshift.com/v1 /`<domain>`/`issues?ids=%5B%2228%22%5D` |
+
+Response Body:
+
+
+```json
+
+        {
+          "page": 1,
+          "page-size": 100,
+          "issues": [
+            {
+                // lots of juicy goodness used to be here
+                // then we decided to remove it, you know - brevity
+                // and the sake of legibility
+            }
+          ],
+          "total-hits": 1,
+          "total-pages": 1
+        }
+
+```
+
+### Total-Pages
+
+In order to reliably handle large lists of data, the Helpshift API supports paging.  Paging is a common REST model where the results are broken into smaller subsets.
+The API breaks up the results into smaller subsets and returns them in pages. The number of items per pages does not vary by endpoint.
+
+By default, the `total-pages` always starts at 1. The number of `total-hits` indicates the number of total issues returned within the page.
+Using this information developers could create some UI that lets users jump between the first, second, third, or last list of results in an API call.
+
+Developers could grab the `total-pages` number, present this information to the user and then allow for iteration through the results.
+This could be achieved with a for loop that at the end of every page continues to loop through to the last page number where there is no further information to consume.
+
+### Handling Pagination
+
+
+<Admonition type="info" title="Note">
+
+When using paging consider adding a sort from oldest to newest. This will ensure that if new items are added into Helpshift while you are downloading pages, you will ensure that you are grabbing the latest records.
+
+
+</Admonition>
+
+
+An approach toward minimizing duplicate records is to sort the results from oldest to newest so that each new record that is added will only affect the last few pages (depending on the size of the data set and the velocity of real-time ingestion).
+In theory, those initial and early pages will always have the same 100 sorted records even if the total record count increases.
+It is worth noting that some HTTP Endpoints have parameters that allow for sort-order (ascending, descending). This will give an added layer of control when keeping track of prolific data set responses.
+
+Data has the possibility of being inaccurate due to the real-time nature of the Helpshift application, hence pagination becomes another mechanism to validate and authenticate data output.
+Items may have been added or removed from your company's Helpshift database instance between page requests and during the iteration over all items.
+The pagination approach that Helpshift uses allow the server to query the database and return the specific subsets as per the parameters passed.
+If no parameters are passed, there will be limited filtering if any at all.
+
+There is another parameter `page-size` for some endpoints (ie. `GET /issues`) which a developer can pass in a query. The Page-size _parameter_ will help in formulating the output response by adjusting the total-hits to an integer between 1-1000. This will control the number of results returned for pages.
+
+Default value 100 issues per page or 1000 issues per page can be used depending on the specific use case and sample size. If you keep `page-size` 100 or 1000 issues, it would help us to maintain the count easily.
+The _parameters_ `page` and `page-size` together can be used to traverse the data returned by these endpoints.
+
+
+<Admonition type="info" title="Note">
+
+A request would be considered as invalid if the multiplication of `page` and `page-size` parameters is greater than 50,000.
+
+</Admonition>
+
+
+If you keep the `page-size` at 1000, you can fetch 50000 issues by just modifying the `page` parameter.
+
+### Fetching Historic Data
+With the above-mentioned limitation in place, issues data for time range, say from `start-ts` to `end-ts`, can be fetched in the following way:
+
+* Pass the following parameters `created_since`, `created_until` and `sort-by` with value of `start-ts`, `end-ts` and `"creation-time"` respectively. `Query 1`
+* _Do not_ pass `page` and `page-size` parameters.
+* _Do not_ process the last item in `Query 1` because it will be processed as a part of the next Query response.
+* Modify the `created_since` with `created_at` value of the last item (`Query 1`) for the next query and continue. Here, the `created_since` will work as the cursor.
+
+#### Sample Python Script to Fetch Historic Data with Cursor Logic
+Apply the following to use the below script:
+
+* Modify the `start-date` and `end-date` _parameters_ as per your requirement
+* Add your domain in `<domain>` and `<api-key>` in the code below
+* Process the issues captured in `issues_to_be_processed` variable
+
+Python Script:
+
+
+```python
+
+    import requests
+    import time
+    import datetime
+
+    def get_timestamp_in_ms(date):
+       return str(int(time.mktime(datetime.datetime.strptime(date, "%d/%m/%Y").timetuple()) * 1e3))
+
+    start_date = "01/11/2019"
+    start_ts = get_timestamp_in_ms(start_date)
+    end_date = "03/11/2019"
+    end_ts = get_timestamp_in_ms(end_date)
+
+    while 1:
+    	r = requests.get(('https://api.helpshift.com/v1/<domain>/issues?sort-by=creation-time&sort-order=asc&created_since=' + start_ts + '&created_until=' + end_ts), auth=('<api-key>', ''))
+	data = r.json()
+
+	# All the issues for the given query
+	issues = (data['issues'])
+
+	if not issues:
+	   print("No issues. Done")
+	   break
+
+	if len(issues) == 1:
+	   # This is the last issue process it.
+	   issues_to_be_processed = issues
+	else:
+	   # Drop the last issue and process it in the next loop because created-since of last issue is taken and it will be
+	   # the first issue in the next query.
+	   issues_to_be_processed = issues[:-1]
+	   # issues_to_be_processed is the array which you should process it further like write to your external system etc.
+
+	if len(issues) == 1:
+	   print('This is the only 1 issue in the chunk. Process it and you are done.')
+	   break
+
+	# Modify the `created_since` cursor for the next query with the value of `created_at` of last issue.
+	start_ts = str(issues[-1]['created_at'])
+```
+

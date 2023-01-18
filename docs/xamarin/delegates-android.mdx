@@ -1,0 +1,253 @@
+---
+sidebar_position: 10
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+
+</Intro>
+
+## Helpshift Delegates implementation {#helpshift-delegates-implementation}
+
+You have to define a class which implements Helpshift Delegates and then
+pass this to Helpshift using `HelpshiftSupport.SetDelegate(ISupportDelegate delegateInstance)` method.
+
+For example:
+
+Class Implementation:
+
+
+```csharp
+
+    using HelpshiftApi;
+
+    public class HSDelegate: ISupportDelegate
+    {
+
+        public HSDelegate()
+        {
+
+        }
+
+        public void AuthenticationFailed(HelpshiftUser user, AuthenticationFailureReason reason)
+        {
+        // Your code here
+        }
+
+        public void ConversationEnded()
+        {
+        // Your code here
+        }
+
+        public void DidCheckIfConversationActive(bool isActive)
+        {
+        // Your code here
+        }
+
+        public void DidReceiveNotification(int state)
+        {
+        // Your code here
+        }
+
+        public void DidReceiveUnreadMessagesCount(int count)
+        {
+        // Your code here
+        }
+
+        public bool HandleTapOnAttachmentFile(string path)
+        {
+        // Your code here
+        }
+
+        public void NewConversationStarted(string text)
+        {
+        // Your code here
+        }
+
+        public void SessionBegan()
+        {
+        // Your code here
+        }
+
+        public void SessionEnded()
+        {
+        // Your code here
+        }
+
+        public void UserCompletedCustomerSatisfactionSurvey(int value, string feedback)
+        {
+        // Your code here
+        }
+
+        public void UserRepliedToConversation(string reply)
+        {
+        // Your code here
+        }
+
+        public void UserDidClickOnActionWithTypeAndData(HelpshiftActionType actionType, string data)
+        {
+            // Your code here
+        }
+    }
+
+```
+
+Class Usage:
+
+
+```csharp
+
+    HSDelegate delegateObject = new HSDelegate ();
+    HelpshiftApi.HelpshiftSupport.SetDelegate(delegateObject);
+
+
+```
+
+## Helpshift Session delegates {#session-delegates}
+
+### Session begin
+
+**SessionBegan**
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+### Session end
+
+**SessionEnded**
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+## Conversation delegates {#conversation-delegates}
+
+### New Conversation Started
+
+**NewConversationStarted**
+
+If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will get fired every time the user starts a new conversation. The delegate method will receive the conversation message in it's arguments.
+
+
+<Admonition type="info" title="Note">
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+</Admonition>
+
+
+### Conversation Ended
+
+**ConversationEnded**
+
+This delegate callback can be implemented to check if an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved, rejected from the Dashboard, timed out or archived.
+
+### Conversation Active
+
+**DidCheckIfConversationActive**
+
+This delegate callback can be implemented to check if a Conversation is active when queried via [HelpshiftApi.HelpshiftSupport.CheckIfConversationActive()](/xamarin/tracking-android#checkifconversationactive)
+
+
+## New message delegate {#delegate-user-replied-to-conversation}
+
+**UserRepliedToConversation**
+
+If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
+
+
+```csharp
+
+    public static final String HSUserAcceptedTheSolution = "User accepted the solution";
+    public static final String HSUserRejectedTheSolution = "User rejected the solution";
+    public static final String HSUserSentScreenShot = "User sent a screenshot";
+    public static final String HSUserReviewedTheApp = "User reviewed the app";
+
+```
+
+
+<Admonition type="info" title="Note">
+
+All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
+
+</Admonition>
+
+
+## Customer satisfaction survey delegate {#csat-completed}
+
+**UserCompletedCustomerSatisfactionSurvey**
+
+If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
+
+## Display attachment delegate {#display-attachment}
+
+**DisplayAttachmentFile**
+
+Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
+
+* Video files (3gp, m4v)
+* Audio files (mp3, mp4, aac)
+* Image files (jpg, png, gif)
+
+After the attachment is downloaded, Helpshift checks for any app which can open it. If no such app is found, then we fall back to passing the file to the delegate handler in the app. There are two possible variants of the path parameter in HandleTapOnAttachmentFile(string path), one is FilePath and the other one is Uri.
+
+* On Android version 10 & above, path value will be a `Uri` path because Files are exposed with Uri objects by the OS.
+* On Android versions older than 10, path value will the `File` path
+
+```csharp
+    public bool HandleTapOnAttachmentFile(String filePathOrUri)
+    {
+        if (filePathOrUri.StartsWith("content://", StringComparison.OrdinalIgnoreCase))
+        {
+            // your code here to handle uri
+        } else
+        {
+            // your code here to handle filePath
+        }
+        return true;
+    }
+```
+
+## New message received count delegate {#newmessage-recieved}
+
+**DidReceiveNotification**
+
+If you want to keep a count of all new messages  received in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift receives a new message in an existing conversation.
+You can also use this delegate to keep your badge counts updated.
+
+## Unread Messages Count Delegate {#unread-messages-count}
+
+**DidReceiveUnreadMessagesCount**
+
+This delegate can be implemented to get the count of unread messages queried via [HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(bool)](/xamarin/notifications-android#showing-notification-count)
+
+## User click on action delegate {#user-click-action}
+
+**UserDidClickOnActionWithTypeAndData**
+
+This delegate method is called when user clicks on an action in Action Card bot.
+ 
+<div className="compact ">
+
+
+| | |
+|--|--|
+|actionType| The type of action user clicked on. Can be one of: HelpshiftActionType.Link, HelpshiftActionType.Call  |
+|actionData| The data associated with the action type. Can be a url link or a phone number.|
+</div>
+
+```csharp
+    public void UserDidClickOnActionWithTypeAndData(HelpshiftActionType actionType, string data)
+    {
+                Toast.MakeText(this, "UserDidClickOnActionWithTypeAndData : " + actionType
+                            + ", with data : " + data, ToastLength.Short).Show();
+    }
+```

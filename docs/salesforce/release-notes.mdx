@@ -1,0 +1,181 @@
+---
+sidebar_position: 20
+title: Release Notes
+description: Read the Release Notes in detail
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Release Notes
+
+
+
+## 3.3
+
+_November 15, 2022_
+
+** Release Notes **
+
+* Fixed an issue were Case tab highlighting was not working for Salesforce Console apps.
+* Helpshift domain connected with Salesforce organisation will be visible on Health check page.
+* An email will be sent to the logged in user after Assign Permissions job is completed.
+* New, faster Helpshift dashboard will now be available as "New Helpshift Dashboard" tab.
+* Bug fixes
+
+
+## 3.1
+
+_August 17, 2022_
+
+** Release Notes **
+
+* Fixed an issue where messages were out of order. The bug was reproducible when a Case created before 3.0 upgrade was opened in new messenger.
+* Fixed an issue due to which a non-HS user was not able to respond on Cases.
+* Messenger is now compatible to be used in Salesforce Service Console.
+* Fixed an issue where attachment preview was not visible right after sending it.
+
+** Upgrade guide **
+
+To upgrade to 3.1 please refer to the guide [here](/salesforce/sf-upgrade-to-30/)
+
+
+## 3.0
+
+
+<Admonition type="info" title="Note">
+
+3.0 package Update
+
+We found few issues in package release 3.0 which are fixed in 3.1 release.
+
+**Action needed:**
+
+* If you are planning to install or are in the process of installing package 3.0, please install 3.1 instead.
+* If you have already installed/upgraded to package 3.0 , please upgrade to 3.1 package.
+
+</Admonition>
+
+
+_July 8, 2022_
+
+** Release Notes **
+
+* Added ** New Messenger ** and ** New Admin Tab ** optimized using Lightning Web Component.
+      * Optimized messenger for faster loading and syncing of messages.
+      * Better UI/UX resembling Helpshift's agent experience.
+      * Non-disruptive messages for providing feedback on user actions.
+* Enhanced logging to enable troubleshooting.
+      * Administrator can configure logs for a specific user or set of users.
+      * INFO log level added along with ERROR log level.
+* Bug fixes
+
+** Upgrade guide **
+
+To upgrade to 3.0 please refer to the guide [here](https://support.helpshift.com/kb/article/guide-salesforce-3-0-package-upgrade/)
+
+
+## 2.22.0
+
+_May 4, 2022_
+
+** Release Notes **
+
+* Message and Attachment redactions will be supported for closed cases too.
+* Attachment in bots will be supported from this version onwards.
+* Bug fixes.
+
+## 2.21.0
+
+_March 7, 2022_
+
+** Release Notes **
+
+* Message and Attachment redactions will be supported from this version onwards.
+       * Agents will see an option to select messages and/or attachments in an open conversation. They can redact those messages and/or attachments from Salesforce and Helpshift.
+       * This redaction is currently not supported for closed cases on Salesforce.
+* Introduced message "read" state indicators.
+       * When an Agent message is delivered, it will be marked as SENT (single tick).
+       * When the end user opens or reads the message, it will be marked as READ (double tick).
+
+## 2.20.0
+
+_December 17, 2021_
+
+** Release Notes **
+
+* Fixed the problem of out-of-order messages. Case comments in the Messenger will now always be in order.
+
+## 2.19.0
+
+_November 18, 2021_
+
+** Release Notes **
+
+* Feedback bots will be supported from this version onwards. Admins can create feedback bots on the Helpshift dashboard and assign them on issue resolutions.
+       * Please ensure that the Issue fields "csat-rating", "csat-comment" and "csat-label" are mapped correctly on the admin page to collect the feedback separately.
+
+## 2.18.0
+
+_October 8, 2021_
+
+** Release Notes **
+
+* Introduced a new action for automatic permissions assignment. Admins can auto-assign all permissions required for the Integration to work correctly (CRUD and FLS). They can do so via Settings -> Permissions -> "Assign Permission".
+* Status check page will show field mappings between Helpshift and Salesforce. Admins can now verify their settings from here.
+
+## 2.17.0
+
+** Release Notes **
+
+* Fixed an issue related to knowledge article sync from Salesforce to Helpshift when only one language knowledge article was enabled in Salesforce.
+* Removed namespace dependencies in the package.
+* Added new security fixes.
+
+## 2.16.0
+
+** Release Notes **
+
+* Fixed an issue with case bidirectional sync.
+* Added new security fixes.
+
+## 2.15.0
+
+** Release Notes **
+
+* Added the following functionalities:
+       * Logger service
+       * Health check page
+* Revamped the "add user" page.
+* Added support for agents's nickname in messenger.
+* Added new security fixes.
+
+## 2.14.1
+
+** Release Notes **
+
+* Fixed a typo in attachment error text.
+
+## 2.14.0
+
+_April 29, 2021_
+
+** Release Notes **
+
+* Improved adding agents implementation, now supports adding multiple agents in one API call. Adding agents from the Salesforce UI will not show an "undefined" error. Also, new informational alerts are shown as below:
+       * success: number of successfully added agents.
+       * failure: number of failed agents.
+       * partial failure: number of successfully added agents and number of failed agents.
+
+
+<Admonition type="info" title="Note">
+
+Adding agents can fail due to multiple reasons. Please reach out to Helpshift in case of failure.
+
+</Admonition>
+
+
+* Added a warning while sending a message for advisors who don't have a Helpshift profile identifier in Salesforce. This warning message can be configured from "Custom Meta -> Custom label" settings.
+* Added an error when an attachment is added with more than 70 characters in the file name.

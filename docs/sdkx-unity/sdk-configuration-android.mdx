@@ -1,0 +1,314 @@
+---
+sidebar_position: 160
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# SDK Configuration
+
+<Intro>
+
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
+
+</Admonition>
+
+
+## Install time configurations
+
+## Enable In-App Notifications {#enable-in-app-notifications}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
+
+On setting this flag to `false`, the SDK will stop showing notifications in the notification tray of the device but it will fetch messages in background. This behaviour is different for iOS, please refer [here](/sdkx-unity/sdk-configuration-ios#enableInAppNotification)
+
+The default value of this flag is `true` i.e., the in-app notification will be enabled.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| HelpshiftSdk.ENABLE_INAPP_NOTIFICATION|
+|values| true/false|
+|default| true|
+
+</div>
+
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.ENABLE_INAPP_NOTIFICATION, false);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+
+### Notification Icon {#notificationIcon}
+
+By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `install` call.
+
+You do not need to specify the file extension for the icon image. If your icon image's file name is "icon.png", you just need to pass "icon" to helpshift config and add the "icon.png" file at `<project-dir>/Assets/Plugins/Android/res/drawable`.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.NOTIFICATION_ICON, "<icon-image-file-name>");
+      help.Install(apId, domainName, configMap);
+    }
+}
+```
+
+### Large Notification Icon {#largeNotificationIcon}
+
+By default the application icon is used as the notification icon.
+If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
+
+You do not need to specify the file extension for the icon image. If your icon image's file name is "large_icon.png", you just need to pass "large_icon" to helpshift config and add the "large_icon.png" file at `<project-dir>/Assets/Plugins/Android/res/drawable`.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.NOTIFICATION_LARGE_ICON, "<large-icon-image-file-name>");
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+### Notification Sound {#notificationSound}
+
+
+<Admonition type="info" title="Note">
+
+* The sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
+
+* If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/sdkx-unity/sdk-configuration-android#notificationChannels).
+
+</Admonition>
+
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
+
+You do not need to specify the file extension for the sound file. If your sound file name is "notificaton_sound.mp3", you just need to pass "notification_sound" to helpshift config and and add the "notificaton_sound.mp3" file at `<project-dir>/Assets/Plugins/Android/res/raw`.
+
+For example:
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+        this.help = HelpshiftSdk.GetInstance();
+        Dictionary<string, object> configMap = new Dictionary<string, object>();
+        configMap.Add(HelpshiftSdk.NOTIFICATION_SOUND_ID, <sound-file-name>);
+        help.Install(appId, domainName, configMap);
+    }
+}
+
+```
+
+### Notification Channels {#notificationChannels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name for the default channel, you can do so by using the config in the install call.
+
+For Example-
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.NOTIFICATION_CHANNEL_ID, <your-channel-id>);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+ 
+
+### Enable Logging {#enableLogging}
+
+Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in the Android logcat. Turning on logging can help developers resolve common integration issues.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| HelpshiftSdk.ENABLE_LOGGING|
+|Values| <code>"true"</code>/<code>"false"</code>|
+|Default| <code>"false"</code>|
+
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.ENABLE_LOGGING, true);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+## Screen Orientation {#screen-orientation}
+
+The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
+For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| HelpshiftSdk.SCREEN_ORIENTATION|
+|values|  integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class|
+|default| 1 (which is ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)|
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      // To make it landscape
+      configMap.Add(HelpshiftSdk.SCREEN_ORIENTATION, 0);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+## Enable Contact Us {#enableContactUs}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+Possible values are `"ALWAYS"` / `"AFTER_VIEWING_FAQS"` / `"AFTER_MARKING_ANSWER_UNHELPFUL"` / `"NEVER"`.
+
+For example
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("enableContactUs", "AFTER_VIEWING_FAQS");
+      help.ShowFAQs(configMap);
+    }
+}
+```
+
+#### Best Practices
+
+* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
+
+## Full privacy {#fullprivacy}
+
+In the `config` dictionary of `help.ShowConversation(config);` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
+
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Making sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+For example
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("fullPrivacy", "true");
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## UI Configurations {#uiConfig}
+
+This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unity/design-android/).
+
+
+## Tracking {#tracking}
+
+This config represents the tracking user actions. For more information check [tracking](/sdkx-unity/tracking-android).

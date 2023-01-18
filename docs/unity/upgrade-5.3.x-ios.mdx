@@ -1,0 +1,67 @@
+---
+sidebar_position: 10
+title: Upgrading to 5.3.0 and above
+description: "The Helpshift SDK v5.3 is a major update and we have made some important changes. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Upgrading to 5.3.0 and above {#upgrade-to-530-ios}
+
+<Intro>
+
+The Helpshift SDK v5.3 is a major update and we have made some important changes. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+</Intro>
+
+
+## Support for Swift {#support-for-swift}
+
+
+<Admonition type="info" title="Note">
+
+Helpshift SDK is not fully compatible with Unity 2019.3.x or above versions and requires some manual steps. Refer [this guide](/unity/troubleshooting-ios#2019.3-support) for more details.
+
+</Admonition>
+
+
+With version 5.3.0, Helpshift SDK has added support for Swift. In order to use SDK 5.3.x for your app, Helpshift recommends you to follow the steps, depending on whether your app is made in Swift, ObjectiveC or mix of both. The minimum required XCode version is 10.2. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+1. Pure Swift App
+	
+	No integration impact.
+
+2. Swift + Objective C app
+	
+	No integration impact
+
+3. Pure Objective C app
+	
+	1. Xcode 11.x and above
+		1. Remove the following line in Assets/Helpshift/Editor/HSPostprocessBuildPlayer
+			`project.add_library_search_paths('$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)')`
+		2. Uncomment the following in the HSPostprocessBuildPlayer
+			`#project.add_library_search_paths('$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)')`
+	
+	2. Xcode 10.2.x
+		No integration impact
+
+
+### Impact on your app {#support-for-swift-impact}
+
+| Host app already using Swift | iOS Version > 12.2 | Impact |
+|-------------|-------------------|--------|
+| Yes  | Yes  | No impact.  |
+| Yes  | No  | No impact.  |
+| No  | Yes |  [Only integration impact.](/unity/upgrade-5.3.x-ios/#support-for-swift) No size impact. |
+| No  | No  | 2 MB size addition in final downloaded IPA  |
+
+## Granting iCloud permission for iOS 10 and below {#icloud-capability}
+
+With version 5.3.0, End-users will be able to send files such as pdf, video, etc. where before 5.3.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451) 
+ 
+Example:
+
+<Image src="/static/books/ios/icloud-entitlement.png"  width="full" alt="icloud-entitlement.png" /> 

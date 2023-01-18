@@ -1,0 +1,418 @@
+---
+sidebar_position: 90
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)
+
+</Admonition>
+
+
+## Helpshift Events Listener/Delegate implementation {#event-listener}
+
+You can set `IHelpshiftEventsListener` implementation by calling the `HelpshiftSdk.GetInstance().SetHelpshiftEventsListener()` method.
+
+### Step 1: Implement the IHelpshiftEventsListener interface
+
+```csharp
+public class HSEventsListener: IHelpshiftEventsListener
+  {
+      public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+      {
+          // all events
+      }
+
+      public void AuthenticationFailedForUser(HelpshiftAuthenticationFailureReason reason)
+      {
+          //auth failure event
+      }
+  }
+```
+
+### Step 2: Set this implementation class by calling Helpshift API
+
+```csharp
+using Helpshift;
+//...
+//...
+private HelpshiftSdk help;
+//..
+
+void Awake(){
+    // install call here
+    help = HelpshiftSdk.GetInstance();
+}
+
+void Start(){
+    // set the listener 
+    help.SetHelpshiftEventsListener(new HSEventsListener());
+}
+
+```
+
+
+## Events {#helpshift-events}
+
+### Helpshift session started event {#session-delegates}
+This event gets fired when the Helpshift session starts
+
+* Event name: `HelpshiftEvent.SDK_SESSION_STARTED` 
+* Event data: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.SDK_SESSION_STARTED))
+      {
+        Debug.Log("Helpshift session started.");
+      }
+    }
+    //...
+}    
+```
+
+### Helpshift session ended event {#session-delegates}
+This event gets fired when the Helpshift session ends.
+
+* Event name: `HelpshiftEvent.SDK_SESSION_ENDED` 
+* Event data: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.SDK_SESSION_ENDED))
+      {
+        Debug.Log("Helpshift session ended.");
+      }
+    }
+    //...
+}    
+```
+
+### Unread Message Count Event {#unreadMessageCount}
+
+This event gets fired when you call `Helpshift.RequestUnreadMessageCount(shouldFetchFromServer)` API to request unread messages count.
+
+* Event name: `HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT` 
+* Event data: 
+  * Event data:
+  * `HelpshiftEvent.DATA_MESSAGE_COUNT`
+      * Type: `int`
+  * `HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE`
+      * Type: `boolean`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT)) {
+          Debug.Log("Unread count: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE)) {
+          Debug.Log("Is Unread count from cache: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]);
+        }
+      }
+    }
+    //...
+}    
+```
+
+### Conversation Status Event {#conversation-status}
+This event contains information about the current ongoing conversation.
+
+* Event name: `HelpshiftEvent.CONVERSATION_STATUS` 
+* Event data: 
+  * Event data: 
+  * `HelpshiftEvent.DATA_LATEST_ISSUE_ID`
+      * Type: `string`
+  * `HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID`
+      * Type: `string`
+  * `HelpshiftEvent.DATA_IS_ISSUE_OPEN`
+      * Type: `boolean`
+                  
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.CONVERSATION_STATUS))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_LATEST_ISSUE_ID)) {
+          Debug.Log("Issue ID : " + eventData[HelpshiftEvent.DATA_LATEST_ISSUE_ID]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID)) {
+          Debug.Log("Publish ID : " + eventData[HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_IS_ISSUE_OPEN)) {
+          Debug.Log("Is issue open : " + eventData[HelpshiftEvent.DATA_IS_ISSUE_OPEN]);
+        }
+      }
+    }
+    //...
+} 
+```
+
+
+### Widget Toggle Event {#widget-toggle-event}
+
+This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
+
+* Event name: `HelpshiftEvent.WIDGET_TOGGLE` 
+* Event data: 
+  * `HelpshiftEvent.DATA_SDK_VISIBLE`
+      * Type: `boolean`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+        if(eventName.Equals(HelpshiftEvent.WIDGET_TOGGLE))
+        {
+          if(eventData.ContainsKey(HelpshiftEvent.DATA_SDK_VISIBLE)) {
+            Debug.Log("Is SDK Visible " + eventData[HelpshiftEvent.DATA_SDK_VISIBLE]);
+          }
+        }
+    }
+    //...
+} 
+```
+
+
+### Conversation Start Event {#conversation-start-event}
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
+
+* Event name: `HelpshiftEvent.CONVERSATION_START` 
+* Event data: 
+  * `HelpshiftEvent.DATA_MESSAGE`
+      * Type: `string`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_START))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE)) {
+          Debug.Log("Conversation started with text: " + eventData[HelpshiftEvent.DATA_MESSAGE]);
+        }
+      }
+    }
+    //...
+} 
+```
+
+### Message Add Event {#message-add-event}
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user. For your reference, see the below example.
+
+* Event name: `HelpshiftEvent.MESSAGE_ADD` 
+* Event data: 
+  * `HelpshiftEvent.DATA_MESSAGE_TYPE`
+      * Values: `HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT` , `HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT`
+  * `HelpshiftEvent.DATA_MESSAGE_BODY`
+      * Type: `string`
+
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.MESSAGE_ADD))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_BODY)) {
+          Debug.Log("New message added with body: " + eventData[HelpshiftEvent.DATA_MESSAGE_BODY]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_TYPE)) {
+          Debug.Log("New message added with type: " + eventData[HelpshiftEvent.DATA_MESSAGE_TYPE]);
+        }
+      }
+    }
+    //...
+} 
+```
+
+### CSAT Submit Event {#csat-submit-event}
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.  For your reference, see the below example.
+
+* Event name: `HelpshiftEvent.CSAT_SUBMIT` 
+* Event data: 
+  * `HelpshiftEvent.DATA_CSAT_RATING`
+      * Type: `int`
+  * `HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK`
+      * Type: `string`
+
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CSAT_SUBMIT))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_CSAT_RATING)) {
+          Debug.Log("CSAT submitted with rating: " + eventData[HelpshiftEvent.DATA_CSAT_RATING]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK)) {
+          Debug.Log("CSAT feedback: " + eventData[HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK]);
+        }
+      }
+    }
+    //...
+} 
+```
+
+### Conversation End Event {#conversation-end-event}
+
+This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+
+* Event name: `HelpshiftEvent.CONVERSATION_END` 
+* Event Data: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_END))
+      {
+        Debug.Log("Conversation Ended");
+      }
+    }
+    //...
+} 
+```
+
+### Conversation Rejected Event {#conversation-rejected-event}
+This event is triggered when an agent rejects the conversation.
+
+* Event name: `HelpshiftEvent.CONVERSATION_REJECTED` 
+* Event data: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_REJECTED))
+      {
+        Debug.Log("Conversation Rejected");
+      }
+    }
+    //...
+} 
+```
+
+### Conversation Resolved Event {#conversation-resolved-event}
+This event is triggered when an agent resolves the conversation.
+
+* Event name: `HelpshiftEvent.CONVERSATION_RESOLVED` 
+* Event data: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_RESOLVED))
+      {
+        Debug.Log("Conversation Resolved");
+      }
+    }
+    //...
+} 
+```
+
+### Conversation Reopened Event {#conversation-reopened-event}
+When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+
+* Event name: `HelpshiftEvent.CONVERSATION_REOPENED` 
+* Event data: `null`
+
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_REOPENED))
+      {
+        Debug.Log("Conversation Reopened");
+      }
+    }
+    //...
+} 
+```
+
+### User Authentication Failed Event {#user-authentication-failed-event}
+If you have `user authentication feature` enabled on the Dashboard and if you pass an invalid token in the `HelpshiftSdk.GetInstance().Login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-unity/users-ios)
+
+Reason type : 
+
+* `HelpshiftAuthenticationFailureReason.INVALID_AUTH_TOKEN`
+* `HelpshiftAuthenticationFailureReason.AUTH_TOKEN_NOT_PROVIDED`
+* `HelpshiftAuthenticationFailureReason.UNKNOWN`
+
+```csharp
+public class HSEventsListener: IHelpshiftEventsListener
+  {
+      // HandleHelpshiftEvent
+
+      public void AuthenticationFailedForUser(HelpshiftAuthenticationFailureReason reason)
+      {
+          Debug.Log("Authentication Failed for reason " + reason.ToString());
+      }
+  }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,127 @@
+---
+sidebar_position: 150
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Troubleshooting {#troubleshoot}
+
+
+## Sharing debug logs {#share-debug-logs}
+
+With v10.2.0, Helpshift SDK enables sharing internal logs via mail when the app runs in debug mode.
+This will help us collect logs faster by sending them over directly from the device.
+
+
+You can share the SDK debug logs with us via the following steps:
+
+* We will post a notification in the notification bar of the device when following conditions are met:
+
+	1. The application is built in debug mode.
+
+	2. The `enableLogging` flag is set to `true`. Refer [here](/sdkx_android/sdk-configuration#enable-logging) for the configuration.
+
+* The title of the notification is `Helpshift Debugger` 
+
+* The SDK will post this notification as soon as the SDK is initialized. Refer [here](/sdkx_android/getting-started#initializing) for initialization steps.
+
+* Reproduce the issue you are facing with the SDK.
+
+* On clicking this notification, we open an app chooser menu to share logs.
+
+* Select a mail app from the given apps.
+
+* The mail app should default to `bugs@helpshift.com` as the recepient.
+
+* Send the mail without changing its contents.
+
+* In case the issue is related to app crash:
+	1. Launch the app again.
+	2. You should see the same notification again in the notification bar.
+	3. Click on the notification to share the logs.
+
+
+
+<Admonition type="info" title="Note">
+
+We do not collect or store logs when the app is in release/production mode.
+
+
+</Admonition>
+
+
+
+## SDK integration {#integration-issues}
+
+### Using AndroidX support libraries {#steps-to-build-with-android-x}
+
+Helpshift SDK X uses legacy android support libraries. If you want to use AndroidX libraries in your application, please follow these steps to make Helpshift SDK compatible with AndroidX:
+
+1. Set targetSdkVersion of your project to >= 28
+
+2. Add following lines in gradle.properties file.
+
+```
+android.useAndroidX=true
+android.enableJetifier=true
+
+```
+
+Jetifier is a tool which migrates support-library-dependent libraries to rely on the equivalent AndroidX packages.
+
+If you want to use standalone jetifier tool mentioned [here](https://developer.android.com/studio/command-line/jetifier), Please follow these steps - 
+
+To install Jetifier, [download this zip file](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta10/jetifier-standalone.zip) and extract it. 
+Your device must have **Java version 1.8 installed**.
+
+To process a library, pass the path to the current library and the path to the output file that the tool should create
+
+For Example -
+
+`./jetifier-standalone -i <source-library> -o <output-library>`
+
+## Known Issues {#known-issues}
+
+### Invalid language code causing CORS error {#cors-error}
+
+If you are unable to load chat screen and find this error in console or android logcat,
+
+```
+Access to XMLHttpRequest at 'https://api.helpshift.com/websdk/……' from origin 
+'https://…...webchat.helpshift.com' has been blocked by CORS policy: Request 
+header field accept-language is not allowed by Access-Control-Allow-Headers in 
+preflight response. -- From line 0 of https://……...webchat.helpshift.com/latest/
+android/html/index.html?v=3.32.1&parent=https%3A%2F%2Flocalhost
+
+```
+this could be because of an invalid language code passed to Helpshift SDK. To resolve the issue you can use `Helpshift.setLanguage(String language)` API to pass the valid language code to Helpshift SDK.
+Valid language code values can only contain characters `0-9, A-Z, a-z, space or *,-.;=.`
+
+For more details, refer [here](/sdkx_android/i18n/#supported-languages). 
+
+### Unable to get Push notification {#push-notification-issue}
+
+If you are unable to get push notifications from Helpshift, verify that you have followed the proper steps from our developer documentation mentioned here [Notifications](/sdkx_android/notifications#push-via-helpshift). 
+
+Still, if you are not getting notifications, then check the following.
+
+* You have to enable the Cloud messaging API (legacy) from Firebase console and provided the Server key inside it in your dashboard as mentioned here [Notifications](/sdkx_android/notifications#push-via-helpshift).
+
+<Image src="/static/books/helpshiftx/gcm-key-example.png"  width="full" /> 
+
+### Notifications not showing in the notification bar
+
+With Android 13, the end user needs to give permissions for the app to be able to post notifications.
+
+If your app has targeted Android 13 (API Level 33), then this might be a probable cause of notifications not working.
+
+If you want your app to be able to post notifications then you need to ask for the Notification permissions. Refer the [Android documentation](https://developer.android.com/develop/ui/views/notifications/notification-permission) for further reference.
+
+Helpshift SDK will not be asking for notification permissions and depend on the application for the same.
+
+

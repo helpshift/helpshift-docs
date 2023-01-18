@@ -1,0 +1,356 @@
+---
+sidebar_position: 30
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# SDK Configuration
+
+<Intro>
+
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+
+
+
+</Intro>
+
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
+
+
+</Admonition>
+
+
+## Enable In-App Notifications {#enable-in-app-notifications}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
+
+On setting this flag to `false`, the SDK will stop showing notifications in the notification tray of the device but it will fetch messages in background. 
+
+
+The default value of this flag is `true` i.e., the in-app notification will be enabled.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableInAppNotification|
+|values| true/false|
+|default| true|
+
+</div>
+
+For example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("enableInAppNotification", false);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+```
+
+## Enable Contact Us {#enableContactUs}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableContactUs|
+|values| "ALWAYS" / "AFTER_VIEWING_FAQS" / "AFTER_MARKING_ANSWER_UNHELPFUL" / "NEVER"|
+|default| null|
+</div>
+
+For example
+
+
+```java
+
+    Map<String, Object> config = new HashMap<>();
+    // .. other configs
+    config.put("enableContactUs", "AFTER_VIEWING_FAQS");
+    Helpshift.showFAQs(MainActivity.this, config);
+
+```
+
+### Best Practices
+
+* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+
+    
+```java
+
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String country = tm.getSimCountryIso();
+        String value = "ALWAYS";
+
+        if("<LOCAL_COUNTRY_CODE>".equals(country)) {
+          value = "AFTER_VIEWING_FAQS";
+        }
+
+        HashMap config = new HashMap();
+        config.put("enableContactUs", value);
+        Support.showFAQs(MyActivity.this, config);
+
+```
+
+## Screen Orientation {#screen-orientation}
+
+The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
+For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| screenOrientation|
+|values|  integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class|
+|default| ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED|
+
+</div>
+
+For example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Enable Logging {#enable-logging}
+
+Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Android logcat. These will be useful for debugging the SDK during integration. Turning on this logging could help the developer resolve common integration issues.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableLogging|
+|values| true/false|
+|default| false|
+
+</div>
+
+For example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("enableLogging",  true);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Notification Icon {#notificationIcon}
+
+By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `install` call.
+
+Example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationIcon", R.drawable.notification_icon);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+```
+
+## Large Notification Icon {#largeNotificationIcon}
+
+By default the application icon is used as the notification icon.
+If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
+
+Example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationLargeIcon", R.drawable.notification_large_icon);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Notification Sound {#notificationSound}
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
+
+Example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationSoundId",  R.raw.notification_sound);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+
+```
+
+## Notification channels {#notificationChannels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
+
+Example:
+
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationChannelId",  "your channel name here");
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Full privacy {#fullprivacy}
+
+In the `config` map of `Helpshift.showConversation(this, config);` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
+
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Making sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+For example
+
+
+```java
+
+    Map<String, Object> config = new HashMap<>();
+    // .. other configs
+    config.put("fullPrivacy", true);
+    Helpshift.showConversation(MainActivity.this, config);
+
+
+```
+
+## Theming the SDK {#theming}
+
+Please check the [design](/sdkx_android/design/) page to apply your styles and theming to SDK.
+
+
+## Tracking {#tracking}
+
+This config represents tracking the user actions. For more information check [tracking](/sdkx_android/tracking).
+
+
+
+

@@ -1,0 +1,583 @@
+---
+sidebar_position: 10
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Troubleshooting {#troubleshoot}
+
+
+## SDK integration {#integration-issues}
+
+### Unity 2020.+ support for Android library / Crash when attaching a file in Conversation {#unity2020-android-lib-issue}
+
+Unity 2020 and higher versions needs `.androidlib` extension for a directory that is meant to be built as an android library.
+
+Refer Unity documentation [here](https://docs.unity3d.com/Manual/AndroidAARPlugins.html).
+
+Helpshift Unity SDK has an android library directory located at `Assets/Plugins/Android/helpshift-plugin-wrapper`.
+
+If you are using Unity 2020 or higher, please rename this directrory to `helpshift-plugin-wrapper.androidlib`.
+
+This might be the reason for a crash when attaching files in a conversation.
+
+This is a temporary workaround and will be fixed in a future release.
+
+### 5.5.0 SDK Update {#5}
+
+We found a bug for the following scenario - for SDK 5.5.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
+
+**Action needed:**
+
+* If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
+* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [5.5.1 SDK](/unity/release-notes-unity#v551).
+
+### Build issues with exporting as Gradle project/Android studio  {#android-studio-gradle-fix}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.1.x and below
+
+</Admonition>
+
+
+Helpshift SDK depends on android support libraries and needs a gradle dependency for successfully building the library.
+Unity's in-built gradle build support and exporting to android studio currently does not support per plugin gradle script. Hence, Helpshift SDK cannot add the dependencies by default.
+
+For configuring "helpshift" module after exporting your project as a gradle/android studio project follow these steps:
+
+* Update the `build.gradle` in the `helpshift` module of the exported project to correctly reflect the android support library dependencies.
+In the `dependencies` section of the gradle script in `helpshift/build.gradle` add dependencies for android support libraries.
+
+For example
+
+```code
+dependencies {
+    compile fileTree(dir: 'bin', include: ['*.jar'])
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:design:26.0.2'
+    compile 'com.android.support:recyclerview-v7:26.0.2'
+    compile 'com.android.support:cardview-v7:26.0.2'
+}
+```
+
+* If there are any version conflicts for the libraries, they'll be highlighted by a red line in the project's build.gradle. Make sure the support library dependencies are all of the same version (otherwise this can lead to inconsistent exceptions). You can also use the "gradle dependencies" command from the command line to list all dependencies for the included SDKs and check for conflicts.
+
+* Delete the folders for android support libraries (example appcompat-26.0.2, design-26.0.2, support-v4-26.0.2, recyclerview-26.0.2, cardview-26.0.2, support-vector-drawable-26.0.2 etc) if they exists in the exported android studio project. You will get these libraries via the changes in step 1.
+* If there are other plugins using android support libraries then make sure that deleting the above folders do not affect them. You can add `build.gradle` file in their respective project folders and add  dependencies, as required,  similar to Helpshift's (as mentioned above) to resolve dependency of the plugin.
+
+
+### Fix build issues using in-built Gradle build system in Unity 5.5+ {#fix-inbuilt-gradle-build}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.1.x and below
+
+</Admonition>
+
+
+Helpshift SDK depends on Android support libraries and needs a Gradle dependency for a successful build.
+
+Unity does not allow different Gradle build scripts for each plugin, therefore, the Helpshift SDK cannot add these dependencies by default.
+
+For configuring "Helpshift" plugin to build via the in-built Gradle system you will need to convert the "Assets/Plugins/Android/helpshift" directory to an "aar" file. This enables the Gradle build system to figure out the dependencies by itself.
+
+Please follow these steps:
+
+* Integrate the Helpshift plugin as per your requirements. If you are using the Helpshift Configurator, make sure the config is saved. [Refer here](https://developers.helpshift.com/unity/getting-started-android#gui-inspector)
+
+* Delete the following directories of Android support libraries that are packaged with Helpshift plugin:
+    * appcompat-26.0.2
+    * design-26.0.2
+    * cardview-26.0.2
+    * recyclerview-26.0.2
+    * support-v4-26.0.2
+    * support-vector-drawable-26.0.2
+    * support-annotations-26.0.2
+    * support-compat-26.0.2
+    * support-core-ui-26.0.2
+    * support-core-utils-26.0.2
+    * support-fragment-26.0.2
+    * support-transition-26.0.2
+
+* Copy the "aar" files of the above mentioned Android support libraries from your Android SDK installation directory into `<project>/Assets/Plugins/Android/` folder.
+
+* Download and run the "PluginToAAR" script from [here](https://github.com/helpshift/dexter/tree/master/PluginToAAR).
+
+    * This script converts the "Assets/Plugins/Android/helpshift" directory to "Assets/Plugins/Android/Helpshift.aar" file and backs up the original  "Assets/Plugins/Android/helpshift" folder at root directory of your project.
+    * If there is a config/theming/GCM related change in your project wrt Helpshift plugin, then restore the backedup Helpshift folder in "Assets/Plugins/Android/" and delete the Helpshift.aar first and only then do the required changes. After the changes are done, re-run the PluginToAAR script to make sure that latest changes are picked up properly.
+    * If you are upgrading the Helpshift plugin then the same steps as above apply. Restore the backedup Helpshift folder in "Assets/Plugins/Android/" and delete the Helpshift.aar first and then upgrade the plugin. 
+
+* Run the project build using the Gradle build system in Unity.
+
+
+<Admonition type="info" title="Note">
+
+ Starting from Support Library v4 v24.2.0, the library has been split into several smaller modules [here](https://developer.android.com/topic/libraries/support-library/rev-archive.html#24-2-0-v4-refactor). So, if you are using support lib v24.2.0 or above, please copy the “aar” files for all the individual modules.
+
+</Admonition>
+
+
+### ProGuard rules needed by Helpshift  {#proguard-rules-set}
+
+Helpshift Unity plugin uses its own dex file to load its code. Beacuse of this the classes used/referred inside the secondary dex cannot be proguarded or obfuscated/minimized.
+If you are using proguard in your build and also minimizing/obfuscating code then the following rules are needed by Helpshift plugin to work properly:
+
+
+```java
+
+    -keep class com.helpshift.** { *; }
+    -dontwarn com.helpshift.**
+    -keep class android.support.** { *; }
+
+```
+
+### Using AndroidX support libraries {#steps-to-build-with-android-x}
+
+Helpshift Unity SDK uses legacy android support libraries.
+If you want to use AndroidX libraries in your application please follow these steps to make Helpshift SDK compatible with AndroidX:
+
+1. We recommend to use the standalone jetifier tool mentioned [here](https://developer.android.com/studio/command-line/jetifier).
+1. To install Jetifier, [download the zip file](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta07/jetifier-standalone.zip) and extract it. Your must have Java version 1.8 installed.
+1. Use `standalone jetifier` tool to manually jetify the Helpshift library files:
+`<project>/Assets/Plugins/Android/Helpshift.aar`
+`<project>/Assets/Plugins/Android/helpshift-plugin-resources.aar`.
+1. Replace the existing `Helpshift.aar ` and `helpshift-plugin-resources.aar` files with the files generated from the standalone jetifier tool.
+
+Example:
+
+ `./jetifier-standalone -i <input path>Helpshift.aar -o <output path>/Helpshift.aar`
+
+Resolving AndroidX library dependencies:
+
+* When using `Unity Jar Resolver` plugin to resolve support library requirements: 
+
+Update the `<project>/Assets/Helpshift/Editor/HelpshiftDependencies.xml` to use the androidx libraries:
+
+```
+<androidPackages>
+<androidPackage spec="com.google.android.material:material:1.0.0"> </androidPackage>
+<androidPackage spec="androidx.cardview:cardview:1.0.0"></androidPackage>
+<androidPackage spec="androidx.recyclerview:recyclerview:1.0.0"></androidPackage>
+</androidPackages>
+```
+* When using `Gradle` to resolve support library requirements:
+
+Update dependencies section of the `<project>/Assets/Plugins/Android/mainTemplate.gradle` or `build.gradle` file to use the androidx libraries as:
+
+```
+dependencies {
+...
+compile 'com.google.android.material:material:1.0.0'
+compile 'androidx.cardview:cardview:1.0.0'
+compile 'androidx.recyclerview:recyclerview:1.0.0'
+...
+}
+```
+
+After all these changes, run a clean build of your app and verify all the UI screens work as expected.
+
+
+### GCM notifications crash the application on and above Android Oreo {#gcm-api26-crash}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.1.x and below
+
+</Admonition>
+
+
+If you are targeting the app on Android API level 26 and above, then GCM will crash if the push notification is received when the app is in background or not running.
+We recommend to move the manual FCM integration as described [here](/unity/notifications-android##fcm-push-support).
+
+
+```java
+
+    java.lang.RuntimeException: Unable to start receiver com.helpshift.supportCampaigns.gcm.HSGcmBroadcastReceiver:
+    java.lang.IllegalStateException: Not allowed to start service Intent { act=com.google.android.c2dm.intent.RECEIVE flg=0x1000010 pkg=com.example.app cmp=com.example.app
+    com.helpshift.supportCampaigns.gcm.HSGcmIntentService (has extras) }: app is in background uid UidRecord{74a5fc3 u0a136 RCVR idle change:idle|uncached procs:1 seq(0,0,0)}
+
+```
+
+### Compilation errors with plugin versions starting 3.7.1 {#android-21-errors}
+
+If you see compilation errors like below, please refer to this section
+
+    res/values-v21/values.xml:7: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Theme.Material'.
+    res/values-v21/values.xml:45: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Theme.Material.Light'.
+    res/values-v21/values.xml:83: error: Error retrieving parent for item: No resource found that matches the given name '@android:style/Theme.Material.Light.DarkActionBar'.
+
+Starting with version 3.7.1, the Helpshift Unity plugin depends on the *targetSdkVersion* being set to 21 or higher.
+
+#### Explanation
+
+Android-21 refers to the Android 5.0 Lollipop version of the Android System.
+According to Android guidelines, *targetSdkVersion* is the API version with you are confident that your application works well. If your applications runs on a Android version greater than the *targetSdkVersion*, it will invoke Google's compatibility behaviours which we have found to be not the most ideal or stable.
+Thus our suggestion would be to increase your Applications targetSdkVersion to 21 or higher.
+If however you are apprehensive about doing that, there is a workaround.
+
+1. Change the *targetSdkVersion* in the Helpshift's *AndroidManifest.xml* to your desired version.
+2. Remove the values-21 folder from Helpshift's *res* folders.
+3. Compile and test.
+
+
+<Admonition type="info" title="Note">
+
+Please note that the above workaround is not something that we recommend. We do not perform thorough QA with these settings and they may lead to some UI issues.
+Please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a> if you face issues.
+
+</Admonition>
+
+
+### Crash with "Native thread exiting without having called DetachCurrentThread"
+
+This issue happens when the app is exited by calling Application.Quit().
+This does not give the SDK a callback to release its resources like a thread attached to AndroidJNI.
+Please refer to [onApplicationQuit](/unity/support-tools-android#application-quit) API for details.
+
+### CommandInvocationFailure: Failed to re-package resources / Build error: Unable to merge manifests   {#commandInvocationFailure-manifest}
+
+This issue can happen if the `${applicationId}` string is not replaced in `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` file.
+
+Confirm that `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` does not contain any "${applicationId}" string.
+This placeholder is automatically replaced with the application bundle identifier if the build system used is gradle or if you are using Helpshift configurator for setting up the Helpshift SDK configuration. You can find the documentation [here](/unity/getting-started-android#adding-package-name)
+
+### CommandInvocationFailure: Gradle build failed / Error: No resource found that matches the given name {#commandInvocationFailure-noResourceFound}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.1.x and below
+
+</Admonition>
+
+
+This issue can happen due to older android resource files being left behind when updating the Helpshift SDK. To resolve this issue please remove the Helpshift SDK Unity specific directories and re-import the Helpshift Unity package.
+
+To run a clean import of the Helpshift SDK package:
+
+1. Remove all the Helpshift SDK specific Android support libraries from the `Assets > Plugins > Android` folder.
+2. If you ran the PluginToAAR script, remove the `helpshift_bkp` folder from your project root directory.
+3. Delete the `helpshift` folder OR `Helpshift.aar` file, and `gcm.jar` file from `Assets > Plugin > Android` folder.
+4. Delete the `helpshift` folder and `hs__data` file from `Assets > Plugin > Android > assets` folder.
+5. After this, import the Helpshift Unity package using the `Assets > Import package > Custom package` menu options.
+
+### Issue with duplicate plugin Helpshift.framework when integrating iOS {#duplicate-plugin-ios}
+
+If you are also integrating for iOS, deselect `iOS/Bitcode` folder while importing the unitypackage. If your game uses bitcode on iOS, keep `Bitcode` selected and deselect `iOS/Helpshift.framework` instead. Refer [here](/unity/getting-started-ios#adding-to-project).
+
+## UI Issues {#ui-issues}
+
+### Cannot scroll FAQ list, cannot switch FAQ tabs, keyboard input not working when creating a new conversation etc.
+
+These UI issues are caused when hardware acceleration is turned off for Helpshift's activities. To ensure that hardware acceleration is turned on, add this to your AndroidManifest.xml file.
+
+
+```xml
+
+    <activity
+        android:name="com.helpshift.support.activities.ParentActivity"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Helpshift.Theme.Activity"/>
+
+```
+
+## Notification issues {#notification-issues}
+
+### Incorrect notification-icon property
+
+If you see the push notification not being generated for Android, one of the first things that you should check for is the `notificationIcon` property.
+
+If you have set the `notificationIcon` but the icon file is not accessible to the Helpshift SDK, the SDK will not generate notifications.
+
+
+## Integration issues with secondary dex {#dex-issues}
+
+
+<Admonition type="info" title="Note">
+
+ When updating to v2.3.1 package, please make sure to remove the previous package completely and then import the new one.
+
+</Admonition>
+
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.1.x and below
+
+</Admonition>
+
+
+In case of issues with update to v2.3.1 package, please collect complete adb logs for the issue and look out for any of the following errors.
+
+### java.lang.NoClassDefFoundError: com/helpshift/support/activities/ParentActivity
+
+In most cases this is not the actual error. This is a derived error and the actual error could be one of the below.
+
+### java.lang.ClassCastException ContentFrameLayout
+
+    java.lang.ClassCastException:
+    android.support.v7.internal.widget.ContentFrameLayout cannot be cast to
+    android.support.v7.widget.ContentFrameLayout
+This issue happens when the support library versions are different. The resources are picked from appcompat 23.0.1 and code is picked from 23.1.1.
+ContentFrameLayout's package was changed in 23.1.1 version of support libraries.
+
+Make sure to use resources and code (i.e jar file) from the same android support library version to reslove the issue.
+Please refer to [Add Helpshift to your project](/unity/getting-started-android#adding-to-project) for selectively adding/removing libraries from Helpshift package.
+
+### Class resolved by unexpected DEX:
+
+    Class resolved by unexpected DEX: Lcom/helpshift/activities/MainActivity;(0x428396f8):0x6fa2e000 ref [Landroid/support/v7/app/AppCompatActivity;]
+    Landroid/support/v7/app/AppCompatActivity;(0x428396f8):0x60dae000
+    W/dalvikvm(32199): (Lcom/helpshift/activities/MainActivity; had used a different Landroid/support/v7/app/AppCompatActivity; during pre-verification)
+
+This issues happens when the code for a class is included in primary dex as well as the secondary dex included by Helpshift SDK.
+For example, appcompat library is packaged with Helpshift as well as some other plugin.
+If previous Helpshift SDK package was not cleaned before importing the new one then this issue might happen since the Helpshift SDK code now resides in both, primary dex (as a jar file from the previous package) and the secondary dex (separate dex file from the new package).
+If other plugins already use android support libraries, please use the [Helpshift SDK-only dex Unity package](/unity/getting-started-android#hs-only-dex-unity).
+
+Make sure to include only one instance of any library to reslove the issue.
+
+###  Rejecting re-init on previously-failed class java.lang.Class<com.example.ExampleActivity\>
+
+This issue happens when a referenced class from the "ExampleActivity" class has not been found when system was loading the "ExampleActivity" class.
+For example :
+
+```java
+
+package com.example;
+
+import android.support.v7.app;
+.
+.
+public class ExampleActivity extends AppCompatActivity
+.
+.
+
+``` 
+
+The ExampleActivity class needs the AppCompatActivity when loaded. If ExampleActivity loads before HelpshiftSdk.install() (which loads the secondary dex) call and AppCompatActivity was to be loaded from secondary dex then ExampleActivity would not be able to load and crash.
+
+If any other plugin/your code is using android support libraries please use the [Helpshift SDK-only dex build](/unity/getting-started-android#hs-only-dex-unity).
+This would ensure that the android support libraries code is packaged in primary dex instead of the secondary dex from Helpshift SDK.
+Please refer to [Add Helpshift to your project](/unity/getting-started-android#adding-to-project).
+
+
+### java.lang.IncompatibleClassChangeError
+
+    Incompatible structural change detected:
+    Structural change of android.support.v4.app.Fragment is hazardous
+
+This issue happens when a class is compiled against two different versions of the dependent libraries and the system tries to load it with the incorrect dependent library.
+Generally the root cause of this issue is duplicate code in jar file as well as the secondary dex files meaning that the previous build of Helpshift SDK was not removed completely.
+It can also happen when the class is packaged with the incorrect version of the dependent library it was compiled with.
+
+Please refer [Impact Analysis](/unity/impact-analysis-android/) for steps to confirm while integrating with v2.3.1 unity package.
+
+
+### Error logs for secondary dex loading
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 4.1.x and below
+
+</Admonition>
+
+
+Some devices may show the following logs while loading the secondary dex from Helpshift.
+
+    E Method makeDexElements with parameters [class java.util. ArrayList, class java.io.File, class java.util.ArrayList] not found in class dalvik.system.DexPathList
+    E Method makeDexElements with parameters [class java.util.ArrayList, class java.io.File, class java.util.ArrayList ] not found in class dalvik.system.DexPathList
+    E Method makeDexElements with parameters [class java.util.ArrayList, class java.io.File, class java.util.ArrayList, class java.lang.ClassLoader] not found in class dalvik.system.DexPathList
+    E Method makeDexElements with parameters [class java.util.ArrayList, class java.io.File, class java.util.ArrayList, class java.lang.ClassLoader] not found in class dalvik.system.DexPathList
+    D Helpshift dex install done
+
+
+The method call to load a secondary dex is via reflection and the signature has changed over different OS versions. The log indicates the methods that it has looked for and failed before finding the correct method. You can safely ignore these logs.
+
+### Resource ID #0x0android.content.res.Resources$NotFoundException {#resource-not-found-error}
+
+    10:31:38.830 I/Unity (25705): Error in : showFAQsUnity. Exception : android.content.res.Resources$NotFoundException: Resource ID #0x0android.content.res.Resources$NotFoundException: Resource ID #0x0 
+    Line 14985: 09-09 10:31:38.830 I/Unity (25705): at android.content.res.Resources.getValue(Resources.java:1351) 
+    Line 14987: 09-09 10:31:38.830 I/Unity (25705): at android.content.res.Resources.openRawResource(Resources.java:1265) 
+    Line 14989: 09-09 10:31:38.830 I/Unity (25705): at android.content.res.Resources.openRawResource(Resources.java:1241) 
+    Line 14991: 09-09 10:31:38.830 I/Unity (25705): at com.helpshift.Helpshift.readConfigFromJson(Helpshift.java:1144) 
+    Line 14993: 09-09 10:31:38.830 I/Unity (25705): at com.helpshift.Helpshift.showFAQsUnity(Helpshift.java:1023) 
+    Line 14993: 09-09 10:31:38.830 I/Unity (25705): at com.helpshift.Helpshift.showFAQsUnity(Helpshift.java:1023) 
+    Line 14995: 09-09 10:31:38.830 I/Unity (25705): at UnityEngine.AndroidJNISafe.CheckException () [0x0008c] in /Users/builduser/buildslave/unity/build/Runtime/Export/AndroidJNISafe.cs:24 
+    Line 14995: 09-09 10:31:38.830 I/Unity (25705): at UnityEngine.AndroidJNISafe.CheckException () [0x0008c] in 
+
+This kind of error happens when:
+
+1. Helpshift GUI editor is used for configuring the SDK and the config was not saved by clicking on the [Save config](/unity/getting-started-android#gui-inspector) button. After saving config, make sure to re-generate the helpshift.aar file if PluginToAAR script was used to build it.
+1. No parameters are passed into `HelpshiftSdk.install()` API and the configuration was not done via the GUI editor.
+1. Unity IDE's build issue. You can try a clean build of your application and reinstalling it on the device.
+
+
+### The number of method references in a .dex file cannot exceed 64K {#dex-64k-issue}
+
+This issue happens when the total method count in the application exceeds 64k, a limit imposed by android. 
+
+Generally, the reason is Unity android build process duplicating "resources" for every android library included in the project. So, if your project has N android libraries and M resources (i.e declarations under "res" folder of the library) in total then Unity build process duplicates the resources count for every library i.e N x M methods. These are added to the dex method count while the application is being built by Unity.
+This duplication error is addressed only when the build process succeeds in converting jar to dex format. Hence, the final dex count in an apk file is much less than the one reported in case the build fails with dex count errors.
+
+You can find the relevant dicussion on this issue in Unity3D forum [here](https://forum.unity3d.com/threads/too-many-method-references-max-is-65536.327064/page-2#post-2749753).
+
+
+There are two ways to resolve this issue, given below:
+
+* Using multi-dex as suggested by android. Refer : [Multi-Dex Android](https://developer.android.com/studio/build/multidex.html)
+
+    You can export the Unity project to a android studio project and then apply the configuration as suggested by android developer site. Refer to "Using Google Android project" here : [Export Unity project to Android Studio](https://docs.unity3d.com/Manual/android-BuildProcess.html)
+
+* If exporting to Android studio is not an option then you can try the following steps to get the count as down as possible.
+
+     The android build system generates references for all the resources (i.e resources under "res" folder for all the plugins) with all the package ids available in the AndroidManifest.xml files of all plugins. Lets consider a library, "support-v4-26.0.2" folder under `project/Assets/Plugins/Android` in the Helpshift SDK package.
+
+    Manual steps are given below. A script that automates these steps can be found [here](https://github.com/helpshift/dexter).
+
+    1. Check if the plugin has any resources in the 'res' folder
+    1. If it doesn't have any resources, then you can change the "package" attribute in the "manifest" tag of the AndroidManifest.xml to your android application identifier. Copy the ".jar" files, if any,to "libs" folder (create the folder if it does not exist).
+    1. Perform steps 1 and 2 with other android libraries as well.
+    1. For android libraries in the form of ".aar" files :
+        * Unpack the .aar file and perform step 1 and 2.
+        * If step 1 holds true, delete the unpacked folder and keep the .aar file as it is. Move on to the next .aar file.
+        * If step 1 does not hold true then, in addition to steps 1 and 2, you would also need to add a "project.properties" file to the unpacked folder. Unity treats it as a android library only when the folder consists of both AndroidManifest.xml and project.properties files.
+        * Add `target=android-26` and `android.library=true` properties (each on a new line) to the project.properties file.
+        * Once these changes are done, delete the original aar file and keep the unpacked folder.
+
+This is a speculative fix by examining the android build processes. You would have to test this out by running on various devices.
+
+### FCM push notifications do not work when app is in background/killed state {#fcm-background-notifications}
+
+Unity engine does not run when the app is in background, hence any communication from the native java layer to C# delegates is not possible.
+For push notifications to work in background you would have to integrate the code in java layer by overriding the service that handles push notifications in FCM plugin.
+
+Refer the [Helpshift Unity sample apps](https://github.com/helpshift/helpshift-unity-examples) to handle Helpshift's push notifications in background/killed app state when using [FCM Unity plugin](https://firebase.google.com/docs/cloud-messaging/unity/client) for push notifications.
+
+
+<Admonition type="info" title="Note">
+
+This is a custom java layer integration based on internal FCM plugin apis. This might change/break with FCM version upgrades.
+
+</Admonition>
+
+
+## Known issues {#known-issues}
+
+<table>
+    <tr>
+        <th>No.</th>
+        <th>Known Issue</th>
+        <th>SDK <br />Version</th>
+        <th>OS Version <br />&amp; Device</th>
+        <th>Occurs When &amp; Frequency</th>
+        <th>Work Around</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>HSService crash</td>
+        <td>v2.3.1, v2.3.2, v2.4.0, v2.5.0</td>
+        <td></td>
+        <td>
+            <ul>
+                <li>
+                When the user kills the app manually (not killed by system in background) and there was a pending start service call which was not delivered to the service, android does restart this service on app restart.
+                </li>
+                <li>
+                    With the multidex approach, this class may not be loaded when the system would look for it to start the service, hence we get ClassNotFoundError in such cases.
+                </li>
+                <li>
+                    Occurs intermittently.
+                </li>
+            </ul>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Meta data supported data types.</td>
+        <td>v2.3.1, v2.3.2</td>
+        <td></td>
+        <td>
+            <ul>
+                <li>
+                    Meta data provided via HelpshiftSdk.*WithMeta(Dictionary&lt;string, object&gt; metaData) api's presently supports only "System.String" data type for custom keys and strings "yes" and "no" will be converted to boolean values and treated accordingly. Value provided for key HelpshiftSdk.HSTAGSKEY should be of type "System.String[]".
+                    <br />Example : HelpshiftSdk.showFAQsWithMeta(Dictionary&lt;string, object&gt; metaMap)
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    Meta data embedded in config dictionary with HelpshiftSdk.HSCUSTOMMETADATAKEY key supports int and long values along with above mentioned data types.
+                    <br />Example : HelpshiftSdk.showFAQs(Dictionary&lt;string, object&gt; configMap). Insert meta data in configMap with HelpshiftSdk.HSCUSTOMMETADATAKEY key.
+                </li>
+            </ul>
+        </td>
+        <td>Pass on data as String values in the dictionary.</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>Custom notification icon and sound issue.</td>
+        <td>v2.3.1, v2.3.2</td>
+        <td></td>
+        <td>
+            <ul>
+                <li>
+                Notification sound and icon configured via install configuration are not being identified correctly and may not reflect. The app will pick up default icon and sound from the device when it receives a notification.
+                </li>
+            </ul>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Post build console error.</td>
+        <td>v2.4.0</td>
+        <td></td>
+        <td>
+            <ul>
+                <li>
+                   The unity build console shows an error "DirectoryNotFoundException: Could not find a part of the path "C:\Users\Administrator\Desktop\a.apk\Classes\Preprocessor.h"."
+                   This happens after successful completion of Android build. The post process script has a bug which thows this error. The Android build process and application creation/installation is not affected by this.
+                </li>
+            </ul>
+        </td>
+        <td>
+                   Find the following code in [project]/Assets/Helpshfift/Editor/HelpshiftPostProcess.cs file and change it as shown to compile it only in iOS builds. This will skip it for android and run it for iOS.
+                   <ul>
+                        <br />    #if UNITY_IOS
+                        <br />    string preprocessorPath = pathToBuildProject + "/Classes/Preprocessor.h";
+                        <br />    string text = File.ReadAllText(preprocessorPath);
+                        <br />    text = text.Replace("UNITY_USES_REMOTE_NOTIFICATIONS 0",
+                        <br />    "UNITY_USES_REMOTE_NOTIFICATIONS 1");
+                        <br />    File.WriteAllText(preprocessorPath, text);
+                        <br />    #endif
+                   </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>Orientation for the Helpshift Activity launches in portrait and then switches to landscape when the calling activity is in landscape mode but the device is held in portrait mode.</td>
+        <td>v2.7.0</td>
+        <td>Android v7.1.1</td>
+        <td>
+            <ul>
+                <li> Use `screenOrientation` flag in install config to set the Helpshift screen to LANDSCAPE </li>
+                <li> Set orientation for app's activity to LANDSCAPE as well </li>
+                <li> Now your activity is in landscape mode. Hold the device in portrait mode and call a Helpshift API like showFaqs(). </li>
+                <li> The Helpshift SDK screen is first started in portrait mode and then switches to landscape mode, which was the requested orientation. </li>
+            </ul>
+        </td>
+        <td></td>
+    </tr>
+</table>
