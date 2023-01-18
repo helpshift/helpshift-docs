@@ -1,0 +1,95 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ * https://docusaurus.io/docs/styling-layout#styling-your-site-with-infima
+ */
+
+/* You can override the default Infima variables here. */
+
+:root {
+  --ifm-color-primary: #215fa6;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme="dark"] {
+  --ifm-color-primary: rgb(26, 144, 255);
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Override some Docusaurus defaults */
+
+/* Hides empty headers caused due to the quill definition list -> Markdown migration */
+th:empty {
+  @apply hidden;
+}
+
+table p {
+  @apply m-0;
+}
+
+article .markdown img {
+  @apply py-4;
+}
+
+img {
+  max-height: 600px;
+  @apply object-contain;
+}
+
+.footer__bottom {
+  @apply mt-12;
+}
+
+footer .container {
+  @apply max-w-6xl;
+}
+
+.navbar__item:nth-child(1) {
+  @apply ml-12;
+}
+
+a.menu__link {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+[data-theme="dark"] a.menu__link--active,
+a.menu__link--active {
+  color: var(--ifm-menu-color-active);
+}
+
+/* Custom global styles */
+
+.full-bg {
+  background: linear-gradient(
+    to bottom right,
+    #e7a64233,
+    #0074d977,
+    #c471edaa,
+    #12c2e9aa
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+[data-theme="dark"] .full-bg {
+  background: unset;
+}

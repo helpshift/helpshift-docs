@@ -1,0 +1,309 @@
+---
+sidebar_position: 10
+title: Helpshift APIs Android
+description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements.You can call only specific screens from the SDK based on thefunctionality you want to expose in your app.There are 4 different ways in which the Helpshift SDK can be presented in your app."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Helpshift APIs <small>Android</small> {#support-tools}
+
+<Intro>
+
+Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
+You can call only specific screens from the SDK based on the
+functionality you want to expose in your app.
+
+There are 4 different ways in which the Helpshift SDK can be presented in your app.
+
+
+</Intro>
+
+
+## Integrating Contact Us & In App Messaging {#conversation-view}
+
+
+```csharp
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    help.showConversation(configMap);
+
+```
+
+You can use the `showConversation` api to provide a way for the user to send feedback or start a new conversation
+with you. This has been provided if you want to embed a **"Send
+Feedback"** or **"Contact Us"** action in your app and want to lead the
+user to this action directly without having to go to the FAQ. Once, a
+user starts a new conversation, this API call will show the conversation
+activity. The conversation will ensue until it is resolved (and the
+resolution is accepted by the user) or rejected by the agent.
+
+
+~~~ side-by-side
+![conversation-bot.png](/static/books/android/conversation-bot.png
+"conversation-bot.png")
+
+![showConversation.png](/static/books/android/showconversation.png
+"showConversation.png")
+
+
+## Integrating FAQs {#faqs-view}
+
+
+```csharp
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    help.showFAQs(configMap);
+
+```
+
+You can use the `showFAQs` api call to provide a way for the user to invoke the purpose built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface.
+_You can wire this api call to a **"Help"** or **"Support"** action in your app._ This Activity combines the FAQ, Search and Contact Us functionality together in a single interface. In this view a user has to search for a specific question in the FAQ failing which they can report an issue. When you respond back to their question from the Helpshift Agent Dashboard, the reply will be shown as a count besides Contact Us, clicking on which will open up the conversation.
+
+Check out [API Options](#api-options) for more configuration.
+
+<SideBySide>
+
+<Image src="/static/books/android/showfaqs.png"  width="quarter" alt="showFAQs.png" /> 
+
+<Image src="/static/books/android/faqsearch.png"  width="quarter" alt="faqSearch.png" /> 
+
+
+</SideBySide>
+
+### FAQ Filtering by tags {#faq-filtering}
+
+Starting v1.3.0 onwards, we have introduced FAQ filtering capability by tags. With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
+Typical cases why you would want to use FAQ filtering are :
+* You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
+* You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone
+
+FAQ filtering is a 2 step approach
+
+1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘iphone’ & ‘ipad’.
+ <Image src="/static/books/android/faq-filtering.png"  width="full" /> 
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly `Issue Tags` & `Search Tags`.
+
+* Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+* Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+
+#### How to use FAQ filtering
+This will  be a config option which will be supported by the showFAQs and showFAQSection APIs.
+
+Usage :
+
+```csharp
+Dictionary<string, object> configD = new Dictionary<string, object>();
+Dictionary<string, object> tags = new Dictionary<string, object>();
+tags.Add("operator", "and/or/not");
+tags.Add("tags", new String[]{"tag1", "tag2"});
+configD.Add(HelpshiftSdk.HSTAGSMATCHINGKEY, tags);
+```
+
+The `HelpshiftSdk.HSTAGSMATCHINGKEY` option will be a HashMap containing 2 keys
+
+* operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
+* tags : the actual tags in the query (String Array)
+
+Example :
+
+```csharp
+//If the developer wants to show all FAQs with tags “android-phone” or “android-tablet”
+Dictionary<string, object> configD = new Dictionary<string, object>();
+Dictionary<string, object> tags = new Dictionary<string, object>();
+tags.Add("operator", "or");
+tags.Add("tags", new String[]{"android-phone", "android-tablet"});
+configD.Add(HelpshiftSdk.HSTAGSMATCHINGKEY, tags);
+help.showFAQs(configD);
+```
+
+## Showing a Particular FAQ Section {#faq-section-view}
+
+<SideBySide>
+
+<Image src="/static/books/android/showfaqsection.png"  width="quarter" alt="showFAQSection.png" /> 
+
+
+</SideBySide>
+
+
+```csharp
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    help.showFAQSection("11", configMap);
+
+```
+
+You can use the `showFAQSection` api call to show faqs from a particular FAQ section.
+
+**You'll need the `publish-id` of the section in this case:**
+
+<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
+
+This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
+
+Check out [API Options](#api-options) for more configuration.
+
+## Showing a Particular FAQ Question {#faq-question-view}
+
+<SideBySide>
+
+<Image src="/static/books/android/showsinglefaq.png"  width="quarter" alt="showSingleFAQ.png" /> 
+
+
+</SideBySide>
+
+
+
+```csharp
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    help.showSingleFAQ("51", configMap);
+
+```
+
+You can use the `showSingleFAQ` api call to show a single faq question.
+
+**You'll need the `publish-id` of the FAQ in this case:**
+
+<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
+
+## Guided Issue Filing {#dynamic-forms}
+
+
+<Admonition type="info" title="Note">
+
+ Applicable to version 2.1.1 and above & Nested Dynamic form is
+ applicable to version v2.2.0-support and above
+
+</Admonition>
+
+
+Guided issue filing is a feature to capture more context when a user interacts with Helpshift Support. For example, lets say you want the user to file a ticket in case of a complaint and also in case he want to suggest a feature. With guided issue filing, you will be able to distinguish between these two use cases and take required actions (like assigning appropriate agents).
+
+Guided Issue Filing can be achieved using Dynamic Forms. 
+
+Dynamic Forms also enable better FAQ discovery. Lets say there is a frequently viewed FAQ or FAQ section buried deep in your FAQ hierarchy. Some users might miss it out and opt to file an issue instead. With dynamic forms, you can create a new section (like top FAQs) that links to that FAQ section. Or create and alternate title to an FAQ (like 'How do I pay for gems' instead of 'Billing').
+
+Dynamic Forms are built using one or more **Flow** types.
+
+
+The app configures a dynamic form using 'flows' which are dictionaries with the appropriate keys present. There are 5 types of
+flows:
+
+1. Flow to show conversation screen
+
+    * `HelpshiftSdk.HsFlowTypeConversation`
+    * similar to the showConversation: API
+
+2. Flow to show all FAQs
+
+    * `HelpshiftSdk.HsFlowTypeFaqs`
+    * similar to the showFAQs: API
+
+3. Flow to show a FAQ section
+
+    * `HelpshiftSdk.HsFlowTypeFaqSection`
+    * similar to the showFAQSection: API
+
+4. Flow to show a single FAQ
+
+    * `HelpshiftSdk.HsFlowTypeSingleFaq`
+    * similar to the showSingleFAQ: API
+
+5. Flow to show a nested Dynamic form
+
+    * `HelpshiftSdk.HsFlowTypeNested`
+
+Each flow need a display text. This will be the text that will be displayed in the row. Each of the flows can include a `HsFlowConfig` dictionary that can have config options as documented [here](/unity/sdk-configuration-android#api-options). This will be the config that is passed to the subsequent Support API.
+
+To show the dynamic form, use the `HelpshiftSdk.showDynamicForm` API
+
+
+For example :
+
+
+Guided ticket filing / Dynamic forms work as a wrapper on top of Helpshift's existing APIs. Each existing API needs to be wrapped in a "flow". A collection of these flows is displayed in a tabular form. A flow may contain a list of other flows (nested flows). In this case when user taps the parent flow, he is taken to another screen which list the child flows.
+
+Consider this hierarchy:
+
+* Gameplay
+* Billing
+    * Issues with Payment
+    * Refund
+* Loading
+* Suggestions
+* Report Cheating
+
+
+```csharp
+    Dictionary<string, object> reportCheatingConversationFlow = new Dictionary<string, object>();
+    reportCheatingConversationFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeConversation);
+    reportCheatingConversationFlow.Add(HelpshiftSdk.HsFlowTitle, "Report Cheating");
+    Dictionary<string, object> conversationConfig = new Dictionary<string, object>() { {"conversationPrefillText" , "This is from dynamic forms"} };
+    reportCheatingConversationFlow.Add(HelpshiftSdk.HsFlowConfig, conversationConfig);
+
+    Dictionary<string, object> gameplaySectionFlow = new Dictionary<string, object>();
+    gameplaySectionFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeFaqSection);
+    gameplaySectionFlow.Add(HelpshiftSdk.HsFlowTitle, "Gameplay");
+    gameplaySectionFlow.Add(HelpshiftSdk.HsFlowData, "1509");
+
+    Dictionary<string, object> suggestionsSectionFlow = new Dictionary<string, object>();
+    suggestionsSectionFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeFaqSection);
+    suggestionsSectionFlow.Add(HelpshiftSdk.HsFlowTitle, "Suggestions");
+    suggestionsSectionFlow.Add(HelpshiftSdk.HsFlowData, "1510");
+
+    Dictionary<string, object> loadingSectionFlow = new Dictionary<string, object>();
+    loadingSectionFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeFaqSection);
+    loadingSectionFlow.Add(HelpshiftSdk.HsFlowTitle, "Loading");
+    loadingSectionFlow.Add(HelpshiftSdk.HsFlowData, "1511");
+
+    Dictionary<string, object> paymentfaqFlow = new Dictionary<string, object>();
+    paymentfaqFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeSingleFaq);
+    paymentfaqFlow.Add(HelpshiftSdk.HsFlowTitle, "Issues with Payment");
+    paymentfaqFlow.Add(HelpshiftSdk.HsFlowData, "2998");
+
+    Dictionary<string, object> refundFaqFlow = new Dictionary<string, object>();
+    refundFaqFlow.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeSingleFaq);
+    refundFaqFlow.Add(HelpshiftSdk.HsFlowTitle, "Refund");
+    refundFaqFlow.Add(HelpshiftSdk.HsFlowData, "2999");
+
+    Dictionary<string, object> billingNestedForm = new Dictionary<string, object >();
+    billingNestedForm.Add(HelpshiftSdk.HsFlowType, HelpshiftSdk.HsFlowTypeNested);
+    billingNestedForm.Add(HelpshiftSdk.HsFlowTitle, "Billing");
+    billingNestedForm.Add(HelpshiftSdk.HsFlowData, new Dictionary<string, object>[] {paymentfaqFlow, refundFaqFlow});
+
+    help.showDynamicForm("This is a dynamic form", new Dictionary<string, object>[] {gameplaySectionFlow, 
+                            billingNestedForm, loadingSectionFlow, suggestionsSectionFlow, reportCheatingConversationFlow});
+```
+
+Each dynamic form needs :
+
+1. **Title**: This will be the title displayed on the action bar
+2. **flows**: An List of dictionary objects as discussed above.
+
+
+Check out [API Options](/unity/sdk-configuration-android#api-options) for more configuration.
+
+## Miscellaneous APIs
+
+### onApplicationQuit {#application-quit}
+
+Gives a callback to the Helpshift SDK to clean up resources and release the AndroidJNI thread.
+Call this api when ever you call the Application.Quit() api in Unity to close the app. This will ensure that the SDK releases the attached thread to AndroidJNI and closes gracefully. Not calling this api on application quit may result in app crashes.
+
+Example Code :
+
+```csharp
+HelpshiftSdk.onApplicationQuit();
+Application.Quit();
+```

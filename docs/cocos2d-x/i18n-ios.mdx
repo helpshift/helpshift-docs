@@ -1,0 +1,203 @@
+---
+sidebar_position: 10
+title: Going International
+description: "Localizing & Internationalizing your in-app Support."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Going International {#going-international}
+
+<Intro>
+
+Localizing & Internationalizing your in-app Support.
+
+
+</Intro>
+
+
+## Internationalization {#i18n}
+
+Helpshift iOS SDK comes with support for **47** languages out of the box with English as the default. To enable the available languages, simply drag & drop the HsLocalization.bundle to your project.
+The Helpshift SDK will be localized based on the user’s device language. This can be set by going to General → Language & Region → iPhone Language. If the user’s device language is not available, English will be used as default.
+
+If the end-user has a language already set for their device (via
+Settings->General->International->Language) the correct language
+translations will be used. If the said language is not available English
+will be used as default.
+
+
+<Admonition type="danger" title="Important">
+
+#### Add only required languages from HSLocalization
+
+If you are adding strings for a certain language, it enables that language in your app when submitted to the App store.
+This has app wide implications and may cause unwanted problems if not taken care of.
+Specifically, this can lead the App Store to detect that you support a particular language even
+though you have not specifically added that language to your application.
+Make sure to only add those languages that your app supports.
+
+
+</Admonition>
+
+
+### List of supported languages {#supported-languages}
+
+| Language | Locale |
+|--------------------|-------------------|-------------------|
+| English | en|
+| German | de|
+| Spanish | es|
+| French | fr |
+| Italian | it|
+| Russian | ru |
+| Simplified-Chinese | zh-Hans|
+| Traditional-Chinese | zh-Hant|
+| Hong Kong-Chinese | zh-HK|
+| Hong Kong-Chinese (Traditional) | zh-Hant-HK|
+| Singapore-Chinese | zh-SG|
+| Singapore-Chinese (Traditional) | zh-Hant-SG|
+| Portuguese |  pt|
+| Korean| ko|
+| Japanese | ja |
+|  Turkish| tr |
+| Dutch | nl|
+|  Czech| cs|
+| Hungarian | hu |
+|  Indonesian| id|
+| Thai | th |
+| Slovenian | sl |
+| Vietnamese | vi |
+| Arabic | ar |
+| Polish | pl |
+| Norwegian | no |
+| Swedish | sv |
+| Finnish | fi |
+| Romanian | ro |
+| Greek | el |
+| Danish | da |
+| Malay | ms |
+| Hebrew | iw |
+| Slovak | sk |
+| Ukrainian | uk |
+| Catalan | ca |
+| Croatian | hr |
+| Bengali | bn |
+| Bulgarian | bg |
+| Gujarati | gu |
+| Hindi | hi |
+| Kannada | kn |
+| Latvian | lv |
+| Malayalam | ml |
+| Marathi | mr |
+| Punjabi | pa |
+| Persian | fa |
+| Tamil | ta |
+| Telugu | te |
+
+
+### Adding your own translations {#custom-translations}
+
+Steps to add your own language translation to Helpshift iOS SDK:
+
+1. Select your Project from XCode, you can see the Localizations section
+  as shown below, click on the + symbol to add your Localization. Select
+  the localization you want to add for e.g., Dutch.
+
+    <Image src="https://d3e51fp79zp4el.cloudfront.net/images/docs/ios/hs-doc-I18n1.png"  width="full" alt="external image hs-doc-I18n1.png" /> 
+
+2. Once you have selected Dutch, XCode will prompt you to choose
+   reference language to create Dutch localization, select
+   HelpshiftLocalizable.strings and select `English` as reference
+   language, uncheck all other resource files in your project to create
+   `Dutch` localization for Helpshift iOS SDK. See below for reference.
+
+    <Image src="https://d3e51fp79zp4el.cloudfront.net/images/docs/ios/hs-doc-I18n2.png"  width="full" alt="external image hs-doc-I18n2.png" /> 
+
+3. After you have pressed the Finish button, Xcode will create the file
+   `HSLocalization/nl.lproj/HelpshiftLocalizable.strings`. Click
+   "HelpshiftLocalizable.strings (Dutch)" from XCode to add Dutch
+   Localization. See below for reference:
+
+    <Image src="https://d3e51fp79zp4el.cloudfront.net/images/docs/ios/hs-doc-I18n3.png"  width="full" alt="external image hs-doc-I18n3.png" /> 
+
+
+## Localization setup {#localization}
+
+
+<Admonition type="info" title="Note">
+
+For v3.2.0 and above
+
+</Admonition>
+
+
+The Helpshift localized strings (.lproj folders) have now
+been moved from `HSResources` to `HSLocalization` folder in the Helpshift
+zip file.The `HSLocalization` folder needs to be added to your project for the
+languages you want to support. Just remove the respective .lproj folders
+from `HSLocalization` for languages you do not wish to support.
+
+If you're using SDK `v3.1.x` or below, and you're upgrading to SDK
+`v3.2.0`, make sure to remove `HSResources` for `v3.1.x` from your project,
+add `HSResources` and `HSLocalization` separately (as mentioned above) from
+the SDK `v3.2.0` folder.
+
+For Cocoapods, localized strings are not added by default on `pod install`. You must add the languages of your choice manually from
+the `HSLocalization` folder. Drag and drop the corresponding .lproj folders into your project from the directory where Cocoapods saves the Helpshift SDK folder.
+<Image src="/static/books/ios/cocoapods-languages.png"  width="full" /> 
+
+## Set SDK language {#set-language}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v1.7.0 and above.
+
+</Admonition>
+
+
+You can set the SDK language for the given locale using the method `setLanguage`.
+
+Locale can contain two-letter lowercase ISO language codes (such as "en") as defined by ISO 639-1 and in addition contain two-letter uppercase ISO country codes (such as "US") as defined by ISO 3166-1. Language code and country code are separated by an underscore ("\_").
+
+Example - "pt\_BR", "zh\_CN".
+
+**For example:**
+
+Setting language for the given locale with only language code.
+
+```
+HelpshiftCocos2dx::setLanguage("fr");
+```
+
+Setting the language for the given locale with both language code and country code.
+
+```
+HelpshiftCocos2dx::setLanguage("zh_CN");
+```
+
+Before you set the language, make sure that there exists translations for the Helpshift strings in that locale. List of supported locale is mentioned above. If there is a locale which we currently do not support out of the box, please add the relevant translation files in your app.
+
+Now, **head over to [String Customization](/ios/string-customization)** for the list of strings that you can customize as per your needs.
+
+
+
+<Admonition type="info" title="Note">
+
+**KNOWN ISSUE - In-built strings don't show up in the Helpshift iOS SDK**
+
+It happens if sometimes you did not enable localized strings for the `HelpshiftLocalizable.strings` file.
+The Helpshift SDK reads all its strings from that strings file.
+In Xcode on the left hand sidein "Project Navigator" select `HelpshiftLocalizable.strings`.
+On the right in "Show Utilities" select "Show the File Inspector".
+You will see a "Localize..." button. Click on that to enable localized
+strings for the `.strings` file.
+
+![localize.png](/static/books/ios/localize.png
+"localize.png")
+
+
+</Admonition>
+

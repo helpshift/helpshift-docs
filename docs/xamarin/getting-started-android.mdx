@@ -1,0 +1,218 @@
+---
+sidebar_position: 10
+title: Getting Started Android
+description: "You're 3 steps away from adding great in-app support to your Xamarin App."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Getting Started <small>Android</small> {#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your Xamarin App.
+
+
+</Intro>
+
+
+Guide to integrating the Xamarin plugin for the Helpshift SDK.
+
+## Download Helpshift Xamarin SDK  {#getting-sdk}
+
+
+<DownloadButton text="Download SDK" link="[% xamarin.android.sdk_url %]" classes="mb-4" />
+
+The Helpshift SDK *.zip* contains the following files:
+
+<div className="text-sm compact ">
+
+
+
+| | |
+|--|--|
+|HelpshiftApi.dll|  The platform independent DLL. Only needs to be added for api reference in a cross platform project. This dll should not be packaged with the final application.|
+|Android/HelpshiftApi.dll|  The Android specific DLL.|
+|iOS/Standard build/Helpshift.IOS.dll|  The iOS binding library DLL for standard build.|
+|iOS/Standard build/HelpshiftApi.dll|  The iOS specific api DLL for standard build.|
+|iOS/Bitcode build/Helpshift.IOS.Bitcode.dll| The iOS Bitcode build binding DLL.|
+|iOS/Bitcode build/HelpshiftApi.dll|  The iOS Bitcode supported api DLL.|
+|iOS/HelpshiftDefaultLocalizations| Localization for strings.|
+|iOS/HsLocalization.bundle| Default bundle to be used if no changes are required by the developer in localized strings.|
+|iOS/HSThemes| Used for theming in iOS|
+
+</div>
+
+## Add Helpshift to your Xamarin project {#adding-to-project}
+
+* Add the *HelpshiftApi.dll* to the References in platform independent project in your multi-platform Xamarin project. This dll should not be packaged with the final application.
+* Add the *Android/HelpshiftApi.dll* to the References in your Android specific project. When the application is compiled, *Android/HelpshiftApi.dll* library will automatically replace the *HelpshiftApi.dll* (since they have the same assembly name and version) referenced in the above step. This serves application development around common API's across different platforms.
+* Add the following packages to your app for android :
+
+1. Newtonsoft JSON.Net
+
+1. Android Support Library v4
+
+1. Android Support Library v7
+
+1. Android Support Library v7 Cardview
+
+1. Android Support Library v7 Recyclerview
+
+1. Android Support Design Library
+
+## Initializing Helpshift in your app {#initializing}
+
+To use Helpshift's APIs, please import the Helpshift's namespace as given below.
+
+
+```csharp
+
+    using HelpshiftApi;
+
+
+```
+
+Helpshift SDK uniquely identifies your App with the combination of:
+
+<div className="text-sm compact ">
+
+
+| | |
+|--|--|
+|API Key| Your unique developer API Key.|
+|Domain Name| Your Helpshift domain name. For example : foo.helpshift.com|
+|App ID| A unique ID assigned to your app.|
+
+</div>
+
+To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" /> 
+
+Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
+
+Initialize Helpshift by calling the method *Install(apiKey, domain, appId)* API
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
+
+
+
+```csharp
+
+    using HelpshiftApi;
+    .
+    .
+    .
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftInstallConfig config = new HelpshiftInstallConfig.Builder().Build();
+    HelpshiftCore.Install ("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", config);
+
+```
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 3.0.0 and above.
+
+</Admonition>
+
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+```csharp
+
+    using HelpshiftApi;
+    .
+    .
+    .
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    HelpshiftCore.Install ("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", config);
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+The install call is required only in the `onCreate` of the `Application` class of your app.
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/xamarin/support-tools-android#faqs-view) or [conversation screens](/xamarin/support-tools-android#conversation-view) inside your app.
+
+Run your app, and try starting a test conversation using the *ShowConversation* API call.
+Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
+
+Sample usage for FAQs and conversation APIs:
+
+
+<Tabs>
+
+<TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
+
+
+
+```csharp
+
+    HelpshiftAPIConfig faqApiConfig = new HelpshiftAPIConfig.Builder().Build();
+    helpBtn.Click += delegate
+    {
+       HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, faqApiConfig);
+    };
+
+    HelpshiftAPIConfig convApiConfig = new HelpshiftAPIConfig.Builder().Build();
+    contactBtn.Click += delegate
+    {
+        HelpshiftApi.HelpshiftSupport.ShowConversation(activity, convApiConfig);
+    };
+
+```
+
+
+<Admonition type="info" title="Note">
+
+Applicable to version 3.0.0 and above.
+
+</Admonition>
+
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+```csharp
+
+    Dictionary<string, object> faqApiConfigDictionary = new Dictionary<string, object>();
+    helpBtn.Click += delegate
+    {
+       HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, faqApiConfigDictionary);
+    };
+
+    Dictionary<string, object> convApiConfigDictionary = new Dictionary<string, object>();
+    contactBtn.Click += delegate
+    {
+        HelpshiftApi.HelpshiftSupport.ShowConversation(activity, convApiConfigDictionary);
+    };
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+

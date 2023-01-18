@@ -1,0 +1,51 @@
+---
+sidebar_position: 10
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Troubleshooting {#troubleshoot}
+
+
+## Notifications {#troubleshooting-notifications}
+
+### 3.5.0 SDK Update {#3}
+
+We found a bug for the following scenario - for SDK 3.5.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
+
+**Action needed:**
+
+* If you are planning to integrate or are in the process of integrating SDK 3.5.0, we recommend integrating with 3.5.1 instead.
+* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [3.5.1 SDK](/xamarin/release-notes-xamarin#v351).
+
+### Campaign notification shows "Support" as its title.
+
+Please make sure to set the *"CFBundleDisplayName"* key, in your application's _Info.plist_ file, to the display name of your application.
+
+Helpshift SDK uses the value of this key as the title of the notification. If this key isn't set then the notification by default shows "Support" as the title.
+
+## Known issues {#known-issues}
+
+<table>
+    <tr>
+        <th>No.</th>
+        <th>Known Issue</th>
+        <th>SDK <br />Version</th>
+        <th>Device OS Version</th>
+        <th>Occurs When &amp; Frequency</th>
+        <th>Workaround</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Log collection api does not send logs along with issues when the assemble name and application names are different</td>
+        <td>v2.0.0</td>
+        <td>N/A</td>
+        <td>If the assembly name and the application do not match exactly then log collection does not report logs along with the issue on admin dashboard. This is a limitation on log collection queries on iOS devices.</td>
+        <td>Keep the assembly name of the application same as the application name.</td>
+    </tr>
+</table>

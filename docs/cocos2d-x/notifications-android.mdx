@@ -1,0 +1,276 @@
+---
+sidebar_position: 10
+title: Notifications Android
+description: "Configure Push and In-app notifications."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+# Notifications <small>Android</small> {#notifications}
+
+<Intro>
+
+Configure Push and In-app notifications.
+
+
+</Intro>
+
+
+## Push notifications via Helpshift {#push-via-helpshift}
+
+<Image src="/static/books/android/urbanairshipnotif.png"  width="quarter" alt="urbanAirshipNotif.png" /> 
+
+Helpshift allows you to send Push notifications when an agent replies to a conversation.
+
+### Prerequisites {#gcm-prerequisites}
+Implement FCM push in your app.
+
+For FCM, refer to the
+[Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) documentation.
+
+### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
+
+To enable the Helpshift system to send push notifications to your users
+you will have to add your FCM Key and Bundle Name via the helpshift
+admin interface.
+
+Enter your Google Push notifications credentials per app, via the
+**Settings page > App listing in the left navigation > Scroll down to Push
+Notifications** settings section for the app.
+
+<Image src="/static/books/android/helpshift-push-notifications.png"  width="major" alt="helpshift-push-notifications.png" /> 
+
+And for FCM users, the API key can be found at your
+[Firebase API Console](https://console.firebase.google.com/)
+<Image src="/static/books/android/fcm_console.png"  width="major" /> 
+
+<br />
+
+### Configure Helpshift Android SDK {#configure-helpshift-android-sdk}
+
+
+<Admonition type="info" title="Note">
+
+* When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications"  for every message sent by Agents/Bots. 
+You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](/cocos2d-x/notifications-android#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+
+</Admonition>
+
+
+1. Send the device registration id to Helpshift via the `Core.registerDeviceToken` API
+
+    
+```java
+
+
+
+        import com.helpshift.Core;
+
+        private void sendRegistrationIdToBackend() {
+          // Send registrationId to Helpshift
+          Core.registerDeviceToken(context, regid);
+        }
+
+```
+
+2. Use `Core.handlePush` API which takes a Map argument.
+
+    
+```java
+
+        @Override
+        public void onMessageReceived(RemoteMessage message) {
+          Map<String, String> data = message.getData();
+          String origin = data.get("origin");
+          if (origin != null && origin.equals("helpshift")) {
+            Core.init(Support.getInstance());
+            try {
+               Core.install(getApplication(),
+                            <API_KEY>,
+                            <DOMAIN_NAME>,
+                            <APP_ID>,
+                            config);
+              } catch (InstallException e) {
+                // install credentials are incorrect
+              }
+            Core.handlePush(this, data);
+          }
+        }
+
+```
+
+## In-app notifications {#in-app-notifications}
+
+In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
+
+These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/cocos2d-x/support-tools-android#conversation-view) when they tap on the notification.
+
+![](/static/books/android/i18n-in-app.png)
+
+
+<Admonition type="info" title="Note">
+
+If the FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
+
+
+</Admonition>
+
+
+## Configuring in-app notifications {#configure-in-app}
+
+The Helpshift [install call](/cocos2d-x/getting-started-android#initializing) supports flags for configuring the SDK's behaviour.
+Currently we support one flag i.e `enableInAppNotification` or you can
+use macro `HS_ENABLE_IN_APP_NOTIFICATION` in `HelpshiftCocos2dx.h` file.
+
+### In-app Notification flag {#in-app}
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| enableInAppNotification|
+|Values| "yes" or "no" (CCString)|
+|Default| "yes"|
+</div>
+
+If you do not want the in-app notifications for replies to customer issues, please set this flag to "no".
+The default value of this flag is "yes" i.e in-app notifications will be enabled.
+
+Example:
+
+**For cocos2d-x 3.x**
+/ .code-header /
+
+
+```cpp
+
+    ValueMap config;
+    config[HS_ENABLE_IN_APP_NOTIFICATION] = Value("yes");
+    HelpshiftCocos2dx::install("<YOUR_API_KEY>",
+                               "<YOUR_COMPANY>.helpshift.com",
+                               "<YOUR_APP_ID>",
+                               config);
+
+```
+
+**For cocos2d-x 2.x**
+/ .code-header /
+
+
+```cpp
+
+    cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
+    config->setObject(new CCString("yes"), HS_ENABLE_IN_APP_NOTIFICATION);
+
+    HelpshiftCocos2dx::install("<YOUR_API_KEY>",
+                               "<YOUR_COMPANY>.helpshift.com",
+                               "<YOUR_APP_ID>",
+                               config);
+
+```
+
+### Customizing notification icons {#customizing-notification-icons}
+
+By default the application icon is used as the notification icon. You can customize the notification icons via the config dictionary passed to the `install` call.
+
+For Example:
+
+
+```cpp
+
+    HashMap config = new HashMap();
+    config.put("notificationIcon", R.drawable.notification_icon_small);
+    config.put("largeNotificationIcon", R.drawable.notification_icon_large);
+    HelpshiftBridge.install(this, // "this" should be the application object
+                            "YOUR_API_KEY",
+                            "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                            "YOUR_APP_ID",
+                            config);
+
+```
+
+### Customizing notification sound {#customizing-notification-sound}
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound via the config dictionary passed to the `install` call.
+
+For Example:
+
+
+```cpp
+
+    HashMap config = new HashMap();
+    config.put("notificationSound", R.raw.notification_sound);
+    HelpshiftBridge.install(this, // "this" should be the application object
+                            "YOUR_API_KEY",
+                            "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                            "YOUR_APP_ID",
+                            config);
+
+```
+
+### Notification channels {#notification-channels}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v1.8.0 and above.
+
+</Admonition>
+
+
+Starting from Android Oreo, Helpshift notifications will have a default channel set as `In-app Support`. The name and description for this default channel can be changed by setting the following settings. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
+
+
+```cpp
+
+    <string name="hs__default_notification_channel_name">Example Support Name</string>
+    <string name="hs__default_notification_channel_desc">Example Support Description</string>
+
+```
+
+If you want to customize the notification channels, you can create your own custom channels and set their channel IDs in the in the config dictionary passed to the `install` corresponsing to following key: `supportNotificationChannelId`
+
+
+For Example:
+
+
+```cpp
+
+    HashMap config = new HashMap();
+    config.put("supportNotificationChannelId", "SUPPORT_CHANNEL_ID");
+    HelpshiftBridge.install(this, // "this" should be the application object
+                            "YOUR_API_KEY",
+                            "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                            "YOUR_APP_ID",
+                            config);
+
+```
+
+## Showing notification count when replies are sent to the user {#showing-notification-count}
+
+If you want to show your user notifications for replies on the issues
+posted, you can get the notification count synchronously from
+cache or asynchronously from the server by setting the `isAsync` flag. Example:-
+
+
+```cpp
+
+    void didReceiveNotificationCountListenerArg(int count) {
+        CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
+    }
+    // Get count synchronously from cache.
+    HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
+    // OR
+    // asynchronously from the server.
+    HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
+
+```
+
+
+<Admonition type="info" title="Note">
+
+The notification count is fetched via this API from the SDK cache and Helpshift's servers. However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+
+</Admonition>

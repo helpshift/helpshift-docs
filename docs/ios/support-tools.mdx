@@ -1,0 +1,800 @@
+---
+sidebar_position: 20
+title: Helpshift APIs
+description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements.You can call only specific screens from the SDK based on thefunctionality you want to expose in your app.There are 7 different ways in which the Helpshift SDK can be presented in your app."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Helpshift APIs {#support-tools}
+
+<Intro>
+
+Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
+You can call only specific screens from the SDK based on the
+functionality you want to expose in your app.
+
+There are 7 different ways in which the Helpshift SDK can be presented in your app.
+
+
+</Intro>
+
+
+## showConversation {#conversation-view}
+
+You can use the API call `showConversation:withOptions:` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+
+<Centered width="half">
+
+![](/static/books/ios/showConversation.png "")
+
+</Centered>
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showConversation:withConfig:</code>|
+|Example Code| <code>[HelpshiftSupport showConversation:self withConfig:nil];</code> // where self is the view controller you're calling Helpshift from|
+|Use with| "Contact Us" or "Send Feedback" button|
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showConversation:withOptions:</code>|
+Example Code
+
+| | |
+|--|--|
+|| <code>[HelpshiftSupport showConversation:self withOptions:nil];</code> // where self is the view controller you're calling Helpshift from|
+|Use with| "Contact Us" or "Send Feedback" button|
+
+</TabItem>
+
+</Tabs>
+
+
+Supports these [API Options](/ios/sdk-configuration/).
+
+## showFAQs {#faqs-view}
+
+You can use the API call `showFAQs:withOptions:` to show FAQs in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. Users can browse FAQs, search for an FAQ, and file issues with Support.
+
+<Centered width="quarter">
+
+![](/static/books/ios/support-screen.png "")
+
+</Centered>
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showFAQs:withConfig:</code>|
+|Example Code| <code>[HelpshiftSupport showFAQs:self withConfig:nil];</code> // where self is the view controller you're calling Helpshift from|
+|Use with| "Help" or "Support" button|
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+
+| | |
+|--|--|
+|Definition| <code>showFAQs:withOptions:</code>|
+|Example Code| <code>[HelpshiftSupport showFAQs:self withOptions:nil];</code>    // where self is the view controller you're calling Helpshift from|
+|Use with| "Help" or "Support" button|
+
+
+</TabItem>
+
+</Tabs>
+
+
+Supports these [API Options](/ios/sdk-configuration/).
+
+
+<Admonition type="info" title="Note">
+
+English translation will be used for non-localized FAQs
+To use deep linking in your app using Helpshift FAQs, check [here](/ios/deep-linking/).
+
+</Admonition>
+
+
+### FAQ Filtering by tags {#faq-filtering}
+
+Starting v4.14.0 onwards, we have introduced FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are :
+
+* You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+* You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+<Image src="/static/books/ios/faq-filtering.png"  width="full" /> 
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+* Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+* Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+
+#### How to use FAQ filtering
+
+This  will be a config option which will be supported by the showFAQs and showFAQSection APIs.
+
+The withTagsMatching option will be a dictionary containing 2 keys
+
+* operator : one of and, or, not which will serve as conditional operators for the given tags.
+* tags : the actual tags in the query
+
+The withTagsMatching option will be should be added as an object against key “withTagsMatching ” in the dictionary optionsDictionary that is taken by showFAQs and showFAQSection APIs.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+```objc
+
+	//If the developer wants to show all FAQs with tags iPad or iPhone
+	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+	apiBuilder.withTagsMatching = [[HelpshiftFAQFilter alloc] initWithFilterOperator:HsOperatorOr / HsOperatorAnd / HsOperatorNot andTags:@[@"tag1",@"tag2",...]];
+	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+	[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+```objc
+
+	//If the developer wants to show all FAQs with tags iPad or iPhone
+	NSDictionary * optionsDictionary = @{ @"withTagsMatching" : @{ @"operator" : @"or",
+                                                                   @"tags" : @[@"iPhone",@"iPad"]}};
+	[HelpshiftSupport showFAQs:self withOptions:optionsDictionary];
+
+```
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="info" title="Note">
+
+As of v4.14.0 you can have only one tag filter config which will be respected on  showFAQs and showFAQSection. Also the tag filtering respects only one operator.
+
+</Admonition>
+
+
+## showFAQSection {#faq-section-view}
+
+You can use the API call `showFAQSection:withController:withOptions:` to show faqs from a particular FAQ section. This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to log in using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
+
+<Centered width="quarter">
+
+![](/static/books/ios/single-section.png "")
+
+</Centered>
+
+You will need the Section Publish ID from the FAQ tab of Helpshift Dashboard:
+
+<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showFAQSection:withController:withConfig:</code>|
+|Example Code| <code>[HelpshiftSupport showFAQSection:@"1" withController:self withConfig:nil]</code> // where self is the view controller you're calling Helpshift from and @"1" is the FAQ section publish-id|
+|Use with| "Login Help" or other category-specific sections|
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showFAQSection:withController:withOptions:</code>|
+|Example Code| <code>[HelpshiftSupport showFAQSection:@"1" withController:self withOptions:nil]</code> // where self is the view controller you're calling Helpshift from and @"1" is the FAQ section publish-id|
+|Use with| "Login Help" or other category-specific sections|
+
+</TabItem>
+
+</Tabs>
+
+
+Supports these [API Options](/ios/sdk-configuration/).
+
+
+<Admonition type="info" title="Note">
+
+English translation will be used for non-localized FAQs.
+
+</Admonition>
+
+
+## showSingleFAQ {#faq-question-view}
+
+You can use the API call `showSingleFAQ:withController:withOptions:` to show a single faq question.
+
+<Centered width="quarter">
+
+![](/static/books/ios/single-faq.png "")
+
+</Centered>
+
+You will need the FAQ Publish ID from the FAQ tab of the Helpshift Dashboard:
+
+<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showSingleFAQ:withController:withConfig:</code>|
+|Example Code| <code>[HelpshiftSupport showSingleFAQ:@"1" withController:self withConfig:nil];</code>|
+|Use with| a '?' button when your user is performing a specific action|
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Definition| <code>showSingleFAQ:withController:withOptions:</code>|
+|Example Code| <code>[HelpshiftSupport showSingleFAQ:@"1" withController:self withOptions:nil];</code>|
+|Use with| a '?' button when your user is performing a specific action|
+
+</TabItem>
+
+</Tabs>
+
+
+Supports these [API Options](/ios/sdk-configuration/).
+
+
+<Admonition type="info" title="Note">
+
+English translation will be used for non-localized FAQs
+
+</Admonition>
+
+
+## Guided Issue Filing {#dynamic-forms}
+
+
+<Admonition type="info" title="Note">
+
+ Applicable to version 5.1.0 and above.
+
+</Admonition>
+
+
+Guided issue filing is a feature to capture more context when a user interacts with Helpshift Support. For example, lets say you want the user to file a ticket in case of a complaint and also in case he want to suggest a feature. With dynamic forms, you will now be able to distinguish between these two use cases and take required actions (like assigning appropriate agents).
+
+Dynamic forms also enable better FAQ discovery. Lets say there is a frequently viewed FAQ or FAQ section buried deep in your FAQ hierarchy. Some users might miss it out and opt to file an issue instead. With dynamic forms, you can create a new section (like top FAQs) that links to that FAQ section. Or create and alternate title to an FAQ (like 'How do I pay for gems' instead of 'Billing').
+
+The app configures a dynamic form using 'flows'. There are 6 types of
+flows:
+
+#### Flow to show conversation screen
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+* `+ (id) flowToShowConversationWithDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;`
+* similar to the showConversation: API
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+* `+ (id) flowToShowConversationWithDisplayText:(NSString *)displayText andConfigOptions:(NSDictionary *)configOptions;`
+* similar to the showConversation: API
+
+
+</TabItem>
+
+</Tabs>
+
+
+#### Flow to show all FAQs
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+* `+ (id) flowToShowFAQsWithDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;`
+* similar to the showFAQs: API
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+* `+ (id) flowToShowFAQsWithDisplayText:(NSString *)displayText andConfigOptions:(NSDictionary *)configOptions;`
+* similar to the showFAQs: API
+
+
+</TabItem>
+
+</Tabs>
+
+
+#### Flow to show a FAQ section
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+* `+ (id) flowToShowFAQSectionForPublishId:(NSString *)sectionPublishId withDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;`
+* similar to the showFAQSection: API
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+* `+ (id) flowToShowFAQSectionForPublishId:(NSString *)sectionPublishId withDisplayText:(NSString *)displayText andConfigOptions:(NSDictionary *)configOptions;`
+* similar to the showFAQSection: API
+
+
+</TabItem>
+
+</Tabs>
+
+
+#### Flow to show a single FAQ
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+* `+ (id) flowToShowSingleFAQForPublishId:(NSString *)FAQPublishId withDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;`
+* similar to the showSingleFAQ: API
+
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+* `+ (id) flowToShowSingleFAQForPublishId:(NSString *)FAQPublishId withDisplayText:(NSString *)displayText andConfigOptions:(NSDictionary *)configOptions;`
+* similar to the showSingleFAQ: API
+
+
+</TabItem>
+
+</Tabs>
+
+
+#### Flow to show a nested Dynamic form
+
+* `+ (id) flowToShowNestedDynamicFormWithFlows:(NSArray *)nextDynamicFormFlows withDisplayText:(NSString *)displayText;`
+
+#### Flow to perform a custom action
+
+* `+ (id) flowToPerformCustomActionOnTarget:(id)target andSelector:(SEL)selector withOptionalObject:(id)optionalObject withDisplayText:(NSString *)displayText;`
+
+Each flow need a display text. This will be the text that will be displayed in the row. It has to be localised NSString. Some flows also expect a 'configOptions' dict. This will be the config that is passed to the subsequent Support API. For example any config you wish apply to the conversation screen needs to be passed to the flowToShowConversationWithDisplayText: API. This is also where you will add your custom HelpshiftSupportTags.
+
+The app can create any number of flows. These flows are then grouped into a dynamic form and displayed in a tabular form. There are three ways to display a dynamic form:
+
+1. Present modally
+
+    * `+ (BOOL) showDynamicFormOnViewController:(UIViewController *)viewController withTitle:(NSString *)title andFlows:(NSArray *)flows withConfigOptions:(NSDictionary *)configOptions;`
+
+    This option accepts an optional configOptions NSDictionary (similar to showConversation: or showFAQs: API). These options only apply to the dynamic form itself and not the included flows. Any config that needs to be applied to a flow will have to be provided in the flow APIs. The only configOption currently available here right now is 'presentFullScreenOniPad' which can be set to 'yes' or 'no'.
+
+2. Push on current navigation controller stack
+
+    * `+ (BOOL) pushDynamicFormOnViewController:(UIViewController *)viewController withTitle:(NSString *)title andFlows:(NSArray *)flows;`
+
+    When using the `pushDynamicFormOnViewController:` API, if the view controller that is passed to this API is being presented modally, please make sure that the view controller is in full screen mode by using the following code:
+
+    
+```objc
+
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+```
+
+3. Get an embeddable UINavigationController (for use in UITabBarController).
+
+    * `+ (void) requestDynamicFormWithTitle:(NSString *)title andFlows:(NSArray *)flows;`
+    The SDK returns the the embeddable navigation controller in `- (void) didCreateDynamicForm:(UINavigationController *)form` method of HelpshiftSupportDelegate protocol.
+
+Each dynamic form needs :
+
+1. **Title**: This will be the title displayed on the action bar
+2. **flows**: An List of supported Flow objects as discussed above.
+
+#### Guided ticket filing Example:
+
+Guided ticket filing / Dynamic forms work as a wrapper on top of Helpshift's existing APIs. Each existing API needs to be wrapped in a "flow". A collection of these flows is displayed in a tabular form. A flow may contain a list of other flows (nested flows). In this case when user taps the parent flow, he is taken to another screen which list the child flows.
+In user's case, consider this hierarchy:
+
+* Gameplay
+* Billing
+    * Issues with Payment
+    * Refund
+* Loading
+* Suggestions
+* Report Cheating
+
+The user needs to create flows for Gameplay, Loading, Suggestions and Report Cheating. Assuming that all these need to call into Helpshift's showContactUs API:, they can use
+
+* `+ (id) flowToShowConversationWithDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;`
+
+Each call would return a flow object. To display the dynamic form with all these flows, these flows need to be packaged into an array and passed to
+
+* `+ (BOOL) showDynamicFormOnViewController:(UIViewController *)viewController withTitle:(NSString *)title andFlows:(NSArray *)flows andConfig:(HelpshiftAPIConfig *)configObject;`
+
+In case of Billing, that needs nested dynamic form support, first we need to create flows for inner items (Issues with Payment and Refund) using
+
+* `+ (id) flowToShowConversationWithDisplayText:(NSString *)displayText andConfig:(HelpshiftAPIConfig *)configObject;`
+
+Then the wrapper "Billing" flow needs to be created using
+
+* `+ (id) flowToShowNestedDynamicFormWithFlows:(NSArray *)nextDynamicFormFlows withDisplayText:(NSString *)displayText;`
+
+Now this Billing flow can be passed along with other flows (Gameplay, Loading etc.). When the user taps Billing, then instead of launching Helpshift's contact us screen, user will be taken to the next dynamic form that lists two options: Issues with Payment and Refund. Tapping on either of these will take the user to contact us screen.
+
+## Add FAQs to Spotlight search {#helpshiftFAQSpotlightSearch}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v5.1.0 and above.
+
+</Admonition>
+
+
+CoreSpolight search on iOS gives users great new ways to access information inside of your app. When you make your content searchable, users can access activities and content deep within your app through Spotlight and Safari search results, Handoff, and Siri suggestions. Using APIs related to search, you decide what content gets indexed, what information to show in search results, and where the user is redirected after tapping a result from your app.
+
+The Helpshift SDK can now use these new APIs to add all of your FAQs to the on-device search index. This will ensure that the FAQs that you have added will get maximum visibility. This will also help ensure that your users find solutions to their problems easily and help reduce support tickets and eventually churn.
+
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+
+
+| | |
+|--|--|
+|Install config Option| <code>addFaqsToDeviceSearch</code>|
+|Values| <code>HsAddFaqsToDeviceSearchAfterViewingFAQs</code> / <code>HsAddFaqsToDeviceSearchNever</code>|
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+
+
+| | |
+|--|--|
+|Install config Option| <code>addFaqsToDeviceSearch</code>|
+|Values| <code>after_viewing_faqs</code> / <code>never</code>|
+
+</TabItem>
+
+</Tabs>
+
+
+`after_viewing_faqs` / `HsAddFaqsToDeviceSearchAfterViewingFAQs` : This will add FAQs to the CoreSpotlight index only after the user actually opens the Help section (wired to the showFAQs and showFAQSection APIs).
+
+`never` / `HsAddFaqsToDeviceSearchNever` : The Helpshift SDK will not add FAQs to the CoreSpotlight index.
+
+For the search entry to launch the appropriate FAQ screen, the application should forward the hand off delegate to Helpshift via the
+
+`[HelpshiftSupport handleContinueUserActivity:userActivity withController:viewController andRestorationHandler:restorationHandler]`
+
+Example :
+
+
+```objc
+
+    - (BOOL) application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
+        NSString *activityIdentifier = [userActivity.userInfo objectForKey:CSSearchableItemActivityIdentifier];
+        if(activityIdentifier && [activityIdentifier hasPrefix:@"helpshift_faq_"]) {
+            return [HelpshiftSupport handleContinueUserActivity:userActivity withController:[UIApplication sharedApplication].keyWindow.rootViewController andRestorationHandler:restorationHandler];
+        }
+        return NO;
+    }
+
+```
+
+## Embeddable Messaging Experience {#embed-messaging}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v7.2.0 and above
+
+</Admonition>
+
+
+Helpshift supports embedding the messaging experience into the application view hierarchy.
+
+You can use this API to get the Helpshift conversation view controller. This view controller can be inserted anywhere into your application's user interface, but must be contained in a UINavigationController where the navigation bar is visible. As this view controller is returned asynchronously, you should make sure that you fetch it before you are going to show it.
+
+
+<Admonition type="info" title="Note">
+
+The Embeddable Helpshift ViewController is designed to work as a single instance only, so it is recommended that you do not hold multiple instances of this view controller and put them at different places in your user interface. Also, the embeddable messaging experience should not be used together with other support APIs that show the messaging experience modally.
+
+</Admonition>
+
+
+
+| | |
+|--|--|
+|Definition| <code>+ (void) conversationViewControllerWithConfig:(HelpshiftAPIConfig *)config completion:(void (^)(UIViewController *))completion</code>|
+|Parameters| *config* - An API config object which will contain the arguments passed to the Helpshift conversation session. *completion* - A block the takes a view controller and returns void.|
+Example Code:
+
+Below is the sample code snippet for embedding conversation view controller into a master-detail UI setup (UISplitViewController)
+
+
+```objc
+
+    @interface MasterViewController()
+    @property(nonatomic,strong) UIViewController* helpshiftConversationViewController;
+    @end
+
+    @implementation MasterViewController
+    - (void)viewDidLoad {
+      [super viewDidLoad];
+      .....
+      HelpshiftAPIConfigBuilder *builder = [HelpshiftAPIConfigBuilder new];
+
+      // Get the Helpshift conversation view controller.
+      [HelpshiftSupport conversationViewControllerWithConfig:[builder build]
+                                                completion:^(UIViewController *conversationVC) {
+         // Store the conversation view controller instance.
+         self.helpshiftConversationViewController = conversationVC;
+      }];
+    }
+
+    - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+      // Handle selection of support row
+      if (indexPath.row == <Row for support>) {
+          // Create a UINavigationController with conversation view controller as root and show as detail view controller.
+          UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.helpshiftConversationViewController];
+          [self.splitViewController showDetailViewController:navController sender:self];
+          return;
+      }
+
+      // Handle selection of other rows
+      // [self performSegueWithIdentifier:@"primaryDetail" sender:self];
+    }
+    @end
+
+```
+
+### Handling User Login/Logout
+
+Whenever a new user logs into the SDK or when the current user logs out, your application should fetch the conversation view controller again and replace the previous instance that you may have fetched with this new instance. Refer [here](/ios/users/) for our login/logout APIs.
+
+### Handling Notifications
+
+When integrated in the embeddable mode, It is application's responsibility to handle the push notifications for the Agent's replies.
+
+Whenever a push notification arrives at the device, the iOS platform calls the relevant notification delegates in the application. Since the Helpshift SDK is not going to handle these notifications, you should not notify the SDK via the handleNotificationWithUserInfoDictionary:isAppLaunch:withController: API. Instead, you should check the "origin" field of the notification dictionary, and if it is "helpshift", then handle it appropriately. (We recommend that you show the conversation view controller wherever you have embedded it, since the user would have read the notification and tapped it with the expectation to open the conversation screen.)
+
+
+<Admonition type="info" title="Note">
+
+You must disable automatic push handling in SDK via the disableAutomaticPushHandling  property of  HelpshiftInstallConfigBuilder class during install call.
+
+</Admonition>
+
+
+
+```objc
+
+    HelpshiftInstallConfigBuilder *builder = [HelpshiftInstallConfigBuilder new];
+    builder.disableAutomaticPushHandling = YES;
+
+    [HelpshiftCore installForApiKey:@"<API Key>"
+                         domainName:@"<Domain Name>"
+                              appID:@"<App ID>"
+                         withConfig:[builder build]];
+
+```
+
+### In-App Notifications
+In-app notification banners will not be shown inside of your application, but you will continue to get the didReceiveInAppNotificationWithMessageCount: delegate method of HelpshiftSupportDelegate whenever a reply is received for the active conversation.
+
+## displayAttachmentFileAtLocation {#displayAttachmentFileAttachmentAtLocation}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v4.10.0 and above
+
+</Admonition>
+
+
+Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
+
+* iWork documents
+* Microsoft Office documents (Office ‘97 and newer)
+* Rich Text Format (RTF) documents
+* PDF files
+* Images
+* Text files whose uniform type identifier (UTI) conforms to the public.text type
+* Comma-separated value (csv) files
+* Video files (3gp, m4v)
+* Audio files (mp3, mp4, aac)
+* Image files (jpg, png, gif)
+
+A new API `displayAttachmentFileAtLocation:onViewController:` lets the app capture the tap event on an attachment and present it to the user. If the app wants to handle the previewing of attachments itself, it must return true for this call.
+
+If the app does not wish to display the attachment, it can return false. In this case the SDK will display the attachment itself using the QLPreviewController.
+
+Please note that the app needs to include the [Quick Look Framework](https://developer.apple.com/library/ios/documentation/QuickLook/Reference/QuickLookFrameworkReference_iPhoneOS/index.html)
+
+Besides providing the ability to preview all the supported documents type, Quick Look also provides a sharing/printing widget and full screen viewing.
+
+## Enable Testing Mode {#enable-testing-mode}
+
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v7.4.0 and above
+
+</Admonition>
+
+
+The Helpshift SDK provides an API to allow developers set the testing mode for the SDK. This API is called `enableTestingMode`. It signals that the SDK is running in testing mode, and allows the SDK to modify certain behaviors to enable better testing. These changes in behavior will be called out in the respective API/Feature documentation. There are certain restrictions that developers should consider prior to using this API:
+
+* The API must be called even before the install call of the SDK.
+* The API must be called in the debug build of the app only. Developers can ensure that it is not called in release build by wrapping the call to this API inside `#ifdef DEBUG`.
+
+Example :
+
+
+```objc
+
+    #ifdef DEBUG
+        [HelpshiftCore enableTestingMode];
+    #endif
+
+```
+
+## Close Helpshift Session {#closeHelpshiftSupportSession}
+
+This API can be used to close an active Helpshift session and return to the app. Any open Helpshift screen will be dismissed and control will return to the original UIViewController that launched the Helpshift screen.
+The completion handler will be called after the Helpshift session is closed. If the session is already closed, the completion handler will be called immediately.
+This API can be useful in situations where the app wants to open its own UI screen in response to a deep link but the Helpshift session is still open.
+
+
+<Admonition type="info" title="Note">
+
+1. With version 7.5.0 and above, closeHelpshiftSession is deprecated. Please use closeHelpshiftSessionWithCompletionHandler: instead.
+2. This API has no affect on any open issue. Users will continue to see their messages next time a Helpshift session is launched.
+3. This API does nothing if you are using Helpshift's Embeddable Messaging Experience.
+
+</Admonition>
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Definition| <code>closeHelpshiftSessionWithCompletionHandler:</code>|
+Example Code
+
+
+```objc
+
+    [HelpshiftSupport closeHelpshiftSupportSessionWithCompletionHandler:^{
+        NSLog(@"Helpshift session closed");
+    }];
+
+```
+
+
+</div>
+
+## Extra APIs {#extra-apis}
+
+This section lists down the extra APIs which need to be implemented in order for the Helpshift SDK to function correctly, if the developer has not enabled the `-ObjC` flag in the `Other Linker Flags` section.
+
+### Handle events for background {#handle-events-for-background}
+
+The Helpshift SDK uses background session calls for sending app data to the server. In order for this to work correctly, the app developer needs to listen to the `application:handlleEventsForBackgroundURLSession:completionHandler:` and call the below Helpshift API
+
+
+```objc
+
+    [HelpshiftCore handleEventsForBackgroundURLSession:completionHandler:];
+
+```
+
+For example,
+
+
+```objc
+
+
+
+    - (void) application:(UIApplication *)application
+    handleEventsForBackgroundURLSession:(NSString *)identifier
+    completionHandler:(void (^)())completionHandler {
+        [HelpshiftCore handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler];
+    }
+
+```
+
+This function will return a `BOOL` to indicate if the Helpshift SDK has handled the event.
+
+## Multi Scene Support for iOS 13 and iPadOS {#multi-scene}
+
+If you want to support multiple scenes in your app using the new [UISceneDelegate](https://developer.apple.com/documentation/uikit/uiscenedelegate?language=objc) API introduced by iOS 13 and iPadOS, please note that the Helpshift SDK does not support having multiple sessions opened in different scenes. If you want to open a Helpshift UI session in a Scene, make sure you use the [closeHelpshiftSupportSession](#closeHelpshiftSupportSession) to close the previous Helpshift session if any.

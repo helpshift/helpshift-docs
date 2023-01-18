@@ -1,0 +1,134 @@
+---
+sidebar_position: 170
+title: Upgrading to 7.5.0 and above
+description: "In order to use SDK 7.5.0 for your app, Helpshift recommends you to follow the below steps. If you have questions or feedback, please Contact Us"
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Upgrading to 7.5.0 and above
+
+<Intro>
+
+
+In order to use SDK 7.5.0 for your app, Helpshift recommends you to follow the below steps. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+
+</Intro>
+
+
+
+<Admonition type="danger" title="Important">
+
+If you are looking to upgrade from a version older than 7.x, please make sure to go through the upgrade guides for 6.x and 4.x
+
+</Admonition>
+
+
+
+### Integration-related changes
+
+Download the SDK from [here](/android/getting-started#download-sdk).
+
+You will need to update integration code to use "Support.getInstance()" in the Helpshift initialisation call.
+
+
+### Code-related changes
+
+If your codebase has references to `Campaigns` code, then the compilation fails after the upgrade. You will need to remove all the references to Campaigns code from the codebase.
+
+Following are the changes:
+
+1. Replace the `Core.install(All.getInstance())` call with `Core.install(Support.getInstance())` 
+2. Remove all references to `Campaigns` apis from code
+
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+
+
+```java
+
+	import com.helpshift.Core;
+	import com.helpshift.support.Support;
+	import com.helpshift.InstallConfig;
+	import com.helpshift.exceptions.InstallException;
+	...
+	...
+```
+
+ 
+	InstallConfig installConfig = new InstallConfig.Builder().build();
+	...
+	Core.init(Support.getInstance());
+	try {
+		Core.install(this,
+					"YOUR_API_KEY",
+					"YOUR_DOMAIN_NAME",
+					"YOUR_APP_ID",
+					installConfig);
+	} catch (InstallException e) {
+		Log.e(TAG, "invalid install credentials : ", e);
+	}
+
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+
+
+```java
+
+	import com.helpshift.Core;
+	import com.helpshift.support.Support;
+	...
+	...
+```
+
+ 
+	HashMap config = new HashMap();
+	...
+	Core.init(Support.getInstance());
+	try {
+	Core.install(this,
+				"YOUR_API_KEY",
+				"YOUR_DOMAIN_NAME",
+				"YOUR_APP_ID",
+				config);
+	} catch (InstallException e) {
+		Log.e(TAG, "invalid install credentials : ", e);
+	}
+
+</TabItem>
+
+</Tabs>
+
+
+
+## If you use Helpshift's English-only SDK
+
+* You can trim the SDK to reduce the SDK size impact on your app further by using only resources of select languages.
+* Follow the instructions as mentioned above to upgrade to 7.5.0 or above, depending on the type of SDK you use.
+* The following gradle script allows you to keep only "english" and "french" resources and remove others from 3rd party libraries in the application.
+
+```java
+android {
+	defaultConfig {
+    ...
+    resConfigs "en", "fr"
+    }
+}
+```
+

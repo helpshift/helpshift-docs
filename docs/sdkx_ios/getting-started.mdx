@@ -1,0 +1,206 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "Getting started with integrating Helpshift in your app."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Getting Started {#getting-started}
+<Intro>
+
+Getting started with integrating Helpshift in your app.
+
+
+</Intro>
+
+
+## Requirements {#version-requirements}
+*   Xcode 12.0 and above.
+*   Cocoapods v1.10.0
+*   Supported iOS versions:
+    *   iOS 16, 15, 14, 13, 12, 11, 10
+
+
+## Automated Integration using Cocoapods {#cocoapods}
+
+To start using SDK X `v[% sdkx_ios.sdk_version  %]` in your project, add the following line to your `Podfile`
+
+
+```text
+
+    pod 'HelpshiftX', '[% sdkx_ios.sdk_version  %]'
+
+```
+
+And run `pod install` or `pod update` to refresh your
+[cocoapods](https://cocoapods.org/) dependencies.
+
+You can now move on to [Initializing Helpshift in your App](#initializing).
+
+## Automated Integration using Swift Package Manager {#spm}
+
+To start using Helpshift `v[% sdkx_ios.sdk_version  %]` in your SPM project, add the following package URL to your project's "Package Dependencies" section
+
+
+```text
+
+    https://github.com/helpshift/HelpshiftX
+
+```
+
+For version rules, we recommend using either "Exact" or "Up to Next Minor" and manually updating the version number when a major version of Helpshift SDK X is released.
+
+You can now move on to [Initializing Helpshift in your App](#initializing).
+
+## Manual Integration {#manual-integration}
+
+### Get the latest SDK zip {#getting-sdk}
+
+Download the latest for the Helpshift iOS SDK.
+
+
+<DownloadButton text="Download SDK" link="[% sdkx_ios.sdk_url %]" classes="mb-4" />
+
+The zip file contains
+
+<div className="text-sm compact ">
+
+
+| | |
+|--|--|
+|HelpshiftX.xcframework| The HelpshiftX framework|
+|NOTICE.txt/| License information about third-party code.|
+
+</div>
+
+### Add the latest stable SDK release to your project {#add-to-project}
+
+* Unzip the SDK and drag drop `HelpshiftX.xcframework` into your Xcode project
+* In the `General` section of your app target, verify that the `HelpshiftX.xcframework` is present in the `Framework, Libraries, and Embedded Content` section
+with the option `Embed and Sign` selected from the Embed options dropdown.
+&nbsp;&nbsp; <Image src="/static/books/sdkx_ios/embed_and_sign_framework.png"  width="full" /> 
+* After successful integration, `Build Phases` should look like this:
+&nbsp;&nbsp; <Image src="/static/books/sdkx_ios/integration_screenshot.png"  width="full" /> 
+
+
+<Admonition type="info" title="Note">
+
+#### Add NSPhotoLibraryUsageDescription key in your application info plist file
+
+If your app does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause app rejection.
+
+**NSPhotoLibraryUsageDescription Description text:** "We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons."
+
+</Admonition>
+
+
+~~~notes \
+The following instructions apply to versions below SDK X 10.2.0.
+
+####Along with NSPhotoLibraryUsageDescription (as mentioned above), also add NSCameraUsageDescription and NSMicrophoneUsageDescription key in your application info plist file
+
+If your app does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause app rejection.
+
+**NSCameraUsageDescription Description text:** "We need to access the camera to allow users to click images meant to be sent as an attachment for help and support reasons."
+
+**NSMicrophoneUsageDescription Description text:** "We need to access the microphone to allow users to record and send videos meant to be sent as an attachment for help and support reasons."
+
+Note that this is just a suggested description. If you need localisations for the same, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+
+
+<Admonition type="info" title="Note">
+
+End-users can attach files such as pdf, video, etc in their issues. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+&nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" /> 
+
+</Admonition>
+
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app and ready to collect meaningful data about your users.
+
+### Initializing Helpshift in your app {#initializing}
+
+1. First, create an app on the Helpshift Dashboard
+<Image src="/static/books/helpshiftx/add_app.png"  width="full" /> 
+
+2. Create an app with **iOS** as a selected `Platform`
+<Image src="/static/books/sdkx_ios/select_platform.png"  width="full" /> 
+
+Helpshift uniquely identifies each registered App using a combination
+of 2 tokens:
+
+<div className=" compact">
+
+
+| | |
+|--|--|
+|<code>Platform ID</code>| This is your platform Id.|
+|<code>Domain Name</code>|  This is your Helpshift domain name e.g. _happyapps.helpshift.com_|
+|<code>Config</code>| An <code>NSDictionary</code> representing the configuration parameters for the installation.|
+</div>
+
+You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
+Select your App and _check `iOS` as a platform_ from the dropdowns and copy
+the 2 tokens to be passed when initializing Helpshift.
+<Image src="/static/books/sdkx_ios/copy_keys.png"  width="full" /> 
+
+
+<Tabs>
+
+<TabItem value="Using Objective-C" label="Using Objective-C">
+
+```
+@import HelpshiftX;
+...
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    ...
+    NSDictionary *config = @{} // Your config                 
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
+                              domain:@"YOUR_DOMAIN"
+                              config:config];
+    ...
+    return YES;
+}
+```
+
+</TabItem>
+<TabItem value="Using Swift" label="Using Swift">
+
+```
+import HelpshiftX
+...
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        ...
+        let config = [String:String]() // Your config
+        Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+        ...
+        return true
+    }
+...
+```
+
+</TabItem>
+
+</Tabs>
+
+
+
+<Admonition type="danger" title="Important">
+
+** Placing the install call **
+
+You should not place the install call anywhere other than `application:didFinishLaunchingWithOptions:`
+Placing it elsewhere might cause unexpected runtime problems.
+Helpshift install call will throw `InstallException` in case the validation of the SDK keys fail.
+
+</Admonition>
+
+

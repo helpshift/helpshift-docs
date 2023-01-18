@@ -1,0 +1,56 @@
+---
+sidebar_position: 270
+title: Migration guide to Support SDK from Campaigns SDK
+description: Learn more about Migration guide to Support SDK from Campaigns SDK
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+
+# Migration guide to Support SDK from Campaigns SDK
+
+To migrate from Campaigns SDK to Support SDK please follow the steps mentioned below -
+
+## Cocoapods Integration:
+
+
+<Admonition type="info" title="Note">
+
+If you are using the Campaigns SDK and want to upgrade to Support SDK then we highly recommend you to upgrade to our [latest version](https://developers.helpshift.com/ios/getting-started#cocoapods).
+
+</Admonition>
+
+
+* Remove all API calls made in your Xcode project which are related to Campaigns feature.
+* In order to migrate from campaigns SDK to same version of support SDK, please modify your Podfile as follows -
+    
+    `pod 'Helpshift', 'version-withCampaigns'` → `pod 'Helpshift', 'version'`  # For normal version 
+    
+    `pod 'Helpshift', 'version-withCampaigns-bitcode'`  →  `pod 'Helpshift', 'version-bitcode'`  # For bitcode version
+    
+    For Example - If you are migrating from `7.8.0-withCampaigns-bitcode` then just replace it with `7.8.0-bitcode`.
+
+* After integrating Support SDK, make sure you add correct install call. Use `[HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];` instead of `[HelpshiftCore initializeWithProvider:[HelpshiftAll sharedInstance]];`.
+
+## Manual Integration:
+
+
+<Admonition type="info" title="Note">
+
+If you are using the Campaigns SDK and want to upgrade to Support SDK then we highly recommend you to upgrade to our [latest version](https://developers.helpshift.com/ios/getting-started#manual-integration).
+
+</Admonition>
+
+
+* Remove all Campaigns SDK related files added to your Xcode project.
+* Remove all API calls made in your Xcode project which are related to Campaigns feature.
+* Add Support SDK to your Xcode project. If you are integrating same version of Support SDK as to Campaigns SDK then integration steps will be similar to how Campaigns SDK was integrated in your Xcode project. If you are integrating latest Support SDK please follow the integration guide [here](https://developers.helpshift.com/ios/getting-started#manual-integration).
+* After integrating Support SDK, make sure you add correct install call. Use `[HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];` instead of `[HelpshiftCore initializeWithProvider:[HelpshiftAll sharedInstance]];`.

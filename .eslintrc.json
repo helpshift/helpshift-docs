@@ -1,0 +1,43 @@
+{
+  "plugins": ["@docusaurus", "react", "import", "jsx-a11y", "prettier"],
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:@docusaurus/recommended"
+  ],
+  "rules": {
+    "import/no-unresolved": [
+      2,
+      {
+        "ignore": ["^@theme", "^@docusaurus", "^@site"]
+      }
+    ],
+    "prettier/prettier": ["error"]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src", "docs"],
+        "extensions": [".js", ".ts", ".d.ts", ".jsx", ".tsx", ".mdx"]
+      }
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  }
+}

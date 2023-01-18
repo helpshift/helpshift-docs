@@ -1,0 +1,259 @@
+---
+sidebar_position: 30
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# SDK Configuration
+
+<Intro>
+
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+
+
+
+</Intro>
+
+
+## Init call configurations
+
+
+<Admonition type="info" title="Note">
+
+All the keys are added as constant strings that you can use.
+The usage of configurations are shown in the image is given below
+
+</Admonition>
+
+
+<Centered width="full">
+
+![](/static/books/unreal/sdk_config.png)
+
+</Centered>
+
+### Enable Logging {#enableLogging}
+
+Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in the Android logcat/ Xcode console. Turning on logging can help developers resolve common integration issues.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| Helpshift Config Enable Logging Key|
+|values| true/false|
+|default| true|
+</div>
+
+
+### Enable In-App Notifications {#enable-in-app-notifications}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. 
+
+
+For Android, setting this flag as `false` will stop showing notifications in the notification tray of the device but it will fetch messages in background.
+
+
+For iOS, setting this flag as `false` will just disable the in-app notifications, push notifications will still be shown in the device’s notification center.
+
+
+The default value of this flag is `true` i.e., the in-app notification will be enabled.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| HelpshiftConfigEnableinAppNotificationKey |
+|values| true/false|
+|default| true|
+
+</div>
+
+## Full privacy {#fullprivacy}
+
+In the `config` dictionary of `ShowConversation` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| HelpshiftConfigEnableFullPrivacyKey |
+|values| true/ false |
+</div>
+
+<Centered width="full">
+
+![](/static/books/unreal/full_privacy.png)
+
+</Centered>
+
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Making sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+This config is common for both iOS and Android.
+
+## Enable Contact Us {#enableContactUs}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| <code>"enableContactUs"</code>|
+|values| <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code>|
+|default| none|
+
+</div>
+
+#### Best Practices
+
+* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
+
+## Android Specific Configurations
+
+### Notification Icon {#notificationIcon}
+
+By default the application icon is used as the notification icon. You can customize the notification icon in the `Init` call.
+
+Pass the name of the file placed in the folder that is configured as `Drawable Path` in the `Plugin Settings`.
+You do not need to specify the file extension for the icon image. If your icon image's file name is "icon.png", you just need to pass "icon" to helpshift config.  
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| HelpshiftConfigNotificationIconKey|
+|values| string - Name of the file|
+|default| Application Icon|
+
+</div>
+
+
+### Large Notification Icon {#largeNotificationIcon}
+
+By default the application icon is used as the notification icon.
+If you want to specify the large notification icon also to show up in the notification tray, you can specify that in the `Init` call.
+
+Pass the name of the file placed in the folder that is configured as `Drawable Path` in the `Plugin Settings`.
+You do not need to specify the file extension for the icon image. If your large icon image's file name is "large_icon.png", you just need to pass "large_icon" to helpshift config. 
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| HelpshiftConfigNotificationLargeIconKey|
+|values| string - Name of the file|
+|default| Application Icon|
+
+</div>
+
+
+### Notification Sound {#notificationSound}
+
+
+<Admonition type="info" title="Note">
+
+* The sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
+
+* If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/sdkx-unreal/sdk-configuration#notificationChannels).
+
+</Admonition>
+
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound in the `Init` call.
+
+Pass the name of the file placed in the folder that is configured as `Sound Path` in the `Plugin Settings` (e.g. “sound” for sound.mp3);
+You do not need to specify the file extension for the sound file. If your sound file name is "notificaton_sound.mp3", you just need to pass "notification_sound" to helpshift config. 
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| HelpshiftConfigNotificationSoundIdKey|
+|values| string - Name of the file|
+|default| Device Notification Sound|
+
+</div>
+
+
+### Notification Channels {#notificationChannels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name for the default channel, you can do so by using the config in the init call.
+
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Key| HelpshiftConfigNotificationChannelKey|
+|values| string - Name of the channel|
+|default| "In-app Support"|
+
+</div>
+
+
+### Screen Orientation {#screen-orientation}
+
+The screen orientation of Helpshift SDK screens can be fixed by setting the `HelpshiftConfigScreenOrientationKey` to constants available - `HelpshiftConfigScreenOrientationLandscape or HelpshiftConfigScreenOrientationPortrait`.
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|Flag| HelpshiftConfigScreenOrientationKey |
+|values| HelpshiftConfigScreenOrientationLandscape or HelpshiftConfigScreenOrientationPortrait |
+|default| HelpshiftConfigScreenOrientationPortrait|
+</div>
+
+
+## iOS Specific Configurations
+
+### presentFullScreenOniPad {#presentFullScreenOniPad}
+
+The `HelpshiftConfigPresentFullScreenOniPadKey` will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
+
+The default value is NO, presents support views as `UIModalPresentationFormSheet`. When the value is set to true, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
+
+
+| | |
+|--|--|
+|Option| HelpshiftConfigPresentFullScreenOniPadKey|
+|Values| true / false|
+|Default| false|
+### inAppNotificationAppearance {#inAppNotificationAppearance}
+
+The `HelpshiftConfigInAppNotificationAppearanceKey` represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this map
+
+
+| | |
+|--|--|
+|Option:| HelpshiftConfigInAppNotificationAppearanceKey|
+|Sub-Options:| HelpshiftConfigInAppNotificationBannerBackgroundColorKey / HelpshiftConfigInAppNotificationTextColorKey|
+|Values:| String representing hex color. Eg - "FFFEEF"|
+
+## UI Configurations {#uiConfig}
+
+This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unreal/design/).
+
+
+## Tracking {#tracking}
+
+This config represents the tracking user actions. For more information check [tracking](/sdkx-unreal/tracking).

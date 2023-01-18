@@ -1,0 +1,274 @@
+---
+sidebar_position: 10
+title: Getting Started iOS
+description: "You're 3 steps away from adding great in-app support to your Unity game."
+---
+
+import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+
+
+
+
+# Getting Started <small>iOS</small> {#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your Unity game.
+
+
+</Intro>
+
+
+Guide to integrating the Unity plugin for the Helpshift SDK which you can call from your C# and Javascript game scripts.
+
+## Requirements {#version-requirements}
+*   Unity 2018.1.0 and above.
+*   Xcode 12.0 and above.
+*   Supported iOS versions:
+    *   iOS 15, 14, 13, 12, 11, and 10
+
+## Download Helpshift Unity SDK for iOS {#getting-sdk}
+
+  
+<DownloadButton text="Download SDK" link="[% unity.ios.sdk_url %]" classes="mb-4" />
+
+Helpshift SDK *.zip* folder includes:
+
+<div className="text-sm compact ">
+
+
+| | |
+|--|--|
+|helpshift-plugin-unity-[version].unitypackage| Unity package of Helpshift SDK|
+|HelpshiftUnityAndroidResources/| Open source project to customize the theme and string resource for Android project|
+|unity-jar-resolver (v1.2.104.0)| Resolves Android Helpshift package support lib dependencies.|
+</div>
+
+
+<Admonition type="info" title="Note">
+
+We recommend you to upgrade to the latest SDK as mentioned above. However, if you are currently using Unity SDK 4.x and need more details, click [here](https://old-developers.helpshift.com/unity-4x/getting-started-ios/).
+
+</Admonition>
+
+
+## Add Helpshift to your Unity project {#adding-to-project}
+
+
+<Admonition type="info" title="Note">
+
+Only for SDK versions 5.5.4 and below -
+In case you want to use the SDK with bitcode support, keep `Bitcode` folder selected and deselect `Helpshift.framework` while importing Helpshift unitypackage.
+
+</Admonition>
+
+
+* Unzip the Helpshift Unity SDK package.
+* Helpshift Unity SDK appears as a  standard `.unitypackage` which you can import through the Unity package import procedure.
+* Following are the steps to import the `helpshift-plugin-unity-version.unitypackage` into your Unity game:
+    1. If you have integrated Helpshift SDK previously, delete the existing `Assets/Helpshift` folder from your unity project.
+    2. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+    3. From the unzipped SDK, select `helpshift-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
+    4. In the *Import Unity Package window*, click **Import**
+
+
+<Admonition type="info" title="Note">
+
+After importing the Helpshift unitypackage file, you may see errors like:
+`Assets/Helpshift/Plugins/iOS/Helpshift.framework/HsUIResourceBundle.bundle/*.png: File could not be read `.
+These errors are shown by Unity because Apple converts traditional PNG images to a optimised [CgBI format](http://iphonedevwiki.net/index.php/CgBI_file_format) using a proprietary version of the public domain [pngcrush tool](https://en.wikipedia.org/wiki/Pngcrush) making the file different from the [PNG standards](https://en.wikipedia.org/wiki/Portable_Network_Graphics#Technical_details).
+This optimisation reduces the size of PNG image by almost half, making our asset folder very small in size.
+Unity is not able to read these images hence throws error like `File could not be read`.
+
+Please ignore the import errors as they will be seen only once while importing and will not cause any run time issues.
+
+</Admonition>
+
+
+* With version 5.3.0, End-users will be able to send files such as pdf, video, etc. where before 5.3.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+&nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" /> 
+
+
+<Admonition type="info" title="Note">
+
+If you are using Xcode 12.3 or above to build your project, please make sure you follow the step mentioned [here](/unity/troubleshooting-ios#Xcode12.3-integration-error) in troubleshooting guide.
+
+</Admonition>
+
+
+## Initializing Helpshift in your app {#initializing}
+
+### Helpshift's namespace {#namespace}
+
+To use Helpshift's APIs, please import the Helpshift's namespace for iOS like below
+
+
+```csharp
+
+    using Helpshift;
+
+```
+
+Helpshift can be used to support all the apps you publish. We uniquely identify each app that is registered with Helpshift using the combination of:
+
+<div className="compact ">
+
+
+| | |
+|--|--|
+|API Key| This is your unique developer API Key|
+|Domain Name| This is your helpshift instance domain name without any http: or forward slashes|
+|App ID| This is the unique ID assigned to your app|
+
+</div>
+
+To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" /> 
+
+Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
+
+#### Install Helpshift via CSharp {#csharp-install}
+
+You can use the CSharp API for installing the Helpshift SDK.
+
+
+```csharp
+
+    using Helpshift;
+    .
+    .
+    .
+    public class MyGameControl : MonoBehaviour
+    {
+        private HelpshiftSdk help;
+        ...
+
+        void Awake()
+        {
+            help = HelpshiftSdk.getInstance();
+            var configMap = new Dictionary<string, object>();
+            help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
+        }
+        ...
+    }
+
+```
+
+#### Install Helpshift via ObjC {#objc-install}
+
+If you intend to initialize the SDK from Xcode using Objective C, You can specify Api Key, Domain Name, App ID and other install configurations in the Objective-C code. To do this you need to override `application:didFinishLaunchingWithOptions` in `HsUnityAppcontroller` as shown below.
+
+
+```objc
+
+    #import <Helpshift/HelpshiftCore.h>
+    #import <Helpshift/HelpshiftSupport.h>
+    #import "Helpshift-Unity.h"
+    .
+    .
+    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+        // Set install configurations
+        NSDictionary *installConfig = @{@"unityGameObject":@"background_image", @"enableInAppNotification":@"yes"};
+
+        // Make install call
+        [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+        [HelpshiftCore installForApiKey:@"<your_api_key>" domainName:@"<your_domain_name>.helpshift.com" appID:@"<your_app_id>" withOptions:installConfig];
+
+        return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    }
+```
+
+
+<Admonition type="info" title="Note">
+
+In order to receive callbacks from Helpshift, you must pass a valid game object for **unityGameObject** key in the install configuration.
+
+</Admonition>
+
+
+## Required UIApplicationDelegate functions {#required-UIApplicationDelegate}
+For its internal functioning, Helpshift needs to override below mentioned functions of `UIApplicationDelegate` protocol. The class `HsUnityAppController` overrides these functions as required. These methods are called by external iOS services and expect the application to call **completionHandler()**. By default, **UnityAppController** class does not implement these functions. If you require any of these functions or other features of your app, you must override these functions, comment out or remove default **completionHandler()** call and provide your own implementation as per your requirements.
+
+
+```objc
+
+
+
+    - (void) application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler {
+        if (![HelpshiftCore handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler]) {
+            // Handle events for background url session. Once you have implemented this function in UnityAppController, uncomment
+            // the code below and comment the call completionHandler();
+
+            //[super application:application handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler];
+            completionHandler();
+        }
+    }
+
+    - (void) application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
+
+        if (![HelpshiftCore handleInteractiveRemoteNotification:userInfo forAction:identifier completionHandler:completionHandler]) {
+
+            // Handle action with identifier. Once you have implemented this function in UnityAppController, uncomment
+            // the code below and comment the call completionHandler();
+
+            //[super application:application handleActionWithIdentifier:identifier forRemoteNotification:userInfo completionHandler:completionHandler];
+            completionHandler();
+        }
+    }
+
+    - (void) application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
+        if(![HelpshiftCore handleInteractiveLocalNotification:notification forAction:identifier completionHandler:completionHandler]) {
+            // Handle action with identifier. Once you have implemented this function in UnityAppController, uncomment
+            // the code below and comment the call completionHandler();
+
+            //[super application:application handleActionWithIdentifier:identifier forLocalNotification:notification completionHandler:completionHandler];
+            completionHandler();
+        }
+    }
+
+```
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/unity/support-tools-ios#faqs-view) or [conversation screens](/unity/support-tools-ios#conversation-view) inside your app.
+
+Run your app, and try starting a test conversation using the [`showConversation`](/unity/support-tools-ios#conversation-view)  API call.
+Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
+
+Sample usage for FAQs and conversation APIs:
+
+
+```csharp
+
+    public class MyGameControl : MonoBehaviour
+    {
+        private HelpshiftSdk help;
+
+        void OnGUI () {
+            ...
+            Dictionary<string, object> configMap = new Dictionary<string, object>();
+
+            // Presenting FAQs to your customers
+            if (MenuButton (helpButton))
+            {
+                help.showFAQs(configMap);
+            }
+
+            // Starting a conversation with your customers
+            if (MenuButton (contactButton))
+            {
+                help.showConversation(configMap);
+            }
+        }
+    }
+
+```
+
+
+<Admonition type="info" title="Note">
+
+Since the Helpshift plugin is meant for mobile devices only, you should put all Helpshift calls inside checks to make sure they are only called when running on a device.
+/ #run-on-device /
+
+</Admonition>
+
+
