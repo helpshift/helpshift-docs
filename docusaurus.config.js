@@ -94,6 +94,36 @@ async function createConfig() {
                 ? "index,follow"
                 : "noindex,nofollow",
           },
+          {
+            name: "og:image",
+            content:
+              "https://developers.helpshift.com/img/social/site-share-thumb.png",
+          },
+          {
+            name: "og:url",
+            content: "https://developers.helpshift.com",
+          },
+          {
+            name: "twitter:site",
+            content: "@HelpshiftEng",
+          },
+          {
+            name: "twitter:domain",
+            content: "https://developers.helpshift.com",
+          },
+          {
+            name: "twitter:image",
+            content:
+              "https://developers.helpshift.com/img/social/tw-share-thumb.png",
+          },
+          {
+            name: "twitter:image:width",
+            content: "800",
+          },
+          {
+            name: "twitter:image:height",
+            content: "400",
+          },
         ],
       }),
     plugins: [
