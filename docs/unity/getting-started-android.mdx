@@ -6,9 +6,6 @@ description: "You're 5 steps away from adding great in-app support to your Unity
 
 import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
 
-
-
-
 # Getting Started <small>Android</small> {#getting-started}
 
 <Intro>
@@ -114,7 +111,7 @@ The `mainTemplate.gradle` is genereted when you enable the **Custom Gradle Templ
 The `build.gradle` exists in generated Gradle project when you enable the **Export Project** property on the Player window and Build the project.
 
 Update **dependencies** section of the `mainTemplate.gradle` or `build.gradle` file as:
-~~~code
+```
     dependencies {
         compile fileTree(dir: 'libs', include: ['*.jar'])
         compile(name: 'Helpshift', ext:'aar')
@@ -124,18 +121,15 @@ Update **dependencies** section of the `mainTemplate.gradle` or `build.gradle` f
         compile 'com.android.support:recyclerview-v7:26.0.2'
         compile 'com.android.support:cardview-v7:26.0.2'
     }
-
-
+```
 
 ## Add package name to AndroidManifest.xml {#adding-package-name}
-
 
 <Admonition type="info" title="Note">
 
 If you are using Unity 2020 or higher version, please update the name of `helpshift-plugin-wrapper` directory located at `/Assets/Plugins/Android/helpshift-plugin-wrapper` to `helpshift-plugin-wrapper.androidlib`
 
 Please refer [troubleshooting](/unity/troubleshooting-android#unity2020-android-lib-issue) for more information.
-
 
 </Admonition>
 
@@ -146,7 +140,7 @@ Otherwise, open `AndroidManifest.xml` located at `<project_dir>/Assets/Plugins/A
 
 As an example, if your package name is `com.Company.ProductName`, `<provider>` tag will now look like this:
 
-~~~ code
+```
         <provider
             android:name="com.helpshift.support.providers.HelpshiftFileProvider"
             android:authorities="com.Company.ProductName.helpshift.fileprovider"
@@ -156,7 +150,7 @@ As an example, if your package name is `com.Company.ProductName`, `<provider>` t
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/hs__provider_paths" />
         </provider>
-
+```
 
 
 
@@ -168,7 +162,6 @@ To use Helpshift's APIs, please import the Helpshift's namespace like below
 ```csharp
 
     using Helpshift;
-
 
 ```
 
@@ -256,6 +249,3 @@ Since the Helpshift plugin is meant for mobile devices only, you should put all 
 / #run-on-device /
 
 </Admonition>
-
-
-
