@@ -6,16 +6,10 @@ description: "Getting started with integrating Helpshift in your Unity app."
 
 import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
 
-
-
-
 # Getting Started <small>Android</small> {#getting-started}
 
 <Intro>
-
 Getting started with integrating Helpshift in your Unity app.
-
-
 </Intro>
 
 
@@ -103,31 +97,27 @@ The `mainTemplate.gradle` is genereted when you enable the **Custom Gradle Templ
 The `build.gradle` exists in generated Gradle project when you enable the **Export Project** property on the Player window and Build the project.
 
 Update **dependencies** section of the `mainTemplate.gradle` or `build.gradle` file as:
-~~~code
+
+```
     dependencies {
         implementation fileTree(dir: 'libs', include: ['*.jar'])
         implementation(name: 'Helpshift', ext:'aar')
         implementation 'com.android.support:appcompat-v7:28.0.0'
         //...
     }
-
-
+```
 
 ## Initializing Helpshift in your app {#initializing}
 
-To use Helpshift's APIs, please import the Helpshift's namespace like below
-
+To use Helpshift's APIs, please import the Helpshift's namespace like below:
 
 ```csharp
-
     using Helpshift;
-
-
 ```
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
 
-<div className=" compact">
+<div className="compact">
 
 
 | | |
