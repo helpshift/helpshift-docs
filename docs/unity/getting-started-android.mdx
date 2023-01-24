@@ -4,7 +4,20 @@ title: Getting Started Android
 description: "You're 5 steps away from adding great in-app support to your Unity game."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started <small>Android</small> {#getting-started}
 
@@ -12,16 +25,14 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 You're 5 steps away from adding great in-app support to your Unity game.
 
-
 </Intro>
-
 
 Guide to integrating the Unity plugin for the Helpshift SDK which you can call from your C# and Javascript game scripts.
 
 ## Requirements {#version-requirements}
-*   Unity 5.5.6 and above.
-*   Supported Android OS version: 14 and above
 
+- Unity 5.5.6 and above.
+- Supported Android OS version: 14 and above
 
 <Admonition type="info" title="Note">
 
@@ -29,25 +40,25 @@ If you have a project with Unity version prior to 5.3, you could use the build m
 
 </Admonition>
 
+## Download Helpshift Unity SDK {#getting-sdk}
 
-## Download Helpshift Unity SDK  {#getting-sdk}
+<DownloadButton
+  text="Download SDK"
+  link="[% unity.android.sdk_url %]"
+  classes="mb-4"
+/>
 
-
-<DownloadButton text="Download SDK" link="[% unity.android.sdk_url %]" classes="mb-4" />
-
-
-Helpshift SDK *.zip* folder includes:
+Helpshift SDK _.zip_ folder includes:
 
 <div className="text-sm compact ">
 
+|                                               |                                                                                     |
+| --------------------------------------------- | ----------------------------------------------------------------------------------- |
+| helpshift-plugin-unity-[version].unitypackage | Unity package of Helpshift SDK                                                      |
+| HelpshiftUnityAndroidResources/               | Open source project to customize the theme and string resources for Android project |
+| unity-jar-resolver (v1.2.104.0)               | Resolves Android Helpshift package support lib dependencies.                        |
 
-| | |
-|--|--|
-|helpshift-plugin-unity-[version].unitypackage| Unity package of Helpshift SDK|
-|HelpshiftUnityAndroidResources/| Open source project to customize the theme and string resources for Android project|
-|unity-jar-resolver (v1.2.104.0)| Resolves Android Helpshift package support lib dependencies.|
 </div>
-
 
 <Admonition type="info" title="Note">
 
@@ -55,16 +66,15 @@ We recommend you to upgrade to the latest SDK as mentioned above. However, if yo
 
 </Admonition>
 
-
 ## Add Helpshift to your Unity project {#adding-to-project}
 
-* Unzip the Helpshift Unity SDK package.
-* Helpshift Unity SDK appears as a  standard `.unitypackage` which you can import through the Unity package import procedure.
-* Following are the steps to import the `helpshift-plugin-unity-version.unitypackage` into your Unity game:
-    1. If you have integrated Helpshift SDK previously, delete the existing `Assets/Helpshift` folder from your unity project.
-    2. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-    3. From the unzipped SDK, select `helpshift-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
-    4. In the *Import Unity Package window*, click **Import**
+- Unzip the Helpshift Unity SDK package.
+- Helpshift Unity SDK appears as a standard `.unitypackage` which you can import through the Unity package import procedure.
+- Following are the steps to import the `helpshift-plugin-unity-version.unitypackage` into your Unity game:
+  1. If you have integrated Helpshift SDK previously, delete the existing `Assets/Helpshift` folder from your unity project.
+  2. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+  3. From the unzipped SDK, select `helpshift-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
+  4. In the _Import Unity Package window_, click **Import**
 
 ## Resolve Android Support library requirements {#resolve-android-support-library-requirements}
 
@@ -74,36 +84,32 @@ Helpshift SDK depends on android support libraries. You can get these libraries 
 
 Use **Unity Jar Resolver** plugin to download and integrate android library dependencies.
 
-
 <Admonition type="info" title="Note">
 
-If your project already uses the *Unity Jar Resolver*, you can skip the *Unity Jar Resolver* importing step.
+If your project already uses the _Unity Jar Resolver_, you can skip the _Unity Jar Resolver_ importing step.
 
 </Admonition>
 
-
-* Import the **Unity Jar Resolver** plugin into your Unity project
-    1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-    2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.160.unitypackage` file to import the Unity Jar resolver.
-    3. In the *Import Unity Package* window, click **Import**
-
+- Import the **Unity Jar Resolver** plugin into your Unity project
+  1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+  2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.160.unitypackage` file to import the Unity Jar resolver.
+  3. In the _Import Unity Package_ window, click **Import**
 
 <Admonition type="info" title="Note">
 
-If you are not able to import *Unity Jar Resolver* packaged with Helpshift plugin due to any reason, you can use any version of *Unity Jar Resolver* as per your needs.
+If you are not able to import _Unity Jar Resolver_ packaged with Helpshift plugin due to any reason, you can use any version of _Unity Jar Resolver_ as per your needs.
 Refer here: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver/releases)
 
 </Admonition>
 
-
-* If the Unity Jar resolver wants to enable Android Auto-resolution, click the *Enable* button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using *Assets* > *Play Services Resolver* > *Android Resolver* > *Settings*
-* By default, the Unity jar resolver auto-resolves all the required dependencies. Following are the steps to resolve dependencies manually:
-    1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
-    2. Select the **Resolve** or **Force Resolve**
-* To know more about the Unity Jar Resolver, refer to: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)
-
+- If the Unity Jar resolver wants to enable Android Auto-resolution, click the _Enable_ button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using _Assets_ > _Play Services Resolver_ > _Android Resolver_ > _Settings_
+- By default, the Unity jar resolver auto-resolves all the required dependencies. Following are the steps to resolve dependencies manually:
+  1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
+  2. Select the **Resolve** or **Force Resolve**
+- To know more about the Unity Jar Resolver, refer to: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)
 
 ### Resolve dependency when using custom Gradle template or Export Project {#resolve-dependency-via-gradle}
+
 *Unity's in-built gradle build support* and *exporting to android studio* does not support per plugin gradle script. Therefore, by default, Helpshift SDK cannot add the dependencies by itself.
 
 The `mainTemplate.gradle` is genereted when you enable the **Custom Gradle Template** property on the Player window.
@@ -111,6 +117,7 @@ The `mainTemplate.gradle` is genereted when you enable the **Custom Gradle Templ
 The `build.gradle` exists in generated Gradle project when you enable the **Export Project** property on the Player window and Build the project.
 
 Update **dependencies** section of the `mainTemplate.gradle` or `build.gradle` file as:
+
 ```
     dependencies {
         compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -133,7 +140,6 @@ Please refer [troubleshooting](/unity/troubleshooting-android#unity2020-android-
 
 </Admonition>
 
-
 If you are using gradle build system then ${applicationId} is automatically replaced during build time.
 
 Otherwise, open `AndroidManifest.xml` located at `<project_dir>/Assets/Plugins/Android/helpshift-plugin-wrapper/` and look for `${applicationId}` located in `<provider>` tag. Replace it with the package name of your android app.
@@ -152,12 +158,9 @@ As an example, if your package name is `com.Company.ProductName`, `<provider>` t
         </provider>
 ```
 
-
-
 ## Initializing Helpshift in your app {#initializing}
 
 To use Helpshift's APIs, please import the Helpshift's namespace like below
-
 
 ```csharp
 
@@ -169,21 +172,19 @@ Helpshift SDK uniquely identifies your App with the combination of:
 
 <div className="text-sm compact ">
 
-
-| | |
-|--|--|
-|API Key| Your unique developer API Key.|
-|Domain Name| Your Helpshift domain name. For example : foo.helpshift.com|
-|App ID| A unique ID assigned to your app.|
+|             |                                                             |
+| ----------- | ----------------------------------------------------------- |
+| API Key     | Your unique developer API Key.                              |
+| Domain Name | Your Helpshift domain name. For example : foo.helpshift.com |
+| App ID      | A unique ID assigned to your app.                           |
 
 </div>
 
-To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" /> 
+To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" />
 
 Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
 
-Initialize Helpshift by calling the method *install(apiKey, domain, appId)* API
-
+Initialize Helpshift by calling the method _install(apiKey, domain, appId)_ API
 
 ```csharp
 
@@ -211,11 +212,10 @@ Initialize Helpshift by calling the method *install(apiKey, domain, appId)* API
 
 Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/unity/support-tools-android#faqs-view) or [conversation screens](/unity/support-tools-android#conversation-view) inside your app.
 
-Run your app, and try starting a test conversation using the *ShowConversation* API call.
+Run your app, and try starting a test conversation using the _ShowConversation_ API call.
 Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
 
 Sample usage for FAQs and conversation APIs:
-
 
 ```csharp
 
@@ -241,7 +241,6 @@ Sample usage for FAQs and conversation APIs:
     }
 
 ```
-
 
 <Admonition type="info" title="Note">
 

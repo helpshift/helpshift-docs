@@ -4,11 +4,20 @@ title: Troubleshooting
 description: Learn more about Troubleshooting
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -16,9 +25,7 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Troubleshooting {#troubleshoot}
-
 
 ## SDK Integration {#integration-issues}
 
@@ -26,11 +33,11 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 We found a bug in following scenario when androidx fragment library is used by the client app:
 
-* Conversation history is off or `enableFullPrivacy` flag is used when opening chat screen.
-* Smart Intents are enabled.
-* Resolve an ongoing conversation.
-* Click "New Conversation" button.
-* When new conversation starts, smart intents selection sheet is collapsed automatically and user is not able to select any option.
+- Conversation history is off or `enableFullPrivacy` flag is used when opening chat screen.
+- Smart Intents are enabled.
+- Resolve an ongoing conversation.
+- Click "New Conversation" button.
+- When new conversation starts, smart intents selection sheet is collapsed automatically and user is not able to select any option.
 
 Androidx Fragment library, above version 1.2.0, has delayed the lifecyle callback of "onDestroyView" until transitions are completed.
 This broke lifecycle management for the SDK and some UI glicthes were found.
@@ -58,15 +65,14 @@ We found a bug for the following scenario - for SDK 7.9.0, when New Issue Automa
 
 **Action needed:**
 
-* If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
-* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [7.9.1 SDK](/android/release-notes#v791).
-
+- If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
+- If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [7.9.1 SDK](/android/release-notes#v791).
 
 ### Duplicate class error for `apache/commons/codec/language`
 
 If you get a dex error like below which indicates that the **apache/commons/codec/language** classes are being added to the app more than once
 
-You can remove these classes from the *Helpshift.jar* in two possible ways :
+You can remove these classes from the _Helpshift.jar_ in two possible ways :
 
 #### command line
 
@@ -77,6 +83,7 @@ You can remove these classes from the *Helpshift.jar* in two possible ways :
 ```
 
 #### custom ant task
+
 ```xml
 <target name="clean-apache" >
   <mkdir dir="./backup"/>
@@ -97,7 +104,6 @@ Once done you can run a `clean & compile`. As these classes are already included
 
 If you get a dex merger error like below, enable the jumbo mode.
 
-
 ```
 
     UNEXPECTED TOP-LEVEL EXCEPTION:
@@ -108,7 +114,6 @@ If you get a dex merger error like below, enable the jumbo mode.
 ```
 
 To enable jumbo mode in Gradle add the following to your build.gradle -
-
 
 ```groovy
 
@@ -122,7 +127,6 @@ To enable jumbo mode in Gradle add the following to your build.gradle -
 
 To enable jumbo mode in Ant add the following to your project.properties -
 
-
 ```xml
 
     dex.force.jumbo=true
@@ -134,7 +138,6 @@ To enable jumbo mode in Ant add the following to your project.properties -
 
 If you get a dex error like below,
 
-
 ```
 
     UNEXPECTED TOP-LEVEL EXCEPTION:
@@ -144,11 +147,9 @@ If you get a dex error like below,
 ```
 
 This indicates that two **BuildConfig** files are getting added to the
-App, once via the *Helpshift.jar* file and then via the *helpshift-android-sdk* resources
-
+App, once via the _Helpshift.jar_ file and then via the _helpshift-android-sdk_ resources
 
 You can resolve this by deleting the **BuildConfig** file which comes with the Helpshift.jar by using the following command -
-
 
 ```
 
@@ -159,7 +160,6 @@ You can resolve this by deleting the **BuildConfig** file which comes with the H
 ### InflateException: Binary XML file: Error inflating class com.helpshift.views.HSTextInputEditText
 
 If you get a crash with the following error, check the android support library version you use:
-
 
 ```
 
@@ -181,10 +181,11 @@ In case the app is not receiving push notifications, you can look at the followi
 ### IP whitelisting
 
 In order to receive push notifications from Helpshift, please note that that there should be no key restrictions on the key used with Helpshift. To ensure this:
-* Click on the API key to be used with Helpshift on your Google console dashboard.
-* Set the Key restriction option to `None`
 
-<Image src="/static/books/android/ip-whitelisting.gif"  width="full" /> 
+- Click on the API key to be used with Helpshift on your Google console dashboard.
+- Set the Key restriction option to `None`
+
+<Image src="/static/books/android/ip-whitelisting.gif" width="full" />{" "}
 
 ## Multi-process apps {#multi-process-apps}
 
@@ -219,7 +220,6 @@ Application.onCreate() {
 
 ### Helpshift Logs with low priority DEBUG
 
-
 ```
 
     02-19 20:35:49.853: D/HelpShiftDebug(7651): org.json.JSONException: No value for pr
@@ -231,7 +231,6 @@ Application.onCreate() {
 You can safely ignore the Helpshift SDK debug logs (log priority "DEBUG" / "Log.d") that are seen in DDMS / Android Monitor. These will not cause any issues with the proper functioning of the SDK.
 
 ### Helpshift Warning with low priority
-
 
 ```
 
@@ -246,7 +245,6 @@ This is just a warning, and this has been handled by the helpshift SDK. You can 
 ### Cannot scroll FAQ list, cannot switch FAQ tabs, keyboard input not working when creating a new conversation etc.
 
 These UI issues are caused when hardware acceleration is turned off for Helpshift's activities. To ensure that hardware acceleration is turned on, add this to your AndroidManifest.xml file.
-
 
 ```xml
 
@@ -289,7 +287,6 @@ These UI issues are caused when hardware acceleration is turned off for Helpshif
     </td>
     <td>Use support library version 24.x and above</td>
 </tr>
-
 
   <tr>
     <td>3</td>

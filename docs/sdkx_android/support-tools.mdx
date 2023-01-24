@@ -4,8 +4,20 @@ title: Helpshift APIs
 description: "Helpshift provides a way to use functional element of the SDK based on your requirements."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift APIs {#support-tools}
 
@@ -13,17 +25,13 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Helpshift provides a way to use functional element of the SDK based on your requirements.
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
 
-
 </Admonition>
-
 
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
@@ -36,7 +44,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 You can call `Helpshift.showConversation(MyActivity.this, configurationMap)` to lead your user to your support and help section.
 You can pass the various configurations while opening the conversation screen which can be found [here](/sdkx_android/sdk-configuration/)
 
-Example: 
+Example:
 
 ```java
 	// config map
@@ -45,7 +53,7 @@ Example:
     // set tags for tracking
     config.put("tags", new String[]{"foo", "bar"});
 
-    // set custom issue fields 
+    // set custom issue fields
     Map<String, Object> cifMap = new HashMap<>();
     Map<String, String> isPro = new HashMap<>();
     isPro.put("type", "boolean");
@@ -63,7 +71,6 @@ Example:
 
 `Helpshift.showConversation(MyActivity.this, configMap);` where `MyActivity.this` is the Activity you're calling Helpshift from and `configMap` is the configuration map that you want to pass to configure the SDK.
 
-
 ## Integrating FAQs {#faqs-view}
 
 Example:
@@ -80,13 +87,11 @@ _You can wire this api call to a **"Help"** or **"Support"** action in your app.
 
 Check out [SDK Configuration](/sdkx_android/sdk-configuration/) for more.
 
-
 ## Showing a Particular FAQ Section {#faq-section-view}
 
 Example:
 `Helpshift.showFAQSection(MyActivity.this, "11", configMap);` where MyActivity.this is the
 Activity you're calling Helpshift from and "11" is the FAQ section `publish-id`
-
 
 <Centered >
 
@@ -99,13 +104,11 @@ You can use the api call
 
 **You'll need the `publish-id` of the section in this case:**
 
-<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
 Check out [SDK Configuration](/sdkx_android/sdk-configuration/) for more.
-
 
 ## Showing a Particular FAQ Question {#faq-question-view}
 
@@ -124,8 +127,7 @@ You can use the api call
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
 ### Set SDK language {#set-language-api}
 
@@ -139,6 +141,7 @@ Setting SDK language for the given locale with only language code.
 ```.java
 Helpshift.setLanguage("fr");
 ```
+
 Setting the SDK language for the given locale with both language code and country code.
 
 ```.java

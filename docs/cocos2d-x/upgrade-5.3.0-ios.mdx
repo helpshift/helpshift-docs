@@ -4,8 +4,20 @@ title: Upgrading to 5.3.0 and above
 description: "The Helpshift SDK v5.3 is a major update and we have made some important changes. If you have questions or feedback, please Contact Us"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Upgrading to 5.3.0 and above {#upgrade-to-530}
 
@@ -13,42 +25,43 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 The Helpshift SDK v5.3 is a major update and we have made some important changes. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
-
 </Intro>
-
 
 ## Support for Swift {#support-for-swift}
 
 With version 5.3.0, Helpshift SDK has added support for Swift. In order to use SDK 5.3.x for your app, Helpshift recommends you to follow the steps, depending on whether your app is made in Swift, ObjectiveC or mix of both. The minimum required XCode version is 10.2. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
 1. Pure Swift App
-	
-	No integration impact.
+
+   No integration impact.
 
 2. Swift + Objective C app
-	
-	No integration impact
+
+   No integration impact
 
 3. Pure Objective C app
-	
-	1. Set Always Embed Swift binaries in the build settings to YES
-	2. Add `/usr/lib/swift` to the `runpath search paths` in the build settings. Make sure it is above the `$(inherited)` and `@executable_path/Frameworks` flags
-	3. Add `$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)` for Xcode 11.x or `$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)` for Xcode 10.x to the `Library Search Paths` in the build settings.
 
+   1. Set Always Embed Swift binaries in the build settings to YES
+   2. Add `/usr/lib/swift` to the `runpath search paths` in the build settings. Make sure it is above the `$(inherited)` and `@executable_path/Frameworks` flags
+   3. Add `$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)` for Xcode 11.x or `$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)` for Xcode 10.x to the `Library Search Paths` in the build settings.
 
 ### Impact on your app {#support-for-swift-impact}
 
-| Host app already using Swift | iOS Version > 12.2 | Impact |
-|-------------|-------------------|--------|
-| Yes  | Yes  | No impact.  |
-| Yes  | No  | No impact.  |
-| No  | Yes |  [Only integration impact.](/cocos2d-x/upgrade-5.3.0-ios/#support-for-swift) No size impact. |
-| No  | No  | 2 MB size addition in final downloaded IPA  |
+| Host app already using Swift | iOS Version > 12.2 | Impact                                                                                      |
+| ---------------------------- | ------------------ | ------------------------------------------------------------------------------------------- |
+| Yes                          | Yes                | No impact.                                                                                  |
+| Yes                          | No                 | No impact.                                                                                  |
+| No                           | Yes                | [Only integration impact.](/cocos2d-x/upgrade-5.3.0-ios/#support-for-swift) No size impact. |
+| No                           | No                 | 2 MB size addition in final downloaded IPA                                                  |
 
 ## Granting iCloud permission for iOS 10 and below {#icloud-capability}
 
-With version 5.3.0, End-users will be able to send files such as pdf, video, etc. where before 5.3.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451) 
- 
+With version 5.3.0, End-users will be able to send files such as pdf, video, etc. where before 5.3.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+
 Example:
 
-<Image src="/static/books/ios/icloud-entitlement.png"  width="full" alt="icloud-entitlement.png" /> 
+<Image
+  src="/static/books/ios/icloud-entitlement.png"
+  width="full"
+  alt="icloud-entitlement.png"
+/>{" "}

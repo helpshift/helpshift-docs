@@ -4,9 +4,20 @@ title: Upgrading from 5.x to 6.x
 description: "The Helpshift SDK v6.x is a major update and we have deprecated some APIs and removed the APIs deprecated in 5.x version of SDK. If you have questions or feedback, please Contact Us"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,16 +25,13 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Upgrading from 5.x to 6.x {#upgrade-to-6x}
 
 <Intro>
 
 The Helpshift SDK v6.x is a major update and we have deprecated some APIs and removed the APIs deprecated in 5.x version of SDK. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
@@ -31,38 +39,36 @@ Please replace all the old files with new files.
 
 </Admonition>
 
-
-
 ## List of deleted APIs {#removed-api}
 
-| Deleted API | New API |
-|----------------|---------|
-| [Helpshift installForApiKey:domainName:appID:(withOptions]] | [HelpshiftCore installForApiKey:domainName:appID:(withConfig]] |
-| [[Helpshift sharedInstance] showConversation:withOptions:] | [HelpshiftSupport showConversation:withConfig:] |
-| [[Helpshift sharedInstance] showFAQs:withOptions:] | [HelpshiftSupport showFAQs:withConfig:] |
-| [[Helpshift sharedInstance] showFAQSection:withController:withOptions:] | [HelpshiftSupport showFAQSection:withController:withConfig:] |
-| [[Helpshift sharedInstance] showSingleFAQ:withController:withOptions:] | [HelpshiftSupport showSingleFAQ:withController:withConfig:] |
-| [[Helpshift sharedInstance] registerDeviceToken:] | [HelpshiftCore registerDeviceToken:] |
-| [[Helpshift sharedInstance] handleRemoteNotification:withController:] |  [HelpshiftCore handleRemoteNotification:withController:] |
-| [[Helpshift sharedInstance] setDelegate:] | [[HelpshiftSupport sharedInstance] setDelegate:] |
-| [Helpshift setName:andEmail:] | [HelpshiftCore setName:andEmail:] |
-| [Helpshift setUserIdentifier:] | [HelpshiftSupport setUserIdentifier:] |
-| [Helpshift loginWithIdentifier:withName:andEmail:] | [HelpshiftCore loginWithIdentifier:withName:andEmail:] |
-| [Helpshift logout] | [HelpshiftCore logout]; |
-| [Helpshift setMetadataBlock:] | [HelpshiftSupport setMetadataObjectBlock:] |
-
+| Deleted API                                                             | New API                                                        |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [Helpshift installForApiKey:domainName:appID:(withOptions]]             | [HelpshiftCore installForApiKey:domainName:appID:(withConfig]] |
+| [[Helpshift sharedInstance] showConversation:withOptions:]              | [HelpshiftSupport showConversation:withConfig:]                |
+| [[Helpshift sharedInstance] showFAQs:withOptions:]                      | [HelpshiftSupport showFAQs:withConfig:]                        |
+| [[Helpshift sharedInstance] showFAQSection:withController:withOptions:] | [HelpshiftSupport showFAQSection:withController:withConfig:]   |
+| [[Helpshift sharedInstance] showSingleFAQ:withController:withOptions:]  | [HelpshiftSupport showSingleFAQ:withController:withConfig:]    |
+| [[Helpshift sharedInstance] registerDeviceToken:]                       | [HelpshiftCore registerDeviceToken:]                           |
+| [[Helpshift sharedInstance] handleRemoteNotification:withController:]   | [HelpshiftCore handleRemoteNotification:withController:]       |
+| [[Helpshift sharedInstance] setDelegate:]                               | [[HelpshiftSupport sharedInstance] setDelegate:]               |
+| [Helpshift setName:andEmail:]                                           | [HelpshiftCore setName:andEmail:]                              |
+| [Helpshift setUserIdentifier:]                                          | [HelpshiftSupport setUserIdentifier:]                          |
+| [Helpshift loginWithIdentifier:withName:andEmail:]                      | [HelpshiftCore loginWithIdentifier:withName:andEmail:]         |
+| [Helpshift logout]                                                      | [HelpshiftCore logout];                                        |
+| [Helpshift setMetadataBlock:]                                           | [HelpshiftSupport setMetadataObjectBlock:]                     |
 
 ## List of deprecated APIs {#deprecated-api}
-| Deprecated API | New API |
-|----------------|---------|
-| [HelpshiftCore installForApiKey:domainName:appID:(withOptions:)]] | [HelpshiftCore installForApiKey:domainName:appID:(withConfig:)]] |
-| [HelpshiftSupport showConversation:withOptions:]] | [HelpshiftSupport showConversation:withConfig:]] |
-| [HelpshiftSupport showFAQs:withOptions:]] | [HelpshiftSupport showFAQs:withConfig:]] |
-| [HelpshiftSupport showFAQSection:withController:withOptions:]] | [HelpshiftSupport showFAQSection:withController:withConfig:]] |
-| [HelpshiftSupport showSingleFAQ:withController:withOptions:]] | [HelpshiftSupport showSingleFAQ:withController:withConfig:]] |
-| [HelpshiftSupport setMetadataBlock:]] | [HelpshiftSupport setMetadataObjectBlock:]] |
+
+| Deprecated API                                                                            | New API                                                                            |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [HelpshiftCore installForApiKey:domainName:appID:(withOptions:)]]                         | [HelpshiftCore installForApiKey:domainName:appID:(withConfig:)]]                   |
+| [HelpshiftSupport showConversation:withOptions:]]                                         | [HelpshiftSupport showConversation:withConfig:]]                                   |
+| [HelpshiftSupport showFAQs:withOptions:]]                                                 | [HelpshiftSupport showFAQs:withConfig:]]                                           |
+| [HelpshiftSupport showFAQSection:withController:withOptions:]]                            | [HelpshiftSupport showFAQSection:withController:withConfig:]]                      |
+| [HelpshiftSupport showSingleFAQ:withController:withOptions:]]                             | [HelpshiftSupport showSingleFAQ:withController:withConfig:]]                       |
+| [HelpshiftSupport setMetadataBlock:]]                                                     | [HelpshiftSupport setMetadataObjectBlock:]]                                        |
 | [HelpshiftSupport showDynamicFormOnViewController:withTitle:andFlows:withConfigOptions:]] | [HelpshiftSupport showDynamicFormOnViewController:withTitle:andFlows:withConfig:]] |
-| [HelpshiftSupport flowToShowConversationWithDisplayText:andConfigOptions:]] | [HelpshiftSupport flowToShowConversationWithDisplayText:andConfig:]] |
-| [HelpshiftSupport flowToShowFAQsWithDisplayText:andConfigOptions:]] | [HelpshiftSupport flowToShowFAQsWithDisplayText:andConfig:]] |
-| [HelpshiftSupport flowToShowFAQSectionForPublishId:withDisplayText:andConfigOptions:]] | [HelpshiftSupport flowToShowFAQSectionForPublishId:withDisplayText:andConfig:]] |
-| [HelpshiftSupport flowToShowSingleFAQForPublishId:withDisplayText:andConfigOptions:]] | [HelpshiftSupport flowToShowSingleFAQForPublishId:withDisplayText:andConfig:]] |
+| [HelpshiftSupport flowToShowConversationWithDisplayText:andConfigOptions:]]               | [HelpshiftSupport flowToShowConversationWithDisplayText:andConfig:]]               |
+| [HelpshiftSupport flowToShowFAQsWithDisplayText:andConfigOptions:]]                       | [HelpshiftSupport flowToShowFAQsWithDisplayText:andConfig:]]                       |
+| [HelpshiftSupport flowToShowFAQSectionForPublishId:withDisplayText:andConfigOptions:]]    | [HelpshiftSupport flowToShowFAQSectionForPublishId:withDisplayText:andConfig:]]    |
+| [HelpshiftSupport flowToShowSingleFAQForPublishId:withDisplayText:andConfigOptions:]]     | [HelpshiftSupport flowToShowSingleFAQForPublishId:withDisplayText:andConfig:]]     |

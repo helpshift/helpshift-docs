@@ -4,10 +4,20 @@ title: Deep Linking in FAQs
 description: "Using custom URL schemes to support deep linking in your app"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Deep Linking in FAQs {#ios-deep-links}
 
@@ -15,9 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Using custom URL schemes to support deep linking in your app
 
-
 </Intro>
-
 
 Use custom URL schemes to direct users to particular sections of your app from Helpshift FAQs. You can use these schemes to provide a more seamless experience for the user. For example, if your iOS app has a registration screen, clicking on a registration link in an FAQ can directly take the user to that screen.
 
@@ -25,19 +33,26 @@ Use custom URL schemes to direct users to particular sections of your app from H
 
 When editing your FAQ, select the text and then click on create a link.
 
-<Image src="/static/books/misc/add-ios-deep-link-1.png"  width="half" alt="add-ios-deep-link-1.png" /> 
-
+<Image
+  src="/static/books/misc/add-ios-deep-link-1.png"
+  width="half"
+  alt="add-ios-deep-link-1.png"
+/>{" "}
 
 In the dialog that pops up, enter your custom URL and save the FAQ.
 
-<Image src="/static/books/misc/add-ios-deep-link-2.png"  width="half" alt="add-ios-deep-link-2.png" /> 
+<Image
+  src="/static/books/misc/add-ios-deep-link-2.png"
+  width="half"
+  alt="add-ios-deep-link-2.png"
+/>{" "}
 
 ## Handle deep links in your iOS App {#handle-deep-link}
 
 To handle the custom URLs in your iOS app, make sure first that your app's Info.list supports the custom URL scheme that you've provided in the FAQs. [[1]](http://iosdevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html)
 
-
 You will then need to implement,`application:openURL:sourceApplication:annotation:` in your app delegate, to handle and take the required action. For example:
+
 ```
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 

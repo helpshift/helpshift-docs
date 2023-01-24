@@ -4,10 +4,20 @@ title: Getting Started
 description: "Getting started with integrating Helpshift in your Android app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started {#getting-started}
 
@@ -15,14 +25,11 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Getting started with integrating Helpshift in your Android app.
 
-
 </Intro>
-
 
 ### Gradle based projects {#gradle-support}
 
 Add the following dependencies to your `build.gradle` file inside the dependencies section.
-
 
 ```groovy
 
@@ -38,29 +45,24 @@ Helpshift SDK comes with built-in support for 47 languages. An API to change SDK
 
 Helpshift is now ready to help you have conversations with your users!
 
-
 ### Initialize Helpshift in your App {#initializing}
-
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
 
 <div className=" compact">
 
+|                          |                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_                                      |
+| <code>Platform ID</code> | Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
 
-| | |
-|--|--|
-|<code>Domain Name</code>|  Your Helpshift domain. E.g. _happyapps.helpshift.com_|
-|<code>Platform ID</code>| Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
 </div>
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
 Select your App and _check Android as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
-<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" /> 
-
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
 
 Initialize SDK by calling `com.helpshift.Helpshift.install()` method.
-
-
 
 ```java
 
@@ -86,7 +88,6 @@ Initialize SDK by calling `com.helpshift.Helpshift.install()` method.
 
 ```
 
-
 <Admonition type="danger" title="Important">
 
 ** Placing the install call **
@@ -102,13 +103,11 @@ Calling any API before the install call would throw an unchecked HelpshiftInitia
 
 Calling `install()` below android SDK version 21 will throw this checked exception. All the APIs will be non operable.
 
-
 </Admonition>
-
 
 ## Minimum supported Android version
 
-The Helpshift SDK for Android requires minimum API level to be 16. 
+The Helpshift SDK for Android requires minimum API level to be 16.
 However, **all the Helpshift's public apis will be non-operable below android SDK version 21.**
 
 ## Integrating Feedback Screen {#conversation-view}
@@ -119,7 +118,7 @@ However, **all the Helpshift's public apis will be non-operable below android SD
 
 </Centered>
 
-You can call `Helpshift.showConversation(MyActivity.this, configurationMap)` to lead your user to your feedback section.  It is advised to add `configurationMap.put("initialUserMessage", "Give Feedback");` before this call to add Initial User Message.
+You can call `Helpshift.showConversation(MyActivity.this, configurationMap)` to lead your user to your feedback section. It is advised to add `configurationMap.put("initialUserMessage", "Give Feedback");` before this call to add Initial User Message.
 
 Example:
 
@@ -130,7 +129,7 @@ Example:
     // set tags for tracking
     config.put("tags", new String[]{"foo", "bar"});
 
-    // set custom issue fields 
+    // set custom issue fields
     Map<String, Object> cifMap = new HashMap<>();
     Map<String, String> isPro = new HashMap<>();
     isPro.put("type", "boolean");
@@ -182,34 +181,29 @@ config.put("customMetadata", customMetadata);
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
-
 <Admonition type="info" title="Note">
 
 Metadata should only be sent as String key-value pairs.
 
 </Admonition>
 
-
-
 ## Set Custom Issue Fields {#set-custom-issue-fields}
-
 
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
 
 </Admonition>
-
 
 If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
 
 1. Initialise a top level custom issue fields' `Map`
 2. Define your custom issue field `Map`
 3. Add the `"type"` and `"value"` for that custom issue field
-3. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
-4. Pass the map to `configMap` with key `"customIssueFields"` of the `Helpshift.showConversation(this, configMap)`
+4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
+5. Pass the map to `configMap` with key `"customIssueFields"` of the `Helpshift.showConversation(this, configMap)`
 
 ```java
 
@@ -234,11 +228,11 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     cifMap.put("stock_level", stockLevel);
     cifMap.put("employee_name", employeeName);
     cifMap.put("is_pro", isPro);
-    
+
 
     Map<String, Object> config = new HashMap<>();
     // other configs...
-    //.. 
+    //..
     config.put("customIssueFields", cifMap);
 
     Helpshift.showConversation(MainActivity.this, config);
@@ -248,20 +242,20 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 
 The following are the valid values for the `type` key of a Custom Issue Field.
 
-* "singleline"
-* "multiline"
-* "number"
-* "checkbox"
-* "dropdown"
-* "date"
+- "singleline"
+- "multiline"
+- "number"
+- "checkbox"
+- "dropdown"
+- "date"
 
 Compatibility table for type and values:
 
-| Type | Value | Comments |
-| --- | --- | --- |
-| singleline | string | Character limit of 255 |
-| multiline | string | Character limit of 100,000 |
-| number | string |  |
-| dropdown | string | Drop-down options should exist for the given Custom Issue Field |
-| date | number | Epoch time. For example - **Date.now()** |
-| checkbox | boolean |   |
+| Type       | Value   | Comments                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | Character limit of 255                                          |
+| multiline  | string  | Character limit of 100,000                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
+| date       | number  | Epoch time. For example - **Date.now()**                        |
+| checkbox   | boolean |                                                                 |

@@ -4,8 +4,20 @@ title: Tracking
 description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Tracking {#tracking}
 
@@ -14,9 +26,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 Track events and user actions when the user starts a new conversation.
 Attach custom metadata to every conversation started via the SDK.
 
-
 </Intro>
-
 
 ## Adding Tags to Conversations {#adding-tags}
 
@@ -30,31 +40,30 @@ You can attach tags while reporting an issue by passing them to the `Tags` param
 
 Pass this Map to `ShowConversation()` API.
 
-<Image src="/static/books/unreal/complete_show_conv.png"  width="full" /> 
+<Image src="/static/books/unreal/complete_show_conv.png" width="full" />{" "}
 
 Similarly, you can pass this configuration to other APIs (ie. `ShowSection`, `ShowQuestion`, `ShowFrequentlyAskedQuestion`).
-
 
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
-* The attached tags must exactly match the tags present on the dashboard.
+- Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- The attached tags must exactly match the tags present on the dashboard.
 
 </Admonition>
-
 
 ## Set Custom Metadata {#set-custom-metadata}
 
 If you want to set Custom Metadata at the time of Issue creation, follow the steps.
 
 1. Define your custom metadata `Map` as key-value pairs.
-3. Add the custom metadata `Map` in the map expected in the `Parameters` argument with `customMetadata` as the key.
+2. Add the custom metadata `Map` in the map expected in the `Parameters` argument with `customMetadata` as the key.
 
 Pass this Map to following APIs:
 
 `ShowConversation` API,
+
 <Centered width="full">
 
 ![](/static/books/unreal/custom_metadata_show_conversation.png)
@@ -62,6 +71,7 @@ Pass this Map to following APIs:
 </Centered>
 
 `ShowQuestion` API,
+
 <Centered width="full">
 
 ![](/static/books/unreal/custom_metadata_show_question.png)
@@ -69,6 +79,7 @@ Pass this Map to following APIs:
 </Centered>
 
 `ShowFrequentlyAskedQuestion` API,
+
 <Centered width="full">
 
 ![](/static/books/unreal/custom_metadata_show_faqs.png)
@@ -76,32 +87,34 @@ Pass this Map to following APIs:
 </Centered>
 
 `ShowSection` API
+
 <Centered width="full">
 
 ![](/static/books/unreal/custom_metadata_show_section.png)
 
 </Centered>
 
-
 <Admonition type="info" title="Note">
 
 Metadata should only be sent as String key-value pairs.
 
-* Once customMetadata is set, if you want to reset it then you’ll have to call the API with an empty map ie.
+- Once customMetadata is set, if you want to reset it then you’ll have to call the API with an empty map ie.
 
-<Image src="/static/books/unreal/custom_metadata_show_conversation_empty.png"  width="full" /> 
+<Image
+  src="/static/books/unreal/custom_metadata_show_conversation_empty.png"
+  width="full"
+/>{" "}
 
 </Admonition>
-
 
 ## Set Custom Issue Fields {#set-custom-issue-fields}
 
 If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
 
-1. Initialise a top level custom issue fields' `Map` 
+1. Initialise a top level custom issue fields' `Map`
 2. Define your custom issue field `Map`
 3. Add the `"type"` and `"value"` for that custom issue field
-   You can find the `type` in this constants class `HelpshiftCustomIssueFieldParameter`  
+   You can find the `type` in this constants class `HelpshiftCustomIssueFieldParameter`
 
 <Centered width="full">
 
@@ -111,49 +124,45 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 
 Pass this Map to `ShowConversation()` API.
 
-<Image src="/static/books/unreal/complete_show_conv.png"  width="full" /> 
+<Image src="/static/books/unreal/complete_show_conv.png" width="full" />{" "}
 
 Similarly, you can pass this Map to other APIs (ie. `ShowSection`, `ShowQuestion`, `ShowFrequentlyAskedQuestion`).
 
 The following are the valid values for the `type` key of a Custom Issue Field.
 
-* NewSingleLineParameter
-* NewMultiLineParameter
-* NewNumberParameter
-* NewCheckboxParameter
-* NewDropdownParameter
-* NewDateParameter
+- NewSingleLineParameter
+- NewMultiLineParameter
+- NewNumberParameter
+- NewCheckboxParameter
+- NewDropdownParameter
+- NewDateParameter
 
 Compatibility table for type and values:
 
-| Type | Value | Comments |
-| --- | --- | --- |
-| NewSingleLineParameter | string | Character limit of 255 |
-| NewMultiLineParameter | string | Character limit of 100,000 |
-| NewNumberParameter | int |  |
-| NewDropdownParameter | string | Drop-down options should exist for the given Custom Issue Field |
-| NewDateParameter | DateTime | Epoch time. For example - **Date.now()** |
-| NewCheckboxParameter | boolean |   |
-
+| Type                   | Value    | Comments                                                        |
+| ---------------------- | -------- | --------------------------------------------------------------- |
+| NewSingleLineParameter | string   | Character limit of 255                                          |
+| NewMultiLineParameter  | string   | Character limit of 100,000                                      |
+| NewNumberParameter     | int      |                                                                 |
+| NewDropdownParameter   | string   | Drop-down options should exist for the given Custom Issue Field |
+| NewDateParameter       | DateTime | Epoch time. For example - **Date.now()**                        |
+| NewCheckboxParameter   | boolean  |                                                                 |
 
 <Admonition type="info" title="Note">
 
 On Custom Issue Fields keys & compatibility
 
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
 
 </Admonition>
 
-
 ## Breadcrumbs {#breadcrumbs}
-
 
 <Admonition type="info" title="Note">
 
 Applicable to SDK X Unreal v10.1.0 & above.
 
 </Admonition>
-
 
 Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs can use `LeaveBreadcrumb` API and pass a string to it. For example -
 
@@ -163,7 +172,7 @@ Breadcrumbs can be used to track events or end-user actions. It helps you to add
 
 </Centered>
 
-Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the  `ClearBreadcrumbs` API. For example -
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `ClearBreadcrumbs` API. For example -
 
 <Centered width="full">
 
@@ -173,13 +182,11 @@ Breadcrumbs are collected within the set breadcrumb limit. The limit is set unde
 
 ## Debug Logs {#debug-logs}
 
-
 <Admonition type="info" title="Note">
 
 Applicable to SDK X Unreal v10.1.0 & above.
 
 </Admonition>
-
 
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
 
@@ -190,5 +197,3 @@ You may wish to pass additional debug logs with every new conversation filed by 
 </Centered>
 
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
-
-

@@ -4,22 +4,28 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 
-
-
 </Intro>
-
 
 ## Install Options {#install-options}
 
@@ -29,24 +35,19 @@ By default the application icon is used as the notification icon. You can custom
 
 <div className="compact ">
 
-
-
-| | |
-|--|--|
-|Flag| notificationIcon|
-|Values| Resource id of the icon|
-|Default| Application icon|
+|         |                         |
+| ------- | ----------------------- |
+| Flag    | notificationIcon        |
+| Values  | Resource id of the icon |
+| Default | Application icon        |
 
 </div>
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -60,19 +61,14 @@ Example :
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -85,11 +81,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### largeNotificationIcon {#largeNotificationIcon}
 
@@ -98,24 +92,19 @@ If you want to specify the large notification icon also to show up in the notifi
 
 <div className="compact ">
 
-
-
-| | |
-|--|--|
-|Flag| largeNotificationIcon|
-|Values| Resource id of the icon|
-|Default| none|
+|         |                         |
+| ------- | ----------------------- |
+| Flag    | largeNotificationIcon   |
+| Values  | Resource id of the icon |
+| Default | none                    |
 
 </div>
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -128,19 +117,14 @@ Example :
                                        installConfig);
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -153,11 +137,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### enableInAppNotification {#enableInAppNotification}
 
@@ -165,24 +147,19 @@ If you do not want the in-app notification support provided by the Helpshift SDK
 
 <div className="compact ">
 
-
-
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | enableInAppNotification               |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
 </div>
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -196,19 +173,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -221,37 +193,29 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### notificationSound {#notificationSound}
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
-
 <div className="compact ">
 
-
-
-| | |
-|--|--|
-|Flag| notificationSound|
-|Values| Resource id of the sound file.|
-|Default| System notification sound.|
+|         |                                |
+| ------- | ------------------------------ |
+| Flag    | notificationSound              |
+| Values  | Resource id of the sound file. |
+| Default | System notification sound.     |
 
 </div>
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -265,23 +229,18 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* Available from SDK version 3.0.0 and above
+- Available from SDK version 3.0.0 and above
 
-* Starting from SDK v3.1.0, the sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
+- Starting from SDK v3.1.0, the sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
 
-* If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/xamarin/sdk-configuration-android#notificationChannels).
+- If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/xamarin/sdk-configuration-android#notificationChannels).
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -294,11 +253,9 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### Notification channels {#notificationChannels}
 
@@ -311,16 +268,13 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 
 If you want to customize the notification channels, you can create your own custom channels and provide their channel IDs using the following config key:
 
-* `supportNotificationChannelId`
+- `supportNotificationChannelId`
 
 For Example:
-
 
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -333,19 +287,14 @@ For Example:
                                        installConfig);
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -355,36 +304,29 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Available from SDK version 2.5.0 and above
 
 </Admonition>
 
-
-
 </TabItem>
 
 </Tabs>
 
-
 ### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
-
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableDefaultFallbackLanguage|
-|values| <code>"yes"</code>/ <code>"no"</code>|
-|default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | enableDefaultFallbackLanguage         |
+| values  | <code>"yes"</code>/ <code>"no"</code> |
+| default | <code>"no"</code>                     |
 
 </div>
 
 You can enable or disable the SDK default fallback language when showing FAQs using this flag. When set to `"no"`, the Helpshift SDK will not fallback to the default language that is English, when showing FAQs.
-
 
 <Admonition type="info" title="Note">
 
@@ -392,15 +334,11 @@ This configuration does not apply to the QuickSearch Bot suggested FAQs.
 
 </Admonition>
 
-
 Example:
-
 
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -413,19 +351,14 @@ Example:
                                        installConfig);
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -438,30 +371,27 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### Using Custom Fonts {#usingCustomFonts}
 
 **Step 1:** Add the font file to your `Assets` folder.
 
-
-<Image src="/static/books/android/custom-fonts.png"  width="major" centered /> 
+<Image
+  src="/static/books/android/custom-fonts.png"
+  width="major"
+  centered
+/>{" "}
 
 **Step 2:** Pass the font location relative to the `Assets` folder as follows during installation. If the font file `DancingScript-Regular.ttf` lies in the `fonts` folder inside the `assets` folder, then your path is `fonts/DancingScript-Regular.ttf`.
 
-
 Example:
-
 
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -475,19 +405,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -500,35 +425,29 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Available from Xamarin SDK version 2.0.0 and above
 
 </Admonition>
 
-
-
 </TabItem>
 
 </Tabs>
 
-
 **Step 3:** Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
 
-
-<Image src="/static/books/android/font-in-use.png"  width="quarter" centered /> 
+<Image src="/static/books/android/font-in-use.png" width="quarter" centered />{" "}
 
 ### screenOrientation {#screenOrientation}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| screenOrientation|
-|values| enum values for orientation from [ScreenOrientation](https://developer.xamarin.com/api/type/Android.Content.PM.ScreenOrientation/) class|
-|default|  [ScreenOrientation.Unspecified](https://developer.xamarin.com/api/field/Android.Content.PM.ScreenOrientation.Unspecified/)|
+|         |                                                                                                                                          |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                                                                                        |
+| values  | enum values for orientation from [ScreenOrientation](https://developer.xamarin.com/api/type/Android.Content.PM.ScreenOrientation/) class |
+| default | [ScreenOrientation.Unspecified](https://developer.xamarin.com/api/field/Android.Content.PM.ScreenOrientation.Unspecified/)               |
 
 </div>
 
@@ -537,12 +456,9 @@ For example, you may want to fix the orientation to `ScreenOrientation.Portrait`
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -559,19 +475,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -587,12 +498,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -600,17 +508,15 @@ Due to a [bug](https://issuetracker.google.com/issues/68454482) in Android OS 8.
 
 </Admonition>
 
-
 ### enableLogging {#enableLogging}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableLogging|
-|values| <code>"yes"</code>/ <code>"no"</code>|
-|default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | enableLogging                         |
+| values  | <code>"yes"</code>/ <code>"no"</code> |
+| default | <code>"no"</code>                     |
 
 </div>
 
@@ -618,12 +524,9 @@ Upon setting enableLogging to true, Helpshift SDK logs will be generated in the 
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -636,19 +539,14 @@ Example:
                                        installConfig);
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -661,23 +559,19 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 ### disableErrorReporting {#disableErrorReporting}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| disableErrorReporting|
-|values| <code>"yes"</code>/ <code>"no"</code>|
-|default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | disableErrorReporting                 |
+| values  | <code>"yes"</code>/ <code>"no"</code> |
+| default | <code>"no"</code>                     |
 
 </div>
 
@@ -685,12 +579,9 @@ Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK w
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -704,11 +595,8 @@ Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -721,12 +609,9 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -734,20 +619,17 @@ Applicable to version 3.3.0 and above.
 
 </Admonition>
 
-
-
 ## API Options {#api-options}
 
 ### enableContactUs {#enableContactUs}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableContactUs|
-|Values| HelpshiftApi.HelpshiftSupport.CONTACT_US_ALWAYS   HelpshiftApi.HelpshiftSupport.CONTACT_US_NEVER   HelpshiftApi.HelpshiftSupport.CONTACT_US_AFTER_VIEWING_FAQS   HelpshiftApi.HelpshiftSupport.CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL|
-|Default| HelpshiftApi.HelpshiftSupport.CONTACT_US_ALWAYS|
+|         |                                                                                                                                                                                                                                    |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | enableContactUs                                                                                                                                                                                                                    |
+| Values  | HelpshiftApi.HelpshiftSupport.CONTACT_US_ALWAYS HelpshiftApi.HelpshiftSupport.CONTACT_US_NEVER HelpshiftApi.HelpshiftSupport.CONTACT_US_AFTER_VIEWING_FAQS HelpshiftApi.HelpshiftSupport.CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL |
+| Default | HelpshiftApi.HelpshiftSupport.CONTACT_US_ALWAYS                                                                                                                                                                                    |
 
 </div>
 
@@ -759,12 +641,9 @@ This flag has no effect for the `ShowConversation` API call.
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -775,19 +654,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -797,14 +671,11 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
-
 
 <Admonition type="info" title="Note">
 
@@ -812,18 +683,15 @@ This API is now deprecated with Xamarin SDK v3.0.0. Read more about the new conv
 
 </Admonition>
 
-
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| gotoConversationAfterContactUs|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | gotoConversationAfterContactUs        |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
 </div>
-
 
 The `gotoConversationAfterContactUs` flag will determine whether the
 user lands up in the conversation screen after starting a new
@@ -832,12 +700,9 @@ conversation via "Contact Us". This only makes sense if the
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -848,19 +713,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -870,12 +730,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -883,10 +740,7 @@ For `ShowFAQs`, `ShowFAQSection` and `ShowSingleFAQ` APIs, setting `gotoConversa
 
 </Admonition>
 
-
-
 ### requireEmail {#requireEmail}
-
 
 <Admonition type="info" title="Note">
 
@@ -894,30 +748,25 @@ This API is now deprecated with Xamarin SDK v3.0.0. Read more about the new conv
 
 </Admonition>
 
-
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| requireEmail|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | requireEmail                          |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
 </div>
 
-If  `requireEmail` flag is set to `"yes"`, an e-mail address is required
+If `requireEmail` flag is set to `"yes"`, an e-mail address is required
 while starting a new conversation. Default value is `"no"` i.e. e-mail
 is optional.
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -928,19 +777,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -951,12 +795,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -964,10 +805,7 @@ Once `requireEmail` flag is set, the SDK will use that value for all new convers
 
 </Admonition>
 
-
-
 ### hideNameAndEmail {#hideNameAndEmail}
-
 
 <Admonition type="info" title="Note">
 
@@ -975,15 +813,14 @@ This API is now deprecated with Xamarin SDK v3.0.0. Read more about the new conv
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | hideNameAndEmail                      |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
-| | |
-|--|--|
-|Flag| hideNameAndEmail|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
@@ -992,12 +829,9 @@ When the flag is set to `"yes"` the name and email fields will be hidden. If set
 
 For example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1008,19 +842,14 @@ For example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1030,11 +859,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 If the [`requireEmail`](#requireEmail) flag is set to `"yes"` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
 
@@ -1044,24 +871,20 @@ If "New Issue Forwarding" is ON then this flag will be ignored when name and ema
 
 If "Allow anonymous issues" is ON, under app settings in the agent dashboard, then this flag will be ignored.
 
-
 <Admonition type="info" title="Note">
 
 Once `hideNameAndEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
 
 </Admonition>
 
-
-
 ### conversationPrefillText {#conversationPrefillText}
 
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| conversationPrefillText|
-|Values| Non-empty String|
+|        |                         |
+| ------ | ----------------------- |
+| Flag   | conversationPrefillText |
+| Values | Non-empty String        |
 
 </div>
 
@@ -1070,12 +893,9 @@ This is useful where you might want your users to send you diagnostic informatio
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1086,19 +906,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1109,12 +924,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -1122,17 +934,15 @@ The `conversationPrefillText` option takes effect only for the `ShowConversation
 
 </Admonition>
 
-
 ### enableFullPrivacy {#enableFullPrivacy}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableFullPrivacy|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | enableFullPrivacy                     |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
 </div>
 
@@ -1140,7 +950,7 @@ In scenarios where the user attaches objectionable content in the screenshots, i
 
 If this flag is set to `"yes"`, it enables full privacy controls for the SDK. The user can be disabled from attaching screenshots and sending personally identifiable information in meta-data. This helps developers ensure full [`COPPA`](http://www.coppa.org/) compliance.
 
-To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this flag is set to `"yes"`,  the following data will be removed when the user starts a new conversation.
+To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this flag is set to `"yes"`, the following data will be removed when the user starts a new conversation.
 
 1. Map with "private-data" key inside custom meta-data.
 1. Country code.
@@ -1148,12 +958,9 @@ To send personally identifiable information through custom meta-data, the inform
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1164,19 +971,14 @@ Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1186,12 +988,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -1199,17 +998,14 @@ Applicable to version 3.0.0 and above.
 1. If the `enableFullPrivacy` flag is set, for SDK versions 2.3.1 or earlier, the email requirement is always set to optional. i.e. even if requiredEmail is true; enableFullPrivacy will override it and set email requirement as optional.
 1. If the `enableFullPrivacy` flag is set, for SDK versions 2.4.0 or later, the user's 'email and name will not be collected and the fields will be hidden. `enableFullPrivacy` flag will override all other flags pertaining to name and email field.
 1. For Xamarin SDK v3.0.0 and above, this flag is ignored in the flows created to show Dynamic forms. The following flows do not honor this flag:
-    * ConversationFlow
-    * FAQsFlow
-    * SingleFAQFlow
-    * FAQSectionFlow
+   - ConversationFlow
+   - FAQsFlow
+   - SingleFAQFlow
+   - FAQSectionFlow
 
 </Admonition>
 
-
-
 ### showSearchOnNewConversation {#showSearchOnNewConversation}
-
 
 <Admonition type="info" title="Note">
 
@@ -1217,18 +1013,15 @@ This API is now deprecated with Xamarin SDK v3.0.0. Read more about the new conv
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showSearchOnNewConversation|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | showSearchOnNewConversation           |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
 </div>
-
 
 If showSearchOnNewConversation flag is set to `"yes"`, the user will be taken to a view which shows the search results relevant to the conversation text that he has entered upon clicking the 'Send' button. This is to avoid tickets which are already answered in the FAQs. The user will still be able to start a new conversation with the same text. He can also go through one of the FAQs and find a solution to his query, and exit the session without submitting a ticket.
 
@@ -1236,12 +1029,9 @@ Default value is `"no"`, ie., this feature will not be enabled unless you explic
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1252,19 +1042,14 @@ Example :
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1274,11 +1059,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### showConversationResolutionQuestion {#showConversationResolutionQuestion}
 
@@ -1286,19 +1069,23 @@ Applicable to version 3.0.0 and above.
 
 This SDK configuration is deprecated with v3.0+ and default value will be treated as False.
 
-If you want to use this feature, you can turn the feature on and off  ("Resolution Question") from the Settings > App settings > In-App Configuration page.
- <Image src="/static/books/android/conversation-resolution-flag.png"  width="full" /> 
+If you want to use this feature, you can turn the feature on and off ("Resolution Question") from the Settings > App settings > In-App Configuration page.
+
+{" "}
+<Image
+  src="/static/books/android/conversation-resolution-flag.png"
+  width="full"
+/>{" "}
 
 #### For Older SDK versions 2.6 and below, please read the following:
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationResolutionQuestion|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"yes"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | showConversationResolutionQuestion     |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"yes"</code>                     |
 
 </div>
 
@@ -1308,12 +1095,9 @@ Default value is `yes`, ie., this feature will not be disabled unless you explic
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1324,19 +1108,14 @@ Example :
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1346,22 +1125,19 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ### customContactUsFlows {#customContactUsFlows}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| customContactUsFlows|
-|Values| List of Flows. See the example below to create flows.|
-|Default| There is no default value for this configuration.|
+|         |                                                       |
+| ------- | ----------------------------------------------------- |
+| Flag    | customContactUsFlows                                  |
+| Values  | List of Flows. See the example below to create flows. |
+| Default | There is no default value for this configuration.     |
 
 </div>
 
@@ -1373,12 +1149,9 @@ Example :
 Let’s say you want the users to see a particular FAQ section, a single FAQ and 2 different Contact Us flows with different prefill texts when
 they tap the Contact Us buttons within the Helpshift SDK. In this case, you would configure the `showHelp` button (a button which triggers Helpshift SDK) in the following way :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1402,19 +1175,14 @@ they tap the Contact Us buttons within the Helpshift SDK. In this case, you woul
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1458,11 +1226,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 Anytime the Helpshift SDK is presented via `showHelp` with this configuration, the Contact Us buttons in the SDK will redirect to Guided Issue Filing with the flows provided in the `customContactUsOptions` list.
 
@@ -1474,12 +1240,9 @@ Example :
 
 Let’s say you want to configure `singleFAQFlow` in the above example to show `showConversationFlow1` and `showConversationFlow2` through the Contact Us buttons inside it. In this case, you would configure the showHelp button (a button which triggers Helpshift SDK) in the following way :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1506,19 +1269,14 @@ Let’s say you want to configure `singleFAQFlow` in the above example to show `
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1547,11 +1305,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
 
@@ -1559,12 +1315,11 @@ With this configuration, the Contact Us buttons in `singleFAQFlow` View will red
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationInfoScreen|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | showConversationInfoScreen           |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -1572,12 +1327,9 @@ The `showConversationInfoScreen` flag will determine if the user can see the Con
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1588,19 +1340,14 @@ Example :
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1610,43 +1357,35 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 <Admonition type="info" title="Note">
 
- Applicable to version 2.3.1 and above.
+Applicable to version 2.3.1 and above.
 
 </Admonition>
-
-
 
 </TabItem>
 
 </Tabs>
 
-
-
 <Admonition type="info" title="Note">
 
-The Conversation ID (Issue ID) will only be visible when a conversation is actually created for support teams and Automations / Agents can act on it. (This is after QuickSearch Bot (if configured) and Identity Bot (if configured) complete their tasks.) 
+The Conversation ID (Issue ID) will only be visible when a conversation is actually created for support teams and Automations / Agents can act on it. (This is after QuickSearch Bot (if configured) and Identity Bot (if configured) complete their tasks.)
 
 </Admonition>
-
 
 ### enableTypingIndicator {#enableTypingIndicator}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableTypingIndicator|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | enableTypingIndicator                |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
 A graphical indicator is shown to the end user if an Agent is currently replying to the same Conversation. The "enableTypingIndicator" flag will enable/disable the aforementioned indicator.
-
 
 <Admonition type="info" title="Note">
 
@@ -1658,17 +1397,16 @@ If this configuration is turned ON from the configurations page OR if the SDK co
 
 </Admonition>
 
-
-<Image src="/static/books/misc/enable-typing-indicator-app-setting.png"  width="full" /> 
+<Image
+  src="/static/books/misc/enable-typing-indicator-app-setting.png"
+  width="full"
+/>{" "}
 
 Example :
-
 
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -1679,19 +1417,14 @@ Example :
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -1701,27 +1434,21 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 2.4.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
 The typing indicator will only be enabled for all the new issues filed using SDK v2.4.0+
 
 </Admonition>
-
 
 ## Minimum issue description length {#minimum-issue-desc-length}
 
@@ -1738,25 +1465,27 @@ Example :
 For Korean language, if you want to have minimum length as 5 characters and 10 characters for all other languages, do the following:
 
 Put the following integer resource in `integers.xml` of `values-ko` resource directory
+
 ```
 <integer name="hs__issue_description_min_chars">5</integer>
 ```
+
 and the following integer resource in `integers.xml` of `values` resource directory
+
 ```
 <integer name="hs__issue_description_min_chars">10</integer>
 ```
 
 ## Configuration Summary {#config-summary}
 
-| Configuration / API                            | [showFAQs](/xamarin/support-tools-android#faqs-view)    | [showFAQSection](/xamarin/support-tools-android#faq-section-view) | [showSingleFAQ](/xamarin/support-tools-android#faq-question-view) | [showConversation](/xamarin/support-tools-android#conversation-view) |
-|-----------------------------------------|-------------|----------------|---------------|------------------|
-| **enableContactUs**                   | Supported   | Supported      | Supported     | Not Supported     |
-| **enableFullPrivacy**                 | Supported   | Supported      | Supported     | Supported        |
-| **showConversationResolutionQuestion**| Supported   | Supported      | Supported     | Supported        |
-| **customContactUsFlows**              | Supported   | Supported      | Supported     | Not Supported    |
-| **showConversationInfoScreen**        | Supported   | Supported      | Supported     | Supported        |
-| **enableTypingIndicator**             | Supported   | Supported      | Supported     | Supported        |
-
+| Configuration / API                    | [showFAQs](/xamarin/support-tools-android#faqs-view) | [showFAQSection](/xamarin/support-tools-android#faq-section-view) | [showSingleFAQ](/xamarin/support-tools-android#faq-question-view) | [showConversation](/xamarin/support-tools-android#conversation-view) |
+| -------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **enableContactUs**                    | Supported                                            | Supported                                                         | Supported                                                         | Not Supported                                                        |
+| **enableFullPrivacy**                  | Supported                                            | Supported                                                         | Supported                                                         | Supported                                                            |
+| **showConversationResolutionQuestion** | Supported                                            | Supported                                                         | Supported                                                         | Supported                                                            |
+| **customContactUsFlows**               | Supported                                            | Supported                                                         | Supported                                                         | Not Supported                                                        |
+| **showConversationInfoScreen**         | Supported                                            | Supported                                                         | Supported                                                         | Supported                                                            |
+| **enableTypingIndicator**              | Supported                                            | Supported                                                         | Supported                                                         | Supported                                                            |
 
 ## Flexible permissions adaptive to Android M and older versions {#app-permissions}
 
@@ -1769,22 +1498,26 @@ Starting from Android 6.0 (API level 23), users grant permissions to apps while 
 The Helpshift SDK has 4 features that require storage permissions. The following is the behavior for these 4 features based on whether the permission is present in AndroidManifest.xml or not.
 
 #### User side attach screenshot flow
+
 Starting from Helpshift SDK v2.5.0, user's screenshots can be attached independent of the storage permission being present in the manifest.
 
 #### Agent side attachment downloads
-|Storage Permission Status                | API 15 to 22 | API 23 and above|
-|-----------------------------------------|--------------|-------------------------------------------------------|
-| **Permission declared in manifest**     | Works as normal (attachments are downloaded and rendered in chat screen by sdk's own download manager) | <b>User granted the permission</b><ul><li>Works as normal</li></ul><br /><b>User did not grant the permission</b><ul><li>User is shown permission dialog. If user denies the permission then show a requirement description msg with intent to launch the app settings page (User can't download the attachment unless he grants the permission)</li></ul> |
-| **Permission not declared in manifest**    | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer. Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer.Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. |
+
+| Storage Permission Status               | API 15 to 22                                                                                                                                                                                                                                                                                                         | API 23 and above                                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Permission declared in manifest**     | Works as normal (attachments are downloaded and rendered in chat screen by sdk's own download manager)                                                                                                                                                                                                               | <b>User granted the permission</b><ul><li>Works as normal</li></ul><br /><b>User did not grant the permission</b><ul><li>User is shown permission dialog. If user denies the permission then show a requirement description msg with intent to launch the app settings page (User can't download the attachment unless he grants the permission)</li></ul> |
+| **Permission not declared in manifest** | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer. Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer.Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen.                                        |
 
 #### Image caching in single question screen
-|Storage Permission Status                | API 15 to 18 | API 19 and above|
-|-----------------------------------------|--------------|-----------------|
-| **Permission declared in manifest**     | Works as normal (images are cached) | Works as normal. |
-| **Permission not declared in manifest** | Caching will not work. Image will be reloaded every time the user visits the particular single question screen   | Works as normal. |
+
+| Storage Permission Status               | API 15 to 18                                                                                                   | API 19 and above |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Permission declared in manifest**     | Works as normal (images are cached)                                                                            | Works as normal. |
+| **Permission not declared in manifest** | Caching will not work. Image will be reloaded every time the user visits the particular single question screen | Works as normal. |
 
 #### Profile persistence across uninstalls for multi login
-|Storage Permission Status                | API 15 and above |
-|-----------------------------------------|------------------|
-| **Permission declared in manifest**     | User profile will be persisted across uninstalls   |
+
+| Storage Permission Status               | API 15 and above                                     |
+| --------------------------------------- | ---------------------------------------------------- |
+| **Permission declared in manifest**     | User profile will be persisted across uninstalls     |
 | **Permission not declared in manifest** | User profile will not be persisted across uninstalls |

@@ -4,10 +4,20 @@ title: Getting Started Android
 description: "You're 3 steps away from adding great in-app support to your Unity game."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started <small>Android</small> {#getting-started}
 
@@ -15,47 +25,45 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 You're 3 steps away from adding great in-app support to your Unity game.
 
-
 </Intro>
-
 
 Guide to integrating the Unity plugin for the Helpshift SDK X which you can call from your C# and Javascript game scripts.
 
 ## Requirements {#version-requirements}
-*   Unity 5.5.6 and above.
-*   Supported Android OS version: 21 and above
 
+- Unity 5.5.6 and above.
+- Supported Android OS version: 21 and above
 
-## Download Helpshift Unity SDK  {#getting-sdk}
-
+## Download Helpshift Unity SDK {#getting-sdk}
 
 #### 1. SDK X - In-app Customer Service {#standard-sdk}
 
+<DownloadButton
+  text="Download SDK"
+  link="[% sdkx-unity.android.sdk_url %]"
+  classes="mb-4"
+/>
 
-<DownloadButton text="Download SDK" link="[% sdkx-unity.android.sdk_url %]" classes="mb-4" />
-
-Helpshift SDK *.zip* folder includes:
+Helpshift SDK _.zip_ folder includes:
 
 <div className="text-sm compact ">
 
+|                                                                      |                                                              |
+| -------------------------------------------------------------------- | ------------------------------------------------------------ |
+| helpshiftX-plugin-unity-[% sdkxunity.package_version %].unitypackage | Unity package of Helpshift SDK                               |
+| unity-jar-resolver (v1.2.170.0)                                      | Resolves Android Helpshift package support lib dependencies. |
 
-| | |
-|--|--|
-|helpshiftX-plugin-unity-[% sdkxunity.package_version  %].unitypackage| Unity package of Helpshift SDK|
-|unity-jar-resolver (v1.2.170.0)| Resolves Android Helpshift package support lib dependencies.|
 </div>
-
 
 ## Add Helpshift to your Unity project {#adding-to-project}
 
-* Unzip the Helpshift Unity SDK package.
-* Helpshift Unity SDK appears as a  standard `.unitypackage` which you can import through the Unity package import procedure.
-* Following are the steps to import the `helpshiftx-plugin-unity-version.unitypackage` into your Unity game:
-    1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-    2. From the unzipped SDK, select `helpshiftx-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
-    3. In the *Import Unity Package window*, click **Import**
-    4. If you are also integrating for iOS, select `iOS/Helpshift.framework` folder while importing the unitypackage. Refer [here](/sdkx-unity/getting-started-ios#adding-to-project).
-
+- Unzip the Helpshift Unity SDK package.
+- Helpshift Unity SDK appears as a standard `.unitypackage` which you can import through the Unity package import procedure.
+- Following are the steps to import the `helpshiftx-plugin-unity-version.unitypackage` into your Unity game:
+  1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+  2. From the unzipped SDK, select `helpshiftx-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
+  3. In the _Import Unity Package window_, click **Import**
+  4. If you are also integrating for iOS, select `iOS/Helpshift.framework` folder while importing the unitypackage. Refer [here](/sdkx-unity/getting-started-ios#adding-to-project).
 
 ## Resolve Android Appcompat library requirements {#resolve-android-appcompat-library-requirements}
 
@@ -65,30 +73,27 @@ Helpshift SDK depends on android appcompat libraries. You can get these librarie
 
 Use **Unity Jar Resolver** plugin to download and integrate android library dependencies.
 
-
 <Admonition type="info" title="Note">
 
-If your project already uses the *Unity Jar Resolver*, you can skip the *Unity Jar Resolver* importing step.
+If your project already uses the _Unity Jar Resolver_, you can skip the _Unity Jar Resolver_ importing step.
 
-You can use any version of *Unity Jar Resolver* as per your needs. Helpshift packages this for convenience of developers.
+You can use any version of _Unity Jar Resolver_ as per your needs. Helpshift packages this for convenience of developers.
 
-You can find the *Unity Jar Resolver* releases here: https://github.com/googlesamples/unity-jar-resolver/tags
+You can find the _Unity Jar Resolver_ releases here: https://github.com/googlesamples/unity-jar-resolver/tags
 
 </Admonition>
 
+- Import the **Unity Jar Resolver** plugin into your Unity project
 
-* Import the **Unity Jar Resolver** plugin into your Unity project
-    1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-    2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.170.unitypackage` file to import the Unity Jar resolver.
-    3. In the *Import Unity Package* window, click **Import**
+  1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+  2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.170.unitypackage` file to import the Unity Jar resolver.
+  3. In the _Import Unity Package_ window, click **Import**
 
-
-* If the Unity Jar resolver wants to enable Android Auto-resolution, click the *Enable* button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using *Assets* > *Play Services Resolver* > *Android Resolver* > *Settings*
-* By default, the Unity jar resolver auto-resolves all the required dependencies. Following are the steps to resolve dependencies manually:
-    1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
-    2. Select the **Resolve** or **Force Resolve**
-* To know more about the Unity Jar Resolver, refer to: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)
-
+- If the Unity Jar resolver wants to enable Android Auto-resolution, click the _Enable_ button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using _Assets_ > _Play Services Resolver_ > _Android Resolver_ > _Settings_
+- By default, the Unity jar resolver auto-resolves all the required dependencies. Following are the steps to resolve dependencies manually:
+  1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
+  2. Select the **Resolve** or **Force Resolve**
+- To know more about the Unity Jar Resolver, refer to: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)
 
 ### Resolve dependency when using custom Gradle template or Export Project {#resolve-dependency-via-gradle}
 
@@ -115,7 +120,6 @@ Please refer to Unity's Gradle template documentation here: https://docs.unity3d
 
 To use Helpshift's APIs, please import the Helpshift's namespace like below
 
-
 ```csharp
 
     using Helpshift;
@@ -123,32 +127,32 @@ To use Helpshift's APIs, please import the Helpshift's namespace like below
 
 ```
 
-1. First, create an app on the Helpshift Dashboard 
-<Image src="/static/books/helpshiftx/add_app.png"  width="full" /> 
+1. First, create an app on the Helpshift Dashboard
 
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
 
 2. Create an app with **Android** as a selected `Platform`
-<Image src="/static/books/helpshiftx/create_app_with_android_platform.png"  width="full" /> 
-
+   <Image
+     src="/static/books/helpshiftx/create_app_with_android_platform.png"
+     width="full"
+   />{" "}
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
 
 <div className=" compact">
 
+|                          |                                                       |
+| ------------------------ | ----------------------------------------------------- |
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_ |
+| <code>Platform ID</code> | Your App's unique App Id                              |
 
-| | |
-|--|--|
-|<code>Domain Name</code>|  Your Helpshift domain. E.g. _happyapps.helpshift.com_|
-|<code>Platform ID</code>| Your App's unique App Id |
 </div>
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
 Select your App and _check Android as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
-<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
 
-
-Initialize Helpshift by calling the method *install(appId, domain)* API
-
+Initialize Helpshift by calling the method _install(appId, domain)_ API
 
 ```csharp
 
@@ -173,7 +177,6 @@ Initialize Helpshift by calling the method *install(appId, domain)* API
 
 ```
 
-
 <Admonition type="danger" title="Important">
 
 ** Placing the install call **
@@ -184,23 +187,20 @@ You should place install call inside the `Awake()` method. Placing it elsewhere 
 
 Calling any API before the install call would throw an unchecked HelpshiftInitializationException in debug mode.
 
-*Android OS version Support*
+_Android OS version Support_
 
 Calling `install()` below android SDK version 21 will not work. All the APIs will be non operable.
 
-
 </Admonition>
-
 
 ## Start using Helpshift {#start-using}
 
 Helpshift is now integrated in your app. You should now use the support APIs for [conversation screens](/sdkx-unity/support-tools-android#conversation-view) inside your app.
 
-Run your app, and try starting a test conversation using the *ShowConversation* API call.
+Run your app, and try starting a test conversation using the _ShowConversation_ API call.
 Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
 
 Sample usage for FAQs and conversation APIs:
-
 
 ```csharp
 
@@ -226,7 +226,8 @@ Sample usage for FAQs and conversation APIs:
 
 ```
 
-
 <Admonition type="info" title="Note">
-Since the Helpshift plugin is meant for mobile devices only, you should put all Helpshift calls inside checks to make sure they are only called when running on a device.
+  Since the Helpshift plugin is meant for mobile devices only, you should put
+  all Helpshift calls inside checks to make sure they are only called when
+  running on a device.
 </Admonition>

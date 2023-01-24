@@ -4,8 +4,20 @@ title: Notifications
 description: "Configure Push and In-app notifications."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Notifications {#notifications}
 
@@ -13,24 +25,19 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Configure Push and In-app notifications.
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
 
-
 </Admonition>
-
 
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
 Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
 
 If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code to your AppDelegate's `application:didFinishLaunchingWithOptions:` method:
-
 
 <Tabs>
 
@@ -73,31 +80,38 @@ if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
 
 </Tabs>
 
-
 ### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
 
 You can configure this in 4 simple steps:
 
 Setup your application with Apple and enable Push notifications.
 
-You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. Its also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift. 
+You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. Its also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
 
 Apple provides two variations of Apple Push Notification service SSL
 
-* Apple Push Notification service SSL (Sandbox)
-* Apple Push Notification service SSL (Sandbox & Production)
+- Apple Push Notification service SSL (Sandbox)
+- Apple Push Notification service SSL (Sandbox & Production)
 
 After creating your certificate, download it. Double click on it to import it to the Keychain Access Application. In the Keychain Access Application, right click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
 
 To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added already). And then click on the push notifications option.
 
-<Image src="/static/books/sdkx_ios/Add-platform.png"  width="full" alt="Add-platform.png" /> 
+<Image
+  src="/static/books/sdkx_ios/Add-platform.png"
+  width="full"
+  alt="Add-platform.png"
+/>{" "}
 
 After export, login and upload the .p12 file in your app in the Helpshift admin panel. Provide the same password you used while exporting to .p12 format.
 
 Please note that you need to use the same bundle identifier in the app as the one you used to create the APNS certificate.
 
-<Image src="/static/books/sdkx_ios/Add-certificate.png"  width="full" alt="Add-certificate.png" /> 
+<Image
+  src="/static/books/sdkx_ios/Add-certificate.png"
+  width="full"
+  alt="Add-certificate.png"
+/>{" "}
 
 You can configure whether to send a badge or not, and sound alerts if you provided custom sounds bundled with your app to handle notifications. Save it and you're all set.
 
@@ -105,32 +119,30 @@ You can configure whether to send a badge or not, and sound alerts if you provid
 
 When you build and run your app from Xcode, it is in development (Sandbox) mode. To test push notifications from Helpshift in this mode make sure you choose 'Development Mode' while uploading either of the above two certificate types.
 
-When you publish your app and download from App Store, your app is in Production mode. To test push notifications from Helpshift in production mode make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work on a production environment. 
+When you publish your app and download from App Store, your app is in Production mode. To test push notifications from Helpshift in production mode make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work on a production environment.
 
-We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing please use the credentials of the developement mode app. When you are ready to publish, please replace the credentials with those of the production level app. 
-
+We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing please use the credentials of the developement mode app. When you are ready to publish, please replace the credentials with those of the production level app.
 
 <Admonition type="info" title="Note">
 
- Your Push Certificate has an expiry date, as indicated in the below screenshot. Helpshift will not send you a reminder when your Push Certificate expires, so please make sure that your developer keeps a tab on the expiry date to reupload the Push Certificate.
-
+Your Push Certificate has an expiry date, as indicated in the below screenshot. Helpshift will not send you a reminder when your Push Certificate expires, so please make sure that your developer keeps a tab on the expiry date to reupload the Push Certificate.
 
 </Admonition>
 
-
-<Image src="/static/books/sdkx_ios/cert-expiry.png"  width="full" alt="cert-expiry.png" /> 
-
+<Image
+  src="/static/books/sdkx_ios/cert-expiry.png"
+  width="full"
+  alt="cert-expiry.png"
+/>{" "}
 
 ### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
 
-
 <Admonition type="info" title="Note">
 
-When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications"  for every message sent by Agents/Bots. 
+When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
 You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
 
 </Admonition>
-
 
 For Helpshift SDK to work with the Helpshift push notification service
 you will need to invoke the `registerDeviceToken:` api call inside the application delegate method
@@ -138,12 +150,9 @@ you will need to invoke the `registerDeviceToken:` api call inside the applicati
 
 In your app delegate file it will look something like this:
 
-
 <Tabs>
 
 <TabItem value="Objective-C" label="Objective-C">
-
-
 
 ```objc
 
@@ -153,7 +162,6 @@ In your app delegate file it will look something like this:
 
 
 ```
-
 
 </TabItem>
 <TabItem value="Swift" label="Swift">
@@ -168,27 +176,23 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 
 </Tabs>
 
-
 #### If your app uses UNNotification framework {#unnotification-framework}
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
 
 1. If a notification arrives while your app is in the foreground, UNUserNotificationCenterDelegate's `willPresentNotification:` is called.
 1. The system does not call the `userNotificationCenter:willPresentNotification:withCompletionHandler:` method when your app is in the background or is not running. In those cases, the system alerts the user according to the information in the notification itself.
-When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method.
+   When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method.
 
-In all of the above cases, you should check the "origin" field of the notification dictionary and call `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` API if the origin of the notification is "helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The isAppLaunch boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true. 
+In all of the above cases, you should check the "origin" field of the notification dictionary and call `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` API if the origin of the notification is "helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The isAppLaunch boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true.
 
 Example usage:
 
 For the userNotificationCenter:willPresentNotification:withCompletionHandler: delegate -
 
-
 <Tabs>
 
 <TabItem value="Objective-C" label="Objective-C">
-
-
 
 ```objc
 
@@ -205,7 +209,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
 
 ```
 
-
 </TabItem>
 <TabItem value="Swift" label="Swift">
 
@@ -221,7 +224,6 @@ func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent noti
 
 </Tabs>
 
-
 #### If your app uses UINotification framework (Deprecated) {#uinotification-framework}
 
 When a push notification is received, the application delegate didReceiveRemoteNotification: is called. Additionally:
@@ -234,7 +236,6 @@ In all of the above cases, developers should check the `origin` field of the not
 Example usage:
 
 When receiving remote notifications when the app starts for the first time, or after being killed by the user:
-
 
 <Tabs>
 
@@ -266,7 +267,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
             if origin == "helpshift" {
                 Helpshift.handleNotification(withUserInfoDictionary: userInfo, isAppLaunch: true, with: rootViewController)
             }
-    }   
+    }
     return true
 }
 ```
@@ -274,7 +275,6 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 </TabItem>
 
 </Tabs>
-
 
 For the `didReceiveRemoteNotification` delegate -
 
@@ -307,7 +307,6 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
 
 </Tabs>
 
-
 ### Badge count {#badge-count}
 
 If you need to handle badge reset in the application icon, you can do
@@ -323,13 +322,11 @@ method:
 
 <Admonition type="info" title="Note">
 
- * To test Push Notifications for an app that is already in production please refer to [this.](/ios/troubleshooting#test-push-production)
- * You should check the origin and call the `handleRemoteNotfication` as soon as you get the callback. SDK checks the state of the app (Active / Inactive) and based on it, decides to show chat screen or in-app notification. Delay in calling handleRemoteNotification could result in SDK to get inaccurate application state.
- * If you are using Xcode 11 for building and deploying your app, please refer to our [troubleshooting guide](/ios/troubleshooting#xcode11)
-
+- To test Push Notifications for an app that is already in production please refer to [this.](/ios/troubleshooting#test-push-production)
+- You should check the origin and call the `handleRemoteNotfication` as soon as you get the callback. SDK checks the state of the app (Active / Inactive) and based on it, decides to show chat screen or in-app notification. Delay in calling handleRemoteNotification could result in SDK to get inaccurate application state.
+- If you are using Xcode 11 for building and deploying your app, please refer to our [troubleshooting guide](/ios/troubleshooting#xcode11)
 
 </Admonition>
-
 
 ## In-app notifications {#in-app-notifications}
 
@@ -339,8 +336,11 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 <SideBySide>
 
-<Image src="/static/books/sdkx_ios/In-app-notification.png"  width="half" alt="In-app-notification.png" /> 
-
+<Image
+  src="/static/books/sdkx_ios/In-app-notification.png"
+  width="half"
+  alt="In-app-notification.png"
+/>{" "}
 
 </SideBySide>
 
@@ -353,12 +353,11 @@ Currently we support one flag i.e `enableInAppNotification`.
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| YES/NO|
-|Default| YES|
+|         |                         |
+| ------- | ----------------------- |
+| Flag    | enableInAppNotification |
+| Values  | YES/NO                  |
+| Default | YES                     |
 
 </div>
 
@@ -375,7 +374,7 @@ Example:
 
     NSDictionary *config = @{ @"enableInAppNotification": @YES };
 
-    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" 
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
                               domain:(NSString *)domain
                               config:@"YOUR_DOMAIN" config:config];
 
@@ -390,7 +389,6 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 </TabItem>
 
 </Tabs>
-
 
 ### Pausing In-app notifications {#pause-in-app}
 
@@ -419,7 +417,6 @@ Helpshift.pauseDisplayOf(inAppNotification: false) // To resume showing the in-a
 
 </Tabs>
 
-
 ## Notification badges {#notification-badges}
 
 If you want to show your user notifications for replies you send to the
@@ -436,10 +433,7 @@ you are polling for notifications using:
 
 `[Helpshift requestUnreadMessageCount:YES];`
 
-
-
 You can implement something like the following in the notification count delegate method:
-
 
 <Tabs>
 
@@ -473,7 +467,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
         print("Count: \(count), fromCache: \(isFromCache)")
 
         DispatchQueue.main.async {
-            yourLabel.text = "\(count)"   
+            yourLabel.text = "\(count)"
         }
     }
 }
@@ -483,10 +477,8 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-
 Similarly for a `UITabBarItem` in the notification count delegate method
 you can implement something like:
-
 
 <Tabs>
 
@@ -520,7 +512,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
         print("Count: \(count), fromCache: \(isFromCache)")
 
         DispatchQueue.main.async {
-            tabBarItem.badgeValue = "\(count)"   
+            tabBarItem.badgeValue = "\(count)"
         }
     }
 }
@@ -530,14 +522,12 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-
 These will update your view or `UITabBarItem` whenever a new notification
 arrives in the delegate method. The situation can vary depending upon
 your app UI. **Showing notification counts at appropriate places would help
 you draw in your users so that you can engage them more in conversations
 and hence solve their problems better**. To display the notification
 count of unread messages stored locally to your users, you can call `requestUnreadMessageCount`:
-
 
 <Tabs>
 
@@ -558,14 +548,10 @@ Helpshift.requestUnreadMessageCount(false)
 
 </Tabs>
 
-
-
 to retrieve the unread messages count stored locally and display the unread count similar to mentioned in the above examples.
-
 
 <Admonition type="info" title="Note">
 
 Refer [Unread Message Count Event](/sdkx_ios/delegates#unreadMessageCount) for knowing more on how the SDK notifies of the unread count to your app.
 
 </Admonition>
-

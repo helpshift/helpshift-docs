@@ -4,8 +4,20 @@ title: Notifications Android
 description: "Configure Push and In-app notifications."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Notifications <small>Android</small> {#notifications}
 
@@ -13,14 +25,11 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Configure Push and In-app notifications.
 
-
 </Intro>
-
 
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
-![urbanAirshipNotif.png](/static/books/android/urbanairshipnotif.png
- "urbanAirshipNotif.png")
+![urbanAirshipNotif.png](/static/books/android/urbanairshipnotif.png "urbanAirshipNotif.png")
 
 Helpshift enables you to send notifications to your users. This is
 particularly useful when you have multiple users on multiple platforms
@@ -40,12 +49,19 @@ Enter your Google Push notifications credentials per app, via the
 **Settings page > App listing in the left navigation > Scroll down to Push
 Notifications** settings section for the app.
 
-<Image src="/static/books/android/helpshift-push-notifications.png"  width="full" alt="helpshift-push-notifications.png" /> 
+<Image
+  src="/static/books/android/helpshift-push-notifications.png"
+  width="full"
+  alt="helpshift-push-notifications.png"
+/>{" "}
 
 The API key can be found at your Google API Console.
 
-<Image src="/static/books/android/fcm_console.png"  width="full" alt="FCM Console.png" /> 
-
+<Image
+  src="/static/books/android/fcm_console.png"
+  width="full"
+  alt="FCM Console.png"
+/>{" "}
 
 ## Configure the Helpshift Unity SDK to handle notifications {#configure-helpshift-unity-sdk}
 
@@ -53,14 +69,12 @@ The API key can be found at your Google API Console.
 
 #### Configure FCM push notification plugins {#}
 
-
 <Admonition type="info" title="Note">
 
-* When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications"  for every message sent by Agents/Bots. 
-You should call `HelpshiftSdk.getInstance().registerDeviceToken ()` API only after you have [configured the Helpshift dashboard](/unity/notifications-android#configure-helpshift-push-admin) for push notifications. Calling the `HelpshiftSdk.getInstance().registerDeviceToken ()` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+- When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
+  You should call `HelpshiftSdk.getInstance().registerDeviceToken ()` API only after you have [configured the Helpshift dashboard](/unity/notifications-android#configure-helpshift-push-admin) for push notifications. Calling the `HelpshiftSdk.getInstance().registerDeviceToken ()` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
 
 </Admonition>
-
 
 **Before you begin**
 
@@ -96,13 +110,11 @@ If your application is not running and it receives a push notification then it w
 
 If you are unable to delegate the push notification payload from the Java receiver class to C# api's then, for such cases, you can use the native Java api `HelpshiftUnity.handlePush(Context context, Intent intent)` to handle push notifications from Helpshift.
 
-
 <Admonition type="danger" title="Important">
 
 There is a known issue with the Helpshift Unity SDK 4.0.0, in which a NullPointerException occurs; when the application is in the stopped state and a push notification is received and handled using the `HelpshiftUnity.handlePush(context, intent);` API. Please call `HelpshiftUnity.install(getApplication());` before calling `HelpshiftUnity.handlePush(context, intent);` to resolve this issue.
 
 </Admonition>
-
 
 In Java implementation of the receiver for push notifications, you can use this api as in the following example.
 
@@ -133,7 +145,7 @@ Refer the sample project for [FCM Unity plugin](https://firebase.google.com/docs
 
 #### Configure Other push notification plugins {#other-plugins}
 
-If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.registerDeviceToken(string deviceToken)** API to register the device token and  **HelpshiftSdk.handlePushNotification(Dictionary<string, object> pushNotificationData)** API to send the payload received in the notification.
+If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.registerDeviceToken(string deviceToken)** API to register the device token and **HelpshiftSdk.handlePushNotification(Dictionary<string, object> pushNotificationData)** API to send the payload received in the notification.
 
 The following is an example to register device token:
 
@@ -144,10 +156,10 @@ void registrationSucceededEvent( string registrationId )
     HelpshiftSdk.getInstance().registerDeviceToken (registrationId);
 }
 ```
+
 Once this is done, you can use the **HelpshiftSdk.handlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send payload which you receive in the **notificationReceivedEvent** callback in your plugin.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift"`, the notification is a Helpshift notification.
-
 
 ### In-app notifications {#in-app-notifications}
 
@@ -157,14 +169,11 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 ![](/static/books/android/i18n-in-app.png)
 
-
 <Admonition type="info" title="Note">
 
 If the FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
 
-
 </Admonition>
-
 
 #### Configuring in-app notifications {#in-app}
 
@@ -175,17 +184,15 @@ Read more about in-app notifications in the [Notifications section.](/unity/noti
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| "yes" / "no"|
-|Default| "yes"|
+|         |                         |
+| ------- | ----------------------- |
+| Flag    | enableInAppNotification |
+| Values  | "yes" / "no"            |
+| Default | "yes"                   |
 
 </div>
 
 Example:
-
 
 ```csharp
 
@@ -208,11 +215,12 @@ Example:
 
 If you want to show your user notifications for replies sent by the Agent to their Issues, you can use notification counts provided by the Helpshift SDK. These give you the total number of unread messages and display that number as a badge. You can get notification counts asynchronously by implementing the Helpshift delegate method [didReceiveUnreadMessageCount](/unity/delegates-android/).
 
-The notification count is fetched on-demand from the SDK cache and Helpshift's servers. However, the count from the Helpshift's servers is rate limited and its value is returned only if a subsequent call to this API is made after the reset timeout or if the user just closed the chat screen (whichever is earlier). The reset timeout is 1 minute if there is an active issue else 5 minutes if there are no active issues. 
+The notification count is fetched on-demand from the SDK cache and Helpshift's servers. However, the count from the Helpshift's servers is rate limited and its value is returned only if a subsequent call to this API is made after the reset timeout or if the user just closed the chat screen (whichever is earlier). The reset timeout is 1 minute if there is an active issue else 5 minutes if there are no active issues.
 
 Notifications are typically displayed as badges inside your app where a user clicks on the help section. These badges can be displayed anywhere in your app's interface to tell the user that they have unread replies/messages from you.
 
 You can implement the "didReceiveUnreadMessageCount" delegate method like the following example:
+
 ```csharp
 API:
 using Helpshift;
@@ -222,7 +230,7 @@ using Helpshift;
 private HelpshiftSdk help;
 this.help = HelpshiftSdk.getInstance();
 help.requestUnreadMessagesCount(true);
- 
+
 Delegate:
 public void didReceiveUnreadMessagesCount(int count) {
     // your code here
@@ -235,11 +243,9 @@ If you want to use the in-app notifications mechanism to get the count of unread
 
 For example
 
-
 ```csharp
 
     public void didReceiveInAppNotificationCount(string count) {
         Debug.Log("In-app Notification count : " + count);
     }
 ```
-

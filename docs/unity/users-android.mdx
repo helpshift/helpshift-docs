@@ -4,21 +4,28 @@ title: Users
 description: Learn more about Users
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Users {#users}
-
 
 <Admonition type="info" title="Note">
 
 Applicable to Unity SDK above 4.x and above.
 
 </Admonition>
-
-
 
 ## How to Identify and Manage Users {#identify-and-manage-users}
 
@@ -33,23 +40,27 @@ A logged-in user is someone who can contact your support team only after providi
 You can provide either `userID` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field with the `helpshiftConfig` object. The following logic applies when you use both `userID` as well as `userEmail`:
 
 <ul>
-    <li>
-        When looking up users, the priority of `userId` is higher than that of `userEmail`
-    </li>
-    <li>
-        When the user ID matches an exisiting user, that user's email will be updated (if the email is provided)
-    </li>
-    <li>
-        When the email matches an existing user, the following logic applies:
-	<ul>
-            <li>
-                If the user ID does not exist for a user matched by email, then the user ID will be added for that user (if a user ID is provided)
-            </li>
-            <li>
-                If the user ID already exists on the user matched by email, then a new user will be created (if a different user ID is provided)
-            </li>
-        </ul>
-    </li>
+  <li>
+    When looking up users, the priority of `userId` is higher than that of
+    `userEmail`
+  </li>
+  <li>
+    When the user ID matches an exisiting user, that user's email will be
+    updated (if the email is provided)
+  </li>
+  <li>
+    When the email matches an existing user, the following logic applies:
+    <ul>
+      <li>
+        If the user ID does not exist for a user matched by email, then the user
+        ID will be added for that user (if a user ID is provided)
+      </li>
+      <li>
+        If the user ID already exists on the user matched by email, then a new
+        user will be created (if a different user ID is provided)
+      </li>
+    </ul>
+  </li>
 </ul>
 
 #### How to use
@@ -106,7 +117,6 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
   </tr>
 </table>
 
-
 ```csharp
 
     private HelpshiftSdk _support = HelpshiftSdk.getInstance();
@@ -118,23 +128,21 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* If you are setting [`enableFullPrivacy`](/unity/sdk-configuration-android#enableFullPrivacy) to be "yes", you shouldn't be using email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+- If you are setting [`enableFullPrivacy`](/unity/sdk-configuration-android#enableFullPrivacy) to be "yes", you shouldn't be using email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
 
-* If you were using `setUserIdentifier` (now deprecated), if the user has an open issue, using login API will result in the creation of a new issue. However, the previous issue will be available to Agents under 'Other issues'
+- If you were using `setUserIdentifier` (now deprecated), if the user has an open issue, using login API will result in the creation of a new issue. However, the previous issue will be available to Agents under 'Other issues'
 
-* Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox.
+- Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox.
 
 </Admonition>
 
-
 ### Logging out users {#logging-out-users}
+
 #### Overview
 
 Once a user logs out from your app, you should call the Helpshift SDK logout API to ensure no one else can view this user's conversations.
-
 
 <Admonition type="info" title="Note">
 
@@ -142,9 +150,7 @@ The logout API is expected to be used in conjunction with the login API.
 
 </Admonition>
 
-
 #### How to use
-
 
 ```csharp
 
@@ -152,16 +158,14 @@ The logout API is expected to be used in conjunction with the login API.
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* If you are using the [`leaveBreadCrumb`](/unity/tracking-android#app-usage) API to pass user login related crumbs, please make sure to call the [`clearBreadCrumbs`](/unity/tracking-android#app-usage) API when you change the login.
-* If any of the Helpshift screens are currently being shown in the app, then any login/logout attempt will be ignored.
-* If the login API is called with different user identifier, then it will first log out the currently logged-in user, and then log in with the user identifier provided.
-* It is best to call the login API immediately when your app user logs in.
+- If you are using the [`leaveBreadCrumb`](/unity/tracking-android#app-usage) API to pass user login related crumbs, please make sure to call the [`clearBreadCrumbs`](/unity/tracking-android#app-usage) API when you change the login.
+- If any of the Helpshift screens are currently being shown in the app, then any login/logout attempt will be ignored.
+- If the login API is called with different user identifier, then it will first log out the currently logged-in user, and then log in with the user identifier provided.
+- It is best to call the login API immediately when your app user logs in.
 
 </Admonition>
-
 
 ### Anonymous users {#anonymous-users}
 
@@ -171,21 +175,18 @@ An anonymous user is someone who can access the app without a username and passw
 
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser` functionality. When this API is used, anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
-
 ```csharp
 
     _support.clearAnonymousUser();
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* The `clearAnonymousUser` API does not impact logged-in users at all.
-* The `clearAnonymousUser` API will only work if called from logged-in mode.
+- The `clearAnonymousUser` API does not impact logged-in users at all.
+- The `clearAnonymousUser` API will only work if called from logged-in mode.
 
 </Admonition>
-
 
 ## Verifying the identity of users {#identify-users}
 
@@ -199,7 +200,6 @@ User Identity Verification is a security measure that verifies that all requests
 
 You can send the 'user authentication token' with the login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
-
 ```csharp
 
     private HelpshiftSdk _support = HelpshiftSdk.getInstance();
@@ -212,14 +212,12 @@ You can send the 'user authentication token' with the login API call. If Identit
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* If the secret key is regenerated for an app on the Dashboard, you should ensure you update your endpoint code as well, in order to generate a valid 'user authentication token'. Following this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
-* If enableFullPrivacy is 'On', then the 'user authentication token' should be generated only on the user ID.
+- If the secret key is regenerated for an app on the Dashboard, you should ensure you update your endpoint code as well, in order to generate a valid 'user authentication token'. Following this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
+- If enableFullPrivacy is 'On', then the 'user authentication token' should be generated only on the user ID.
 
 </Admonition>
-
 
 ### Identity verificaiton failure {#identity-verification-failure}
 
@@ -227,18 +225,16 @@ You can send the 'user authentication token' with the login API call. If Identit
 
 When Identity Verification is turned 'On' and a login request is made with no 'user authentication token' or with an invalid 'user authentication token' for Unity SDK v4.0.0 & above, identity verification will fail. If identity verification fails, the following will hold true:
 
-* Anonymous users (users for whom the developer is not providing any identifiers) are always able to file Issues.
-* Logged-in users (users for whom the developer is providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the form or conversational UI.
+- Anonymous users (users for whom the developer is not providing any identifiers) are always able to file Issues.
+- Logged-in users (users for whom the developer is providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the form or conversational UI.
 
 If the logged-in users are verified (i.e. a valid 'user authentication token' is provided), they are able to see the previous issue or create a new issue. The UI for verified, logged-in users looks & works exactly the same as it would if 'Identity verification' were turned off. Only unverified users get impacted as listed above.
-
 
 <Admonition type="info" title="Note">
 
 End-users on Unity SDK 3.0.x or lower are not impacted, even if 'Identity Verification' is enabled on the Dashboard.
 
 </Admonition>
-
 
 #### How to use the failure delegates
 
@@ -253,23 +249,45 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
   <tr>
     <td>AUTH_TOKEN_NOT_PROVIDED</td>
     <td>When no 'user authentication token' is provided</td>
-    <td>If you do not plan on sending a 'user authentication token' when implementing Unity SDK 4.0.0, but plan on implementing it in the future, you can use this failure delegate to show your own alerts to the user, such as a prompt to update the app. You may want to use this if you are using the login API without the 'user authentication token', since these users will be considered unverified once 'Identity Verification' is enabled on the Dashboard. Using this delegate is completely optional - Helpshift will prevent unverified users from being able to file Issues, as mentioned previously.</td>
+    <td>
+      If you do not plan on sending a 'user authentication token' when
+      implementing Unity SDK 4.0.0, but plan on implementing it in the future,
+      you can use this failure delegate to show your own alerts to the user,
+      such as a prompt to update the app. You may want to use this if you are
+      using the login API without the 'user authentication token', since these
+      users will be considered unverified once 'Identity Verification' is
+      enabled on the Dashboard. Using this delegate is completely optional -
+      Helpshift will prevent unverified users from being able to file Issues, as
+      mentioned previously.
+    </td>
   </tr>
   <tr>
     <td>INVALID_AUTH_TOKEN</td>
     <td>When the 'user authentication token' is invalid</td>
     <td>
-	For Unity SDK v4.0.0 and later, if the HMAC Digest being provided via login API is invalid, then Helpshift will prevent the users from filing Issues. The 'user authentication token' can be invalid if:
+      For Unity SDK v4.0.0 and later, if the HMAC Digest being provided via
+      login API is invalid, then Helpshift will prevent the users from filing
+      Issues. The 'user authentication token' can be invalid if:
       <ul>
-        <li>You made a programming error. Check how to generate HMAC Digest <a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">here</a></li>
-        <li>You regenerated the secret key on the Dashboard, but didn't update the 'user authentication token'.</li>
+        <li>
+          You made a programming error. Check how to generate HMAC Digest{" "}
+          <a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
+            here
+          </a>
+        </li>
+        <li>
+          You regenerated the secret key on the Dashboard, but didn't update the
+          'user authentication token'.
+        </li>
         <li>A 3rd party is trying to make requests.</li>
       </ul>
-      When the 'user authentication token' is invalid, end-users will not able to file Issues and an error is shown to them, as mentioned previously. You can use this delegate if you want to show your own alerts or re-fetch the correct auth token from your server.
-</td>
+      When the 'user authentication token' is invalid, end-users will not able
+      to file Issues and an error is shown to them, as mentioned previously. You
+      can use this delegate if you want to show your own alerts or re-fetch the
+      correct auth token from your server.
+    </td>
   </tr>
 </table>
-
 
 ```csharp
 
@@ -285,13 +303,11 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 The error strings can be customised in the SDK.
 
 </Admonition>
-
 
 #### Testing & Troubleshooting {#identity-verification-troubleshooting}
 

@@ -4,8 +4,20 @@ title: Upgrading from 1.7.0 to 1.8.0 / #upgrade-to-1.8.0 /
 description: "Please note that we have deprecated some APIs. If you have questions or feedback, please Contact Us"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Upgrading from 1.7.0 to 1.8.0 {#upgrade-to-1}
 
@@ -13,20 +25,17 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Please note that we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
-
 </Intro>
-
 
 ## List of deprecated APIs {#deprecated-api}
 
-| Deprecated API | New API |
-|----------------|---------|
+| Deprecated API                                   | New API                                                        |
+| ------------------------------------------------ | -------------------------------------------------------------- |
 | `HelpshiftCocos2dx::getCountOfUnreadMessages();` | `HelpshiftCocos2dx::requestUnreadCampaignsMessagesCount(...);` |
 
 ## GetCountOfUnreadMessages {#get-count-of-unread-messages}
 
-On SDK version 1.7.0 or below, you can get  the current count of unread campaign messages in the user's Inbox as shown below :
-
+On SDK version 1.7.0 or below, you can get the current count of unread campaign messages in the user's Inbox as shown below :
 
 ```cpp
 
@@ -36,7 +45,6 @@ On SDK version 1.7.0 or below, you can get  the current count of unread campaign
 
 On SDK version 1.8.0 and above, you can asyncronously check the current count of unread campaign messages as shown below :
 
-
 ```cpp
 
     void unreadCampaignsMessageCountHandler(int cnt) {
@@ -45,4 +53,3 @@ On SDK version 1.8.0 and above, you can asyncronously check the current count of
 
     HelpshiftCocos2dx::requestUnreadCampaignsMessagesCount(*unreadCampaignsMessageCountHandler);
 ```
-

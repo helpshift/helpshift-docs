@@ -4,8 +4,20 @@ title: Helpshift APIs Android
 description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements.You can call only specific screens from the SDK based on thefunctionality you want to expose in your app.There are 4 different ways in which the Helpshift SDK can be presented in your app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift APIs <small>Android</small> {#support-tools}
 
@@ -17,12 +29,9 @@ functionality you want to expose in your app.
 
 There are 4 different ways in which the Helpshift SDK can be presented in your app.
 
-
 </Intro>
 
-
 ## Integrating Contact Us & In App Messaging {#conversation-view}
-
 
 ```cpp
 
@@ -38,20 +47,15 @@ user starts a new conversation, this API call will show the conversation
 activity. The conversation will ensue until it is resolved (and the
 resolution is accepted by the user) or rejected by the agent.
 
-
 <SideBySide>
 
-![conversation-bot.png](/static/books/android/conversation-bot.png
-"conversation-bot.png")
+![conversation-bot.png](/static/books/android/conversation-bot.png "conversation-bot.png")
 
-![showConversation.png](/static/books/android/showconversation.png
-"showConversation.png")
-
+![showConversation.png](/static/books/android/showconversation.png "showConversation.png")
 
 </SideBySide>
 
 ## Integrating FAQs {#faqs-view}
-
 
 ```cpp
 
@@ -66,15 +70,21 @@ Check out [API Options](#api-options) for more configuration.
 
 <SideBySide>
 
-<Image src="/static/books/android/showfaqs.png"  width="quarter" alt="showFAQs.png" /> 
+<Image
+  src="/static/books/android/showfaqs.png"
+  width="quarter"
+  alt="showFAQs.png"
+/>{" "}
 
-<Image src="/static/books/android/faqsearch.png"  width="quarter" alt="faqSearch.png" /> 
-
+<Image
+  src="/static/books/android/faqsearch.png"
+  width="quarter"
+  alt="faqSearch.png"
+/>{" "}
 
 </SideBySide>
 
 ## Showing a Particular FAQ Section {#faq-section-view}
-
 
 ```cpp
 
@@ -86,7 +96,7 @@ You can use the `showFAQSection` API call to show faqs from a particular FAQ sec
 
 **You will need the `publish-id` of the FAQ section in this case.**
 
-<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, Facebook and Twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -94,13 +104,15 @@ Check out [API Options](#api-options) for more configuration.
 
 <SideBySide>
 
-<Image src="/static/books/android/showfaqsection.png"  width="quarter" alt="showFAQSection.png" /> 
-
+<Image
+  src="/static/books/android/showfaqsection.png"
+  width="quarter"
+  alt="showFAQSection.png"
+/>{" "}
 
 </SideBySide>
 
 ## Showing a Particular FAQ Question {#faq-question-view}
-
 
 ```cpp
 
@@ -112,14 +124,17 @@ You can use the `showSingleFAQ` API call to show a single faq question.
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
 Check out [API Options](#api-options) for more configuration.
 
 <SideBySide>
 
-<Image src="/static/books/android/showsinglefaq.png"  width="quarter" alt="showSingleFAQ.png" /> 
-
+<Image
+  src="/static/books/android/showsinglefaq.png"
+  width="quarter"
+  alt="showSingleFAQ.png"
+/>{" "}
 
 </SideBySide>
 
@@ -127,38 +142,34 @@ Check out [API Options](#api-options) for more configuration.
 
 Starting v1.0.0 onwards, we have introduced FAQ filtering capability by tags. With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
 Typical cases why you would want to use FAQ filtering are :
-* You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
-* You may want to show specific FAQs based on the device. E.g. a set of FAQs for Tablet vs. Phone
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for Tablet vs. Phone
 
 FAQ filtering is a 2 step approach
 
 1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘phone’ & ‘tablet’.
- <Image src="/static/books/android/faq-filtering.png"  width="full" /> 
+   <Image src="/static/books/android/faq-filtering.png" width="full" />{" "}
 2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
-
 
 <Admonition type="info" title="Note">
 
 Helpshift has 2 types of tags mainly `Issue Tags` & `Search Tags`.
 
-* Issue tags are used to filter the FAQ list on the SDK with the filter rules.
-* Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
 
 </Admonition>
 
-
 ### How to use FAQ filtering
 
-This will  be a config option which will be supported by the showFAQs and showFAQSection APIs.
+This will be a config option which will be supported by the showFAQs and showFAQSection APIs.
 
 Usage :
-
 
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -181,11 +192,8 @@ Usage :
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -202,28 +210,23 @@ Usage :
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 The `withTagsMatching` option will be a HashMap containing 2 keys
 
-* operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
-* tags : the actual tags in the query (String Array)
+- operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
+- tags : the actual tags in the query (String Array)
 
 ## Guided Issue Filing {#dynamic-forms}
 
-
 <Admonition type="info" title="Note">
 
- Applicable to version 1.0.0 and above & Nested Dynamic form is
- applicable to version v1.1.0-support and above
+Applicable to version 1.0.0 and above & Nested Dynamic form is
+applicable to version v1.1.0-support and above
 
 </Admonition>
-
 
 Guided Issue filing is a feature to capture more context when a user interacts with Helpshift Support. For example, lets say you want the user to file an issue in case of a complaint and also in case he want to suggest a feature. With dynamic forms, you will now be able to distinguish between these two use cases and take required actions (like assigning appropriate agents).
 
@@ -234,27 +237,27 @@ flows:
 
 1. Flow to show conversation screen
 
-    * `HS_FAQS_FLOW`
-    * similar to the HelpshiftCocos2dx::showConversation API
+   - `HS_FAQS_FLOW`
+   - similar to the HelpshiftCocos2dx::showConversation API
 
 2. Flow to show all FAQs
 
-    * `HS_CONVERSATION_FLOW`
-    * similar to the HelpshiftCocos2dx::showFAQs API
+   - `HS_CONVERSATION_FLOW`
+   - similar to the HelpshiftCocos2dx::showFAQs API
 
 3. Flow to show a FAQ section
 
-    * `HS_FAQ_SECTION_FLOW`
-    * similar to the HelpshiftCocos2dx::showFAQSection API
+   - `HS_FAQ_SECTION_FLOW`
+   - similar to the HelpshiftCocos2dx::showFAQSection API
 
 4. Flow to show a single FAQ
 
-    * `HS_SINGLE_FAQ_FLOW`
-    * similar to the HelpshiftCocos2dx::showSingleFAQ API
+   - `HS_SINGLE_FAQ_FLOW`
+   - similar to the HelpshiftCocos2dx::showSingleFAQ API
 
 5. Flow to show a nested Dynamic form
 
-    * `HS_DYNAMIC_FORM_FLOW`
+   - `HS_DYNAMIC_FORM_FLOW`
 
 Each flow need a display text. This will be the text that will be displayed in the row. Some flows also expect a `HS_FLOW_CONFIG` dict. This will be the config that is passed to the subsequent Support API.
 
@@ -262,12 +265,9 @@ To show the dynamic form, use the `HelpshiftCocos2dx::showDynamicForm` API
 
 Usage :
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -304,11 +304,8 @@ Usage :
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -346,13 +343,9 @@ Usage :
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
-
 
 Each dynamic form needs :
 

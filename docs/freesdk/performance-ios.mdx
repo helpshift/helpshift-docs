@@ -4,10 +4,20 @@ title: Impact Analysis
 description: "For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Impact Analysis {#performance}
 
@@ -15,11 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application.
 
-
 </Intro>
-
-
-
 
 <Admonition type="info" title="Note">
 
@@ -29,9 +35,7 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 </Admonition>
 
-
 ## 10.1.0
-
 
 <Admonition type="info" title="Note">
 
@@ -39,29 +43,26 @@ Performed on macOS 11.4, with Xcode 12.5.1 and iOS 15.1 (iPhone XR). Memory Usag
 
 </Admonition>
 
-
 ### Disk space
 
 This is the amount of disk space the xcframework takes up.
 
 The size of the xcframework is 6.6 MB for device and 4.7 MB for the simulator. Total size is 11.3 MB.
 
-
 The breakage is as follows:
 
 | Architecture | Size (MB) Device | Size (MB) Simulator |
-|--------------|------------------|---------------------|
-| arm64        |      3.09        |        3.17         |
-| armv7        |      2.98        |          NA         |
-| i386         |       NA         |        5.32         |
-| x86_64       |       NA         |        5.89         |
+| ------------ | ---------------- | ------------------- |
+| arm64        | 3.09             | 3.17                |
+| armv7        | 2.98             | NA                  |
+| i386         | NA               | 5.32                |
+| x86_64       | NA               | 5.89                |
 
 When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `240` KB.
 
 ### Ram usage
 
-
-| | |
-|--|--|
-|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>4.6</code> MB (This depends on number of messages on the chat screen).|
-|**Helpshift's FAQs screen (<code>showFAQs:</code>)**| adds <code>3.9</code> MB.|
+|                                                              |                                                                                   |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)** | adds <code>4.6</code> MB (This depends on number of messages on the chat screen). |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**         | adds <code>3.9</code> MB.                                                         |

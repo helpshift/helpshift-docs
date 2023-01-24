@@ -4,10 +4,20 @@ title: Getting Started Android
 description: "You're 3 steps away from adding great in-app support to your Xamarin App."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started <small>Android</small> {#getting-started}
 
@@ -15,42 +25,41 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 You're 3 steps away from adding great in-app support to your Xamarin App.
 
-
 </Intro>
-
 
 Guide to integrating the Xamarin plugin for the Helpshift SDK.
 
-## Download Helpshift Xamarin SDK  {#getting-sdk}
+## Download Helpshift Xamarin SDK {#getting-sdk}
 
+<DownloadButton
+  text="Download SDK"
+  link="[% xamarin.android.sdk_url %]"
+  classes="mb-4"
+/>
 
-<DownloadButton text="Download SDK" link="[% xamarin.android.sdk_url %]" classes="mb-4" />
-
-The Helpshift SDK *.zip* contains the following files:
+The Helpshift SDK _.zip_ contains the following files:
 
 <div className="text-sm compact ">
 
-
-
-| | |
-|--|--|
-|HelpshiftApi.dll|  The platform independent DLL. Only needs to be added for api reference in a cross platform project. This dll should not be packaged with the final application.|
-|Android/HelpshiftApi.dll|  The Android specific DLL.|
-|iOS/Standard build/Helpshift.IOS.dll|  The iOS binding library DLL for standard build.|
-|iOS/Standard build/HelpshiftApi.dll|  The iOS specific api DLL for standard build.|
-|iOS/Bitcode build/Helpshift.IOS.Bitcode.dll| The iOS Bitcode build binding DLL.|
-|iOS/Bitcode build/HelpshiftApi.dll|  The iOS Bitcode supported api DLL.|
-|iOS/HelpshiftDefaultLocalizations| Localization for strings.|
-|iOS/HsLocalization.bundle| Default bundle to be used if no changes are required by the developer in localized strings.|
-|iOS/HSThemes| Used for theming in iOS|
+|                                             |                                                                                                                                                                 |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HelpshiftApi.dll                            | The platform independent DLL. Only needs to be added for api reference in a cross platform project. This dll should not be packaged with the final application. |
+| Android/HelpshiftApi.dll                    | The Android specific DLL.                                                                                                                                       |
+| iOS/Standard build/Helpshift.IOS.dll        | The iOS binding library DLL for standard build.                                                                                                                 |
+| iOS/Standard build/HelpshiftApi.dll         | The iOS specific api DLL for standard build.                                                                                                                    |
+| iOS/Bitcode build/Helpshift.IOS.Bitcode.dll | The iOS Bitcode build binding DLL.                                                                                                                              |
+| iOS/Bitcode build/HelpshiftApi.dll          | The iOS Bitcode supported api DLL.                                                                                                                              |
+| iOS/HelpshiftDefaultLocalizations           | Localization for strings.                                                                                                                                       |
+| iOS/HsLocalization.bundle                   | Default bundle to be used if no changes are required by the developer in localized strings.                                                                     |
+| iOS/HSThemes                                | Used for theming in iOS                                                                                                                                         |
 
 </div>
 
 ## Add Helpshift to your Xamarin project {#adding-to-project}
 
-* Add the *HelpshiftApi.dll* to the References in platform independent project in your multi-platform Xamarin project. This dll should not be packaged with the final application.
-* Add the *Android/HelpshiftApi.dll* to the References in your Android specific project. When the application is compiled, *Android/HelpshiftApi.dll* library will automatically replace the *HelpshiftApi.dll* (since they have the same assembly name and version) referenced in the above step. This serves application development around common API's across different platforms.
-* Add the following packages to your app for android :
+- Add the _HelpshiftApi.dll_ to the References in platform independent project in your multi-platform Xamarin project. This dll should not be packaged with the final application.
+- Add the _Android/HelpshiftApi.dll_ to the References in your Android specific project. When the application is compiled, _Android/HelpshiftApi.dll_ library will automatically replace the _HelpshiftApi.dll_ (since they have the same assembly name and version) referenced in the above step. This serves application development around common API's across different platforms.
+- Add the following packages to your app for android :
 
 1. Newtonsoft JSON.Net
 
@@ -68,7 +77,6 @@ The Helpshift SDK *.zip* contains the following files:
 
 To use Helpshift's APIs, please import the Helpshift's namespace as given below.
 
-
 ```csharp
 
     using HelpshiftApi;
@@ -80,27 +88,23 @@ Helpshift SDK uniquely identifies your App with the combination of:
 
 <div className="text-sm compact ">
 
-
-| | |
-|--|--|
-|API Key| Your unique developer API Key.|
-|Domain Name| Your Helpshift domain name. For example : foo.helpshift.com|
-|App ID| A unique ID assigned to your app.|
+|             |                                                             |
+| ----------- | ----------------------------------------------------------- |
+| API Key     | Your unique developer API Key.                              |
+| Domain Name | Your Helpshift domain name. For example : foo.helpshift.com |
+| App ID      | A unique ID assigned to your app.                           |
 
 </div>
 
-To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" /> 
+To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" />
 
 Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
 
-Initialize Helpshift by calling the method *Install(apiKey, domain, appId)* API
-
+Initialize Helpshift by calling the method _Install(apiKey, domain, appId)_ API
 
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
-
 
 ```csharp
 
@@ -114,19 +118,14 @@ Initialize Helpshift by calling the method *Install(apiKey, domain, appId)* API
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -140,11 +139,9 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 The install call is required only in the `onCreate` of the `Application` class of your app.
 
@@ -152,17 +149,14 @@ The install call is required only in the `onCreate` of the `Application` class o
 
 Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/xamarin/support-tools-android#faqs-view) or [conversation screens](/xamarin/support-tools-android#conversation-view) inside your app.
 
-Run your app, and try starting a test conversation using the *ShowConversation* API call.
+Run your app, and try starting a test conversation using the _ShowConversation_ API call.
 Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
 
 Sample usage for FAQs and conversation APIs:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
-
-
 
 ```csharp
 
@@ -180,19 +174,14 @@ Sample usage for FAQs and conversation APIs:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
-
 
 ```csharp
 
@@ -210,9 +199,6 @@ Applicable to version 3.0.0 and above.
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-

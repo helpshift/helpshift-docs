@@ -4,52 +4,62 @@ title: Getting Started Android
 description: "Getting started with integrating Helpshift in your Unity app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started <small>Android</small> {#getting-started}
 
-<Intro>
-Getting started with integrating Helpshift in your Unity app.
-</Intro>
-
+<Intro>Getting started with integrating Helpshift in your Unity app.</Intro>
 
 Guide to integrating the Unity plugin for the Helpshift SDK X which you can call from your C# and Javascript game scripts.
 
 ## Requirements {#version-requirements}
-*   Unity 5.5.6 and above.
-*   Supported Android OS version: 16 and above
 
+- Unity 5.5.6 and above.
+- Supported Android OS version: 16 and above
 
-## Download Helpshift Unity SDK  {#getting-sdk}
-
+## Download Helpshift Unity SDK {#getting-sdk}
 
 #### 1. SDK X - In-app Customer Service {#standard-sdk}
 
+<DownloadButton
+  text="Download SDK"
+  link="[% freesdk.sdk_url %]"
+  classes="mb-4"
+/>
 
-<DownloadButton text="Download SDK" link="[% freesdk.sdk_url %]" classes="mb-4" />
-
-Helpshift SDK *.zip* folder includes:
+Helpshift SDK _.zip_ folder includes:
 
 <div className="text-sm compact ">
 
+|                                                                      |                                                              |
+| -------------------------------------------------------------------- | ------------------------------------------------------------ |
+| helpshiftX-plugin-unity-[% sdkxunity.package_version %].unitypackage | Unity package of Helpshift SDK                               |
+| unity-jar-resolver (v1.2.160.0)                                      | Resolves Android Helpshift package support lib dependencies. |
 
-| | |
-|--|--|
-|helpshiftX-plugin-unity-[% sdkxunity.package_version  %].unitypackage| Unity package of Helpshift SDK|
-|unity-jar-resolver (v1.2.160.0)| Resolves Android Helpshift package support lib dependencies.|
 </div>
-
 
 ## Add Helpshift to your Unity project {#adding-to-project}
 
-* Unzip the Helpshift Unity SDK package.
-* Helpshift Unity SDK appears as a  standard `.unitypackage` which you can import through the Unity package import procedure.
-* Following are the steps to import the `helpshiftx-plugin-unity-version.unitypackage` into your Unity game:
-    1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-    2. From the unzipped SDK, select `helpshiftx-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
-    3. In the *Import Unity Package window*, click **Import**
-    4. If you are also integrating for iOS, select `iOS/Helpshift.framework` folder while importing the unitypackage. Refer [here](/sdkx-unity/getting-started-ios#adding-to-project).
-
+- Unzip the Helpshift Unity SDK package.
+- Helpshift Unity SDK appears as a standard `.unitypackage` which you can import through the Unity package import procedure.
+- Following are the steps to import the `helpshiftx-plugin-unity-version.unitypackage` into your Unity game:
+  1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+  2. From the unzipped SDK, select `helpshiftx-plugin-unity-version.unitypackage` file to import the Helpshift SDK.
+  3. In the _Import Unity Package window_, click **Import**
+  4. If you are also integrating for iOS, select `iOS/Helpshift.framework` folder while importing the unitypackage. Refer [here](/sdkx-unity/getting-started-ios#adding-to-project).
 
 ## Resolve Android Appcompat library requirements {#resolve-android-appcompat-library-requirements}
 
@@ -59,34 +69,29 @@ Helpshift SDK depends on android appcompat libraries. You can get these librarie
 
 Use **Unity Jar Resolver** plugin to download and integrate android library dependencies.
 
-
 <Admonition type="info" title="Note">
 
-If your project already uses the *Unity Jar Resolver*, you can skip the *Unity Jar Resolver* importing step.
+If your project already uses the _Unity Jar Resolver_, you can skip the _Unity Jar Resolver_ importing step.
 
 </Admonition>
 
-
-* Import the **Unity Jar Resolver** plugin into your Unity project
-    1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-    2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.160.unitypackage` file to import the Unity Jar resolver.
-    3. In the *Import Unity Package* window, click **Import**
-
+- Import the **Unity Jar Resolver** plugin into your Unity project
+  1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
+  2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.160.unitypackage` file to import the Unity Jar resolver.
+  3. In the _Import Unity Package_ window, click **Import**
 
 <Admonition type="info" title="Note">
 
-If you are not able to import *Unity Jar Resolver* packaged with Helpshift plugin due to any reason, you can use any version of *Unity Jar Resolver* as per your needs.
+If you are not able to import _Unity Jar Resolver_ packaged with Helpshift plugin due to any reason, you can use any version of _Unity Jar Resolver_ as per your needs.
 Refer here: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver/releases)
 
 </Admonition>
 
-
-* If the Unity Jar resolver wants to enable Android Auto-resolution, click the *Enable* button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using *Assets* > *Play Services Resolver* > *Android Resolver* > *Settings*
-* By default, the Unity jar resolver auto-resolves all the required dependencies. Following are the steps to resolve dependencies manually:
-    1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
-    2. Select the **Resolve** or **Force Resolve**
-* To know more about the Unity Jar Resolver, refer to: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)
-
+- If the Unity Jar resolver wants to enable Android Auto-resolution, click the _Enable_ button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using _Assets_ > _Play Services Resolver_ > _Android Resolver_ > _Settings_
+- By default, the Unity jar resolver auto-resolves all the required dependencies. Following are the steps to resolve dependencies manually:
+  1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
+  2. Select the **Resolve** or **Force Resolve**
+- To know more about the Unity Jar Resolver, refer to: [Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)
 
 ### Resolve dependency when using custom Gradle template or Export Project {#resolve-dependency-via-gradle}
 
@@ -119,20 +124,18 @@ Helpshift uniquely identifies each registered App with a combination of 2 tokens
 
 <div className="compact">
 
+|                          |                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_                                      |
+| <code>Platform ID</code> | Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
 
-| | |
-|--|--|
-|<code>Domain Name</code>|  Your Helpshift domain. E.g. _happyapps.helpshift.com_|
-|<code>Platform ID</code>| Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
 </div>
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
 Select your App and _check Android as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
-<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
 
-
-Initialize Helpshift by calling the method *install(platformId, domain)* API
-
+Initialize Helpshift by calling the method _install(platformId, domain)_ API
 
 ```csharp
 
@@ -157,7 +160,6 @@ Initialize Helpshift by calling the method *install(platformId, domain)* API
 
 ```
 
-
 <Admonition type="danger" title="Important">
 
 ** Placing the install call **
@@ -168,13 +170,11 @@ You should place install call inside the `Awake()` method. Placing it elsewhere 
 
 Calling any API before the install call would throw an unchecked HelpshiftInitializationException in debug mode.
 
-*Android OS version Support*
+_Android OS version Support_
 
 Calling `install()` below android SDK version 21 will not work. All the APIs will be non operable.
 
-
 </Admonition>
-
 
 ## Integrating Feedback Section {#conversation-view}
 
@@ -185,7 +185,7 @@ Calling `install()` below android SDK version 21 will not work. All the APIs wil
 </Centered>
 
 You can use the API call `help.ShowConversation(configMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
-To configure SDK, you can pass various config options in a `Dictionary<string, object>`.  It is advised to add Initial User Message in the `configMap`.
+To configure SDK, you can pass various config options in a `Dictionary<string, object>`. It is advised to add Initial User Message in the `configMap`.
 
 Example :
 
@@ -223,7 +223,7 @@ void openHelpshift(){
 
 You can use the API call `ShowFAQs(configMap)` to provide a way for the user to invoke the purpose-built help/FAQs section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"FAQs"** action in your app.
 
-To configure the FAQs screen, you can pass various config options in a `Dictionary<string, object>`.  It is advised to add Initial User Message in the `configMap`.
+To configure the FAQs screen, you can pass various config options in a `Dictionary<string, object>`. It is advised to add Initial User Message in the `configMap`.
 
 Example :
 
@@ -246,12 +246,13 @@ void ShowFAQs(){
             { "tags", new String[] { "foo", "bar" } },
             { "initialUserMessage", "Give Feedback"}
         };
-    
+
     // open the FAQs screen
     help.ShowFAQs(configMap);
 
 }
 ```
+
 ## Adding Custom Metadata to Feedback
 
 If you want to add Custom Metadata at the time of Issue creation, follow the steps.
@@ -282,13 +283,12 @@ void openHelpshift(){
 
     Dictionary<string, object> config = new Dictionary<string, object>();
     // other configs...
-    //.. 
+    //..
     config.Add("customMetadata", customMetadataDictionary);
 
     help.ShowConversation(configMap);
 }
 ```
-
 
 <Admonition type="info" title="Note">
 
@@ -296,26 +296,23 @@ Metadata should only be sent as String key-value pairs.
 
 </Admonition>
 
-
 ## Set Custom Issue Fields {#set-custom-issue-fields}
-
 
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
 
 </Admonition>
-
 
 If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
 
 1. Initialise a top level custom issue fields' `Dictionary`
 2. Define your custom issue field `Dictionary`
 3. Add the `"type"` and `"value"` for that custom issue field
-3. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
-4. Pass the map to `configMap` with key `"customIssueFields"` of the `ShowConversation(configMap)`
+4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
+5. Pass the map to `configMap` with key `"customIssueFields"` of the `ShowConversation(configMap)`
 
 ```csharp
 using Helpshift;
@@ -349,11 +346,11 @@ void openHelpshift(){
     cifDictionary.Add("stock_level", stockLevel);
     cifDictionary.Add("employee_name", employeeName);
     cifDictionary.Add("is_pro", isPro);
-    
+
 
     Dictionary<string, object> config = new Dictionary<string, object>();
     // other configs...
-    //.. 
+    //..
     config.Add("customIssueFields", cifDictionary);
 
     help.ShowConversation(configMap);
@@ -362,20 +359,20 @@ void openHelpshift(){
 
 The following are the valid values for the `type` key of a Custom Issue Field.
 
-* "singleline"
-* "multiline"
-* "number"
-* "checkbox"
-* "dropdown"
-* "date"
+- "singleline"
+- "multiline"
+- "number"
+- "checkbox"
+- "dropdown"
+- "date"
 
 Compatibility table for type and values:
 
-| Type | Value | Comments |
-| --- | --- | --- |
-| singleline | string | Character limit of 255 |
-| multiline | string | Character limit of 100,000 |
-| number | string |  |
-| dropdown | string | Drop-down options should exist for the given Custom Issue Field |
-| date | number | Epoch time. For example - **Date.now()** |
-| checkbox | boolean |   |
+| Type       | Value   | Comments                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | Character limit of 255                                          |
+| multiline  | string  | Character limit of 100,000                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
+| date       | number  | Epoch time. For example - **Date.now()**                        |
+| checkbox   | boolean |                                                                 |

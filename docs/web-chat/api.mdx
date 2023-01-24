@@ -4,38 +4,50 @@ title: Helpshift APIs
 description: Learn more about Helpshift APIs
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift APIs
 
 <Intro>
 
-
-
-
 </Intro>
 
-
 ## Open Widget {#open-widget}
+
 If you want to open the conversation window at any time (apart from an explicit user click on launcher button), you can do it by calling the following API. This could be useful for triggering proactive help.
+
 ```javascript
 Helpshift("open");
 ```
 
-
 ## Close Widget {#close-widget}
+
 Similarly, for closing the conversation window at any time, you can call the following API.
+
 ```javascript
 Helpshift("close");
 ```
 
 ## Hide Widget {#hide-widget}
+
 You can hide Web Chat completely (both the launcher and the widget) by calling the following API.
+
 ```javascript
 Helpshift("hide");
 ```
-
 
 <Admonition type="info" title="Note">
 
@@ -43,13 +55,13 @@ You may want to use this API when you do not want to show the widget on specific
 
 </Admonition>
 
-
 ## Show Widget {#show-widget}
+
 You can have Web Chat (both the launcher and the widget) re-appear after it was previously hidden (via the hide API) by calling the following API.
+
 ```javascript
 Helpshift("show");
 ```
-
 
 <Admonition type="info" title="Note">
 
@@ -57,16 +69,20 @@ This API will restore the visibility of Web Chat after it was previously hidden.
 
 </Admonition>
 
-
 ## Visibility States
-<Image src="/static/books/web-chat/wc-chat-widget-hide-show-api.png"  width="full" /> 
+
+<Image
+  src="/static/books/web-chat/wc-chat-widget-hide-show-api.png"
+  width="full"
+/>{" "}
 
 ## Update Helpshift Config {#update-helpshift-config}
+
 If you want to update the `helpshiftConfig` object after your web page has loaded, you can do it by calling the following API
+
 ```javascript
 Helpshift("updateHelpshiftConfig");
 ```
-
 
 <Admonition type="info" title="Note">
 
@@ -74,8 +90,8 @@ This API is best for use with single page web applications.
 
 </Admonition>
 
-
 Example: In a single page application, if you are retrieving user related data after login, to pass that updated user data to Web Chat, you should update the global helpshiftConfig object with the user data and call the above API.
+
 ```javascript
 // Initial helpshift config object during page load
 helpshiftConfig = {
@@ -92,14 +108,11 @@ helpshiftConfig.userId = "<LOGGED_IN_USER_ID>";
 Helpshift("updateHelpshiftConfig");
 ```
 
-
 <Admonition type="danger" title="Important">
 
 Make sure you do not overwrite the `helpshiftConfig` object when trying to update it.
 
 </Admonition>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -109,12 +122,12 @@ Make sure you do not overwrite the `helpshiftConfig` object when trying to updat
 
 </Admonition>
 
-
 ## Set Initial User Message {#set-initial-user-message}
+
 If you want to set the initial user message through an API rather than making the end user type it, you can use the following API.
 
 ```javascript
-var userMessage = "Hello, how can I track my order?"
+var userMessage = "Hello, how can I track my order?";
 Helpshift("setInitialUserMessage", userMessage);
 ```
 
@@ -124,13 +137,13 @@ You should call this API before a conversation starts. In other words, it works 
 
 </Admonition>
 
-
 ## Events {#events}
+
 The Helpshift widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
 
 ### New Unread Messages Event {#new-unread-messages-event}
-This event gets fired when there are new unread message for the user. To listen to this event, add the following code after the embed code.
 
+This event gets fired when there are new unread message for the user. To listen to this event, add the following code after the embed code.
 
 <Admonition type="info" title="Note">
 
@@ -140,20 +153,27 @@ More info on [Browser notifications](https://developer.mozilla.org/en-US/docs/We
 
 </Admonition>
 
-
 #### Adding the New Unread Messages event handler
 
 ```javascript
-var newUnreadMessagesEventHandler = function(data) {
+var newUnreadMessagesEventHandler = function (data) {
   console.log("Unread count = ", data.unreadCount);
-}
-Helpshift("addEventListener", "newUnreadMessages", newUnreadMessagesEventHandler);
+};
+Helpshift(
+  "addEventListener",
+  "newUnreadMessages",
+  newUnreadMessagesEventHandler
+);
 ```
 
 #### Removing the New Unread Messages event handler
 
 ```javascript
-Helpshift("removeEventListener", "newUnreadMessages", newUnreadMessagesEventHandler);
+Helpshift(
+  "removeEventListener",
+  "newUnreadMessages",
+  newUnreadMessagesEventHandler
+);
 ```
 
 ### User Changed Event {#user-changed-event}
@@ -161,23 +181,22 @@ Helpshift("removeEventListener", "newUnreadMessages", newUnreadMessagesEventHand
 This event gets fired when the user reopens Web Chat by clicking on the email link, if we detect that the user's identifier
 has changed from when the original user started the conversation to when this user clicked the email link.
 
-
 <Admonition type="info" title="Note">
 
-The ‘Follow up via email’ toggle for Web Chat needs to be enabled for you to use this event.  The User Changed event can
+The ‘Follow up via email’ toggle for Web Chat needs to be enabled for you to use this event. The User Changed event can
 be used to build an optimal user experience for cases where the user’s identifier has changed after clicking the link,
 such as in the following scenarios:
+
 1. The user started chat anonymously (didn’t login when they were chatting), but logged in before clicking on the link.
 2. The user started chat as a logged-in user but logged out before clicking the link.
 3. The user started chat as a logged-in user but logged in as a different user before clicking the link.
 
 </Admonition>
 
-
 #### Adding the User Changed event handler
 
 ```javascript
-var userChangedHandler = function(data) {
+var userChangedHandler = function (data) {
   console.log("User's original state is: " + data.originalState);
   console.log("User was having conversation on: " + data.pageUrl);
 };
@@ -192,12 +211,11 @@ Helpshift("removeEventListener", "userChanged", userChangedHandler);
 
 #### Using the values returned by the event
 
-|Name|Values|How to use|
-|--|--|--|
-|`originalState` (this is the user’s state when they started chat)| `logged-in`| If the user was originally logged-in, you should prompt the user to login again. As long as the user’s login credentials are same as their credentials when they started the chat, they’ll be able to resume their conversation.|
-||`anonymous`|If the user was originally anonymous (aka not logged-in), you should prompt the user to logout or automatically log them out so that they are able to resume their conversation.|
-|`pageUrl`|The page where the user had started the chat|We highly recommend taking the user to the page where they started the chat after they successfully logout or login (based on what their original state was), so that they are taken back to the page with the right context.|
-
+| Name                                                              | Values                                       | How to use                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `originalState` (this is the user’s state when they started chat) | `logged-in`                                  | If the user was originally logged-in, you should prompt the user to login again. As long as the user’s login credentials are same as their credentials when they started the chat, they’ll be able to resume their conversation. |
+|                                                                   | `anonymous`                                  | If the user was originally anonymous (aka not logged-in), you should prompt the user to logout or automatically log them out so that they are able to resume their conversation.                                                 |
+| `pageUrl`                                                         | The page where the user had started the chat | We highly recommend taking the user to the page where they started the chat after they successfully logout or login (based on what their original state was), so that they are taken back to the page with the right context.    |
 
 <Admonition type="info" title="Note">
 
@@ -206,73 +224,90 @@ login/logout (depending on what their original state was.)
 
 </Admonition>
 
-
 ### Widget Toggle Event {#widget-toggle-event}
+
 This event is triggered when the user minimizes or maximizes the Web Chat main window. The event data object has a boolean property ‘visible’ which indicates the visibility of the main chat window. For your reference, see the below example:
 
 #### Adding the Widget Toggle Event Handler
+
 ```javascript
-var widgetToggleEventHandler = function(data) {
+var widgetToggleEventHandler = function (data) {
   console.log("Visibility = ", data.visible);
-}
+};
 Helpshift("addEventListener", "widgetToggle", widgetToggleEventHandler);
 ```
 
 #### Removing the Widget Toggle Event Handler
+
 ```javascript
 Helpshift("removeEventListener", "widgetToggle", widgetToggleEventHandler);
 ```
 
 ### Conversation Start Event {#conversation-start-event}
+
 This event triggers when the user sends the first message in a conversation. The event data object has a property, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
 #### Adding the Conversation Start Event Handler
+
 ```javascript
-var conversationStartEventHandler = function(data) {
+var conversationStartEventHandler = function (data) {
   console.log("Message = ", data.message);
-}
-Helpshift("addEventListener", "conversationStart", conversationStartEventHandler);
+};
+Helpshift(
+  "addEventListener",
+  "conversationStart",
+  conversationStartEventHandler
+);
 ```
 
 #### Removing the Conversation Start Event Handler
-```javascript
-Helpshift("removeEventListener", "conversationStart", conversationStartEventHandler);
 
+```javascript
+Helpshift(
+  "removeEventListener",
+  "conversationStart",
+  conversationStartEventHandler
+);
 ```
 
 ### Message Add Event {#message-add-event}
+
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` properties, which indicates the type and body of the message added by the user. For your reference, see the below example.
 
 #### Adding the Message Add event handler
+
 ```javascript
-var messageAddEventHandler = function(data) {
+var messageAddEventHandler = function (data) {
   if (data.type === "attachment") {
-      console.log ("user sent an attachment");
+    console.log("user sent an attachment");
   }
   console.log("Message = ", data.body);
-}
+};
 Helpshift("addEventListener", "messageAdd", messageAddEventHandler);
 ```
 
 #### Removing the Message Add event handler
+
 ```javascript
 Helpshift("removeEventListener", "messageAdd", messageAddEventHandler);
 ```
 
 ### CSAT Submit Event {#csat-submit-event}
-This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` properties, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.  For your reference, see the below example.
 
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` properties, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
 #### Adding the CSAT Submit event handler
+
 ```javascript
-var csatSubmitEventHandler = function(data) {
+var csatSubmitEventHandler = function (data) {
   console.log("Rating = ", data.rating);
   console.log("Additional Feedback = ", data.additionalFeedback);
-}
+};
 Helpshift("addEventListener", "csatSubmit", csatSubmitEventHandler);
 ```
 
 #### Removing the CSAT Submit event handler
+
 ```javascript
 Helpshift("removeEventListener", "csatSubmit", csatSubmitEventHandler);
 ```
@@ -282,19 +317,23 @@ Helpshift("removeEventListener", "csatSubmit", csatSubmitEventHandler);
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
 #### Adding the Conversation End event handler
+
 ```javascript
-var conversationEndEventHandler = function() {
+var conversationEndEventHandler = function () {
   console.log("Conversation has ended.");
-}
+};
 Helpshift("addEventListener", "conversationEnd", conversationEndEventHandler);
 ```
 
-
 #### Removing the Conversation End event handler
-```javascript
-Helpshift("removeEventListener", "conversationEnd", conversationEndEventHandler);
-```
 
+```javascript
+Helpshift(
+  "removeEventListener",
+  "conversationEnd",
+  conversationEndEventHandler
+);
+```
 
 <Admonition type="info" title="Note">
 
@@ -304,51 +343,83 @@ The `conversationEnd` event is triggered along with the `conversationResolved` a
 
 </Admonition>
 
-
 ### Conversation Rejected Event {#conversation-rejected-event}
+
 This event is triggered when an agent rejects the conversation.
 
 #### Adding the Conversation Rejected event handler
+
 ```javascript
-var conversationRejectedEventHandler = function() {
+var conversationRejectedEventHandler = function () {
   console.log("Conversation has been rejected by the agent.");
-}
-Helpshift("addEventListener", "conversationRejected", conversationRejectedEventHandler);
+};
+Helpshift(
+  "addEventListener",
+  "conversationRejected",
+  conversationRejectedEventHandler
+);
 ```
 
 #### Removing the Conversation Rejected event handler
+
 ```javascript
-Helpshift("removeEventListener", "conversationRejected", conversationRejectedEventHandler);
+Helpshift(
+  "removeEventListener",
+  "conversationRejected",
+  conversationRejectedEventHandler
+);
 ```
 
 ### Conversation Resolved Event {#conversation-resolved-event}
+
 This event is triggered when an agent resolves the conversation.
 
 #### Adding the Conversation Resolved event handler
+
 ```javascript
-var conversationResolvedEventHandler = function() {
+var conversationResolvedEventHandler = function () {
   console.log("Conversation has been resolved by the agent.");
-}
-Helpshift("addEventListener", "conversationResolved", conversationResolvedEventHandler);
+};
+Helpshift(
+  "addEventListener",
+  "conversationResolved",
+  conversationResolvedEventHandler
+);
 ```
 
 #### Removing the Conversation Resolved event handler
+
 ```javascript
-Helpshift("removeEventListener", "conversationResolved", conversationResolvedEventHandler);
+Helpshift(
+  "removeEventListener",
+  "conversationResolved",
+  conversationResolvedEventHandler
+);
 ```
 
 ### Conversation Reopened Event {#conversation-reopened-event}
+
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
 #### Adding the Conversation Reopened event handler
+
 ```javascript
-var conversationReopenedEventHandler = function() {
+var conversationReopenedEventHandler = function () {
   console.log("Conversation has been reopened by the user.");
-}
-Helpshift("addEventListener", "conversationReopened", conversationReopenedEventHandler);
+};
+Helpshift(
+  "addEventListener",
+  "conversationReopened",
+  conversationReopenedEventHandler
+);
 ```
 
 #### Removing the Conversation Reopened event handler
+
 ```javascript
-Helpshift("removeEventListener", "conversationReopened", conversationReopenedEventHandler);
+Helpshift(
+  "removeEventListener",
+  "conversationReopened",
+  conversationReopenedEventHandler
+);
 ```

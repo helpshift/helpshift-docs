@@ -4,8 +4,20 @@ title: Tracking iOS
 description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Tracking <small>iOS</small> {#tracking}
 
@@ -14,9 +26,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 Track events and user actions when the user starts a new conversation.
 Attach custom metadata to every conversation started via the SDK.
 
-
 </Intro>
-
 
 ## Name and email {#name-and-email}
 
@@ -29,8 +39,7 @@ You can set the name and email for the user, using
 HelpshiftCocos2dx::setNameAndEmail("John", "john@example.com");
 ```
 
-<Image src="/static/books/ios/username-email-sdk.png"  width="half" /> 
-
+<Image src="/static/books/ios/username-email-sdk.png" width="half" />{" "}
 
 The SDK prefills the previously used name and email in the new conversation screen. If you want to clear these fields, please use the `setNameAndEmail` API with both params set to NULL.
 
@@ -42,19 +51,17 @@ HelpshiftCocos2dx::setNameAndEmail(NULL, NULL);
 
 The name and email shows up in the issue's sidebar in the agent dashboard -
 
-<Image src="/static/books/common/username-email-admin.png"  width="half" /> 
-
+<Image src="/static/books/common/username-email-admin.png" width="half" />{" "}
 
 <Admonition type="info" title="Note">
 
- This API is now deprecated with cocos2d-x SDK v4.0.
+This API is now deprecated with cocos2d-x SDK v4.0.
 
- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-ios#user-identification) going forward.
+It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-ios#user-identification) going forward.
 
- Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
+Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
 
 </Admonition>
-
 
 ## User Identifier {#user-id}
 
@@ -69,9 +76,7 @@ HelpshiftCocos2dx::login("unique-user-id-746501", "John Doe", "john.doe@app.co")
 
 This shows up in the issue's sidebar in the agent dashboard -
 
-<Image src="/static/books/common/user-id-admin.png"  width="half" /> 
-
-
+<Image src="/static/books/common/user-id-admin.png" width="half" />{" "}
 
 <Admonition type="danger" title="Important">
 
@@ -79,24 +84,18 @@ This shows up in the issue's sidebar in the agent dashboard -
 
 In issue sidebar in the agent dashboard, other issues by the same user are also matched using user identifier. So make sure it is unique for each user.
 
-<Image src="/static/books/common/other-issues-by.png"  width="half" /> 
-
+<Image src="/static/books/common/other-issues-by.png" width="half" />{" "}
 
 </Admonition>
  notes
 
- This API is now deprecated with cocos2d-x SDK v4.0. 
+This API is now deprecated with cocos2d-x SDK v4.0.
 
- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-ios#user-identification) going forward.
+It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-ios#user-identification) going forward.
 
- Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
-
-
-
-
+Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
 
 ## Multi Login {#multi-login}
-
 
 <Admonition type="info" title="Note">
 
@@ -104,19 +103,15 @@ Applicable to plugin v4.10.0 and above
 
 </Admonition>
 
-
 These APIs give developers the ability to allow multiple users to chat with agents on the same app
 
 ### Logging in {#login}
-
 
 <Admonition type="info" title="Note">
 
 Details on User management are available [here](/cocos2d-x/users-ios#user-identification).
 
-
 </Admonition>
-
 
 ## App usage {#app-usage}
 
@@ -148,11 +143,9 @@ sent along with the next reported issue. When the user exits out of the Help sec
 
 **For example :**
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
 
 ```cpp
     ValueMap config;
@@ -165,10 +158,8 @@ sent along with the next reported issue. When the user exits out of the Help sec
     HelpshiftCocos2dx::showFAQs(config);
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
 
 ```cpp
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
@@ -181,37 +172,31 @@ sent along with the next reported issue. When the user exits out of the Help sec
     HelpshiftCocos2dx::showFAQs(config);
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ### Attaching tags with metadata {#metadatatags}
-
 
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Tags must be lowercase.
-* Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
 
 </Admonition>
 
-
-<Image src="/static/books/ios/metadata-tags.png"  width="half" /> 
+<Image src="/static/books/ios/metadata-tags.png" width="half" />{" "}
 
 You can attach tags with metadata to every reported issue via a reserved key constant
 `HS_TAGS_KEY`. This is used with the config dictionary.
 
 **For example:**
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
 
 ```cpp
     ValueMap config;
@@ -229,10 +214,8 @@ You can attach tags with metadata to every reported issue via a reserved key con
     HelpshiftCocos2dx::showFAQs(config)
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
 
 ```cpp
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
@@ -250,57 +233,48 @@ You can attach tags with metadata to every reported issue via a reserved key con
     HelpshiftCocos2dx::showFAQs(config);
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 <Admonition type="info" title="Note">
 
- While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
+While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
 
- As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
+As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
 
- Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
-
+Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 </Admonition>
 
-
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
-
 
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Applicable to SDK v1.8.0 & above.
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+- Applicable to SDK v1.8.0 & above.
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
 
 </Admonition>
-
 
 You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `HS_CUSTOM_ISSUE_FIELDS` key in the config object.
 These Custom Issue Fields would be sent whenever a new issue is created.
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
-Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts. 
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 Possible datatypes to be passed into the config are:
 
-
-|  Type             | value |  Comments          |
-|-------------------|-------|--------------------|
-| "sl" | string | Single line string with character limit of 255 |
-| "ml"   | string | Multi line string with character limit of 100,000 |
-| "n" | string |  String representation of number. For eg.  "12345" |
-| "dd"  | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "dt"  | string | String representation of epoch time in milliseconds. For eg. "1505927361535" |
-| "b"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
-
+| Type | value  | Comments                                                                                                                                                      |
+| ---- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | string | Single line string with character limit of 255                                                                                                                |
+| "ml" | string | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | string | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | string | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 Example:-
 
@@ -391,17 +365,13 @@ Example:-
 
 </Tabs>
 
-
-
 ## Debug logs {#debug-logs}
-
 
 <Admonition type="info" title="Note">
 
 Starting iOS 10, Apple has deprecated support for the ASL library that was used to collect logs from the system automatically.
 
 </Admonition>
-
 
 You may wish to send additional debug logs when an issue is filed. This can be acheived using HelpshiftCocos2dx's `log:` API.
 
@@ -415,13 +385,14 @@ static void log(const char *message);
 void MyGame::buyGems() {
     ...
     HelpshiftCocos2dx::log("User has bought gems");
-    ...    
+    ...
 }
 ```
 
 When an issue is filed by the user, these debug logs will be submitted as metadata.
 
 ## Issue Archival {#issue-archival}
+
 From version 5.7.0, Helpshift SDK includes support for archiving issues.
 Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
 Once archived, issues cannot be reopened. This improves dashboard performance.
@@ -431,16 +402,13 @@ Archived issues will be accessible to agents through the dashboard for future re
 
 ## Check if there is an active Conversation {#check-if-conversation-active}
 
-
 <Admonition type="info" title="Note">
 
 Applicable to SDK v1.7.0 and above.
 
 </Admonition>
 
-
 You can check if the user has any active Conversation on the device with `HelpshiftCocos2dx::checkIfConversationActive(...)` API. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
-
 
 **For example:**
 

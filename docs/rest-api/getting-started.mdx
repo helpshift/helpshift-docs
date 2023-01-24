@@ -4,48 +4,55 @@ title: Getting Started
 description: "Helpshift exposes a comprehensive set of REST APIs that can be used to access or modify core Helpshift objects along with a set of actions that can be made inside of Helpshift. This Includes the following core APIs:* Issues: APIs to read, write or create Issues in Helpshift* Web Messenger: Transactional set of APIs to create a full messaging/chat support client over REST* FAQs: APIs to read, write, or create FAQs in Helpshift* FAQ Sections: APIs to read, write, or create FAQs sections in HelpshiftIn addition, the Helpshift REST APIs enables read access to Agents, users and applications."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started {#getting-started}
 
 <Intro>
 
-
 Helpshift exposes a comprehensive set of REST APIs that can be used to access or modify core Helpshift objects along with a set of actions that can be made inside of Helpshift. This Includes the following core APIs:
 
-* Issues: APIs to read, write or create Issues in Helpshift
-* Web Messenger: Transactional set of APIs to create a full messaging/chat support client over REST
-* FAQs: APIs to read, write, or create FAQs in Helpshift
-* FAQ Sections: APIs to read, write, or create FAQs sections in Helpshift
+- Issues: APIs to read, write or create Issues in Helpshift
+- Web Messenger: Transactional set of APIs to create a full messaging/chat support client over REST
+- FAQs: APIs to read, write, or create FAQs in Helpshift
+- FAQ Sections: APIs to read, write, or create FAQs sections in Helpshift
 
 In addition, the Helpshift REST APIs enables read access to Agents, users and applications.
 
-
-
 </Intro>
-
 
 ## Exploring the REST API with Helpshift's 'API Docs' tool {#intro}
 
 Helpshift provides a simple tool at [https://apidocs.helpshift.com](https://apidocs.helpshift.com) called API Docs that makes it easy to learn about and explore the Helpshift REST APIs.
 
-<Image src="/static/books/rest-api/api_docs.png"  width="major" centered /> 
+<Image src="/static/books/rest-api/api_docs.png" width="major" centered />{" "}
 
 With the API docs tool, you can explore the full set of REST API's along with examples and full documentation.
 
-<Image src="/static/books/rest-api/api_docs1.png"  width="major" centered /> 
+<Image src="/static/books/rest-api/api_docs1.png" width="major" centered />{" "}
 
 This is an example of the API docs view showing the details of the 'Create Issue' API.
 
 In addition, APIs docs will let you try each API against your own domain providing you with the REST API string, and the actual content returned from each REST API call.
 
-
 ## Accessing the API Docs tool
 
 To access our API docs, navigate to [https://apidocs.helpshift.com](https://apidocs.helpshift.com) and enter your domain name and your domain's default API key.
 
-<Image src="/static/books/rest-api/api_docs2.png"  width="major" centered /> 
+<Image src="/static/books/rest-api/api_docs2.png" width="major" centered />{" "}
 
 You will need to have the integrations feature enabled and you will need to have your domains default API key to use the API Docs tool.
 
@@ -53,84 +60,79 @@ You will need to have the integrations feature enabled and you will need to have
 
 You can obtain the default API key from the API section of the Helpshift dashboard as seen here:
 
-<Image src="/static/books/rest-api/api_dashboard.png"  width="major" centered /> 
-
+<Image src="/static/books/rest-api/api_dashboard.png" width="major" centered />{" "}
 
 ## What is the REST API
 
-The REST API service enables read/write access into the core Helpshift objects, and access to perform Helpshift actions. These API's can enable a number of custom solutions or extend core features to be embedded into ancillary workflows, tools, or projects. 
+The REST API service enables read/write access into the core Helpshift objects, and access to perform Helpshift actions. These API's can enable a number of custom solutions or extend core features to be embedded into ancillary workflows, tools, or projects.
 
 ## Using API Docs to explore the API
 
 Helpshift's API Docs is a tool used to explore the API and many of the available parameters. The tool can be found by clicking through the link [https://apidocs.helpshift.com](https://apidocs.helpshift.com).
 For full parameter descriptions and syntax examples we recommend developers frequent the API Docs page.
-Practicing calls and filtering those calls is encouraged.  Use the following documentation as a top level reference, wherein the API Docs will provide a more thorough experience for discovering what the API can do.
+Practicing calls and filtering those calls is encouraged. Use the following documentation as a top level reference, wherein the API Docs will provide a more thorough experience for discovering what the API can do.
 See screenshots of the API Docs tool below:
 
-<Image src="/static/books/rest-api/api_docs3.png"  width="major" centered /> 
+<Image src="/static/books/rest-api/api_docs3.png" width="major" centered />{" "}
 
 ## Using the REST API
 
 Using the REST API is relatively straight forward. For most calls the syntax is direct and concise, however, there are some areas of the API that are very precise and will require referencing of ancillary API documentation.
 
-
-## Main REST Endpoints 
+## Main REST Endpoints
 
 List of Endpoints (GET/POST/PUT)
 
 ### Issues
 
-| Command | Request URL                                                           | Description                    |
-|---------|-----------------------------------------------------------------------|--------------------------------|
-| GET     | https://api.helpshift.com/v1/ `<domain>` /issues                          | retrieve multiple issues       |
-| GET     | https://api.helpshift.com/v1/ `<domain>` /issues/ `{issue-id}`               | retrieve single issue          |
-| POST    | https://api.helpshift.com/v1/ `<domain>` /issues/ `{issue-id}`/messages      | add message to an issue        |
-| PUT     | https://api.helpshift.com/v1/ `<domain>` /issues                         | bulk edit issues               |
-| PUT     | https://api.helpshift.com/v1/ `<domain>` /issues/`{issue-id}`              | edit a single issue            |
+| Command | Request URL                                                                 | Description                    |
+| ------- | --------------------------------------------------------------------------- | ------------------------------ |
+| GET     | https://api.helpshift.com/v1/ `<domain>` /issues                            | retrieve multiple issues       |
+| GET     | https://api.helpshift.com/v1/ `<domain>` /issues/ `{issue-id}`              | retrieve single issue          |
+| POST    | https://api.helpshift.com/v1/ `<domain>` /issues/ `{issue-id}`/messages     | add message to an issue        |
+| PUT     | https://api.helpshift.com/v1/ `<domain>` /issues                            | bulk edit issues               |
+| PUT     | https://api.helpshift.com/v1/ `<domain>` /issues/`{issue-id}`               | edit a single issue            |
 | POST    | https://api.helpshift.com/v1/ `<domain>` /issues/`{issue-id}`/private-notes | add a private note to an issue |
-| POST    | https://api.helpshift.com/v1/ `<domain>` /issues                         | create an issue                |
-| PUT     | https://api.helpshift.com/v1/ `<domain>` /issues                         | bulk edit issues               |
+| POST    | https://api.helpshift.com/v1/ `<domain>` /issues                            | create an issue                |
+| PUT     | https://api.helpshift.com/v1/ `<domain>` /issues                            | bulk edit issues               |
 
 ### FAQ's
 
-| Command | Request URL                                         | Description    |
-|---------|-----------------------------------------------------|----------------|
+| Command | Request URL                                               | Description    |
+| ------- | --------------------------------------------------------- | -------------- |
 | GET     | https://api.helpshift.com/v1 /`<domain>` /faqs/`{faq-id}` | retrieve a faq |
-| GET     | https://api.helpshift.com/v1 /`<domain>` /faqs/suggest  | suggest faq's  |
-| POST    | https://api.helpshift.com/v1 /`<domain>` /faqs          | create a faq   |
+| GET     | https://api.helpshift.com/v1 /`<domain>` /faqs/suggest    | suggest faq's  |
+| POST    | https://api.helpshift.com/v1 /`<domain>` /faqs            | create a faq   |
 | POST    | https://api.helpshift.com/v1 /`<domain>` /faqs/`{faq-id}` | edit a faq     |
 
 ### Sections
 
-| Command | Request URL                                         | Description                      |
-|---------|-----------------------------------------------------|----------------------------------|
-| GET     | https://api.helpshift.com/v1/ `<domain>` / `{app-id}`/sections     | retrieve all sections for an app |
+| Command | Request URL                                                       | Description                      |
+| ------- | ----------------------------------------------------------------- | -------------------------------- |
+| GET     | https://api.helpshift.com/v1/ `<domain>` / `{app-id}`/sections    | retrieve all sections for an app |
 | GET     | https://api.helpshift.com/v1/ `<domain>` /sections/`{section-id}` | retrieve a single app            |
-| POST     | https://api.helpshift.com/v1/ `<domain>` /sections/`{section-id}`  | edit a section                   |
-| POST     | https://api.helpshift.com/v1/ `<domain>` /sections             | create a section                 |
-
+| POST    | https://api.helpshift.com/v1/ `<domain>` /sections/`{section-id}` | edit a section                   |
+| POST    | https://api.helpshift.com/v1/ `<domain>` /sections                | create a section                 |
 
 ### Apps
 
-| Command  | Request URL                                    | Description           |
-|----------|------------------------------------------------|-----------------------|
-| GET      | https://api.helpshift.com/v1/ `<domain>` /apps             | retrieve all apps     |
-| GET      | https://api.helpshift.com/v1/ `<domain>` /apps/`{publish-id}` | retrieve a single app |
+| Command | Request URL                                                   | Description           |
+| ------- | ------------------------------------------------------------- | --------------------- |
+| GET     | https://api.helpshift.com/v1/ `<domain>` /apps                | retrieve all apps     |
+| GET     | https://api.helpshift.com/v1/ `<domain>` /apps/`{publish-id}` | retrieve a single app |
 
 ### Users
 
-| Command  | Request URL                                      | Description |
-|----------|--------------------------------------------------|-------------|
-| GET      | https://api.helpshift.com/v1/ `<domain>` /users              | get users   |
-| GET      | https://api.helpshift.com/v1/ `<domain>` /users/`{profile-id}` | edit users  |
-
+| Command | Request URL                                                    | Description |
+| ------- | -------------------------------------------------------------- | ----------- |
+| GET     | https://api.helpshift.com/v1/ `<domain>` /users                | get users   |
+| GET     | https://api.helpshift.com/v1/ `<domain>` /users/`{profile-id}` | edit users  |
 
 ### Agents
 
-| Command | Request URL                          | Description |
-|---------|--------------------------------------|-------------|
+| Command | Request URL                                      | Description |
+| ------- | ------------------------------------------------ | ----------- |
 | GET     | https://api.helpshift.com/v1/ `<domain>` /agents | get agents  |
-
 
 ## Webhooks
 

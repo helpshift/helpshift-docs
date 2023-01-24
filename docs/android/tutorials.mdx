@@ -4,9 +4,20 @@ title: Tutorials
 description: Learn more about Tutorials
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,9 +25,7 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Tutorials {#tutorials}
-
 
 ## Skinning - Button appearance {#skinning-buttons}
 
@@ -29,20 +38,19 @@ zip. For this example we have kept the theme name as the default
 The downloaded zip contains the following:-
 
 1. `drawable/` - contains the selector resource which is the multi-state
-drawable for different button states.
+   drawable for different button states.
 1. `drawable-hdpi/`, `drawable-mdpi/` and `drawable-xhdpi/` - contains the
-various drawable images for the different button states.
+   various drawable images for the different button states.
 1. `values/` and `values-v11/` - contains the `apptheme_style.xml` which
-defines the new button style. This folder also contains the
-`apptheme_theme.xml` file, which we do not use as we have out own theme
-xml.
+   defines the new button style. This folder also contains the
+   `apptheme_theme.xml` file, which we do not use as we have out own theme
+   xml.
 
 The new button styles can be applied as follows:-
 
-* To apply the new button style globally for a particular theme. (Inside
+- To apply the new button style globally for a particular theme. (Inside
   one of the theme files. Example:- `hs_theme_light.xml`)
 
-    
 ```xml
 
         <style name="HSThemeLight" parent="@android:style/Theme.Holo.Light.NoActionBar">
@@ -57,9 +65,8 @@ The new button styles can be applied as follows:-
 
 ```
 
-* To set the button style for the "Search List Footer" button.
+- To set the button style for the "Search List Footer" button.
 
-    
 ```xml
 
         <style name="hs_lightSearchFooterButtonStyle" parent="@style/ButtonAppTheme">
@@ -85,10 +92,13 @@ To learn more about 9-patch images refer to
 [this article](http://developer.android.com/tools/help/draw9patch.html)
 on Android Developers.
 
-<Image src="/static/books/android/9-patch-tool.png"  width="full" alt="9-patch-tool.png" /> 
+<Image
+  src="/static/books/android/9-patch-tool.png"
+  width="full"
+  alt="9-patch-tool.png"
+/>{" "}
 
-![chat-bubble-skinning.png](/static/books/android/chat-bubble-skinning.png
- "chat-bubble-skinning.png")
+![chat-bubble-skinning.png](/static/books/android/chat-bubble-skinning.png "chat-bubble-skinning.png")
 
 ## Skinning - Tiled backgrounds {#tiled-backgrounds}
 
@@ -117,10 +127,9 @@ the bitmap drawable resource used for the tiled background.
 You can now use this resource for defining the the `android:background`
 attribute for various styles inside the theme files.
 
-* To use this drawable as a activity background, you could do the
+- To use this drawable as a activity background, you could do the
   following:
 
-    
 ```xml
 
         <style name="hs_lightActivityBgStyle">
@@ -140,9 +149,8 @@ attribute for various styles inside the theme files.
 
 ```
 
-* To set the activity header background:
+- To set the activity header background:
 
-     
 ```xml
 
          <style name="hs_lightActivityHeaderStyle">
@@ -155,9 +163,8 @@ attribute for various styles inside the theme files.
 
 ```
 
-* To set the section header background:
+- To set the section header background:
 
-     
 ```xml
 
          <style name="hs_lightSectionHeaderBgStyle">
@@ -172,4 +179,3 @@ attribute for various styles inside the theme files.
     themes. Be sure to make these changes in both `values/` and `value-v11/`
     theme files.
 ```
-

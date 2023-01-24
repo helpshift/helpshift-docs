@@ -4,10 +4,20 @@ title: Skinning & Customization
 description: "Customize the Helpshift SDK to completely match the look and feel of your app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Skinning & Customization {#design}
 
@@ -15,9 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Customize the Helpshift SDK to completely match the look and feel of your app.
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
@@ -28,7 +36,6 @@ UIAppearance customisations are applied to Helpshift SDK by default. However if 
 For example: If the app uses UIAppearance to change the colour of Navigation Bar title and also specifies a colour for the same property in the HelpshiftConfig.plist file, then the value in plist will be used. In order to use the UIAppearance value, the app must leave the corresponding entry in the plist blank.
 
 </Admonition>
-
 
 ## Introduction {#intro}
 
@@ -42,10 +49,10 @@ If you want to change strings used in the SDK's UI or want to translate them as 
 
 Helpshift comes with four default skinning configurations -
 
-* **Light** - `HSThemes/HelpshiftConfig.plist`
-* **Dark** - `HSThemes/HelpshiftConfigDark.plist`
-* **Light High Contrast** - `HSThemes/HelpshiftConfigHighContrast.plist`
-* **Dark High Contrast** - `HSThemes/HelpshiftConfigDarkHighContrast.plist`
+- **Light** - `HSThemes/HelpshiftConfig.plist`
+- **Dark** - `HSThemes/HelpshiftConfigDark.plist`
+- **Light High Contrast** - `HSThemes/HelpshiftConfigHighContrast.plist`
+- **Dark High Contrast** - `HSThemes/HelpshiftConfigDarkHighContrast.plist`
 
 ### Customized Skinning Configurations {#custom-skinning}
 
@@ -82,7 +89,6 @@ HelpshiftSdk support = HelpshiftSdk.getInstance();
 support.setThemes("HelpshiftCustomLightConfig", "HelpshiftCustomDarkConfig");
 ```
 
-
 <Admonition type="info" title="Note">
 
 1. Light and Dark Appearance switching works only if your app is built with Xcode 11 or above.
@@ -92,7 +98,6 @@ support.setThemes("HelpshiftCustomLightConfig", "HelpshiftCustomDarkConfig");
 5. The [enableAutomaticThemeSwitching](/unity/sdk-configuration-ios#enableAutomaticThemeSwitching) config flag is ignored when this API is used and SDK will use the provided themes for Light and Dark Appearances respectively.
 
 </Admonition>
-
 
 #### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API: {#runtime-common}
 
@@ -114,7 +119,6 @@ HelpshiftSdk support = HelpshiftSdk.getInstance();
 support.setTheme("HelpshiftCustomConfig");
 ```
 
-
 <Admonition type="info" title="Note">
 
 1. You can pass null to reset the theme to default SDK theme for that param.
@@ -123,8 +127,8 @@ support.setTheme("HelpshiftCustomConfig");
 
 </Admonition>
 
-
 ### Compile time Theme Changes {#compile-time-theming}
+
 If your app does not change theme on runtime, Please read the below documentation:
 
 #### If your app supports Dark Appearance in iOS 13 {#compile-time-light-dark}
@@ -163,78 +167,90 @@ These attributes control the looks of in-app support over many screens.
 
 <div className="text-sm  compact">
 
+|                                        |                                                                                                                                                      |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Font name                              | Global font face - applies to texts for sections list, FAQ list, FAQ answer, search results and notification banner sub-title                        |
+| Bold font name                         | Applies to FAQ section headers on support screen, FAQ question and notification banner title                                                         |
+| Background color                       | Applies to regions with no UI elements or content. E.g. spaces around table views, FAQ section headers.                                              |
+| Content background color               | Background color for content - table cells, single FAQ screen, conversation screen.                                                                  |
+| Separator line color                   | Separator color for table views - search results, section & faq lists.                                                                               |
+| Text color                             | Applies to text color for table cells, FAQ answer & search results.                                                                                  |
+| Secondary text color                   | Applies to text color of footers, attachment info, conversation ended message and ratings.                                                           |
+| Placeholder text color                 | Applies to text color of all the place holders like Name, email fields etc in the SDK.                                                               |
+| Contact us button color                | Applies to "contact us" button below search results                                                                                                  |
+| Cell selection color                   | Applies to tableview cells. Sets the cell selection color.                                                                                           |
+| Search highlight color                 | Highlight the search result with specified colour.                                                                                                   |
+| Status bar light content               | Specify wether the status bar needs to use light content mode. Use only if you have ViewController based StatusBar appearance.                       |
+| Table view cell extra vertical padding | Provide custom padding for cell row height. Valid values are between 0 and 100 (included).                                                           |
+| Hide back button label                 | Hides the text for back button.                                                                                                                      |
+| Table view max lines                   | Sets the max number of lines to be shown in a section, an FAQ and or search lists. If the text exceeds this value, the last line will be ellipsized. |
+| Font file name                         | The file name of the font to be used for displaying the FAQ body.                                                                                    |
+| Bold font file name                    | The file name of the font to be used for displaying the FAQ title.                                                                                   |
+| Table view disclosure color            | The color of the disclosure indicator in the inbox table view.                                                                                       |
+| Notification banner color              | The background color of notification banner                                                                                                          |
+| Notification banner title color        | The text color of the title in notification banner                                                                                                   |
+| Notification banner subtitle color     | The text color of the subtitle in notification banner                                                                                                |
 
-| | |
-|--|--|
-|Font name| Global font face - applies to texts for sections list, FAQ list, FAQ answer, search results and notification banner sub-title|
-|Bold font name| Applies to FAQ section headers on support screen, FAQ question and notification banner title|
-|Background color| Applies to regions with no UI elements or content. E.g. spaces around table views, FAQ section headers.|
-|Content background color| Background color for content - table cells, single FAQ screen, conversation screen.|
-|Separator line color| Separator color for table views - search results, section & faq lists.|
-|Text color| Applies to text color for table cells, FAQ answer & search results.|
-|Secondary text color| Applies to text color of footers, attachment info, conversation ended message and ratings.|
-|Placeholder text color| Applies to text color of all the place holders like Name, email fields etc in the SDK.|
-|Contact us button color| Applies to "contact us" button below search results|
-|Cell selection color| Applies to tableview cells. Sets the cell selection color.|
-|Search highlight color| Highlight the search result with specified colour.|
-|Status bar light content| Specify wether the status bar needs to use light content mode. Use only if you have ViewController based StatusBar appearance.|
-|Table view cell extra vertical padding| Provide custom padding for cell row height. Valid values are between 0 and 100 (included).|
-|Hide back button label| Hides the text for back button.|
-|Table view max lines| Sets the max number of lines to be shown in a section, an FAQ and or search lists. If the text exceeds this value, the last line will be ellipsized.|
-|Font file name| The file name of the font to be used for displaying the FAQ body.|
-|Bold font file name| The file name of the font to be used for displaying the FAQ title.|
-|Table view disclosure color| The color of the disclosure indicator in the inbox table view.|
-|Notification banner color| The background color of notification banner|
-|Notification banner title color| The text color of the title in notification banner|
-|Notification banner subtitle color| The text color of the subtitle in notification banner|
 </div>
 
 Association of "Global Attributes" to UI elements -
 
-<Image src="/static/books/ios/Overview-1.png"  width="full" /> 
+<Image src="/static/books/ios/Overview-1.png" width="full" />{" "}
 
-<Image src="/static/books/ios/Overview-2.png"  width="full" /> 
+<Image src="/static/books/ios/Overview-2.png" width="full" />{" "}
 
-<Image src="/static/books/ios/Overview-3.png"  width="full" /> 
+<Image src="/static/books/ios/Overview-3.png" width="full" />{" "}
 
 ### Header background and layering {#ios-ui-layering}
+
 Background for section headers is transparent, hence it inherits from Background color in Global Attributes -
 
 #### Support UI Overview {#ios-support-ui}
-<Image src="/static/books/ios/isometric3.png"  width="full" alt="isometric3.png" /> 
+
+<Image
+  src="/static/books/ios/isometric3.png"
+  width="full"
+  alt="isometric3.png"
+/>{" "}
 
 ### Navigation Bar {#attributes-navigation-bar}
 
 <div className="text-sm  compact">
 
+|                       |                                                                     |
+| --------------------- | ------------------------------------------------------------------- |
+| Font name             | Font face used for navigation bar title                             |
+| Font size             | Font size of navigation bar title. It's a unitless number, e.g. 20. |
+| Title color           | Color for navigation bar title                                      |
+| Bar button text color | Text color for navigation bar buttons                               |
+| Background color      | Applies to navigation bar's background                              |
+| Bar button font name  | Font name for navigation bar button.                                |
+| Bar button font size  | Font size navigation bar button.                                    |
+| Set Translucent       | Translucent property for navigation bar. It's a boolean value.      |
 
-| | |
-|--|--|
-|Font name| Font face used for navigation bar title|
-|Font size| Font size of navigation bar title. It's a unitless number, e.g. 20.|
-|Title color| Color for navigation bar title|
-|Bar button text color| Text color for navigation bar buttons|
-|Background color| Applies to navigation bar's background|
-|Bar button font name| Font name for navigation bar button.|
-|Bar button font size| Font size navigation bar button.|
-|Set Translucent| Translucent property for navigation bar. It's a boolean value.|
 </div>
 
-<Image src="/static/books/ios/group-navigation-bar.png"  width="full" alt="Navigation bar group" /> 
+<Image
+  src="/static/books/ios/group-navigation-bar.png"
+  width="full"
+  alt="Navigation bar group"
+/>{" "}
 
 ### Search Bar {#attributes-search-bar}
 
 <div className="text-sm  compact">
 
+|                  |                                  |
+| ---------------- | -------------------------------- |
+| Background color | Background color for search bar. |
 
-| | |
-|--|--|
-|Background color| Background color for search bar.|
 </div>
 
-<Image src="/static/books/ios/group-search-bar.png"  width="full" alt="Search bar group" /> 
-
-
+<Image
+  src="/static/books/ios/group-search-bar.png"
+  width="full"
+  alt="Search bar group"
+/>{" "}
 
 <Admonition type="info" title="Note">
 
@@ -242,49 +258,46 @@ While iOS allows developers to set a background color on search bars, it forbids
 
 </Admonition>
 
-
-
 <Admonition type="info" title="Note">
 
 Starting from iOS 11, search bar is part of the navigation bar. So this attribute has no effect on iOS 11 and later. The color of the whole navigation bar, including the search bar, can be changed using the "Background color" attribute of [navigation bar](#attributes-navigation-bar)
 
 </Admonition>
 
-
 ### FAQ and Chat {#attributes-footers}
 
 <div className="text-sm  compact">
 
+|                                    |                                                                                                 |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Chat send button color             | Color for send button on conversation chat screen.                                              |
+| Timestamp text color               | Applies to the chat Timestamps in the SDK.                                                      |
+| FAQ yes button color               | Color for FAQ helpfulness choice "YES"                                                          |
+| FAQ no button color                | Color for FAQ helpfulness choice "NO"                                                           |
+| Screenshot tutorial button color   | Color for screenshot request tutorial button and back button in screenshot tutorial             |
+| Screenshot attach button color     | Color for screenshot request attach button and take screenshot button in screenshot tutorial    |
+| Media message background color     | Color of the background shown in the attachment message or QuickSearch Bot FAQs message bubble. |
+| Media message border color         | Color of the border shown in the attachment message bubble.                                     |
+| Media message action color         | Color for the action button in the media message.                                               |
+| Message error color                | Color of the error thrown for a message.                                                        |
+| User message text color            | Color for the text in the user chat bubble                                                      |
+| Agent message text color           | Color for the text in the agent chat bubble                                                     |
+| User message background color      | Color for background of the user chat bubble.                                                   |
+| Agent message background color     | Color for background of the admin chat bubble.                                                  |
+| Typing indicator color             | Color for the dots shown in the typing indicator                                                |
+| Selectable Option Text Color       | The color of the text in option pills of the QuickSearch Bot or skip button.                    |
+| Selectable Option Background Color | The background color of the option pills of the QuickSearch Bot or skip button.                 |
+| Selectable Option Border Color     | The border color of the option pills of the QuickSearch Bot or skip button.                     |
+| Field Background color             | The background color of the reply field.                                                        |
+| Field border color                 | The border color of the reply field.                                                            |
+| Notification color                 | Color of the dot indicator on the 'jump' button to indicate there are new messages.             |
+| Links in FAQ color                 | Color of the links inside FAQs                                                                  |
 
-| | |
-|--|--|
-|Chat send button color| Color for send button on conversation chat screen.|
-|Timestamp text color| Applies to the chat Timestamps in the SDK.|
-|FAQ yes button color| Color for FAQ helpfulness choice "YES"|
-|FAQ no button color| Color for FAQ helpfulness choice "NO"|
-|Screenshot tutorial button color| Color for screenshot request tutorial button and back button in screenshot tutorial|
-|Screenshot attach button color| Color for screenshot request attach button and take screenshot button in screenshot tutorial|
-|Media message background color| Color of the background shown in the attachment message or QuickSearch Bot FAQs message bubble.|
-|Media message border color| Color of the border shown in the attachment message bubble.|
-|Media message action color| Color for the action button in the media message.|
-|Message error color| Color of the error thrown for a message.|
-|User message text color| Color for the text in the user chat bubble|
-|Agent message text color| Color for the text in the agent chat bubble|
-|User message background color| Color for background of the user chat bubble.|
-|Agent message background color| Color for background of the admin chat bubble.|
-|Typing indicator color|  Color for the dots shown in the typing indicator|
-|Selectable Option Text Color| The color of the text in option pills of the QuickSearch Bot or skip button.|
-|Selectable Option Background Color| The background color of the option pills of the QuickSearch Bot or skip button.|
-|Selectable Option Border Color| The border color of the option pills of the QuickSearch Bot or skip button.|
-|Field Background color| The background color of the reply field.|
-|Field border color| The border color of the reply field.|
-|Notification color| Color of the dot indicator on the 'jump' button to indicate there are new messages. |
-|Links in FAQ color| Color of the links inside FAQs|
 </div>
 
-<Image src="/static/books/ios/Conversational-Screen.png"  width="full" /> 
+<Image src="/static/books/ios/Conversational-Screen.png" width="full" />{" "}
 
-<Image src="/static/books/ios/FAQ-and-Answer-Bot.png"  width="full" /> 
+<Image src="/static/books/ios/FAQ-and-Answer-Bot.png" width="full" />{" "}
 
 ### Message Retry Badge {#attributes-message-retry-badge}
 
@@ -292,49 +305,42 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 <div className="text-sm  compact">
 
+|                  |                                                                |
+| ---------------- | -------------------------------------------------------------- |
+| Text color       | Color for the exclamation mark (**!**) on message retry badge. |
+| Background color | Retry badge's background color                                 |
 
-| | |
-|--|--|
-|Text color| Color for the exclamation mark (**!**) on message retry badge.|
-|Background color| Retry badge's background color|
 </div>
 
 ### Conversation Resolution {#conversation-resolution}
 
-<Image src="/static/books/ios/skinning.resolution.png"  width="full" /> 
+<Image src="/static/books/ios/skinning.resolution.png" width="full" />{" "}
 
 <div className="text-sm  compact">
 
-
-| | |
-|--|--|
-|Background color| Background color for conversation resolution footer|
-|Text color| Color for labels on conversation resolution footer|
-|Rating star color| Color for rating stars when customer satisfaction survey is enabled|
-|Yes button color| Color for confirmation button "YES"|
-|No button color| Color for confirmation button NO"|
+|                   |                                                                     |
+| ----------------- | ------------------------------------------------------------------- |
+| Background color  | Background color for conversation resolution footer                 |
+| Text color        | Color for labels on conversation resolution footer                  |
+| Rating star color | Color for rating stars when customer satisfaction survey is enabled |
+| Yes button color  | Color for confirmation button "YES"                                 |
+| No button color   | Color for confirmation button NO"                                   |
 
 </div>
-
 
 ## Using Custom Fonts {#custom-fonts}
 
 **Step 1:** Add the font to your project. Edit your app's plist file `<App-name-Info.plist>` and add a key `"Fonts provided by application"` to it. Under the key, list out file names of all the fonts you want to use in your app and in support. If you've already listed such fonts, skip this step.
 
-
-<Image src="/static/books/ios/custom-fonts.png"  width="major" centered /> 
+<Image src="/static/books/ios/custom-fonts.png" width="major" centered />{" "}
 
 **Step 2:** Copy the font's full name. To do this, select the font in Finder and hit <kbd><b>Command</b> ⌘</kbd>+<kbd>I</kbd> (Get Info).
 
-
-<Image src="/static/books/ios/font-info.png"  width="major" centered /> 
-
+<Image src="/static/books/ios/font-info.png" width="major" centered />{" "}
 
 **Step 3:** Paste the font name into HelpshiftConfig.plist, wherever necesary
 
-
-<Image src="/static/books/ios/fontconfig.png"  width="major" centered /> 
-
+<Image src="/static/books/ios/fontconfig.png" width="major" centered />{" "}
 
 <Admonition type="info" title="Note">
 
@@ -342,15 +348,15 @@ Starting 5.10.0, if you need to apply font name and bold font name to Single FAQ
 
 </Admonition>
 
-
-<Image src="/static/books/ios/custom-fonts-single-FAQ.png"  width="major" centered /> 
+<Image
+  src="/static/books/ios/custom-fonts-single-FAQ.png"
+  width="major"
+  centered
+/>{" "}
 
 **Step 4:** Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
 
-
-<Image src="/static/books/ios/in-use.png"  width="quarter" centered /> 
-
-
+<Image src="/static/books/ios/in-use.png" width="quarter" centered />{" "}
 
 ## Orientation support {#orientation-support}
 

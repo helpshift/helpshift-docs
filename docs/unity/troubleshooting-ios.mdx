@@ -4,20 +4,28 @@ title: Troubleshooting
 description: Learn more about Troubleshooting
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Troubleshooting {#troubleshoot}
-
 
 ## SDK integration {#integration-issues}
 
 ### Xcode 12.3 & above integration build error : Building for iOS, but the embedded framework ‘Helpshift.framework’ was built for iOS + iOS Simulator. {#Xcode12}
 
 **Workaround : ** Under Build Settings - Navigate to Validate Workspace - Toggle setting back to Yes/No but not to Yes (Error).
-
 
 <Admonition type="info" title="Note">
 
@@ -26,8 +34,7 @@ Due to a bug in Xcode 12.3, this setting is visible in Xcode but isn’t actuall
 
 </Admonition>
 
-
-<Image src="/static/books/ios/validate_workspace_flag.png"  width="full" /> 
+<Image src="/static/books/ios/validate_workspace_flag.png" width="full" />{" "}
 
 ### 5.5.0 SDK Update {#5}
 
@@ -35,37 +42,37 @@ We found a bug for the following scenario - for SDK 5.5.0, when New Issue Automa
 
 **Action needed:**
 
-* If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
-* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [5.5.1 SDK](/unity/release-notes-unity#v551).
+- If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
+- If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [5.5.1 SDK](/unity/release-notes-unity#v551).
 
 ### Support for Unity 2019.3.x and above for plugin version 5.3.x and below {#2019}
 
 The Xcode project structure has changed as of Unity 2019.3 to support Unity integration into native iOS applications via Unity as a Library. Refer [Unity Docs](https://docs.unity3d.com/Manual/StructureOfXcodeProject.html) for details.
 
-We use an open source project called `mod-pbxproj` to manipulate the XCode project and make the integration seamless. This script doesn’t work well with the new changes introduced in the Unity 2019.3.  Here we recommend you update to our [latest](https://developers.helpshift.com/unity/getting-started-ios#getting-sdk) unity SDK version in which the fix is already supported. If you are using SDK version 5.3.x and below then it requires a few manual steps to get Helpshift SDK working. 
+We use an open source project called `mod-pbxproj` to manipulate the XCode project and make the integration seamless. This script doesn’t work well with the new changes introduced in the Unity 2019.3. Here we recommend you update to our [latest](https://developers.helpshift.com/unity/getting-started-ios#getting-sdk) unity SDK version in which the fix is already supported. If you are using SDK version 5.3.x and below then it requires a few manual steps to get Helpshift SDK working.
 
 #### 1. Modify mod_pbxproj.py script as per the following instructions:
 
-   1. Inside Unity Editor, open Assets->Helpshift->Editor->mod_pbxproj.py
-   2. On line 1349, add `('PBXHeadersBuildPhase', True),` to the sections = [...] array.
-   3. Failing to do so will result in Xcode build Error : 'UnityFramework/UnityFramework.h' file not found
+1.  Inside Unity Editor, open Assets->Helpshift->Editor->mod_pbxproj.py
+2.  On line 1349, add `('PBXHeadersBuildPhase', True),` to the sections = [...] array.
+3.  Failing to do so will result in Xcode build Error : 'UnityFramework/UnityFramework.h' file not found
 
 #### 2. When the final build is ready, Open Xcode project and do the following:
 
-   1. Go to UnityFramework target build settings and set Always Embed Swift Standard Libraries to No  <Image src="/static/books/unity/unity_build_settings-2019.png"  width="full" /> 
-   2. Failing to do so will result in IPA validation to fail when you upload your build to App Store.
+1.  Go to UnityFramework target build settings and set Always Embed Swift Standard Libraries to No <Image src="/static/books/unity/unity_build_settings-2019.png"  width="full" />
+2.  Failing to do so will result in IPA validation to fail when you upload your build to App Store.
 
 ### "Nothing to import!" message on importing helpshift unity package {#nothing-to-import-message}
 
-<br/>
+<br />
 ![nothing-to-import.png](/static/books/unity/nothing-to-import.png "nothing-to-import.png")
 
 Only the following versions of Unity are compatible with APFS on macOS 10.13 High Sierra:
 
-* 5.5.5 patch 2 or later (install Visual Studio for Mac for script editing)
-* 5.6.4 patch 3 or later
-* 2017.1.2 patch 3 or later
-* 2017.2.0 patch 3 or later
+- 5.5.5 patch 2 or later (install Visual Studio for Mac for script editing)
+- 5.6.4 patch 3 or later
+- 2017.1.2 patch 3 or later
+- 2017.2.0 patch 3 or later
 
 Using any other Unity version causes the assets to not appear in the Unity Editor.
 
@@ -84,27 +91,30 @@ If you don't see localized strings when the game is built using Unity 5.4, make 
 If you see Android resources are added to the Xcode project when the game is built using Unity 5.4, make sure the platform for Plugins/Android/appcompat and Plugins/Android/helpshift are set to `Android`
 
 ### App crashes on selecting screenshot button {#app-crashes-on-screenshot-button}
+
 Applicable to version 2.4.0 and above on iOS 10
 
 Add `NSPhotoLibraryUsageDescription` key in you application info plist file
-
 
 ### Resources missing in the SDK {#resources-missing-inside-app}
 
 If you are seeing resources like chat bubbles, attachment buttion icon missing, please follow the below steps:
 
-#### **Step 1:** Select the `HsUIResourceBundle` in the project  
+#### **Step 1:** Select the `HsUIResourceBundle` in the project
 
-<br/>
-<Image src="/static/books/unity/select-ios-in-project.png"  width="full" alt="select-ios-in-project.png" /> 
+<br />
+<Image
+  src="/static/books/unity/select-ios-in-project.png"
+  width="full"
+  alt="select-ios-in-project.png"
+/>{" "}
 
-Select the  `HsUIResourcesBundle` inside the project. You can locate the bundle at path `Assets/Helpshift/Plugins/iOS`
+Select the `HsUIResourcesBundle` inside the project. You can locate the bundle at path `Assets/Helpshift/Plugins/iOS`
 
-#### **Step 2:** Select iOS in the file inspecter  
+#### **Step 2:** Select iOS in the file inspecter
 
-<br/>
-![select-ios-in-inspector.png](/static/books/unity/select-ios-in-inspector.png
- "select-ios-in-inspector.png")
+<br />
+![select-ios-in-inspector.png](/static/books/unity/select-ios-in-inspector.png "select-ios-in-inspector.png")
 
 Check `iOS` in the file inspector. This needs to be done for the `HsLocalization` bundle as well.
 
@@ -114,7 +124,7 @@ From unity 5.4.x and above, we have observed that unity does not add .bundle fil
 
 ### Strings missing in the SDK UI {#strings-missing-in-sdk}
 
-<br/>
+<br />
 ![](/static/books/ios/no-strings-found.jpg)
 
 If you cannot see strings in the SDK UI, go to the XCode project and navigate to the `Build Phases -> Copy Bundle Resources`
@@ -122,7 +132,7 @@ The issue here is that the HSLocalization files have not been added correctly. T
 
 If you are using the Facebook or any other plugin which uses the [XCodeEditor for Unity](https://github.com/dcariola/XCodeEditor-for-Unity) project, please follow the below steps to fix the problem.
 
-#### **Step 1:** Increase PostProcessBuildAttribute  
+#### **Step 1:** Increase PostProcessBuildAttribute
 
 Make the value of the `PostProcessBuild` attribute in the `HelpshiftPostProcess.cs` file to something greater than all other attribute values.
 
@@ -134,6 +144,7 @@ By using the above method, we essentially make sure that Helpshift's `PostProces
 If you still can't get it to work or if you have any other concerns, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
 ### CFBundleShortVersionString crash {#CFBundleShortVersionString}
+
 If you are seeing app crashes just after launching the app, please make sure to set the **CFBundleShortVersionString** (Bundle versions string, short) in the **<YOUR_APP\>-Info.plist** file of your XCode project.
 
 ```objc
@@ -145,8 +156,10 @@ libc++abi.dylib: terminating with uncaught exception of type NSException
 ```
 
 ### Incorrect iOS initialization code crash {#initialization-crash}
+
 If just after launching the app, you get a crash that has `readLocalConfig` in it's call stack, then make sure that you're using the correct Helpshift initialization code for iOS.
 When testing again, after using the correct initialization code, delete the app from your device or simulator and do a fresh install.
+
 ```objc
 2014-08-26 13:28:54.862 HS Demo[96593:3a03] -[__NSCFString objectAtIndex:]: unrecognized selector sent to instance 0x9e27a30
 2014-08-26 13:28:54.865 HS Demo[96593:3a03] *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '-[__NSCFString objectAtIndex:]: unrecognized selector sent to instance 0x9e27a30'
@@ -183,6 +196,7 @@ If you are seeing the followin crashe just after launching the app, please clean
 ```objc
 2019-11-08 15:32:06.910946-0500 jw2[261:6106] *** Terminating app due to uncaught exception \'NSUnknownKeyException\', reason: \'[<HsSingleFaqViewController 0x128b31000> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key contactUsButtonTrailingConstraint.\'
 ```
+
 ## Known issues {#known-issues}
 
 ### Push notification behavior when app is killed {#notification-with-app-killed}
@@ -190,13 +204,11 @@ If you are seeing the followin crashe just after launching the app, please clean
 If the app is killed and the end user taps on Helpshift's push notification, the app will open but will not redirect to the SDK screens. This happens only if your app has a splash screen shown to the user on the app launch.
 In this scenario, the `application(_:didReceiveRemoteNotification:fetchCompletionHandler:)` method is called by system and Helpshift's `handleRemoteNotification API` is called from it which takes the rootViewController. Since the rootViewController is not initialized when the splash screen is showing, SDK is not able to render the UI. If you are able to provide a initialized rootViewController in this case, SDK will work properly in this scenario as well.
 
-
 <Admonition type="info" title="Note">
 
 This behavios does not happen if you use UNUserNotifications framework for the push notifications.
 
 </Admonition>
-
 
 ### PNG crush compilation errors {#png-crush-cimpilation-problem}
 
@@ -208,13 +220,14 @@ For more details on the root issue, please [refer here](http://stackoverflow.com
 
 ### Unsupported Architectures Found While Submitting App to App Store {#unsupported-architectures-found}
 
-Since Unity doesn't support `xcframework` packaging, we ship our SDK with `framework` packaging. This requires us to strip non-valid architectures (x86_64 and i386) while creating an archive. We achieve this by adding a Run Script phase named as `HS Strip Simulator Slices`. It executes `strip_frameworks.sh` script and removes non-valid architectures (x86_64 and i386) while creating an archive.    
+Since Unity doesn't support `xcframework` packaging, we ship our SDK with `framework` packaging. This requires us to strip non-valid architectures (x86_64 and i386) while creating an archive. We achieve this by adding a Run Script phase named as `HS Strip Simulator Slices`. It executes `strip_frameworks.sh` script and removes non-valid architectures (x86_64 and i386) while creating an archive.
 
 Now while submitting the app to App Store if you ran into an issue which states something like - "Unsupported Architectures. The executable for XYZ.app/Frameworks/HelpshiftX.framework contains unsupported architectures '[x86_64/i386]'". This probably means `strip_frameworks.sh` was not executed or didn't get executed as expected.
 
 1. First make sure `strip_frameworks.sh` has executable permission. To find this script, go to directory where Xcode project is created from Unity. Under that directory you will find script under this path `Frameworks/Plugins/iOS/Helpshift.framework/`. You can give executable permission by running command `chmod +x strip_framework.sh`. Now, archive project and check again, if the issue persists then go to next step.
 
 2. Replace the contents of `strip_frameworks.sh` with following -
+
 ```
 ################################################################################
 #
@@ -291,4 +304,5 @@ for file in $(find . -type f); do
   fi
 done
 ```
+
 Now, archive project and check again. This should ideally resolve your issue. We will be updating our script in Helpshift unitypackage with the above changes soon.

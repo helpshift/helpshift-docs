@@ -4,8 +4,20 @@ title: Tracking
 description: "Attach metadata via Web Chat widget."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Tracking {#tracking}
 
@@ -13,35 +25,32 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Attach metadata via Web Chat widget.
 
-
 </Intro>
 
-
 ## Adding Tags to Conversations {#adding-tags}
+
 You can attach tags while reporting an issue by passing them to the `helpshiftConfig` object at the time of initialization. You can pass an **array of strings** which will get added as Tags when the issue is created.
 
 For example:
+
 ```javascript
 // Make this change to the embed code placed before the closing </body> tag.
 
 window.helpshiftConfig = {
   platformId: "<YOUR_APP_ID>",
   domain: "<YOUR_DOMAIN>",
-  tags: ["foo", "bar"]
+  tags: ["foo", "bar"],
 };
 ```
-
 
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
-* The attached tags must exactly match the tags present on the dashboard.
+- Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- The attached tags must exactly match the tags present on the dashboard.
 
 </Admonition>
-
-
 
 ## Set Custom Issue Fields {#set-custom-issue-fields}
 
@@ -50,49 +59,47 @@ If you want to set Custom Issue Fields at the time of Issue creation, use the fo
 ```javascript
 Helpshift("setCustomIssueFields", {
   // Key of the Custom Issue Field
-  "version": {
+  version: {
     // Type of Custom Issue Field
     type: "number",
     // Value to set for Custom Issue Field
-    value: "10.0"
+    value: "10.0",
   },
-  "userInfo": {
+  userInfo: {
     // Type of Custom Issue Field
     type: "singleline",
     // Value to set for Custom Issue Field
-    value: "We have a new user!"
-  }
+    value: "We have a new user!",
+  },
 });
 ```
 
 The following are the valid values for the type property of a Custom Issue Field.
 
-* singleline
-* multiline
-* number
-* checkbox
-* dropdown
-* date
+- singleline
+- multiline
+- number
+- checkbox
+- dropdown
+- date
 
 Compatibility table for type and values:
 
-| Type | Value | Comments |
-| --- | --- | --- |
-| singleline | string | Character limit of 255 |
-| multiline | string | Character limit of 100,000 |
-| number | string |  |
-| dropdown | string | Drop-down options should exist for the given Custom Issue Field |
-| date | number | Epoch time. For example - **Date.now()** |
-| checkbox | boolean |   |
-
+| Type       | Value   | Comments                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | Character limit of 255                                          |
+| multiline  | string  | Character limit of 100,000                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
+| date       | number  | Epoch time. For example - **Date.now()**                        |
+| checkbox   | boolean |                                                                 |
 
 <Admonition type="info" title="Note">
 
-* This API should be called before the Issue is created (i.e. before the Webchat launcher is clicked or the "[open](/web-chat/api#open-widget)" API is called). You won't be able to update Custom Issue Fields after the Issue is created.
-* If any of the keys, types or values are invalid, that particular Custom Issue Field will get dropped.
+- This API should be called before the Issue is created (i.e. before the Webchat launcher is clicked or the "[open](/web-chat/api#open-widget)" API is called). You won't be able to update Custom Issue Fields after the Issue is created.
+- If any of the keys, types or values are invalid, that particular Custom Issue Field will get dropped.
 
 </Admonition>
-
 
 ## Replace Custom Issue Fields {#replace-custom-issue-fields}
 
@@ -101,25 +108,23 @@ If you want to clear previous Custom Issue Fields and set new fields, use the fo
 ```javascript
 Helpshift("replaceCustomIssueFields", {
   // Key of the Custom Issue Field
-  "isMobile": {
+  isMobile: {
     // Type of Custom Issue Field
     type: "checkbox",
     // Value to set for Custom Issue Field
-    value: true
+    value: true,
   },
-  "browser": {
+  browser: {
     // Type of Custom Issue Field
     type: "dropdown",
     // Value to set for Custom Issue Field
-    value: "chrome"
-  }
+    value: "chrome",
+  },
 });
 ```
-
 
 <Admonition type="info" title="Note">
 
 This API can be used when you want to navigate from one page to another and set different Custom Issue Fields for each page.
 
 </Admonition>
-

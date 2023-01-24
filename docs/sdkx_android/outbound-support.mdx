@@ -4,30 +4,34 @@ title: Outbound Support
 description: "With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Outbound Support {#outbound-support}
 
 <Intro>
 
-
 With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
 
-
 </Admonition>
-
 
 The steps to use this feature are the following -
 
@@ -37,13 +41,13 @@ To generate the link for outbound support, on your Helpshift dashboard, go to **
 
 You should see a **Create link** button. Click on the Create link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
 
-<Image src="/static/books/helpshiftx/generate-link-box.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
 
 At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
 
 YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp , myAppSupport, etc.
 
-<Image src="/static/books/helpshiftx/proactive-link.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
 
 ## Delegate push notification data to Helpshift {#delegate-notification-data}
 
@@ -55,9 +59,9 @@ To pass the outbound support data to Helpshift, follow these steps -
 
 3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
 
-For example - 
+For example -
 
-*Following code shows how to handle incoming push notification and posting it on the notification bar of the device*
+_Following code shows how to handle incoming push notification and posting it on the notification bar of the device_
 
 ```java
 
@@ -65,17 +69,17 @@ For example -
 public void onMessageReceived(RemoteMessage remoteMessage) {
   Map<String, String> data = remoteMessage.getData();
     String origin = data.get("origin");
-    
+
     // This is a notification from Helpshift push notification system
     if (origin != null && origin.equals("helpshift")) {
       Helpshift.handlePush(data);
     } else {
     // This is not a notification from Helpshift system
     // This is your existing push notification system
-    
-    // Sample key in notification data where you will put the proactive support link generated from Helpshift dashboard  
-    String proactiveUrl = data.get("proactive_link"); 
-    
+
+    // Sample key in notification data where you will put the proactive support link generated from Helpshift dashboard
+    String proactiveUrl = data.get("proactive_link");
+
     // Sample code to generate Push notification
     Context context = getApplicationContext();
     Intent intent = new Intent(context, HandleNotificationActivity.class); // Your notification handling class
@@ -92,7 +96,7 @@ public void onMessageReceived(RemoteMessage remoteMessage) {
             .setSmallIcon(R.drawable.icon) // Set your icon for notification
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-            .setChannelId(CHANNEL_ID); // Set your app's channelId     
+            .setChannelId(CHANNEL_ID); // Set your app's channelId
       if (builder != null) {
         Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -103,12 +107,12 @@ public void onMessageReceived(RemoteMessage remoteMessage) {
 
 ```
 
-When the user clicks on the notification,  `HandleNotificationActivity` activity is started (as specified in the above code sample).
-To delegate push notification data to Helpshift SDK, call `Helpshift.handleProactiveLink()` in **HandleNotificationActivity's onCreate()** method. 
+When the user clicks on the notification, `HandleNotificationActivity` activity is started (as specified in the above code sample).
+To delegate push notification data to Helpshift SDK, call `Helpshift.handleProactiveLink()` in **HandleNotificationActivity's onCreate()** method.
 
-For Example - 
+For Example -
 
-*Following code shows how to delegate push notification data by calling `Helpshift.handleProactiveLink()` to Helpshift SDK.*
+_Following code shows how to delegate push notification data by calling `Helpshift.handleProactiveLink()` to Helpshift SDK._
 
 ```java
 
@@ -135,14 +139,11 @@ Setting local API config enables the Helpshift SDK to merge configuration from b
 
 We will use this configuration for current issue as well as next issue filed in same session.
 
-
 <Admonition type="info" title="Note">
 
 You need to call this API after [Helpshift.install() API](/sdkx_android/getting-started#start-using) and before Helpshift.handleProactiveLink()
 
-
 </Admonition>
-
 
 Implement public interface `com.helpshift.proactive.HelpshiftProactiveAPIConfigCollector` and call `Helpshift.setHelpshiftProactiveConfigCollector("<instance of HelpshiftProactiveAPIConfigCollector>")` method to initialize the config collector.
 
@@ -152,7 +153,7 @@ We will merge this config and the config embedded in the outbound support link. 
 
 For example -
 
-*Following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method.*
+_Following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method._
 
 ```java
 
@@ -161,31 +162,31 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
   public void onCreate() {
     super.onCreate();
     //...
-    
+
     // initialise proactiveConfig collector
     Helpshift.setHelpshiftProactiveConfigCollector(this);
-    
+
     //...
   }
 
   //...
-  
+
   @Override
   public Map<String, Object> getAPIConfig() {
-    
+
     // config map
     Map<String, Object> localConfig = new HashMap<>();
-    
+
     // set tags for tracking
     localConfig.put("tags", new String[]{"currentUserTag", "currentUserLevel"});
-    
-    // set custom issue fields 
+
+    // set custom issue fields
     Map<String, Object> cifMap = new HashMap<>();
     Map<String, String> isPro = new HashMap<>();
     isPro.put("type", "boolean");
     isPro.put("value", "true");
     cifMap.put("is_pro", isPro);
-    
+
     localConfig.put("customIssueFields", cifMap);
     ..etc
     return localConfig;
@@ -193,5 +194,3 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
 }
 
 ```
-
-

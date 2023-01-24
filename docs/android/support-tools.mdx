@@ -4,16 +4,26 @@ title: Helpshift APIs
 description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements.You can call only specific screens from the SDK based on thefunctionality you want to expose in your app.There are 6 different ways in which the Helpshift SDK can be presented in your app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
 Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
 
 </Admonition>
-
 
 # Helpshift APIs {#support-tools}
 
@@ -25,9 +35,7 @@ functionality you want to expose in your app.
 
 There are 6 different ways in which the Helpshift SDK can be presented in your app.
 
-
 </Intro>
-
 
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
@@ -38,7 +46,6 @@ Example: `Support.showConversation(MyActivity.this);` where MyActivity.this is t
 ![newConversation.png](/static/books/android/conversation-bot.png "newConversation.png")
 
 ![showConversation.png](/static/books/android/showconversation.png "showConversation.png")
-
 
 </SideBySide>
 
@@ -51,13 +58,11 @@ user starts a new conversation, this API call will show the conversation
 activity. The conversation will ensue until it is resolved (and the
 resolution is accepted by the user) or rejected by the agent.
 
-
 <Admonition type="info" title="Note">
 
 Applicable to SDK version 3.10.0 and above.
 
 </Admonition>
-
 
 ## Integrating FAQs {#faqs-view}
 
@@ -68,7 +73,6 @@ Example: `Support.showFAQs(MyActivity.this);` where MyActivity.this is the Activ
 ![showFAQs.png](/static/books/android/showfaqs.png "showFAQs.png")
 
 ![faqSearch.png](/static/books/android/faqsearch.png "faqSearch.png")
-
 
 </SideBySide>
 
@@ -81,38 +85,34 @@ Check out [SDK Configuration](/android/sdk-configuration/) for more.
 
 Starting v3.11.0 onwards, we have introduced FAQ filtering capability by tags. With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
 Typical cases why you would want to use FAQ filtering are :
-* You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
-* You may want to show specific FAQs based on the device. E.g. a set of FAQs for Tablet vs. Phone
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for Tablet vs. Phone
 
 FAQ filtering is a 2 step approach
 
 1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘phone’ & ‘tablet’.
- <Image src="/static/books/android/faq-filtering.png"  width="full" /> 
+   <Image src="/static/books/android/faq-filtering.png" width="full" />{" "}
 2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
-
 
 <Admonition type="info" title="Note">
 
 Helpshift has 2 types of tags mainly `Issue Tags` & `Search Tags`.
 
-* Issue tags are used to filter the FAQ list on the SDK with the filter rules.
-* Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
 
 </Admonition>
 
-
 #### How to use FAQ filtering
-This will  be a config option which will be supported by the showFAQs and showFAQSection APIs.
+
+This will be a config option which will be supported by the showFAQs and showFAQSection APIs.
 
 Usage :
-
 
 <Tabs>
 
 <TabItem value="Using ApiConfig" label="Using ApiConfig">
-
-
-
 
 ```java
 
@@ -127,11 +127,10 @@ Usage :
 
 The `withTagsMatching` option will take a FaqTagFilter object which takes two parameters
 
-* operator : one of `FaqTagFilter.Operator.AND`, `FaqTagFilter.Operator.OR`, `FaqTagFilter.Operator.NOT` which will serve as conditional operators for the given tags (String).
-* tags : the actual tags in the query (String Array)
+- operator : one of `FaqTagFilter.Operator.AND`, `FaqTagFilter.Operator.OR`, `FaqTagFilter.Operator.NOT` which will serve as conditional operators for the given tags (String).
+- tags : the actual tags in the query (String Array)
 
 Example :
-
 
 ```java
 
@@ -146,11 +145,8 @@ Example :
 
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
-
-
 
 ```java
 
@@ -166,11 +162,10 @@ Example :
 
 The `withTagsMatching` option will be a HashMap containing 2 keys
 
-* operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
-* tags : the actual tags in the query (String Array)
+- operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
+- tags : the actual tags in the query (String Array)
 
 Example :
-
 
 ```java
 
@@ -186,11 +181,9 @@ Example :
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ## Showing a Particular FAQ Section {#faq-section-view}
 
@@ -202,8 +195,7 @@ You can use the API call `Support.showFAQSection(Activity a, String sectionPubli
 
 **You'll need the `publish-id` of the section in this case:**
 
-<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -219,57 +211,54 @@ You can use the API call `Support.showSingleFAQ(Activity a, String questionPubli
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
 Check out [SDK Configuration](/android/sdk-configuration/) for more.
 
 ## Guided Issue Filing {#dynamic-forms}
 
-
 <Admonition type="info" title="Note">
 
- Applicable to version 4.1.0 and above.
+Applicable to version 4.1.0 and above.
 
 </Admonition>
 
-
-
 Guided issue filing is a feature to capture more context when a user interacts with Helpshift Support. For example, lets say you want the user to file a ticket in case of a complaint and also in case he want to suggest a feature. With guided issue filing, you will be able to distinguish between these two use cases and take required actions (like assigning appropriate agents).
 
-Guided Issue Filing can be achieved using Dynamic Forms. 
+Guided Issue Filing can be achieved using Dynamic Forms.
 
 Dynamic Forms also enable better FAQ discovery. Lets say there is a frequently viewed FAQ or FAQ section buried deep in your FAQ hierarchy. Some users might miss it out and opt to file an issue instead. With dynamic forms, you can create a new section (like top FAQs) that links to that FAQ section. Or create and alternate title to an FAQ (like 'How do I pay for gems' instead of 'Billing').
 
 Dynamic Forms are built using one or more **Flow** types.
 
-
 The app configures a dynamic form using 'flows'. There are 6 types of
 flows:
 
-1. Flow to show conversation screen
+1.  Flow to show conversation screen
 
-    * `new ConversationFlow(int titleStringResId, ApiConfig config) `
-    * similar to the showConversation: API
+    - `new ConversationFlow(int titleStringResId, ApiConfig config) `
+    - similar to the showConversation: API
 
-2. Flow to show all FAQs
+2.  Flow to show all FAQs
 
-    * `new FAQsFlow(int titleStringResId, ApiConfig config)`
-    * similar to the showFAQs: API
+    - `new FAQsFlow(int titleStringResId, ApiConfig config)`
+    - similar to the showFAQs: API
 
-3. Flow to show a FAQ section
+3.  Flow to show a FAQ section
 
-    * `new FAQSectionFlow(int titleStringResId, String sectionPublishId, ApiConfig config)`
-    * similar to the showFAQSection: API
+    - `new FAQSectionFlow(int titleStringResId, String sectionPublishId, ApiConfig config)`
+    - similar to the showFAQSection: API
 
-4. Flow to show a single FAQ
-    * `new SingleFAQFlow(int titleStringResId, String questionPublishId, ApiConfig config)`
-    * similar to the showSingleFAQ: API
+4.  Flow to show a single FAQ
 
-5. Flow to show a nested Dynamic form
-    * `new DynamicFormFlow(int titleStringResId, List<Flow> nextDynamicFormFlowList)`
+    - `new SingleFAQFlow(int titleStringResId, String questionPublishId, ApiConfig config)`
+    - similar to the showSingleFAQ: API
 
-6. Flow to perform a custom action
+5.  Flow to show a nested Dynamic form
+
+    - `new DynamicFormFlow(int titleStringResId, List<Flow> nextDynamicFormFlowList)`
+
+6.  Flow to perform a custom action
 
     For Example,
 
@@ -297,7 +286,6 @@ flows:
           }
         }
 
-
 Each flow needs a display text. This will be the text that will be displayed in the list item. It has to be localized String resource . Some flows also expect a 'config' Map. This will be the config that is passed to the subsequent Helpshift Support API. For example any config you wish apply to the conversation screen needs to be passed to the ConversationFlow(int titleStringResId, Map config)API. This is also where you will add your custom HSTags. These APIs do not add any custom meta data by default. You need to add your custom meta data including HSTags at your own.
 
 The app can create any number of flows. These flows are then grouped
@@ -306,41 +294,37 @@ display a dynamic form:
 
 1. Launch a new activity to show the Dynamic Form Screen.
 
-    * `Support.showDynamicForm(@NonNull Activity activity, @NonNull String title, @NonNull List<Flow> flowList)`
+   - `Support.showDynamicForm(@NonNull Activity activity, @NonNull String title, @NonNull List<Flow> flowList)`
 
 2. Get an **embeddable Fragment** to show in your activity (for eg. you
    can use this in your Navigation Drawer to replace the current
    fragment)
 
-    * `Support.getDynamicFormFragment(@NonNull Activity activity, @NonNull String title, @NonNull List<Flow> flowList)`
-
+   - `Support.getDynamicFormFragment(@NonNull Activity activity, @NonNull String title, @NonNull List<Flow> flowList)`
 
 Each dynamic form needs :
 
 1. **Title**: This will be the title displayed on the action bar
 2. **flows**: An List of supported Flow objects as discussed above.
 
-
 ## Embeddable Support Fragments {#embeddable-fragments}
-
 
 <Admonition type="info" title="Note">
 
- Applicable to version 4.1.0 and above.
+Applicable to version 4.1.0 and above.
 
 </Admonition>
-
 
 Helpshift now supports embeddable SupportFragments which can be used to
 embed a Helpshift support view inside your application's Activity. These
 support fragments can also be configured by providing a config map just
 like the previous Helpshift show-support-APIs. You need to complete the following steps to embed Helpshift fragments in your Activity :
 
-1. Make sure that the Activity holding Helpshift's Embeddable fragments is extended from **AppCompatActivity** only.
+1.  Make sure that the Activity holding Helpshift's Embeddable fragments is extended from **AppCompatActivity** only.
 
-2. Inherit theme of your Activity from one of the Helpshift's themes: Helpshift.Theme.Light.DarkActionBar, Helpshift.Theme.Light, Helpshift.Theme.Dark or Helpshift.Theme.HighContrast.
+2.  Inherit theme of your Activity from one of the Helpshift's themes: Helpshift.Theme.Light.DarkActionBar, Helpshift.Theme.Light, Helpshift.Theme.Dark or Helpshift.Theme.HighContrast.
 
-3. Create a style named Helpshift.Theme.Base and set its parent to your Activity's theme.
+3.  Create a style named Helpshift.Theme.Base and set its parent to your Activity's theme.
 
     For Example,
 
@@ -352,7 +336,7 @@ like the previous Helpshift show-support-APIs. You need to complete the followin
 
         <style name="Helpshift.Theme.Base" parent="YourActivityTheme"/>
 
-4. In your AndroidManifest.xml set the Activity theme (which contains the embeddable fragment) to Helpshift.Theme.Activity; which now contains both YourActivityTheme and the theme required by Helpshift embeddable fragments.
+4.  In your AndroidManifest.xml set the Activity theme (which contains the embeddable fragment) to Helpshift.Theme.Activity; which now contains both YourActivityTheme and the theme required by Helpshift embeddable fragments.
 
     For Example,
 
@@ -364,52 +348,51 @@ Following is the list of supported APIs :
 
 1. All FAQs
 
-    `Support.getFAQsFragment(Activity activity, ApiConfig config);`
+   `Support.getFAQsFragment(Activity activity, ApiConfig config);`
 
-    `Support.getFAQsFragment(Activity activity, Map config);`
+   `Support.getFAQsFragment(Activity activity, Map config);`
 
-    `Support.getFAQsFragment(Activity activity);`
+   `Support.getFAQsFragment(Activity activity);`
 
 2. Conversation
 
-     `Support.getConversationFragment(Activity activity, ApiConfig config);`
+   `Support.getConversationFragment(Activity activity, ApiConfig config);`
 
-     `Support.getConversationFragment(Activity activity, Map config);`
+   `Support.getConversationFragment(Activity activity, Map config);`
 
-     `Support.getConversationFragment(Activity activity);`
+   `Support.getConversationFragment(Activity activity);`
 
 3. Single section
 
-     `Support.getFAQSectionFragment(Activity activity, String sectionPublishId, ApiConfig config);`
+   `Support.getFAQSectionFragment(Activity activity, String sectionPublishId, ApiConfig config);`
 
-     `Support.getFAQSectionFragment(Activity activity, String sectionPublishId, Map config);`
+   `Support.getFAQSectionFragment(Activity activity, String sectionPublishId, Map config);`
 
-     `Support.getFAQSectionFragment(Activity activity, String sectionPublishId);`
+   `Support.getFAQSectionFragment(Activity activity, String sectionPublishId);`
 
 4. Single FAQ
 
-     `Support.getSingleFAQFragment(Activity activity, String questionPublishId, ApiConfig config);`
+   `Support.getSingleFAQFragment(Activity activity, String questionPublishId, ApiConfig config);`
 
-     `Support.getSingleFAQFragment(Activity activity, String questionPublishId, Map config);`
+   `Support.getSingleFAQFragment(Activity activity, String questionPublishId, Map config);`
 
-     `Support.getSingleFAQFragment(Activity activity, String questionPublishId);`
+   `Support.getSingleFAQFragment(Activity activity, String questionPublishId);`
 
 5. Dynamic Form
 
-    `Support.getDynamicFormFragment(Activity activity, String title, List<Flow> flowList, ApiConfig config);`
+   `Support.getDynamicFormFragment(Activity activity, String title, List<Flow> flowList, ApiConfig config);`
 
-    `Support.getDynamicFormFragment(Activity activity, String title, List<Flow> flowList, Map config);`
+   `Support.getDynamicFormFragment(Activity activity, String title, List<Flow> flowList, Map config);`
 
-    `Support.getDynamicFormFragment(Activity activity, String title, List<Flow> flowList);`
+   `Support.getDynamicFormFragment(Activity activity, String title, List<Flow> flowList);`
 
-    `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList, ApiConfig config);`
+   `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList, ApiConfig config);`
 
-    `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList, Map config);`
+   `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList, Map config);`
 
-    `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList);`
+   `Support.getDynamicFormFragment(Activity activity, List<Flow> flowList);`
 
 Example :
-
 
 ```java
 
@@ -421,17 +404,13 @@ Example :
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 When using SupportFragments with a standalone toolbar (i.e. toolbar
 which is a standalone widget and not used as an action bar) pass your
 toolbar id in the config map with the "toolbarId" key.
 
-
 </Admonition>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -440,25 +419,24 @@ fragments.
 
 </Admonition>
 
-
 ### Handling onBackPressed with Helpshift's Embeddable Fragments {#embeddable-fragments-handle-backstack}
+
 There is an issue with Android where `onBackPressed` doesn't behave as
 expected when used with nested fragments. Use the following guidelines for
 handling onBackPressed behaviour:
 
 1. Override `onBackPressed` inside your parent activity which contains
-the Helpshift's `SupportFragment`.
+   the Helpshift's `SupportFragment`.
 
 2. If the fragment is Helpshift's `SupportFragment`, call SupportFragment's
-`onBackPressed` method which return a boolean value.
-If back press was handled by Helpshift's SupportFragment, this method will
-return value `true`.
-If there is nothing to go back in, this method will return value `false`,
-in which case you can either pop the SupportFragment or `finish` the activity
-as per your requirements.
+   `onBackPressed` method which return a boolean value.
+   If back press was handled by Helpshift's SupportFragment, this method will
+   return value `true`.
+   If there is nothing to go back in, this method will return value `false`,
+   in which case you can either pop the SupportFragment or `finish` the activity
+   as per your requirements.
 
 For Example:
-
 
 ```java
 
@@ -495,7 +473,6 @@ If you are using Helpshift SDK's [setSDKLanguage](/android/i18n/#language-change
 
 Refer to the sample code provided:
 
-
 ```java
 
     @Override
@@ -514,13 +491,12 @@ Refer to the sample code provided:
 
 This language handling is required because of the following changes in the Android:
 
-* From **Android API level 17**, `Context.createConfigurationContext()` API is introduced to create custom configuration context object.
-* From **Android API level 25**, `Resources.updateConfiguration()` API is deprecated and it is recommended to use `Context.createConfigurationContext()` which will create a new context instead of updating the old context object. [Reference](https://developer.android.com/reference/android/content/res/Resources.html#updateConfiguration(android.content.res.Configuration, android.util.DisplayMetrics))
+- From **Android API level 17**, `Context.createConfigurationContext()` API is introduced to create custom configuration context object.
+- From **Android API level 25**, `Resources.updateConfiguration()` API is deprecated and it is recommended to use `Context.createConfigurationContext()` which will create a new context instead of updating the old context object. [Reference](https://developer.android.com/reference/android/content/res/Resources.html#updateConfiguration(android.content.res.Configuration, android.util.DisplayMetrics))
 
 ### Enabling hardware acceleration in Manifest {#embeddable-fragments-hardware-acceleration}
 
 There are some known [issues](/android/troubleshooting#ui-issues) in rendering the FAQ fragment views if hardware acceleration is explicitly disabled for the application (the system enables it by default) due to known WebView issues on Android 5.1. Thus, Helpshift recommends you to enable hardware acceleration in your app. However, if you want to disable hardware acceleration in your app, you can enable it only for the activity in which you plan to attach the SDK's fragments. For example, in your AndroidManifest.xml:
-
 
 ```xml
 
@@ -533,4 +509,3 @@ There are some known [issues](/android/troubleshooting#ui-issues) in rendering t
               android:hardwareAccelerated="true" />
     </application>
 ```
-

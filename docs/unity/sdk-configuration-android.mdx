@@ -4,23 +4,29 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK.These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
@@ -28,19 +34,16 @@ Applicable to SDK version 3.0.0 and above
 
 </Admonition>
 
-
-
 ## Install time configurations
 
 ### unityGameObject {#unity-game-object}
 
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| unityGameObject|
-|Values| Non-empty String|
+|        |                  |
+| ------ | ---------------- |
+| Flag   | unityGameObject  |
+| Values | Non-empty String |
 
 </div>
 
@@ -60,13 +63,11 @@ configMap.Add("unityGameObject", "Cube");
 help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 This option will only work with the Helpshift's `install` API
 
 </Admonition>
-
 
 ### notificationIcon {#notificationIcon}
 
@@ -107,17 +108,15 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 ### notificationSound {#notificationSound}
 
-
 <Admonition type="info" title="Note">
 
-* Available from SDK version 1.0.0 and above
+- Available from SDK version 1.0.0 and above
 
-* Starting from SDK v5.0.0, the sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
+- Starting from SDK v5.0.0, the sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
 
-* If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/unity/sdk-configuration-android#notificationChannels).
+- If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/unity/sdk-configuration-android#notificationChannels).
 
 </Admonition>
-
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -139,16 +138,13 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 ### Notification channels {#notificationChannels}
 
-
 <Admonition type="info" title="Note">
 
 Available from SDK version 2.9.0 and above
 
 </Admonition>
 
-
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
-
 
 ```xml
 
@@ -159,10 +155,9 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 
 If you want to customize the notification channels, you can create your own custom channels and provide their channel IDs using the following config key:
 
-* `supportNotificationChannelId`
+- `supportNotificationChannelId`
 
 For Example-
-
 
 ```csharp
 
@@ -180,35 +175,29 @@ For Example-
 
 ### enableDialogUIForTablets {#enableDialogUIForTablets}
 
-
 <Admonition type="info" title="Note">
 
 Available from SDK version 1.0.0 and above.
 
-
 </Admonition>
-
-
 
 <Admonition type="info" title="Note">
 
 Unsupported from SDK version 2.1.1 and above.
 
-
 </Admonition>
-
 
 <div className="compact ">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableDialogUIForTablets               |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| enableDialogUIForTablets|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
-If `enableDialogUIForTablets` is set to `yes`, Helpshift SDK will be opened in Dialog mode on tablet devices. <Image src="/static/books/android/enableDialogUIForTablets.png"  width="full" /> 
+If `enableDialogUIForTablets` is set to `yes`, Helpshift SDK will be opened in Dialog mode on tablet devices. <Image src="/static/books/android/enableDialogUIForTablets.png"  width="full" />
 
 For Example:
 
@@ -230,12 +219,12 @@ If you do not want the in-app notification support provided by the Helpshift SDK
 
 <div className="compact ">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableInAppNotification                |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 Example:
@@ -254,34 +243,29 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 ### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
 
-
 <Admonition type="info" title="Note">
 
 Available from SDK version 1.3.0 and above
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableDefaultFallbackLanguage|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableDefaultFallbackLanguage          |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
 
 You can enable or disable the SDK default fallback language when showing FAQs using this flag. When set to false, the Helpshift SDK will not fallback to the default language that is English, when showing FAQs.
-
 
 <Admonition type="info" title="Note">
 
 This configuration does not apply to the QuickSearch Bot suggested FAQs.
 
 </Admonition>
-
 
 Example:
 
@@ -299,13 +283,11 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 ### Using Custom Fonts {#usingCustomFonts}
 
-
 <Admonition type="info" title="Note">
 
 Available from SDK version 2.5.0 and above
 
 </Admonition>
-
 
 If `assets` folder doesn't already exist at `<project_path>/Assets/Plugins/Android/` path, create folder `assets`.
 
@@ -325,11 +307,13 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
 
-<Image src="/static/books/android/font-in-use.png"  width="quarter" centered /> 
-
+<Image
+  src="/static/books/android/font-in-use.png"
+  width="quarter"
+  centered
+/>{" "}
 
 ### screenOrientation {#screenOrientation}
-
 
 <Admonition type="info" title="Note">
 
@@ -337,18 +321,16 @@ Applicable to version 1.6.0 and above
 
 </Admonition>
 
-
 The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the `ActivityInfo` class.
 For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| screenOrientation|
-|Values| Integer values for orientation from <code>ActivityInfo</code> class|
-|Default| -1 (value for ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)|
+|         |                                                                     |
+| ------- | ------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                   |
+| Values  | Integer values for orientation from <code>ActivityInfo</code> class |
+| Default | -1 (value for ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)          |
 
 </div>
 
@@ -365,13 +347,11 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Due to a [bug](https://issuetracker.google.com/issues/68454482) in Android OS 8.0, setting the requested orientation when opening the Helpshift activity causes a crash. This happens only when the targetSDKVersion is greater than 26 and certain android theming flags (mentioned in the bug) are used for the Activity. On Unity SDK v5.0.0 & above, calling this API would be a no-op if the android exception is thrown. On Unity SDK v4.1.0 & below, as a workaround, apps need to turn off the flags for Helpshift's ParentActivity which will prevent the exception.
 
 </Admonition>
-
 
 ### enableLogging {#enableLogging}
 
@@ -379,12 +359,11 @@ Upon setting enableLogging to `yes`, Helpshift SDK logs will be generated in the
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableLogging|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | enableLogging                        |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -407,12 +386,11 @@ Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK w
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| HelpshiftSdk.DISABLE_ERROR_REPORTING|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | HelpshiftSdk.DISABLE_ERROR_REPORTING |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -429,32 +407,31 @@ help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 
 ```
 
-
 ## API Options {#api-options}
 
 ### enableContactUs {#enable-contact-us}
 
 <div className="compact ">
 
+|         |                                                                                                                                                                |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | enableContactUs                                                                                                                                                |
+| Values  | <code>CONTACT_US_ALWAYS</code>/<code>CONTACT_US_NEVER</code>/<code>CONTACT_US_AFTER_VIEWING_FAQS</code>/<code>CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL</code> |
+| Default | <code>CONTACT_US_ALWAYS</code>                                                                                                                                 |
 
-| | |
-|--|--|
-|Flag| enableContactUs|
-|Values| <code>CONTACT_US_ALWAYS</code>/<code>CONTACT_US_NEVER</code>/<code>CONTACT_US_AFTER_VIEWING_FAQS</code>/<code>CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL</code>|
-|Default| <code>CONTACT_US_ALWAYS</code>|
 </div>
 
 The `enableContactUs` flag controls the visibility of `Contact Us` button -
 
 <div className=" compact text-sm">
 
+|                                           |                                                                                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| CONTACT_US_ALWAYS                         | show in the navigation bar, search, and after marking an FAQ unhelpful. <code>"yes"</code> for SDK versions below 3.4.1 |
+| CONTACT_US_AFTER_VIEWING_FAQS             | show only while searching, on FAQ screen and after marking an FAQ unhelpful.                                            |
+| CONTACT_US_NEVER                          | do not show "Contact Us" button anywhere in the SDK. <code>"no"</code> for SDK versions below 3.4.1                     |
+| CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL | do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful.                                  |
 
-| | |
-|--|--|
-|CONTACT_US_ALWAYS| show in the navigation bar, search, and after marking an FAQ unhelpful. <code>"yes"</code> for SDK versions below 3.4.1|
-|CONTACT_US_AFTER_VIEWING_FAQS| show only while searching, on FAQ screen and after marking an FAQ unhelpful.|
-|CONTACT_US_NEVER| do not show "Contact Us" button anywhere in the SDK. <code>"no"</code> for SDK versions below 3.4.1|
-|CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL| do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful.|
 </div>
 
 To override the default value you can pass the arguments in the options dictionary.
@@ -474,7 +451,6 @@ help.showFAQs(configMap);
 
 This flag has no effect for the `showConversation` API call, since there is no `Contact Us` button in the conversation screen.
 
-
 <Admonition type="info" title="Note">
 
 ** AFTER_VIEWING_FAQS is applicable to Plugin version 3.4.1 and above **
@@ -483,14 +459,12 @@ By using this option, you encourage users to read and search FAQs first instead 
 
 </Admonition>
 
-
 #### Best Practices
 
-* Provide tier-based support by setting enableContactUs to `CONTACT_US_ALWAYS` for paid users and `CONTACT_US_AFTER_VIEWING_FAQS` for unpaid ones.
-* Provide country based support by setting enableContactUs to `CONTACT_US_ALWAYS` for local users and `CONTACT_US_AFTER_VIEWING_FAQS` for foreign ones.
+- Provide tier-based support by setting enableContactUs to `CONTACT_US_ALWAYS` for paid users and `CONTACT_US_AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `CONTACT_US_ALWAYS` for local users and `CONTACT_US_AFTER_VIEWING_FAQS` for foreign ones.
 
 ### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
-
 
 <Admonition type="info" title="Note">
 
@@ -498,15 +472,14 @@ This API is now deprecated with Unity SDK v4.0.0. Read more about the new conver
 
 </Admonition>
 
-
 <div className="compact ">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | gotoConversationAfterContactUs         |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| gotoConversationAfterContactUs|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `gotoConversationAfterContactUs` flag will determine whether the
@@ -515,6 +488,7 @@ conversation via "Contact Us". This only makes sense if the
 `enableContactUs` flag takes on the default value.
 
 Example:
+
 ```csharp
 using Helpshift;
 .
@@ -527,16 +501,13 @@ configMap.Add("gotoConversationAfterContactUs", "yes");
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 For `showFAQs`, `showFAQSection` and `showSingleFAQ`, setting `gotoConversationAfterContactUs` makes sense only if `enableContactUs` is `yes`.
 
 </Admonition>
 
-
 ### requireEmail {#requireEmail}
-
 
 <Admonition type="info" title="Note">
 
@@ -544,10 +515,9 @@ This API is now deprecated with Unity SDK v4.0.0. Read more about the new conver
 
 </Admonition>
 
-
-* `Flag:` requireEmail
-* `Values:` `"yes"` / `"no"`
-* `Default:` `"no"`
+- `Flag:` requireEmail
+- `Values:` `"yes"` / `"no"`
+- `Default:` `"no"`
 
 The `requireEmail` flag will determine whether the
 email field is compulsory while starting a new conversation.
@@ -572,26 +542,23 @@ Available in plugin version 3.4.1 and above
 
 </Admonition>
 
-
 ### hideNameAndEmail {#hideNameAndEmail}
-
 
 <Admonition type="info" title="Note">
 
-* Applicable to plugin version 3.5.0 and above
-* This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+- Applicable to plugin version 3.5.0 and above
+- This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | hideNameAndEmail                       |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| hideNameAndEmail|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
@@ -599,6 +566,7 @@ The `hideNameAndEmail` flag will hide the name and email fields when the user st
 When the flag is set to `yes` the name and email fields will be hidden. If set to `no` the default behaviour will resume.
 
 For example:
+
 ```csharp
 using Helpshift;
 .
@@ -615,10 +583,9 @@ If the [`requireEmail`](#requireEmail) flag is set to `yes` and email is not ava
 
 #### Interaction with Helpshift settings on agent dashboard {#hideNameEmailAdmin}
 
-If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the *setNameAndEmail* API, to supply the SDK with name and email in this case.
+If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the _setNameAndEmail_ API, to supply the SDK with name and email in this case.
 
 If "Allow anonymous issues" is ON, under app settings in the agent dashboard, then this flag will be ignored.
-
 
 <Admonition type="info" title="Note">
 
@@ -626,10 +593,7 @@ Once `hideNameAndEmail` flag is set, the SDK will use that value for all new con
 
 </Admonition>
 
-
-
 ### conversationPrefillText {#conversationPrefillText}
-
 
 <Admonition type="info" title="Note">
 
@@ -637,14 +601,12 @@ Applicable to plugin version 3.5.0 and above
 
 </Admonition>
 
-
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| conversationPrefillText|
-|Values| Non-empty String|
+|        |                         |
+| ------ | ----------------------- |
+| Flag   | conversationPrefillText |
+| Values | Non-empty String        |
 
 </div>
 
@@ -652,6 +614,7 @@ The `conversationPrefillText` API option will prefill a new conversation descrip
 This is useful where you might want your users to send you diagnostic information in the conversation description, for example if the app hits an exception, etc.
 
 Example:
+
 ```csharp
 using Helpshift;
 .
@@ -665,24 +628,21 @@ configMap.Add("conversationPrefillText", preFillString);
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
-The `conversationPrefillText` option takes effect only for the *showConversation* API.
+The `conversationPrefillText` option takes effect only for the _showConversation_ API.
 
 </Admonition>
-
 
 ### enableFullPrivacy {#enableFullPrivacy}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableFullPrivacy|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableFullPrivacy                      |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
 
@@ -690,15 +650,16 @@ In scenarios where the user attaches objectionable content in the screenshots, i
 
 If enableFullPrivacy option is set to YES, HS SDK does the following:
 
-1. Disables user-initiated screenshots - players cannot send images without being requested by an Agent.
-1. Does not collect any of the following personal information:
-    *     Map with "private-data" key inside custom meta-data.
-    *     Country code.
-    *     Carrier name.
+1.  Disables user-initiated screenshots - players cannot send images without being requested by an Agent.
+1.  Does not collect any of the following personal information:
+    -     Map with "private-data" key inside custom meta-data.
+    -     Country code.
+    -     Carrier name.
 
 To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this option is set to YES, this data will be removed when the user starts a new conversation.
 
 Example:
+
 ```csharp
 using Helpshift;
 .
@@ -712,8 +673,8 @@ help.showConversation(configMap);
 ```
 
 #### Best Practices
-In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to YES. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
 
+In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to YES. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
 
 <Admonition type="info" title="Note">
 
@@ -721,44 +682,39 @@ In your registration process, ask your user for his/her age. If the user's age i
 1. For SDK versions 2.7.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
 1. For SDK versions 2.8.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
 1. For Unity SDK v4.0.0 and above, this flag is ignored in the flows created to show Dynamic forms. Following flows do not honor this flag
-    * `ConversationFlow`
-    * `FAQsFlow`
-    * `SingleFAQFlow`
-    * `FAQSectionFlow`
-    * `CustomFlow`
+   - `ConversationFlow`
+   - `FAQsFlow`
+   - `SingleFAQFlow`
+   - `FAQSectionFlow`
+   - `CustomFlow`
 
 </Admonition>
-
-
 
 ### showSearchOnNewConversation {#showSearchOnNewConversation}
 
-
 <Admonition type="info" title="Note">
 
-* Applicable to SDK version 3.6.0 and above
-* This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+- Applicable to SDK version 3.6.0 and above
+- This API is now deprecated with Unity SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showSearchOnNewConversation|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | showSearchOnNewConversation            |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
-
 
 If showSearchOnNewConversation flag is set to `yes`, the user will be taken to a view which shows the search results relevant to the conversation text that he has entered upon clicking the 'Send' button. This is to avoid tickets which are already answered in the FAQs. The user will still be able to start a new conversation with the same text. He can also go through one of the FAQs and find a solution to his query, and exit the session without submitting a ticket.
 
 Default value is `no`, ie., this feature will not be enabled unless you explicitly pass `yes` for this flag.
 
 For example
+
 ```csharp
 using Helpshift;
 .
@@ -773,31 +729,32 @@ help.showConversation(configMap);
 
 ### showConversationResolutionQuestion {#showConversationResolutionQuestion}
 
-
 <Admonition type="info" title="Note">
 
-* Applicable to version 1.3.0 and above.
-* For application version 1.2.0 and below the conversation resolution question for user confirmation will be shown by default. This default behaviour has changed for version 1.3.0 and above, where the conversation resolution question for user confirmation is not shown.
+- Applicable to version 1.3.0 and above.
+- For application version 1.2.0 and below the conversation resolution question for user confirmation will be shown by default. This default behaviour has changed for version 1.3.0 and above, where the conversation resolution question for user confirmation is not shown.
 
 </Admonition>
-
 
 #### For v4.0+
 
 This SDK configuration is deprecated with v4.0+ and default value will be treated as False.
-If you want to use this feature, you can turn the feature on and off  ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
-<Image src="/static/books/android/conversation-resolution-flag.png"  width="full" /> 
+If you want to use this feature, you can turn the feature on and off ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
+
+<Image
+  src="/static/books/android/conversation-resolution-flag.png"
+  width="full"
+/>{" "}
 
 #### For Older SDK versions 3.0 and below, please read the following:
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationResolutionQuestion|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"yes"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | showConversationResolutionQuestion     |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"yes"</code>                     |
 
 </div>
 
@@ -819,16 +776,13 @@ configMap.Add("showConversationResolutionQuestion", "yes");
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
-The `conversationPrefillText` option takes effect only for the *showConversation* API.
+The `conversationPrefillText` option takes effect only for the _showConversation_ API.
 
 </Admonition>
 
-
 ### customContactUsFlows {#customContactUsFlows}
-
 
 <Admonition type="info" title="Note">
 
@@ -836,15 +790,13 @@ Applicable to version 2.3.0 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| customContactUsFlows|
-|Values| List of Flows. Flows can be created by using the [<code>Guided Issue Filing</code>](/unity/support-tools-android#dynamic-forms) APIs|
-|Default| There is no default value for this configuration.|
+|         |                                                                                                                                      |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Flag    | customContactUsFlows                                                                                                                 |
+| Values  | List of Flows. Flows can be created by using the [<code>Guided Issue Filing</code>](/unity/support-tools-android#dynamic-forms) APIs |
+| Default | There is no default value for this configuration.                                                                                    |
 
 </div>
 
@@ -941,17 +893,13 @@ public void showHelp() {
 
 With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
 
-
 <Admonition type="info" title="Note">
 
- This configuration will work only when there is no open conversation for the user, otherwise every Contact Us button will transition to the chat screen.
+This configuration will work only when there is no open conversation for the user, otherwise every Contact Us button will transition to the chat screen.
 
 </Admonition>
 
-
-
 ### showConversationInfoScreen {#showConversationInfoScreen}
-
 
 <Admonition type="info" title="Note">
 
@@ -959,15 +907,13 @@ Applicable to version 2.7.0 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationInfoScreen|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | showConversationInfoScreen           |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -985,16 +931,13 @@ help.showConversation(configMap);
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 The info screen would only be visible when an QuickSearch Bot/Identity Bot (if configured) complete their tasks and Automations/Agents can act on the new conversation.
 
 </Admonition>
 
-
 ### enableTypingIndicator {#enableTypingIndicator}
-
 
 <Admonition type="info" title="Note">
 
@@ -1002,31 +945,32 @@ The typing indicator can only be enabled for Issues filed with SDK version 2.8.0
 
 </Admonition>
 
-
 A graphical typing indicator is shown to the end user if an Agent is currently replying to the same Conversation. The `enableTypingIndicator` flag will enable/disable the aforementioned indicator.
-
 
 <Admonition type="info" title="Note">
 
-* This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
-* For Unity SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
-* If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will shown to the end users.
+- This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
+- For Unity SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
+- If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will shown to the end users.
 
 </Admonition>
 
-
-<Image src="/static/books/misc/enable-typing-indicator-app-setting.png"  width="full" /> 
+<Image
+  src="/static/books/misc/enable-typing-indicator-app-setting.png"
+  width="full"
+/>{" "}
 
 <div className="compact ">
 
+|         |                                      |
+| ------- | ------------------------------------ |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
-| | |
-|--|--|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 Example :
+
 ```csharp
 using Helpshift;
 .
@@ -1045,9 +989,10 @@ By default, the Helpshift Android Unity SDK contains configuration for the Andro
 
 Following are the steps to modify the support library version:
 
-* In the Open Unity project, navigate to **Assets** > **Helpshift** > **Editor** and open the **HelpshiftDependencies.xml** file. Path: `<project path>/Assets/Helpshift/Editor/HelpshiftDependencies.xml`
-* In the **androidpackage** tag, modify the values of design, cardview, and recyclerview library suffix to your custom lib version and save the dependency file.
-    * Example: If you want to modify the support lib version to **v25.3.1**, then following is the content of dependency.
+- In the Open Unity project, navigate to **Assets** > **Helpshift** > **Editor** and open the **HelpshiftDependencies.xml** file. Path: `<project path>/Assets/Helpshift/Editor/HelpshiftDependencies.xml`
+- In the **androidpackage** tag, modify the values of design, cardview, and recyclerview library suffix to your custom lib version and save the dependency file.
+  - Example: If you want to modify the support lib version to **v25.3.1**, then following is the content of dependency.
+
 ```xml
 <dependencies>
   <androidPackages>
@@ -1060,15 +1005,16 @@ Following are the steps to modify the support library version:
   </androidPackages>
 </dependencies>
 ```
-* After you have changed the dependency file, if auto-resolution is enabled for Unity Jar Resolver, it auto-resolves all the required dependencies. 
 
-* Following are the steps to resolve dependencies manually:
-    1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
-    1. Select the **Resolve** or **Force Resolve**
+- After you have changed the dependency file, if auto-resolution is enabled for Unity Jar Resolver, it auto-resolves all the required dependencies.
+
+- Following are the steps to resolve dependencies manually:
+  1. In the Open Unity project, navigate to **Assets** dropdown menu and choose **Play services resolver** > **Android Resolve**
+  1. Select the **Resolve** or **Force Resolve**
 
 ## Minimum issue description length {#minimum-issue-desc-length}
 
-You can set the minimum length requirement of text for the user while filing the new issue using the integer resource **hs__issue_description_min_chars**. Its default value is set to 1 for all languages and it can be configured per language. If the number of characters is less than the defined minimum length requirement then an error is displayed to the user.
+You can set the minimum length requirement of text for the user while filing the new issue using the integer resource **hs\_\_issue_description_min_chars**. Its default value is set to 1 for all languages and it can be configured per language. If the number of characters is less than the defined minimum length requirement then an error is displayed to the user.
 
 <Centered >
 
@@ -1078,39 +1024,40 @@ You can set the minimum length requirement of text for the user while filing the
 
 The Helpshift Unity SDK zip folder includes the **HelpshiftUnityAndroidResources** an open source android studio project, to customize theme and string resources according to your application.
 
-Open the `HelpshiftUnityAndroidResources/helpshift-plugin/src/main/res` directory and customize the key **hs__issue_description_min_chars** in `values-<language>.xml` file and build the project. 
+Open the `HelpshiftUnityAndroidResources/helpshift-plugin/src/main/res` directory and customize the key **hs\_\_issue_description_min_chars** in `values-<language>.xml` file and build the project.
 
 Example :
 
-For Korean language, if you want to have  minimum length as 5 characters and 10 characters for all other languages, do the following:
+For Korean language, if you want to have minimum length as 5 characters and 10 characters for all other languages, do the following:
 
 Put the following integer resource in **values-ko.xml** of the values-ko resource directory
+
 ```xml
 <integer name="hs__issue_description_min_chars">5</integer>
 ```
+
 and the following integer resource in **values.xml** of the values resource directory
+
 ```xml
 <integer name="hs__issue_description_min_chars">10</integer>
 ```
+
 After you complete the resource customization, follow the Resource Customization guide to build and update the **helpshift-plugin-resources.aar** file. [Resource customization guide](https://developers.helpshift.com/unity/string-customization-android#string-customization)
 
 ## Configuration Summary {#config-summary}
 
-
-| Option / API                            | [showFAQs](#faqs-view)    | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
-|-----------------------------------------|-------------|----------------|---------------|------------------|
-| **enableContactUs**                   | Supported   | Supported      | Supported     | Not Supported     |
-| **enableFullPrivacy**                 | Supported   | Supported      | Supported     | Supported        |
-| **showConversationResolutionQuestion**| Supported   | Supported      | Supported     | Supported        |
-| **customContactUsFlows**              | Supported   | Supported      | Supported     | Not Supported    |
-| **showConversationInfoScreen**        | Supported   | Supported      | Supported     | Supported        |
-| **enableTypingIndicator**             | Supported   | Supported      | Supported     | Supported        |
-
+| Option / API                           | [showFAQs](#faqs-view) | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
+| -------------------------------------- | ---------------------- | ----------------------------------- | ----------------------------------- | -------------------------------------- |
+| **enableContactUs**                    | Supported              | Supported                           | Supported                           | Not Supported                          |
+| **enableFullPrivacy**                  | Supported              | Supported                           | Supported                           | Supported                              |
+| **showConversationResolutionQuestion** | Supported              | Supported                           | Supported                           | Supported                              |
+| **customContactUsFlows**               | Supported              | Supported                           | Supported                           | Not Supported                          |
+| **showConversationInfoScreen**         | Supported              | Supported                           | Supported                           | Supported                              |
+| **enableTypingIndicator**              | Supported              | Supported                           | Supported                           | Supported                              |
 
 ## Flexible permissions adaptive to Android M and older versions {#app-permissions}
 
 Starting from Android 6.0 (API level 23), users grant permissions to apps while the app is running, not when they install the app. The storage permissions can be removed from AndroidManifest.xml in case you do not want to use them. You can remove the `WRITE_EXTERNAL_STORAGE` permission with the following line in your final AndroidManifest.xml file:
-
 
 ```xml
 
@@ -1123,22 +1070,26 @@ Instructions on how to override the AndroidManifest.xml file for Unity project i
 The Helpshift SDK has 4 features that require storage permissions. The following is the behavior for these 4 features based on whether the permission is present in AndroidManifest.xml or not.
 
 #### User side attach screenshot flow
+
 Starting from Helpshift SDK v2.9.0, user's screenshots can be attached independent of the storage permission being present in the manifest.
 
 #### Agent side attachment downloads
-|Storage Permission Status                | API 15 to 22 | API 23 and above|
-|-----------------------------------------|--------------|-------------------------------------------------------|
-| **Permission declared in manifest**     | Works as normal (attachments are downloaded and rendered in chat screen by sdk's own download manager) | <b>User granted the permission</b><ul><li>Works as normal</li></ul><br /><b>User did not grant the permission</b><ul><li>User is shown permission dialog. If user denies the permission then show a requirement description msg with intent to launch the app settings page (User can't download the attachment unless he grants the permission)</li></ul> |
-| **Permission not declared in manifest**    | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer. Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer.Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. |
+
+| Storage Permission Status               | API 15 to 22                                                                                                                                                                                                                                                                                                         | API 23 and above                                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Permission declared in manifest**     | Works as normal (attachments are downloaded and rendered in chat screen by sdk's own download manager)                                                                                                                                                                                                               | <b>User granted the permission</b><ul><li>Works as normal</li></ul><br /><b>User did not grant the permission</b><ul><li>User is shown permission dialog. If user denies the permission then show a requirement description msg with intent to launch the app settings page (User can't download the attachment unless he grants the permission)</li></ul> |
+| **Permission not declared in manifest** | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer. Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer.Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen.                                        |
 
 #### Image caching in single question screen
-|Storage Permission Status                | API 15 to 18 | API 19 and above|
-|-----------------------------------------|--------------|-----------------|
-| **Permission declared in manifest**     | Works as normal (images are cached) | Works as normal. |
-| **Permission not declared in manifest** | Caching will not work. Image will be reloaded every time the user visits the particular single question screen   | Works as normal. |
+
+| Storage Permission Status               | API 15 to 18                                                                                                   | API 19 and above |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Permission declared in manifest**     | Works as normal (images are cached)                                                                            | Works as normal. |
+| **Permission not declared in manifest** | Caching will not work. Image will be reloaded every time the user visits the particular single question screen | Works as normal. |
 
 #### Profile persistence across uninstalls for multi login
-| Storage Permission Status               | API 15 to 22                                         | API 23 and above |
-|-----------------------------------------|------------------------------------------------------|------------------|
+
+| Storage Permission Status               | API 15 to 22                                         | API 23 and above                                                                                                                                                           |
+| --------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Permission declared in manifest**     | User profile will be persisted across uninstalls     | User granted the permission: User profile will be persisted across uninstalls<br />User did not grant the permission: User profile will not be persisted across uninstalls |
-| **Permission not declared in manifest** | User profile will not be persisted across uninstalls | User profile will not be persisted across uninstalls |
+| **Permission not declared in manifest** | User profile will not be persisted across uninstalls | User profile will not be persisted across uninstalls                                                                                                                       |

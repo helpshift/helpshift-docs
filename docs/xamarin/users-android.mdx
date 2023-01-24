@@ -4,21 +4,28 @@ title: Users
 description: Learn more about Users
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Users {#users}
-
 
 <Admonition type="info" title="Note">
 
 Applicable to version 3.0.0 and above.
 
 </Admonition>
-
-
 
 ## How to Identify and Manage Users {#identify-and-manage-users}
 
@@ -32,11 +39,11 @@ A logged-in user is someone who can contact your support team only after providi
 
 You can provide either `userID` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field with the `HelpshiftUser` object. The following logic applies when you use both `userID` as well as `userEmail`:
 
-* When looking up users, the priority of `userId` is higher than that of `userEmail`
-* When the user ID matches an existing user, that user's email will be updated (if the email is provided)
-* When the email matches an existing user, the following logic applies:
-	* If the user ID does not exist for a user matched by email, then the user ID will be added for that user (if a user ID is provided)
-	* If the user ID already exists on the user matched by email, then a new user will be created (if a different user ID is provided)
+- When looking up users, the priority of `userId` is higher than that of `userEmail`
+- When the user ID matches an existing user, that user's email will be updated (if the email is provided)
+- When the email matches an existing user, the following logic applies:
+  - If the user ID does not exist for a user matched by email, then the user ID will be added for that user (if a user ID is provided)
+  - If the user ID already exists on the user matched by email, then a new user will be created (if a different user ID is provided)
 
 #### How to use
 
@@ -92,7 +99,6 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
   </tr>
 </table>
 
-
 ```csharp
 
     HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
@@ -102,26 +108,24 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* If you are setting [`EnableFullPrivacy`](/xamarin/sdk-configuration-android#enableFullPrivacy) to be True, you shouldn't be using email as the only identifier in the LoginAPI for that user. This will result in the creation of an anonymous user.
+- If you are setting [`EnableFullPrivacy`](/xamarin/sdk-configuration-android#enableFullPrivacy) to be True, you shouldn't be using email as the only identifier in the LoginAPI for that user. This will result in the creation of an anonymous user.
 
-* If you were using `setUserIdentifier` (now deprecated), if the user has an open issue, using LoginAPI will result in the creation of a new issue. However, the previous issue will be available to Agents under 'Other issues'
+- If you were using `setUserIdentifier` (now deprecated), if the user has an open issue, using LoginAPI will result in the creation of a new issue. However, the previous issue will be available to Agents under 'Other issues'
 
-* Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox.
+- Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox.
 
 </Admonition>
 
-
 ### Logging out users {#logging-out-users}
+
 #### Overview
 
 Once a user logs out from your app, you should call the Helpshift SDK logout API to ensure no one else can view this user's conversations.
-*Note:* The logout API is expected to be used in conjunction with the login API.
+_Note:_ The logout API is expected to be used in conjunction with the login API.
 
 #### How to use
-
 
 ```csharp
 
@@ -129,21 +133,17 @@ Once a user logs out from your app, you should call the Helpshift SDK logout API
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* If you are using the [`leaveBreadCrumb`](/xamarin/tracking-android#app-usage) API to pass user login related crumbs, please make sure to call the clearBreadCrumbs API when you change the login.
+- If you are using the [`leaveBreadCrumb`](/xamarin/tracking-android#app-usage) API to pass user login related crumbs, please make sure to call the clearBreadCrumbs API when you change the login.
 
-* If any of the Helpshift screens are currently being shown in the app, then any login/logout attempt will be ignored.
+- If any of the Helpshift screens are currently being shown in the app, then any login/logout attempt will be ignored.
 
-* If the login API is called with different user identifier, then it will first log out the currently logged-in user, and then log in with the user identifier provided.
+- If the login API is called with different user identifier, then it will first log out the currently logged-in user, and then log in with the user identifier provided.
 
-* It is recommended to call the login API immediately when your app user logs in.
+- It is recommended to call the login API immediately when your app user logs in.
 
 </Admonition>
-
-
-
 
 ### Anonymous users {#anonymous-users}
 
@@ -153,21 +153,18 @@ An anonymous user is someone who can access the app without a username and passw
 
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser` functionality. When this API is used, anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
-
 ```csharp
 
     HelpshiftCore.ClearAnonymousUser();
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* The `clearAnonymousUser` API does not impact logged-in users at all.
-* The `clearAnonymousUser` API will only work if called from logged-in mode.
+- The `clearAnonymousUser` API does not impact logged-in users at all.
+- The `clearAnonymousUser` API will only work if called from logged-in mode.
 
 </Admonition>
-
 
 ## Verifying the identity of users {#identify-users}
 
@@ -182,7 +179,6 @@ In order to ensure your users are verified, you should provide a 'user authentic
 
 You can send the 'user authentication token' with the Login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
-
 ```csharp
 
     HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
@@ -193,14 +189,12 @@ You can send the 'user authentication token' with the Login API call. If Identit
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-* If the secret key is regenerated for an app on the Dashboard, you should ensure you update your endpoint code as well, in order to generate a valid 'user authentication token'. Following this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
-* If EnableFullPrivacy is 'On', then the 'user authentication token' should be generated only on the user ID.
+- If the secret key is regenerated for an app on the Dashboard, you should ensure you update your endpoint code as well, in order to generate a valid 'user authentication token'. Following this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
+- If EnableFullPrivacy is 'On', then the 'user authentication token' should be generated only on the user ID.
 
 </Admonition>
-
 
 ### Identity verificaiton failure {#identity-verification-failure}
 
@@ -208,18 +202,16 @@ You can send the 'user authentication token' with the Login API call. If Identit
 
 When Identity Verification is turned 'On' and a login request is made with no 'user authentication token' or with an invalid 'user authentication token' for Xamarin SDK v3.0.0 & above, identity verification will fail. If identity verification fails, the following will hold true:
 
-* Anonymous users (users for whom the developer is not providing any identifiers) are always able to file Issues.
-* Logged-in users (users for whom the developer is providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the form or conversational UI.
+- Anonymous users (users for whom the developer is not providing any identifiers) are always able to file Issues.
+- Logged-in users (users for whom the developer is providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the form or conversational UI.
 
 If the logged-in users are verified (i.e., a valid 'user authentication token' is provided), they are able to see the previous Issue or create a new Issue. The UI for verified, logged-in users looks & works exactly the same as it would if 'Identity verification' were turned off. Only unverified users get impacted as listed above.
-
 
 <Admonition type="info" title="Note">
 
 End-users on Xamarin SDK 2.x or lower are not impacted, even if 'Identity Verification' is enabled on the Dashboard.
 
 </Admonition>
-
 
 #### How to use the failure delegates
 
@@ -249,10 +241,10 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
       </ul>
 
       When the 'user authentication token' is invalid, end-users will not able to file Issues and an error is shown to them, as mentioned previously. You can use this delegate if you want to show your own alerts or re-fetch the correct auth token from your server.
+
 </td>
   </tr>
 </table>
-
 
 <Admonition type="info" title="Note">
 
@@ -260,9 +252,7 @@ The error strings can be customised in the SDK.
 
 </Admonition>
 
-
 Example:
-
 
 ```csharp
 

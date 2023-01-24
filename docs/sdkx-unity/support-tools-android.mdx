@@ -4,8 +4,20 @@ title: Helpshift APIs Android
 description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift APIs <small>Android</small> {#support-tools}
 
@@ -13,16 +25,13 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
 
 </Admonition>
-
 
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
@@ -32,7 +41,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Centered>
 
-You can use the API call `help.ShowConversation(configMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent. 
+You can use the API call `help.ShowConversation(configMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
 To configure SDK, you can pass various config options in a `Dictionary<string, object>`. Checkout more config options [here](/sdkx-unity/sdk-configuration-android)
 
 Example :
@@ -92,7 +101,7 @@ void ShowFAQs(){
         {  // other values
             { "tags", new String[] { "foo", "bar" } },
         };
-    
+
     // open the FAQs screen
     help.ShowFAQs(configMap);
 
@@ -131,7 +140,7 @@ void ShowFAQSection(string sectionPublishId){
         {  // other values
             { "tags", new String[] { "foo", "bar" } },
         };
-    
+
     // open the section with provided section id
     help.ShowFAQSection(sectionPublishId, configMap);
 
@@ -140,8 +149,7 @@ void ShowFAQSection(string sectionPublishId){
 
 **You'll need the `publish-id` of the section in this case:**
 
-<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 ## Showing a Particular FAQ {#faq-view}
 
@@ -173,7 +181,7 @@ void ShowFAQs(string faqPublishId){
         {  // other values
             { "tags", new String[] { "foo", "bar" } },
         };
-    
+
     // open particular FAQ with provided faqid
     help.ShowSingleFAQ(faqPublishId, configMap);
 
@@ -182,8 +190,7 @@ void ShowFAQs(string faqPublishId){
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
 ### Set SDK language {#set-language-api}
 
@@ -197,6 +204,7 @@ Setting SDK language for the given locale with only language code.
 ```csharp
 help.SetLanguage("fr");
 ```
+
 Setting the SDK language for the given locale with both language code and country code.
 
 ```csharp

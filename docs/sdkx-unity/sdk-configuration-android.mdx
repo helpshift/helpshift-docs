@@ -4,29 +4,34 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
 
 </Admonition>
-
 
 ## Install time configurations
 
@@ -40,15 +45,13 @@ The default value of this flag is `true` i.e., the in-app notification will be e
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| HelpshiftSdk.ENABLE_INAPP_NOTIFICATION|
-|values| true/false|
-|default| true|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | HelpshiftSdk.ENABLE_INAPP_NOTIFICATION |
+| values  | true/false                             |
+| default | true                                   |
 
 </div>
-
 
 ```csharp
 using Helpshift;
@@ -57,7 +60,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -66,7 +69,6 @@ public class MyGameControl : MonoBehaviour
     }
 }
 ```
-
 
 ### Notification Icon {#notificationIcon}
 
@@ -81,7 +83,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -105,7 +107,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -117,15 +119,13 @@ public class MyGameControl : MonoBehaviour
 
 ### Notification Sound {#notificationSound}
 
-
 <Admonition type="info" title="Note">
 
-* The sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
+- The sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
 
-* If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/sdkx-unity/sdk-configuration-android#notificationChannels).
+- If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/sdkx-unity/sdk-configuration-android#notificationChannels).
 
 </Admonition>
-
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -140,7 +140,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
         this.help = HelpshiftSdk.GetInstance();
         Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -164,7 +164,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -173,7 +173,6 @@ public class MyGameControl : MonoBehaviour
     }
 }
 ```
- 
 
 ### Enable Logging {#enableLogging}
 
@@ -181,12 +180,11 @@ Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in th
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| HelpshiftSdk.ENABLE_LOGGING|
-|Values| <code>"true"</code>/<code>"false"</code>|
-|Default| <code>"false"</code>|
+|         |                                          |
+| ------- | ---------------------------------------- |
+| Flag    | HelpshiftSdk.ENABLE_LOGGING              |
+| Values  | <code>"true"</code>/<code>"false"</code> |
+| Default | <code>"false"</code>                     |
 
 </div>
 
@@ -197,7 +195,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -214,12 +212,12 @@ For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTA
 
 <div className="compact ">
 
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | HelpshiftSdk.SCREEN_ORIENTATION                                                                                                        |
+| values  | integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class |
+| default | 1 (which is ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)                                                                               |
 
-| | |
-|--|--|
-|Flag| HelpshiftSdk.SCREEN_ORIENTATION|
-|values|  integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class|
-|default| 1 (which is ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)|
 </div>
 
 ```csharp
@@ -229,7 +227,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -270,8 +268,8 @@ public class MyGameControl : MonoBehaviour
 
 #### Best Practices
 
-* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
-* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
+- Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
 
 ## Full privacy {#fullprivacy}
 
@@ -307,7 +305,6 @@ public class MyGameControl : MonoBehaviour
 ## UI Configurations {#uiConfig}
 
 This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unity/design-android/).
-
 
 ## Tracking {#tracking}
 

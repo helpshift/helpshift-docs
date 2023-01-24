@@ -4,8 +4,20 @@ title: Notifications Android
 description: "Configure Push and In-app notifications."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Notifications <small>Android</small> {#notifications}
 
@@ -13,17 +25,20 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Configure Push and In-app notifications.
 
-
 </Intro>
-
 
 ## Push notifications via Helpshift {#push-via-helpshift}
 
-<Image src="/static/books/android/urbanairshipnotif.png"  width="quarter" alt="urbanAirshipNotif.png" /> 
+<Image
+  src="/static/books/android/urbanairshipnotif.png"
+  width="quarter"
+  alt="urbanAirshipNotif.png"
+/>{" "}
 
 Helpshift allows you to send Push notifications when an agent replies to a conversation.
 
 ### Prerequisites {#gcm-prerequisites}
+
 Implement FCM push in your app.
 
 For FCM, refer to the
@@ -39,28 +54,30 @@ Enter your Google Push notifications credentials per app, via the
 **Settings page > App listing in the left navigation > Scroll down to Push
 Notifications** settings section for the app.
 
-<Image src="/static/books/android/helpshift-push-notifications.png"  width="major" alt="helpshift-push-notifications.png" /> 
+<Image
+  src="/static/books/android/helpshift-push-notifications.png"
+  width="major"
+  alt="helpshift-push-notifications.png"
+/>{" "}
 
 And for FCM users, the API key can be found at your
 [Firebase API Console](https://console.firebase.google.com/)
-<Image src="/static/books/android/fcm_console.png"  width="major" /> 
+
+<Image src="/static/books/android/fcm_console.png" width="major" />{" "}
 
 <br />
 
 ### Configure Helpshift Android SDK {#configure-helpshift-android-sdk}
 
-
 <Admonition type="info" title="Note">
 
-* When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications"  for every message sent by Agents/Bots. 
-You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](/cocos2d-x/notifications-android#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+- When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
+  You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](/cocos2d-x/notifications-android#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
 
 </Admonition>
 
-
 1. Send the device registration id to Helpshift via the `Core.registerDeviceToken` API
 
-    
 ```java
 
 
@@ -76,7 +93,6 @@ You should call `registerDeviceToken` API only after you have [configured the He
 
 2. Use `Core.handlePush` API which takes a Map argument.
 
-    
 ```java
 
         @Override
@@ -108,14 +124,11 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 ![](/static/books/android/i18n-in-app.png)
 
-
 <Admonition type="info" title="Note">
 
 If the FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
 
-
 </Admonition>
-
 
 ## Configuring in-app notifications {#configure-in-app}
 
@@ -127,12 +140,12 @@ use macro `HS_ENABLE_IN_APP_NOTIFICATION` in `HelpshiftCocos2dx.h` file.
 
 <div className="compact ">
 
+|         |                          |
+| ------- | ------------------------ |
+| Flag    | enableInAppNotification  |
+| Values  | "yes" or "no" (CCString) |
+| Default | "yes"                    |
 
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| "yes" or "no" (CCString)|
-|Default| "yes"|
 </div>
 
 If you do not want the in-app notifications for replies to customer issues, please set this flag to "no".
@@ -142,7 +155,6 @@ Example:
 
 **For cocos2d-x 3.x**
 / .code-header /
-
 
 ```cpp
 
@@ -157,7 +169,6 @@ Example:
 
 **For cocos2d-x 2.x**
 / .code-header /
-
 
 ```cpp
 
@@ -176,7 +187,6 @@ Example:
 By default the application icon is used as the notification icon. You can customize the notification icons via the config dictionary passed to the `install` call.
 
 For Example:
-
 
 ```cpp
 
@@ -197,7 +207,6 @@ By default the default device notification sound is used for helpshift notificat
 
 For Example:
 
-
 ```cpp
 
     HashMap config = new HashMap();
@@ -212,16 +221,13 @@ For Example:
 
 ### Notification channels {#notification-channels}
 
-
 <Admonition type="info" title="Note">
 
 Applicable to SDK v1.8.0 and above.
 
 </Admonition>
 
-
 Starting from Android Oreo, Helpshift notifications will have a default channel set as `In-app Support`. The name and description for this default channel can be changed by setting the following settings. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
-
 
 ```cpp
 
@@ -232,9 +238,7 @@ Starting from Android Oreo, Helpshift notifications will have a default channel 
 
 If you want to customize the notification channels, you can create your own custom channels and set their channel IDs in the in the config dictionary passed to the `install` corresponsing to following key: `supportNotificationChannelId`
 
-
 For Example:
-
 
 ```cpp
 
@@ -254,7 +258,6 @@ If you want to show your user notifications for replies on the issues
 posted, you can get the notification count synchronously from
 cache or asynchronously from the server by setting the `isAsync` flag. Example:-
 
-
 ```cpp
 
     void didReceiveNotificationCountListenerArg(int count) {
@@ -267,7 +270,6 @@ cache or asynchronously from the server by setting the `isAsync` flag. Example:-
     HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
 
 ```
-
 
 <Admonition type="info" title="Note">
 

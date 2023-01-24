@@ -4,10 +4,20 @@ title: Impact Analysis
 description: "The following numbers are representative of a skeletal sample app integrated with the Helpshift SDK X Unreal plugin."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Impact Analysis {#performance}
 
@@ -15,11 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 The following numbers are representative of a skeletal sample app integrated with the Helpshift SDK X Unreal plugin.
 
-
 </Intro>
-
-
-
 
 <Admonition type="info" title="Note">
 
@@ -29,18 +35,15 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 </Admonition>
 
-
 ## v10.1.0
 
 **iOS**
-
 
 <Admonition type="info" title="Note">
 
 Tested with Unreal Engine 4.26.2, on macOS 12.1, with Xcode 12.5 built demo app on iOS 15.1 (iPhone X). Memory Usage will increase with number of messages in a conversation.
 
 </Admonition>
-
 
 #### Disk space
 
@@ -50,22 +53,20 @@ When an Unreal iOS app is integrated with `HelpshiftX.framework`, the increase i
 
 The following is the memory usage of Helpshift APIs in debug mode. (Values are approximate)
 
+|                                                                   |                                                                                    |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>10.2</code> MB (This depends on number of messages on the chat screen). |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>10.2</code> MB.                                                         |
+| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>10</code> MB.                                                           |
+| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>10.1</code> MB.                                                         |
 
-| | |
-|--|--|
-|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>10.2</code> MB (This depends on number of messages on the chat screen).|
-|**Helpshift's FAQs screen (<code>showFAQs:</code>)**| adds <code>10.2</code> MB.|
-|**Helpshift's FAQ section screen (<code>showFAQSection:</code>)**| adds <code>10</code> MB.|
-|**Helpshift's single FAQ screen (<code>showFAQ:</code>)**| adds <code>10.1</code> MB.|
 **Android**
-
 
 <Admonition type="info" title="Note">
 
 Tested with Unreal Engine 4.27.1, on macOS 12.1, with Android Studio built demo app on Android 10 (Note 9). Memory Usage will increase with number of messages in a conversation.
 
 </Admonition>
-
 
 #### Disk space
 
@@ -75,10 +76,9 @@ When an Unreal iOS app is integrated with `helpshiftx-release.arr`, the increase
 
 The following is the memory usage of Helpshift APIs in debug mode. (Values are approximate)
 
-
-| | |
-|--|--|
-|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>8.7</code> MB (This depends on number of messages on the chat screen).|
-|**Helpshift's FAQs screen (<code>showFAQs:</code>)**| adds <code>8.2</code> MB.|
-|**Helpshift's FAQ section screen (<code>showFAQSection:</code>)**| adds <code>7.8</code> MB.|
-|**Helpshift's single FAQ screen (<code>showFAQ:</code>)**| adds <code>8.3</code> MB. |
+|                                                                   |                                                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>8.7</code> MB (This depends on number of messages on the chat screen). |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>8.2</code> MB.                                                         |
+| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>7.8</code> MB.                                                         |
+| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>8.3</code> MB.                                                         |

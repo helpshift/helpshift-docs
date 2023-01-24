@@ -4,9 +4,20 @@ title: Understanding the impact on app size due to Helpshift SDK Swift adoption 
 description: Learn more about Understanding the impact on app size due to Helpshift SDK Swift adoption in 7.7.0
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,15 +25,13 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Understanding the impact on app size due to Helpshift SDK Swift adoption in 7.7.0
 
 ### Terminology
 
-* IPA Size - Size of compressed app. When downloading from App Store, the IPA is downloaded. So this is the amount of data that will be downloaded when installing the app from App Store.
-* App Size - Size of uncompressed app. After downloading the IPA, iOS uncompresses it to get the actual app and installs this app. So this size represents the amount of space the app will take up on device.
-* App Thinning - Catch all name for all optimizations that App Store performs on the uploaded IPA to ensure that the downloaded IPA contains only the code and resources for the device on which the IPA is being downloaded. [More Info](https://help.apple.com/xcode/mac/11.0/index.html?localePath=en.lproj#/devbbdc5ce4f)
-
+- IPA Size - Size of compressed app. When downloading from App Store, the IPA is downloaded. So this is the amount of data that will be downloaded when installing the app from App Store.
+- App Size - Size of uncompressed app. After downloading the IPA, iOS uncompresses it to get the actual app and installs this app. So this size represents the amount of space the app will take up on device.
+- App Thinning - Catch all name for all optimizations that App Store performs on the uploaded IPA to ensure that the downloaded IPA contains only the code and resources for the device on which the IPA is being downloaded. [More Info](https://help.apple.com/xcode/mac/11.0/index.html?localePath=en.lproj#/devbbdc5ce4f)
 
 <Admonition type="info" title="Note">
 
@@ -30,8 +39,8 @@ The size reported in App Store app download screen is IPA Size and not App Size.
 
 </Admonition>
 
-
 ### Figuring out IPA and App Size for any app
+
 Measuring the IPA and App size without considering App Thinning is a bit meaningless since the final IPA that will be downloaded will have been processed via App Thinning. The only meaningful way to get an idea of IPA and App size is to archive the app with app thinning enabled for all device variants and check the size report in the generated archive. The steps to create the report are mentioned [here](https://developer.apple.com/documentation/xcode/reducing_your_app_s_size). The archive will contain multiple IPAs tailored specifically for individual device variants and also one universal IPA that contains code and resources for all device variants.
 
 The size report has lines like:
@@ -50,15 +59,14 @@ We did the archival exercise mentioned above for two apps
 2. Plain Objecitve C app with no swift integration, with Helpshift SDK 7.7.0 integrated
 
 |           | iOS <12.2                         | iOS >= 12.2                       |
-|-----------|-----------------------------------|-----------------------------------|
+| --------- | --------------------------------- | --------------------------------- |
 | SDK 7.6.0 | Thinned IPA Size : 08.8 - 09.8 MB | Thinned IPA Size : 08.8 - 09.8 MB |
 |           | Thinned App Size - 29.7 - 30.1 MB | Thinned App Size - 29.7 - 30.1 MB |
 | SDK 7.7.0 | Thinned IPA Size - 11.5 - 12.7 MB | Thinned IPA Size - 9.0 MB         |
 |           | Thinned App Size - 36.7 - 38.1 MB | Thinned App Size - 30.7 MB        |
 
-
 Above table is the result for thinned IPA and Apps. For Universal IPAs, there is a folder called SwiftSupport/ inside the IPA which adds ~68 MB to IPA size and 144 MB to App size. However this folder gets removed completely in the App Thinning process and has no effect on the final IPA and App size that users download. [More Info](https://stackoverflow.com/a/34483254)
 
 ### Summary
 
-Due to App Thinning, figuring out the real size impact due to Swift support in SDK 7.7.0 is not as straightforward as checking the size of the IPA. Due to the additon of SwiftSupport folder inside the Universal IPA, it might look like we are adding a *lot* more size than we actually are. The real size impact, summarized from the table above is - moving from 7.6.0 to 7.7.0 and above should add ~3 MB to IPA and ~7 MB to app size for iOS < 12.2. Same migration should add ~0.5 MB to IPA and ~1 MB to app size for iOS >= 12.2
+Due to App Thinning, figuring out the real size impact due to Swift support in SDK 7.7.0 is not as straightforward as checking the size of the IPA. Due to the additon of SwiftSupport folder inside the Universal IPA, it might look like we are adding a _lot_ more size than we actually are. The real size impact, summarized from the table above is - moving from 7.6.0 to 7.7.0 and above should add ~3 MB to IPA and ~7 MB to app size for iOS < 12.2. Same migration should add ~0.5 MB to IPA and ~1 MB to app size for iOS >= 12.2
