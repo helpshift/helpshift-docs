@@ -4,11 +4,20 @@ title: Getting Started
 description: "You're 3 steps away from adding great in-app support to your Android App."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="info" title="Note">
 
@@ -22,24 +31,38 @@ This is an integration guide for Helpshift SDK version 2.8.0 to 3.1.1
 
 You're 3 steps away from adding great in-app support to your Android App.
 
-
 </Intro>
-
 
 ## Integration Video {#integration-video}
 
-<iframe src="//fast.wistia.net/embed/iframe/sg67fcbj6s" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen mozallowfullscreen webkitallowfullscreen oallowfullscreen msallowfullscreen width="640" height="360"></iframe>
+<iframe
+  src="//fast.wistia.net/embed/iframe/sg67fcbj6s"
+  allowtransparency="true"
+  frameborder="0"
+  scrolling="no"
+  class="wistia_embed"
+  name="wistia_embed"
+  allowfullscreen
+  mozallowfullscreen
+  webkitallowfullscreen
+  oallowfullscreen
+  msallowfullscreen
+  width="640"
+  height="360"
+></iframe>
 
 ## Get the latest stable Helpshift SDK for Android {#getting-sdk}
 
-
-<DownloadButton text="Download SDK" link="[% misc.android_31x.sdk_url %]" classes="mb-4" />
+<DownloadButton
+  text="Download SDK"
+  link="[% misc.android_31x.sdk_url %]"
+  classes="mb-4"
+/>
 
 The zip file contains the Helpshift SDK in the Android Library Project
 format.
 
 ## Adding the latest stable release of the SDK to your project {#add-to-project}
-
 
 <Admonition type="info" title="Note">
 
@@ -48,21 +71,20 @@ on the [v7 appcompat library](http://developer.android.com/tools/support-library
 
 </Admonition>
 
-
 To add the Helpshift SDK to your **Android Application Project** just unzip the zip file you
 **Step 1:** have downloaded, and import it in Eclipse :
 
-
-1. Select  _File > Import_
+1. Select _File > Import_
 1. Select _Android > Existing Android Code Into Workspace_, and click _Next_.
 1. Click _Browse_ for **Root Directory** and Select path to `helpshift-android-sdk` > _Finish_.
 
-
-    <Image src="/static/books/android/eclipse-helpshiftsdk.png"  width="major" alt="Project import wizard" /> 
-
+   <Image
+     src="/static/books/android/eclipse-helpshiftsdk.png"
+     width="major"
+     alt="Project import wizard"
+   />{" "}
 
 Also set the flag for `manifestmerger.enabled` to `true` in your `project.properties`:
-
 
 ```text
 
@@ -75,50 +97,68 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
 
 1. Select _File > Import_
 1. Select _Android > Existing Android Code Into Workspace_, and click _Next_.
-1. Click _Browse_ for **Root Directory** and  Select path to `v7 appcompat library` > _Finish_.
+1. Click _Browse_ for **Root Directory** and Select path to `v7 appcompat library` > _Finish_.
 
-
-     <Image src="/static/books/android/eclipse-v7appcompat.png"  width="major" alt="Project import wizard" /> 
-
+   {" "}
+   <Image
+     src="/static/books/android/eclipse-v7appcompat.png"
+     width="major"
+     alt="Project import wizard"
+   />{" "}
 
 **Step 3:** Add reference of `v7 appcompat library` to the `Helpshift SDK`:
 
-
 1. In the Package Explorer, right-click Helpshift SDK project and select _Properties_.
 
-    <Image src="/static/books/android/eclipse-package-explorer.png"  width="half" alt="Package Explorer wizard" /> 
+   <Image
+     src="/static/books/android/eclipse-package-explorer.png"
+     width="half"
+     alt="Package Explorer wizard"
+   />{" "}
 
 1. In the Properties window, select the **"Android"** properties group at left and locate the Library properties at right.
 1. Select /path/to/appcompat/ and Click _Remove_.
 
-    <Image src="/static/books/android/eclipse-path-remove.png"  width="major" alt="Updating SDK reference" /> 
+   <Image
+     src="/static/books/android/eclipse-path-remove.png"
+     width="major"
+     alt="Updating SDK reference"
+   />{" "}
 
 1. Click _Add_ to open the Project Selection dialog. From the list of available library projects, select `v7 appcompat library` and click _OK_.
 
-    <Image src="/static/books/android/eclipse-project-selection.png"  width="major" alt="Project selection wizard" /> 
+   <Image
+     src="/static/books/android/eclipse-project-selection.png"
+     width="major"
+     alt="Project selection wizard"
+   />{" "}
 
 1. Click _Apply_ and _OK_ in the Properties window.
 
-    <Image src="/static/books/android/eclipse-v7reference.png"  width="major" alt="Updating SDK reference" /> 
-
+   <Image
+     src="/static/books/android/eclipse-v7reference.png"
+     width="major"
+     alt="Updating SDK reference"
+   />{" "}
 
 **Step 4:** Add reference of the `Helpshift SDK` to your project :
-
 
 1. In the Package Explorer, right-click your project and select _Properties_.
 1. In the Properties window, select the **"Android"** properties group at left and locate the Library properties at right.
 1. Click _Add_ to open the Project Selection dialog. From the list of available library projects, select Helpshift SDK and click _OK_.
 1. Click _Apply_ and _OK_ in the Properties window.
 
-    <Image src="/static/books/android/eclipse-helpshiftsdk-reference.png"  width="full" alt="Properties dialog to add library references" /> 
-
+   <Image
+     src="/static/books/android/eclipse-helpshiftsdk-reference.png"
+     width="full"
+     alt="Properties dialog to add library references"
+   />{" "}
 
 ### Additional Configuration {#additional-config}
 
-* The Helpshift SDK can inherit theme styles from your existing Action Bar theme files via. the `helpshift.res.parent` variable. For more on this, refer to [Design](/android/design/)
+- The Helpshift SDK can inherit theme styles from your existing Action Bar theme files via. the `helpshift.res.parent` variable. For more on this, refer to [Design](/android/design/)
 
-
-* In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
+- In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
 
         <path id="helpshift-classpath">
           <fileset dir="<path/to/Helpshift-SDK/libs>">
@@ -130,9 +170,8 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
           <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
         </java>
 
-* If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
+- If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
 
-    
 ```text
 
         -keep class com.ibm.** { *; }
@@ -155,7 +194,6 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
 To use Helpshift SDK via. Maven add the following dependency to your
 `<dependencies>` tag:
 
-
 ```xml
 
     <dependency>
@@ -169,7 +207,6 @@ To use Helpshift SDK via. Maven add the following dependency to your
 
 You also need to ensure that dependencies for `v7 appcompat library` are added to your `<dependencies>` tag. You can use the [Maven Android SDK Deployer](https://github.com/mosabua/maven-android-sdk-deployer)
 to install the libraries necessary, from your local Android SDK installation. To install the required support libraries, run `mvn install -P 4.3` from within the maven-android-sdk-deployer folder.
-
 
 ```xml
 
@@ -195,7 +232,6 @@ to install the libraries necessary, from your local Android SDK installation. To
 
 ## ActionBarSherlock Compatibility {#action-bar-sherlock}
 
-
 <Admonition type="info" title="Note">
 
 **Android SDK v2.8 is not backwards compatible with ActionBarSherlock
@@ -205,22 +241,20 @@ to install the libraries necessary, from your local Android SDK installation. To
 ** Google Action Bar is dependant on the new [v7 appcompat library](http://developer.android.com/tools/support-library/features.html#v7-appcompat)**
 
 **If you are not ready to switch, you can download and use
-  [Android SDK v2.7.1](https://d3e51fp79zp4el.cloudfront.net/library/android/v2.7/helpshift-android-sdk-2.7.1.zip)
- , the last SDK that was compatible with ActionBarSherlock**
-
+[Android SDK v2.7.1](https://d3e51fp79zp4el.cloudfront.net/library/android/v2.7/helpshift-android-sdk-2.7.1.zip)
+, the last SDK that was compatible with ActionBarSherlock**
 
 </Admonition>
 
-
 ### Reasons to consider appcompat over ActionBarSherlock
 
-* Can be kept updated as the Action Bar API evolves.
-* Integrated Ancestral Navigation support.
-* Use of framework Menu and MenuItem classes.
-* Continue to use the Support Library's Fragment class.
-* Integrated support for ActionBarDrawerToggle for use with
+- Can be kept updated as the Action Bar API evolves.
+- Integrated Ancestral Navigation support.
+- Use of framework Menu and MenuItem classes.
+- Continue to use the Support Library's Fragment class.
+- Integrated support for ActionBarDrawerToggle for use with
   DrawerLayout.
-* Backport of PopupMenu.
+- Backport of PopupMenu.
 
 For more information please refer to
 [ActionBarCompat and I/O 2013 App Source](http://android-developers.blogspot.in/2013/08/actionbarcompat-and-io-2013-app-source.html)

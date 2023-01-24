@@ -4,30 +4,34 @@ title: Outbound Support
 description: "With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Outbound Support {#outbound-support}
 
 <Intro>
 
-
 With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.Install() API](/sdkx-unity/getting-started-android#initializing)
 
-
 </Admonition>
-
 
 The steps to use this feature are the following -
 
@@ -37,13 +41,13 @@ To generate the link for outbound support, on your Helpshift dashboard, go to **
 
 You should see a **Create link** button. Click on the Create link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
 
-<Image src="/static/books/helpshiftx/generate-link-box.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
 
 At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
 
 YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp , myAppSupport, etc.
 
-<Image src="/static/books/helpshiftx/proactive-link.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
 
 ## Delegate push notification data to Helpshift SDK {#delegate-notification-data}
 
@@ -119,16 +123,13 @@ Setting local API config enables the Helpshift SDK to merge configuration from b
 
 We will use this configuration for current issue as well as next issue filed in same session.
 
-
 <Admonition type="info" title="Note">
 
 You need to call this API after [Helpshift Installation API](/sdkx-unity/getting-started-android#initializing) and before `HelpshiftSdk.HandleProactiveLink()`.
 
-
 </Admonition>
 
-
-1. Implement public interface `IHelpshiftProactiveAPIConfigCollector` in one of your classes and call `HelpshiftSdk.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())`  method to initialise the config collector delegate after the initializing the Helpshift SDK.
+1. Implement public interface `IHelpshiftProactiveAPIConfigCollector` in one of your classes and call `HelpshiftSdk.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())` method to initialise the config collector delegate after the initializing the Helpshift SDK.
 
 2. You will have to implement the method `getLocalApiConfig()` where you can add any user-specific config provided by Helpshift in the same format as you add in other public APIs like `ShowConversation()` or `ShowFAQs()`.
 

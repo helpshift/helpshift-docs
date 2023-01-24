@@ -4,10 +4,20 @@ title: Helpshift Delegates
 description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift Delegates {#delegates}
 
@@ -15,12 +25,11 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
 
-
 </Intro>
 
-All delegate callbacks will be sent as Unity-messages on the *unityGameObject* that you configure.
+All delegate callbacks will be sent as Unity-messages on the _unityGameObject_ that you configure.
 If you want to connect to any of the below callbacks, please implement a public void method with a string as the only argument.
-This method needs to be implemented in the script which is attached to the *unityGameObject* configured via install.
+This method needs to be implemented in the script which is attached to the _unityGameObject_ configured via install.
 
 Call the `HelpshiftSdk.registerDelegates()` API to start listening to the Helpshift delegates. Call this method as early in the lifecycle of your game as possible. We recommend calling it in the `Start()` method of your game's first `GameObject`. You might already have this method call in your `GameObject` if you are using our Android plugin as well. In that case, simply remove the `#if UNITY_ANDROID` and `#endif` surrounding this call.
 
@@ -46,7 +55,6 @@ If you want to keep track of when your app users start a new conversation throug
 
 For example:
 
-
 ```csharp
 
     public void newConversationStarted (string newConversationMessage) {
@@ -55,13 +63,11 @@ For example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
 </Admonition>
-
 
 ### Conversation ended delegate {#delegate-conversation-ended}
 
@@ -81,7 +87,6 @@ public void conversationEnded() {
 
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
-
 ```csharp
 
     public const String HSUserAcceptedTheSolution = "User accepted the solution";
@@ -93,7 +98,6 @@ If you want to keep track of when your app users send new messages to an ongoing
 
 For example:
 
-
 ```csharp
 
     public void userRepliedToConversation (string newMessage) {
@@ -104,13 +108,11 @@ For example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
 
 </Admonition>
-
 
 ## Customer satisfaction survey delegate {#csat-completed}
 
@@ -119,7 +121,6 @@ All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also
 If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
 
 For example:
-
 
 ```csharp
 
@@ -135,7 +136,6 @@ This delegate is the response to the `requestUnreadMessagesCount` method. It pro
 
 Example usage:
 
-
 ```csharp
 
     public void didReceiveUnreadMessagesCount(string count) {
@@ -145,10 +145,10 @@ Example usage:
 ```
 
 ## Conversation active delegate {#didCheckIfConversationActive}
+
 This delegate responds to the `checkIfConversationActive` to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
 
 Example usage:
-
 
 ```csharp
 
@@ -168,7 +168,6 @@ Agents can attach a wide variety of files when replying to users. This delegate 
 If the app does not wish to handle the attachment, and this delegate is not implemented , in this case, the SDK will display the attachment using Quicklook Framework.
 
 Example usage:
-
 
 ```csharp
 
@@ -192,15 +191,14 @@ Example usage:
 This delegate method is called when user clicks on an action in Action Card bot.
 HelpshiftUserAction holds the deserialzed data for the action type and data.
 
-`HelpshiftUserAction.actionType` : The type of action user clicked on. Can be one of: 
+`HelpshiftUserAction.actionType` : The type of action user clicked on. Can be one of:
 
 - `ActionType.CALL`
-- `ActionType.LINK` 
+- `ActionType.LINK`
 
 `HelpshiftUserAction.actionData`: The data associated with the action type. Can be a url link or a phone number.
 
 Example usage:
-
 
 ```csharp
 
@@ -210,4 +208,3 @@ Example usage:
         Debug.Log("User clicked on action: Type: " + userAction.actionType + ", Data: " + userAction.actionData);
     }
 ```
-

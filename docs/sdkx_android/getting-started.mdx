@@ -4,10 +4,20 @@ title: Getting Started
 description: "Follow these simple steps to add Helpshift in-app support to yourAndroid app right away"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started {#getting-started}
 
@@ -16,14 +26,11 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 Follow these simple steps to add Helpshift in-app support to your
 Android app right away
 
-
 </Intro>
-
 
 ### Gradle based projects {#gradle-support}
 
 Add the following dependencies to your `build.gradle` file inside the dependencies section.
-
 
 ```groovy
 
@@ -39,7 +46,6 @@ Helpshift SDK comes with built-in support for 47 languages. An api to change sdk
 
 Helpshift is now ready to help you have conversations with your users!
 
-
 ## Start using Helpshift {#start-using}
 
 Helpshift is now integrated in your app and ready to provide customer
@@ -47,44 +53,40 @@ support and collect meaningful data about your users.
 
 ### Version Requirements {#version-requirements}
 
-
 | Helpshift SDK Version | minSDKVersion | compileSDKVersion | buildToolsVersion |
-|-----------------------|---------------|-------------------|-------------------|
+| --------------------- | ------------- | ----------------- | ----------------- |
 | >= 10.2.0             | 21            | 33                | 33                |
 | >= 10.0.2             | 21            | 31                | 31                |
 | >= 10.0.0             | 21            | 29                | 29                |
 
-
-
 ### Initialize Helpshift in your App {#initializing}
 
-1. First, create an app on the Helpshift Dashboard 
-<Image src="/static/books/helpshiftx/add_app.png"  width="full" /> 
+1. First, create an app on the Helpshift Dashboard
 
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
 
 2. Create an app with **Android** as a selected `Platform`
-<Image src="/static/books/helpshiftx/create_app_with_android_platform.png"  width="full" /> 
-
+   <Image
+     src="/static/books/helpshiftx/create_app_with_android_platform.png"
+     width="full"
+   />{" "}
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
 
 <div className=" compact">
 
+|                          |                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_                                      |
+| <code>Platform ID</code> | Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
 
-| | |
-|--|--|
-|<code>Domain Name</code>|  Your Helpshift domain. E.g. _happyapps.helpshift.com_|
-|<code>Platform ID</code>| Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
 </div>
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
 Select your App and _check Android as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
-<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" /> 
-
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
 
 Initialize SDK by calling `com.helpshift.Helpshift.install()` method.
-
-
 
 ```java
 
@@ -110,7 +112,6 @@ Initialize SDK by calling `com.helpshift.Helpshift.install()` method.
 
 ```
 
-
 <Admonition type="danger" title="Important">
 
 ** Placing the install call **
@@ -126,14 +127,9 @@ Calling any API before the install call would throw an unchecked HelpshiftInitia
 
 Calling `install()` below android SDK version 21 will throw this checked exception. All the APIs will be non operable.
 
-
 </Admonition>
-
-
 
 ## Minimum supported Android version
 
-The Helpshift SDK X for Android requires minimum API level to be 16. 
+The Helpshift SDK X for Android requires minimum API level to be 16.
 However, **all the Helpshift's public apis will be non-operable below android SDK version 21.**
-
-

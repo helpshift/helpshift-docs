@@ -4,8 +4,20 @@ title: Tracking Android
 description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Tracking <small>Android</small> {#tracking}
 
@@ -14,43 +26,35 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 Track events and user actions when the user starts a new conversation.
 Attach custom metadata to every conversation started via the SDK.
 
-
 </Intro>
-
 
 ## Name and email {#name-and-email}
 
-
 <Admonition type="info" title="Note">
 
-* This API is now deprecated with Cocos2d-x SDK v4.0. 
-* It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-android#identify-users) going forward.
-* Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.  
+- This API is now deprecated with Cocos2d-x SDK v4.0.
+- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-android#identify-users) going forward.
+- Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
 
 </Admonition>
-
 
 ## User Identifier {#user-id}
 
-
 <Admonition type="info" title="Note">
 
-* This API is now deprecated with Cocos2d-x SDK v4.0. 
-* It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-android#identify-users) going forward.
-* Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
+- This API is now deprecated with Cocos2d-x SDK v4.0.
+- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-android#identify-users) going forward.
+- Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
 
 </Admonition>
 
-
 ## Multi Login {#multi-login}
-
 
 <Admonition type="info" title="Note">
 
 Details on User management are available [here](/cocos2d-x/users-android#identify-users).
 
 </Admonition>
-
 
 ## App usage {#app-usage}
 
@@ -80,37 +84,32 @@ In all the API calls which launch the Help section, you can add a meta-data dict
 in the config dictionary parameter using the HS_META_DATA_KEY macro. This meta-data will be
 sent along with the next reported issue. When the user exits out of the Help section this meta-data will be dropped in favor of the meta-data sent in the next Helpshift API call.
 
-
 <Admonition type="info" title="Note">
 
-* While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
-* As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
-* Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+- While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
+- As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
+- Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 </Admonition>
 
-
 ### Attaching tags with metadata {#metadatatags}
-
 
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Tags must be lowercase.
-* Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
 
 </Admonition>
 
-
-<Image src="/static/books/android/metadata-tags.png"  width="half" /> 
+<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
 
 You can attach tags with metadata to every reported issue via the
 `HS_TAGS_KEY` macro. This is used with the config dictionary as follows:
 
 **For cocos2d-x 3.x**
 / .code-header /
-
 
 ```cpp
 
@@ -134,7 +133,6 @@ You can attach tags with metadata to every reported issue via the
 **For cocos2d-x 2.x**
 / .code-header /
 
-
 ```cpp
 
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
@@ -154,40 +152,36 @@ You can attach tags with metadata to every reported issue via the
 
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
 
-
 <Admonition type="info" title="Note">
 
 **Applicable to SDK v1.8.0 and above.**
 
 </Admonition>
 
-
-You can attach Custom Issue Fields to every new conversation started by the app user. A Custom Issue Field should have a key, a datatype, and a value. The SDK allows the addition of Custom Issue Fields by using the setCustomIssueFields method with the config dictionary passed to the SDK APIs. 
+You can attach Custom Issue Fields to every new conversation started by the app user. A Custom Issue Field should have a key, a datatype, and a value. The SDK allows the addition of Custom Issue Fields by using the setCustomIssueFields method with the config dictionary passed to the SDK APIs.
 
 These Custom Issue Fields would be sent whenever a new issue is created.
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
-Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts. 
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 Possible datatypes to be passed into the config are:
 
-|  Type             |  Comments          |
-|--------------------|-------------------|
-| "sl" | Single line string with character limit of 255 |
-| "ml"   | Multi line string with character limit of 100,000 |
-| "n" |  String representation of number. For eg.  "12345" |
-| "dd"  | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "dt"  | String representation of epoch time in milliseconds. For eg. "1505927361535" |
-| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
+| Type | Comments                                                                                                                                                      |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | Single line string with character limit of 255                                                                                                                |
+| "ml" | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 **For example:**
-
 
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
 
 ```cpp
     ValueMap customIssueFields;
@@ -227,10 +221,8 @@ Possible datatypes to be passed into the config are:
     HelpshiftCocos2dx::showFAQs(config)
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
 
 ```cpp
     cocos2d::CCDictionary *customIssueFields = new CCDictionary();
@@ -270,13 +262,12 @@ Possible datatypes to be passed into the config are:
     HelpshiftCocos2dx::showFAQs(config);
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ## Debug logs {#debug-logs}
+
 If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can use the log functions of the Helpshift class which will provide varying degress of logging.
 For example, if you want to attach debug level logs please add the following code
 
@@ -285,6 +276,7 @@ HelpshiftCocos2dx::logd("Helloworld", "This is the number : %d", 123);
 ```
 
 ## Issue Archival {#issue-archival}
+
 From version 1.3.0, Helpshift SDK includes support for archiving issues.
 Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
 Once archived, issues cannot be reopened. This improves dashboard performance.
@@ -300,11 +292,9 @@ Applicable to SDK v1.7.0 and above.
 
 </Admonition>
 
-
 You can check if the user has any active Conversations on the device with `HelpshiftCocos2dx::checkIfConversationActive(...)` API. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
 For Example:
-
 
 ```cpp
 
@@ -318,4 +308,3 @@ For Example:
     HelpshiftCocos2dx::checkIfConversationActive(conversationActive);
 
 ```
-

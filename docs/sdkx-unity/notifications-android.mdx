@@ -4,8 +4,20 @@ title: Notifications Android
 description: "Configure Push notifications."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Notifications <small>Android</small> {#notifications}
 
@@ -13,9 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Configure Push notifications.
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
@@ -23,10 +33,13 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
-<Image src="/static/books/sdkx_android/app_notification.png"  width="half" alt="urbanAirshipNotif.png" /> 
+<Image
+  src="/static/books/sdkx_android/app_notification.png"
+  width="half"
+  alt="urbanAirshipNotif.png"
+/>{" "}
 
 Helpshift enables you to send notifications to your users. This is
 particularly useful when you have multiple users on multiple platforms
@@ -37,29 +50,32 @@ the notification that is sent from Helpshift appears as a notification.
 To know more about the FCM Push, refer:- [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)
 
 ### Prerequisites {#gcm-prerequisites}
-Implement FCM push in your app. 
+
+Implement FCM push in your app.
 
 For FCM, refer to the
 [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) documentation.
 
-
 ### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
 
 To enable the Helpshift system to send push notifications to your users
-you will have to add an **Android** as a platform in your app _(if you have not added already)_. And then click on the _push notifications_ option. 
+you will have to add an **Android** as a platform in your app _(if you have not added already)_. And then click on the _push notifications_ option.
 
-<Image src="/static/books/helpshiftx/add_android_platform.png"  width="full" /> 
+<Image
+  src="/static/books/helpshiftx/add_android_platform.png"
+  width="full"
+/>{" "}
 
 Enter your FCM key credentials per app, via the
 **Settings page > App listing in the left navigation > Scroll down to Push
 Notifications** settings section for the app.
 
-<Image src="/static/books/helpshiftx/add_fcm_token.png"  width="full" /> 
+<Image src="/static/books/helpshiftx/add_fcm_token.png" width="full" />{" "}
 
 For FCM users, the API key can be found at your
 [Firebase API Console](https://console.firebase.google.com/)
-<Image src="/static/books/android/fcm_console.png"  width="full" /> 
 
+<Image src="/static/books/android/fcm_console.png" width="full" />{" "}
 
 ## Configure the Helpshift Unity SDK to handle notifications {#configure-helpshift-unity-sdk}
 
@@ -131,7 +147,7 @@ Note: The latest FCM plugin for Unity uses androidx libraries. For updating the 
 
 #### Configure Other push notification plugins {#other-plugins}
 
-If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.RegisterPushToken(string deviceToken)** API to register the device token and  **HelpshiftSdk.HandlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send the payload received in the notification.
+If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.RegisterPushToken(string deviceToken)** API to register the device token and **HelpshiftSdk.HandlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send the payload received in the notification.
 
 The following is an example to register device token:
 
@@ -142,10 +158,10 @@ void registrationSucceededEvent( string registrationId )
     HelpshiftSdk.GetInstance().RegisterPushToken(registrationId);
 }
 ```
+
 Once this is done, you can use the **HelpshiftSdk.GetInstance().HandlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send payload which you receive in the **notificationReceivedEvent** callback in your plugin.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift"`, the notification is a Helpshift notification.
-
 
 ## In-app notifications {#in-app-notifications}
 
@@ -153,28 +169,22 @@ In-app notifications are similar to notifications in the [notification drawer](h
 
 These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/sdkx_android/support-tools#conversation-view) when they tap on the notification.
 
-
 <Centered >
 
 ![](/static/books/sdkx_android/notification.png)
 
 </Centered>
 
-
 <Admonition type="info" title="Note">
 
 If the FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
 
-
 </Admonition>
-
-
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
 To fetch unread messages count from the server you can call `Helpshift.RequestUnreadMessageCount(shouldFetchFromServer)` API. This API will return unread messages count via delegate.
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the `Helpshift.SetHelpshiftEventsListener(eventsListener)` API.
-
 
 ```csharp
 
@@ -186,7 +196,7 @@ Based on the value of `shouldFetchFromServer`, the locally stored count will be 
 
 ```
 
-When you call this API, you receive the unread count in your event listener which implements `IHelpshiftEventsListener`. 
+When you call this API, you receive the unread count in your event listener which implements `IHelpshiftEventsListener`.
 Following is an example implementation
 
 ```csharp
@@ -204,8 +214,7 @@ public class HSEventsListener : IHelpshiftEventsListener
       }
     }
     //...
-}    
+}
 ```
 
-* The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
-
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

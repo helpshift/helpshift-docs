@@ -4,11 +4,20 @@ title: Helpshift Support Delegates
 description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -16,13 +25,11 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Helpshift Support Delegates {#delegates}
 
 <Intro>
 
 The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
-
 
 </Intro>
 
@@ -34,7 +41,6 @@ set this delegate instance using `Support.setDelegate()` method.
 For example:
 
 Class Implementation:
-
 
 ```java
 
@@ -104,7 +110,6 @@ Class Implementation:
 
 Class Usage:
 
-
 ```java
 
     MyDelegates delegates = new MyDelegates();
@@ -141,16 +146,13 @@ If you want to keep track of when your app users start a new conversation throug
 
 For issues filed via smart intents, the value newConversationMessage will be "Level 1 intent, level 2 intent"
 
-
 <Admonition type="info" title="Note">
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
 </Admonition>
 
-
 For example:
-
 
 ```java
 
@@ -168,7 +170,6 @@ This delegate callback can be implemented to check if an ongoing Conversation ha
 
 For example:
 
-
 ```java
 
     public void conversationEnded () {
@@ -183,7 +184,6 @@ For example:
 
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
-
 ```java
 
     public static final String UserAcceptedTheSolution = "User accepted the solution";
@@ -195,7 +195,6 @@ If you want to keep track of when your app users send new messages to an ongoing
 
 For example:
 
-
 ```java
 
     public void userRepliedToConversation (String newMessage) {
@@ -206,13 +205,11 @@ For example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
 
 </Admonition>
-
 
 ### Customer satisfaction survey delegate {#csat-completed}
 
@@ -221,7 +218,6 @@ All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also
 If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
 
 For example:
-
 
 ```java
 
@@ -239,25 +235,24 @@ For example:
 
 Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
 
-* Video files (3gp, m4v)
-* Audio files (mp3, mp4, aac)
-* Image files (jpg, png, gif)
+- Video files (3gp, m4v)
+- Audio files (mp3, mp4, aac)
+- Image files (jpg, png, gif)
 
 After the attachment is downloaded, helpshift checks for any app which can open it. If no such app is found than we fall back to passing the file to the delegate handler in the app.
 There are two variants of the `displayAttachmentFile` delegate - `displayAttachmentFile(File attachmentFile)` and `displayAttachmentFile(Uri attachmentUri)`.
 
-* On Android version 10 & above, `displayAttachmentFile(Uri attachmentUri)` will be called since Files are exposed with Uri objects by the OS.
-* On Android versions older than 10, `displayAttachmentFile(File attachmentFile)` will be called.
+- On Android version 10 & above, `displayAttachmentFile(Uri attachmentUri)` will be called since Files are exposed with Uri objects by the OS.
+- On Android versions older than 10, `displayAttachmentFile(File attachmentFile)` will be called.
 
 ### New message received count delegate {#newmessage-recieved}
 
 `didReceiveNotification`
 
-If you want to keep a count of all new messages  recieved in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift recieves a new message in an existing conversation.
+If you want to keep a count of all new messages recieved in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift recieves a new message in an existing conversation.
 You can also use this delegate to keep your badge counts updated.
 
 For example:
-
 
 ```java
 
@@ -275,15 +270,14 @@ This delegate method is called when user clicks on an action in Action Card bot.
 
 <div className="compact ">
 
+|            |                                                                                     |
+| ---------- | ----------------------------------------------------------------------------------- |
+| actionType | The type of action user clicked on. Can be one of: ActionType.CALL, ActionType.LINK |
+| actionData | The data associated with the action type. Can be a url link or a phone number.      |
 
-| | |
-|--|--|
-|actionType| The type of action user clicked on. Can be one of: ActionType.CALL, ActionType.LINK|
-|actionData| The data associated with the action type. Can be a url link or a phone number.|
 </div>
 
 For example:
-
 
 ```java
 
@@ -292,4 +286,3 @@ For example:
       }
 
 ```
-

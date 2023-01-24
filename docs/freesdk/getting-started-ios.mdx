@@ -4,31 +4,39 @@ title: Getting Started
 description: "Getting started with integrating Helpshift in your iOS app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started {#getting-started}
+
 <Intro>
 
 Getting started with integrating Helpshift in your iOS app.
 
-
 </Intro>
 
-
 ## Requirements {#version-requirements}
-*   Xcode 12.0 and above.
-*   Cocoapods v1.10.0
-*   Supported iOS versions:
-    *   iOS 15, 14, 13, 12, 11, 10
 
+- Xcode 12.0 and above.
+- Cocoapods v1.10.0
+- Supported iOS versions:
+  - iOS 15, 14, 13, 12, 11, 10
 
 ## Automated Integration using Cocoapods {#cocoapods}
 
 To start using SDK X `v[% sdkx_ios.sdk_version  %]` in your project, add the following line to your `Podfile`
-
 
 ```text
 
@@ -44,7 +52,6 @@ You can now move on to [Initializing Helpshift in your App](#initializing).
 ## Automated Integration using Swift Package Manager {#spm}
 
 To start using Helpshift `v[% sdkx_ios.sdk_version  %]` in your SPM project, add the following package URL to your project's "Package Dependencies" section
-
 
 ```text
 
@@ -66,28 +73,30 @@ The zip file contains
 
 <div className="text-sm compact ">
 
-
-| | |
-|--|--|
-|HelpshiftX.xcframework| The HelpshiftX framework|
-|NOTICE.txt/| License information about third-party code.|
+|                        |                                             |
+| ---------------------- | ------------------------------------------- |
+| HelpshiftX.xcframework | The HelpshiftX framework                    |
+| NOTICE.txt/            | License information about third-party code. |
 
 </div>
 
 ### Add the latest stable SDK release to your project {#add-to-project}
 
-* Unzip the SDK and drag drop `HelpshiftX.xcframework` into your Xcode project
-* In the `General` section of your app target, verify that the `HelpshiftX.xcframework` is present in the `Framework, Libraries, and Embedded Content` section
-with the option `Embed and Sign` selected from the Embed options dropdown.
-&nbsp;&nbsp; <Image src="/static/books/sdkx_ios/embed_and_sign_framework.png"  width="full" /> 
-* After successful integration, `Build Phases` should look like this:
-&nbsp;&nbsp; <Image src="/static/books/sdkx_ios/integration_screenshot.png"  width="full" /> 
+- Unzip the SDK and drag drop `HelpshiftX.xcframework` into your Xcode project
+- In the `General` section of your app target, verify that the `HelpshiftX.xcframework` is present in the `Framework, Libraries, and Embedded Content` section
+  with the option `Embed and Sign` selected from the Embed options dropdown.
+  &nbsp;&nbsp; <Image src="/static/books/sdkx_ios/embed_and_sign_framework.png"  width="full" />
+- After successful integration, `Build Phases` should look like this:
+  &nbsp;&nbsp; <Image src="/static/books/sdkx_ios/integration_screenshot.png"  width="full" />
 
 ### Info.plist changes - Addition of usage description strings {#plist-description-strings}
 
 “User Attachments” feature is enabled for SDK which allows User to upload an attachment. The attachments can be picked from the Photo Library or can be captured directly using the camera. The options for these sources look like:
 
-<Image src="/static/books/sdkx_ios/attachment_picker_ios.png"  width="half" /> 
+<Image
+  src="/static/books/sdkx_ios/attachment_picker_ios.png"
+  width="half"
+/>{" "}
 
 To use the camera and photo library, Apple requires the app to have Usage Description strings in the Info.plist while. Failing to add these strings might result in app rejection. The following strings are needed for the attachment feature:
 
@@ -99,29 +108,44 @@ To use the camera and photo library, Apple requires the app to have Usage Descri
   </tr>
   <tr>
     <td>NSPhotoLibraryUsageDescription</td>
-    <td>“We need to access photos library to allow users manually pick images meant to be sent as an attachment for help and support reasons.”</td>
-    <td>This is not needed if your app is iOS 11 or above. Below iOS 11, this key is compulsory else the app may crash when user tries to open the photo library for attaching photos.</td>
+    <td>
+      “We need to access photos library to allow users manually pick images
+      meant to be sent as an attachment for help and support reasons.”
+    </td>
+    <td>
+      This is not needed if your app is iOS 11 or above. Below iOS 11, this key
+      is compulsory else the app may crash when user tries to open the photo
+      library for attaching photos.
+    </td>
   </tr>
   <tr>
     <td>NSCameraUsageDescription</td>
-    <td>“We need to access the camera to allow users to click images meant to be sent as an attachment for help and support reasons.”</td>
-    <td>This key is needed for capturing a photo using camera and attaching it.</td>
+    <td>
+      “We need to access the camera to allow users to click images meant to be
+      sent as an attachment for help and support reasons.”
+    </td>
+    <td>
+      This key is needed for capturing a photo using camera and attaching it.
+    </td>
   </tr>
   <tr>
     <td>NSMicrophoneUsageDescription</td>
-    <td>“We need to access the microphone to allow users to record videos using camera meant to be sent as an attachment for help and support reasons.”</td>
-    <td>This key is needed for capturing a video using camera and attaching it.</td>
+    <td>
+      “We need to access the microphone to allow users to record videos using
+      camera meant to be sent as an attachment for help and support reasons.”
+    </td>
+    <td>
+      This key is needed for capturing a video using camera and attaching it.
+    </td>
   </tr>
 </table>
 
-
 <Admonition type="info" title="Note">
 
-End-users can attach files such as pdf, video, etc in their issues. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451) 
-&nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" /> 
+End-users can attach files such as pdf, video, etc in their issues. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+&nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" />
 
 </Admonition>
-
 
 ### Initializing Helpshift in your app {#initializing}
 
@@ -130,19 +154,19 @@ of 2 tokens:
 
 <div className=" compact">
 
+|                          |                                                                                              |
+| ------------------------ | -------------------------------------------------------------------------------------------- |
+| <code>Platform ID</code> | This is your platform Id.                                                                    |
+| <code>Domain Name</code> | This is your Helpshift domain name e.g. _happyapps.helpshift.com_                            |
+| <code>Config</code>      | An <code>NSDictionary</code> representing the configuration parameters for the installation. |
 
-| | |
-|--|--|
-|<code>Platform ID</code>| This is your platform Id.|
-|<code>Domain Name</code>|  This is your Helpshift domain name e.g. _happyapps.helpshift.com_|
-|<code>Config</code>| An <code>NSDictionary</code> representing the configuration parameters for the installation.|
 </div>
 
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
 Select your App and _check `iOS` as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
-<Image src="/static/books/sdkx_ios/copy_keys.png"  width="full" /> 
 
+<Image src="/static/books/sdkx_ios/copy_keys.png" width="full" />{" "}
 
 <Tabs>
 
@@ -154,9 +178,9 @@ the 2 tokens to be passed when initializing Helpshift.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     ...
-    NSDictionary *config = @{} // Your config                 
-    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" 
-                              domain:@"YOUR_DOMAIN" 
+    NSDictionary *config = @{} // Your config
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
+                              domain:@"YOUR_DOMAIN"
                               config:config];
     ...
     return YES;
@@ -183,8 +207,6 @@ import HelpshiftX
 
 </Tabs>
 
-
-
 <Admonition type="danger" title="Important">
 
 ** Placing the install call **
@@ -201,26 +223,22 @@ You can use the API call `showConversationWith:config:` to allow a user to direc
 
 <Centered >
 
-![](/static/books/freesdk/iosfeedback.png "")
+![](/static/books/freesdk/iosfeedback.png)
 
 </Centered>
-
 
 <Tabs>
 
 <TabItem value="Objective-C Example" label="Objective-C Example">
 
-
 ```
 	NSDictionary *config = @{ @"initialUserMessage": @"Give Feedback" };
-    [Helpshift showConversationWith:self config:config]; 
+    [Helpshift showConversationWith:self config:config];
 
 ```
-
 
 </TabItem>
 <TabItem value="Swift Example" label="Swift Example">
-
 
 ```
 	let config = ["initialUserMessage": "Give Feedback"]
@@ -228,11 +246,9 @@ You can use the API call `showConversationWith:config:` to allow a user to direc
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ## Integrating FAQs {#faqs-view}
 
@@ -240,26 +256,22 @@ You can use the API call `showFAQsWith:config:` to provide a way for the user to
 
 <Centered >
 
-<Image src="/static/books/sdkx_ios/show_faqs.png"  width="full" /> 
+<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />{" "}
 
 </Centered>
-
 
 <Tabs>
 
 <TabItem value="Objective-c Example" label="Objective-c Example">
 
-
 ```
 	NSDictionary *config = @{ @"initialUserMessage": @"Give Feedback" };
-    [Helpshift showFAQsWith:self config:config]; 
+    [Helpshift showFAQsWith:self config:config];
 
 ```
-
 
 </TabItem>
 <TabItem value="Swift Example" label="Swift Example">
-
 
 ```
 	let config = ["initialUserMessage": "Give Feedback"]
@@ -267,11 +279,9 @@ You can use the API call `showFAQsWith:config:` to provide a way for the user to
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ## Attaching Custom Metadata to feedback {#custom-meta-data}
 
@@ -282,8 +292,6 @@ Example:-
 <Tabs>
 
 <TabItem value="Configuration details" label="Configuration details">
-
-
 
 <Tabs>
 
@@ -314,19 +322,15 @@ Helpshift.showConversation(with: self, config: config)
 
 </Tabs>
 
-
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
 Metadata should only be sent as String key-value pairs.
 
-* Once customMetadata is set, if you want to reset it, then you’ll have to call the SDK X API with an empty dictionary, i.e.,
+- Once customMetadata is set, if you want to reset it, then you’ll have to call the SDK X API with an empty dictionary, i.e.,
 
 ```swift
 let customMetadata = [String: String]();
@@ -336,18 +340,15 @@ Helpshift.showConversation(with: self, config: config)
 
 </Admonition>
 
-
 ## Attaching Custom Issue Fields to feedback {#custom-issue-fields}
-
 
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
 
 </Admonition>
-
 
 You can attach Custom Issue Fields to every new feedback started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` method in the ApiConfig object.
 These Custom Issue Fields would be sent whenever a new feedback is started by the end user.
@@ -357,24 +358,20 @@ All the modified Custom Issue Fields (updated during an active feedback) will on
 
 Possible datatypes to be passed into the config are:
 
-
-|  Type             | value |  Comments          |
-|-------------------|-------|--------------------|
-| "singleline" | string | Single line string with character limit of 255 |
-| "multiline"   | string | Multi line string with character limit of 100,000 |
-| "number" | string |  String representation of number. For eg.  "12345" |
-| "dropdown"  | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "date"  | long long int | Epoch time in milliseconds. For eg. `1505927361535` |
-| "checkbox"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
-
+| Type         | value         | Comments                                                                                                                                                      |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "singleline" | string        | Single line string with character limit of 255                                                                                                                |
+| "multiline"  | string        | Multi line string with character limit of 100,000                                                                                                             |
+| "number"     | string        | String representation of number. For eg. "12345"                                                                                                              |
+| "dropdown"   | string        | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "date"       | long long int | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
+| "checkbox"   | string        | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 Example:-
 
 <Tabs>
 
 <TabItem value="Configuration details" label="Configuration details">
-
-
 
 <Tabs>
 
@@ -388,7 +385,7 @@ NSDictionary *cifs = @{ @"joining_date": @{ @"type":@"date", @"value":@150592736
                      @"salary_currency": @{ @"type":@"dropdown", @"value":@"Dollars" } };
 
 NSDictionary *config = @{ @"customIssueFields" : cifs };
-[Helpshift showConversationWith:self config:config]; 
+[Helpshift showConversationWith:self config:config];
 ```
 
 </TabItem>
@@ -408,9 +405,6 @@ Helpshift.showConversation(with: self, config: config)
 
 </Tabs>
 
-
-
 </TabItem>
 
 </Tabs>
-

@@ -4,31 +4,35 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK.These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 Applicable to SDK version 4.0.0 and above
 
 </Admonition>
-
-
 
 ## Install time configurations {#install-config}
 
@@ -38,12 +42,12 @@ Upon setting this option to YES, Helpshift SDK will switch between default light
 
 <div className="compact ">
 
+|         |                                                            |
+| ------- | ---------------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_AUTOMATIC_THEME_SWITCHING</code> |
+| Values  | <code>"yes"</code> / <code>"no"</code>                     |
+| Default | <code>"no"</code>                                          |
 
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.ENABLE_AUTOMATIC_THEME_SWITCHING</code>|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 ```csharp
@@ -58,7 +62,6 @@ configMap.Add(HelpshiftSdk.ENABLE_AUTOMATIC_THEME_SWITCHING, "yes");
 help.install("apiKey","domainName","appId", configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 1. This configuration is only applicable to iOS 13 and above.
@@ -67,16 +70,14 @@ help.install("apiKey","domainName","appId", configMap);
 
 </Admonition>
 
-
 ### unityGameObject {#unity-game-object}
 
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.UNITY_GAME_OBJECT</code>|
-|Values| Non-empty String|
+|        |                                             |
+| ------ | ------------------------------------------- |
+| Flag   | <code>HelpshiftSdk.UNITY_GAME_OBJECT</code> |
+| Values | Non-empty String                            |
 
 </div>
 
@@ -96,13 +97,11 @@ configMap.Add(HelpshiftSdk.UNITY_GAME_OBJECT, "Cube");
 help.install("apiKey","domainName","appId", configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 This option will only work with the Helpshift's `install` API
 
 </Admonition>
-
 
 ### enableInAppNotification {#enableInAppNotification}
 
@@ -110,12 +109,12 @@ If you do not want the in-app notification support provided by the Helpshift SDK
 
 <div className="compact ">
 
+|         |                                                      |
+| ------- | ---------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_IN_APP_NOTIFICATION</code> |
+| Values  | <code>"yes"</code> / <code>"no"</code>               |
+| Default | <code>"no"</code>                                    |
 
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.ENABLE_IN_APP_NOTIFICATION</code>|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 Example:
@@ -134,22 +133,19 @@ help.install("apiKey","domainName","appId", configMap);
 
 ### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
 
-
 <Admonition type="info" title="Note">
 
 Available from SDK version 1.3.0 and above
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.ENABLE_DEFAULT_FALLBACK_LANGUAGE</code>|
-|values| <code>"yes"</code> / <code>"no"</code>|
-|default| <code>"yes"</code>|
+|         |                                                            |
+| ------- | ---------------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_DEFAULT_FALLBACK_LANGUAGE</code> |
+| values  | <code>"yes"</code> / <code>"no"</code>                     |
+| default | <code>"yes"</code>                                         |
 
 </div>
 
@@ -171,28 +167,24 @@ help.install("apiKey","domainName","appId", configMap);
 
 ### disableEntryExitAnimations {#disableEntryExitAnimations}
 
-
 <Admonition type="info" title="Note">
 
- Applicable to version 2.1.1 and above.
+Applicable to version 2.1.1 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.DISABLE_ENTRY_EXIT_ANIMATIONS</code>|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                                         |
+| ------- | ------------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.DISABLE_ENTRY_EXIT_ANIMATIONS</code> |
+| Values  | <code>"yes"</code> / <code>"no"</code>                  |
+| Default | <code>"no"</code>                                       |
 
 </div>
 
 If you want to disable animations shown by the Helpshift SDK while entering and exit the Helpshift screens, please set this config option to `yes`.
 Default value is `no`, ie., Helpshift SDK **will show** animations if this value is not set.
-
 
 Example:
 
@@ -208,19 +200,17 @@ configMap.Add(HelpshiftSdk.DISABLE_ENTRY_EXIT_ANIMATIONS, "yes");
 help.install("apiKey","domainName","appId", configMap);
 ```
 
-
 ### enableLogging {#enableLogging}
 
 Upon setting enableLogging to `yes`, Helpshift SDK logs will be generated in the Xcode console. Turning on logging can help developers resolve common integration issues.
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.ENABLE_LOGGING</code>|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                          |
+| ------- | ---------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_LOGGING</code> |
+| Values  | <code>"yes"</code>/<code>"no"</code>     |
+| Default | <code>"no"</code>                        |
 
 </div>
 
@@ -242,15 +232,13 @@ help.install("apiKey","domainName","appId", configMap);
 
 Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK will collect internal error level logs and report them to our systems to ensure that we become aware of runtime issues and we have enough information to fix them.
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.DISABLE_ERROR_REPORTING</code>|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>no</code>.|
+|         |                                                   |
+| ------- | ------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.DISABLE_ERROR_REPORTING</code> |
+| Values  | <code>"yes"</code>/<code>"no"</code>              |
+| Default | <code>no</code>.                                  |
 
 </div>
 
@@ -273,25 +261,25 @@ help.install("apiKey","domainName","appId", configMap);
 
 <div className="compact ">
 
+|         |                                                                                                                                                                |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | enableContactUs                                                                                                                                                |
+| Values  | <code>CONTACT_US_ALWAYS</code>/<code>CONTACT_US_NEVER</code>/<code>CONTACT_US_AFTER_VIEWING_FAQS</code>/<code>CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL</code> |
+| Default | <code>CONTACT_US_ALWAYS</code>                                                                                                                                 |
 
-| | |
-|--|--|
-|Flag| enableContactUs|
-|Values| <code>CONTACT_US_ALWAYS</code>/<code>CONTACT_US_NEVER</code>/<code>CONTACT_US_AFTER_VIEWING_FAQS</code>/<code>CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL</code>|
-|Default| <code>CONTACT_US_ALWAYS</code>|
 </div>
 
 The `enableContactUs` flag controls the visibility of `Contact Us` button -
 
 <div className=" compact text-sm">
 
+|                                           |                                                                                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| CONTACT_US_ALWAYS                         | show in the navigation bar, search, and after marking an FAQ unhelpful. <code>"yes"</code> for SDK versions below 4.5.0 |
+| CONTACT_US_AFTER_VIEWING_FAQS             | show only while searching, on FAQ screen and after marking an FAQ unhelpful.                                            |
+| CONTACT_US_NEVER                          | do not show "Contact Us" button anywhere in the SDK. <code>"no"</code> for SDK versions below 4.5.0                     |
+| CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL | do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful.                                  |
 
-| | |
-|--|--|
-|CONTACT_US_ALWAYS| show in the navigation bar, search, and after marking an FAQ unhelpful. <code>"yes"</code> for SDK versions below 4.5.0|
-|CONTACT_US_AFTER_VIEWING_FAQS| show only while searching, on FAQ screen and after marking an FAQ unhelpful.|
-|CONTACT_US_NEVER| do not show "Contact Us" button anywhere in the SDK. <code>"no"</code> for SDK versions below 4.5.0|
-|CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL| do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful.|
 </div>
 
 To override the default value you can pass the arguments in the options dictionary.
@@ -311,7 +299,6 @@ help.showFAQs(configMap);
 
 This flag has no effect for the `showConversation` API call, since there is no `Contact Us` button in the conversation screen.
 
-
 <Admonition type="info" title="Note">
 
 ** AFTER_VIEWING_FAQS is applicable to Plugin version 4.5.0 and above **
@@ -320,22 +307,21 @@ By using this option, you encourage users to read and search FAQs first instead 
 
 </Admonition>
 
-
 #### Best Practices
 
-* Provide tier-based support by setting enableContactUs to `CONTACT_US_ALWAYS` for paid users and `CONTACT_US_AFTER_VIEWING_FAQS` for unpaid ones.
-* Provide country based support by setting enableContactUs to `CONTACT_US_ALWAYS` for local users and `CONTACT_US_AFTER_VIEWING_FAQS` for foreign ones.
+- Provide tier-based support by setting enableContactUs to `CONTACT_US_ALWAYS` for paid users and `CONTACT_US_AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `CONTACT_US_ALWAYS` for local users and `CONTACT_US_AFTER_VIEWING_FAQS` for foreign ones.
 
 ### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
 
 <div className="compact ">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | gotoConversationAfterContactUs         |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| gotoConversationAfterContactUs|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `gotoConversationAfterContactUs` flag will determine whether the
@@ -344,6 +330,7 @@ conversation via "Contact Us". This only makes sense if the
 `enableContactUs` flag takes on the default value.
 
 Example:
+
 ```csharp
 using Helpshift;
 .
@@ -356,15 +343,11 @@ configMap.Add("gotoConversationAfterContactUs", "yes");
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 For `showFAQs`, `showFAQSection` and `showSingleFAQ`, setting `gotoConversationAfterContactUs` makes sense only if `enableContactUs` is `yes`.
 
 </Admonition>
-
-
-
 
 <Admonition type="info" title="Note">
 
@@ -372,9 +355,7 @@ This API is now deprecated with Unity SDK v4.0.0. Read more about the new conver
 
 </Admonition>
 
-
 ### presentFullScreenOniPad {#presentFullScreenOniPad}
-
 
 <Admonition type="info" title="Note">
 
@@ -382,15 +363,14 @@ Applicable to SDK version 4.2.0 and above
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | presentFullScreenOniPad                |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| presentFullScreenOniPad|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen`
@@ -401,9 +381,7 @@ When the value is set to `"yes"`, support views will be presented in `UIModalPre
 
 This flag only takes effect on iPad.
 
-
 ### requireEmail {#requireEmail}
-
 
 <Admonition type="info" title="Note">
 
@@ -411,15 +389,14 @@ Applicable to SDK version 4.6.0 and above
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | requireEmail                           |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| requireEmail|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `requireEmail` flag will determine whether email is required or optional for starting a new conversation.
@@ -427,6 +404,7 @@ The `requireEmail` flag will determine whether email is required or optional for
 When the flag is set to `yes` customer's email will be required. If set to `no` email will be optional.
 
 For example:
+
 ```csharp
 using Helpshift;
 .
@@ -441,14 +419,11 @@ help.showFAQs(configMap);
 
 If "New Issue Forwarding" is ON or if "Allow anonymous issues" is ON in the agent dashboard, then this flag will be ignored.
 
-
 <Admonition type="info" title="Note">
 
 Once `requireEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
 
 </Admonition>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -456,9 +431,7 @@ This API is now deprecated with Unity SDK v4.0.0. Read more about the new conver
 
 </Admonition>
 
-
 ### hideNameAndEmail {#hideNameAndEmail}
-
 
 <Admonition type="info" title="Note">
 
@@ -466,29 +439,28 @@ Applicable to SDK version 4.7.0 and above
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | hideNameAndEmail                       |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| hideNameAndEmail|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
 
 When the flag is set to `yes` the name and email fields will be hidden. If set to `no` the default behaviour will resume.
 
-If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the *setNameAndEmail* API, to supply the SDK with name and email in this case.
+If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the _setNameAndEmail_ API, to supply the SDK with name and email in this case.
 
 If "Allow anonymous issues" is ON, under app settings in the agent dashboard, then this flag will be ignored.
 
 Also, if the [`requireEmail`](#requireEmail) flag is set to `no` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
 
-
 For example:
+
 ```csharp
 using Helpshift;
 .
@@ -501,15 +473,11 @@ configMap.Add("hideNameAndEmail", "yes");
 help.showFAQs(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 Once `hideNameAndEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
 
 </Admonition>
-
-
-
 
 <Admonition type="info" title="Note">
 
@@ -517,9 +485,7 @@ This API is now deprecated with Unity SDK v4.0.0. Read more about the new conver
 
 </Admonition>
 
-
 ### conversationPrefillText {#conversationPrefillText}
-
 
 <Admonition type="info" title="Note">
 
@@ -527,14 +493,12 @@ Applicable to SDK version 4.7.0 and above
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| conversationPrefillText|
-|Values| Non-empty <code>string</code>|
+|        |                               |
+| ------ | ----------------------------- |
+| Flag   | conversationPrefillText       |
+| Values | Non-empty <code>string</code> |
 
 </div>
 
@@ -542,6 +506,7 @@ The `conversationPrefillText` API option will prefill a new conversation descrip
 This is useful where you might want your users to send you diagnostic information in the conversation description, for example if the app hits an exception, etc.
 
 Example:
+
 ```csharp
 using Helpshift;
 .
@@ -555,16 +520,13 @@ configMap.Add("conversationPrefillText", preFillString);
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 The `conversationPrefillText` option takes effect only for the **showConversation** API
 
 </Admonition>
 
-
 ### enableFullPrivacy {#enableFullPrivacy}
-
 
 <Admonition type="info" title="Note">
 
@@ -572,15 +534,13 @@ Applicable to SDK version 4.9.1 and above
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableFullPrivacy|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableFullPrivacy                      |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
 
@@ -590,13 +550,14 @@ If enableFullPrivacy option is set to YES, HS SDK does the following:
 
 1. Disables user-initiated screenshots - players cannot send images without being requested by an Agent.
 1. Does not collect any of the following personal information:
-    *    Mobile country code, mobile network code and carrier name.
-    *    Country code and country.
-    *    Custom meta-data that is labeled "private-data".
+   - Mobile country code, mobile network code and carrier name.
+   - Country code and country.
+   - Custom meta-data that is labeled "private-data".
 
 To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this option is set to YES, this data will be removed when the user starts a new conversation.
 
 Example:
+
 ```csharp
 using Helpshift;
 .
@@ -609,19 +570,15 @@ configMap.Add("enableFullPrivacy", "yes");
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 1. Once `enableFullPrivacy` flag is set, the SDK will use that value for all further sessions until it is changed again.
-2.  For plugin versions 2.7.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
-3.  For plugin versions 2.8.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
+2. For plugin versions 2.7.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
+3. For plugin versions 2.8.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
 
 </Admonition>
 
-
-
 ### showSearchOnNewConversation {#showSearchOnNewConversation}
-
 
 <Admonition type="info" title="Note">
 
@@ -629,24 +586,22 @@ Applicable to SDK version 4.9.1 and above
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showSearchOnNewConversation|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | showSearchOnNewConversation            |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
-
 
 If showSearchOnNewConversation flag is set to `yes`, the user will be taken to a view which shows the search results relevant to the conversation text that he has entered upon clicking the 'Send' button. This is to avoid tickets which are already answered in the FAQs. The user will still be able to start a new conversation with the same text. He can also go through one of the FAQs and find a solution to his query, and exit the session without submitting a ticket.
 
 Default value is `no`, ie., this feature will not be enabled unless you explicitly pass `yes` for this flag.
 
 For example
+
 ```csharp
 using Helpshift;
 .
@@ -659,14 +614,11 @@ configMap.Add("showSearchOnNewConversation", "yes");
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 The `showSearchOnNewConversation` option takes effect only for the **showConversation** API.
 
 </Admonition>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -674,35 +626,34 @@ This API is now deprecated with Unity SDK v4.0.0. Read more about the new conver
 
 </Admonition>
 
-
 ### showConversationResolutionQuestion {#showConversationResolutionQuestion}
-
 
 <Admonition type="info" title="Note">
 
- Applicable to version 1.3.0 and above.
+Applicable to version 1.3.0 and above.
 
- For application version 1.2.0 and below the conversation resolution question for user confirmation will be shown by default. This default behaviour has changed for version 1.3.0 and above, where the conversation resolution question for user confirmation is not shown.
+For application version 1.2.0 and below the conversation resolution question for user confirmation will be shown by default. This default behaviour has changed for version 1.3.0 and above, where the conversation resolution question for user confirmation is not shown.
 
 </Admonition>
-
 
 #### For v4.0+
 
 This SDK configuration is deprecated with v4.0+ and default value will be treated as False.
 
-If you want to use this feature, you can turn the feature on and off  ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
+If you want to use this feature, you can turn the feature on and off ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
 
-<Image src="/static/books/misc/resolution-question-app-setting.png"  width="full" /> 
+<Image
+  src="/static/books/misc/resolution-question-app-setting.png"
+  width="full"
+/>{" "}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationResolutionQuestion|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| Before version 5.3.0: <code>yes</code>.   From version 5.3.0: <code>no</code>|
+|         |                                                                             |
+| ------- | --------------------------------------------------------------------------- |
+| Flag    | showConversationResolutionQuestion                                          |
+| Values  | <code>"yes"</code> / <code>"no"</code>                                      |
+| Default | Before version 5.3.0: <code>yes</code>. From version 5.3.0: <code>no</code> |
 
 </div>
 
@@ -728,18 +679,15 @@ configMap.Add("showConversationResolutionQuestion", "yes");
 help.showConversation(configMap);
 ```
 
-
 <Admonition type="info" title="Note">
 
 This SDK configuration is deprecated with v4.0+ and default value will be treated as False.
 
-If you want to use this feature, you can turn the feature on and off  ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
+If you want to use this feature, you can turn the feature on and off ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
 
 </Admonition>
 
-
 ### customContactUsFlows {#custom-contactus-flows}
-
 
 <Admonition type="info" title="Note">
 
@@ -747,15 +695,13 @@ Available in version 2.3.0 and above. User can be directed to dynamic form only 
 
 </Admonition>
 
-
 <div className=" compact">
 
-
-| | |
-|--|--|
-|Flag| customContactUsFlows|
-|Values| Non-empty array of flow dictionaries. Refer [<code>Guided Issue Filing</code>](/unity/support-tools-ios#dynamic-forms) to know more about creating flow dictionaries.|
-|Default| There is no default value for this configuration.|
+|         |                                                                                                                                                                       |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | customContactUsFlows                                                                                                                                                  |
+| Values  | Non-empty array of flow dictionaries. Refer [<code>Guided Issue Filing</code>](/unity/support-tools-ios#dynamic-forms) to know more about creating flow dictionaries. |
+| Default | There is no default value for this configuration.                                                                                                                     |
 
 </div>
 
@@ -813,22 +759,19 @@ public void onCustomContactUsClick() {
 
 ### showConversationInfoScreen {#showConversationInfoScreen}
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 2.7.0 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationInfoScreen|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | showConversationInfoScreen           |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -846,16 +789,13 @@ help.showConversation(configMap);
 
 ```
 
-
 <Admonition type="info" title="Note">
 
-The info screen would only be visible when an QuickSearch Bot/Identity Bot (if configured) complete their tasks and Automations/Agents can act on the new conversation. 
+The info screen would only be visible when an QuickSearch Bot/Identity Bot (if configured) complete their tasks and Automations/Agents can act on the new conversation.
 
 </Admonition>
 
-
 ### enableTypingIndicator {#enableTypingIndicator}
-
 
 <Admonition type="info" title="Note">
 
@@ -863,15 +803,13 @@ Applicable to version 2.8.0 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableTypingIndicator|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | enableTypingIndicator                |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -883,8 +821,10 @@ For SDK v740 and above, the typing indicator configuration `Show Agent Typing In
 
 If this configuration is turned ON from the configurations page OR if an SDK configuration is used, the typing indicator will shown to end users.
 
-
-<Image src="/static/books/misc/enable-typing-indicator-app-setting.png"  width="full" /> 
+<Image
+  src="/static/books/misc/enable-typing-indicator-app-setting.png"
+  width="full"
+/>{" "}
 
 Example :
 
@@ -901,17 +841,15 @@ help.showConversation(configMap);
 
 ```
 
-
 <Admonition type="info" title="Note">
 
- * This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
- 
- * For Unity SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
- 
- * If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will shown to the end users.
+- This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
+
+- For Unity SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
+
+- If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will shown to the end users.
 
 </Admonition>
-
 
 ## IssueDescriptionMinimumCharacterLength {#issue-description-minimum-length}
 
@@ -919,13 +857,11 @@ To control the minimum number of characters that the users need to type before t
 This option works both in Conversational issue-filing and Form-based issue-filing experience.
 Since this option is dependent on the language in which the user starts a conversation, developers are encouraged to set this value for each language as appropriate.
 
-
 <Admonition type="info" title="Note">
 
 This option is not an SDK API config but rather a **key in the HelpshiftLocalizable.strings** file.
 
 </Admonition>
-
 
 <Centered >
 
@@ -935,17 +871,17 @@ This option is not an SDK API config but rather a **key in the HelpshiftLocaliza
 
 ## Configuration Summary {#config-summary}
 
-| Option / API                            | [showFAQs](#faqs-view)    | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
-|-----------------------------------------|-------------|----------------|---------------|------------------|
-| **enableContactUs**                   | Supported   | Supported      | Supported     | Not Supported     |
-| **gotoConversationAfterContactUs**    | Supported   | Supported      | Supported     | Supported        |
-| **presentFullScreenOniPad**           | Supported   | Supported      | Supported     | Supported        |
-| **requireEmail**                      | Supported   | Supported      | Supported     | Supported        |
-| **hideNameAndEmail**                  | Supported   | Supported      | Supported     | Supported        |
-| **conversationPrefillText**                       | No effect   | No effect      | No effect     | Supported        |
-| **enableFullPrivacy**                 | Supported   | Supported      | Supported     | Supported        |
-| **showSearchOnNewConversation**       | Supported   | Supported      | No effect     | Supported        |
-| **showConversationResolutionQuestion**| Supported   | Supported      | Supported     | Supported        |
-| **customContactUsFlows**              | Supported   | Supported      | Supported     | Not Supported    |
-| **showConversationInfoScreen**| Supported   | Supported      | Supported     | Supported        |
-| **enableTypingIndicator**| Supported   | Supported      | Supported     | Supported        |
+| Option / API                           | [showFAQs](#faqs-view) | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
+| -------------------------------------- | ---------------------- | ----------------------------------- | ----------------------------------- | -------------------------------------- |
+| **enableContactUs**                    | Supported              | Supported                           | Supported                           | Not Supported                          |
+| **gotoConversationAfterContactUs**     | Supported              | Supported                           | Supported                           | Supported                              |
+| **presentFullScreenOniPad**            | Supported              | Supported                           | Supported                           | Supported                              |
+| **requireEmail**                       | Supported              | Supported                           | Supported                           | Supported                              |
+| **hideNameAndEmail**                   | Supported              | Supported                           | Supported                           | Supported                              |
+| **conversationPrefillText**            | No effect              | No effect                           | No effect                           | Supported                              |
+| **enableFullPrivacy**                  | Supported              | Supported                           | Supported                           | Supported                              |
+| **showSearchOnNewConversation**        | Supported              | Supported                           | No effect                           | Supported                              |
+| **showConversationResolutionQuestion** | Supported              | Supported                           | Supported                           | Supported                              |
+| **customContactUsFlows**               | Supported              | Supported                           | Supported                           | Not Supported                          |
+| **showConversationInfoScreen**         | Supported              | Supported                           | Supported                           | Supported                              |
+| **enableTypingIndicator**              | Supported              | Supported                           | Supported                           | Supported                              |

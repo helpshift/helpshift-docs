@@ -4,11 +4,20 @@ title: Troubleshooting
 description: Learn more about Troubleshooting
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -16,12 +25,9 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Troubleshooting {#troubleshoot}
 
-
 ## SDK integration {#integration-issues}
-
 
 ### 7.9.0 SDK Update {#7}
 
@@ -29,8 +35,8 @@ We found a bug for the following scenario - for SDK 7.9.0, when New Issue Automa
 
 **Action needed:**
 
-* If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
-* If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [7.9.1 SDK](/ios/release-notes#7.9.1).
+- If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
+- If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [7.9.1 SDK](/ios/release-notes#7.9.1).
 
 ### Using Xcode 11 {#xcode11}
 
@@ -56,7 +62,6 @@ should be changed to
 + (void) setTheme:(NSString *__nullable)themeName;
 ```
 
-
 ### Managing Helpshift SDK updates with Cocoapods
 
 Due to the way Cocoapods handles version updates, if you have your own **custom localized strings**, note that, on the next SDK release they will be overwritten. Make sure you backup your translations, so you can migrate the values back into the new string files. One way of doing that might be to add these customizations in the version control system. That way when you upgrade Helpshift, you can see the `diff` of the changes that you made and reinstate them as you require.
@@ -69,6 +74,7 @@ To do so, goto `System Preferences -> Security and Privacy Settings -> General` 
 ![privacy settings.png](/static/books/ios/privacy.png)
 
 ### hs_setContentInsetAdjustmentBehaviorToAutomaticWithParent crash {#setContentInsetAdjustmentBehaviorToAutomaticWithParent}
+
 If you are seeing app crash just after launching Helpshift Support screens, please add -ObjC flag to the Other Linker Flags under Build Settings section.
 
 ```objc
@@ -77,6 +83,7 @@ reason: '-[UITableView hs_setContentInsetAdjustmentBehaviorToAutomaticWithParent
 ```
 
 ### CFBundleShortVersionString crash {#CFBundleShortVersionString}
+
 If you are seeing app crashes just after launching the app, please make sure to set the **CFBundleShortVersionString** (Bundle versions string, short) in the **<YOUR_APP\>-Info.plist** file of your XCode project.
 
 ```objc
@@ -88,8 +95,10 @@ libc++abi.dylib: terminating with uncaught exception of type NSException
 ```
 
 ### Incorrect iOS initialization code crash {#initialization-crash}
+
 If just after launching the app, you get a crash that has `readLocalConfig` in it's call stack, then make sure that you're using the correct Helpshift initialization code for iOS.
 When testing again, after using the correct initialization code, delete the app from your device or simulator and do a fresh install.
+
 ```objc
 2014-08-26 13:28:54.862 HS Demo[96593:3a03] -[__NSCFString objectAtIndex:]: unrecognized selector sent to instance 0x9e27a30
 2014-08-26 13:28:54.865 HS Demo[96593:3a03] *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '-[__NSCFString objectAtIndex:]: unrecognized selector sent to instance 0x9e27a30'
@@ -155,9 +164,7 @@ requirements.
 If you encounter a conversation screen, where the chat bubbles are missing, or camera icon is missing, then make sure to correctly import the png files from the HSResources folder into your project.
 ![](/static/books/ios/no-chat-bubbles.png)
 
-
-<Image src="/static/books/ios/import-hs-resources.png"  width="full" /> 
-
+<Image src="/static/books/ios/import-hs-resources.png" width="full" />{" "}
 
 ### Strings missing in the SDK UI {#strings-missing-in-sdk}
 
@@ -173,19 +180,19 @@ To setup push notifications, check out the [Notifications](/ios/notifications/) 
 
 Things to check when you're not receiving push notifications:
 
-* Make sure that you've uploaded the correct .p12 file for development/production push modes.
+- Make sure that you've uploaded the correct .p12 file for development/production push modes.
   For more info check [here](/ios/notifications#configure-helpshift-push-admin).
-* Make sure you're using the `registerDeviceToken:` API, in your `application:didRegisterForRemoteNotificationsWithDeviceToken:` delegate method.
-* Check that the app identifier you're using is the one used for your push certificate.
-* Check whether you're have the correct **Code Signing** setup for the app identifier.
-* Make sure that you're registering the app to use push notifications, using `registerForRemoteNotificationTypes` (`registerForRemoteNotifications` in iOS 8) in the `application:didFinishLaunchingWithOptions:` delegate method.
-* If badge count is not showing up with push, make sure that in the agent dashboard, **Send Badge Count** is selected under **App Settings > Push Notification**. <Image src="/static/books/ios/enable-badge-count-push.png"  width="full" /> 
-* If custom sound alerts are not working, make sure that **Custom Sound Alert** is selected under **App Settings > Push Notifications**. Also, provide the sound file name (with the file extension) exactly as the file name used in your app. <Image src="/static/books/ios/custom-sound-alert-push.png"  width="full" /> 
-* To configure your app to handle notifications from Helpshift, check out the [configuration doc](/ios/notifications#configure-helpshift-sdk).
+- Make sure you're using the `registerDeviceToken:` API, in your `application:didRegisterForRemoteNotificationsWithDeviceToken:` delegate method.
+- Check that the app identifier you're using is the one used for your push certificate.
+- Check whether you're have the correct **Code Signing** setup for the app identifier.
+- Make sure that you're registering the app to use push notifications, using `registerForRemoteNotificationTypes` (`registerForRemoteNotifications` in iOS 8) in the `application:didFinishLaunchingWithOptions:` delegate method.
+- If badge count is not showing up with push, make sure that in the agent dashboard, **Send Badge Count** is selected under **App Settings > Push Notification**. <Image src="/static/books/ios/enable-badge-count-push.png"  width="full" />
+- If custom sound alerts are not working, make sure that **Custom Sound Alert** is selected under **App Settings > Push Notifications**. Also, provide the sound file name (with the file extension) exactly as the file name used in your app. <Image src="/static/books/ios/custom-sound-alert-push.png"  width="full" />
+- To configure your app to handle notifications from Helpshift, check out the [configuration doc](/ios/notifications#configure-helpshift-sdk).
 
 ### Campaign notification shows "Support" as its title.
 
-Please make sure to set the *"CFBundleDisplayName"* key, in your application's _Info.plist_ file, to the display name of your application.
+Please make sure to set the _"CFBundleDisplayName"_ key, in your application's _Info.plist_ file, to the display name of your application.
 
 Helpshift SDK uses the value of this key as the title of the notification. If this key isn't set then the notification by default shows "Support" as the title.
 
@@ -201,23 +208,24 @@ If you have not moved to Universal Push Notification system, upload a developmen
 
 Things to check if skinning is not working as expected:
 
-* Make sure that `HelpshiftConfig.plist` is correctly imported into your Xcode project. It should shown under **Build Phases > Copy Bundle Resources** for your target.  <Image src="/static/books/ios/plist-added-correctly.png"  width="full" />  To make sure that your project is picking up the plist correctly, you can run the following snippet in your project:
+- Make sure that `HelpshiftConfig.plist` is correctly imported into your Xcode project. It should shown under **Build Phases > Copy Bundle Resources** for your target. <Image src="/static/books/ios/plist-added-correctly.png"  width="full" /> To make sure that your project is picking up the plist correctly, you can run the following snippet in your project:
+
 ```objc
         NSString *filePath = [[NSBundle mainBundle] pathForResource:@"HelpshiftConfig" ofType:@"plist"];
         NSLog(@"%@",filePath);
 ```
+
 If it is printing `null` etc. then the `HelpshiftConfig.plist` file is not correctly added to your project.
 
-* Colors are specified in hexadecimal format, e.g. `FF0000` is Red. Do not use <del>`0xFF0000`</del> or <del>`#FF0000`</del> to specify color values.
-* If you're using `UIAppearance` for a particular UI element, then you will not need to configure that UI element in `HelpshiftConfig.plist`, as Helpshift takes on UIAppearance values automatically.
-* When using custom fonts make sure that you're using the exact font name. For more info check [here](/ios/design#custom-fonts).
+- Colors are specified in hexadecimal format, e.g. `FF0000` is Red. Do not use <del>`0xFF0000`</del> or <del>`#FF0000`</del> to specify color values.
+- If you're using `UIAppearance` for a particular UI element, then you will not need to configure that UI element in `HelpshiftConfig.plist`, as Helpshift takes on UIAppearance values automatically.
+- When using custom fonts make sure that you're using the exact font name. For more info check [here](/ios/design#custom-fonts).
 
 ## Miscellaneous {#misc}
 
 ### App crashing on foreground during `getAcceptLangHeaderValue:` or `completeEventsDataForEventDTOs:`
 
 If you are using iOS SDK version 7.4.0 or below and are seeing crashes during app foreground with a similar stacktrace, please upgrade the SDK to version 7.5.0 or above.
-
 
 ```objc
 
@@ -235,7 +243,6 @@ stack. We've minimized the effect as much as possible and reported the
 issue to Apple.
 For more details on the root issue, please [refer here](http://stackoverflow.com/questions/19568083/uilabel-allocation-persistent-and-taking-up-8mb-of-memory)
 
-
 ### For Crittercism users {#crittercism-users}
 
 If you're using Crittercism for crash analytics and facing issues related to FAQ's content not loading, do not use the following API to initialize Crittercism.
@@ -243,6 +250,7 @@ If you're using Crittercism for crash analytics and facing issues related to FAQ
 ```objc
 + (void)enableWithAppID:(NSString *)appId;
 ```
+
 As described [here](http://stackoverflow.com/a/19283645) use,
 
 ```objc
@@ -294,6 +302,7 @@ CALayer position contains NaN: [nan nan]
 25   GraphicsServices    GSEventRunModal + 138
 26   UIKit   UIApplicationMain + 1136
 ```
+
 ### Hidden status bar on orientation change in iOS 8 {#Hidden-status-bar}
 
 On iOS 8, Helpshift SDK's navigation bar covers status bar after a change of orientation. To fix this, implement following method in the viewController that makes use of Helpshift API.
@@ -306,12 +315,14 @@ On iOS 8, Helpshift SDK's navigation bar covers status bar after a change of ori
     return NO;
 }
 ```
+
 ### Images not loading in FAQs and Conversations for iOS 9 {#ios9-issue}
 
 **Root Cause : ** Apple has changed its policies regarding TLS versions and only accepts connections which support TLSv1.2 SSL. Some of our backend servers do not currently work well with this restriction due to which the network calls fail and images do not load.
 
 **Workaround : ** App developers will temporarily have to disable this restriction by adding the following lines to the app's Info.plist file
-<Image src="/static/books/ios/troubleshoot-ios9.png"  width="full" /> 
+
+<Image src="/static/books/ios/troubleshoot-ios9.png" width="full" />{" "}
 
 ```xml
 <key>NSAppTransportSecurity</key>
@@ -327,6 +338,7 @@ If you are experiencing crashes or reduced instances being reported in your cras
 You can disable our crash reporting using the flag **disableErrorLogging**.
 
 For example :/
+
 ```objc
 NSDictionary *installConfig = @{@"disableErrorLogging" : @"yes"};
 
@@ -337,14 +349,13 @@ NSDictionary *installConfig = @{@"disableErrorLogging" : @"yes"};
 
 Helpshift SDK adds some meta data (like app's version number, name etc.) along with the conversations that users start. The SDK reads this info from the app's Info.plist file. Some of these fields are mandatory and may cause a crash if left emtpy. Please ensure that the following values are always populated in your Info.plist:
 
-* Bundle versions string
-* Bundle name
-* Bundle identifier
+- Bundle versions string
+- Bundle name
+- Bundle identifier
 
 ### Xcode12.3 integration build error : Building for iOS, but the embedded framework ‘Helpshift.framework’ was built for iOS + iOS Simulator. {#Xcode12}
 
 **Workaround : ** Under Build Settings - Navigate to Validate Workspace - Toggle setting back to Yes/No but not to Yes (Error).
-
 
 <Admonition type="info" title="Note">
 
@@ -353,8 +364,7 @@ Due to a bug in Xcode 12.3, this setting is visible in Xcode but isn’t actuall
 
 </Admonition>
 
-
-<Image src="/static/books/ios/validate_workspace_flag.png"  width="full" /> 
+<Image src="/static/books/ios/validate_workspace_flag.png" width="full" />{" "}
 
 ### Known Issues List {#known-issues-list}
 
@@ -362,8 +372,14 @@ Due to a bug in Xcode 12.3, this setting is visible in Xcode but isn’t actuall
   <tr>
     <th>No.</th>
     <th>Known Issue</th>
-    <th>SDK <br />Version</th>
-    <th>OS Version <br />&amp; Device</th>
+    <th>
+      SDK <br />
+      Version
+    </th>
+    <th>
+      OS Version <br />
+      &amp; Device
+    </th>
     <th>Occurs When &amp; Frequency</th>
     <th>Work Around</th>
   </tr>
@@ -373,86 +389,113 @@ Due to a bug in Xcode 12.3, this setting is visible in Xcode but isn’t actuall
     <td>v4.11.1 and above</td>
     <td>iOS 7,8 iPhone, iPad</td>
     <td>
-        <ul>
-            <li>Set the dark theme for Helpshift.</li>
-            <li>Search for FAQ.</li>
-            <li>Observe the light keyboard and dark search text</li>
-        </ul>
-    Frequency: Always.
+      <ul>
+        <li>Set the dark theme for Helpshift.</li>
+        <li>Search for FAQ.</li>
+        <li>Observe the light keyboard and dark search text</li>
+      </ul>
+      Frequency: Always.
     </td>
     <td></td>
   </tr>
   <tr>
     <td>2</td>
-    <td>Crash when text size is changed from settings and app is in background.</td>
+    <td>
+      Crash when text size is changed from settings and app is in background.
+    </td>
     <td>v4.11.1 and above</td>
     <td>iOS 8.3 iPhone 6, iPhone 6+</td>
     <td>
-        <ul>
-            <li>Invoke Helpshift &amp; go to a FAQ detail </li>
-            <li>background the app and go to Settings->Display &amp; Brightness->Text Size </li>
-            <li>Change the Text Size(bigger smaller either works for this bug)</li>
-            <li>Return to the app, Close the Faq, go to the navigation pane and invoke the Faq again.</li>
-            <li>Repeat steps 1-4</li>
-            <li>Now return to the app and observe the app crash</li>
-        </ul>
-    Frequency: Always.
+      <ul>
+        <li>Invoke Helpshift &amp; go to a FAQ detail </li>
+        <li>
+          background the app and go to Settings->Display &amp; Brightness->Text
+          Size{" "}
+        </li>
+        <li>Change the Text Size(bigger smaller either works for this bug)</li>
+        <li>
+          Return to the app, Close the Faq, go to the navigation pane and invoke
+          the Faq again.
+        </li>
+        <li>Repeat steps 1-4</li>
+        <li>Now return to the app and observe the app crash</li>
+      </ul>
+      Frequency: Always.
     </td>
     <td></td>
   </tr>
   <tr>
     <td>3</td>
-    <td>Chat screen does not get scrolled automatically when screenshot is attached.</td>
+    <td>
+      Chat screen does not get scrolled automatically when screenshot is
+      attached.
+    </td>
     <td>v4.11.1 and above</td>
     <td>iOS 7+ iPhone, iPad</td>
     <td>
-        <ul>
-            <li>Initiate an in-app session</li>
-            <li>Tap on camera icon</li>
-            <li>Send a screenshot</li>
-            <li>Observe the chat screen does not scroll automatically</li>
-        </ul>
-    Frequency: Always.
+      <ul>
+        <li>Initiate an in-app session</li>
+        <li>Tap on camera icon</li>
+        <li>Send a screenshot</li>
+        <li>Observe the chat screen does not scroll automatically</li>
+      </ul>
+      Frequency: Always.
     </td>
-    <td>Manually scroll the in-app chat. Or go to the previous screen and get into the in-app chat again</td>
+    <td>
+      Manually scroll the in-app chat. Or go to the previous screen and get into
+      the in-app chat again
+    </td>
   </tr>
   <tr>
     <td>4</td>
-    <td>Migration from 4.11.1 to 4.12.0 sometimes causes a crash on iPhone 6+.</td>
+    <td>
+      Migration from 4.11.1 to 4.12.0 sometimes causes a crash on iPhone 6+.
+    </td>
     <td>v4.11.1 and above</td>
     <td>iOS 7,8 iPhone, iPad</td>
-    <td>Migration from 4.11.1 to 4.12.0 sometimes causes a crash on iPhone 6+
-    <br />Frequency: Very rare.
+    <td>
+      Migration from 4.11.1 to 4.12.0 sometimes causes a crash on iPhone 6+
+      <br />
+      Frequency: Very rare.
     </td>
     <td></td>
   </tr>
   <tr>
     <td>5</td>
-    <td>Sometimes In-app notification is received after reporting on issue. Or Sometimes user gets in-app notification with 0 notification count.</td>
+    <td>
+      Sometimes In-app notification is received after reporting on issue. Or
+      Sometimes user gets in-app notification with 0 notification count.
+    </td>
     <td>v4.11.1 and above</td>
     <td>iOS 7,8 iPhone, iPad</td>
     <td>
-        <ul>
-            <li>Report an issue</li>
-            <li>Observe an in-app notification is received</li>
-            <li>Clicking on the in-app notification opens the chat in the last known state</li>
-        </ul>
-    Frequency: Very rare.
+      <ul>
+        <li>Report an issue</li>
+        <li>Observe an in-app notification is received</li>
+        <li>
+          Clicking on the in-app notification opens the chat in the last known
+          state
+        </li>
+      </ul>
+      Frequency: Very rare.
     </td>
     <td></td>
   </tr>
   <tr>
     <td>6</td>
-    <td>Chat bar disappears when user goes back to chat screen after receiving follow up on customer feedback..</td>
+    <td>
+      Chat bar disappears when user goes back to chat screen after receiving
+      follow up on customer feedback..
+    </td>
     <td>v4.11.1 and above</td>
     <td>iOS 6,7,8 iPhone, iPad</td>
     <td>
-        <ul>
-            <li>Report an issue</li>            <li>Send resolved request to the issue</li>
-            <li>Tap on Yes -> Star ratings</li>
-            <li>Send follow up request when user is on feedback page</li>
-            <li>Go back to the chat screen after follow up is sent</li>
-        </ul>
+      <ul>
+        <li>Report an issue</li> <li>Send resolved request to the issue</li>
+        <li>Tap on Yes -> Star ratings</li>
+        <li>Send follow up request when user is on feedback page</li>
+        <li>Go back to the chat screen after follow up is sent</li>
+      </ul>
     </td>
     <td></td>
   </tr>

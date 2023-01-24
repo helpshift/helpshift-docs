@@ -4,9 +4,20 @@ title: Upgrading to 7.8.0 and above
 description: "The Helpshift SDK v7.8.0 is a major update and we have made some important changes. If you have questions or feedback, please Contact Us"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,16 +25,13 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Upgrading to 7.8.0 and above {#upgrade-to-780}
 
 <Intro>
 
 The Helpshift SDK v7.8.0 is a major update and we have made some important changes. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
-
 </Intro>
-
 
 ## Framework packaging for SDK {#framework-packaging}
 
@@ -32,13 +40,12 @@ With version 7.8.0, Helpshift SDK is packaged as a dynamic framework rather than
 ### Manual Integration
 
 1. Remove all Helpshift SDK related files from the project. These include -
-    * HelpshiftSupport.h
-    * HelpshiftCore.h
-    * HsUIResourceBundle.bundle
-    * HsLocalization.bundle
-    * HelpshiftConfig.plist
-    * HelpshiftConfigDark.plist
-
+   - HelpshiftSupport.h
+   - HelpshiftCore.h
+   - HsUIResourceBundle.bundle
+   - HsLocalization.bundle
+   - HelpshiftConfig.plist
+   - HelpshiftConfigDark.plist
 
 <Admonition type="info" title="Note">
 
@@ -46,21 +53,19 @@ No changes are needed for custom theming plists and custom localization bundle w
 
 </Admonition>
 
-
-
 <Admonition type="info" title="Note">
 
 In case you have made changes to HelpshiftConfig.plist or HelpshiftConfigDark.plist, please rename the files to HelpshiftCustomConfig.plist and HelpshiftCustomConfigDark.plist respectively.
 
 </Admonition>
 
-
 2. Remove `/usr/lib/swift` from runpath search paths in the build settings, if other SDKs in your app don’t need it
 3. Remove `$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)` and `$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)` from `Library Search Paths` in the build settings, if other SDKs in your app don’t need it
 4. Ensure `Always Embed Swift Standard Libraries` is set to YES in the build settings
-After doing these, please follow the steps [here](/ios/getting-started#manual-integration) to integrate the framework version of the SDK.
+   After doing these, please follow the steps [here](/ios/getting-started#manual-integration) to integrate the framework version of the SDK.
 
 ### Cocoapods Integration
+
 After updating your podfile to use v7.8.0 of Helpshift SDK and running `pod install`, perform the following steps -
 
 1. Remove `/usr/lib/swift` from runpath search paths in the build settings, if other SDKs in your app don’t need it
@@ -70,8 +75,10 @@ After updating your podfile to use v7.8.0 of Helpshift SDK and running `pod inst
 ### Code changes
 
 #### Objective C App
-* Replace any instances of #import `”HelpshiftSupport.h”` and `#import ”HelpshiftCore.h”` with `@import Helpshift`;
+
+- Replace any instances of #import `”HelpshiftSupport.h”` and `#import ”HelpshiftCore.h”` with `@import Helpshift`;
 
 #### Swift App
-* Remove all Helpshift related `#import` directives from your app’s Bridging header
-* Add the `import Helpshift` directive in Swift files using Helpshift APIs
+
+- Remove all Helpshift related `#import` directives from your app’s Bridging header
+- Add the `import Helpshift` directive in Swift files using Helpshift APIs

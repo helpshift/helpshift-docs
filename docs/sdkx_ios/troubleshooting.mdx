@@ -4,19 +4,28 @@ title: Troubleshooting
 description: Learn more about Troubleshooting
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Troubleshooting {#troubleshoot}
-
 
 ## Known Issues {#known-issues}
 
 ### Photos library Permission for Attachment Flows {#photos-library-permission}
 
-If your app does not declare the **NSPhotoLibraryUsageDescription** permission, It might cause app rejection. To fix this, you will have to add the following key and description. 
+If your app does not declare the **NSPhotoLibraryUsageDescription** permission, It might cause app rejection. To fix this, you will have to add the following key and description.
 
 Add **NSPhotoLibraryUsageDescription** key in your application info plist file
 
@@ -24,28 +33,24 @@ Add **NSPhotoLibraryUsageDescription** key in your application info plist file
 
 ### Camera Permission for Attachment Flows {#camera-permission-for-attachments}
 
-
 <Admonition type="info" title="Note">
 
 This issue is resolved with SDK X 10.2.0. The following instructions apply to versions below SDK X 10.2.0.
 
 </Admonition>
 
-
 The attachment features of SDK X conversations opens the attachment menu. This is Safari's native menu with 3 options as of now, one of which is “Take Photo or Video”. This option requires your app to declare the camera permissions in your Xcode project's Info.plist file. If you don't declare it, and if the user selects this option, your app may crash. This option cannot be hidden as of now. We have it in our roadmap to add the ability to disable this option, though.
 
 To avoid this crash, you need to add the following keys in your Xcode project's Info.plist file.
 
-* NSPhotoLibraryUsageDescription
+- NSPhotoLibraryUsageDescription
 
-* NSCameraUsageDescription
+- NSCameraUsageDescription
 
 If your use-case allows you to not ask users to send attachments, you should disable the user attachments configuration on your app's App Settings page on the Admin Dashboard. This will hide the attachment icon altogether from the conversation, and you will not need to add the above-mentioned permissions to Info.plist file. Along with disabling the user attachments configuration, you should also not use the request attachment feature for the Agents.
-
 
 <Admonition type="info" title="Note">
 
 Attachment features: These features let users send an attachment during a conversation — attachment icon in the reply box and request attachment message by agent.
 
 </Admonition>
-

@@ -4,8 +4,20 @@ title: Tracking iOS
 description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Tracking <small>iOS</small> {#tracking}
 
@@ -14,12 +26,9 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 Track events and user actions when the user starts a new conversation.
 Attach custom metadata to every conversation started via the SDK.
 
-
 </Intro>
 
-
 ## Name and email {#name-and-email}
-
 
 <Admonition type="info" title="Note">
 
@@ -27,21 +36,17 @@ This API is now deprecated with SDK v3.0.
 
 </Admonition>
 
-
 It is expected that you will pass the user's name, email or, user identifier using the [Login API](/xamarin/users-ios#logged-in-users).
 
 Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up). However, there will no impact on older SDK versions. They will keep on working as usual.
 
-
 ## User Identifier {#user-id}
-
 
 <Admonition type="info" title="Note">
 
-This API is now deprecated with SDK v3.0. 
+This API is now deprecated with SDK v3.0.
 
 </Admonition>
-
 
 It is expected that you will pass the user's name, email or, user identifier using the [Login API](/ios/users#logged-in-users).
 
@@ -65,6 +70,7 @@ HelpshiftApi.HelpshiftLogger.e("AppLogTag", "Error Log message");
 HelpshiftApi.HelpshiftLogger.d("AppLogTag", "Debug log message");
 
 ```
+
 ## App usage {#app-usage}
 
 Breadcrumbs will help you track events or user actions and when user
@@ -89,15 +95,13 @@ simple mechanisms provided by the SDK. This metadata can range from
 user-name, email etc to game scores, current game levels and any other
 data relevant to creating a suitable context to each new conversation.
 
-
 <Admonition type="info" title="Note">
 
-* While metadata can be set anytime, it will only be sent to the Agent Dashboard when customer starts a new conversation.
-* As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
-* All the modified metadata (updated during an active conversation) will only be sent with the next conversation that end user starts. 
+- While metadata can be set anytime, it will only be sent to the Agent Dashboard when customer starts a new conversation.
+- As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
+- All the modified metadata (updated during an active conversation) will only be sent with the next conversation that end user starts.
 
 </Admonition>
-
 
 In all the API calls which launch the Help section, you can add a meta-data dictionary
 in the config dictionary parameter using the `HelpshiftApi.HelpshiftSupport.HSCUSTOMMETADATAKEY` key. This meta-data will be
@@ -105,26 +109,22 @@ sent along with the next reported issue. When the user exits out of the Help sec
 
 ### Attaching tags with metadata {#metadatatags}
 
-
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Tags must be lowercase.
-* Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
 
 </Admonition>
 
-
-<Image src="/static/books/android/metadata-tags.png"  width="half" /> 
+<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
 
 Examples :
-
 
 <Tabs>
 
 <TabItem value="Using HelpshiftSupportMetadata and HelpshiftAPIConfig" label="Using HelpshiftSupportMetadata and HelpshiftAPIConfig">
-
 
 ```csharp
 string[] tags = new string[] { "feedback", "paid user" };
@@ -142,7 +142,6 @@ HelpshiftApi.HelpshiftSupport.ShowFAQs(this, apiConfig);
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-
 You can attach tags with metadata to every reported issue via a reserved constant key
 `HelpshiftApi.HelpshiftSupport.HSTAGSKEY`. This is used with the config dictionary as follows:
 
@@ -156,42 +155,37 @@ configMap.Add(HelpshiftApi.HelpshiftSupport.HSCUSTOMMETADATAKEY,config);
 HelpshiftApi.HelpshiftSupport.showFAQs(uiViewController, configMap);
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
-
 
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Applicable to SDK v2.5.0 & above.
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings -> Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
+- Applicable to SDK v2.5.0 & above.
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings -> Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
 
 </Admonition>
-
 
 You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a data type, and a value. The SDK allows the addition of a dictionary of Custom Issue Fields by using the `SetCustomIssueFields` method in the HelpshiftAPIConfig class.
 These Custom Issue Fields would be sent whenever a new issue is created by the end user.
 
 As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
-All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts. 
+All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts.
 
 Possible datatypes to be passed into the config are:
 
-|  Type             |  Comments          |
-|--------------------|-------------------|
-| "sl" | Single line string with character limit of 255 |
-| "ml"   | Multi line string with character limit of 100,000 |
-| "n" |  String representation of a number. For eg.  "12345" |
-| "dd"  | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "dt"  | String representation of epoch time in milliseconds. For eg. "1505927361535" |
-| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
-
+| Type | Comments                                                                                                                                                      |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | Single line string with character limit of 255                                                                                                                |
+| "ml" | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | String representation of a number. For eg. "12345"                                                                                                            |
+| "dd" | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 <Tabs>
 
@@ -204,7 +198,7 @@ Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]
 customIssueFields.Add("join_date", new string[]{"dt", "1505927361535"});
 customIssueFields.Add("level", new string[]{"n", "42"});
 customIssueFields.Add("name", new string[]{"sl", "John Doe"});
-customIssueFields.Add("address", new string[]{"ml", "3346, Sunny Glen Lane, 
+customIssueFields.Add("address", new string[]{"ml", "3346, Sunny Glen Lane,
                                                Warrensville Heights, Ohio - 44128"});
 customIssueFields.Add("is_pro", new string[]{"b", "true"});
 customIssueFields.Add("currency", new string[]{"dd", "Dollar"});
@@ -217,7 +211,6 @@ HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, apiConfig);
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
 
 The SDK allows the addition of a dictionary of Custom Issue Fields by using the `HelpshiftApi.HelpshiftSupport.HSCUSTOMISSUEFIELDKEY` key to the config dictionary.
 
@@ -236,14 +229,11 @@ configD.Add(HelpshiftApi.HelpshiftSupport.HSCUSTOMISSUEFIELDKEY, customIssueFiel
 HelpshiftApi.HelpshiftSupport.ShowFAQs(configD);
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ## Check if there is an active Conversation {#check-if-conversation-active}
-
 
 <Admonition type="info" title="Note">
 
@@ -251,13 +241,11 @@ Applicable to SDK v2.4.0 and above
 
 </Admonition>
 
-
 This API determines if there is currently an ongoing Conversation in the SDK. You can use "HelpshiftApi.HelpshiftSupport.CheckIfConversationActive()" and implement [Helpshift delegate DidCheckIfConversationActive](/xamarin/delegates-ios#helpshift-delegates-implementation) method as shown below to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
 
 As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
 
 For example:
-
 
 ```csharp
 
@@ -266,7 +254,6 @@ For example:
 ```
 
 You can implement the "DidCheckIfConversationActive" delegate method like the following example:
-
 
 ```csharp
 
@@ -277,7 +264,7 @@ You can implement the "DidCheckIfConversationActive" delegate method like the fo
     .
     .
     .
-    . 
+    .
 
         public void DidCheckIfConversationActive(bool isActive) {
             // your code here
@@ -291,7 +278,6 @@ You can implement the "DidCheckIfConversationActive" delegate method like the fo
 
 If you want to keep track of when your users end an ongoing conversation, you can implement this delegate callback. This delegate is called whenever the ongoing conversation is resolved, rejected from the Dashboard, timed out or archived.
 
-
 ```csharp
 
     public override void ConversationEnded() {
@@ -299,4 +285,3 @@ If you want to keep track of when your users end an ongoing conversation, you ca
     }
 
 ```
-

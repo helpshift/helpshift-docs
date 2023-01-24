@@ -4,8 +4,20 @@ title: Migration Guide
 description: "SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates. This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Migration Guide
 
@@ -13,36 +25,49 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates. This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X.
 
-
 </Intro>
-
 
 ## Steps to migrate to SDK X {#steps-to-migrate}
 
 <Steps title="Migrate from legacy SDK to SDK X">
-    <Step number="1" title="Check migration support" subtitle="Go through migration guide" link="/sdkx_ios/migration-guide#unsupported-features" newTab={true} />
-    <Step number="2" title="Update to SDK X" subtitle="Migrate code/features step by step" link="/sdkx_ios/migration-guide#update-helpshift-dependencies" newTab={true} />
-    <Step number="3" title="Test the migration" subtitle="Validate the functionality" />
+  <Step
+    number="1"
+    title="Check migration support"
+    subtitle="Go through migration guide"
+    link="/sdkx_ios/migration-guide#unsupported-features"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="Update to SDK X"
+    subtitle="Migrate code/features step by step"
+    link="/sdkx_ios/migration-guide#update-helpshift-dependencies"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="Test the migration"
+    subtitle="Validate the functionality"
+  />
 </Steps>
 
 ## Unsupported features {#unsupported-features}
 
 We recommend to hold off on SDK X migration if you are currently using the following APIs/features -
 
-* [Guided issue filing](/ios/support-tools#dynamic-forms)
-* [Embedded messaging experience](/ios/support-tools#embed-messaging)
-* [FAQ filtering by tags](/ios/support-tools#faq-filtering)
-* [Minimum Issue description length](/ios/sdk-configuration#issue-description-minimum-length)
-* [Conversation pre-fill text](/ios/sdk-configuration#conversationPrefillText)
-* [SDK UI strings customization](/ios/string-customization/)
-* [Switching between light and dark themes](/ios/design#skinning)
+- [Guided issue filing](/ios/support-tools#dynamic-forms)
+- [Embedded messaging experience](/ios/support-tools#embed-messaging)
+- [FAQ filtering by tags](/ios/support-tools#faq-filtering)
+- [Minimum Issue description length](/ios/sdk-configuration#issue-description-minimum-length)
+- [Conversation pre-fill text](/ios/sdk-configuration#conversationPrefillText)
+- [SDK UI strings customization](/ios/string-customization/)
+- [Switching between light and dark themes](/ios/design#skinning)
 
 These features are yet to be developed, and we may add them to our 2022 roadmap. You can reach out to [support@helpshift.com](mailto:support@helpshift.com) to raise any query for the above.
 
 ## Supported SDK Versions {#supported-sdk-versions}
 
 A successful migration indicates maintaining user’s data and chat history when they move from an SDK version to another. We support migration of legacy SDK from version 7.x & greater to SDK X.
-
 
 <Admonition type="info" title="Note">
 
@@ -52,31 +77,31 @@ We don’t support the migration from SDK version < 6. If you move to SDK X from
 
 </Admonition>
 
-
 ## Update Helpshift dependencies {#update-helpshift-dependencies}
 
 The Xcode and iOS version requirements for legacy SDK and SDK X remain same.
 
 ### Automated Integration using Cocoapods
 
-* Remove the existing Helpshift dependency from your Podfile
-* Follow the instructions [here](/sdkx_ios/getting-started#cocoapods) to add Helpshift SDK X to your project
+- Remove the existing Helpshift dependency from your Podfile
+- Follow the instructions [here](/sdkx_ios/getting-started#cocoapods) to add Helpshift SDK X to your project
 
 ### Manual integration
 
-* Remove all Helpshift related files from your project. These include -
-    - Helpshift.xcframework or Helpshift.framework depending on the version of Helpshift SDK you are using
-    - HelpshiftCustomLocalizations/ folder
-    - HelpshiftCustomThemes/ folder
-* Follow the instructions [here](/sdkx_ios/getting-started#manual-integration) to add Helpshift SDK X to your project
+- Remove all Helpshift related files from your project. These include -
+  - Helpshift.xcframework or Helpshift.framework depending on the version of Helpshift SDK you are using
+  - HelpshiftCustomLocalizations/ folder
+  - HelpshiftCustomThemes/ folder
+- Follow the instructions [here](/sdkx_ios/getting-started#manual-integration) to add Helpshift SDK X to your project
 
 ## Code Changes {#code-changes}
 
 If you try to compile your project after updating the Helpshift dependency, you will get compilation errors. This is because some API method names and signatures have changed between legacy SDK and SDK X.
 
 #### import statements
-* The `Helpshift` module is called `HelpshiftX` instead of `Helpshift`. Be sure to replace `@import Helpshift;` with `@import HelpshiftX;` in all the files where you plan to use Helpshift APIs.
-* If you are using header file import statements like `#import <Helpshift/HelpshiftCore.h>` in your project, you will need to replace them with module import statement.
+
+- The `Helpshift` module is called `HelpshiftX` instead of `Helpshift`. Be sure to replace `@import Helpshift;` with `@import HelpshiftX;` in all the files where you plan to use Helpshift APIs.
+- If you are using header file import statements like `#import <Helpshift/HelpshiftCore.h>` in your project, you will need to replace them with module import statement.
 
 #### Helpshift install call
 
@@ -88,9 +113,9 @@ Remove the existing Helpshift install call and replace it with following -
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     ...
-    NSDictionary *config = @{} // Your config                 
-    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" 
-                              domain:@"YOUR_DOMAIN" 
+    NSDictionary *config = @{} // Your config
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
+                              domain:@"YOUR_DOMAIN"
                               config:config];
     ...
     return YES;
@@ -104,7 +129,7 @@ Refer to SDK X [Getting Started](/sdkx_ios/getting-started#start-using) guide fo
 The install call in SDK X takes a dictionary rather than an `HelpshiftInstallConfig` object. The mapping of install config properties to dictionary keys is -
 
 | Legacy SDK InstallConfig property | SDK X install dictionary key |
-|-----------------------------------|------------------------------|
+| --------------------------------- | ---------------------------- |
 | enableLogging                     | enableLogging                |
 | enableInAppNotifications          | enableInAppNotification      |
 
@@ -115,7 +140,7 @@ All other deprecated configurations have been removed and are not supported anym
 The API signatures have changed. Update existing API calls with new ones as follows -
 
 | Legacy SDK API                               | SDK X API                      |
-|----------------------------------------------|--------------------------------|
+| -------------------------------------------- | ------------------------------ |
 | `showConversation:withOptions:`              | `showConversationWith:config:` |
 | `showFAQs:withOptions:`                      | `showFAQsWith:config:`         |
 | `showFAQSection:withController:withOptions:` | `showFAQSection:with:config:`  |
@@ -131,7 +156,7 @@ For more information about Conversation and FAQ APIs in SDK X, refer [Helpshift 
 The conversation and FAQ APIs in SDK X take a dictionary parameter rather than `HelpshiftAPIConfig` object. The mapping of API config properties to dictionary keys is -
 
 | Legacy HelpshiftAPIConfig Property | SDK X API dictionary key | Notes                                                                                                 |
-|------------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------|
+| ---------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
 | presentFullScreenOniPad            | presentFullScreenOniPad  | -                                                                                                     |
 | enableFullPrivacy                  | enableFullPrivacy        | -                                                                                                     |
 | customIssueFields                  | customIssueFields        | -                                                                                                     |
@@ -146,7 +171,7 @@ All other configurations have been deprecated and are no longer supported. For m
 Replace the following APIs for user login/logout -
 
 ##### Login
- 
+
 Replace legacy SDK login code -
 
 ```
@@ -158,7 +183,7 @@ HelpshiftUser *user = userBuilder.build;
 [HelpshiftCore login:user];
 ```
 
- with SDK X login code -
+with SDK X login code -
 
 ```
 NSDictionary *userDetails = @{ HelpshiftUserName:@"John Doe",
@@ -169,18 +194,16 @@ NSDictionary *userDetails = @{ HelpshiftUserName:@"John Doe",
 [Helpshift loginUser:userDetails];
 ```
 
-
 <Admonition type="info" title="Note">
 
 We recommend that on migration to SDK X, you should login the active user again to avoid potential inconsistencies.
 
 </Admonition>
 
-
 Other user management APIs have also changed -
 
 | Action               | Legacy SDK API                        | SDK X API                                |
-|----------------------|---------------------------------------|------------------------------------------|
+| -------------------- | ------------------------------------- | ---------------------------------------- |
 | Logout               | `[HelpshiftCore logout];`             | `[Helpshift logout];`                    |
 | Clear anonymous user | `[HelpshiftCore clearAnonymousUser];` | `[Helpshift clearAnonymousUserOnLogin];` |
 
@@ -189,8 +212,9 @@ For more information on User management in SDK X, refer [Users](/sdkx_ios/users/
 #### Design and theming
 
 SDK design and theming has been completely moved to admin dashboard in SDK X. Please remove all calls to theming APIs and all theming related files from your project. Removed APIs -
-* `setTheme:`
-* `setLightTheme:darkTheme:`
+
+- `setTheme:`
+- `setLightTheme:darkTheme:`
 
 Theming can be configured from admin dashboard. You can find more details in the [SDK X theming](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/) guide.
 
@@ -203,7 +227,7 @@ String customization is yet to be supported. It will move to Helpshift Dashboard
 The API signatures have changed. Update existing API calls with new ones as mentioned -
 
 | Action                       | Legacy SDK API                                            | SDK X API                                          |
-|------------------------------|-----------------------------------------------------------|----------------------------------------------------|
+| ---------------------------- | --------------------------------------------------------- | -------------------------------------------------- |
 | Register device token        | `[HelpshiftCore registerDeviceToken:deviceToken];`        | `[Helpshift registerDeviceToken:deviceToken];`     |
 | Pause in-app notifications   | `[HelpshiftSupport pauseDisplayOfInAppNotification:YES];` | `[Helpshift pauseDisplayOfInAppNotification:YES];` |
 | Request unread message count | `[HelpshiftSupport requestUnreadMessagesCount:YES];`      | `[Helpshift requestUnreadMessageCount:YES];`       |
@@ -264,13 +288,11 @@ with SDK X code -
 }
 ```
 
-
 <Admonition type="info" title="Note">
 
 If you are using push notifications, we recommend that you register the push token again with SDK X after your app has been upgraded to avoid potential inconsistencies.
 
 </Admonition>
-
 
 For more information on Notification APIs in SDK X, refer [Notifications](/sdkx_ios/notifications/) guide.
 For more information on delegates in SDK X, refer [Delegates](/sdkx_ios/delegates/) guide.
@@ -280,16 +302,14 @@ For more information on delegates in SDK X, refer [Delegates](/sdkx_ios/delegate
 The API to set SDK language has changed -
 
 | Legacy SDK API                       | SDK X API                       |
-|--------------------------------------|---------------------------------|
+| ------------------------------------ | ------------------------------- |
 | `[HelpshiftCore setLanguage:@"fr"];` | `[Helpshift setLanguage:"fr"];` |
-
 
 <Admonition type="info" title="Note">
 
 We recommend that you set the SDK language again on upgrading your app with SDK X to avoid potential inconsistencies.
 
 </Admonition>
-
 
 For more information on internationalization in SDK X and a list of supported languages, refer [Internationalization](/sdkx_ios/internationalization/) guide.
 
@@ -369,7 +389,7 @@ NSDictionary *config = @{ @"customIssueFields" : cifs };
 ##### Breadcrumbs & Debug logs
 
 | Action            | Legacy SDK API                                         | SDK X API                                       |
-|-------------------|--------------------------------------------------------|-------------------------------------------------|
+| ----------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | Leave breadcrumbs | `[HelpshiftSupport leaveBreadCrumb:@"Custom String"];` | `[Helpshift leaveBreadcrumb:@"Custom String"];` |
 | Clear breadcrumbs | `[HelpshiftSupport clearBreadCrumbs];`                 | `[Helpshift clearBreadcrumbs];`                 |
 | Add debug logs    | `[HelpshiftSupport addLog:message];`                   | `[Helpshift addLog:message];`                   |
@@ -381,16 +401,16 @@ For more information on tracking APIs in SDK X, refer [Tracking](/sdkx_ios/track
 The API to set Helpshift delegate has been changed -
 
 | Legacy SDK API                                              | SDK X API                                            |
-|-------------------------------------------------------------|------------------------------------------------------|
+| ----------------------------------------------------------- | ---------------------------------------------------- |
 | `[[HelpshiftSupport sharedInstance] setDelegate:delegate];` | `[[Helpshift sharedInstance] setDelegate:delegate];` |
 
 Each SDK event had a separate method in legacy SDK. In SDK X, all events are received in the delegate’s `handleHelpshiftEvent:withData:` method. For a list of events, refer [this guide](/sdkx_ios/delegates#helpshift-delegate-events).
 
 Legacy SDK methods that are unsupported in SDK X and don't have a corresponding event are -
 
-* `userDidClickOnActionWithType:withData:`
-* `displayAttachmentFileAtLocation:onViewController:`
-* `didCheckIfConversationActive`
+- `userDidClickOnActionWithType:withData:`
+- `displayAttachmentFileAtLocation:onViewController:`
+- `didCheckIfConversationActive`
 
 #### Reviews & Feedback
 
@@ -403,8 +423,9 @@ Deep links are supported in SDK X, similar to Legacy SDK. Refer [deep links](/sd
 ## Troubleshooting
 
 ### Compilation errors after upgrading to SDK X
-* For supported APIs or configurations, make sure you have replaced all legacy SDK code with corresponding SDK X code as mentioned in this guide.
-* For unsupported APIs or configurations, make sure you have removed all legacy SDK code as mentioned in this guide.
+
+- For supported APIs or configurations, make sure you have replaced all legacy SDK code with corresponding SDK X code as mentioned in this guide.
+- For unsupported APIs or configurations, make sure you have removed all legacy SDK code as mentioned in this guide.
 
 ## Contact Us
 

@@ -4,13 +4,22 @@ title: Troubleshooting
 description: Learn more about Troubleshooting
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Troubleshooting {#troubleshoot}
-
 
 ## Known Issues {#known-issues}
 
@@ -20,12 +29,11 @@ The attachment features of SDK X conversations opens the attachment menu. This i
 
 To avoid this crash, you need to add the following keys in your Xcode project's Info.plist file.
 
-* NSPhotoLibraryUsageDescription
+- NSPhotoLibraryUsageDescription
 
-* NSCameraUsageDescription
+- NSCameraUsageDescription
 
 If your use-case allows you to not ask users to send attachments, you should disable the user attachments configuration on your app's App Settings page on the Admin Dashboard. This will hide the attachment icon altogether from the conversation, and you will not need to add the above-mentioned permissions to Info.plist file. Along with disabling the user attachments configuration, you should also not use the request attachment feature for the Agents.
-
 
 <Admonition type="info" title="Note">
 
@@ -33,16 +41,16 @@ Attachment features: These features let users send an attachment during a conver
 
 </Admonition>
 
-
 ### Unsupported Architectures Found While Submitting App to App Store {#unsupported-architectures-found}
 
-Since Unity doesn't support `xcframework` packaging, we ship our SDK with `framework` packaging. This requires us to strip non-valid architectures (x86_64 and i386) while creating an archive. We achieve this by adding a Run Script phase named as `HS Strip Simulator Slices`. It executes `strip_frameworks.sh` script and removes non-valid architectures (x86_64 and i386) while creating an archive.    
+Since Unity doesn't support `xcframework` packaging, we ship our SDK with `framework` packaging. This requires us to strip non-valid architectures (x86_64 and i386) while creating an archive. We achieve this by adding a Run Script phase named as `HS Strip Simulator Slices`. It executes `strip_frameworks.sh` script and removes non-valid architectures (x86_64 and i386) while creating an archive.
 
 Now while submitting the app to App Store if you ran into an issue which states something like - "Unsupported Architectures. The executable for XYZ.app/Frameworks/HelpshiftX.framework contains unsupported architectures '[x86_64/i386]'". This probably means `strip_frameworks.sh` was not executed or didn't get executed as expected.
 
 1. First make sure `strip_frameworks.sh` has executable permission. To find this script, go to directory where Xcode project is created from Unity. Under that directory you will find script under this path `Frameworks/Plugins/iOS/HelpshiftX.framework/`. You can give executable permission by running command `chmod +x strip_framework.sh`. Now, archive project and check again, if the issue persists then go to next step.
 
 2. Replace the contents of `strip_frameworks.sh` with following -
+
 ```
 ################################################################################
 #
@@ -119,4 +127,5 @@ for file in $(find . -type f); do
   fi
 done
 ```
+
 Now, archive project and check again. This should ideally resolve your issue. We will be updating our script in Helpshift unitypackage with the above changes soon.

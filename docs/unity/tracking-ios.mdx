@@ -4,8 +4,20 @@ title: Tracking iOS
 description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Tracking <small>iOS</small> {#tracking}
 
@@ -14,9 +26,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 Track events and user actions when the user starts a new conversation.
 Attach custom metadata to every conversation started via the SDK.
 
-
 </Intro>
-
 
 ## Name and email {#name-and-email}
 
@@ -27,7 +37,7 @@ You can set the name and email for the user, using
 helpshift.setNameAndEmail("John Doe", "john.doe@johndoe.com");
 ```
 
-<Image src="/static/books/ios/username-email-sdk.png"  width="half" /> 
+<Image src="/static/books/ios/username-email-sdk.png" width="half" />{" "}
 
 The SDK prefills the previously used name and email in the new conversation screen. If you want to clear these fields, please use the `setNameAndEmail` API with both params set to null. For example:
 
@@ -37,19 +47,17 @@ helpshift.setNameAndEmail(null, null);
 
 The name and email shows up in the issue's sidebar in the agent dashboard -
 
-<Image src="/static/books/common/username-email-admin.png"  width="half" /> 
-
+<Image src="/static/books/common/username-email-admin.png" width="half" />{" "}
 
 <Admonition type="info" title="Note">
 
- This API is now deprecated with Unity SDK v4.0. 
+This API is now deprecated with Unity SDK v4.0.
 
- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/unity/users-ios#user-identification) going forward.
+It is expected that developers will pass the Name, Email or User Identifier using the [login API](/unity/users-ios#user-identification) going forward.
 
- Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual. 
+Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
 
 </Admonition>
-
 
 ## User Identifier {#user-id}
 
@@ -62,9 +70,7 @@ helpshift.login("unique-user-id-746501", "John Doe", "john.doe@app.co");
 
 This shows up in the issue's sidebar in the agent dashboard -
 
-<Image src="/static/books/common/user-id-admin.png"  width="half" /> 
-
-
+<Image src="/static/books/common/user-id-admin.png" width="half" />{" "}
 
 <Admonition type="danger" title="Important">
 
@@ -72,34 +78,26 @@ This shows up in the issue's sidebar in the agent dashboard -
 
 In issue sidebar in the agent dashboard, other issues by the same user are also matched using user identifier. So make sure it is unique for each user.
 
-<Image src="/static/books/common/other-issues-by.png"  width="half" /> 
-
+<Image src="/static/books/common/other-issues-by.png" width="half" />{" "}
 
 </Admonition>
-
-
 
 <Admonition type="info" title="Note">
 
- This API is now deprecated with SDK v4.0. 
- 
- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/unity/users-ios#user-identification) going forward.
-	
- Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
+This API is now deprecated with SDK v4.0.
+
+It is expected that developers will pass the Name, Email or User Identifier using the [login API](/unity/users-ios#user-identification) going forward.
+Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
 
 </Admonition>
 
-
 ## Multi Login {#multi-login}
-
 
 <Admonition type="info" title="Note">
 
 Details on User management are available [here](/unity/users-ios#user-identification).
 
 </Admonition>
-
-
 
 ## App usage {#app-usage}
 
@@ -142,14 +140,14 @@ There are 2 ways in which this metadata can be attached to reported issues.
 </Admonition>
 
 
-<Image src="/static/books/android/metadata-tags.png"  width="half" /> 
+<Image src="/static/books/android/metadata-tags.png"  width="half" />
 
 Examples :
 
 1. You can attach tags with metadata to every reported issue via a reserved key constant
 `Helpshift.HSTAGSKEY`. This is used with `updateMetaData` as follows:
 
-    
+
 ```csharp
 
         Helpshift help = new Helpshift();
@@ -165,7 +163,7 @@ Examples :
 2. You can attach tags with metadata to every reported issue via a reserved constant key
 `HSTAGSKEY`. This is used with the config dictionary as follows:
 
-    
+
 ```csharp
 
         Helpshift help = new Helpshift();
@@ -202,26 +200,23 @@ In all the API calls that accept a config dictionary, you can add a metadata dic
 
 ### Attaching tags with metadata {#metadatatags}
 
-
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Applicable to SDK v 2.8.0 & above.
-* Tags must be lowercase.
-* Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
+- Applicable to SDK v 2.8.0 & above.
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
 
 </Admonition>
 
-
-<Image src="/static/books/android/metadata-tags.png"  width="half" /> 
+<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
 
 Example :
 
 You can attach tags with metadata to every reported issue via a reserved constant key
 `HSTAGSKEY`. This is used with the config dictionary as follows:
 
-    
 ```csharp
 
         Helpshift help = new Helpshift();
@@ -238,27 +233,23 @@ You can attach tags with metadata to every reported issue via a reserved constan
 
 ```
 
-
 <Admonition type="info" title="Note">
 
- While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
+While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
 
- As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
+As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
 
- Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 </Admonition>
 
-
 ## Check if an active Conversation exists. {#isConversationActive}
-
 
 <Admonition type="info" title="Note">
 
 Applicable to Helpshift Unity plugin v2.8.0 & above.
 
 </Admonition>
-
 
 This API determines if there is currently an ongoing Conversation in the SDK. You can use "CheckIfConversationActive()" and implement the Helpshift delegate method [didCheckIfConversationActive:(string isActive)](https://developers.helpshift.com/unity/delegates-ios#delegates) as shown below to get a string with value either `true` or `false`. This string value indicates whether there is an active Conversation open for the user. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
@@ -272,7 +263,7 @@ using Helpshift;
 private HelpshiftSdk help;
 this.help = HelpshiftSdk.getInstance();
 help.checkIfConversationActive();
- 
+
 Delegate:
 public void didCheckIfConversationActive(string isActive) {
     if (isActive.Equals("true")) {
@@ -286,38 +277,35 @@ public void didCheckIfConversationActive(string isActive) {
 
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
 
-
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Applicable to plugin v2.9.0 & above.
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+- Applicable to plugin v2.9.0 & above.
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
 
 </Admonition>
-
 
 You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` method in the ApiConfig object.
 These Custom Issue Fields would be sent whenever a new issue is created.
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
-Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts. 
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 Possible datatypes to be passed into the config are:
 
-
-|  Type             | value |  Comments          |
-|-------------------|-------|--------------------|
-| "sl" | string | Single line string with character limit of 255 |
-| "ml"   | string | Multi line string with character limit of 100,000 |
-| "n" | string |  String representation of number. For eg.  "12345" |
-| "dd"  | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "dt"  | string | String representation of epoch time in milliseconds. For eg. "1505927361535" |
-| "b"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
-
+| Type | value  | Comments                                                                                                                                                      |
+| ---- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | string | Single line string with character limit of 255                                                                                                                |
+| "ml" | string | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | string | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | string | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 Example:-
+
 ```csharp
 
 Helpshift help = new Helpshift();
@@ -337,6 +325,7 @@ help.showFAQs(configD);
 ```
 
 ## Debug logs {#debug-logs}
+
 If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can instantiate and use the **HelpshiftLog** class and its methods which will provide varying degress of logging.
 For example, if you want to attach debug level logs please add the following code
 

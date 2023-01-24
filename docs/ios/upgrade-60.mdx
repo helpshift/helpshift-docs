@@ -4,9 +4,20 @@ title: Upgrading from 6.0.0 to 6.1.0
 description: "The Helpshift SDK v6.1.0 is a major update and we have deprecated some APIs. If you have questions or feedback, please Contact Us"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,16 +25,13 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Upgrading from 6.0.0 to 6.1.0 {#upgrade-to-610}
 
 <Intro>
 
 The Helpshift SDK v6.1.0 is a major update and we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
@@ -31,21 +39,20 @@ Please replace all the old files with new files
 
 </Admonition>
 
-
-
 ## List of deprecated APIs {#deprecated-api}
-| Deprecated API | New API |
-|----------------|---------|
-| [HelpshiftCore setSDKLanguage:] | [HelpshiftCore setLanguage:] |
-| [HelpshiftSupport setSDKLanguage:] | [HelpshiftSupport setLanguage:] |
-| [HelpshiftSupport dynamicFormWithTitle:andFlows:] | [HelpshiftSupport requestDynamicFormWithTitle:andFlows:] |
-| [HelpshiftSupport isConversationActive] | [HelpshiftSupport checkIfConversationActive] |
-| [HelpshiftSupport getNotificationCountFromRemote:] | [HelpshiftSupport requestUnreadMessagesCount:] |
-| [[HelpshiftSupport delegate] didReceiveNotificationCount:] | [[HelpshiftSupport delegate] didReceiveUnreadMessagesCount:] |
-| | |
 
+| Deprecated API                                             | New API                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| [HelpshiftCore setSDKLanguage:]                            | [HelpshiftCore setLanguage:]                                 |
+| [HelpshiftSupport setSDKLanguage:]                         | [HelpshiftSupport setLanguage:]                              |
+| [HelpshiftSupport dynamicFormWithTitle:andFlows:]          | [HelpshiftSupport requestDynamicFormWithTitle:andFlows:]     |
+| [HelpshiftSupport isConversationActive]                    | [HelpshiftSupport checkIfConversationActive]                 |
+| [HelpshiftSupport getNotificationCountFromRemote:]         | [HelpshiftSupport requestUnreadMessagesCount:]               |
+| [[HelpshiftSupport delegate] didReceiveNotificationCount:] | [[HelpshiftSupport delegate] didReceiveUnreadMessagesCount:] |
+|                                                            |                                                              |
 
 ## Set SDK language {#set-sdk-language}
+
 On SDK version 6.0.0 or below, the SDK language can be changed using below code:
 
 ```
@@ -69,7 +76,9 @@ On SDK version 6.0.0 or below, the SDK language can be changed using below code:
 }
 
 ```
+
 On SDK version 6.1.0, a new api is introduced to change SDK language as shown in the example code below:
+
 ```
 #import "HelpshiftCore.h"
 
@@ -87,6 +96,7 @@ On SDK version 6.1.0, a new api is introduced to change SDK language as shown in
 ```
 
 ## Show dynamic form {#show-dynamic-form}
+
 On SDK version 6.0.0 or below, you can retrieve and display dynamic forms for guided ticket filing as shown below:
 
 ```
@@ -175,6 +185,7 @@ On SDK version 6.1.0, you can retrieve and show dynamic form as shown below:
 ```
 
 ## Check active Conversation {#check-active-conversation}
+
 On SDK version 6.0.0 or below, you can check if an active conversation exists as shown below:
 
 ```
@@ -239,7 +250,6 @@ On SDK version 6.1.0, a new api and a delegate method is introduced to check if 
 
 On SDK version 6.0.0 or below, unread messages count can be obtained both synchronously and asynchronously. This is changed in SDK version 6.1.0 and unread message count is always obtained asynchronously.
 
-
 As an example, if you want to show the locally saved unread messages in one of the view controllers and you're on SDK 6.0.0 or earlier versions, you would use code like shown below:
 
 ```
@@ -290,8 +300,6 @@ On SDK version 6.1.0, you can retrieve the locally stored unread messages and di
 @end
 
 ```
-
-
 
 ## Show count of unread messages from server {#unread-count-remote-example-snippet}
 
@@ -352,4 +360,3 @@ On SDK 6.1.0, you can retrieve unread messages from server and display the count
 @end
 
 ```
-

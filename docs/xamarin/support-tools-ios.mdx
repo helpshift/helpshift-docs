@@ -4,8 +4,20 @@ title: Helpshift APIs iOS
 description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements.You can call only specific screens from the SDK based on thefunctionality you want to expose in your app.There are 6 different ways in which the Helpshift SDK can be presented in your app."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift APIs <small>iOS</small> {#support-tools}
 
@@ -17,12 +29,9 @@ functionality you want to expose in your app.
 
 There are 6 different ways in which the Helpshift SDK can be presented in your app.
 
-
 </Intro>
 
-
 ## Integrating Contact Us & In App Messaging {#conversation-view}
-
 
 ```csharp
 
@@ -38,15 +47,13 @@ user starts a new conversation, this API call will show the conversation
 view. The conversation will ensue until it is resolved (and the
 resolution is accepted by the user) or rejected by the agent.
 
-
 <Centered width="half">
 
-![](/static/books/ios/showConversation.png "")
+![](/static/books/ios/showConversation.png)
 
 </Centered>
 
 ## Integrating FAQs {#faqs-view}
-
 
 ```csharp
 
@@ -62,10 +69,9 @@ Check out [API Options](/xamarin/sdk-configuration-ios#api-options) for more con
 
 <SideBySide>
 
-<Image src="/static/books/ios/support-screen.png"  width="quarter" /> 
+<Image src="/static/books/ios/support-screen.png" width="quarter" />{" "}
 
-<Image src="/static/books/ios/faq-search.png"  width="quarter" /> 
-
+<Image src="/static/books/ios/faq-search.png" width="quarter" />{" "}
 
 </SideBySide>
 
@@ -73,31 +79,30 @@ Check out [API Options](/xamarin/sdk-configuration-ios#api-options) for more con
 
 With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
 Typical cases why you would want to use FAQ filtering are :
-* You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
-* You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone
 
 FAQ filtering is a 2 step approach
 
 1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘iphone’ & ‘ipad’.
-<Image src="/static/books/ios/faq-filtering.png"  width="full" /> 
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />{" "}
 2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
-
 
 <Admonition type="info" title="Note">
 
 Helpshift has 2 types of tags mainly `Issue Tags` & `Search Tags`.
 
-* Issue tags are used to filter the FAQ list on the SDK with the filter rules.
-* Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
 
 </Admonition>
 
-
 #### How to use FAQ filtering
-This will  be a config option which will be supported by the showFAQs and showFAQSection APIs.
+
+This will be a config option which will be supported by the showFAQs and showFAQSection APIs.
 
 Usage :
-
 
 <Tabs>
 
@@ -111,10 +116,11 @@ HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
                                     .SetWithTagsMatching(filter)
                                     .build();
 ```
+
 The SetWithTagsMatching call will take the HelpshiftFAQFilter object, which takes two parameters
 
-* operator : one of HsOperator.Or, HsOperator.And or HsOperator.Not which will serve as conditional operators for the given tags.
-* tags : the actual tags in the query as a String array.
+- operator : one of HsOperator.Or, HsOperator.And or HsOperator.Not which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query as a String array.
 
 ```csharp
 HsOperator operator = HsOperator.Or;
@@ -129,7 +135,6 @@ HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-
 ```csharp
 Dictionary<string, object> configD = new Dictionary<string, object>();
 Dictionary<string, object> tags = new Dictionary<string, object>();
@@ -140,8 +145,8 @@ configD.Add(HelpshiftApi.HelpshiftSupport.HSTAGSMATCHINGKEY, tags);
 
 The `HelpshiftApi.HelpshiftSupport.HSTAGSMATCHINGKEY` option will be a HashMap containing 2 keys
 
-* operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
-* tags : the actual tags in the query (String Array)
+- operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
+- tags : the actual tags in the query (String Array)
 
 Example :
 
@@ -159,16 +164,13 @@ HelpshiftApi.HelpshiftSupport.ShowFAQs(uiViewController, configD);
 
 </Tabs>
 
-
 ## Showing a Particular FAQ Section {#faq-section-view}
 
 <SideBySide>
 
-<Image src="/static/books/ios/single-section.png"  width="quarter" /> 
-
+<Image src="/static/books/ios/single-section.png" width="quarter" />{" "}
 
 </SideBySide>
-
 
 ```csharp
 
@@ -181,22 +183,19 @@ You can use the `ShowFAQSection` api call to show faqs from a particular FAQ sec
 
 **You'll need the `publish-id` of the section in this case:**
 
-<Image src="/static/books/misc/section-publish-id.png"  width="full" /> 
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
 Check out [API Options](/xamarin/sdk-configuration-ios#api-options) for more configuration.
 
-
 ## Showing a Particular FAQ Question {#faq-question-view}
 
 <SideBySide>
 
-<Image src="/static/books/ios/single-faq.png"  width="quarter" /> 
-
+<Image src="/static/books/ios/single-faq.png" width="quarter" />{" "}
 
 </SideBySide>
-
 
 ```csharp
 
@@ -206,16 +205,13 @@ Check out [API Options](/xamarin/sdk-configuration-ios#api-options) for more con
 
 You can use the `ShowSingleFAQ` api call to show a single faq question.
 
-
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png"  width="full" /> 
-
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
 Check out [API Options](/xamarin/sdk-configuration-ios#api-options) for more configuration.
 
 ## Guided Issue Filing {#dynamic-forms}
-
 
 Guided issue filing is a feature to capture more context when a user interacts with Helpshift Support. For example, lets say you want the user to file a ticket in case of a complaint and also in case he want to suggest a feature. With dynamic forms, you will now be able to distinguish between these two use cases and take required actions (like assigning appropriate agents).
 
@@ -224,39 +220,38 @@ Dynamic forms also enable better FAQ discovery. Lets say there is a frequently v
 The app configures a dynamic form using 'flows. There are 5 types of
 flows:
 
-
 <Tabs>
 
 <TabItem value="Using Flows" label="Using Flows">
 
-
 1. Flow to show conversation screen
 
-    * `new ConversationFlow(string label, HelpshiftAPIConfig config)`
-    * similar to the showConversation: API
+   - `new ConversationFlow(string label, HelpshiftAPIConfig config)`
+   - similar to the showConversation: API
 
 2. Flow to show all FAQs
 
-    * `new FAQsFlow(string label, HelpshiftAPIConfig config)`
-    * similar to the showFAQs: API
+   - `new FAQsFlow(string label, HelpshiftAPIConfig config)`
+   - similar to the showFAQs: API
 
 3. Flow to show a FAQ section
 
-    * `new FAQSectionFlow(string sectionPublishId, string label, HelpshiftAPIConfig config)`
-    * similar to the showFAQSection: API
+   - `new FAQSectionFlow(string sectionPublishId, string label, HelpshiftAPIConfig config)`
+   - similar to the showFAQSection: API
 
 4. Flow to show a single FAQ
 
-    * `new SingleFAQFlow(string questionPublishId, string label, HelpshiftAPIConfig config)`
-    * similar to the showSingleFAQ: API
+   - `new SingleFAQFlow(string questionPublishId, string label, HelpshiftAPIConfig config)`
+   - similar to the showSingleFAQ: API
 
 5. Flow to show a nested Dynamic form
 
-    * `new DynamicFormFlow(string label, IList<Flow> flowList)`
+   - `new DynamicFormFlow(string label, IList<Flow> flowList)`
 
 Each flow needs a display label. This will be the text that is displayed in the row. Some flows also expect a HelpshiftAPIConfig object. This will be the config that is passed to the subsequent Support API. To show the dynamic form, use the HelpshiftApi.HelpshiftSupport.ShowDynamicForm API.
 
 Example:
+
 ```csharp
 HelpshiftAPIConfig conversationConfig = new HelpshiftAPIConfig.Builder()
                                               .SetConversationPrefillText("This is from Dynamic")
@@ -277,30 +272,29 @@ HelpshiftApi.HelpshiftSupport.ShowDynamicForm(activity, "dummy title", flows);
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-
 1. Flow to show conversation screen
 
-    * `HelpshiftApi.HelpshiftSupport.HsFlowTypeConversation`
-    * similar to the showConversation: API
+   - `HelpshiftApi.HelpshiftSupport.HsFlowTypeConversation`
+   - similar to the showConversation: API
 
 2. Flow to show all FAQs
 
-    * `HelpshiftApi.HelpshiftSupport.HsFlowTypeFaqs`
-    * similar to the showFAQs: API
+   - `HelpshiftApi.HelpshiftSupport.HsFlowTypeFaqs`
+   - similar to the showFAQs: API
 
 3. Flow to show a FAQ section
 
-    * `HelpshiftApi.HelpshiftSupport.HsFlowTypeFaqSection`
-    * similar to the showFAQSection: API
+   - `HelpshiftApi.HelpshiftSupport.HsFlowTypeFaqSection`
+   - similar to the showFAQSection: API
 
 4. Flow to show a single FAQ
 
-    * `HelpshiftApi.HelpshiftSupport.HsFlowTypeSingleFaq`
-    * similar to the showSingleFAQ: API
+   - `HelpshiftApi.HelpshiftSupport.HsFlowTypeSingleFaq`
+   - similar to the showSingleFAQ: API
 
 5. Flow to show a nested Dynamic form
 
-    * `HelpshiftApi.HelpshiftSupport.HsFlowTypeNested`
+   - `HelpshiftApi.HelpshiftSupport.HsFlowTypeNested`
 
 Each flow needs a display text. This will be the text that will be displayed in the row. Some flows also expect a `HsFlowConfig` dict. This will be the config that is passed to the subsequent Support API.
 
@@ -343,9 +337,7 @@ HelpshiftApi.HelpshiftSupport.ShowDynamicForm(uiVewController, "title", flows);
 
 </Tabs>
 
-
 ## Enable Testing Mode {#enable-testing-mode}
-
 
 <Admonition type="info" title="Note">
 
@@ -353,14 +345,12 @@ Applicable to SDK v3.1.0 and above
 
 </Admonition>
 
-
 The Helpshift SDK provides an API to allow developers set the testing mode for the SDK. This API is called `enableTestingMode`. It signals that the SDK is running in testing mode, and allows the SDK to modify certain behaviors to enable better testing. These changes in behavior will be called out in the respective API/Feature documentation. There are certain restrictions that developers should consider prior to using this API:
 
-* The API must be called even before the install call of the SDK.
-* The API must be called in the debug build of the app only. Developers can ensure that it is not called in release build by wrapping the call to this API inside `#if DEBUG`.
+- The API must be called even before the install call of the SDK.
+- The API must be called in the debug build of the app only. Developers can ensure that it is not called in release build by wrapping the call to this API inside `#if DEBUG`.
 
 Example :
-
 
 ```csharp
 
@@ -376,7 +366,6 @@ This API can be used to close an active Helpshift session and return to the app.
 The completion handler will be called after the Helpshift session is closed. If the session is already closed, the completion handler will be called immediately.
 This API can be useful in situations where the app wants to open its own UI screen in response to a deep link but the Helpshift session is still open.
 
-
 <Admonition type="info" title="Note">
 
 2. This API has no affect on any open issue. Users will continue to see their messages next time a Helpshift session is launched.
@@ -384,15 +373,13 @@ This API can be useful in situations where the app wants to open its own UI scre
 
 </Admonition>
 
-
 <div className="compact ">
 
+|            |                                                                     |
+| ---------- | ------------------------------------------------------------------- |
+| Definition | <code>CloseHelpshiftSupportSession(Action completionHandler)</code> |
 
-| | |
-|--|--|
-|Definition| <code>CloseHelpshiftSupportSession(Action completionHandler)</code>|
 Example Code
-
 
 ```csharp
 
@@ -409,9 +396,6 @@ Example Code
 
 ```
 
-
 </div>
 
-
 Check out [API Options](/xamarin/sdk-configuration-ios#api-options) for more configuration.
-

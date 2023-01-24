@@ -4,17 +4,26 @@ title: Helpshift Delegates
 description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift Delegates {#delegates}
 
 <Intro>
 
 The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
-
 
 </Intro>
 
@@ -125,13 +134,11 @@ If you want to keep track of when helpshift session ends in your app, you can im
 
 If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will be fired every time the user starts a new conversation. The delegate method will receive the conversation message in its arguments.
 
-
 <Admonition type="info" title="Note">
 
 As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
 
 </Admonition>
-
 
 ### Conversation Active
 
@@ -145,8 +152,6 @@ This delegate callback can be implemented to check if a Conversation is active w
 
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in its arguments. if the message is of a special type then it will be one of the following four messages.
 
-
-
 ```csharp
 
     public const String HSUserAcceptedTheSolution = "User accepted the solution";
@@ -156,13 +161,11 @@ If you want to keep track of when your app users send new messages to an ongoing
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 All the replies from end users to Bot (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
 
 </Admonition>
-
 
 ## Conversation ended delegate {#delegate-conversation-ended}
 
@@ -182,9 +185,9 @@ If you want to keep track of when your app user completes the customer satisfact
 
 Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
 
-* Video files (3gp, m4v)
-* Audio files (mp3, mp4, aac)
-* Image files (jpg, png, gif)
+- Video files (3gp, m4v)
+- Audio files (mp3, mp4, aac)
+- Image files (jpg, png, gif)
 
 After the end user taps on a downloaded attachment, helpshift tries to call the HandleTapOnAttachmentFile delegate(if implemented) and check its return value. If the delegate returns true, then SDK assumes that the host app has handled the opening of attachment and does not take any further action.
 
@@ -206,13 +209,12 @@ This delegate can be implemented to get the count of unread messages queried via
 
 This delegate method is called when user clicks on action card button. The `HelpshiftActionType actionType` parameter can be one of:
 
-* Link
-* Call
+- Link
+- Call
 
 The `data` parameter can be url/phoneNumber based on actionType
 
 Example:
-
 
 ```csharp
 
@@ -221,4 +223,3 @@ Example:
         // your code here
     }
 ```
-

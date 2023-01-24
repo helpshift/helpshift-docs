@@ -4,61 +4,78 @@ title: Migration Guide
 description: "SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Migration Guide
 
 <Intro>
 
-
 SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates.
 
-
-
 </Intro>
-
 
 ## Steps to migrate to SDK X {#steps-to-migrate}
 
 <Steps title="Migrate from legacy SDK to SDK X">
-    <Step number="1" title="Check migration support" subtitle="Go through migration guide" link="/sdkx_android/migration-guide#unsupported-features" newTab={true} />
-    <Step number="2" title="Update to SDK X" subtitle="Migrate code/features step by step" link="/sdkx_android/migration-guide#update-gradle-import" newTab={true} />
-    <Step number="3" title="Test the migration" subtitle="Validate the functionality" />
+  <Step
+    number="1"
+    title="Check migration support"
+    subtitle="Go through migration guide"
+    link="/sdkx_android/migration-guide#unsupported-features"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="Update to SDK X"
+    subtitle="Migrate code/features step by step"
+    link="/sdkx_android/migration-guide#update-gradle-import"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="Test the migration"
+    subtitle="Validate the functionality"
+  />
 </Steps>
-
-
 
 ## Unsupported features {#unsupported-features}
 
 We recommend to hold off on SDK X migration if you are currently using the following APIs/features -
 
-* [Guided issue filing](/android/support-tools#dynamic-forms).
+- [Guided issue filing](/android/support-tools#dynamic-forms).
 
-* [Embeddable support fragments](/android/support-tools#embeddable-fragments).
+- [Embeddable support fragments](/android/support-tools#embeddable-fragments).
 
-* [FAQ filtering by tags](/android/support-tools#faq-filtering).
+- [FAQ filtering by tags](/android/support-tools#faq-filtering).
 
-* [Minimum Issue description length](/android/sdk-configuration#minimum-issue-desc-length).
+- [Minimum Issue description length](/android/sdk-configuration#minimum-issue-desc-length).
 
-* [Conversation pre-fill text](/android/sdk-configuration#conversationPrefillText).
+- [Conversation pre-fill text](/android/sdk-configuration#conversationPrefillText).
 
-* [SDK UI strings customization](/android/string-customization/).
+- [SDK UI strings customization](/android/string-customization/).
 
-* [Automated review requests](/android/reviews-and-feedback/).
+- [Automated review requests](/android/reviews-and-feedback/).
 
-* [Switching between light and dark themes](/android/design#skinning).
+- [Switching between light and dark themes](/android/design#skinning).
 
 These features are yet to be developed, and we may add them to our 2022 roadmap. You can reach out to support@helpshift.com to raise any query for the above.
 
-
-
 ## Supported SDK Versions {#support-sdk-versions}
 
-A successful migration indicates maintaining user’s data and chat history when they move from an SDK version to another. We support migration of legacy SDK from version 7+ to SDK X 10.1.+ 
-
+A successful migration indicates maintaining user’s data and chat history when they move from an SDK version to another. We support migration of legacy SDK from version 7+ to SDK X 10.1.+
 
 <Admonition type="info" title="Note">
 
@@ -66,9 +83,7 @@ Migration from SDK version < 6.x
 
 We don’t support the migration from SDK version < 6. If you move to SDK X from version < 6, SDK X will function correctly, but the logged-in user information will be lost, and a new default user will be created. You can log the current user in again, but the corresponding data for that user will not be migrated. It will be treated as a new user in the Helpshift system.
 
-
 </Admonition>
-
 
 ## Migrate SDK Gradle Import to SDK X Library {#update-gradle-import}
 
@@ -85,12 +100,11 @@ dependencies {
 
 If you have added design, recyclerview, and cardview dependencies only for Helpshift SDK, then you can remove them because SDK X does not use those libraries.
 
-
 <Admonition type="info" title="Note">
 
 Remove the legacy SDK dependency from your app. Do not keep both dependencies.
 
-Integration sources other than Gradle are not supported anymore. 
+Integration sources other than Gradle are not supported anymore.
 
 For example:
 
@@ -98,9 +112,7 @@ For example:
 
 [Maven based projects](/android/getting-started#maven-support)
 
-
 </Admonition>
-
 
 ## Update "install" call {#update-install-call}
 
@@ -121,84 +133,72 @@ try {
 
 Please refer to [SDK X Getting Started](/sdkx_android/getting-started#initializing) guide for more information.
 
-
 ## "install" call Configurations {#install-config}
 
 SDK X’s `install` API takes in a Map as the configuration for initialization. `InstallConfig` class has been removed and needs to be replaced by a `Map`.
 
 Update the configuration passed in the `install` call based on the following mapping of functions from `InstallConfig` to a key in `Map`.
 
-|Legacy SDK `InstallConfig`                | SDK X : Key in `Map` | Example Value |
-|------------------------------------------|----------------------|--------------------------- |
-| InstallConfig.Builder.setNotificationIcon | "notificationIcon"  | R.drawable.notification_icon |
-| InstallConfig.Builder.setLargeNotificationIcon | "notificationLargeIcon"  | R.drawable.notification_large_icon |
-| InstallConfig.Builder.setEnableInAppNotifications | "enableInAppNotification"  | true/false |
-| InstallConfig.Builder.setNotificationSound | "notificationSoundId"  | R.raw.notification_sound |
-| InstallConfig.Builder.setSupportNotificationChannelId | "notificationChannelId"  | "ABC App Channel" |
-| InstallConfig.Builder.setEnableDefaultFallbackLanguage | This config has been removed  |  |
-| InstallConfig.Builder.setFont | This config has been removed  |  |
-| InstallConfig.Builder.setScreenOrientation | "screenOrientation"  | ActivityInfo.SCREEN_ORIENTATION_PORTRAIT |
-| InstallConfig.Builder.setEnableLogging | "enableLogging"  | true/false |
-| InstallConfig.Builder.disableErrorReporting | This config has been removed |  |
-
-
+| Legacy SDK `InstallConfig`                             | SDK X : Key in `Map`         | Example Value                            |
+| ------------------------------------------------------ | ---------------------------- | ---------------------------------------- |
+| InstallConfig.Builder.setNotificationIcon              | "notificationIcon"           | R.drawable.notification_icon             |
+| InstallConfig.Builder.setLargeNotificationIcon         | "notificationLargeIcon"      | R.drawable.notification_large_icon       |
+| InstallConfig.Builder.setEnableInAppNotifications      | "enableInAppNotification"    | true/false                               |
+| InstallConfig.Builder.setNotificationSound             | "notificationSoundId"        | R.raw.notification_sound                 |
+| InstallConfig.Builder.setSupportNotificationChannelId  | "notificationChannelId"      | "ABC App Channel"                        |
+| InstallConfig.Builder.setEnableDefaultFallbackLanguage | This config has been removed |                                          |
+| InstallConfig.Builder.setFont                          | This config has been removed |                                          |
+| InstallConfig.Builder.setScreenOrientation             | "screenOrientation"          | ActivityInfo.SCREEN_ORIENTATION_PORTRAIT |
+| InstallConfig.Builder.setEnableLogging                 | "enableLogging"              | true/false                               |
+| InstallConfig.Builder.disableErrorReporting            | This config has been removed |                                          |
 
 <Admonition type="info" title="Note">
 
 All deprecated configurations have been removed and are not supported anymore.
 
-
 </Admonition>
 
-
 For more information on configurations, please refer to this document — [SDK Configuration - Helpshift SDK X for Android](/sdkx_android/sdk-configuration/)
-
 
 ## Conversation and FAQ APIs {#sdk-apis}
 
 Update the public APIs for conversation and FAQs as following.
 
-
-|Legacy SDK                | SDK X |
-|------------------------------------------|----------------------|
-| Support.showConversation(MyActivity.this); <br /> Support.showConversation(MyActivity.this, apiConfig); | Helpshift.showConversation(MyActivity.this, config); |
-| Support.showFAQs(MyActivity.this); <br /> Support.showFAQs(MyActivity.this, apiConfig); | Helpshift.showFAQs(MyActivity.this, config); |
-| Support.showFAQSection(MyActivity.this, "11"); <br /> Support.showFAQSection(MyActivity.this, "11", apiConfig);| Helpshift.showFAQSection(MyActivity.this, "11", config); |
-| Support.showSingleFAQ(MyActivity.this, "51"); <br /> Support.showSingleFAQ(MyActivity.this, "51", apiConfig); | Helpshift.showSingleFAQ(MyActivity.this, "51", config); |
-| FAQ filtering by tags | Currently not supported |
-| Guided issue filing | Currently not supported |
-| Embeddable fragments | Currently not supported |
-
+| Legacy SDK                                                                                                      | SDK X                                                    |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Support.showConversation(MyActivity.this); <br /> Support.showConversation(MyActivity.this, apiConfig);         | Helpshift.showConversation(MyActivity.this, config);     |
+| Support.showFAQs(MyActivity.this); <br /> Support.showFAQs(MyActivity.this, apiConfig);                         | Helpshift.showFAQs(MyActivity.this, config);             |
+| Support.showFAQSection(MyActivity.this, "11"); <br /> Support.showFAQSection(MyActivity.this, "11", apiConfig); | Helpshift.showFAQSection(MyActivity.this, "11", config); |
+| Support.showSingleFAQ(MyActivity.this, "51"); <br /> Support.showSingleFAQ(MyActivity.this, "51", apiConfig);   | Helpshift.showSingleFAQ(MyActivity.this, "51", config);  |
+| FAQ filtering by tags                                                                                           | Currently not supported                                  |
+| Guided issue filing                                                                                             | Currently not supported                                  |
+| Embeddable fragments                                                                                            | Currently not supported                                  |
 
 For more information on public APIs in SDK X, please refer to this document — [Helpshift APIs - Helpshift SDK X for Android](/sdkx_android/support-tools/).
-
 
 ## Conversation and FAQ API Configuration {#sdk-api-config}
 
 Update the configuration passed in conversation and FAQ APIs as following.
 
-
-|Legacy SDK ApiConfig | SDK X: Key in Map |
-|------------------------------------------|----------------------|
-|ApiConfig.Builder.setEnableFullPrivacy| "fullPrivacy" |
-|ApiConfig.Builder.setCustomIssueFields| "customIssueFields" |
-|ApiConfig.Builder.setShowConversationResolutionQuestion| Moved to Helpshift Admin Dashboard. <br /> Under App settings → Resolution Experience → Resolution Question toggle |
-|ApiConfig.Builder.setEnableTypingIndicator| Moved to Helpshift Admin Dashboard. <br /> Under App settings → Support Experience → Show Agent Typing Indicator toggle |
-|Other configs from `ApiConfig` have been removed| Currently, other configs are not supported |
-
+| Legacy SDK ApiConfig                                    | SDK X: Key in Map                                                                                                       |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| ApiConfig.Builder.setEnableFullPrivacy                  | "fullPrivacy"                                                                                                           |
+| ApiConfig.Builder.setCustomIssueFields                  | "customIssueFields"                                                                                                     |
+| ApiConfig.Builder.setShowConversationResolutionQuestion | Moved to Helpshift Admin Dashboard. <br /> Under App settings → Resolution Experience → Resolution Question toggle      |
+| ApiConfig.Builder.setEnableTypingIndicator              | Moved to Helpshift Admin Dashboard. <br /> Under App settings → Support Experience → Show Agent Typing Indicator toggle |
+| Other configs from `ApiConfig` have been removed        | Currently, other configs are not supported                                                                              |
 
 Following deprecated configurations have been removed from the SDK:
 
-* [gotoConversationAfterContactUs](/android/sdk-configuration#gotoConversationAfterContactUs)
-* [requireEmail](/android/sdk-configuration#requireEmail)
-* [hideNameAndEmail](/android/sdk-configuration#hideNameAndEmail)
-* [enableTypingIndicator](/android/sdk-configuration#enableTypingIndicator)
-* [showConversationResolutionQuestion](/android/sdk-configuration#showConversationResolutionQuestion)
+- [gotoConversationAfterContactUs](/android/sdk-configuration#gotoConversationAfterContactUs)
+- [requireEmail](/android/sdk-configuration#requireEmail)
+- [hideNameAndEmail](/android/sdk-configuration#hideNameAndEmail)
+- [enableTypingIndicator](/android/sdk-configuration#enableTypingIndicator)
+- [showConversationResolutionQuestion](/android/sdk-configuration#showConversationResolutionQuestion)
 
 ## User Management {#user-management}
 
 ### Login {#login}
-
 
 Replace the legacy SDK `login` code:
 
@@ -206,7 +206,7 @@ Replace the legacy SDK `login` code:
 HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.co")
                                               .setName("John Doe")
                                               .setAuthToken("generated-user-authentication-token")
-                                              .build();  
+                                              .build();
 
 Core.login(user);
 
@@ -305,15 +305,13 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 
 For more information on User management, please refer to this document — [Users - Helpshift SDK X for Android](/sdkx_android/users/)
 
-
 <Admonition type="info" title="Note">
 
 We recommend that on migration to SDK X, you should log the active user in again to avoid potential inconsistencies.
 
 </Admonition>
 
- 
-## Design and Customization Support  {#design-customize-support}
+## Design and Customization Support {#design-customize-support}
 
 Design and Customization of SDK X has completely moved to Helpshift Dashboard.
 
@@ -321,13 +319,11 @@ Please remove all code related to Helpshift SDK’s design, theming, and customi
 
 For more information on Design and Customization, please refer to this document — [Design - Helpshift SDK X for Android](/sdkx_android/design/)
 
-
 <Admonition type="info" title="Note">
 
 Theming and customization is yet to be supported in SDK X and we will add it in our roadmap for 2022.
 
 </Admonition>
-
 
 ## String Customization {#string-customize}
 
@@ -339,14 +335,15 @@ Remove all Helpshift SDK related string customizations done in your app as it wi
 
 Replace the following APIs from Legacy SDK to SDK X APIs for notification handling.
 
-|Legacy SDK                | SDK X |
-|------------------------------------------|----------------------|
-|Core.registerDeviceToken(context, pushToken);|Helpshift.registerPushToken(pushToken);|
-|Core.handlePush(context, intent);|Helpshift.handlePush(data);|
-|Fetching notification count synchronously. <br /> Support.getNotificationCount()| Not supported |
-|Fetching notification count asynchronously. <br /> Support.getNotificationCount(countHandler, failHandler);| Helpshift.requestUnreadMessageCount(shouldFetchFromServer)|
+| Legacy SDK                                                                                                  | SDK X                                                      |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Core.registerDeviceToken(context, pushToken);                                                               | Helpshift.registerPushToken(pushToken);                    |
+| Core.handlePush(context, intent);                                                                           | Helpshift.handlePush(data);                                |
+| Fetching notification count synchronously. <br /> Support.getNotificationCount()                            | Not supported                                              |
+| Fetching notification count asynchronously. <br /> Support.getNotificationCount(countHandler, failHandler); | Helpshift.requestUnreadMessageCount(shouldFetchFromServer) |
 
 Asynchronous `requestUnreadMessageCount` result is provided as an event on `HelpshiftEventListener`:
+
 ```
 Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
@@ -364,34 +361,27 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }
 ```
 
-
-
 <Admonition type="info" title="Note">
 
 If you are using push notifications, we recommend that you register the push token again with SDK X after your app has been upgraded to avoid potential inconsistencies.
 
 </Admonition>
 
-
 For more information on notification handling, please refer to this document — [Notifications - Helpshift SDK X for Android](/sdkx_android/notifications/)
 
 ## SDK Language
 
-|Legacy SDK                | SDK X |
-|------------------------------------------|----------------------|
-|Core.setSDKLanguage("fr");|Helpshift.setLanguage("fr");`|
-
-
+| Legacy SDK                 | SDK X                         |
+| -------------------------- | ----------------------------- |
+| Core.setSDKLanguage("fr"); | Helpshift.setLanguage("fr");` |
 
 <Admonition type="info" title="Note">
 
- We recommend that you set the SDK language again on upgrading your app with SDK X to avoid potential inconsistencies.
+We recommend that you set the SDK language again on upgrading your app with SDK X to avoid potential inconsistencies.
 
 </Admonition>
 
-
 For more information on internationalization, please refer to this document — [Going International - Helpshift SDK X for Android](/sdkx_android/i18n/)
-
 
 ## Tracking {#tracking}
 
@@ -406,9 +396,11 @@ Replace legacy SDK API `Support.clearBreadCrumbs();` with SDK X API `Helpshift.c
 Legacy SDK support for [Debug Logs](/android/tracking#debug-logs) has been replaced in SDK X with debug logs documented [here](/sdkx_android/tracking#debug-logs)
 
 ### Checking active Conversation
+
 Legacy SDK API `Support.isConversationActive()` is not supported in SDK X
 
 ### Adding meta data for Conversations
+
 `MetaData` class has been removed.
 
 We recommened using [CIF](/sdkx_android/tracking#set-custom-issue-fields) instead of meta data. You can find detailed article [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
@@ -495,7 +487,7 @@ Map<String, String> joiningDate = new HashMap<>();
     Map<String, String> isPro = new HashMap<>();
     isPro.put("type", "boolean");
     isPro.put("value", "true");
-     
+
     Map<String, String> address = new HashMap<>();
     address.put("type", "multiline");
     address.put("value", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128");
@@ -503,7 +495,7 @@ Map<String, String> joiningDate = new HashMap<>();
     Map<String, String> currency = new HashMap<>();
     currency.put("type", "dropdown");
     currency.put("value", "Dollar");
-    
+
     Map<String, Object> cifMap = new HashMap<>();
     cifMap.put("join_date", joiningDate);
     cifMap.put("level", stockLevel);
@@ -515,13 +507,13 @@ Map<String, String> joiningDate = new HashMap<>();
 
     Map<String, Object> config = new HashMap<>();
     // other configs...
-    //.. 
+    //..
     config.put("customIssueFields", cifMap);
 
     Helpshift.showFAQs(MainActivity.this, config);
 ```
 
-Please refer to this document for further details - [CIF - Helpshift SDK X Android](/sdkx_android/tracking#set-custom-issue-fields) 
+Please refer to this document for further details - [CIF - Helpshift SDK X Android](/sdkx_android/tracking#set-custom-issue-fields)
 
 ## Helpshift Delegates {#delegates}
 
@@ -532,24 +524,23 @@ For more details on supported events, please refer to this document — [Helpshi
 
 Following events are not supported anymore from the legacy SDK:
 
-* `userClickOnAction`  
+- `userClickOnAction`
 
-* `displayAttachmentFile`
+- `displayAttachmentFile`
 
 ## Review and Feedback {#review-feedback}
 
-* App review request is not supported in SDK X — [Review Request - Helpshift for Android](/android/reviews-and-feedback#review-and-feedback) 
+- App review request is not supported in SDK X — [Review Request - Helpshift for Android](/android/reviews-and-feedback#review-and-feedback)
 
-* Manual app rating request is not supported in SDK X — [Manual App Rating - Helpshift for Android](/android/reviews-and-feedback#app-rating-api)
+- Manual app rating request is not supported in SDK X — [Manual App Rating - Helpshift for Android](/android/reviews-and-feedback#app-rating-api)
 
-* Automatic review request is not supported in SDK X — [Automatic Reviews - Helpshift for Android](/android/reviews-and-feedback#configure-review-request)
+- Automatic review request is not supported in SDK X — [Automatic Reviews - Helpshift for Android](/android/reviews-and-feedback#configure-review-request)
 
 ## Deep Links {#deep-links}
 
 Deep links are supported in SDK X, similar to Legacy SDK — [Deep Linking - Helpshift SDK X for Android](/sdkx_android/deep-linking/)
 
 ## Troubleshooting {#troubleshooting-migration}
- 
 
 ### Compilation errors due to Helpshift SDK
 
@@ -559,15 +550,11 @@ Check that the gradle dependency is correctly added as mentioned [here](/sdkx_an
 
 Make sure that the new/replaced API's that you are using are having the correct parameters.
 
- 
-
 ### Push notifications not working properly
 
 Check that you have migrated to the new API to be used for registering push token in SDK X.
 
 Check if you have correctly migrated to use the new API for handling push notifications i.e `Helpshift.handlePush()` instead of `Core.handlePush()`
-
- 
 
 ### Not getting event updates from the SDK
 

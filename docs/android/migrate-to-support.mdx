@@ -4,9 +4,20 @@ title: Migration guide to Support SDK
 description: Learn more about Migration guide to Support SDK
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,18 +25,13 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
-# Migration guide to Support SDK 
-
+# Migration guide to Support SDK
 
 <Admonition type="info" title="Note">
 
 If you are upgrading to Support SDK then we highly recommend you to upgrade to our [latest version](/android/getting-started/)
 
-
 </Admonition>
-
-
 
 ### Migrating to Support SDK
 
@@ -35,8 +41,8 @@ Please remove all the code related to Campaigns features that you might have add
 
 #### Update gradle dependency to Support only artifact
 
-* Use the Support build artifact id `com.helpshift:android-helpshift-aar`
-* Use the SDK version as per your requirements.
+- Use the Support build artifact id `com.helpshift:android-helpshift-aar`
+- Use the SDK version as per your requirements.
 
 ```
 	dependencies {
@@ -51,15 +57,13 @@ Please remove all the code related to Campaigns features that you might have add
 
 Initialize the SDK with `Support.getInstance()` instead of `All.getInstance()`
 
-
 ```java
 
 	// Please remove the following code for SDK initialization
 
 	Core.init(All.getInstance());
 
-	// Please use the following code to initialize the SDK 
+	// Please use the following code to initialize the SDK
 
 	Core.init(Support.getInstance());
 ```
-

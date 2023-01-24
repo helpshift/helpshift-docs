@@ -4,10 +4,20 @@ title: Getting Started iOS
 description: "You're 3 steps away from adding great in-app support to your Xamarin App."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Getting Started <small>iOS</small> {#getting-started}
 
@@ -15,17 +25,15 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 You're 3 steps away from adding great in-app support to your Xamarin App.
 
-
 </Intro>
-
 
 Guide to integrating the Xamatin plugin for the Helpshift SDK.
 
 ## Requirements {#version-requirements}
-*   Xcode 12.0 and above.
-*   Supported iOS versions:
-    *   iOS 15, 14, 13, 12, 11 and 10
 
+- Xcode 12.0 and above.
+- Supported iOS versions:
+  - iOS 15, 14, 13, 12, 11 and 10
 
 <Admonition type="info" title="Note">
 
@@ -33,37 +41,36 @@ With version 3.1.0, Helpshift SDK has dropped support for iOS 9. If you wish to 
 
 </Admonition>
 
-
 ## Download Helpshift Xamarin SDK for iOS {#getting-sdk}
 
-  
-<DownloadButton text="Download SDK" link="[% xamarin.ios.sdk_url %]" classes="mb-4" />
+<DownloadButton
+  text="Download SDK"
+  link="[% xamarin.ios.sdk_url %]"
+  classes="mb-4"
+/>
 
-
-The Helpshift SDK *.zip* file contains the following files:
+The Helpshift SDK _.zip_ file contains the following files:
 
 <div className="text-sm compact ">
 
-
-
-| | |
-|--|--|
-|HelpshiftApi.dll|  The platform independent DLL. Only needs to be added for api reference in a cross platform project. This dll should not be packaged with the final application.|
-|Android/HelpshiftApi.dll|  The Android specific DLL.|
-|iOS/Helpshift.IOS.dll|  The iOS binding library DLL.|
-|iOS/HelpshiftApi.dll|  The iOS specific api DLL.|
-|iOS/HelpshiftCustomLocalizations|  Folder containing language translations which can be used to create the HelpshiftCustomLocalization bundle.|
-|iOS/HelpshiftCustomThemes|  Folder containing skinning configuration to match the design of your app|
+|                                  |                                                                                                                                                                 |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HelpshiftApi.dll                 | The platform independent DLL. Only needs to be added for api reference in a cross platform project. This dll should not be packaged with the final application. |
+| Android/HelpshiftApi.dll         | The Android specific DLL.                                                                                                                                       |
+| iOS/Helpshift.IOS.dll            | The iOS binding library DLL.                                                                                                                                    |
+| iOS/HelpshiftApi.dll             | The iOS specific api DLL.                                                                                                                                       |
+| iOS/HelpshiftCustomLocalizations | Folder containing language translations which can be used to create the HelpshiftCustomLocalization bundle.                                                     |
+| iOS/HelpshiftCustomThemes        | Folder containing skinning configuration to match the design of your app                                                                                        |
 
 </div>
 
 ## Add Helpshift to your Xamarin project {#adding-to-project}
 
-* Add the *HelpshiftApi.dll* to the References in platform independent project in your multi-platform Xamarin project. This dll should not be packaged with the final application.
-* Add the *iOS/HelpshiftApi.dll* and *iOS/Helpshift.IOS.dll* to the References in your iOS specific project.
-* When the application is compiled, the platform specific dll - i.e *iOS/HelpshiftApi.dll* - will automatically replace the *HelpshiftApi.dll* (since they have the same assembly name and version) referenced in the first step. This serves application development around common API's across different platforms.
-* If you want to customize the localized strings, make changes to the strings in *HelpshiftCustomLocalizations* folder and convert it to a bundle. Add this customized bundle to Resources folder of the project. 
-* If you want to customize theming for the Helpshift SDK, make changes to the theming files in *HelpshiftCustomThemes* folder and add the plist files in the resources folders inside your iOS specific project.
+- Add the _HelpshiftApi.dll_ to the References in platform independent project in your multi-platform Xamarin project. This dll should not be packaged with the final application.
+- Add the _iOS/HelpshiftApi.dll_ and _iOS/Helpshift.IOS.dll_ to the References in your iOS specific project.
+- When the application is compiled, the platform specific dll - i.e _iOS/HelpshiftApi.dll_ - will automatically replace the _HelpshiftApi.dll_ (since they have the same assembly name and version) referenced in the first step. This serves application development around common API's across different platforms.
+- If you want to customize the localized strings, make changes to the strings in _HelpshiftCustomLocalizations_ folder and convert it to a bundle. Add this customized bundle to Resources folder of the project.
+- If you want to customize theming for the Helpshift SDK, make changes to the theming files in _HelpshiftCustomThemes_ folder and add the plist files in the resources folders inside your iOS specific project.
 
 ## Add the following packages to your app for iOS {#adding-to-project}
 
@@ -71,16 +78,14 @@ The Helpshift SDK *.zip* file contains the following files:
 
 2. **Xamarin.iOS.SwiftRuntimeSupport**:
 
-    With version 3.4.0, Helpshift SDK has added support for Swift. In order to use plugin v3.4.x for your app, add the SwiftRuntimeSupport package to your project from the nuget package manager
+   With version 3.4.0, Helpshift SDK has added support for Swift. In order to use plugin v3.4.x for your app, add the SwiftRuntimeSupport package to your project from the nuget package manager
 
-* With version 3.3.0, End-users will be able to send files such as pdf, video, etc. where before 3.3.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451) 
-    &nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement-xamarin.png"  width="full" /> 
-
+- With version 3.3.0, End-users will be able to send files such as pdf, video, etc. where before 3.3.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+  &nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement-xamarin.png"  width="full" />
 
 ## Initializing Helpshift in your app {#initializing}
 
 To use Helpshift's APIs, please import the Helpshift's namespace as given below.
-
 
 ```csharp
 
@@ -92,26 +97,23 @@ Helpshift SDK uniquely identifies your App with the combination of:
 
 <div className="text-sm compact ">
 
-
-| | |
-|--|--|
-|API Key| Your unique developer API Key.|
-|Domain Name| Your Helpshift domain name. For example : foo.helpshift.com|
-|App ID| A unique ID assigned to your app.|
+|             |                                                             |
+| ----------- | ----------------------------------------------------------- |
+| API Key     | Your unique developer API Key.                              |
+| Domain Name | Your Helpshift domain name. For example : foo.helpshift.com |
+| App ID      | A unique ID assigned to your app.                           |
 
 </div>
 
-To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" /> 
+To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" />
 
 Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
 
-And, initialize Helpshift by calling the *Install(apiKey, domain, appId)*. For example:
-
+And, initialize Helpshift by calling the _Install(apiKey, domain, appId)_. For example:
 
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
 
     ::::csharp
     using HelpshiftApi;
@@ -124,7 +126,6 @@ And, initialize Helpshift by calling the *Install(apiKey, domain, appId)*. For e
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
-
 
     ::::csharp
     using HelpshiftApi;
@@ -143,16 +144,14 @@ And, initialize Helpshift by calling the *Install(apiKey, domain, appId)*. For e
 
 Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/xamarin/support-tools-ios#faqs-view) or [conversation screens](/xamarin/support-tools-ios#conversation-view) inside your app.
 
-Run your app, and try starting a test conversation using the [`showConversation`](/xamarin/support-tools-ios#conversation-view)  API call.
+Run your app, and try starting a test conversation using the [`showConversation`](/xamarin/support-tools-ios#conversation-view) API call.
 Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
 
 Sample usage for FAQs and conversation APIs:
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
-
 
     ::::chsarp
     HelpshiftAPIConfig faqApiConfig = new HelpshiftAPIConfig.Builder().Build();
@@ -187,4 +186,3 @@ contactBtn.Click += delegate
 </TabItem>
 
 </Tabs>
-

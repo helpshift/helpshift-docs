@@ -4,53 +4,54 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
 
-
 </Admonition>
-
 
 ## Enable In-App Notifications {#enable-in-app-notifications}
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
 
-On setting this flag to `false`, the SDK will stop showing notifications in the notification tray of the device but it will fetch messages in background. 
-
+On setting this flag to `false`, the SDK will stop showing notifications in the notification tray of the device but it will fetch messages in background.
 
 The default value of this flag is `true` i.e., the in-app notification will be enabled.
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|values| true/false|
-|default| true|
+|         |                         |
+| ------- | ----------------------- |
+| Flag    | enableInAppNotification |
+| values  | true/false              |
+| default | true                    |
 
 </div>
 
 For example:
-
 
 ```java
 
@@ -79,16 +80,15 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 
 <div className="compact ">
 
+|         |                                                                              |
+| ------- | ---------------------------------------------------------------------------- |
+| Flag    | enableContactUs                                                              |
+| values  | "ALWAYS" / "AFTER_VIEWING_FAQS" / "AFTER_MARKING_ANSWER_UNHELPFUL" / "NEVER" |
+| default | null                                                                         |
 
-| | |
-|--|--|
-|Flag| enableContactUs|
-|values| "ALWAYS" / "AFTER_VIEWING_FAQS" / "AFTER_MARKING_ANSWER_UNHELPFUL" / "NEVER"|
-|default| null|
 </div>
 
 For example
-
 
 ```java
 
@@ -101,10 +101,9 @@ For example
 
 ### Best Practices
 
-* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
-* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+- Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
 
-    
 ```java
 
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -126,20 +125,17 @@ For example
 The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
 For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| screenOrientation|
-|values|  integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class|
-|default| ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED|
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                                                                                      |
+| values  | integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class |
+| default | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                                            |
 
 </div>
 
 For example:
-
 
 ```java
 
@@ -169,17 +165,15 @@ Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in 
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableLogging|
-|values| true/false|
-|default| false|
+|         |               |
+| ------- | ------------- |
+| Flag    | enableLogging |
+| values  | true/false    |
+| default | false         |
 
 </div>
 
 For example:
-
 
 ```java
 
@@ -209,7 +203,6 @@ By default the application icon is used as the notification icon. You can custom
 
 Example:
 
-
 ```java
 
     public class MainApplication extends Application {
@@ -237,7 +230,6 @@ By default the application icon is used as the notification icon.
 If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
 
 Example:
-
 
 ```java
 
@@ -267,7 +259,6 @@ By default the default device notification sound is used for helpshift notificat
 
 Example:
 
-
 ```java
 
     public class MainApplication extends Application {
@@ -296,7 +287,6 @@ Example:
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
 
 Example:
-
 
 ```java
 
@@ -331,7 +321,6 @@ Moreover, in scenarios where the user attaches objectionable content, it becomes
 
 For example
 
-
 ```java
 
     Map<String, Object> config = new HashMap<>();
@@ -346,11 +335,6 @@ For example
 
 Please check the [design](/sdkx_android/design/) page to apply your styles and theming to SDK.
 
-
 ## Tracking {#tracking}
 
 This config represents tracking the user actions. For more information check [tracking](/sdkx_android/tracking).
-
-
-
-

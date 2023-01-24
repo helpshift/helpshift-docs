@@ -4,10 +4,20 @@ title: Impact Analysis
 description: "For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Impact Analysis {#performance}
 
@@ -15,11 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application.
 
-
 </Intro>
-
-
-
 
 <Admonition type="info" title="Note">
 
@@ -29,21 +35,17 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 </Admonition>
 
-
-
 # Version specific reports {#version-impact}
 
 You can find impact analysis reports for every version of the Helpshift SDK below.
 
 ## 10.1.0
 
-
 <Admonition type="info" title="Note">
 
 Tested with Unity 2019.4.11f1, on macOS 12.1, with Xcode 13.2 built demo app on iOS 15.1 (iPhone X). Memory Usage will increase with number of messages in a conversation.
 
 </Admonition>
-
 
 ### Disk space
 
@@ -53,22 +55,20 @@ When an Unity iOS app is integrated with `HelpshiftX.framework`, the increase in
 
 The following is the memory usage of Helpshift APIs in debug mode. (Values are approximate)
 
+|                                                                   |                                                                                    |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>10.3</code> MB (This depends on number of messages on the chat screen). |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>10.1</code> MB.                                                         |
+| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>10</code> MB.                                                           |
+| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>10</code> MB.                                                           |
 
-| | |
-|--|--|
-|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>10.3</code> MB (This depends on number of messages on the chat screen).|
-|**Helpshift's FAQs screen (<code>showFAQs:</code>)**| adds <code>10.1</code> MB.|
-|**Helpshift's FAQ section screen (<code>showFAQSection:</code>)**| adds <code>10</code> MB.|
-|**Helpshift's single FAQ screen (<code>showFAQ:</code>)**| adds <code>10</code> MB.|
 ## 10.0.0
-
 
 <Admonition type="info" title="Note">
 
 Tested with Unity 2019.4.11f1, on macOS 10.15.7, with Xcode 12.0 built demo app on iOS 14.0 (iPhone X). Memory Usage will increase with number of messages in a conversation.
 
 </Admonition>
-
 
 ### Disk space
 
@@ -78,22 +78,20 @@ When an Unity iOS app is integrated with `HelpshiftX.framework`, the increase in
 
 The following is the memory usage of Helpshift APIs in debug mode. (Values are approximate)
 
+|                                                                   |                                                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>8.6</code> MB (This depends on number of messages on the chat screen). |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>8.3</code> MB.                                                         |
+| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>8.1</code> MB.                                                         |
+| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>8</code> MB.                                                           |
 
-| | |
-|--|--|
-|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>8.6</code> MB (This depends on number of messages on the chat screen).|
-|**Helpshift's FAQs screen (<code>showFAQs:</code>)**| adds <code>8.3</code> MB.|
-|**Helpshift's FAQ section screen (<code>showFAQSection:</code>)**| adds <code>8.1</code> MB.|
-|**Helpshift's single FAQ screen (<code>showFAQ:</code>)**| adds <code>8</code> MB.|
 ## 1.0.0-beta
-
 
 <Admonition type="info" title="Note">
 
 Tested with Unity 2019.4.11f1, on OS X 10.15.6, with Xcode 11 built demo app on iOS 12.4.5 (iPhone 6 Plus). Memory Usage will increase with number of messages in a conversation.
 
 </Admonition>
-
 
 ### Disk space
 
@@ -104,20 +102,18 @@ The total size of framework is `1.7 MB`.
 The breakage is as follows:
 
 | Architecture | Size (MB) |
-|--------------|-----------|
-| arm64        |   0.421   |
-| armv7        |   0.373   |
-| i386         |   0.368   |
-| x86_64       |   0.372   |
+| ------------ | --------- |
+| arm64        | 0.421     |
+| armv7        | 0.373     |
+| i386         | 0.368     |
+| x86_64       | 0.372     |
 
 When an Unity iOS app is integrated with HelpshiftX framework, the increase in the size of the IPA file is around `140 KB` for both bitcode and non-bitcode versions of the framework.
-
 
 ### Ram usage
 
 Memory usage (In debug mode. Values are approximate.)
 
-
-| | |
-|--|--|
-|**Helpshift's Chat screen (<code>showConversation:</code>)**| adds <code>4.5</code> MB (This depends on number of messages on the chat screen).|
+|                                                              |                                                                                   |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)** | adds <code>4.5</code> MB (This depends on number of messages on the chat screen). |

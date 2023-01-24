@@ -4,17 +4,26 @@ title: Helpshift Delegates
 description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift Delegates {#delegates}
 
 <Intro>
 
 The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
-
 
 </Intro>
 
@@ -26,7 +35,6 @@ pass this to Helpshift using `HelpshiftSupport.SetDelegate(ISupportDelegate dele
 For example:
 
 Class Implementation:
-
 
 ```csharp
 
@@ -105,7 +113,6 @@ Class Implementation:
 
 Class Usage:
 
-
 ```csharp
 
     HSDelegate delegateObject = new HSDelegate ();
@@ -136,13 +143,11 @@ If you want to keep track of when helpshift session ends in your app, you can im
 
 If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will get fired every time the user starts a new conversation. The delegate method will receive the conversation message in it's arguments.
 
-
 <Admonition type="info" title="Note">
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
 </Admonition>
-
 
 ### Conversation Ended
 
@@ -156,13 +161,11 @@ This delegate callback can be implemented to check if an ongoing Conversation ha
 
 This delegate callback can be implemented to check if a Conversation is active when queried via [HelpshiftApi.HelpshiftSupport.CheckIfConversationActive()](/xamarin/tracking-android#checkifconversationactive)
 
-
 ## New message delegate {#delegate-user-replied-to-conversation}
 
 **UserRepliedToConversation**
 
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
-
 
 ```csharp
 
@@ -173,13 +176,11 @@ If you want to keep track of when your app users send new messages to an ongoing
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
 
 </Admonition>
-
 
 ## Customer satisfaction survey delegate {#csat-completed}
 
@@ -193,14 +194,14 @@ If you want to keep track of when your app user completes the customer satisfact
 
 Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
 
-* Video files (3gp, m4v)
-* Audio files (mp3, mp4, aac)
-* Image files (jpg, png, gif)
+- Video files (3gp, m4v)
+- Audio files (mp3, mp4, aac)
+- Image files (jpg, png, gif)
 
 After the attachment is downloaded, Helpshift checks for any app which can open it. If no such app is found, then we fall back to passing the file to the delegate handler in the app. There are two possible variants of the path parameter in HandleTapOnAttachmentFile(string path), one is FilePath and the other one is Uri.
 
-* On Android version 10 & above, path value will be a `Uri` path because Files are exposed with Uri objects by the OS.
-* On Android versions older than 10, path value will the `File` path
+- On Android version 10 & above, path value will be a `Uri` path because Files are exposed with Uri objects by the OS.
+- On Android versions older than 10, path value will the `File` path
 
 ```csharp
     public bool HandleTapOnAttachmentFile(String filePathOrUri)
@@ -220,7 +221,7 @@ After the attachment is downloaded, Helpshift checks for any app which can open 
 
 **DidReceiveNotification**
 
-If you want to keep a count of all new messages  received in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift receives a new message in an existing conversation.
+If you want to keep a count of all new messages received in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift receives a new message in an existing conversation.
 You can also use this delegate to keep your badge counts updated.
 
 ## Unread Messages Count Delegate {#unread-messages-count}
@@ -234,14 +235,14 @@ This delegate can be implemented to get the count of unread messages queried via
 **UserDidClickOnActionWithTypeAndData**
 
 This delegate method is called when user clicks on an action in Action Card bot.
- 
+
 <div className="compact ">
 
+|            |                                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------- |
+| actionType | The type of action user clicked on. Can be one of: HelpshiftActionType.Link, HelpshiftActionType.Call |
+| actionData | The data associated with the action type. Can be a url link or a phone number.                        |
 
-| | |
-|--|--|
-|actionType| The type of action user clicked on. Can be one of: HelpshiftActionType.Link, HelpshiftActionType.Call  |
-|actionData| The data associated with the action type. Can be a url link or a phone number.|
 </div>
 
 ```csharp

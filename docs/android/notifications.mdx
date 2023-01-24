@@ -4,9 +4,20 @@ title: Notifications
 description: "Configure Push notifications and in-app notifications"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -14,25 +25,27 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Notifications {#notifications}
 
 <Intro>
 
 Configure Push notifications and in-app notifications
 
-
 </Intro>
-
 
 ## Push notifications via Helpshift {#push-via-helpshift}
 
-<Image src="/static/books/android/urbanairshipnotif.png"  width="quarter" alt="urbanAirshipNotif.png" /> 
+<Image
+  src="/static/books/android/urbanairshipnotif.png"
+  width="quarter"
+  alt="urbanAirshipNotif.png"
+/>{" "}
 
 Helpshift allows you to send Push notifications when an agent replies to a conversation.
 
 ### Prerequisites {#gcm-prerequisites}
-Implement FCM (or the older GCM) push in your app. 
+
+Implement FCM (or the older GCM) push in your app.
 
 For FCM, refer to the
 [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) documentation.
@@ -42,17 +55,16 @@ For GCM, refer to the
 
 During this, you can also refer to the following sample apps which
 enable the Helpshift Android SDK to handle push notifications -
+
 <div className="compact  text-sm">
 
+|                                                                                                       |                                                                                                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [FCMClient](https://github.com/helpshift/helpshift-android-sdk-examples/tree/master/FCMClient)        | implement FCM Push in your app along with helpshift support.                                                                                                                                     |
+| [GcmClient](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/GcmClient)        | implement GCM Push (using Google Play Services) in your app along with helpshift support. This is a port of [GcmClient project](https://code.google.com/p/gcm/) from Gradle to Ant build system. |
+| [GCMApp (Deprecated)](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/GCMApp) | implement GCM Push in your app along with helpshift support.                                                                                                                                     |
 
-| | |
-|--|--|
-|[FCMClient](https://github.com/helpshift/helpshift-android-sdk-examples/tree/master/FCMClient)| implement FCM Push in your app along with helpshift support.|
-|[GcmClient](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/GcmClient)| implement GCM Push (using Google Play Services) in your app along with helpshift support. This is a port of [GcmClient project](https://code.google.com/p/gcm/) from Gradle to Ant build system.|
-|[GCMApp (Deprecated)](https://github.com/helpshift/helpshift-android-sdk-examples/blob/master/GCMApp)| implement GCM Push in your app along with helpshift support.|
 </div>
-
-
 
 ### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
 
@@ -64,33 +76,36 @@ Enter your Google Push notifications credentials per app, via the
 **Settings page > App listing in the left navigation > Scroll down to Push
 Notifications** settings section for the app.
 
-<Image src="/static/books/android/helpshift-push-notifications.png"  width="major" alt="helpshift-push-notifications.png" /> 
+<Image
+  src="/static/books/android/helpshift-push-notifications.png"
+  width="major"
+  alt="helpshift-push-notifications.png"
+/>{" "}
 
 For GCM users, the API key can be found at your
 [Google API Console](https://console.developers.google.com)
-<Image src="/static/books/android/gcm-console.png"  width="major" /> 
+
+<Image src="/static/books/android/gcm-console.png" width="major" />{" "}
 
 And for FCM users, the API key can be found at your
 [Firebase API Console](https://console.firebase.google.com/)
-<Image src="/static/books/android/fcm_console.png"  width="major" /> 
+
+<Image src="/static/books/android/fcm_console.png" width="major" />{" "}
 
 <br />
 
 ### Configure Helpshift Android SDK {#configure-helpshift-android-sdk}
 
-
 <Admonition type="info" title="Note">
 
-* Applicable to SDK v3.0.0 & above
-* When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications"  for every message sent by Agents/Bots. 
-You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](/android/notifications#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+- Applicable to SDK v3.0.0 & above
+- When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
+  You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](/android/notifications#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
 
 </Admonition>
 
-
 1. Send the device registration id to Helpshift via the `Core.registerDeviceToken` API
 
-    
 ```java
 
         private void sendRegistrationIdToBackend() {
@@ -102,7 +117,6 @@ You should call `registerDeviceToken` API only after you have [configured the He
 
 1. Inside your "GcmBroadcastReceiver's `onReceive` method" check origin is "helpshift" and pass the intent to `Core.handlePush` API
 
-    
 ```java
 
         @Override
@@ -122,7 +136,6 @@ You should call `registerDeviceToken` API only after you have [configured the He
 
 1. If you are using GCM service which provides "Bundle" argument instead of Intent, you should use `Core.handlePush` API which takes Bundle argument.
 
-    
 ```java
 
         @Override
@@ -137,7 +150,6 @@ You should call `registerDeviceToken` API only after you have [configured the He
 
 1. If you are using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `Core.handlePush` API which takes a Map argument.
 
-    
 ```java
 
         @Override
@@ -159,25 +171,19 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 ![](/static/books/android/i18n-in-app.png)
 
-
 <Admonition type="info" title="Note">
 
 If the GCM/FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
 
-
 </Admonition>
-
 
 ## Customizing notification icons {#notification-icon}
 
 By default the application icon is used as the notification icon. You can customize the notification icons using the config in the `install` call.
 
-
 <Tabs>
 
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
-
-
 
 ```java
 
@@ -194,11 +200,8 @@ By default the application icon is used as the notification icon. You can custom
 
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
-
-
 
 ```java
 
@@ -213,38 +216,31 @@ By default the application icon is used as the notification icon. You can custom
                  config);
 ```
 
-
 </TabItem>
 
 </Tabs>
 
 ## Customizing notification sound {#notificationSound}
 
-
 <Admonition type="info" title="Note">
 
 <br />
 
-* Available from SDK version 3.7.2 and above.
+- Available from SDK version 3.7.2 and above.
 
-* Starting from SDK v7.4.0, the sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
+- Starting from SDK v7.4.0, the sound provided here would only be set for the default notification channel that the SDK creates on its own on Android OS 8.0 & above. This sound can only be set once on the default channel and it won’t change if a different sound resource is passed.
 
-* If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/android/notifications#notificationChannels).
-
+- If the sound needs to be changed later on, it is recommended to create your own notification channels. Refer [this](/android/notifications#notificationChannels).
 
 </Admonition>
-
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
 For example:
 
-
 <Tabs>
 
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
-
-
 
 ```java
 
@@ -259,11 +255,8 @@ For example:
                  installConfig);
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
-
-
 
 ```java
 
@@ -277,22 +270,17 @@ For example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ## Customizing notification channels {#notificationChannels}
-
 
 <Admonition type="info" title="Note">
 
 Available from SDK version 6.2.0 and above
 
-
 </Admonition>
-
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
 
@@ -303,16 +291,13 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 
 If you want to customize the notification channels, you can create your own custom channels and provide their channel IDs using the following config API:
 
-* `supportNotificationChannelId`
+- `supportNotificationChannelId`
 
 For example:
-
 
 <Tabs>
 
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
-
-
 
 ```java
 
@@ -327,11 +312,8 @@ For example:
                  installConfig);
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
-
-
 
 ```java
 
@@ -345,29 +327,23 @@ For example:
                  config);
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 ## Configuring in-app notifications {#in-app}
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
 
-* `Flag:` enableInAppNotification
-* `Values:` true/false
-* `Default:` true
+- `Flag:` enableInAppNotification
+- `Values:` true/false
+- `Default:` true
 
 Example:
-
 
 <Tabs>
 
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
-
-
 
 ```java
 
@@ -382,11 +358,8 @@ Example:
                  installConfig);
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
-
-
 
 ```java
 
@@ -399,11 +372,9 @@ Example:
                  config);
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
@@ -411,11 +382,10 @@ Fetching notification count can be done in two ways.
 
 ### Synchronous fetch notification count {#synchronous-fetch-count}
 
-* If you want to show your user notifications for replies on the issues
-posted, you can get the notification count synchronously from
-cache. Example:-
+- If you want to show your user notifications for replies on the issues
+  posted, you can get the notification count synchronously from
+  cache. Example:-
 
-    
 ```java
 
         Integer notifCount = Support.getNotificationCount();
@@ -425,11 +395,10 @@ cache. Example:-
 
 ### Asynchronous fetch notification count {#asynchronous-fetch-count}
 
-* If you want to show your user notifications for replies on the issues
-posted, you can get the notification count asynchronously by
-implementing the `countHandler` and `failHandler`. Example:-
+- If you want to show your user notifications for replies on the issues
+  posted, you can get the notification count asynchronously by
+  implementing the `countHandler` and `failHandler`. Example:-
 
-    
 ```java
 
         Support.getNotificationCount(countHandler, failHandler);
@@ -437,10 +406,9 @@ implementing the `countHandler` and `failHandler`. Example:-
 
 ```
 
-* The notification count can be obtained from the message recived though
-the countHandler. Example:-
+- The notification count can be obtained from the message recived though
+  the countHandler. Example:-
 
-    
 ```java
 
         private Handler countHandler = new Handler() {
@@ -459,4 +427,4 @@ the countHandler. Example:-
 
 ```
 
-* The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `cache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `cache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

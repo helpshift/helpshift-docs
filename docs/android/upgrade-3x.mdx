@@ -4,16 +4,26 @@ title: Upgrading from 3.x to 4.x
 description: "The Helpshift SDK v4.x is a major update and we have moved all Helpshift support APIs to a new namespace.If you have questions or feedback, please Contact Us"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
 Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
 
 </Admonition>
-
 
 # Upgrading from 3.x to 4.x {#upgrade-to-4x}
 
@@ -22,25 +32,23 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 The Helpshift SDK v4.x is a major update and we have moved all Helpshift support APIs to a new namespace.
 If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
 
-
 </Intro>
-
 
 ## Upgrading {#upgrading}
 
 When migrating from the Helpshift SDK 3.12.0 or older, you will need to
 take care of the following changes -
 
-1. Changes in Helpshift Delegate
+1.  Changes in Helpshift Delegate
 
-    * `com.helpshift.HelpshiftDelegate` has been renamed to `com.helpshift.support.Delegate`.
-    * `helpshiftSessionBegan()` method of the delegate is renamed to `sessionBegan()`
-    * `helpshiftSessionEnded()` method of the delegate is renamed to `sessionEnded()`
+    - `com.helpshift.HelpshiftDelegate` has been renamed to `com.helpshift.support.Delegate`.
+    - `helpshiftSessionBegan()` method of the delegate is renamed to `sessionBegan()`
+    - `helpshiftSessionEnded()` method of the delegate is renamed to `sessionEnded()`
 
-1. Changes in `HSAlertToRateAppListener`
+1.  Changes in `HSAlertToRateAppListener`
 
-    * `HSAlertToRateAppListener` has been renamed to `AlertToRateAppListener`
-    * `Helpshift.HS_RATE_ALERT` enum has been replaced with integer. Now you have to use the final integers from the `RateAlert` class.
+    - `HSAlertToRateAppListener` has been renamed to `AlertToRateAppListener`
+    - `Helpshift.HS_RATE_ALERT` enum has been replaced with integer. Now you have to use the final integers from the `RateAlert` class.
 
     For example,
 
@@ -66,7 +74,7 @@ take care of the following changes -
             }
         }
 
-1. Now the `ENABLE_CONTACT_US` enum has been replaced with integer. Now you have to use the final integer from the `EnableContactUs` class.
+1.  Now the `ENABLE_CONTACT_US` enum has been replaced with integer. Now you have to use the final integer from the `EnableContactUs` class.
 
     For example,
 
@@ -74,10 +82,9 @@ take care of the following changes -
         config.put("enableContactUs", Helpshift.EnableContactUs.ALWAYS);
         Helpshift.showFAQs(MyActivity.this, config);
 
+1.  Changes in `HSCallable`
 
-1. Changes in `HSCallable`
-
-    * `HSCallable` has been renamed to `Callable`
+    - `HSCallable` has been renamed to `Callable`
 
     For example,
 
@@ -92,25 +99,25 @@ take care of the following changes -
 
 ## List of API changes {#api-changes}
 
-| 3.x API | New API |
-|---------|---------|
-| `Helpshift.install(...);` | `Core.init(Support.getInstance());`  <br /> `Core.install(...)` |
-| `Helpshift.showFAQs(...);` | `Support.showFAQs(...);` |
-| `Helpshift.showSingleFAQ(...);`	| `Support.showSingleFAQ(...);` |
-| `Helpshift.showFAQSection(...);` | `Support.showFAQSection(...);` |
-| `Helpshift.showConversation(...);` | `Support.showConversation(...);` |
-| `Helpshift.setNameAndEmail(...);` | `Core.setNameAndEmail(...);` |
-| `Helpshift.registerDeviceToken(...);` | `Core.registerDeviceToken(...);` |
-| `Helpshift.handlePush(...);` | `Core.handlePush(...);` |
-| `Helpshift.login(...);` | `Core.login(...);` |
-| `Helpshift.logout(...);` | `Core.logout();` |
-| `Helpshift.clearBreadCrumbs();` | `Support.clearBreadCrumbs();` |
-| `Helpshift.getNotificationCount(...);` | `Support.getNotificationCount(...);` |
-| `Helpshift.leaveBreadCrumb();` | `Support.leaveBreadCrumb();` |
-| `Helpshift.setDelegate(...);` | `Support.setDelegate(...);` |
-| `Helpshift.setMetadataCallback(...);` | `Support.setMetadataCallback(...);` |
-| `Helpshift.setSDKLanguage(...);` | `Support.setSDKLanguage(...);` |
-| `Helpshift.setUserIdentifier(...);` | `Support.setUserIdentifier(...);` |
-| `Helpshift.showAlertToRateApp(...);` | `Support.showAlertToRateApp(...);` |
-| `Helpshift.HSTagsKey` | `Support.TagsKey` |
-| `Helpshift.HSCustomMetadataKey` | `Support.CustomMetadataKey` |
+| 3.x API                                | New API                                                        |
+| -------------------------------------- | -------------------------------------------------------------- |
+| `Helpshift.install(...);`              | `Core.init(Support.getInstance());` <br /> `Core.install(...)` |
+| `Helpshift.showFAQs(...);`             | `Support.showFAQs(...);`                                       |
+| `Helpshift.showSingleFAQ(...);`        | `Support.showSingleFAQ(...);`                                  |
+| `Helpshift.showFAQSection(...);`       | `Support.showFAQSection(...);`                                 |
+| `Helpshift.showConversation(...);`     | `Support.showConversation(...);`                               |
+| `Helpshift.setNameAndEmail(...);`      | `Core.setNameAndEmail(...);`                                   |
+| `Helpshift.registerDeviceToken(...);`  | `Core.registerDeviceToken(...);`                               |
+| `Helpshift.handlePush(...);`           | `Core.handlePush(...);`                                        |
+| `Helpshift.login(...);`                | `Core.login(...);`                                             |
+| `Helpshift.logout(...);`               | `Core.logout();`                                               |
+| `Helpshift.clearBreadCrumbs();`        | `Support.clearBreadCrumbs();`                                  |
+| `Helpshift.getNotificationCount(...);` | `Support.getNotificationCount(...);`                           |
+| `Helpshift.leaveBreadCrumb();`         | `Support.leaveBreadCrumb();`                                   |
+| `Helpshift.setDelegate(...);`          | `Support.setDelegate(...);`                                    |
+| `Helpshift.setMetadataCallback(...);`  | `Support.setMetadataCallback(...);`                            |
+| `Helpshift.setSDKLanguage(...);`       | `Support.setSDKLanguage(...);`                                 |
+| `Helpshift.setUserIdentifier(...);`    | `Support.setUserIdentifier(...);`                              |
+| `Helpshift.showAlertToRateApp(...);`   | `Support.showAlertToRateApp(...);`                             |
+| `Helpshift.HSTagsKey`                  | `Support.TagsKey`                                              |
+| `Helpshift.HSCustomMetadataKey`        | `Support.CustomMetadataKey`                                    |

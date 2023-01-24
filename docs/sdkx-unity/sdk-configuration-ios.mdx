@@ -4,29 +4,34 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 
-
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)
 
 </Admonition>
-
 
 ## Install time configurations
 
@@ -36,12 +41,11 @@ Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in th
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.ENABLE_LOGGING</code>|
-|Values| <code>true</code>/<code>false</code>|
-|Default| <code>false</code>|
+|         |                                          |
+| ------- | ---------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_LOGGING</code> |
+| Values  | <code>true</code>/<code>false</code>     |
+| Default | <code>false</code>                       |
 
 </div>
 
@@ -52,7 +56,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -70,12 +74,11 @@ This behaviour is different for Android, please refer [here](/sdkx-unity/sdk-con
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.ENABLE_INAPP_NOTIFICATION</code>|
-|Values| <code>true</code>/<code>false</code>|
-|Default| <code>true</code>|
+|         |                                                     |
+| ------- | --------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_INAPP_NOTIFICATION</code> |
+| Values  | <code>true</code>/<code>false</code>                |
+| Default | <code>true</code>                                   |
 
 </div>
 
@@ -86,7 +89,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -102,11 +105,10 @@ Customization of the appearance of in-app notification using the flag `inAppNoti
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| <code>HelpshiftSdk.INAPP_NOTIFICATION_APPEARANCE</code>|
-|Sub-Options:| <code>bannerBackgroundColor</code> / <code>textColor</code>|
+|              |                                                             |
+| ------------ | ----------------------------------------------------------- |
+| Flag         | <code>HelpshiftSdk.INAPP_NOTIFICATION_APPEARANCE</code>     |
+| Sub-Options: | <code>bannerBackgroundColor</code> / <code>textColor</code> |
 
 </div>
 
@@ -116,7 +118,7 @@ The bannerBackgroundColor represents the background color of the banner of the i
 
 #### textColor {#textColor}
 
-The textColor represents the text color of the text shown in the in-app notification. The value for this key should be a 6-characters string representing the HEX value of the color 
+The textColor represents the text color of the text shown in the in-app notification. The value for this key should be a 6-characters string representing the HEX value of the color
 
 ```csharp
 using Helpshift;
@@ -125,7 +127,7 @@ using Helpshift;
 public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk help;
-    
+
     void Awake(){
       this.help = HelpshiftSdk.GetInstance();
       Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -169,8 +171,8 @@ public class MyGameControl : MonoBehaviour
 
 #### Best Practices
 
-* Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
-* Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
+- Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
 
 ## Full privacy {#fullprivacy}
 
@@ -206,7 +208,6 @@ public class MyGameControl : MonoBehaviour
 ## UI Configurations {#uiConfig}
 
 This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unity/design-ios/).
-
 
 ## Tracking {#tracking}
 

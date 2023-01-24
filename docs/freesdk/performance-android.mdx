@@ -4,10 +4,20 @@ title: Impact Analysis
 description: "The following numbers are representative of a skeletal sample appintegrated with the Helpshift SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Impact Analysis {#performance}
 
@@ -16,17 +26,13 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 The following numbers are representative of a skeletal sample app
 integrated with the Helpshift SDK.
 
-
 </Intro>
-
-
-
 
 ## v10.1.0
 
 ### SDK payload in your app {#payload-size}
 
-The Helpshift SDK will add `140 Kb` to your application's release APK. 
+The Helpshift SDK will add `140 Kb` to your application's release APK.
 This analysis was done with Android Gradle Plugin `v4.1.1` and Gradle `v6.5`.
 The `140 Kb` size includes total impact with all the resources and code.
 
@@ -34,21 +40,18 @@ The `140 Kb` size includes total impact with all the resources and code.
 
 The Helpshift SDK will add 1128 methods to your dex:
 
-| Package                                                 | Method Count             |
-|---------------------------------------------------------|-------------------------:|
-| **com.helpshift**                                       |                  `1128`  |
+| Package           | Method Count |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1128` |
 
 ### Memory usage {#memory-usage}
 
-
-| Helpshift API launch                       | Java heap memory (in approx.MB) | Total memory usage(in approx MB)|
-|--------------------------------------------|---------------------------------|--------------------------------:|
-| showFAQs                                   |                          `4.40` |                        `95-105` |
-| showConversation (conversational mode)     |                          `5.80` |                        `135`    |
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `4.40`                          |                         `95-105` |
+| showConversation (conversational mode) | `5.80`                          |                            `135` |
 
 This memory impact will also depend on the device OS and memory configurations on which your app is running.
-
-
 
 <Admonition type="info" title="Note">
 

@@ -4,11 +4,20 @@ title: Getting Started
 description: "Or, follow these simple steps to add Helpshift in-app support to yourAndroid app right away -"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
@@ -16,13 +25,30 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 
 </Admonition>
 
-
 # Getting Started {#getting-started}
 
 <Steps title="New to Helpshift? Try out sample projects in 3 clicks">
-    <Step number="1" title="Download samples" subtitle="Ready to use Android projects" link="https://github.com/helpshift/helpshift-android-sdk-examples/" newTab={true} />
-    <Step number="2" title="Paste in your API key" subtitle="A one-line change" link="/android/samples#support-app" newTab={true} />
-    <Step number="3" title="File your first ticket" subtitle="Tap Contact Us to talk to yourself" link="/android/samples#test-integration" newTab={true} />
+  <Step
+    number="1"
+    title="Download samples"
+    subtitle="Ready to use Android projects"
+    link="https://github.com/helpshift/helpshift-android-sdk-examples/"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="Paste in your API key"
+    subtitle="A one-line change"
+    link="/android/samples#support-app"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="File your first ticket"
+    subtitle="Tap Contact Us to talk to yourself"
+    link="/android/samples#test-integration"
+    newTab={true}
+  />
 </Steps>
 
 <Intro>
@@ -30,26 +56,20 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 Or, follow these simple steps to add Helpshift in-app support to your
 Android app right away -
 
-
 </Intro>
-
 
 ## Integration Guide {#integration-guide}
 
 ### Version Requirements {#version-requirements}
 
-
 | Helpshift SDK Version | minSDKVersion | compileSDKVersion | buildToolsVersion |
-|-----------------------|---------------|-------------------|-------------------|
+| --------------------- | ------------- | ----------------- | ----------------- |
 | >= 7.9.0              | 21            | 30                | 30                |
 | >= 7.6.0              | 21            | 29                | 29                |
 | >= 7.3.0              | 21            | 28                | 28                |
 | >= 6.2.0              | 21            | 26                | 26                |
 
-
-
 For example, update your `AndroidManifest.xml` as follows:
-
 
 ```xml
 
@@ -59,22 +79,19 @@ For example, update your `AndroidManifest.xml` as follows:
 
 ```
 
-
 <Admonition type="danger" title="Important">
 
-* If you have released your app with `7.8.0` version, we highly recommend that you upgrade to `7.8.1` which fixes an important migration bug. Refer [here](/android/release-notes#v781).
-* If you're currently using Android SDK `v7.7.0` or `v7.7.1` in your app, please update the SDK to `v7.7.2` which contains some important bug fixes. Check release notes [here](/android/release-notes).
-* If you have released your app with Android SDK `v7.7.0` and `v7.7.1` to production, please get in touch with us via support and make sure to upgrade to `v7.7.2` asap. Apologies for any inconvenience that this has caused.
+- If you have released your app with `7.8.0` version, we highly recommend that you upgrade to `7.8.1` which fixes an important migration bug. Refer [here](/android/release-notes#v781).
+- If you're currently using Android SDK `v7.7.0` or `v7.7.1` in your app, please update the SDK to `v7.7.2` which contains some important bug fixes. Check release notes [here](/android/release-notes).
+- If you have released your app with Android SDK `v7.7.0` and `v7.7.1` to production, please get in touch with us via support and make sure to upgrade to `v7.7.2` asap. Apologies for any inconvenience that this has caused.
 
 </Admonition>
-
 
 ### Download the SDK {#download-sdk}
 
 ### Gradle based projects {#gradle-support}
 
 Add the following dependencies to your `build.gradle` file inside the depencencies section.
-
 
 ```groovy
 
@@ -104,15 +121,14 @@ If your Android project is based on IntelliJ or Eclipse, <a href="[% android.sdk
 The zip file contains the Helpshift SDK in the Android Library Project
 format.
 
-* **IntelliJ Integration**: [follow the steps here](/misc/intellij-integration/).
-* **Eclipse Integration**: [follow the steps here](/misc/eclipse-integration/).
+- **IntelliJ Integration**: [follow the steps here](/misc/intellij-integration/).
+- **Eclipse Integration**: [follow the steps here](/misc/eclipse-integration/).
 
 ---
 
 ### Maven based projects {#maven-support}
 
 If your Android project is based on Maven, [follow the steps here](/misc/maven-integration/).
-
 
 ## Start using Helpshift {#start-using}
 
@@ -125,17 +141,17 @@ Helpshift uniquely identifies each registered App with a combination of 3 tokens
 
 <div className=" compact">
 
+|                          |                                                                                                                        |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| <code>API Key</code>     | Your unique developer API key                                                                                          |
+| <code>Domain Name</code> | Your Helpshift domain name without any http: or slashes. E.g. _happyapps_ if your account is _happyapps.helpshift.com_ |
+| <code>App ID</code>      | Your App's unique ID                                                                                                   |
 
-| | |
-|--|--|
-|<code>API Key</code>| Your unique developer API key|
-|<code>Domain Name</code>|  Your Helpshift domain name without any http: or slashes. E.g. _happyapps_ if your account is _happyapps.helpshift.com_|
-|<code>App ID</code>| Your App's unique ID|
 </div>
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
 Select your App and _the correct platform_ from the dropdowns and copy
 the 3 tokens to be passed when initializing Helpshift.
-<Image src="/static/books/common/settings-integration.png"  width="full" /> 
+<Image src="/static/books/common/settings-integration.png"  width="full" />
 
 Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by doing the following.
 
@@ -144,12 +160,9 @@ Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by d
 
 `com.helpshift.Core` is the class which encapsulates all the functions which are common to all Helpshift services.
 
-
 <Tabs>
 
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
-
-
 
 ```java
 
@@ -174,11 +187,8 @@ Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by d
     }
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
-
-
 
 ```java
 
@@ -201,11 +211,9 @@ Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by d
     }
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 <Admonition type="danger" title="Important">
 
@@ -228,26 +236,21 @@ If your app is a multi-process app, please visit the troubleshooting guide [here
 
 </Admonition>
 
-
-
 ## Minimum supported Android version
 
 From SDK version 4.4.0 onwards, the Helpshift Android SDK requires minimum
 API level to be 14. For versions 14 and 15 you will not receive the rich
 push notifications which are only supported after android api level 16.
 
-
 <Admonition type="danger" title="Important">
 
 With the transition to TLSv1.2 on Sep 20,2021, connections to a Helpshift SDK via any previous TLS version will not work as expected. Specifically, this means that:
 
-* Helpshift SDKs will not work or load on lower-end Android devices (meaning, Android 4.x and earlier), because these lower-end Android versions do not support TLSv1.2.
-* End-users on lower-end Android devices will not be able to access FAQs, raise new issues, or access their past support conversations.
-* On a lower-end Android device, the mobile app that embeds a Helpshift SDK will be prevented from communicating with the SDK for any purpose. However, this disconnect will not cause any malfunction or crash on the parent application.
-
+- Helpshift SDKs will not work or load on lower-end Android devices (meaning, Android 4.x and earlier), because these lower-end Android versions do not support TLSv1.2.
+- End-users on lower-end Android devices will not be able to access FAQs, raise new issues, or access their past support conversations.
+- On a lower-end Android device, the mobile app that embeds a Helpshift SDK will be prevented from communicating with the SDK for any purpose. However, this disconnect will not cause any malfunction or crash on the parent application.
 
 </Admonition>
-
 
 ## Permissions needed by Helpshift SDK
 
@@ -259,9 +262,8 @@ If you are having issues with Helpshift integration, head over to the [Troublesh
 
 ## Additional Configuration {#additional-config}
 
-* If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
+- If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
 
-    
 ```text
 
         # For Helpshift SDK <= 4.8.1
@@ -316,7 +318,7 @@ If you are having issues with Helpshift integration, head over to the [Troublesh
 
 ```
 
-* In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
+- In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
 
         <path id="helpshift-classpath">
           <fileset dir="<path/to/Helpshift-SDK/libs>">

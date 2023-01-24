@@ -4,10 +4,20 @@ title: Helpshift Xamarin SDK performance
 description: "SDK payload size and memory usage"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Helpshift Xamarin SDK performance {#performance}
 
@@ -15,42 +25,40 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 SDK payload size and memory usage
 
-
 </Intro>
 
 ## v3.6.0
+
 The impact analysis was done with Visual Studio Community Version 8.4.2 (build 59). Version of Newtonsoft.Json used was 12.0.2.
 
 ### SDK payload in your app {#payload-size}
 
-The Helpshift Android SDK will add 4.97 MB to your application's APK. 
-The 4.97 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library. 
+The Helpshift Android SDK will add 4.97 MB to your application's APK.
+The 4.97 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library.
 If your app already contains the Android Support Libraries and Newtonsoft.Json library, then the Helpshift SDK will add 2.45 MB.
 
 ### Method count {#methods-count}
 
 The Helpshift Android SDK will add 9161 methods to your dex:
 
-| Package                                                                             | Method Count|
-|-------------------------------------------------------------------------------------|------------:|
-| **com.helpshift**                                                                   |   `9161`    |
-| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |   `19279`   |
-
+| Package                                                                             | Method Count |
+| ----------------------------------------------------------------------------------- | -----------: |
+| **com.helpshift**                                                                   |       `9161` |
+| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |      `19279` |
 
 ### Memory usage {#memory-usage}
 
 Memory usage for the SDK screen launches.
 
-| Support API launch                           | Memory Usage (approx. MB)|
-|----------------------------------------------|-------------------------:|
-| After adding Helpshift install call          |                   `0.36` |
-| showConversation                             |                   `4.48` |
-| showFAQs                                     |                   `2.54` |
-| showFAQSection                               |                   `2.37` |
-| showSingleFAQ                                |                   `3.70` |
-| showInbox (Campaigns)                        |                   `1.89` |
-| showMessage (Campaigns)                      |                   `2.14` |
-    
+| Support API launch                  | Memory Usage (approx. MB) |
+| ----------------------------------- | ------------------------: |
+| After adding Helpshift install call |                    `0.36` |
+| showConversation                    |                    `4.48` |
+| showFAQs                            |                    `2.54` |
+| showFAQSection                      |                    `2.37` |
+| showSingleFAQ                       |                    `3.70` |
+| showInbox (Campaigns)               |                    `1.89` |
+| showMessage (Campaigns)             |                    `2.14` |
 
 <Admonition type="info" title="Note">
 
@@ -59,42 +67,38 @@ increase with number of FAQs and number of messages in a conversation.
 
 </Admonition>
 
-
-
-
 ## v3.5.0
+
 The impact analysis was done with Visual Studio Community Version 8.4.2 (build 59). Version of Newtonsoft.Json used was 12.0.2.
 
 ### SDK payload in your app {#payload-size}
 
-The Helpshift Android SDK will add 4.77 MB to your application's APK. 
-The 4.77 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library. 
+The Helpshift Android SDK will add 4.77 MB to your application's APK.
+The 4.77 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library.
 If your app already contains the Android Support Libraries and Newtonsoft.Json library, then the Helpshift SDK will add 2.15 MB.
 
 ### Method count {#methods-count}
 
 The Helpshift Android SDK will add 9335 methods to your dex:
 
-| Package                                                                             | Method Count|
-|-------------------------------------------------------------------------------------|------------:|
-| **com.helpshift**                                                                   |   `9335`    |
-| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |   `19279`   |
-
+| Package                                                                             | Method Count |
+| ----------------------------------------------------------------------------------- | -----------: |
+| **com.helpshift**                                                                   |       `9335` |
+| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |      `19279` |
 
 ### Memory usage {#memory-usage}
 
 Memory usage for the SDK screen launches.
 
-| Support API launch                           | Memory Usage (approx. MB)|
-|----------------------------------------------|-------------------------:|
-| After adding Helpshift install call          |                   `0.36` |
-| showConversation                             |                   `4.48` |
-| showFAQs                                     |                   `2.54` |
-| showFAQSection                               |                   `2.37` |
-| showSingleFAQ                                |                   `3.70` |
-| showInbox (Campaigns)                        |                   `1.89` |
-| showMessage (Campaigns)                      |                   `2.14` |
-    
+| Support API launch                  | Memory Usage (approx. MB) |
+| ----------------------------------- | ------------------------: |
+| After adding Helpshift install call |                    `0.36` |
+| showConversation                    |                    `4.48` |
+| showFAQs                            |                    `2.54` |
+| showFAQSection                      |                    `2.37` |
+| showSingleFAQ                       |                    `3.70` |
+| showInbox (Campaigns)               |                    `1.89` |
+| showMessage (Campaigns)             |                    `2.14` |
 
 <Admonition type="info" title="Note">
 
@@ -103,40 +107,38 @@ increase with number of FAQs and number of messages in a conversation.
 
 </Admonition>
 
-
 ## v3.4.0
+
 The impact analysis was done with Visual Studio Community Version 8.4.2 (build 59). Version of Newtonsoft.Json used was 12.0.2.
 
 ### SDK payload in your app {#payload-size}
 
-The Helpshift Android SDK will add 4.7 MB to your application's APK. 
-The 4.7 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library. 
+The Helpshift Android SDK will add 4.7 MB to your application's APK.
+The 4.7 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library.
 If your app already contains the Android Support Libraries and Newtonsoft.Json library, then the Helpshift SDK will add 2.1 MB.
 
 ### Method count {#methods-count}
 
 The Helpshift Android SDK will add 8955 methods to your dex:
 
-| Package                                                                             | Method Count|
-|-------------------------------------------------------------------------------------|------------:|
-| **com.helpshift**                                                                   |   `8955`    |
-| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |   `19279`   |
-
+| Package                                                                             | Method Count |
+| ----------------------------------------------------------------------------------- | -----------: |
+| **com.helpshift**                                                                   |       `8955` |
+| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |      `19279` |
 
 ### Memory usage {#memory-usage}
 
 Memory usage for the SDK screen launches.
 
-| Support API launch                           | Memory Usage (approx. MB)|
-|----------------------------------------------|-------------------------:|
-| After adding Helpshift install call          |                   `0.34` |
-| showConversation                             |                   `4.52` |
-| showFAQs                                     |                   `2.46` |
-| showFAQSection                               |                   `2.47` |
-| showSingleFAQ                                |                   `3.63` |
-| showInbox (Campaigns)                        |                   `1.92` |
-| showMessage (Campaigns)                      |                   `2.10` |
-    
+| Support API launch                  | Memory Usage (approx. MB) |
+| ----------------------------------- | ------------------------: |
+| After adding Helpshift install call |                    `0.34` |
+| showConversation                    |                    `4.52` |
+| showFAQs                            |                    `2.46` |
+| showFAQSection                      |                    `2.47` |
+| showSingleFAQ                       |                    `3.63` |
+| showInbox (Campaigns)               |                    `1.92` |
+| showMessage (Campaigns)             |                    `2.10` |
 
 <Admonition type="info" title="Note">
 
@@ -145,41 +147,38 @@ increase with number of FAQs and number of messages in a conversation.
 
 </Admonition>
 
-
-
 ## v3.3.0
+
 The impact analysis was done with Visual Studio Community Version 8.4.2 (build 59). Version of Newtonsoft.Json used was 12.0.2.
 
 ### SDK payload in your app {#payload-size}
 
-The Helpshift Android SDK will add 6.03 MB to your application's APK. 
-The 6.03 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library. 
+The Helpshift Android SDK will add 6.03 MB to your application's APK.
+The 6.03 MB size includes total impact with dependencies on Android Support Libraries (Design, CardView, RecyclerView and Appcompat) and Newtonsoft.Json library.
 If your app already contains the Android Support Libraries and Newtonsoft.Json library, then the Helpshift SDK will add 1.9 MB.
 
 ### Method count {#methods-count}
 
 The Helpshift Android SDK will add 9209 methods to your dex:
 
-| Package                                                                             | Method Count|
-|-------------------------------------------------------------------------------------|------------:|
-| **com.helpshift**                                                                   |   `9209`    |
-| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |   `19279`   |
-
+| Package                                                                             | Method Count |
+| ----------------------------------------------------------------------------------- | -----------: |
+| **com.helpshift**                                                                   |       `9209` |
+| **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView (28.0.0.3)** |      `19279` |
 
 ### Memory usage {#memory-usage}
 
 Memory usage for the SDK screen launches.
 
-| Support API launch                           | Memory Usage (approx. MB)|
-|----------------------------------------------|-------------------------:|
-| After adding Helpshift install call          |                   `0.19` |
-| showConversation                             |                   `3.48` |
-| showFAQs                                     |                   `2.63` |
-| showFAQSection                               |                   `2.44` |
-| showSingleFAQ                                |                   `3.52` |
-| showInbox (Campaigns)                        |                   `1.71` |
-| showMessage (Campaigns)                      |                   `1.20` |
-    
+| Support API launch                  | Memory Usage (approx. MB) |
+| ----------------------------------- | ------------------------: |
+| After adding Helpshift install call |                    `0.19` |
+| showConversation                    |                    `3.48` |
+| showFAQs                            |                    `2.63` |
+| showFAQSection                      |                    `2.44` |
+| showSingleFAQ                       |                    `3.52` |
+| showInbox (Campaigns)               |                    `1.71` |
+| showMessage (Campaigns)             |                    `1.20` |
 
 <Admonition type="info" title="Note">
 
@@ -187,8 +186,6 @@ Tested with a demo app on Nexus 5 running Android 6.0.1. Usage will
 increase with number of FAQs and number of messages in a conversation.
 
 </Admonition>
-
-
 
 ## v3.2.0
 
@@ -203,7 +200,7 @@ The Helpshift Android SDK will add 4.8 MB to your application's APK. The 4.8 MB 
 The Helpshift Android SDK will add 8271 methods to your dex:
 
 | Package                                                                             | Method Count |
-|-------------------------------------------------------------------------------------|-------------:|
+| ----------------------------------------------------------------------------------- | -----------: |
 | **com.helpshift**                                                                   |       `8271` |
 | **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView** (28.0.0.3) |      `19301` |
 
@@ -211,16 +208,15 @@ The Helpshift Android SDK will add 8271 methods to your dex:
 
 Memory usage for the SDK support screen launches.
 
-| Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
-| After adding Helpshift install call                  | `0.22`                    |
-| showConversation                                     | `3.20`                    |
-| showFAQs                                             | `2.40`                    |
-| showFAQSection                                       | `2.50`                    |
-| showSingleFAQ                                        | `3.20`                    |
-| showInbox (Campaigns)                                | `1.30`                    |
-| showMessage (Campaigns)                              | `0.35`                    |
-
+| Support API launch                  | Memory Usage (approx. MB) |
+| ----------------------------------- | ------------------------- |
+| After adding Helpshift install call | `0.22`                    |
+| showConversation                    | `3.20`                    |
+| showFAQs                            | `2.40`                    |
+| showFAQSection                      | `2.50`                    |
+| showSingleFAQ                       | `3.20`                    |
+| showInbox (Campaigns)               | `1.30`                    |
+| showMessage (Campaigns)             | `0.35`                    |
 
 <Admonition type="info" title="Note">
 
@@ -228,7 +224,6 @@ Tested with a demo app on Nexus 5 device. Usage will increase with number of FAQ
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v3.1.0
 
@@ -241,7 +236,7 @@ The Helpshift Android aar package will add 1.70 MB to your application apk. <br/
 The Helpshift Android SDK will add 8181 methods to your dex:
 
 | Package                                                                             | Method Count |
-|-------------------------------------------------------------------------------------|-------------:|
+| ----------------------------------------------------------------------------------- | -----------: |
 | **com.helpshift**                                                                   |       `8181` |
 | **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView** (28.0.0.1) |      `19283` |
 
@@ -249,16 +244,15 @@ The Helpshift Android SDK will add 8181 methods to your dex:
 
 Memory usage for the SDK support screen launches.
 
-| Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
-| After adding Helpshift install call                  | `0.20`                    |
-| showConversation                                     | `3.10`                    |
-| showFAQs                                             | `2.50`                    |
-| showFAQSection                                       | `2.60`                    |
-| showSingleFAQ                                        | `3.00`                    |
-| showInbox (Campaigns)                                | `1.10`                    |
-| showMessage (Campaigns)                              | `0.40`                    |
-
+| Support API launch                  | Memory Usage (approx. MB) |
+| ----------------------------------- | ------------------------- |
+| After adding Helpshift install call | `0.20`                    |
+| showConversation                    | `3.10`                    |
+| showFAQs                            | `2.50`                    |
+| showFAQSection                      | `2.60`                    |
+| showSingleFAQ                       | `3.00`                    |
+| showInbox (Campaigns)               | `1.10`                    |
+| showMessage (Campaigns)             | `0.40`                    |
 
 <Admonition type="info" title="Note">
 
@@ -266,7 +260,6 @@ Tested with a demo app on Nexus 5 device. Usage will increase with number of FAQ
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v3.0.0
 
@@ -279,7 +272,7 @@ The Helpshift Android aar package will add 9.12 MB to your application apk. <br/
 The Helpshift Android SDK will add 8420 methods to your dex:
 
 | Package                                                                             | Method Count |
-|-------------------------------------------------------------------------------------|-------------:|
+| ----------------------------------------------------------------------------------- | -----------: |
 | **com.helpshift**                                                                   |       `8420` |
 | **Xamarin.Android.Support.Design & Xamarin.Android.Support.v7.CardView** (28.0.0.1) |      `10746` |
 
@@ -288,7 +281,7 @@ The Helpshift Android SDK will add 8420 methods to your dex:
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
+| ---------------------------------------------------- | ------------------------- |
 | After adding Helpshift install call                  | `0.22`                    |
 | showConversation (with no Conversation)              | `3.00`                    |
 | showConversation (with already running Conversation) | `3.57`                    |
@@ -299,14 +292,12 @@ Memory usage for the SDK support screen launches.
 | showInbox (Campaigns)                                | `0.77`                    |
 | showMessage (Campaigns)                              | `5.85`                    |
 
-
 <Admonition type="info" title="Note">
 
 Tested with a demo app on Nexus 5 device. Usage will increase with number of FAQs and
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v2.6.0
 
@@ -318,29 +309,28 @@ The Helpshift Android aar package will add 1.4 MB to your application apk. <br/>
 
 The Helpshift Android SDK will add 6263 methods to your dex:
 
-| Package                                      | Method Count |
-|----------------------------------------------|-------------:|
-| **com.helpshift**                            |       `6263` |
-| **android.support:25.1.1**                   |      `19249` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4         |       `9862` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7         |       `6425` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.design     |       `1983` |
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `6263` |
+| **android.support:25.1.1**               |      `19249` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9862` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6425` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1983` |
 
 ### SDK memory usage {#memory-usage}
 
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
-| After adding Helpshift install call                  |                    `0.4`  |
-| showConversation (with no Conversation)              |                    `3.50` |
-| showConversation (with already running Conversation) |                    `2.90` |
-| showFAQs                                             |                    `3.05` |
-| showFAQSection                                       |                    `3.10` |
-| showSingleFAQ                                        |                    `4.50` |
-| showInbox (Campaigns)                                |                    `3.10` |
-| showMessage (Campaigns)                              |                    `5.90` |
-
+| ---------------------------------------------------- | ------------------------- |
+| After adding Helpshift install call                  | `0.4`                     |
+| showConversation (with no Conversation)              | `3.50`                    |
+| showConversation (with already running Conversation) | `2.90`                    |
+| showFAQs                                             | `3.05`                    |
+| showFAQSection                                       | `3.10`                    |
+| showSingleFAQ                                        | `4.50`                    |
+| showInbox (Campaigns)                                | `3.10`                    |
+| showMessage (Campaigns)                              | `5.90`                    |
 
 <Admonition type="info" title="Note">
 
@@ -348,8 +338,6 @@ Tested with a demo app on Moto G device. Usage will increase with number of FAQs
 number of messages in a conversation.
 
 </Admonition>
-
-
 
 ## v2.5.0
 
@@ -361,29 +349,28 @@ The Helpshift Android aar package will add 1.4 MB to your application apk. <br/>
 
 The Helpshift Android SDK will add 6263 methods to your dex:
 
-| Package                                      | Method Count |
-|----------------------------------------------|-------------:|
-| **com.helpshift**                            |       `6263` |
-| **android.support:25.1.1**                   |      `19249` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4         |       `9862` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7         |       `6425` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.design     |       `1983` |
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `6263` |
+| **android.support:25.1.1**               |      `19249` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9862` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6425` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1983` |
 
 ### SDK memory usage {#memory-usage}
 
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
-| After adding Helpshift install call                  |                    `0.4`  |
-| showConversation (with no Conversation)              |                    `3.50` |
-| showConversation (with already running Conversation) |                    `2.90` |
-| showFAQs                                             |                    `3.05` |
-| showFAQSection                                       |                    `3.10` |
-| showSingleFAQ                                        |                    `4.50` |
-| showInbox (Campaigns)                                |                    `3.10` |
-| showMessage (Campaigns)                              |                    `5.90` |
-
+| ---------------------------------------------------- | ------------------------- |
+| After adding Helpshift install call                  | `0.4`                     |
+| showConversation (with no Conversation)              | `3.50`                    |
+| showConversation (with already running Conversation) | `2.90`                    |
+| showFAQs                                             | `3.05`                    |
+| showFAQSection                                       | `3.10`                    |
+| showSingleFAQ                                        | `4.50`                    |
+| showInbox (Campaigns)                                | `3.10`                    |
+| showMessage (Campaigns)                              | `5.90`                    |
 
 <Admonition type="info" title="Note">
 
@@ -391,9 +378,6 @@ Tested with a demo app on Moto G device. Usage will increase with number of FAQs
 number of messages in a conversation.
 
 </Admonition>
-
-
-
 
 ## v2.4.0
 
@@ -405,29 +389,28 @@ The Helpshift Android aar package will add 1.4 MB to your application apk. <br/>
 
 The Helpshift Android SDK will add 6488 methods to your dex:
 
-| Package                                      | Method Count |
-|----------------------------------------------|-------------:|
-| **com.helpshift**                            |       `6488` |
-| **android.support:25.1.1**                   |      `19249` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4         |       `9862` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7         |       `6425` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.design     |       `1983` |
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `6488` |
+| **android.support:25.1.1**               |      `19249` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9862` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6425` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1983` |
 
 ### SDK memory usage {#memory-usage}
 
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
-| After adding Helpshift install call                  |                    `0.4`  |
-| showConversation (with no Conversation)              |                    `3.90` |
-| showConversation (with already running Conversation) |                    `3.40` |
-| showFAQs                                             |                    `3.15` |
-| showFAQSection                                       |                    `3.40` |
-| showSingleFAQ                                        |                    `4.90` |
-| showInbox (Campaigns)                                |                    `3.60` |
-| showMessage (Campaigns)                              |                    `6.70` |
-
+| ---------------------------------------------------- | ------------------------- |
+| After adding Helpshift install call                  | `0.4`                     |
+| showConversation (with no Conversation)              | `3.90`                    |
+| showConversation (with already running Conversation) | `3.40`                    |
+| showFAQs                                             | `3.15`                    |
+| showFAQSection                                       | `3.40`                    |
+| showSingleFAQ                                        | `4.90`                    |
+| showInbox (Campaigns)                                | `3.60`                    |
+| showMessage (Campaigns)                              | `6.70`                    |
 
 <Admonition type="info" title="Note">
 
@@ -435,8 +418,6 @@ Tested with a demo app on Moto G device. Usage will increase with number of FAQs
 number of messages in a conversation.
 
 </Admonition>
-
-
 
 ## v2.3.1
 
@@ -448,29 +429,28 @@ The Helpshift Android aar package will add 1.2 MB to your application apk. <br/>
 
 The Helpshift Android SDK will add 4803 methods to your dex:
 
-| Package                                      | Method Count |
-|----------------------------------------------|-------------:|
-| **com.helpshift**                            |       `4803` |
-| **android.support:24.2.0**                   |      `19169` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4         |       `9737` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7         |       `6421` |
-| &nbsp;&nbsp;&nbsp;&nbsp;- support.design     |       `1944` |
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `4803` |
+| **android.support:24.2.0**               |      `19169` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9737` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6421` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1944` |
 
 ### SDK memory usage {#memory-usage}
 
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
-| After adding Helpshift install call                  |                    `0.4`  |
-| showConversation (with no Conversation)              |                    `2.49` |
-| showConversation (with already running Conversation) |                    `2.67` |
-| showFAQs                                             |                    `2.97` |
-| showFAQSection                                       |                    `2.44` |
-| showSingleFAQ                                        |                    `3.30` |
-| showInbox (Campaigns)                                |                    `10.05` |
-| showMessage (Campaigns)                              |                    `4.27` |
-
+| ---------------------------------------------------- | ------------------------- |
+| After adding Helpshift install call                  | `0.4`                     |
+| showConversation (with no Conversation)              | `2.49`                    |
+| showConversation (with already running Conversation) | `2.67`                    |
+| showFAQs                                             | `2.97`                    |
+| showFAQSection                                       | `2.44`                    |
+| showSingleFAQ                                        | `3.30`                    |
+| showInbox (Campaigns)                                | `10.05`                   |
+| showMessage (Campaigns)                              | `4.27`                    |
 
 <Admonition type="info" title="Note">
 
@@ -478,7 +458,6 @@ Tested with a demo app on Xiaomi Redmi Note 3 Device. Usage will increase with n
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v2.3.0
 
@@ -492,13 +471,12 @@ SDK method count: 4786
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
+| ---------------------------------------------------- | ------------------------- |
 | showConversation (with no Conversation)              | 2.40                      |
 | showConversation (with already running Conversation) | 2.30                      |
 | showFAQs                                             | 2.61                      |
 | showFAQSection                                       | 2.40                      |
 | showSingleFAQ                                        | 2.40                      |
-
 
 <Admonition type="info" title="Note">
 
@@ -506,7 +484,6 @@ Tested with a demo app. Usage will increase with number of FAQs and
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v2.2.0
 
@@ -520,13 +497,12 @@ SDK method count: 4619
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
+| ---------------------------------------------------- | ------------------------- |
 | showConversation (with no Conversation)              | 1.20                      |
 | showConversation (with already running Conversation) | 2.03                      |
 | showFAQs                                             | 2.20                      |
 | showFAQSection                                       | 2.15                      |
 | showSingleFAQ                                        | 2.20                      |
-
 
 <Admonition type="info" title="Note">
 
@@ -534,7 +510,6 @@ Tested with a demo app. Usage will increase with number of FAQs and
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v2.0.0
 
@@ -547,13 +522,12 @@ The Helpshift Android aar package will add 1.1 MB to your application apk.
 Memory usage for the SDK support screen launches.
 
 | Support API launch                                   | Memory Usage (approx. MB) |
-|------------------------------------------------------|---------------------------|
+| ---------------------------------------------------- | ------------------------- |
 | showConversation (with no Conversation)              | 4.20                      |
 | showConversation (with already running Conversation) | 3.50                      |
 | showFAQs                                             | 4.50                      |
 | showFAQSection                                       | 4.50                      |
 | showSingleFAQ                                        | 4.00                      |
-
 
 <Admonition type="info" title="Note">
 
@@ -561,7 +535,6 @@ Tested with a demo app. Usage will increase with number of FAQs and
 number of messages in a conversation.
 
 </Admonition>
-
 
 ## v1.0.0
 
@@ -573,14 +546,13 @@ The Helpshift Android aar package will add 581 KB to your application apk.
 
 Memory usage for the SDK support screen launches.
 
-| Support API launch | Memory Usage (approx. MB) |
-|--------------------|-------------------|
-| showConversation (with no Conversation) | 1.1 |
-| showConversation (with already running Conversation) | 0.63 |
-| showFAQs | 8.25 |
-| showFAQSection | 7.91 |
-| showSingleFAQ | 2.07 |
-
+| Support API launch                                   | Memory Usage (approx. MB) |
+| ---------------------------------------------------- | ------------------------- |
+| showConversation (with no Conversation)              | 1.1                       |
+| showConversation (with already running Conversation) | 0.63                      |
+| showFAQs                                             | 8.25                      |
+| showFAQSection                                       | 7.91                      |
+| showSingleFAQ                                        | 2.07                      |
 
 <Admonition type="info" title="Note">
 
@@ -588,4 +560,3 @@ Tested with a demo app. Usage will increase with number of FAQs and
 number of messages in a conversation.
 
 </Admonition>
-

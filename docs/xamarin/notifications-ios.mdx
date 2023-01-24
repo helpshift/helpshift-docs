@@ -4,8 +4,20 @@ title: Notifications iOS
 description: "Configure Push notifications and In-app notifications"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Notifications <small>iOS</small> {#notifications}
 
@@ -13,9 +25,7 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Configure Push notifications and In-app notifications
 
-
 </Intro>
-
 
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
@@ -43,7 +53,11 @@ you have exported the `.p12` file you can login and upload that file in
 your app settings in the Helpshift admin panel. Provide the same
 password you used while exporting to `.p12 format`.
 
-<Image src="/static/books/ios/helpshift-push-notifications.png"  width="full" alt="helpshift-push-notifications.png" /> 
+<Image
+  src="/static/books/ios/helpshift-push-notifications.png"
+  width="full"
+  alt="helpshift-push-notifications.png"
+/>{" "}
 
 Set the Production / Development mode options, depending on whether your
 Apple push certificate was for testing (development push) or
@@ -53,21 +67,16 @@ notifications. Save it and you're all set.
 
 ## Configure the Helpshift Xamarin SDK to handle notifications {#configure-helpshift-xamarin-sdk}
 
-
 <Admonition type="info" title="Note">
 
-When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications"  for every message sent by Agents/Bots. 
+When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
 You should call `RegisterDeviceToken()` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `RegisterDeviceToken()` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
 
 </Admonition>
 
-
-
 <Tabs>
 
 <TabItem value="Using UILocalNotification Framework" label="Using UILocalNotification Framework">
-
-
 
 In order to receive push notifications from the Helpshift backend servers,
 you will need to invoke the `HelpshiftApi.HelpshiftCore.RegisterDeviceToken`api call inside the
@@ -155,11 +164,8 @@ public override void DidReceiveRemoteNotification(UIApplication application, NSD
 }
 ```
 
-
-
 </TabItem>
 <TabItem value="Using UNUserNotification framework" label="Using UNUserNotification framework">
-
 
 For the Helpshift SDK to work with the Helpshift push notification service, you will need to invoke the `HelpshiftApi.HelpshiftCore.RegisterDeviceTokenapi` call inside of the application delegate method `RegisteredForRemoteNotifications`. In your app delegate file it will look something like this:
 
@@ -215,13 +221,9 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
 }
 ```
 
-
-
 </TabItem>
 
 </Tabs>
-
-
 
 ## In-app notifications {#in-app-notifications}
 
@@ -231,10 +233,17 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 <SideBySide>
 
-<Image src="/static/books/ios/in-app-notification-badge-count-1.png"  width="quarter" alt="in-app-notification-badge-count-1.png" /> 
+<Image
+  src="/static/books/ios/in-app-notification-badge-count-1.png"
+  width="quarter"
+  alt="in-app-notification-badge-count-1.png"
+/>{" "}
 
-<Image src="/static/books/ios/in-app-notification-badge-count-2.png"  width="quarter" alt="in-app-notification-badge-count-2.png" /> 
-
+<Image
+  src="/static/books/ios/in-app-notification-badge-count-2.png"
+  width="quarter"
+  alt="in-app-notification-badge-count-2.png"
+/>{" "}
 
 </SideBySide>
 
@@ -245,23 +254,22 @@ Helpshift SDK, please set this flag to `false`. The default value of this
 flag is `true` i.e in-app notifications will be enabled.<br />
 Read more about in-app notifications in the [Notifications section](/xamarin/notifications-ios#in-app-notifications).
 
-
 <Tabs>
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
 
-
 <div className="compact ">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableInAppNotification                |
+| Values  | <code>true</code> / <code>false</code> |
+| Default | <code>false</code>                     |
 
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| <code>true</code> / <code>false</code>|
-|Default| <code>false</code>|
 </div>
 
 Example:
+
 ```csharp
 HelpshiftInstallConfig installConfig = new HelpshiftInstallConfig.Builder()
                                          .SetEnableInAppNotifications(true)
@@ -272,23 +280,20 @@ HelpshiftApi.HelpshiftCore.Install("<YOUR_API_KEY>",
                                    installConfig);
 ```
 
-
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-
 <div className="compact ">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableInAppNotification                |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 Example:
-
 
 ```csharp
 
@@ -302,12 +307,9 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
@@ -316,7 +318,6 @@ Example:
 If you want to show your user notifications for replies sent by an Agent to their open Issues, you can use notification counts provided by the Helpshift SDK. These notification counts give you the total number of unread messages and display it as a badge. You can get notification counts asynchronously by implementing the Helpshift delegate method ["DidReceiveUnreadMessageCount"](/xamarin/delegates-ios#unread-messages-count) . Notifications are typically displayed as badges inside your app where a user clicks on the help section. These badges can be displayed anywhere in your app's interface to tell the user that they have unread replies/messages from you.
 
 For example
-
 
 ```csharp
 
@@ -328,7 +329,6 @@ If you want to fetch the notification count from the server, you can call the `R
 
 For example
 
-
 ```csharp
 
     HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(true);
@@ -337,5 +337,3 @@ For example
 
 You will receive the callback with the notification count in the delegate registered using `HelpshiftSupport.SetDelegate()` api in `DidReceiveUnreadMessagesCount` method.
 Refer [Support delegates](/xamarin/delegates-ios#helpshift-delegates-implementation). The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
-
-

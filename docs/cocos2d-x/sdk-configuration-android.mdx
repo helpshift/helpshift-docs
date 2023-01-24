@@ -4,23 +4,29 @@ title: SDK Configuration
 description: "Helpshift provides several config options which can be used to customize behaviour of the SDK.These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # SDK Configuration
 
 <Intro>
 
-
 Helpshift provides several config options which can be used to customize behaviour of the SDK.
 These options are boolean flags which can be passed with the Helpshift APIs such as showConversation, showFAQs etc.
 
-
-
 </Intro>
-
 
 ## Install Options {#install-options}
 
@@ -28,19 +34,18 @@ These options are boolean flags which can be passed with the Helpshift APIs such
 
 <div className="compact ">
 
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | enableInAppNotification               |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"yes"</code>                    |
 
-| | |
-|--|--|
-|Flag| enableInAppNotification|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"yes"</code>|
 </div>
 
 If you want to disable the in-app notifications, please set this
 variable to `"no"` in the config dictionary passed to the `install`.
 
 For Example:
-
 
 ```cpp
 
@@ -59,7 +64,6 @@ For Example:
 By default the application icon is used as the notification icon. You can customize the notification icons via the config dictionary passed to the `install` call.
 
 For Example:
-
 
 ```cpp
 
@@ -80,7 +84,6 @@ By default the default device notification sound is used for helpshift notificat
 
 For Example:
 
-
 ```cpp
 
     HashMap config = new HashMap();
@@ -95,16 +98,13 @@ For Example:
 
 ### Notification channels {#notification-channels}
 
-
 <Admonition type="info" title="Note">
 
 Applicable to SDK v1.8.0 and above.
 
 </Admonition>
 
-
 Starting from Android Oreo, Helpshift notifications will have a default channel set as `In-app Support`. The name and description for this default channel can be changed by setting the following settings. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
-
 
 ```cpp
 
@@ -115,9 +115,7 @@ Starting from Android Oreo, Helpshift notifications will have a default channel 
 
 If you want to customize the notification channels, you can create your own custom channels and set their channel IDs in the in the config dictionary passed to the `install` corresponsing to following key: `supportNotificationChannelId`.
 
-
 For Example:
-
 
 ```cpp
 
@@ -136,17 +134,15 @@ For Example:
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| HS_ENABLE_DEFAULT_FALL_BACK_LANGUAGE|
-|values| <code>"yes"</code>/<code>"no"</code>|
-|default| <code>"yes"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | HS_ENABLE_DEFAULT_FALL_BACK_LANGUAGE |
+| values  | <code>"yes"</code>/<code>"no"</code> |
+| default | <code>"yes"</code>                   |
 
 </div>
 
 You can enable or disable the SDK default fallback language when showing FAQs using this flag. When set to false, the Helpshift SDK will not fallback to the default language that is English, when showing FAQs. This flag is to be passed only in the config for the `HelpshiftBridge.install` call.
-
 
 <Admonition type="info" title="Note">
 
@@ -154,9 +150,7 @@ This configuration does not apply to the QuickSearch Bot suggested FAQs.
 
 </Admonition>
 
-
 For Example:
-
 
 ```java
 
@@ -173,22 +167,17 @@ For Example:
 
 ### Using Custom Fonts {#usingCustomFonts}
 
-
 <Admonition type="info" title="Note">
 
 Applicable to version 1.4.0 and above.
 
 </Admonition>
 
-
 **Step 1:** Add the font to your `Resources/fonts` folder.
-
 
 **Step 2:** Pass the font location relative to the `Resources` folder as follows during installation. If the font file `DancingScript-Regular.ttf` lies in the `fonts` folder inside the `Resources` folder, then your path is `fonts/DancingScript-Regular.ttf`.
 
-
 For Example:
-
 
 ```java
 
@@ -204,11 +193,13 @@ For Example:
 
 **Step 3:** Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
 
-
-<Image src="/static/books/android/font-in-use.png"  width="quarter" centered /> 
+<Image
+  src="/static/books/android/font-in-use.png"
+  width="quarter"
+  centered
+/>{" "}
 
 ### screenOrientation {#screenOrientation}
-
 
 <Admonition type="info" title="Note">
 
@@ -216,23 +207,20 @@ Applicable to version 1.6.0 and above
 
 </Admonition>
 
-
 The screen orientation of Helpshift SDK screens can be fixed by setting the screenOrientation to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
 For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| screenOrientation|
-|values| integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class|
-|default|  ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED|
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                                                                                      |
+| values  | integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class |
+| default | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                                            |
 
 </div>
 
 For Example:
-
 
 ```java
 
@@ -246,7 +234,6 @@ For Example:
 
 ```
 
-
 <Admonition type="info" title="Note">
 
 Due to a [bug](https://issuetracker.google.com/issues/68454482) in Android OS 8.0, setting the requested orientation when opening the Helpshift activity causes a crash. This happens when the targetSDKVersion is greater than 26 and the Activity is not full screen.
@@ -254,24 +241,21 @@ As a workaround, apps need to set Helpshift's ParentActivity to full screen mode
 
 </Admonition>
 
-
 ### enableLogging {#enableLogging}
 
 Upon setting enableLogging to "yes", Helpshift SDK logs will be generated in the Android logcat. These will be useful for debugging the SDK during integration. Turning on this logging could help the developer resolve common integration issues.
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableLogging|
-|values| <code>"yes"</code>/<code>"no"</code>|
-|default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | enableLogging                        |
+| values  | <code>"yes"</code>/<code>"no"</code> |
+| default | <code>"no"</code>                    |
 
 </div>
 
 For Example:
-
 
 ```java
 
@@ -291,17 +275,15 @@ Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK w
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| disableErrorReporting|
-|values| <code>"yes"</code>/<code>"no"</code>|
-|default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | disableErrorReporting                |
+| values  | <code>"yes"</code>/<code>"no"</code> |
+| default | <code>"no"</code>                    |
 
 </div>
 
 For Example:
-
 
 ```java
 
@@ -322,25 +304,24 @@ For Example:
 
 <div className="compact ">
 
+|         |                                                                                                                                       |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | enableContactUs                                                                                                                       |
+| Values  | <code>HS_ENABLE_CONTACT_US_ALWAYS</code>/<code>HS_ENABLE_CONTACT_US_NEVER</code>/<code>HS_ENABLE_CONTACT_US_AFTER_VIEWING_FAQS</code> |
+| Default | <code>HS_ENABLE_CONTACT_US_ALWAYS</code>                                                                                              |
 
-| | |
-|--|--|
-|Flag| enableContactUs|
-|Values| <code>HS_ENABLE_CONTACT_US_ALWAYS</code>/<code>HS_ENABLE_CONTACT_US_NEVER</code>/<code>HS_ENABLE_CONTACT_US_AFTER_VIEWING_FAQS</code>|
-|Default| <code>HS_ENABLE_CONTACT_US_ALWAYS</code>|
 </div>
 
 The `enableContactUs` flag controls the visibility of `Contact Us` button -
 
 <div className=" compact text-sm">
 
-
-| | |
-|--|--|
-|HS_ENABLE_CONTACT_US_ALWAYS| show in the navigation bar, search, and after marking an FAQ unhelpful.|
-|HS_ENABLE_CONTACT_US_AFTER_VIEWING_FAQS| show only while searching, on FAQ screen and after marking an FAQ unhelpful.|
-|HS_ENABLE_CONTACT_US_NEVER| do not show "Contact Us" button anywhere in the SDK.|
-|HS_ENABLE_CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL| do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful.|
+|                                                     |                                                                                        |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| HS_ENABLE_CONTACT_US_ALWAYS                         | show in the navigation bar, search, and after marking an FAQ unhelpful.                |
+| HS_ENABLE_CONTACT_US_AFTER_VIEWING_FAQS             | show only while searching, on FAQ screen and after marking an FAQ unhelpful.           |
+| HS_ENABLE_CONTACT_US_NEVER                          | do not show "Contact Us" button anywhere in the SDK.                                   |
+| HS_ENABLE_CONTACT_US_AFTER_MARKING_ANSWER_UNHELPFUL | do not show "Contact Us" button until the user specifically marks an FAQ as unhelpful. |
 
 </div>
 
@@ -348,12 +329,9 @@ To override the default value you can pass the arguments in the options dictiona
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -363,11 +341,8 @@ Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -379,15 +354,11 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 This flag has no effect for the `showConversation` API call, since there is no `Contact Us` button in the conversation screen.
-
 
 <Admonition type="info" title="Note">
 
@@ -395,9 +366,7 @@ By using this option, you encourage users to read and search FAQs first instead 
 
 </Admonition>
 
-
 ### gotoConversationAfterContactUs {#goto-conversation-after-contact-us}
-
 
 <Admonition type="info" title="Note">
 
@@ -405,15 +374,14 @@ This API is now deprecated with Cocos2d-x SDK v4.0.0. Read more about the new co
 
 </Admonition>
 
-
 <div className="compact ">
 
+|         |                                       |
+| ------- | ------------------------------------- |
+| Flag    | gotoConversationAfterContactUs        |
+| Values  | <code>"yes"</code>/ <code>"no"</code> |
+| Default | <code>"no"</code>                     |
 
-| | |
-|--|--|
-|Flag| gotoConversationAfterContactUs|
-|Values| <code>"yes"</code>/ <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `gotoConversationAfterContactUs` flag will determine whether the
@@ -423,12 +391,9 @@ conversation via "Contact Us". This only makes sense if the
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -438,11 +403,8 @@ Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -452,12 +414,9 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -465,9 +424,7 @@ For `showFAQs`, `showFAQSection` and `showSingleFAQ`, setting `gotoConversationA
 
 </Admonition>
 
-
 ### requireEmail {#requireEmail}
-
 
 <Admonition type="info" title="Note">
 
@@ -475,15 +432,14 @@ This API is now deprecated with Cocos2d-x SDK v4.0.0. Read more about the new co
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | requireEmail                           |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| requireEmail|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `requireEmail` flag will determine whether email is required or optional for starting a new conversation.
@@ -492,12 +448,9 @@ When the flag is set to `yes` customer's email will be required. If set to `no` 
 
 For example:
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cppp
 
@@ -507,11 +460,8 @@ For example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -522,15 +472,11 @@ For example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 If "New Issue Forwarding" is ON or if "Allow anonymous issues" is ON in the agent dashboard, then this flag will be ignored.
-
 
 <Admonition type="info" title="Note">
 
@@ -538,26 +484,22 @@ Once `requireEmail` flag is set, the SDK will use that value for all new convers
 
 </Admonition>
 
-
-
 ### hideNameAndEmail {#hideNameAndEmail}
-
 
 <Admonition type="info" title="Note">
 
-* This API is now deprecated with Cocos2d-x SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+- This API is now deprecated with Cocos2d-x SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
 
 </Admonition>
 
-
 <div className=" compact">
 
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | hideNameAndEmail                       |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
-| | |
-|--|--|
-|Flag| hideNameAndEmail|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
@@ -570,17 +512,11 @@ If "Allow anonymous issues" is ON, under app settings in the agent dashboard, th
 
 Also, if the [`requireEmail`](#requireEmail) flag is set to `no` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
 
-
 For example:
-
-
-
 
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -590,11 +526,8 @@ For example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -605,12 +538,9 @@ For example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
@@ -618,17 +548,14 @@ Once `hideNameAndEmail` flag is set, the SDK will use that value for all new con
 
 </Admonition>
 
-
-
 ### conversationPrefillText {#conversationPrefillText}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| conversationPrefillText|
-|Values| Non-empty string|
+|        |                         |
+| ------ | ----------------------- |
+| Flag   | conversationPrefillText |
+| Values | Non-empty string        |
 
 </div>
 
@@ -637,12 +564,9 @@ This is useful where you might want your users to send you diagnostic informatio
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -652,11 +576,8 @@ Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -667,13 +588,9 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
-
 
 <Admonition type="info" title="Note">
 
@@ -681,17 +598,15 @@ The `conversationPrefillText` option takes effect only for the `showConversation
 
 </Admonition>
 
-
 ### enableFullPrivacy {#enableFullPrivacy}
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| enableFullPrivacy|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | enableFullPrivacy                      |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
 
@@ -699,23 +614,19 @@ In scenarios where the user attaches objectionable content in the screenshots, i
 
 If enableFullPrivacy option is set to `"yes"`, HS SDK does the following:
 
-1. Disables user-initiated screenshots - players cannot send images without being requested by an Agent
-1. Does not collect any of the following personal information:
-    *     Map with "private-data" key inside custom meta-data.
-    *     Country code.
-    *     Carrier name.
-
+1.  Disables user-initiated screenshots - players cannot send images without being requested by an Agent
+1.  Does not collect any of the following personal information:
+    -     Map with "private-data" key inside custom meta-data.
+    -     Country code.
+    -     Carrier name.
 
 To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this option is set to `"yes"`, this data will be removed when the user starts a new conversation.
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -725,11 +636,8 @@ Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -740,15 +648,13 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 #### Best Practices
-In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to `"yes"`. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
 
+In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to `"yes"`. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
 
 <Admonition type="info" title="Note">
 
@@ -756,36 +662,31 @@ In your registration process, ask your user for his/her age. If the user's age i
 1. For SDK versions 1.6.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
 1. For SDK versions 1.7.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
 1. For Cocos2d-x SDK versions 4.0.0 and above, this flag is ignored in the flows created to show Dynamic forms. Following flows do not honor this flag
-    * `ConversationFlow`
-    * `FAQsFlow`
-    * `SingleFAQFlow`
-    * `FAQSectionFlow`
-    * `CustomFlow`
+   - `ConversationFlow`
+   - `FAQsFlow`
+   - `SingleFAQFlow`
+   - `FAQSectionFlow`
+   - `CustomFlow`
 
 </Admonition>
-
 
 ### showSearchOnNewConversation {#showSearchOnNewConversation}
 
-
 <Admonition type="info" title="Note">
 
-* This API is now deprecated with Cocos2d-x SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+- This API is now deprecated with Cocos2d-x SDK v4.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showSearchOnNewConversation|
-|Values| <code>"yes"</code> / <code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                        |
+| ------- | -------------------------------------- |
+| Flag    | showSearchOnNewConversation            |
+| Values  | <code>"yes"</code> / <code>"no"</code> |
+| Default | <code>"no"</code>                      |
 
 </div>
-
 
 If showSearchOnNewConversation flag is set to `yes`, the user will be taken to a view which shows the search results relevant to the conversation text that he has entered upon clicking the 'Send' button. This is to avoid tickets which are already answered in the FAQs. The user will still be able to start a new conversation with the same text. He can also go through one of the FAQs and find a solution to his query, and exit the session without submitting a ticket.
 
@@ -793,12 +694,9 @@ Default value is `no`, ie., this feature will not be enabled unless you explicit
 
 Example:
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cppp
 
@@ -808,11 +706,8 @@ Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -823,19 +718,15 @@ Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
 The `conversationPrefillText` option takes effect only for the `showConversation` API.
 
 </Admonition>
-
 
 ### showConversationResolutionQuestion {#showConversationResolutionQuestion}
 
@@ -844,18 +735,21 @@ The `conversationPrefillText` option takes effect only for the `showConversation
 This SDK configuration is deprecated with v4.0+ and default value will be treated as False.
 
 If you want to use this feature, you can turn the feature on and off ("Resolution Question") from the In-App Configuration page.(Settings > App settings)
-<Image src="/static/books/android/conversation-resolution-flag.png"  width="full" /> 
+
+<Image
+  src="/static/books/android/conversation-resolution-flag.png"
+  width="full"
+/>{" "}
 
 #### For Older Cocos2d-x SDK versions 1.9.0 and below, please read the following:
 
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| HS_SHOW_CONVERSATION_RESOLUTION_QUESTION|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"yes"</code>|
+|         |                                          |
+| ------- | ---------------------------------------- |
+| Flag    | HS_SHOW_CONVERSATION_RESOLUTION_QUESTION |
+| Values  | <code>"yes"</code>/<code>"no"</code>     |
+| Default | <code>"yes"</code>                       |
 
 </div>
 
@@ -865,12 +759,9 @@ Default value is `yes`, ie., this feature will not be disabled unless you explic
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -880,11 +771,8 @@ Example :
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -895,15 +783,11 @@ Example :
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 ### customContactUsFlows {#customContactUsFlows}
-
 
 <Admonition type="info" title="Note">
 
@@ -911,15 +795,13 @@ Applicable to Cocos2d-x plugin version 1.2.0 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Option| customContactUsFlows|
-|Value| List of Flows. Flows can be created by using the [<code>Guided Issue Filing</code>](/cocos2d-x/support-tools-android#dynamic-forms) APIs|
-|Default| There is no default value for this configuration.|
+|         |                                                                                                                                          |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Option  | customContactUsFlows                                                                                                                     |
+| Value   | List of Flows. Flows can be created by using the [<code>Guided Issue Filing</code>](/cocos2d-x/support-tools-android#dynamic-forms) APIs |
+| Default | There is no default value for this configuration.                                                                                        |
 
 </div>
 
@@ -929,12 +811,9 @@ Example :
 
 Let's say you want the users to see a particular FAQ section, a single FAQ and 2 different Contact Us flows with different prefill texts when they tap the Contact Us buttons within the Helpshift SDK. In this case, you would configure the `menuHelpCallback` (a button which triggers Helpshift SDK) in the following way :
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -972,11 +851,8 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -1014,13 +890,9 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
-
 
 Anytime the Helpshift SDK is presented via `menuHelpCallback` with this configuration, the Contact Us buttons in the SDK will redirect to Guided Issue Filing with the flows provided in the `HS_CUSTOM_CONTACT_US_FLOWS` list.
 
@@ -1032,12 +904,9 @@ Example :
 
 Let's say you want to configure `singleFAQFlow` in the above example to show `showConversationFlow1` and `showConversationFlow2` through the Contact Us buttons inside it. In this case, you would configure the `menuHelpCallback` button (a button which triggers Helpshift SDK) in the following way :
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -1080,11 +949,8 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -1127,41 +993,33 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
-
 
 <Admonition type="info" title="Note">
 
- This configuration will work only when there is no open conversation for the user, otherwise every Contact Us button will transition to the chat screen.
+This configuration will work only when there is no open conversation for the user, otherwise every Contact Us button will transition to the chat screen.
 
 </Admonition>
-
 
 ### showConversationInfoScreen {#showConversationInfoScreen}
 
-
 <Admonition type="info" title="Note">
 
- Applicable to version 1.6.0 and above.
+Applicable to version 1.6.0 and above.
 
 </Admonition>
 
-
 <div className="compact ">
 
-
-| | |
-|--|--|
-|Flag| showConversationInfoScreen|
-|Values| <code>"yes"</code>/<code>"no"</code>|
-|Default| <code>"no"</code>|
+|         |                                      |
+| ------- | ------------------------------------ |
+| Flag    | showConversationInfoScreen           |
+| Values  | <code>"yes"</code>/<code>"no"</code> |
+| Default | <code>"no"</code>                    |
 
 </div>
 
@@ -1169,12 +1027,9 @@ The `showConversationInfoScreen` flag will determine if users can see the Conver
 
 Example :
 
-
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -1184,11 +1039,8 @@ Example :
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -1199,19 +1051,15 @@ Example :
 
 ```
 
-
 </TabItem>
 
 </Tabs>
-
-
 
 <Admonition type="info" title="Note">
 
 The info screen would only be visible when an QuickSearch Bot/Identity Bot (if configured) complete their tasks and Automations/Agents can act on the new conversation.
 
 </Admonition>
-
 
 ## Minimum issue description length {#minimum-issue-desc-length}
 
@@ -1223,10 +1071,13 @@ Example :
 If you want to have minimum length as 5 characters for Korean language and 10 characters for all other languages then you can achieve this as shown below:
 
 Put the following integer resource in `integers.xml` of `values-ko` resource directory
+
 ```
 <integer name="hs__issue_description_min_chars">5</integer>
 ```
+
 and the following integer resource in `integers.xml` of `values` resource directory
+
 ```
 <integer name="hs__issue_description_min_chars">10</integer>
 ```
@@ -1239,30 +1090,27 @@ The typing indicator can only be enabled for Issues filed with SDK v1.7.0 and ab
 
 </Admonition>
 
-
 A graphical typing indicator is shown to the end user if an Agent is currently replying to the same Conversation. The `HS_ENABLE_TYPING_INDICATOR` flag will enable/disable the aforementioned indicator.
-
 
 <Admonition type="info" title="Note">
 
-* This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
-* For Cocos2d-x SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
-* If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will be shown to the end users.
+- This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
+- For Cocos2d-x SDK v4.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
+- If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will be shown to the end users.
 
 </Admonition>
-
 
 ![](/static/books/misc/enable-typing-indicator-app-setting.png)
 +/ .full-width /
 
 <div className="compact ">
 
+|         |                            |
+| ------- | -------------------------- |
+| Flag    | HS_ENABLE_TYPING_INDICATOR |
+| Values  | <code>"yes"/"no"</code>    |
+| Default | <code>"no"</code>          |
 
-| | |
-|--|--|
-|Flag| HS_ENABLE_TYPING_INDICATOR|
-|Values| <code>"yes"/"no"</code>|
-|Default| <code>"no"</code>|
 </div>
 
 For Example:
@@ -1270,8 +1118,6 @@ For Example:
 <Tabs>
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
-
-
 
 ```cpp
 
@@ -1281,11 +1127,8 @@ For Example:
 
 ```
 
-
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
-
-
 
 ```cpp
 
@@ -1296,20 +1139,17 @@ For Example:
 
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ## Configuration Summary {#config-summary}
 
-
-| Option / API                            | [showFAQs](#faqs-view)    | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
-|-----------------------------------------|-------------|----------------|---------------|------------------|
-| **enableContactUs**                   | Supported   | Supported      | Supported     | Not Supported     |
-| **enableFullPrivacy**                 | Supported   | Supported      | Supported     | Supported        |
-| **showConversationResolutionQuestion**| Supported   | Supported      | Supported     | Supported        |
-| **customContactUsFlows**              | Supported   | Supported      | Supported     | Not Supported    |
-| **showConversationInfoScreen**        | Supported   | Supported      | Supported     | Supported  |
-| **enableTypingIndicator**             | Supported   | Supported      | Supported     | Supported        |
+| Option / API                           | [showFAQs](#faqs-view) | [showFAQSection](#faq-section-view) | [showSingleFAQ](#faq-question-view) | [showConversation](#conversation-view) |
+| -------------------------------------- | ---------------------- | ----------------------------------- | ----------------------------------- | -------------------------------------- |
+| **enableContactUs**                    | Supported              | Supported                           | Supported                           | Not Supported                          |
+| **enableFullPrivacy**                  | Supported              | Supported                           | Supported                           | Supported                              |
+| **showConversationResolutionQuestion** | Supported              | Supported                           | Supported                           | Supported                              |
+| **customContactUsFlows**               | Supported              | Supported                           | Supported                           | Not Supported                          |
+| **showConversationInfoScreen**         | Supported              | Supported                           | Supported                           | Supported                              |
+| **enableTypingIndicator**              | Supported              | Supported                           | Supported                           | Supported                              |

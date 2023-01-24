@@ -4,8 +4,20 @@ title: Deep Linking in FAQs
 description: "Using custom URL schemes to support deep linking in your app"
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 # Deep Linking in FAQs {#ios-deep-links}
 
@@ -13,17 +25,13 @@ import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image,
 
 Using custom URL schemes to support deep linking in your app
 
-
 </Intro>
-
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
 
-
 </Admonition>
-
 
 Use custom URL schemes to direct users to particular sections of your app from Helpshift FAQs. You can use these schemes to provide a more seamless experience for the user. For example, if your iOS app has a registration screen, clicking on a registration link in an FAQ can directly take the user to that screen.
 
@@ -31,16 +39,23 @@ Use custom URL schemes to direct users to particular sections of your app from H
 
 When editing your FAQ, select the text and then click on create a link.
 
-<Image src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-1.png"  width="half" alt="add-deep-link-to-faq-sdkx-1.png" /> 
-
+<Image
+  src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-1.png"
+  width="half"
+  alt="add-deep-link-to-faq-sdkx-1.png"
+/>{" "}
 
 In the dialog that pops up, enter your custom URL and save the FAQ.
 
-<Image src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-2.png"  width="half" alt="add-deep-link-to-faq-sdkx-2.png" /> 
+<Image
+  src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-2.png"
+  width="half"
+  alt="add-deep-link-to-faq-sdkx-2.png"
+/>{" "}
 
 ## Handle deep links in your iOS App {#handle-deep-link}
 
-Deep linking is a custom linking URL that gives the developers the freedom to decide what the URL can do when the user clicks on a Custom URL. Examples of deep linking includes instances when the user needs to be redirected to a review page from the chat screen, or from the chat screen to an FAQ page or an FAQ section. 
+Deep linking is a custom linking URL that gives the developers the freedom to decide what the URL can do when the user clicks on a Custom URL. Examples of deep linking includes instances when the user needs to be redirected to a review page from the chat screen, or from the chat screen to an FAQ page or an FAQ section.
 
 In deep linking, you are allowed to set Custom URL schemes like `myscheme://example.com`.
 For example, the URL `myscheme://FAQID` (where FAQID is the publish ID of an FAQ), will open up the relevant FAQ in the conversation screen. In order for the developers to handle myscheme, they will have to call `showSingleFAQ` api with the corresponding FAQ ID.
@@ -48,6 +63,7 @@ For example, the URL `myscheme://FAQID` (where FAQID is the publish ID of an FAQ
 To handle the custom URLs in your iOS app, make sure first that your app's Info.plist supports the custom URL scheme that you've provided in the FAQs. [More information](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app)
 
 You will then need to implement,`application:openURL:sourceApplication:annotation:` in your app delegate, to handle and take the required action. For example:
+
 ```
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 

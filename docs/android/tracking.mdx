@@ -4,16 +4,26 @@ title: Tracking
 description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
 ---
 
-import {Admonition, CodeBlock, Tabs, TabItem, LatestSdkVersion, Centered, Image, Intro, SideBySide, DownloadButton, Steps, Step} from "@site/src/components/forDocs"
-
-
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
 
 <Admonition type="danger" title="Important">
 
 Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
 
 </Admonition>
-
 
 # Tracking {#tracking}
 
@@ -22,26 +32,21 @@ Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 De
 Track events and user actions when the user starts a new conversation.
 Attach custom metadata to every conversation started via the SDK.
 
-
 </Intro>
 
-
 ## Name and email {#name-and-email}
-
 
 <Admonition type="info" title="Note">
 
 This API is now deprecated with SDK v7.0.0
 
-It is expected that developers will pass the Name, Email or User Identifier using the Login API `<link to User Identification>`  going forward.
+It is expected that developers will pass the Name, Email or User Identifier using the Login API `<link to User Identification>` going forward.
 
-Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual. 
+Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
 
 </Admonition>
 
-
 ## User Identifier {#user-id}
-
 
 <Admonition type="info" title="Note">
 
@@ -49,10 +54,9 @@ This API is now deprecated with SDK v7.0.0
 
 It is expected that developers will pass the Name, Email or User Identifier using the [Login API](/android/users#logging-in-users) going forward.
 
-Also, please note that there will no impact on older SDK versions and that they will keep on working as usual. 
+Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
 
 </Admonition>
-
 
 ## Multi Login {#multi-login}
 
@@ -75,14 +79,13 @@ Support.clearBreadCrumbs();
 
 ## Attaching metadata to conversations {#metadata}
 
-You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation. 
+You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation.
 You can attach metadata to every new conversation in one of two ways:
 
-* [API configuration](#metadata-api-config)
-* [Metadata callback](#metadata-reported-issues)
+- [API configuration](#metadata-api-config)
+- [Metadata callback](#metadata-reported-issues)
 
 In case both methods are used, and then the metadata from the last accessed method will be sent when creating a new conversation. For example, if metadata is sent with the showFAQs() API, and the metadata callback is set from a background thread after the showFAQs() API call, then metadata from the metadata callback will be sent with the new conversation.
-
 
 <Admonition type="info" title="Note">
 
@@ -91,13 +94,11 @@ dashboard when customer starts a new conversation.
 
 As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
 
-Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts. 
+Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 </Admonition>
 
-
 ### Attaching metadata with API configuration {#metadata-api-config}
-
 
 <Admonition type="info" title="Note">
 
@@ -107,14 +108,13 @@ Metadata using API config is available in SDK v3.1.0 and above. Also, Metadata s
 
 The Android SDK allow adding of metadata by using Metadata object in the ApiConfig object
 
-* `showConversation`
+- `showConversation`
 
-* `showFAQs`
+- `showFAQs`
 
-* `showFAQSection`
+- `showFAQSection`
 
-* `showSingleFAQ`
-
+- `showSingleFAQ`
 
 The SDK will send data which is given as Metadata in ApiConfig for the new conversation.
 
@@ -123,8 +123,6 @@ Example:-
 <Tabs>
 
 <TabItem value="Using Metadata and ApiConfig" label="Using Metadata and ApiConfig">
-
-
 
 ```java
 
@@ -144,14 +142,10 @@ Example:-
     }
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
 
-
-
 The Android SDK also allows adding of metadata by using reserved constant key `Support.CustomMetadataKey` in the API Configuration HashMap.
-
 
 ```java
 
@@ -171,21 +165,17 @@ The Android SDK also allows adding of metadata by using reserved constant key `S
     }
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ### Attaching metadata with metadata callback {#metadata-reported-issues}
-
 
 <Admonition type="info" title="Note">
 
 Metadata should only be sent as String key-value pairs.
 
 </Admonition>
-
 
 In order to facilitate the adding of such metadata the Android SDK
 provides a method to set `MetadataCallable`, which is called right before
@@ -197,12 +187,9 @@ Developers can use the `setMetadataCallback` API to provide a MetadataCallable o
 
 Example:-
 
-
 <Tabs>
 
 <TabItem value="Using MetadataCallable" label="Using MetadataCallable">
-
-
 
 ```java
 
@@ -221,11 +208,8 @@ Example:-
     });
 ```
 
-
 </TabItem>
 <TabItem value="Using HashMap Callable" label="Using HashMap Callable">
-
-
 
 ```java
 
@@ -245,39 +229,31 @@ Example:-
     });
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
 ### Attaching tags with metadata {#metadatatags}
-
 
 <Admonition type="info" title="Note">
 
 **On tag names & compatibility**
 
-* Applicable to SDK v 2.8.0 & above.
-* Tags must be lowercase.
-* Please do ensure that the tags you send via meta data, match the tags
-that exist in the agent dashboard.
+- Applicable to SDK v 2.8.0 & above.
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, match the tags
+  that exist in the agent dashboard.
 
 </Admonition>
 
-
-<Image src="/static/books/android/metadata-tags.png"  width="half" /> 
-
+<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
 
 You can attach tags with metadata to every reported issue by passing them to `Metadata` object. You can pass an array of strings which get interpreted
 at server and added as Tags for the every issue reported.
 
-
 <Tabs>
 
 <TabItem value="Using Metadata and ApiConfig" label="Using Metadata and ApiConfig">
-
-
 
 ```java
 
@@ -297,13 +273,10 @@ at server and added as Tags for the every issue reported.
     }
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
 
-
 You can attach tags with metadata to every reported issue via a reserved key constant `Support.TagsKey` to be used with `setMetadataCallback` to pass an array of strings which get interpreted at server and added as Tags for the every issue reported.
-
 
 ```java
 
@@ -322,25 +295,20 @@ You can attach tags with metadata to every reported issue via a reserved key con
     }
 ```
 
-
 </TabItem>
 
 </Tabs>
 
-
-
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
-
 
 <Admonition type="info" title="Note">
 
 **On Custom Issue Fields keys & compatibility**
 
-* Applicable to SDK v6.3.0 & above.
-* Custom Issue Fields must be created in the Helpshift Dashboard (Settings -> Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
+- Applicable to SDK v6.3.0 & above.
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings -> Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
 
 </Admonition>
-
 
 You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a data type, and a value. The SDK allows the addition of Custom Issue Fields by using the `setCustomIssueFields` method in the ApiConfig class.
 
@@ -348,26 +316,24 @@ These Custom Issue Fields would be sent whenever a new issue is created.
 
 As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
-Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts. 
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts.
 
 Possible datatypes to be passed into the config are:
 
-|  Type             |  Comments          |
-|--------------------|-------------------|
-| "sl" | Single line string with character limit of 255 |
-| "ml"   | Multi line string with character limit of 100,000 |
-| "n" |  String representation of number. For eg.  "12345" |
-| "dd"  | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "dt"  | String representation of epoch time in milliseconds. For eg. "1505927361535" |
-| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
+| Type | Comments                                                                                                                                                      |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | Single line string with character limit of 255                                                                                                                |
+| "ml" | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 Example:-
 
 <Tabs>
 
 <TabItem value="Using ApiConfig" label="Using ApiConfig">
-
-
 
 ```java
 
@@ -389,14 +355,10 @@ Example:-
     }
 ```
 
-
 </TabItem>
 <TabItem value="Using Map" label="Using Map">
 
-
-
 The SDK also allows adding of custom issue fields by using reserved constant key `Support.CustomIssueFieldKey`in the API Configuration HashMap.
-
 
 ```java
 
@@ -417,11 +379,9 @@ The SDK also allows adding of custom issue fields by using reserved constant key
      }
 ```
 
-
 </TabItem>
 
 </Tabs>
-
 
 ## Debug logs {#debug-logs}
 
@@ -430,8 +390,8 @@ Optionally, if you want to send additional debug logs, Replace import
 have used Log statements. This will send your logs when a new issue is
 registered. `com.helpshift.support.Log` can be used as `android.util.Log`.
 
-
 ## Issue Archival {#issue-archival}
+
 From version 4.6.0, Helpshift SDK includes support for archiving issues.
 Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
 Once archived, issues cannot be reopened. This improves dashboard performance.
@@ -447,11 +407,9 @@ Applicable to SDK v4.9.0 and above
 
 </Admonition>
 
-
 You can check if the user has any active Conversation on the device with `isConversationActive`. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
 For example:
-
 
 ```java
 
@@ -462,4 +420,3 @@ For example:
     }
 
 ```
-
