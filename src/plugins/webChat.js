@@ -4,7 +4,7 @@
  */
 module.exports = function () {
   if (
-    process.env.NODE_ENV !== "production" ||
+    process.env.VERCEL_ENV !== "production" ||
     !process.env.HS_PID ||
     !process.env.HS_DOMAIN
   ) {
