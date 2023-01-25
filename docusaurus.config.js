@@ -15,11 +15,16 @@ const getDocsDirectoriesForSearchPaths = (rootPath) =>
     .filter((dir) => dir.isDirectory())
     .map((dir) => dir.name);
 
+const isEnvProduction = process.env.VERCEL_ENV === "production";
+const deployUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
   const config = {
     title: "Helpshift Developer Guide",
-    url: "https://developers.helpshift.com",
+    url: deployUrl,
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
@@ -43,7 +48,7 @@ async function createConfig() {
             sidebarPath: require.resolve("./sidebars.js"),
             routeBasePath: "/",
             remarkPlugins: [[variables, { data: variablesData }]],
-            editUrl: "https://github.com/helpshift/helpshift-docs/edit/main",
+            editUrl: "https://github.com/helpshift/helpshift-docs/edit/next",
           },
           theme: {
             customCss: require.resolve("./src/css/custom.css"),
@@ -89,19 +94,15 @@ async function createConfig() {
         metadata: [
           {
             name: "robots",
-            content:
-              process.env.AWS_BRANCH === "main"
-                ? "index,follow"
-                : "noindex,nofollow",
+            content: isEnvProduction ? "index,follow" : "noindex,nofollow",
           },
           {
             name: "og:image",
-            content:
-              "https://developers.helpshift.com/img/social/site-share-thumb.png",
+            content: `${deployUrl}/img/social/site-share-thumb.png`,
           },
           {
             name: "og:url",
-            content: "https://developers.helpshift.com",
+            content: deployUrl,
           },
           {
             name: "twitter:site",
@@ -109,12 +110,11 @@ async function createConfig() {
           },
           {
             name: "twitter:domain",
-            content: "https://developers.helpshift.com",
+            content: deployUrl,
           },
           {
             name: "twitter:image",
-            content:
-              "https://developers.helpshift.com/img/social/tw-share-thumb.png",
+            content: `${deployUrl}/img/social/tw-share-thumb.png`,
           },
           {
             name: "twitter:image:width",
