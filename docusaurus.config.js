@@ -16,21 +16,22 @@ const getDocsDirectoriesForSearchPaths = (rootPath) =>
     .map((dir) => dir.name);
 
 const PRODUCTION_URL = "https://developers.helpshift.com";
+const envIsProduction = process.env.VERCEL_ENV === "production";
+const envIsPreview = process.env.VERCEL_ENV === "preview";
 
 const getDeployUrl = () => {
-  if (process.env.VERCEL_ENV === "production") {
+  if (envIsProduction) {
     return process.env.SEO_URL || PRODUCTION_URL;
   }
 
-  if (process.env.VERCEL_ENV === "preview") {
+  if (envIsPreview) {
     return `https://${process.env.VERCEL_URL}`;
   }
 
-  // Development
+  // Development - this has no impact even if it's wrong during development
   return "http://localhost:3000";
 };
 
-const isEnvProduction = process.env.VERCEL_ENV === "production";
 const deployUrl = getDeployUrl();
 
 async function createConfig() {
@@ -107,7 +108,7 @@ async function createConfig() {
         metadata: [
           {
             name: "robots",
-            content: isEnvProduction ? "index,follow" : "noindex,nofollow",
+            content: envIsProduction ? "index,follow" : "noindex,nofollow",
           },
           {
             name: "og:image",
