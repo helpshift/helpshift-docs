@@ -1,0 +1,214 @@
+---
+sidebar_position: 20
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# SDK Configuration
+
+<Intro>
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)
+
+</Admonition>
+
+## Install time configurations
+
+### enableLogging {#enableLogging}
+
+Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in the Xcode console. Turning on logging can help developers resolve common integration issues.
+
+<div className="compact ">
+
+|         |                                          |
+| ------- | ---------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_LOGGING</code> |
+| Values  | <code>true</code>/<code>false</code>     |
+| Default | <code>false</code>                       |
+
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.ENABLE_LOGGING, true);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+### enableInAppNotification {#enableInAppNotification}
+
+If you do not want the in-app notifications support provided by the Helpshift SDK, set this flag to `false`.
+
+This behaviour is different for Android, please refer [here](/sdkx-unity/sdk-configuration-android#enable-in-app-notifications)
+
+<div className="compact ">
+
+|         |                                                     |
+| ------- | --------------------------------------------------- |
+| Flag    | <code>HelpshiftSdk.ENABLE_INAPP_NOTIFICATION</code> |
+| Values  | <code>true</code>/<code>false</code>                |
+| Default | <code>true</code>                                   |
+
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.ENABLE_INAPP_NOTIFICATION, true);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+### inAppNotificationAppearance {#inAppNotificationAppearance}
+
+Customization of the appearance of in-app notification using the flag `inAppNotificationAppearance`. This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary
+
+<div className="compact ">
+
+|              |                                                             |
+| ------------ | ----------------------------------------------------------- |
+| Flag         | <code>HelpshiftSdk.INAPP_NOTIFICATION_APPEARANCE</code>     |
+| Sub-Options: | <code>bannerBackgroundColor</code> / <code>textColor</code> |
+
+</div>
+
+#### bannerBackgroundColor {#bannerBackgroundColor}
+
+The bannerBackgroundColor represents the background color of the banner of the in-app notification. The value for this key should be a 6-characters string representing the HEX value of the color.
+
+#### textColor {#textColor}
+
+The textColor represents the text color of the text shown in the in-app notification. The value for this key should be a 6-characters string representing the HEX value of the color
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      Dictionary<string, object> inAppNotificationAppearance = new Dictionary<string, object>();
+      inAppNotificationAppearance.Add(HelpshiftSdk.INAPP_NOTIFICATION_BANNER_BACKGROUND_COLOR, "000000");
+      inAppNotificationAppearance.Add(HelpshiftSdk.INAPP_NOTIFICATION_BANNER_TEXT_COLOR, "FFFFFF");
+
+      configMap.Add(HelpshiftSdk.INAPP_NOTIFICATION_APPEARANCE, inAppNotificationAppearance);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+## Enable Contact Us {#enableContactUs}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+Possible values are `"ALWAYS"` / `"AFTER_VIEWING_FAQS"` / `"AFTER_MARKING_ANSWER_UNHELPFUL"` / `"NEVER"`.
+
+For example
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("enableContactUs", "AFTER_VIEWING_FAQS");
+      help.ShowFAQs(configMap);
+    }
+}
+```
+
+#### Best Practices
+
+- Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
+
+## Full privacy {#fullprivacy}
+
+In the `config` dictionary of `help.ShowConversation(config);` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
+
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Making sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+For example
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("fullPrivacy", "true");
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## UI Configurations {#uiConfig}
+
+This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unity/design-ios/).
+
+## Tracking {#tracking}
+
+This config represents the tracking user actions. For more information check [tracking](/sdkx-unity/tracking-ios).

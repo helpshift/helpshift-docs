@@ -1,0 +1,331 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "Or, follow these simple steps to add Helpshift in-app support to yourAndroid app right away -"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Getting Started {#getting-started}
+
+<Steps title="New to Helpshift? Try out sample projects in 3 clicks">
+  <Step
+    number="1"
+    title="Download samples"
+    subtitle="Ready to use Android projects"
+    link="https://github.com/helpshift/helpshift-android-sdk-examples/"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="Paste in your API key"
+    subtitle="A one-line change"
+    link="/android/samples#support-app"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="File your first ticket"
+    subtitle="Tap Contact Us to talk to yourself"
+    link="/android/samples#test-integration"
+    newTab={true}
+  />
+</Steps>
+
+<Intro>
+
+Or, follow these simple steps to add Helpshift in-app support to your
+Android app right away -
+
+</Intro>
+
+## Integration Guide {#integration-guide}
+
+### Version Requirements {#version-requirements}
+
+| Helpshift SDK Version | minSDKVersion | compileSDKVersion | buildToolsVersion |
+| --------------------- | ------------- | ----------------- | ----------------- |
+| >= 7.9.0              | 21            | 30                | 30                |
+| >= 7.6.0              | 21            | 29                | 29                |
+| >= 7.3.0              | 21            | 28                | 28                |
+| >= 6.2.0              | 21            | 26                | 26                |
+
+For example, update your `AndroidManifest.xml` as follows:
+
+```xml
+
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="28"
+              android:compileSDKVersion="28" android:buildToolsVersion="28" />
+
+
+```
+
+<Admonition type="danger" title="Important">
+
+- If you have released your app with `7.8.0` version, we highly recommend that you upgrade to `7.8.1` which fixes an important migration bug. Refer [here](/android/release-notes#v781).
+- If you're currently using Android SDK `v7.7.0` or `v7.7.1` in your app, please update the SDK to `v7.7.2` which contains some important bug fixes. Check release notes [here](/android/release-notes).
+- If you have released your app with Android SDK `v7.7.0` and `v7.7.1` to production, please get in touch with us via support and make sure to upgrade to `v7.7.2` asap. Apologies for any inconvenience that this has caused.
+
+</Admonition>
+
+### Download the SDK {#download-sdk}
+
+### Gradle based projects {#gradle-support}
+
+Add the following dependencies to your `build.gradle` file inside the depencencies section.
+
+```groovy
+
+    dependencies {
+        implementation 'com.android.support:design:28.0.0'
+        implementation 'com.android.support:recyclerview-v7:28.0.0'
+        implementation 'com.android.support:cardview-v7:28.0.0'
+        implementation 'com.helpshift:android-helpshift-aar:[% android.sdk_version  %]'
+    }
+
+```
+
+`design`, `cardview` and `recyclerview` library are required by the Helpshift SDK, make sure they've also been added.
+
+Helpshift SDK comes with built-in support for 47 languages. If your app supports only a subset of these languages, please follow the steps mentioned [here](/android/i18n/#language-selection).
+
+Helpshift is now ready to help you have conversations with your users!
+
+Move on to [Initializing Helpshift in your App](#initializing).
+
+---
+
+### IntelliJ/Eclipse based projects {#intellij-eclipse}
+
+If your Android project is based on IntelliJ or Eclipse, <a href="[% android.sdk_url %]">download the latest version</a> of the Android SDK.
+
+The zip file contains the Helpshift SDK in the Android Library Project
+format.
+
+- **IntelliJ Integration**: [follow the steps here](/misc/intellij-integration/).
+- **Eclipse Integration**: [follow the steps here](/misc/eclipse-integration/).
+
+---
+
+### Maven based projects {#maven-support}
+
+If your Android project is based on Maven, [follow the steps here](/misc/maven-integration/).
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app and ready to provide customer
+support and collect meaningful data about your users.
+
+### Initialize Helpshift in your App {#initializing}
+
+Helpshift uniquely identifies each registered App with a combination of 3 tokens:
+
+<div className=" compact">
+
+|                          |                                                                                                                        |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| <code>API Key</code>     | Your unique developer API key                                                                                          |
+| <code>Domain Name</code> | Your Helpshift domain name without any http: or slashes. E.g. _happyapps_ if your account is _happyapps.helpshift.com_ |
+| <code>App ID</code>      | Your App's unique ID                                                                                                   |
+
+</div>
+You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
+Select your App and _the correct platform_ from the dropdowns and copy
+the 3 tokens to be passed when initializing Helpshift.
+<Image src="/static/books/common/settings-integration.png"  width="full" />
+
+Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by doing the following.
+
+1. Initialize the `Core` class with the Helpshift service that you want to use.
+2. Call the `Core`'s `install` method.
+
+`com.helpshift.Core` is the class which encapsulates all the functions which are common to all Helpshift services.
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    import com.helpshift.Core;
+    import com.helpshift.support.Support;
+    import com.helpshift.InstallConfig;
+    import com.helpshift.exceptions.InstallException;
+    ...
+    ...
+
+    InstallConfig installConfig = new InstallConfig.Builder().build();
+    ...
+    Core.init(Support.getInstance());
+    try {
+      Core.install(this,
+                   "YOUR_API_KEY",
+                   "YOUR_DOMAIN_NAME",
+                   "YOUR_APP_ID",
+                   installConfig);
+    } catch (InstallException e) {
+      Log.e(TAG, "invalid install credentials : ", e);
+    }
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    import com.helpshift.Core;
+    import com.helpshift.support.Support;
+    ...
+    ...
+
+    HashMap config = new HashMap();
+    ...
+    Core.init(Support.getInstance());
+    try {
+      Core.install(this,
+                   "YOUR_API_KEY",
+                   "YOUR_DOMAIN_NAME",
+                   "YOUR_APP_ID",
+                   config);
+    } catch (InstallException e) {
+      Log.e(TAG, "invalid install credentials : ", e);
+    }
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="danger" title="Important">
+
+** Placing the install call **
+
+You should not place the install call anywhere other than `Application.onCreate`
+Placing it elsewhere might cause unexpected runtime problems.
+
+**HelpshiftInitializationException**
+
+From v7.4.0 & above, calling any API before the install call would throw an unchecked HelpshiftInitializationException in debug mode.
+
+** InstallException **
+
+From v4.6.0 & above, the Helpshift install call will throw InstallException in case the validation of the SDK keys fail.
+
+** Multi-process apps **
+
+If your app is a multi-process app, please visit the troubleshooting guide [here](/android/troubleshooting#multi-process-apps) to integrate the Helpshift SDK with your app.
+
+</Admonition>
+
+## Minimum supported Android version
+
+From SDK version 4.4.0 onwards, the Helpshift Android SDK requires minimum
+API level to be 14. For versions 14 and 15 you will not receive the rich
+push notifications which are only supported after android api level 16.
+
+<Admonition type="danger" title="Important">
+
+With the transition to TLSv1.2 on Sep 20,2021, connections to a Helpshift SDK via any previous TLS version will not work as expected. Specifically, this means that:
+
+- Helpshift SDKs will not work or load on lower-end Android devices (meaning, Android 4.x and earlier), because these lower-end Android versions do not support TLSv1.2.
+- End-users on lower-end Android devices will not be able to access FAQs, raise new issues, or access their past support conversations.
+- On a lower-end Android device, the mobile app that embeds a Helpshift SDK will be prevented from communicating with the SDK for any purpose. However, this disconnect will not cause any malfunction or crash on the parent application.
+
+</Admonition>
+
+## Permissions needed by Helpshift SDK
+
+The Helpshift Android SDK requires `WRITE_EXTERNAL_PERMISSION`. For SDK v6.2.0 and above this permission is optional, and you can choose to not include this permission in your app’s manifest file. The behaviour of the SDK based on whether this permission is mentioned in your manifest file is detailed [here](/android/sdk-configuration#app-permissions).
+
+## Troubleshooting {#troubleshooting}
+
+If you are having issues with Helpshift integration, head over to the [Troubleshooting](/android/troubleshooting#integration-issues) section for further information.
+
+## Additional Configuration {#additional-config}
+
+- If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
+
+```text
+
+        # For Helpshift SDK <= 4.8.1
+        -keepnames class * extends com.helpshift.support.fragments.MainFragment
+
+        # For Serializable classes
+        -keepnames class * implements java.io.Serializable
+        -keepclassmembers class * implements java.io.Serializable {
+            static final long serialVersionUID;
+            private static final java.io.ObjectStreamField[] serialPersistentFields;
+            !static !transient <fields>;
+            private void writeObject(java.io.ObjectOutputStream);
+            private void readObject(java.io.ObjectInputStream);
+            java.lang.Object writeReplace();
+            java.lang.Object readResolve();
+        }
+
+        # If the app uses support libs version 23 or below
+        -keepclassmembernames class android.support.v4.app.Fragment {
+            android.support.v4.app.FragmentManagerImpl mChildFragmentManager;
+        }
+
+        # Support design
+        -dontwarn android.support.design.**
+        -keep class android.support.design.** { *; }
+        -keep interface android.support.design.** { *; }
+        -keep public class android.support.design.R$* { *; }
+
+        # Appcompat
+        -keep public class android.support.v7.widget.** { *; }
+        -keep public class android.support.v7.internal.widget.** { *; }
+        -keep public class android.support.v7.internal.view.menu.** { *; }
+        -keep public class * extends android.support.v4.view.ActionProvider {
+            public <init>(android.content.Context);
+        }
+
+        # Cardview
+        # Based on this issue http://stackoverflow.com/questions/29679177/cardview-shadow-not-appearing-in-lollipop-after-obfuscate-with-proguard/29698051
+        -keep class android.support.v7.widget.RoundRectDrawable { *; }
+
+    Proguard rules for Android support libraries are taken from the `android-proguard-snippets` repository, which you can review [here](https://github.com/krschultz/android-proguard-snippets)
+
+    Helpshift Android SDK **v2.8.2 and above** is not pre-obfuscated with Proguard. To shrink & obfuscate the Helpshift SDK, we recommend you use this Proguard configuration in your project.
+    /.notes/
+
+    Proguard is recommended for shrinking, optimizing, and
+    obfuscating your code by removing unused code and renaming classes,
+    fields, and methods with semantically obscured names. The result is
+    a smaller sized APK file that is more difficult to reverse
+    engineer. For more information refer
+    [Proguard Documentation](http://developer.android.com/tools/help/proguard.html)
+
+```
+
+- In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
+
+        <path id="helpshift-classpath">
+          <fileset dir="<path/to/Helpshift-SDK/libs>">
+            <include name="Helpshift.jar"/>
+          </fileset>
+        </path>
+        <java classname="com.helpshift.HSPostCompileCheck" failonerror="true">
+          <classpath refid="helpshift-classpath"/>
+          <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
+        </java>

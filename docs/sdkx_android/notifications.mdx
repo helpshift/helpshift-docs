@@ -1,0 +1,274 @@
+---
+sidebar_position: 60
+title: Notifications
+description: "Configure Push notifications "
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Notifications {#notifications}
+
+<Intro>
+
+Configure Push notifications
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
+
+</Admonition>
+
+## Push notifications via Helpshift {#push-via-helpshift}
+
+<Image
+  src="/static/books/sdkx_android/app_notification.png"
+  width="half"
+  alt="urbanAirshipNotif.png"
+/>{" "}
+
+Helpshift allows you to send Push notifications when an agent replies to a conversation.
+
+### Prerequisites {#gcm-prerequisites}
+
+Implement FCM push in your app.
+
+For FCM, refer to the
+[Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) documentation.
+
+### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
+
+To enable the Helpshift system to send push notifications to your users
+you will have to add an **Android** as a platform in your app _(if you have not added already)_. And then click on the _push notifications_ option.
+
+<Image
+  src="/static/books/helpshiftx/add_android_platform.png"
+  width="full"
+/>{" "}
+
+Enter your FCM key credentials per app, via the
+**Settings page > App listing in the left navigation > Scroll down to Push
+Notifications** settings section for the app.
+
+<Image src="/static/books/helpshiftx/add_fcm_token.png" width="full" />{" "}
+
+For FCM users, the API key can be found at your
+[Firebase API Console](https://console.firebase.google.com/)
+
+<Image src="/static/books/android/fcm_console.png" width="full" />{" "}
+
+<br />
+
+### Configure SDK {#configure-sdkx-android}
+
+1. Send the device registration id to Helpshift via the `Helpshift.registerDeviceToken` API
+
+```java
+
+        public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+        // ...
+        @Override
+        public void onNewToken(String newToken) {
+          // your logic to save the token here for the app
+          Helpshift.registerPushToken(newToken);
+        }
+      }
+
+```
+
+2. Using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `Helpshift.handlePush` API which takes a Map argument.
+
+```java
+
+        @Override
+        public void onMessageReceived(RemoteMessage message) {
+          Map<String, String> data = message.getData();
+          String origin = data.get("origin");
+          if (origin != null && origin.equals("helpshift")) {
+            Helpshift.handlePush(data);
+          }
+        }
+
+
+
+```
+
+## In-app notifications {#in-app-notifications}
+
+In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
+
+These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/sdkx_android/support-tools#conversation-view) when they tap on the notification.
+
+<Centered >
+
+![](/static/books/sdkx_android/notification.png)
+
+</Centered>
+
+<Admonition type="info" title="Note">
+
+If the FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
+
+</Admonition>
+
+## Customizing notification icons {#notification-icon}
+
+By default the application icon is used as the notification icon. You can customize the notification icons using the config in the `install` call.
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationIcon", R.drawable.notification_icon);
+        configurations.put("notificationLargeIcon", R.drawable.notification_large_icon);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Customizing notification sound {#notificationSound}
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
+
+For example:
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationSoundId",  R.raw.notification_sound);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+```
+
+## Customizing notification channels {#notificationChannels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
+
+Example:
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("notificationChannelId",  "your channel name here");
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Configuring in-app notifications {#in-app}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
+
+- `Flag:` enableInAppNotification
+- `Values:` true/false
+- `Default:` true
+
+Example:
+
+```java
+
+    public class MainApplication extends Application {
+
+      @Override
+      public void onCreate() {
+        super.onCreate();
+
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put("enableInAppNotification",  false);
+
+        // Install call
+        Helpshift.install(this,
+                          "<PLATFORM_ID>",
+                          "<DOMAIN>",
+                          configurations);
+      }
+    }
+
+
+```
+
+## Showing notification count when replies are sent to the user {#showing-notification-count}
+
+To fetch unread messages count from the server you can call `requestUnreadMessageCount(boolean shouldFetchFromServer)` API. This API will return unread messages count via delegate.
+Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.
+
+```java
+
+    private void updateAppBadgeCount(){
+        Helpshift.requestUnreadMessageCount(true)
+    }
+
+    // ...
+    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+      @Override
+      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+        switch(eventName){
+          case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
+            int count = (int) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT);
+            boolean fromCache = (boolean) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE);
+            if (fromCache) {
+              Log.d("Notification Count", "local" + count);
+            } else {
+              Log.d("Notification Count", "server" + count);
+            }
+        }
+      }
+    // ...
+
+
+```
+
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

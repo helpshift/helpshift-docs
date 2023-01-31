@@ -1,0 +1,1182 @@
+---
+sidebar_position: 10
+title: Impact Analysis
+description: "The following numbers are representative of a skeletal sample appintegrated with the Helpshift Unity plugin."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Impact Analysis {#performance}
+
+<Intro>
+
+The following numbers are representative of a skeletal sample app
+integrated with the Helpshift Unity plugin.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+**App Launch Time**
+
+Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
+
+</Admonition>
+
+## v5.6.0 {#integration-impact-560}
+
+### SDK payload in your app {#payload-size-560}
+
+The Helpshift Android plugin will add 1.32 MB to your application's release APK.
+The 1.32 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-560}
+
+The Helpshift Android SDK will add 8510 methods to your dex:
+
+| Package                                    | Method Count |
+| ------------------------------------------ | -----------: |
+| **com.helpshift**                          |       `8510` |
+| Required Android Support Libraries v26.0.2 |      `16154` |
+
+### Memory usage {#memory-usage-550}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.74` |
+| showFAQs                                     |                    `4.61` |
+| showFAQSection                               |                    `5.34` |
+| showSingleFAQ                                |                    `3.61` |
+| showConversation (with no open Conversation) |                    `4.79` |
+| showConversation (with an open Conversation) |                    `5.15` |
+| showConversation (conversational mode)       |                    `3.14` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.5.0 {#integration-impact-550}
+
+### SDK payload in your app {#payload-size-550}
+
+The Helpshift Android plugin will add 1.30 MB to your application's release APK.
+The 1.30 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-550}
+
+The Helpshift Android SDK will add 8334 methods to your dex:
+
+| Package                                    | Method Count |
+| ------------------------------------------ | -----------: |
+| **com.helpshift**                          |       `8334` |
+| Required Android Support Libraries v26.0.2 |      `16154` |
+
+### Memory usage {#memory-usage-550}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.64` |
+| showFAQs                                     |                    `4.12` |
+| showFAQSection                               |                    `5.89` |
+| showSingleFAQ                                |                    `3.17` |
+| showConversation (with no open Conversation) |                    `4.87` |
+| showConversation (with an open Conversation) |                    `5.45` |
+| showConversation (conversational mode)       |                    `3.29` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.5.0-withCampaigns {#integration-impact-withCampaigns-550}
+
+### SDK payload in your app {#payload-size-withCampaigns-550}
+
+The Helpshift Android SDK will add 1.42 MB to your application's release APK.
+The 1.42 MB size excludes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+
+### Method count {#methods-count-550}
+
+The Helpshift Android SDK will add 9435 methods to your dex:
+
+| Package                                                           | Method Count |
+| ----------------------------------------------------------------- | -----------: |
+| **com.helpshift**                                                 |       `9435` |
+| **com.android.support:design:** (includes recyclerview, cardview) |      `16154` |
+
+### Memory usage {#memory-usage-550}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.67` |
+| showFAQs                                     |                    `5.04` |
+| showFAQSection                               |                    `4.69` |
+| showSingleFAQ                                |                    `4.38` |
+| showConversation (with no open Conversation) |                    `4.71` |
+| showConversation (with an open Conversation) |                    `4.81` |
+| showConversation (conversational mode)       |                    `3.84` |
+| showInbox (Campaigns)                        |                    `1.22` |
+| showMessage (Campaigns)                      |                    `4.79` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.4.0 {#integration-impact-540}
+
+### SDK payload in your app {#payload-size-540}
+
+The Helpshift Android plugin will add 1.24 MB to your application's release APK.
+The 1.24 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-540}
+
+The Helpshift Android SDK will add 8461 methods to your dex:
+
+| Package                                    | Method Count |
+| ------------------------------------------ | -----------: |
+| **com.helpshift**                          |       `8461` |
+| Required Android Support Libraries v26.0.2 |      `16154` |
+
+### Memory usage {#memory-usage-540}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.61` |
+| showFAQs                                     |                    `4.26` |
+| showFAQSection                               |                    `5.72` |
+| showSingleFAQ                                |                    `3.36` |
+| showConversation (with no open Conversation) |                    `4.51` |
+| showConversation (with an open Conversation) |                    `5.26` |
+| showConversation (conversational mode)       |                    `3.12` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 5 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.4.0-withCampaigns {#integration-impact-withCampaigns-540}
+
+### SDK payload in your app {#payload-size-withCampaigns-540}
+
+The Helpshift Android SDK will add 1.34 MB to your application's release APK.
+The 1.34 MB size excludes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+
+### Method count {#methods-count-540}
+
+The Helpshift Android SDK will add 9410 methods to your dex:
+
+| Package                                                           | Method Count |
+| ----------------------------------------------------------------- | -----------: |
+| **com.helpshift**                                                 |       `9410` |
+| **com.android.support:design:** (includes recyclerview, cardview) |      `16154` |
+
+### Memory usage {#memory-usage-540}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.57` |
+| showFAQs                                     |                    `5.21` |
+| showFAQSection                               |                    `4.77` |
+| showSingleFAQ                                |                    `4.47` |
+| showConversation (with no open Conversation) |                    `4.62` |
+| showConversation (with an open Conversation) |                    `4.91` |
+| showConversation (conversational mode)       |                    `3.74` |
+| showInbox (Campaigns)                        |                    `1.32` |
+| showMessage (Campaigns)                      |                    `4.81` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 5 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.3.0 {#integration-impact-530}
+
+### SDK payload in your app {#payload-size-530}
+
+The Helpshift Android plugin will add 1.2 MB to your application's release APK.
+The 1.2 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-530}
+
+The Helpshift Android SDK will add 8080 methods to your dex:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `8080` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### Memory usage {#memory-usage-530}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.59` |
+| showFAQs                                     |                    `4.22` |
+| showFAQSection                               |                    `4.87` |
+| showSingleFAQ                                |                    `3.76` |
+| showConversation (with no open Conversation) |                    `4.67` |
+| showConversation (with an open Conversation) |                    `5.82` |
+| showConversation (conversational mode)       |                    `3.61` |
+
+<Admonition type="info" title="Note">
+
+Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.3.0-withCampaigns {#integration-impact-withCampaigns-530}
+
+### SDK payload in your app {#payload-size-withCampaigns-530}
+
+The Helpshift Android SDK will add 1.3 MB to your application's release APK.
+The 1.3 MB size excludes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+
+### Method count {#methods-count-withCampaigns-530}
+
+The Helpshift Android SDK will add 9051 methods to your dex:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `9051` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### Memory usage {#memory-usage-withCampaigns-530}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.61` |
+| showFAQs                                     |                    `5.30` |
+| showFAQSection                               |                    `4.37` |
+| showSingleFAQ                                |                    `4.23` |
+| showConversation (with no open Conversation) |                    `5.02` |
+| showConversation (with an open Conversation) |                    `5.59` |
+| showConversation (conversational mode)       |                    `3.54` |
+| showInbox (Campaigns)                        |                    `1.12` |
+| showMessage (Campaigns)                      |                    `4.59` |
+
+<Admonition type="info" title="Note">
+
+Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.2.0 {#integration-impact-520}
+
+### SDK payload in your app {#payload-size-520}
+
+The Helpshift Android plugin will add 1.23 MB to your application's release APK.
+The 1.23 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-520}
+
+The Helpshift Android SDK will add 7167 methods to your application:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `7167` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### SDK Memory usage {#memory-usage-520}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.56` |
+| showFAQs                                     |                    `4.23` |
+| showFAQSection                               |                    `4.89` |
+| showSingleFAQ                                |                    `3.71` |
+| showConversation (with no open Conversation) |                    `4.39` |
+| showConversation (with an open Conversation) |                    `5.75` |
+| showConversation (Conversational mode)       |                    `3.59` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.2.0-withCampaigns {#integration-impact-withCampaigns-520}
+
+### SDK payload in your app {#payload-size-withCampaigns-520}
+
+The Helpshift Android plugin will add 1.43 MB to your application's release APK.
+The 1.43 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-withCampaigns-520}
+
+The Helpshift Android SDK will add 8116 methods to your application:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `8116` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### SDK Memory usage {#memory-usage-withCampaigns-520}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.58` |
+| showFAQs                                     |                    `5.34` |
+| showFAQSection                               |                    `4.39` |
+| showSingleFAQ                                |                    `4.27` |
+| showConversation (with no open Conversation) |                    `4.58` |
+| showConversation (with an open Conversation) |                    `5.26` |
+| showConversation (Conversational mode)       |                    `3.54` |
+| showInbox (Campaigns)                        |                    `1.12` |
+| showMessage (Campaigns)                      |                    `4.59` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.1.0 {#integration-impact-510}
+
+### SDK payload in your app {#payload-size-510}
+
+The Helpshift Android plugin will add 1.20 MB to your application's release APK.
+The 1.20 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-510}
+
+The Helpshift Android SDK will add 7233 methods to your application:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `7233` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### SDK Memory usage {#memory-usage-510}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.50` |
+| showFAQs                                     |                    `4.11` |
+| showFAQSection                               |                    `4.91` |
+| showSingleFAQ                                |                    `3.75` |
+| showConversation (with no open Conversation) |                    `4.34` |
+| showConversation (with an open Conversation) |                    `5.68` |
+| showConversation (Conversational mode)       |                    `3.52` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.1.0-withCampaigns {#integration-impact-withCampaigns-510}
+
+### SDK payload in your app {#payload-size-withCampaigns-510}
+
+The Helpshift Android plugin will add 1.40 MB to your application's release APK.
+The 1.40 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-withCampaigns-510}
+
+The Helpshift Android SDK will add 8201 methods to your application:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `8201` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### SDK Memory usage {#memory-usage-withCampaigns-510}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.53` |
+| showFAQs                                     |                    `5.21` |
+| showFAQSection                               |                    `4.31` |
+| showSingleFAQ                                |                    `4.15` |
+| showConversation (with no open Conversation) |                    `4.40` |
+| showConversation (with an open Conversation) |                    `5.80` |
+| showConversation (Conversational mode)       |                    `3.48` |
+| showInbox (Campaigns)                        |                    `1.30` |
+| showMessage (Campaigns)                      |                    `4.20` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.0.0 {#integration-impact-500}
+
+### SDK payload in your app {#payload-size-500}
+
+The Helpshift Android plugin will add 1.80 MB to your application's release APK.
+The 1.80 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-500}
+
+The Helpshift Android SDK will add 7041 methods to your application:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `7041` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### SDK Memory usage {#memory-usage-500}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.47` |
+| showFAQs                                     |                    `4.11` |
+| showFAQSection                               |                    `4.91` |
+| showSingleFAQ                                |                    `3.75` |
+| showConversation (with no open Conversation) |                    `4.52` |
+| showConversation (with an open Conversation) |                    `5.75` |
+| showConversation (Conversational mode)       |                    `3.43` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.0.0-withCampaigns {#integration-impact-withCampaigns-500}
+
+### SDK payload in your app {#payload-size-withCampaigns-500}
+
+The Helpshift Android plugin will add 2.00 MB to your application's release APK.
+The 2.00 MB size excludes the size impact of Android Support Libraries used by Helpshift plugin (design, recycler-view and card-view).
+
+### Method count {#methods-count-withCampaigns-500}
+
+The Helpshift Android SDK will add 8006 methods to your application:
+
+| Package                                        | Method Count |
+| ---------------------------------------------- | -----------: |
+| **com.helpshift**                              |       `8006` |
+| **Required Android Support Libraries v26.0.2** |      `16154` |
+
+### SDK Memory usage {#memory-usage-withCampaigns-500}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.51` |
+| showFAQs                                     |                    `5.21` |
+| showFAQSection                               |                    `4.31` |
+| showSingleFAQ                                |                    `4.15` |
+| showConversation (with no open Conversation) |                    `4.61` |
+| showConversation (with an open Conversation) |                    `5.23` |
+| showConversation (Conversational mode)       |                    `3.42` |
+| showInbox (Campaigns)                        |                    `1.20` |
+| showMessage (Campaigns)                      |                    `4.12` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+<hr />
+### Secondary Dex specifications
+
+For tackling the method count limit of 65536 on android, we have introduced Helpshift SDK dex file.
+Helpshift SDK loads its own dex file in a background thread without affecting the application performance.
+
+The dex will be loaded on the first call to HelpshiftSdk.getInstance() in the application's lifecycle.
+
+<Admonition type="info" title="Note">
+
+Applies to v2.3.1 to v4.1.0.
+
+From v5.0.0, secondary dex loading is not used by Helpshift plugin.
+
+</Admonition>
+
+### Unified dex specifications {#unified-dex-specs}
+
+<Admonition type="info" title="Note">
+
+Applies to v2.3.1 to v4.1.0.
+
+From v5.0.0, secondary dex loading is not used by Helpshift plugin.
+
+</Admonition>
+
+Dex loading generally takes around 8-9 seconds on the very first load. (i.e the first time HelpshiftSdk.getInstance() is called after app install)
+For subsequent loads (i.e on first HelpshiftSdk.getInstance() call on app restarts) it is cached and would take around 100-150ms.
+
+If your app is already using multidex setup, Helpshift SDK will not affect it since it is independent of the
+other dex files.
+
+#### Integration impact :
+
+1. Since unified dex package already includes android support libraries, it is assumed that no other plugin uses the android support libraries.
+1. Remove the previous Helpshift package from your Unity project as it may duplicate code between dex and android support libraries. After importing the new unity package make sure there are no jar files in the following locations :
+   1. _/Assets/Plugins/Android/appcompat/libs_
+   1. _/Assets/Plugins/Android/cardview/libs_
+   1. _/Assets/Plugins/Android/recyclerview/libs_
+   1. _/Assets/Plugins/Android/design/libs_
+1. After importing the unity package make sure that the following jar file exists :
+   1. _/Assets/Plugins/Android/helpshift/libs/helpshiftloader.jar_
+   1. _/Assets/Plugins/Android/helpshift/helpshiftnotificationhandler.jar_
+1. After importing the unity package, make sure that the dex file exists at
+   _/Assets/Plugins/Android/assets/helpshift/helpshift_classes.dex_
+1. No modifications to existing API signatures.
+
+### Helpshift SDK-only dex specifications {#hs-only-dex-specs}
+
+<Admonition type="info" title="Note">
+
+Applies to v2.3.1 to v4.1.0.
+
+From v5.0.0, secondary dex loading is not used by Helpshift plugin.
+
+</Admonition>
+
+Dex loading generally takes around 2-3 seconds on the very first load. (i.e the first time HelpshiftSdk.getInstance() is called after app install)
+For subsequent loads (i.e on first HelpshiftSdk.getInstance() call on app restarts) it is cached and would take around 100-150ms.
+
+If your app is already using multidex setup, Helpshift SDK will not affect it since it is independent of the
+other dex files.
+
+#### Integration impact :
+
+1. Remove the previous Helpshift package from your Unity project.
+1. After importing the unity package make sure that the following jar file exists :
+   1. _/Assets/Plugins/Android/helpshift/libs/helpshiftloader.jar_
+   1. _/Assets/Plugins/Android/helpshift/helpshiftnotificationhandler.jar_
+1. After importing the unity package, make sure that the dex file exists at
+   _/Assets/Plugins/Android/assets/helpshift/helpshift_classes.dex_
+1. If android support libraries are used by any other plugin then you can deselect the required libraires when importing the unity package.
+1. No modifications to existing API signatures.
+
+## v4.1.0 {#integration-impact-410}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 26.0.2)
+   1. support-v4 split libraries (Version 26.0.2)
+   1. support-vector-drawable (Version 26.0.2)
+   1. Cardview library. (Version 26.0.2)
+   1. Recyclerview library. (Version 26.0.2)
+   1. Design library. (Version 26.0.2)
+1. File size : 3.8MB
+1. Secondary dex file method count : 27353
+1. Helpshift SDK impact on the application's dex count: 175
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.4 MB
+1. Secondary dex file method count : 9091
+1. Helpshift SDK impact on the application's dex count: 175
+
+The Helpshift Unity SDK for Android will add 3.0 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-410}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.37` |
+| showFAQs                                     |                    `4.61` |
+| showFAQSection                               |                    `4.71` |
+| showSingleFAQ                                |                    `3.15` |
+| showConversation (with no open Conversation) |                    `4.20` |
+| showConversation (with an open Conversation) |                    `5.10` |
+| showConversation (Conversational mode)       |                    `3.83` |
+| showInbox (Campaigns)                        |                    `5.50` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v4.0.0 {#integration-impact-400}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 26.0.2)
+   1. support-v4 split libraries (Version 26.0.2)
+   1. support-vector-drawable (Version 26.0.2)
+   1. Cardview library. (Version 26.0.2)
+   1. Recyclerview library. (Version 26.0.2)
+   1. Design library. (Version 26.0.2)
+1. File size : 3.7MB
+1. Secondary dex file method count : 27353
+1. Helpshift SDK impact on the application's dex count: 175
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.3 MB
+1. Secondary dex file method count : 8596
+1. Helpshift SDK impact on the application's dex count: 175
+
+The Helpshift Unity SDK for Android will add 3.0 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-400}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.37` |
+| showFAQs                                     |                    `8.61` |
+| showFAQSection                               |                    `7.13` |
+| showSingleFAQ                                |                    `7.15` |
+| showConversation (with no open Conversation) |                    `7.10` |
+| showConversation (with an open Conversation) |                    `7.60` |
+| showConversation (Conversational mode)       |                    `7.83` |
+| showInbox (Campaigns)                        |                    `5.50` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v3.0.0 {#integration-impact-300}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.3MB
+1. Secondary dex file method count : 27002
+1. Helpshift SDK impact on the application's dex count: 168
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.1 MB
+1. Secondary dex file method count : 7469
+1. Helpshift SDK impact on the application's dex count: 168
+
+The Helpshift Unity SDK for Android will add 2.8 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-300}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.37` |
+| showFAQs                                     |                    `8.61` |
+| showFAQSection                               |                    `7.13` |
+| showSingleFAQ                                |                    `7.40` |
+| showConversation (with no open Conversation) |                    `7.15` |
+| showConversation (with an open Conversation) |                    `7.45` |
+| showInbox (Campaigns)                        |                    `5.50` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.9.1 {#integration-impact-291}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.3MB
+1. Secondary dex file method count : 27002
+1. Helpshift SDK impact on the application's dex count: 168
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.1 MB
+1. Secondary dex file method count : 7469
+1. Helpshift SDK impact on the application's dex count: 168
+
+The Helpshift Unity SDK for Android will add 2.8 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-291}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.37` |
+| showFAQs                                     |                    `8.61` |
+| showFAQSection                               |                    `7.13` |
+| showSingleFAQ                                |                    `7.40` |
+| showConversation (with no open Conversation) |                    `7.15` |
+| showConversation (with an open Conversation) |                    `7.45` |
+| showInbox (Campaigns)                        |                    `5.50` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.9.0 {#integration-impact-290}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.3MB
+1. Secondary dex file method count : 26999
+1. Helpshift SDK impact on the application's dex count: 168
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.1 MB
+1. Secondary dex file method count : 7466
+1. Helpshift SDK impact on the application's dex count: 168
+
+The Helpshift Unity SDK for Android will add 2.8 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-290}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.95` |
+| showFAQs                                     |                    `3.67` |
+| showFAQSection                               |                    `3.18` |
+| showSingleFAQ                                |                    `2.84` |
+| showConversation (with no open Conversation) |                    `3.01` |
+| showConversation (with an open Conversation) |                    `4.38` |
+| showInbox (Campaigns)                        |                    `2.43` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.8.1 {#integration-impact-281}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.3 MB
+1. Method count : 27200
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.1 MB
+1. Method count : 7641
+
+The Helpshift Unity SDK for Android will add 2.8 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-281}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `1.00` |
+| showFAQs                                     |                    `3.90` |
+| showFAQSection                               |                    `5.13` |
+| showSingleFAQ                                |                    `4.01` |
+| showConversation (with no open Conversation) |                    `2.94` |
+| showConversation (with an open Conversation) |                    `4.30` |
+| showInbox (Campaigns)                        |                    `2.30` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.8.0 {#integration-impact-280}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.3 MB
+1. Method count : 27200
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 1.1 MB
+1. Method count : 7641
+
+The Helpshift Unity SDK for Android will add 2.8 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-280}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `1.00` |
+| showFAQs                                     |                    `3.90` |
+| showFAQSection                               |                    `5.13` |
+| showSingleFAQ                                |                    `4.01` |
+| showConversation (with no open Conversation) |                    `2.94` |
+| showConversation (with an open Conversation) |                    `4.30` |
+| showInbox (Campaigns)                        |                    `2.30` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.7.0 {#integration-impact-270}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.0 MB
+1. Method count : 25453
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 832 kB
+1. Method count : 5857
+
+The Helpshift Unity SDK for Android will add 3 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-270}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `1.00` |
+| showFAQs                                     |                    `4.50` |
+| showFAQSection                               |                    `3.40` |
+| showSingleFAQ                                |                    `3.53` |
+| showConversation (with no open Conversation) |                    `3.60` |
+| showConversation (with an open Conversation) |                    `4.23` |
+| showInbox (Campaigns)                        |                    `2.35` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.6.1 {#integration-impact-261}
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.0 MB
+1. Method count : 24637
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 749 kB
+1. Method count : 4661
+
+The Helpshift Unity SDK for Android will add 3 MB to your application apk.
+
+### SDK Memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `1.00` |
+| showFAQs                                     |                    `3.65` |
+| showFAQSection                               |                    `2.11` |
+| showSingleFAQ                                |                    `2.20` |
+| showConversation (with no open Conversation) |                    `2.12` |
+| showConversation (with an open Conversation) |                    `2.10` |
+| showInbox (Campaigns)                        |                    `0.66` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.5.0 {#integration-impact-250}
+
+### Integration impact
+
+If you are upgrading from older versions of the Helpshift Unity package then please remove the following folders from `<project path>/Assets/Plugins/Android`
+
+1. appcompat
+1. design
+1. cardview
+1. recyclerview
+
+This version is packaged with required android support libs v23.4.0 and is also tested with Android Nougat devices.
+
+<Admonition type="info" title="Note">
+
+If the developer wants to integrate with android support libs 24.x, there are reported issues on pre-lolipop devices
+Refer [this blog](https://medium.com/@chrisbanes/appcompat-v23-2-age-of-the-vectors-91cbafa87c88#.zm0nvq4xu) and the [issue here](http://stackoverflow.com/questions/35622438/update-android-support-library-to-23-2-0-cause-error-xmlpullparserexception-bin).
+
+Unity does not support android build for the vector changes introduced in 24.x version. Refer [here](http://answers.unity3d.com/questions/1252014/unity-android-build-support-for-support-v7-v24xx.html)
+
+Helpshift Unity plugin is tested with 24.x support lib version but does not work on pre-lollipop devices because of the Unity android build incompatibility.
+
+</Admonition>
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library support-v7 (Version 23.4.0)
+   1. support-v4 (Version 23.4.0)
+   1. support-vector-drawable (Version 23.4.0)
+   1. Cardview library. (Version 23.4.0)
+   1. Recyclerview library. (Version 23.4.0)
+   1. Design library. (Version 23.4.0)
+1. File size : 3.0 MB
+1. Method count : 24637
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 760 kB
+1. Method count : 5454
+
+The Helpshift Unity SDK for Android will add 2.7 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-250}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `2.08` |
+| showFAQs                                     |                    `7.12` |
+| showFAQSection                               |                     `4.4` |
+| showSingleFAQ                                |                    `4.73` |
+| showConversation (with no open Conversation) |                    `3.79` |
+| showConversation (with an open Conversation) |                    `6.84` |
+| showInbox (Campaigns)                        |                    `1.70` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Moto G4 Plus running Android 6.0.1. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v2.4.0
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   1. Appcompat library i.e android-support-v4 and android-support-v7. (Version 23.0.1)
+   1. Cardview library. (Version 23.0.1)
+   1. Recyclerview library. (Version 23.0.1)
+   1. Design library. (Version 23.0.1)
+1. File size : 2.9 MB
+1. Method count : 24913
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 737 kB
+1. Method count : 5283
+
+The Helpshift Unity SDK for Android will add 2.5 MB to your application apk.
+
+### SDK Memory usage {#memory-usage-240}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `2.64` |
+| showFAQs                                     |                    `8.00` |
+| showFAQSection                               |                    `6.19` |
+| showSingleFAQ                                |                    `6.53` |
+| showConversation (with no open Conversation) |                    `4.86` |
+| showConversation (with an open Conversation) |                    `5.63` |
+| showInbox (Campaigns)                        |                    `1.63` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.3.1
+
+### Unified SDK dex details :
+
+1. The dex file includes :
+   1. Helpshift SDK.
+   2. Appcompat library i.e android-support-v4 and android-support-v7. (Version 23.0.1)
+   3. Cardview library. (Version 23.0.1)
+   4. Recyclerview library. (Version 23.0.1)
+   5. Design library. (Version 23.0.1)
+1. File size : 2.8 MB
+1. Method count : 23903
+
+### Helpshift SDK-only dex details :
+
+1. The dex file includes only Helpshift SDK code.
+1. File size : 726 kB
+1. Method count : 5227
+
+The Helpshift Unity SDK for Android will add 2.5 MB to your application apk.
+
+### SDK memory usage {#memory-usage-231}
+
+Memory usage for the SDK support screen launches.
+
+| Support API launch                                   | Memory Usage (approx. MB) |
+| ---------------------------------------------------- | ------------------------- |
+| showConversation (with no Conversation)              | 5.18                      |
+| showConversation (with already running Conversation) | 6.02                      |
+| showFAQs                                             | 5.99                      |
+| showFAQSection                                       | 7.15                      |
+| showSingleFAQ                                        | 6.97                      |
+| showInbox (Campaigns)                                | 1.58                      |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v2.2.0-support
+
+The Helpshift Unity SDK for Android will add 581 KB to your application apk.
+
+### SDK memory usage {#memory-usage-220}
+
+Memory usage for the SDK support screen launches.
+
+| Support API launch                                   | Memory Usage (approx. MB) |
+| ---------------------------------------------------- | ------------------------- |
+| showConversation (with no Conversation)              | 1.1                       |
+| showConversation (with already running Conversation) | 0.63                      |
+| showFAQs                                             | 8.25                      |
+| showFAQSection                                       | 7.91                      |
+| showSingleFAQ                                        | 2.07                      |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>

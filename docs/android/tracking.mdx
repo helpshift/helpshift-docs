@@ -1,0 +1,422 @@
+---
+sidebar_position: 90
+title: Tracking
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Tracking {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+</Intro>
+
+## Name and email {#name-and-email}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.0
+
+It is expected that developers will pass the Name, Email or User Identifier using the Login API `<link to User Identification>` going forward.
+
+Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
+
+</Admonition>
+
+## User Identifier {#user-id}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.0
+
+It is expected that developers will pass the Name, Email or User Identifier using the [Login API](/android/users#logging-in-users) going forward.
+
+Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
+
+</Admonition>
+
+## Multi Login {#multi-login}
+
+Details on User management are available [here](/android/users)
+
+## App usage {#app-usage}
+
+Breadcrumbs will help you track events or user actions and when user starts a new conversation, these breadcrumbs can be seen along with the conversation in the admin site. To leave breadcrumbs can use `leaveBreadCrumb:`
+
+```.java
+Support.leaveBreadCrumb("Went to Preferences Screen");
+```
+
+Breadcrumbs will be collected within the set breadcrumb limit. This is set in the **SDK Configurations** section for app settings in the agent dashboard.
+Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs queue, please use the `clearBreadCrumbs` API call.
+
+```.java
+Support.clearBreadCrumbs();
+```
+
+## Attaching metadata to conversations {#metadata}
+
+You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation.
+You can attach metadata to every new conversation in one of two ways:
+
+- [API configuration](#metadata-api-config)
+- [Metadata callback](#metadata-reported-issues)
+
+In case both methods are used, and then the metadata from the last accessed method will be sent when creating a new conversation. For example, if metadata is sent with the showFAQs() API, and the metadata callback is set from a background thread after the showFAQs() API call, then metadata from the metadata callback will be sent with the new conversation.
+
+<Admonition type="info" title="Note">
+
+While metadata can be set anytime, it will only be sent to the agent
+dashboard when customer starts a new conversation.
+
+As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
+
+Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+
+</Admonition>
+
+### Attaching metadata with API configuration {#metadata-api-config}
+
+<Admonition type="info" title="Note">
+
+Metadata using API config is available in SDK v3.1.0 and above. Also, Metadata should only be sent as String key-value pairs.
+
+</Admonition>
+
+The Android SDK allow adding of metadata by using Metadata object in the ApiConfig object
+
+- `showConversation`
+
+- `showFAQs`
+
+- `showFAQSection`
+
+- `showSingleFAQ`
+
+The SDK will send data which is given as Metadata in ApiConfig for the new conversation.
+
+Example:-
+
+<Tabs>
+
+<TabItem value="Using Metadata and ApiConfig" label="Using Metadata and ApiConfig">
+
+```java
+
+    String[] tags = new String[]{"feedback", "paid user"};
+
+    HashMap<String, Object> userData = new HashMap<>();
+    userData.put("usertype", "paid");
+    userData.put("level", "7");
+    userData.put("score", "12345");
+    Metadata metadata = new Metadata(userData, tags);
+
+    private void showHelp () {
+      ApiConfig apiConfig = new ApiConfig.Builder()
+                             .setCustomMetadata(metadata)
+                             .build();
+      Support.showFAQs(MainActivity.this, apiConfig);
+    }
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+The Android SDK also allows adding of metadata by using reserved constant key `Support.CustomMetadataKey` in the API Configuration HashMap.
+
+```java
+
+    String [] tags = new String[]{"feedback", "paid user"};
+
+    HashMap customMetadata = new HashMap();
+    customMetadata.put("usertype","paid");
+    customMetadata.put("level","7");
+    customMetadata.put("score","12345");
+    customMetadata.put(Support.TagsKey, tags);
+
+    private void showHelp() {
+        HashMap config = new HashMap ();
+        config.put ("enableContactUs", preferences.getBoolean("enableContactUs", true));
+        config.put(Support.CustomMetadataKey, customMetadata);
+        Support.showFAQs(MainActivity.this, config);
+    }
+```
+
+</TabItem>
+
+</Tabs>
+
+### Attaching metadata with metadata callback {#metadata-reported-issues}
+
+<Admonition type="info" title="Note">
+
+Metadata should only be sent as String key-value pairs.
+
+</Admonition>
+
+In order to facilitate the adding of such metadata the Android SDK
+provides a method to set `MetadataCallable`, which is called right before
+sending the new conversation message to agent dashboard. The SDK will send
+along the data returned from this callable as metadata for the reported
+issue.
+
+Developers can use the `setMetadataCallback` API to provide a MetadataCallable object with call method implemented to return an object of `Metadata` containing the key-value pairs and tags which make up the metadata.
+
+Example:-
+
+<Tabs>
+
+<TabItem value="Using MetadataCallable" label="Using MetadataCallable">
+
+```java
+
+    import com.helpshift.support.MetadataCallable;
+
+    Support.setMetadataCallback (new MetadataCallable (){
+      public Metadata call() {
+        HashMap<String, Object> userMetadata = new HashMap<>();
+        userMetadata.put("name", "John");
+        userMetadata.put("email", "john@example.com");
+        userMetadata.put("level", gameObject.getLevel());
+        userMetadata.put("score", gameObject.getScore());
+        String[] tags = new String[]{"feedback", "paid user"};
+        return new Metadata(userMetadata, tags);
+      }
+    });
+```
+
+</TabItem>
+<TabItem value="Using HashMap Callable" label="Using HashMap Callable">
+
+```java
+
+    import com.helpshift.support.Callable;
+
+    Support.setMetadataCallback (new Callable (){
+        public HashMap call() {
+          String[] tags = new String[]{"feedback", "paid user"};
+          HashMap userMetadata = new HashMap();
+          userMetadata.put("name", "John");
+          userMetadata.put("email", "john@example.com");
+          userMetadata.put("level", gameObject.getLevel());
+          userMetadata.put("score", gameObject.getScore());
+          userMetadata.put(Support.TagsKey, tags);
+          return usermetadata;
+        }
+    });
+```
+
+</TabItem>
+
+</Tabs>
+
+### Attaching tags with metadata {#metadatatags}
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Applicable to SDK v 2.8.0 & above.
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, match the tags
+  that exist in the agent dashboard.
+
+</Admonition>
+
+<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
+
+You can attach tags with metadata to every reported issue by passing them to `Metadata` object. You can pass an array of strings which get interpreted
+at server and added as Tags for the every issue reported.
+
+<Tabs>
+
+<TabItem value="Using Metadata and ApiConfig" label="Using Metadata and ApiConfig">
+
+```java
+
+    String[] tags = new String[]{"feedback", "paid user"};
+
+    HashMap<String, Object> userData = new HashMap<>();
+    userData.put("usertype", "paid");
+    userData.put("level", "7");
+    userData.put("score", "12345");
+    Metadata metadata = new Metadata(userData, tags);
+
+    private void showHelp () {
+      ApiConfig apiConfig = new ApiConfig.Builder()
+                             .setCustomMetadata(metadata)
+                             .build();
+      Support.showFAQs(MainActivity.this, apiConfig);
+    }
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+You can attach tags with metadata to every reported issue via a reserved key constant `Support.TagsKey` to be used with `setMetadataCallback` to pass an array of strings which get interpreted at server and added as Tags for the every issue reported.
+
+```java
+
+    String [] tags = new String [] ("feedback", "paid user");
+
+    HashMap customMetadata = new HashMap();
+    customMetadata.put("name","John");
+    customMetadata.put("email","john@example.com");
+    customMetadata.put(Support.TagsKey, tags);
+
+    private void showHelp() {
+        HashMap config = new HashMap ();
+        config.put ("enableContactUs", preferences.getBoolean("enableContactUs", true));
+        config.put(Support.CustomMetadataKey, customMetadata);
+        Support.showFAQs(MainActivity.this, config);
+    }
+```
+
+</TabItem>
+
+</Tabs>
+
+## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+
+<Admonition type="info" title="Note">
+
+**On Custom Issue Fields keys & compatibility**
+
+- Applicable to SDK v6.3.0 & above.
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings -> Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
+
+</Admonition>
+
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a data type, and a value. The SDK allows the addition of Custom Issue Fields by using the `setCustomIssueFields` method in the ApiConfig class.
+
+These Custom Issue Fields would be sent whenever a new issue is created.
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+
+Possible datatypes to be passed into the config are:
+
+| Type | Comments                                                                                                                                                      |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | Single line string with character limit of 255                                                                                                                |
+| "ml" | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
+
+Example:-
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    Map<String, String[]> customIssueFields = new HashMap<>();
+
+    // The format for calling put is customIssueFields.put(<key>, new String[]{<datatype>, <value>});
+    customIssueFields.put("join_date", new String[]{"dt", "1505927361535"});
+    customIssueFields.put("level", new String[]{"n", "42"});
+    customIssueFields.put("name", new String[]{"sl", "John Doe"});
+    customIssueFields.put("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+    customIssueFields.put("is_pro", new String[]{"b", "true"});
+    customIssueFields.put("currency", new String[]{"dd", "Dollar"});
+
+    private void showHelp() {
+             ApiConfig apiConfig = new ApiConfig.Builder()
+                                                .setCustomIssueFields(customIssueFields)
+                                                .build();
+            Support.showFAQs(MainActivity.this, apiConfig);
+    }
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+The SDK also allows adding of custom issue fields by using reserved constant key `Support.CustomIssueFieldKey`in the API Configuration HashMap.
+
+```java
+
+    Map<String, String[]> customIssueFields = new HashMap<>();
+
+    // The format for calling put is customIssueFields.put(<key>, new String[]{<datatype>, <value>});
+    customIssueFields.put("join_date", new String[]{"dt", "1505927361535"});
+    customIssueFields.put("level", new String[]{"n", "42"});
+    customIssueFields.put("name", new String[]{"sl", "John Doe"});
+    customIssueFields.put("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+    customIssueFields.put("is_pro", new String[]{"b", "true"});
+    customIssueFields.put("currency", new String[]{"dd", "Dollar"});
+
+     private void showHelp() {
+            Map<String, Object> config = new HashMap<>();
+            config.put(Support.CustomIssueFieldKey, customIssueFields);
+            Support.showFAQs(MainActivity.this, config);
+     }
+```
+
+</TabItem>
+
+</Tabs>
+
+## Debug logs {#debug-logs}
+
+Optionally, if you want to send additional debug logs, Replace import
+`android.util.Log` with import `com.helpshift.support.Log` in all files where you
+have used Log statements. This will send your logs when a new issue is
+registered. `com.helpshift.support.Log` can be used as `android.util.Log`.
+
+## Issue Archival {#issue-archival}
+
+From version 4.6.0, Helpshift SDK includes support for archiving issues.
+Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
+Once archived, issues cannot be reopened. This improves dashboard performance.
+Archived issues will be accessible to agents through the dashboard for future reference.
+
+![issueArchival.png](/static/books/android/issuearchival.png "issueArchival.png")
+
+## Check if there exists an active Conversation {#isConversationActive}
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v4.9.0 and above
+
+</Admonition>
+
+You can check if the user has any active Conversation on the device with `isConversationActive`. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+For example:
+
+```java
+
+    if (Support.isConversationActive()) {
+        //Your code here
+    } else {
+        //Your code here
+    }
+
+```

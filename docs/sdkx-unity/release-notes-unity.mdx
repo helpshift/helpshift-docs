@@ -1,0 +1,201 @@
+---
+sidebar_position: 290
+title: Release Notes
+description: Read the Release Notes in detail
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Release Notes
+
+<LatestSdkVersion>
+
+## v10.2.1
+
+_Nov 25th, 2022_
+
+</LatestSdkVersion>
+
+** Release Notes: **
+
+**iOS**
+
+- Fixed an issue with `SetSDKLanguage` API where the passed language was not being applied.
+
+**Android**
+
+- No changes for Android.
+
+## v10.2.0
+
+_Nov 10th, 2022_
+
+** Release Notes: **
+
+**iOS**
+
+- Updated to iOS SDK X version 10.2.0. [View](/sdkx_ios/release-notes#1020)
+- Added the capability for Outbound Support. You can reach out to your users proactively without them having to raise a ticket first. For more details, refer [here](/sdkx-unity/outbound-support-ios).
+- Introduced a new API `ClearAnonymousUserOnLogin(Boolean shouldClear)` to support maintaining anonymous user login. For more details, refer [here](/sdkx-unity/users-ios#anonymous-users).
+- `clearAnonymousUserOnLogin()` API will be deprecated.
+- Removed the `Take Photo or Video` option from the attachment flow. You don’t have to ask for camera permission in your app for Helpshift use-cases anymore. This is applicable to iOS 11 and above. On iOS 10 and below, attachment options will not be unavailable.
+
+**Android**
+
+- Updated to Android SDK X version 10.2.0. [View](/sdkx_android/release-notes#1020)
+- Added the capability for Outbound Support. You can reach out to your users proactively without them having to raise a ticket first. For more details, refer [here](/sdkx-unity/outbound-support-android).
+- Introduced a new API `ClearAnonymousUserOnLogin(Boolean shouldClear)` to support maintaining anonymous user login. For more details, refer [here](/sdkx-unity/users-android#anonymous-users).
+- `clearAnonymousUserOnLogin()` API will be deprecated.
+- Fixed application crash that occurs on some devices when uploading attachment in chat screen.
+- As part of Android 13 updates
+  - Added Support for `App level language introduced in Android 13`. Preference will be given to App level language, if set, over the device level language. [Read more](https://developer.android.com/guide/topics/resources/app-languages).
+  - SDK will post notifications only when end user has allowed the `POST_NOTIFICATIONS` permission. [Read more](https://developer.android.com/develop/ui/views/notifications/notification-permission).
+  - SDK will not ask for Notification permission, it will show notification only when end user has allowed the permission asked by the client's app.
+
+## v10.1.2
+
+_May 9th, 2022_
+
+** Release Notes: **
+
+**iOS**
+
+- Added more verbose logging around legacy to SDK X migration scenarios.
+
+**Android**
+
+- No changes for Android.
+
+## v10.1.1
+
+_April 6th, 2022_
+
+** Release Notes: **
+
+**iOS**
+
+- Fixed a critical bug which caused following issues :
+  - Users were greeted with infinitely loading spinner on opening chat screen.
+  - Custom metadata wasn't sent along with filed issues.
+- If you are using the SDK X version 10.0.x and want to upgrade to 10.1.x or if you have already upgraded to 10.1.0, **you should upgrade to 10.1.1**.
+
+**Android**
+
+- No changes for Android.
+
+## v10.1.0
+
+_February 7th, 2022_
+
+** Release Notes: **
+
+**iOS**
+
+- Updated to iOS SDK X version 10.1.0. [View](/sdkx_ios/release-notes#1010)
+
+- Added support for adding breadcrumbs and debug logs to a new conversation filed by an end-user. For more details, refer to our [Tracking](/sdkx-unity/tracking-ios/) page.
+
+- Added support for showing an announcement in Help Center. For more details, refer [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/).
+
+- Added migration support from legacy SDK to SDK X. For more details on how to migrate, refer to our [migration guide](/sdkx-unity/migration-guide-ios).
+
+**Android**
+
+- Updated to Android SDK X version 10.1.0. [View](/sdkx_android/release-notes#1010)
+
+- Added support for adding breadcrumbs and debug logs to a new conversation filed by an end-user. For more details refer [Tracking](/sdkx-unity/tracking-android).
+
+- Added support for showing an announcement in Help Center. For more details refer [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/).
+
+- Added migration support from legacy SDK to SDK X. For more details on how to migrate, refer our [migration guide](/sdkx-unity/migration-guide-android).
+
+## v10.0.3
+
+_November 18th, 2021_
+
+** Release Notes **
+
+- Attach the HelpshiftExampleScript to HelpshiftExample scene by default.
+
+## v10.0.2
+
+_October 28th, 2021_
+
+** Release Notes: **
+
+**iOS**
+
+- No change for iOS.
+
+**Android**
+
+- Comply with PendingIntent flag requirements expected on apps targeting Android 12 (API level 31).
+
+## v10.0.1
+
+_Aug 31st, 2021_
+
+** Release Notes: **
+
+**iOS**
+
+- No change for iOS.
+
+**Android**
+
+- Fixed a bug where file chooser is not allowing to select whitelisted attachments while sending attachments in chat.
+
+## v10.0.0
+
+_June 9th, 2021_
+
+** Release Notes: **
+
+**iOS**
+
+- Launched next-generation SDK X Unity v10.0.0 which has lower size foot-print and requires minimal SDK upgrades to adopt new features and bug fixes.
+
+Getting started guide
+
+- To start using SDK X Unity 10.0.0, please refer to the guide [here](/sdkx-unity/getting-started-ios)
+
+**Android**
+
+- Launched next-generation SDK X Unity v10.0.0 which has lower size foot-print and requires minimal SDK upgrades to adopt new features and bug fixes.
+
+Getting started guide
+
+- To start using SDK X Unity 10.0.0, please refer to the guide [here](/sdkx-unity/getting-started-android)
+
+## v1.0.0-beta
+
+** Release Notes: **
+
+**iOS**
+
+- Launched next-generation SDK X Unity Beta which has lower size foot-print and does not require SDK upgrades to adopt new features and bug fixes
+
+Getting started guide
+
+- To start using SDK X Unity 1.0.0 beta, please refer to the guide [here](/sdkx-unity/getting-started-ios)
+
+**Android**
+
+- Launched next-generation SDK X Unity Beta which has lower size foot-print and does not require SDK upgrades to adopt new features and bug fixes
+
+Getting started guide
+
+- To start using SDK X Unity 1.0.0 beta, please refer to the guide [here](/sdkx-unity/getting-started-android)

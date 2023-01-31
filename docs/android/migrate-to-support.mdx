@@ -1,0 +1,69 @@
+---
+sidebar_position: 160
+title: Migration guide to Support SDK
+description: Learn more about Migration guide to Support SDK
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Migration guide to Support SDK
+
+<Admonition type="info" title="Note">
+
+If you are upgrading to Support SDK then we highly recommend you to upgrade to our [latest version](/android/getting-started/)
+
+</Admonition>
+
+### Migrating to Support SDK
+
+#### Remove Campaigns code
+
+Please remove all the code related to Campaigns features that you might have added. When you replace the Campaigns SDK dependency in your app's build.gradle file, you might get some compilation errors. These errors will be related to campaigns code and can be removed safely.
+
+#### Update gradle dependency to Support only artifact
+
+- Use the Support build artifact id `com.helpshift:android-helpshift-aar`
+- Use the SDK version as per your requirements.
+
+```
+	dependencies {
+    	implementation 'com.android.support:design:28.0.0'
+    	implementation 'com.android.support:recyclerview-v7:28.0.0'
+    	implementation 'com.android.support:cardview-v7:28.0.0'
+    	implementation 'com.helpshift:android-helpshift-aar:7.9.2'
+	}
+```
+
+#### Fix the SDK initialization code
+
+Initialize the SDK with `Support.getInstance()` instead of `All.getInstance()`
+
+```java
+
+	// Please remove the following code for SDK initialization
+
+	Core.init(All.getInstance());
+
+	// Please use the following code to initialize the SDK
+
+	Core.init(Support.getInstance());
+```

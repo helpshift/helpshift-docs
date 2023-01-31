@@ -1,0 +1,114 @@
+---
+sidebar_position: 10
+title: Going International
+description: Learn more about Going International
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Going International {#going-international}
+
+The Helpshift Android SDK supports 47 languages out of the box with
+English as default. The translation strings used by the SDK can be
+found in the `strings.xml` file, under the following folders -
+
+| Values        | Language            | Locale |
+| ------------- | ------------------- | ------ |
+| values        | English             | en     |
+| values-de     | German              | de     |
+| values-es     | Spanish             | es     |
+| values-fr     | French              | fr     |
+| values-it     | Italian             | it     |
+| values-ru     | Russian             | ru     |
+| values-zh-rCN | Simplified-Chinese  | zh_CN  |
+| value-zh-rTW  | Traditional-Chinese | zh_TW  |
+| values-zh-rSG | Simplified-Chinese  | zh_SG  |
+| value-zh-rHK  | Traditional-Chinese | zh_HK  |
+| values-pt-rBR | Portuguese          | pt_BR  |
+| values-ko     | Korean              | ko     |
+| values-ja     | Japanese            | ja     |
+| values-tr     | Turkish             | tr     |
+| values-nl     | Dutch               | nl     |
+| values-cs     | Czech               | cs     |
+| values-hu     | Hungarian           | hu     |
+| values-in     | Indonesian          | in     |
+| values-th     | Thai                | th     |
+| values-sl     | Slovenian           | sl     |
+| values-vi     | Vietnamese          | vi     |
+| values-ar     | Arabic              | ar     |
+| values-pl     | Polish              | pl     |
+| values-no     | Norwegian           | no     |
+| values-sv     | Swedish             | sv     |
+| values-fi     | Finnish             | fi     |
+| values-ro     | Romanian            | ro     |
+| values-el     | Greek               | el     |
+| values-da     | Danish              | da     |
+| values-ms     | Malay               | ms     |
+| values-iw     | Hebrew              | iw     |
+| values-sk     | Slovak              | sk     |
+| values-uk     | Ukrainian           | uk     |
+| values-ca     | Catalan             | ca     |
+| values-hr     | Croatian            | hr     |
+| values-bn     | Bengali             | bn     |
+| values-bg     | Bulgarian           | bg     |
+| values-gu     | Gujarati            | gu     |
+| values-hi     | Hindi               | hi     |
+| values-kn     | Kannada             | kn     |
+| values-lv     | Latvian             | lv     |
+| values-ml     | Malayalam           | ml     |
+| values-mr     | Marathi             | mr     |
+| values-pa     | Punjabi             | pa     |
+| values-fa     | Persian             | fa     |
+| values-ta     | Tamil               | ta     |
+| values-te     | Telugu              | te     |
+
+If the end-user has a language already set for their device, the correct
+language translations will be used. If the said language is not
+available, English will be used by default.
+
+To add your own language, you need to provide the translated strings
+inside `strings.xml` under the appropriate folder. For example, in
+order to support the Japanese language, you need to place `strings.xml`
+with the translated strings under `values-ja` folder.
+
+For more information, refer to
+[Android's Language Support Guide](http://developer.android.com/training/basics/supporting-devices/languages.html)
+
+# Set SDK language {#language-change-programatically}
+
+You can set the SDK language for the given locale using the method `HelpshiftApi.HelpshiftSupport.SetSDKLanguage`
+
+Locale can contain two-letter lowercase ISO language codes (such as "en") as defined by ISO 639-1 and in addition contain two-letter uppercase ISO country codes (such as "US")as defined by ISO 3166-1. Language code and country code are separated by an underscore ("\_"). Example - "pt_BR", "zh_CN".
+
+For example :
+
+Setting SDK language for the given locale with only language code.
+
+```csharp
+
+    HelpshiftApi.HelpshiftCore.SetLanguage("fr");
+```
+
+Setting the SDK language for the given locale with both language code and country code.
+
+```csharp
+
+    HelpshiftApi.HelpshiftCore.SetLanguage("zh_CN");
+
+```
+
+Before you set the language, make sure that there exists translations for the Helpshift strings in that locale. List of supported locale is mentioned above.
+If there is a locale which we currently do not support out of the box, please add the relevant translation files in your app.

@@ -1,0 +1,112 @@
+---
+sidebar_position: 10
+title: Going International
+description: "Localizing & Internationalizing your in-app Support."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Going International {#going-international}
+
+<Intro>
+
+Localizing & Internationalizing your in-app Support.
+
+</Intro>
+
+## Internationalization {#i18n}
+
+Helpshift iOS SDK comes with support for **47** languages out of the box with English as the default. To enable the available languages, simply drag & drop the HsLocalization.bundle to your project.
+The Helpshift SDK will be localized based on the user’s device language. This can be set by going to General → Language & Region → iPhone Language. If the user’s device language is not available, English will be used as default.
+
+If the end-user has a language already set for their device (via
+Settings->General->International->Language) the correct language
+translations will be used. If the said language is not available English
+will be used as default.
+
+### List of supported languages {#supported-languages}
+
+| Language                        | Locale     |
+| ------------------------------- | ---------- |
+| English                         | en         |
+| German                          | de         |
+| Spanish                         | es         |
+| French                          | fr         |
+| Italian                         | it         |
+| Russian                         | ru         |
+| Simplified-Chinese              | zh-Hans    |
+| Traditional-Chinese             | zh-Hant    |
+| Hong Kong-Chinese               | zh-HK      |
+| Hong Kong-Chinese (Traditional) | zh-Hant-HK |
+| Singapore-Chinese               | zh-SG      |
+| Singapore-Chinese (Traditional) | zh-Hant-SG |
+| Portuguese                      | pt         |
+| Korean                          | ko         |
+| Japanese                        | ja         |
+| Turkish                         | tr         |
+| Dutch                           | nl         |
+| Czech                           | cs         |
+| Hungarian                       | hu         |
+| Indonesian                      | id         |
+| Thai                            | th         |
+| Slovenian                       | sl         |
+| Vietnamese                      | vi         |
+| Arabic                          | ar         |
+| Polish                          | pl         |
+| Norwegian                       | no         |
+| Swedish                         | sv         |
+| Finnish                         | fi         |
+| Romanian                        | ro         |
+| Greek                           | el         |
+| Danish                          | da         |
+| Malay                           | ms         |
+| Hebrew                          | iw         |
+| Slovak                          | sk         |
+| Ukrainian                       | uk         |
+| Catalan                         | ca         |
+| Croatian                        | hr         |
+| Bengali                         | bn         |
+| Bulgarian                       | bg         |
+| Gujarati                        | gu         |
+| Hindi                           | hi         |
+| Kannada                         | kn         |
+| Latvian                         | lv         |
+| Malayalam                       | ml         |
+| Marathi                         | mr         |
+| Punjabi                         | pa         |
+| Persian                         | fa         |
+| Tamil                           | ta         |
+| Telugu                          | te         |
+
+## Localization setup {#localization}
+
+The Helpshift localized strings come bundled in the DLL. If you have already integrated an older version of the SDK, we would recommend
+removing the `HSLocalization` folder.
+
+To customize the localzied strings, [follow these steps.](/xamarin/string-customization-ios#string-customization)
+
+## Set SDK language {#set-language}
+
+You can set the SDK language using the method `HelpshiftApi.HelpshiftCore.SetLanguage`
+
+For Example :
+
+Setting SDK language for the given locale with only language code.
+
+```csharp
+
+    HelpshiftApi.HelpshiftCore.SetLanguage("fr");
+```

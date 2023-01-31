@@ -1,0 +1,71 @@
+---
+sidebar_position: 220
+title: Upgrading to 7.5.0 and above
+description: Learn more about Upgrading to 7.5.0 and above
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Upgrading to 7.5.0 and above {#upgrade-to-750}
+
+<Admonition type="danger" title="Important">
+
+When upgrading to 7.5.x, please replace all the old files with new files. If you have made changes in the `HelpshiftLocalizable.strings` or `HelpshiftConfig.plist` file, please make sure to port over those changes to the new versions.
+
+If you are looking to upgrade from a version older than 7.x, please make sure to go through the Upgrade guides for 6.x, 6.2, 6.0 and 5.x
+
+</Admonition>
+
+#### Integration-related changes
+
+##### Manual integration
+
+When you integrate SDK manually, remove all the old SDK files and add the Standard SDK zip file in your app.
+[Integration Guide](/ios/getting-started#manual-integration)
+
+##### Cocoapods
+
+If you are using cocoapods for integration, then there is no need to update or modify any file.
+[Integration Guide](/ios/getting-started#cocoapods)
+
+#### Code-related changes
+
+If your code-base has references to `Campaigns` code, then the compilation fails after the upgrade. You will need to remove all the references to `Campaigns` code from the code-base.
+
+Following are the changes:
+
+1. Remove any `HelpshiftCampaigns.h` imports.
+2. Remove any `HelpshiftAll.h` imports.
+3. Remove any `HelpshiftInbox.h` imports.
+4. Replace `[HelpshiftCore initializeWithProvider:[HelpshiftAll sharedInstance]]` call with `[HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]]` call.
+
+## Drop iOS 9 support
+
+With version 7.5.0, Helpshift SDK has dropped support for iOS 9. If you wish to keep supporting iOS 9 devices for your apps, please read the [KB Article](https://support.helpshift.com/kb/article/what-are-the-minimum-ios-versions-supported-by-helpshift/) to support Helpshift on older OS versions.
+
+## Deprecations
+
+| deprecated API                                           | New API                                  |
+| -------------------------------------------------------- | ---------------------------------------- |
+| HelpshiftCampaigns.inboxDelegate                         | HelpshiftInbox.delegate                  |
+| HsAddFAQsToDeviceSearch.HsAddFAQsToDeviceSearchOnInstall | HsAddFAQsToDeviceSearch.AfterViewingFAQs |
+|                                                          |                                          |

@@ -1,0 +1,512 @@
+---
+sidebar_position: 10
+title: Impact Analysis
+description: "The following numbers are representative of a skeletal sample appintegrated with the Helpshift Unity plugin."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Impact Analysis {#performance}
+
+<Intro>
+
+The following numbers are representative of a skeletal sample app
+integrated with the Helpshift Unity plugin.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+**App Launch Time**
+
+Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
+
+</Admonition>
+
+## v5.6.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2019.4.20f1, Xcode 12.0 built demo app on iPhone X running iOS 14.0. Memory Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `3.8` MB for both bitcode and non-bitcode variants of the framework.
+
+If your app is not already using swift, there will be an additional `~2.6` MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+Impact analysis for support only native framework can be found [here](/ios/performance#7110).
+
+Memory usage (In debug mode. Values are approximate.)
+
+|                                                               |                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (<code>installForApiKey:</code>)** | adds <code>7.1</code> MB of memory.                                                             |
+| **Helpshift's FAQ screens (<code>showFAQs:</code>)**          | adds <code>5.7</code> MB (This depends on the number of FAQ sections and FAQs in each section). |
+| **Single section**                                            | adds <code>5.7</code> MB (This depends on number of FAQs in the section).                       |
+| **Single FAQ**                                                | adds <code>3.5</code> MB (This depends on the FAQ content).                                     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**  | adds <code>7.4</code> MB (This depends on number of messages on the chat screen).               |
+
+## v5.5.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2019.4.3f1, Xcode 12 built demo app on iPhone XR running iOS 14. Memory Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `~3.6` MB for both bitcode and non-bitcode variants of the framework.
+
+If your app is not already using swift, there will be an additional `2.4` MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+Impact analysis for support only native framework can be found [here](/ios/performance#790).
+
+Memory usage (In debug mode. Values are approximate.)
+
+|                                                               |                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (<code>installForApiKey:</code>)** | adds <code>6.8</code> MB of memory.                                                             |
+| **Helpshift's FAQ screens (<code>showFAQs:</code>)**          | adds <code>5.7</code> MB (This depends on the number of FAQ sections and FAQs in each section). |
+| **Single section**                                            | adds <code>5.8</code> MB (This depends on number of FAQs in the section).                       |
+| **Single FAQ**                                                | adds <code>3.4</code> MB (This depends on the FAQ content).                                     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**  | adds <code>7.2</code> MB (This depends on number of messages on the chat screen).               |
+
+## v5.4.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2019.4.3f1, Xcode 11.5 built demo app on iPhone XR running iOS 13.5.1. Memory Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `~3.6` MB for both bitcode and non-bitcode variants of the framework.
+
+If your app is not already using swift, there will be an additional `2.4` MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+Impact analysis for support only native framework can be found [here](/ios/performance#780).
+
+Memory usage (In debug mode. Values are approximate.)
+
+|                                                               |                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (<code>installForApiKey:</code>)** | adds <code>7.1</code> MB of memory.                                                             |
+| **Helpshift's FAQ screens (<code>showFAQs:</code>)**          | adds <code>6.0</code> MB (This depends on the number of FAQ sections and FAQs in each section). |
+| **Single section**                                            | adds <code>5.7</code> MB (This depends on number of FAQs in the section).                       |
+| **Single FAQ**                                                | adds <code>3.2</code> MB (This depends on the FAQ content).                                     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**  | adds <code>8.0</code> MB (This depends on number of messages on the chat screen).               |
+
+## v5.3.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.4.2f1, Xcode 11 built demo app on iPhone Xs Max running iOS 13.3. Memory Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `~3.1` MB for both bitcode and non-bitcode variants of the library.
+
+If your app is not already using swift, there will be an additional 2 MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+Impact analysis for support only native library can be found [here](/ios/performance#763).
+
+Memory usage (In debug mode. Values are approximate.)
+
+|                                                               |                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (<code>installForApiKey:</code>)** | adds <code>3.7</code> MB of memory with peak usage of <code>4.6</code> MB (for 1-2 seconds).    |
+| **Helpshift's FAQ screens (<code>showFAQs:</code>)**          | adds <code>2.9</code> MB (This depends on the number of FAQ sections and FAQs in each section). |
+| **Single section**                                            | adds <code>3.5</code> MB (This depends on number of FAQs in the section).                       |
+| **Single FAQ**                                                | adds <code>4.2</code> MB (This depends on the FAQ content).                                     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**  | adds <code>5.1</code> MB (This depends on number of messages on the chat screen).               |
+
+## v5.2.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.4.2f1, Xcode 11 built demo app on iPhone Xs Max running iOS 13.1. Memory Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `~3.0` MB for both bitcode and non-bitcode variants of the library.
+
+Impact analysis for support only native library can be found [here](/ios/performance#763).
+
+Memory usage (In debug mode. Values are approximate.)
+
+|                                                               |                                                                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (<code>installForApiKey:</code>)** | adds <code>3.4</code> MB of memory with peak usage of <code>3.8</code> MB (for 1-2 seconds).    |
+| **Helpshift's FAQ screens (<code>showFAQs:</code>)**          | adds <code>2.4</code> MB (This depends on the number of FAQ sections and FAQs in each section). |
+| **Single section**                                            | adds <code>2.6</code> MB (This depends on number of FAQs in the section).                       |
+| **Single FAQ**                                                | adds <code>3.7</code> MB (This depends on the FAQ content).                                     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**  | adds <code>4.8</code> MB (This depends on number of messages on the chat screen).               |
+
+## v5.1.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.3.13f1, Xcode 10.3 built demo app on iPhone X running iOS 12.1.4. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `~2.7` MB for both bitcode and non-bitcode variants of the library.
+
+Impact analysis for support only native library can be found [here](/ios/performance#760).
+
+### RAM usage
+
+|                                                         |                                                                                                                                             |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>~ 3.6 MB</code> of memory.                                                                                                |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.8</code> MB. The actual RAM usage depends upon the number of FAQs.    |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3 MB</code>, settled at <code>2 MB</code>. This depends on number of FAQs in the section                                 |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>3.6 MB</code> of memory. This depends on the FAQ content                                                                  |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>5.2 MB</code> of memory at peak and settles at <code>3.5 MB</code>. This depends on number of messages on the chat screen |
+
+## v5.0.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.3.13f1, Xcode 10.0 built demo app on iPhone X running iOS 12.1.4. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `~2.8` MB for both bitcode and non-bitcode variants of the library.
+
+Impact analysis for support only native library can be found [here](/ios/performance#750).
+
+### RAM usage
+
+|                                                         |                                                                                                                                        |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>~ 2.5 MB</code> of memory.                                                                                           |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>4</code> MB. The actual RAM usage depends upon the number of FAQs. |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>2.6 MB</code>, settled at <code>2 MB</code>.                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>1 MB</code> of memory.                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>7.5 MB</code> of memory at peak and settles at <code>3.5 MB</code>.                                                  |
+
+## v5.0.0-withCampaigns
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.3.13f1, Xcode 10.0 built demo app on iPhone X running iOS 12.1.4. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `3` MB for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>~ 3.4 MB</code> of memory.                                                                                                                                                                                             |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.1</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>2.6 MB</code>, settled at <code>1 MB</code>.                                                                                                                                                                          |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>1.5 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>7.5 MB</code> of memory at peak and settles at <code>4 MB</code>.                                                                                                                                                      |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.3 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v4.1.0
+
+Sample app running on iPhone 7
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.2.13f1, Xcode 10.0 built demo app on iPhone 7 running iOS 12.0.1. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `3` MB for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>7 MB</code> of memory with peak usage of <code>10 MB</code> (for 1-2 seconds). Around <code>1 MB</code> of memory is used when a Helpshift screen is not engaged.                                                      |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>5.9</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>5.9 MB</code>, settled at <code>2 MB</code>.                                                                                                                                                                          |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>6.9 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>7.5 MB</code> of memory at peak and settles at <code>3.5 MB</code>.                                                                                                                                                    |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.2 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v4.0.0
+
+Sample app running on iPhone 6
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Unity 2018.1.1f1, Xcode 9.3 built demo app on iPhone 6 running iOS 11.2.6. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Unity iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `4.7` MB for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>2 MB</code> of memory with peak usage of <code>3 MB</code> (for 1-2 seconds). Around <code>1 MB</code> of memory is used when a Helpshift screen is not engaged.                                                       |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                   |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3 MB</code>, settled at <code>2 MB</code>.                                                                                                                                                                            |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>3 MB</code> of memory.                                                                                                                                                                                                 |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>4.5 MB</code> of memory at peak and settles at <code>3.5 MB</code>.                                                                                                                                                    |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.2 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v3.0.0
+
+Sample app running on iPhone 7, built from Unity 2017.1.2f1 and Xcode 9.1.
+
+### Disk space
+
+This is the amount of disk space the static library takes up. The total size of the Unity package is `44.6 MB`.
+
+When an iOS app is integrated with Helpshift or Helpshift-bitcode, the increase in the size of IPA file is around `4 MB` for iOS 8 devices and around `2.3 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>0.9 MB</code> of memory with peak usage of <code>1.7 MB</code> (for 1-2 seconds). Around <code>0.8 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | adds around <code>3.1 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds around <code>3.3 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>2.9 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>0.7 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>1.6 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.9.0
+
+Sample app running on iPhone 6s plus, built from Xcode 9.0.1.
+
+### Disk space
+
+This is the amount of disk space the static library takes up. The total size of the Unity package is `54 MB`.
+
+When an iOS app is integrated with Helpshift or Helpshift-bitcode, the increase in the size of IPA file is around `3.9 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>0.8 MB</code> of memory with peak usage of <code>1.6 MB</code> (for 1-2 seconds). Around <code>0.8 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | use around <code>13.4</code> MB of memory when viewing FAQs for the first time. The RAM usage is setttled at <code>3.2</code>                                                                                                            |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>4.4 MB</code>, settled at <code>1.7 MB</code>.                                                                                                                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>1.7 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>2.1 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>4.4 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.8.1
+
+Sample app running on iPhone 6s plus, built from Xcode 8.3.3.
+
+### Disk space
+
+This is the amount of disk space the static library takes up. The total size of the Unity package is `54 MB`.
+
+When an iOS app is integrated with Helpshift or Helpshift-bitcode, the increase in the size of IPA file is around `7.2 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                           |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>0.3 MB</code> of memory with peak usage of <code>0.6 MB</code> (for 1-2 seconds). Around <code>0.3 MB</code> of memory is used when a Helpshift screen is not engaged.                                                  |
+| **Helpshift's FAQ screens (showFAQ:)**                  | use around <code>14.1</code> MB of memory when viewing FAQs for the first time. The RAM usage is setttled at <code>3.0</code>                                                                                                             |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.4 MB</code>, settled at <code>1.8 MB</code>.                                                                                                                                                                         |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>2.8 MB</code> of memory.                                                                                                                                                                                                |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>2.3 MB</code> of memory.                                                                                                                                                                                                |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.77 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.8.0
+
+Sample app running on iPhone 6s plus, built from Xcode 8.3.3.
+
+### Disk space
+
+This is the amount of disk space the static library takes up. The total size of the Unity package is `54 MB`.
+
+When an iOS app is integrated with Helpshift or Helpshift-bitcode, the increase in the size of IPA file is around `7.2 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                           |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>0.3 MB</code> of memory with peak usage of <code>0.6 MB</code> (for 1-2 seconds). Around <code>0.3 MB</code> of memory is used when a Helpshift screen is not engaged.                                                  |
+| **Helpshift's FAQ screens (showFAQ:)**                  | use around <code>14.1</code> MB of memory when viewing FAQs for the first time. The RAM usage is setttled at <code>3.0</code>                                                                                                             |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.4 MB</code>, settled at <code>1.8 MB</code>.                                                                                                                                                                         |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>2.8 MB</code> of memory.                                                                                                                                                                                                |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>2.3 MB</code> of memory.                                                                                                                                                                                                |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.77 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.7.0
+
+Sample app running on iPhone 6s plus, built from Xcode 8.3.3.
+
+### Disk space
+
+This is the amount of disk space the static library takes up. The total size of the Unity package is `50.5 MB`.
+
+When an iOS app is integrated with Helpshift or Helpshift-bitcode, the increase in the size of IPA file is around `7.3 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                           |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>0.3 MB</code> of memory with peak usage of <code>0.43 MB</code> (for 1-2 seconds). Around <code>0.3 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | use around <code>15.5</code> MB of memory when viewing FAQs for the first time. The RAM usage is setttled at <code>3.27</code>                                                                                                            |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.9 MB</code>, settled at <code>2.1 MB</code>.                                                                                                                                                                         |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>2.8 MB</code> of memory.                                                                                                                                                                                                |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>3.64 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.77 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.6.1
+
+Sample app running on iPhone 7 Plus
+
+### Disk space
+
+This is the amount of disk space the static library takes up. The total size of the Unity package is `49.1 MB`.
+
+When an iOS app is integrated with Helpshift or Helpshift-bitcode, the increase in the size of IPA file is around `2.7 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                        |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>0.9 MB</code> of memory with peak usage of <code>1.3 MB</code> (for 1-2 seconds). Around <code>0.9 MB</code> of memory is used when a Helpshift screen is not engaged.                                               |
+| **Helpshift's FAQ screens (showFAQ:)**                  | use around <code>15.5</code> MB of memory when viewing FAQs for the first time. The actual RAM usage depends upon the number of FAQs.                                                                                                  |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>5.2 MB</code>, settled at <code>1.8 MB</code>.                                                                                                                                                                      |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>2.2 MB</code> of memory.                                                                                                                                                                                             |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>3.9 MB</code> of memory.                                                                                                                                                                                             |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.5.0
+
+Sample app running on a iPhone 6S.
+
+### Disk space
+
+This is the amount of disk space the static library takes up.
+The total size of library is `24.8 MBs`.
+The breakup is as follows:
+
+| Architecture | Size (MB) |
+| ------------ | --------- |
+| arm64        | 6.4       |
+| armv7        | 4.6       |
+| armv7s       | 4.6       |
+| simulator    | 9.2       |
+
+When deployed in an iOS app, the final linked static library size is around `2.15 MBs`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                           |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around 0.8 MB of memory with peak usage of 1.1 MB (for 1-2 seconds). So around 0.8 MB of memory is used when a Helpshift screen in not engaged.                                                                      |
+| **Helpshift's FAQ screens (showFAQ:)**                  | around 28 MB of memory when viewing faqs for the first time. The actual Ram usage dependes upon the number of faqs.                                                                                                       |
+| **Helpshift's Conversation screen (showConversation:)** | adds around 4 MB of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around 3 MB of memory for an average of 5 campaigns on the device. Please note that this number will vary depending on the number of campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.3.0
+
+Sample app running on a iPhone 6.
+
+### Disk space
+
+This is the amount of disk space the static library takes up.
+The total size of library is `22.3 MBs`.
+The breakup is as follows:
+
+| Architecture | Size (MB) |
+| ------------ | --------- |
+| arm64        | 5.7       |
+| armv7        | 4.2       |
+| armv7s       | 4.2       |
+| simulator    | 8.2       |
+
+When deployed in an iOS app, the final linked static library size is around `1.9 MBs`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                           |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around 1.03 MB of memory with peak usage of 1.06 MB (for 1-2 seconds). So around 1.03 MB of memory is used when a Helpshift screen in not engaged.                                                                   |
+| **Helpshift's FAQ screens (showFAQ:)**                  | around 10 MB of memory.                                                                                                                                                                                                   |
+| **Helpshift's Conversation screen (showConversation:)** | adds around 6.6 MB of memory.                                                                                                                                                                                             |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around 3 MB of memory for an average of 5 campaigns on the device. Please note that this number will vary depending on the number of campaigns received and the resolution of the icon images used in the Campaigns. |
+
+### iOS 6 deprecation
+
+Starting with unity plugin version 2.x, we officially dropped support for iOS 6.
+But we had kept the code handling the differences in platforms iOS 6 and below.
+With SDK version 2.3.0 and above, we have now removed all handling in our code so running your application on iOS 6 is likely to cause runtime crashes and bad behaviour.
+
+## v2.2.0-support
+
+The combined library size (libSupport.a) is 15.8 MB.
+The breakup is as follows:
+
+| Architecture              | Size (MB) |
+| ------------------------- | --------- |
+| i386 + x86_64 (simulator) | 5.8       |
+| armv7                     | 3         |
+| armv7s                    | 3         |
+| arm64                     | 4         |
+
+When compiled with an app for deployment on the app store, armv7, armv7s and arm64 will be taken up and i386+x86_64 or the simulator architectures will be ignored.
+
+### Sample compiled payload size using a demo app {#demoapp-payload-size}
+
+Helpshift SDK would add about 1.3 MB to your app's bundle.
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK support screen launches.
+Helpshift's install call will add around 1.2 MB of memory usage to your
+app.
+
+<Admonition type="info" title="Note">
+
+Memory usage tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+| Support API launch                                  | Memory Usage (approx. MB) |
+| --------------------------------------------------- | ------------------------- |
+| showConversation                                    | 5 MB                      |
+| showFAQs                                            | 7.9 MB                    |
+| showFAQSection                                      | 7 MB                      |
+| showSingleFAQ (depending on the content of the FAQ) | 5 - 10 MB                 |

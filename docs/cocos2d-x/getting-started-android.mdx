@@ -1,0 +1,276 @@
+---
+sidebar_position: 10
+title: Getting Started Android
+description: "Cocos2d-x plugin for Helpshift SDK helps you utilize Helpshift from your game's C++ codebase."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Getting Started <small>Android</small> {#getting-started}
+
+<Intro>
+
+Cocos2d-x plugin for Helpshift SDK helps you utilize Helpshift from your game's C++ codebase.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+From version 3.2.0 and above, the `Helpshift` class has been renamed to `HelpshiftCocos2dx`.
+Please rename all instances of the `Helpshift` in your code as follows:
+
+```cpp
+
+    // Helpshift:showConversation();
+    // ^ the above API call becomes
+    HelpshiftCocos2dx::showConversation();
+
+```
+
+</Admonition>
+
+Guide to integrating the Cocos2d-x plugin for the Helpshift SDK which you can call from your C++ game scripts.
+
+## Download the Cocos2d-x plugin for Helpshift {#getting-sdk}
+
+<Admonition type="info" title="Note">
+
+5.5.0 Plugin Update
+
+We found a bug for the following scenario - for SDK 5.5.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
+
+**Action needed:**
+
+- If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
+- If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [5.5.1 SDK](/cocos2d-x/release-notes-android#v551).
+
+</Admonition>
+
+Download Helpshift Cocos2d-x package:
+
+<DownloadButton
+  text="Download SDK"
+  link="[% cocos2d-x.android.sdk_url %]"
+  classes="mb-4"
+/>
+
+The Helpshift SDK plugin contains the following:
+
+<div className="text-sm compact ">
+
+|              |                                                                                                                             |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| android_libs | The dependencies which the Helpshift Android SDK needs. Currently these include : design, recyclerview, appcompat, cardview |
+| v3.x         | Folder containing the files for Cocos2dx version 3.x                                                                        |
+| v2.x         | Folder containing the files for Cocos2dx version 2.x                                                                        |
+
+</div>
+
+## Add Helpshift to your Cocos2dx project {#adding-to-project}
+
+Copy the helpshift-plugin-cocos2dx folder to the root directory of your project.
+
+## Adding the Helpshift Android plugin {#adding-android}
+
+1. Copy the android/src/com/helpshift folder to the src/com/ folder of your Android project.
+
+2. Copy the contents of the android/Classes folder to the Classes folder of your Cocos2dx application.
+
+### Using Android Studio (Only for Cocos2d-x v3.x)
+
+1.  Create libs directory in proj.android/app directory
+
+2.  Copy the Helpshift.aar file from the android/proj.android-studio in the libs directory.
+
+3.  Add dependency to Helpshift SDK in your app/build.gradle file.
+
+        repositories {
+            //your other repositories
+            flatDir { dirs 'libs' }
+        }
+
+        dependencies {
+            // your other dependencies
+            implementation 'com.android.support:design:28.0.0'
+            implementation 'com.android.support:recyclerview-v7:28.0.0'
+            implementation 'com.android.support:cardview-v7:28.0.0'
+            implementation(name: 'Helpshift', ext:'aar')
+        }
+
+4.  Link Helpshift files in your project as source depending on your build system.
+
+<Tabs>
+
+<TabItem value="Using CMake" label="Using CMake">
+
+    # Add Helpshift files to CMakeLists.txt, under the Android dependency
+    if(ANDROID)
+      list(APPEND GAME_SOURCE
+           <other dependency files>
+           Classes/HelpshiftCocos2dx.cpp
+           Classes/HelpshiftCocos2dxUser.cpp
+           Classes/HelpshiftUtil.cpp
+           )
+      list(APPEND GAME_HEADER
+          <other dependency files>
+          Classes/HelpshiftCocos2dx.h
+          Classes/HelpshiftCocos2dxUser.h
+          Classes/HelpshiftUtil.h
+          )
+
+</TabItem>
+<TabItem value="Using ndk-build" label="Using ndk-build">
+
+    # Add Helpshift files to makefile (Android.mk), under the LOCAL_SRC_FILES rule
+    LOCAL_SRC_FILES := hellocpp/main.cpp \
+                      ../../../Classes/HelpshiftCocos2dx.cpp \
+                      ../../../Classes/HelpshiftUtil.cpp \
+                      ../../../Classes/HelpshiftCocos2dxUser.cpp
+
+</TabItem>
+
+</Tabs>
+
+### Using Eclipse project (ANT build)
+
+1.  To use the latest Cocos2dx plugin in your application, add a reference to the Helpshift Android SDK from the `project.properties` file of your Android application. With the release of version 5.0.0, the Helpshift Android plugin sets the Android target to 26. To use this plugin, set the target to `android-26` in your application.
+
+    **Cocos2d-x v3.x**
+
+        android.library.reference.1=../helpshift-plugin-cocos2dx/v3.x/android/proj.android/sdk/
+
+    **Cocos2d-x v2.x**
+
+        android.library.reference.1=../helpshift-plugin-cocos2dx/v2.x/android/sdk/
+
+2.  Add Helpshift files to makefile (Android.mk), under the `LOCAL_SRC_FILES` rule. For example:
+
+        LOCAL_SRC_FILES := hellocpp/main.cpp \
+                      ../../Classes/HelpshiftCocos2dx.cpp \
+                      ../../Classes/HelpshiftUtil.cpp \
+                      ../../Classes/HelpshiftCocos2dxUser.cpp
+
+3.  Open `AndroidManifest.xml` located at `helpshift-plugin-cocos2dx/v2.x/android/sdk/` and `helpshift-plugin-cocos2dx/v3.x/android/sdk/` for Cocos2dx version 2.x and 3.x respectively. Look for `${applicationId}` located in `provider` tag and replace it with the package name of your android app. As an example, if your appplication's package name is `com.example.application`, `<provider>` tag will now look like this:
+
+        <provider
+            android:name="com.helpshift.support.providers.HelpshiftFileProvider"
+            android:authorities="com.example.application.helpshift.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/hs__provider_paths" />
+        </provider>
+
+4.  Set the flag for `manifestmerger.enabled` to true in your project.properties file:
+
+        manifestmerger.enabled=true
+
+5.  Copy the `hs__data` file from the `sdk/assets/` directory to the `assets` directory of your Cocos2dx application.
+
+<Admonition type="info" title="Note">
+
+Helpshift Cocos plugin version 1.4.0 and above is packaged with the required android support libs v23.4.0 and it is also tested with Android Nougat devices.
+
+If the developer wants to integrate android support libs 24.x, there are reported issues on pre-lolipop devices. Refer [this blog](https://medium.com/@chrisbanes/appcompat-v23-2-age-of-the-vectors-91cbafa87c88#.zm0nvq4xu) and the [issue here](http://stackoverflow.com/questions/35622438/update-android-support-library-to-23-2-0-cause-error-xmlpullparserexception-bin). Cocos ant build system does not support android build options for the vector changes introduced in 24.x version.
+
+As a result, the Helpshift Cocos plugin which is tested with 24.x support lib version, does not work on pre-lollipop devices because of the Cocos ant and android build incompatibility.
+
+</Admonition>
+
+## Initializing Helpshift in your app {#initializing}
+
+<Admonition type="info" title="Note">
+
+Use Helpshift.install(...); with the required arguments immediately after the `super.onCreate()` of your Cocos2d-xActivity.
+
+</Admonition>
+
+Helpshift SDK uniquely identifies your App with the combination of:
+
+<div className="text-sm compact ">
+
+|             |                                                             |
+| ----------- | ----------------------------------------------------------- |
+| API Key     | Your unique developer API Key.                              |
+| Domain Name | Your Helpshift domain name. For example : foo.helpshift.com |
+| App ID      | A unique ID assigned to your app.                           |
+
+</div>
+
+To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **"Initializing Helpshift"** section. <Image src="/static/books/common/settings-integration.png"  width="full" />
+
+Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
+
+Initialize Helpshift by importing `com.helpshift.HelpshiftBridge` and
+calling the `HelpshiftBridge.install` in the `onCreate` of your `Cocos2dxActivity`:
+
+```java
+
+    import com.helpshift.HelpshiftBridge;
+    import com.helpshift.exceptions.InstallException;
+
+    public class MyActivity extends Cocos2dxActivity {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            try {
+              HelpshiftBridge.install(this,
+                                      "YOUR_API_KEY",
+                                      "YOUR_DOMAIN_NAME",
+                                      "YOUR_APP_ID");
+            } catch (InstallException e) {
+              Log.e(TAG, "invalid install credentials : ", e);
+            }
+        }
+    }
+
+```
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/cocos2d-x/support-tools-android#faqs-view) or [conversation screens](/cocos2d-x/support-tools-android#conversation-view) inside your app.
+
+Run your app, and try starting a test conversation using the `showConversation` API call.
+Then goto your Helpshift agent dashboard and reply to experience the in-app messaging.
+
+Sample usage for FAQs and conversation APIs:
+
+```cpp
+
+    // Presenting FAQs to your customers
+    void GameSettingsScene::menuHelpCallback(CCObject* pSender)
+    {
+        HelpshiftCocos2dx::showFAQs();
+    }
+
+    // Starting a conversation with your customers
+    void GameSettingsScene::menuConversationCallback(CCObject* pSender)
+    {
+        HelpshiftCocos2dx::showConversation();
+    }
+
+
+```
+
+## Flickering issues with Cocos2d-x 2.x {#flickering-dialog}
+
+Cocos2d-x v2.x has a bug which causes the screen to flicker when a dialog Activity is shown on top of it.
+
+If you integrate Helpshift SDK for Cocos2d-x, you will see a flicker in your app when the [Review Reminder](/cocos2d-x/reviews-feedback-android) dialog is shown.
+
+To fix the bug, please apply the patch [described on github](https://github.com/cocos2d/cocos2d-x/pull/5320/files).

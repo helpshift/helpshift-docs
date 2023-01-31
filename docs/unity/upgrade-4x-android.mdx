@@ -1,0 +1,189 @@
+---
+sidebar_position: 10
+title: Upgrading from 4.x to 5.x
+description: "The Helpshift SDK for Unity v5.0.0 is a major version upgrade. With v5.0.0 release, the SDK files structure has been refactored in order to enable easier integration of SDK with Unity's gradle build. If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 4.x to 5.x
+
+<Intro>
+
+The Helpshift SDK for Unity v5.0.0 is a major version upgrade. With v5.0.0 release, the SDK files structure has been refactored in order to enable easier integration of SDK with Unity's gradle build. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+<Admonition type="danger" title="Important">
+
+When upgrading to 5.x, remove all the old files and replace/add new files. If you have made changes the `string resources` or modified the SDK `theme`, please make sure to port over those changes to the new version.
+
+If you are looking to upgrade from a version older than 4.x, please make sure to go through the Upgrade guides for 3.x, 2.8.x, 2.7.0
+
+</Admonition>
+
+## Removing the existing SDK files {#removing-existing-sdk}
+
+When upgrading the SDK, delete the following folders and files prior to importing the latest SDK package.
+
+#### Scenario 1: You are using Unity's internal build to build project with Helpshift SDK {#using-unity-internal-build}
+
+1. Delete all the Helpshift plugin files:
+   - project_path/Assets/Plugins/Android/helpshift/\*
+   - project_path/Assets/Plugins/Android/assets/helpshift/\*
+   - project_path/Assets/Plugins/Android/assets/hs\_\_data
+   - project_path/Assets/Plugins/Android/gcm.jar
+   - project_path/Assets/Helpshift/\*
+     - project_path/Assets/Helpshift/Editor/\*
+     - project_path/Assets/Helpshift/Example/\*
+     - project_path/Assets/Helpshift/Plugins/\*
+     - project_path/Assets/Helpshift/Resources/\*
+2. Delete all the Android support library directories from **project_path/Assets/Plugins/Android** location that are packaged with Helpshift plugin. Ex. for support lib 26.0.2, delete all the following directories:
+   - project_path/Assets/Plugins/Android/appcompat-v7-26.0.2
+   - project_path/Assets/Plugins/Android/cardview-v7-26.0.2
+   - project_path/Assets/Plugins/Android/design-26.0.2
+   - project_path/Assets/Plugins/Android/recyclerview-v7-26.0.2
+   - project_path/Assets/Plugins/Android/support-annotations-26.0.2
+   - project_path/Assets/Plugins/Android/support-compat-26.0.2
+   - project_path/Assets/Plugins/Android/appcompat-v7-26.0.2
+   - project_path/Assets/Plugins/Android/support-core-ui-26.0.2
+   - project_path/Assets/Plugins/Android/support-core-utils-26.0.2
+   - project_path/Assets/Plugins/Android/support-fragment-26.0.2
+   - project_path/Assets/Plugins/Android/support-transition-26.0.2
+   - project_path/Assets/Plugins/Android/support-v4-26.0.2
+   - project_path/Assets/Plugins/Android/support-vector-drawable-26.0.2
+3. Delete all the .meta files associated with all the deleted files/directories in step-1 and step-2
+
+<Admonition type="info" title="Note">
+
+If you moved Helpshift SDK files to any other directory, then navigate to that directory and delete all the Helpshift SDK files.
+
+</Admonition>
+
+#### Scenario 2: You are using Unity's in-built gradle build system to build project with Helpshift SDK {#using-unity-gradle-build}
+
+1. Delete all the Helpshift plugin files:
+   - project_path/Assets/Plugins/Android/Helpshift.aar
+   - project_path/Assets/Plugins/Android/assets/helpshift/\*
+   - project_path/Assets/Plugins/Android/assets/hs\_\_data
+   - project_path/Assets/Plugins/Android/gcm.jar
+   - project_path/Assets/Helpshift/\*
+     - project_path/Assets/Helpshift/Editor/\*
+     - project_path/Assets/Helpshift/Example/\*
+     - project_path/Assets/Helpshift/Plugins/\*
+     - project_path/Assets/Helpshift/Resources/\*
+2. Delete all the Android support library **aar** files from **project_path/Assets/Plugins/Android** location. Ex. for support lib 26.0.1, delete all the following aar files:
+   - project_path/Assets/Plugins/Android/appcompat-v7-26.0.1.aar
+   - project_path/Assets/Plugins/Android/cardview-v7-26.0.1.aar
+   - project_path/Assets/Plugins/Android/design-26.0.1.aar
+   - project_path/Assets/Plugins/Android/recyclerview-v7-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-compat-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-core-ui-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-core-utils-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-fragment-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-media-compat-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-v4-26.0.1.aar
+   - project_path/Assets/Plugins/Android/support-vector-drawable-26.0.1.aar
+3. Delete `helpshift_bkp` folder, at `<project_path>/helpshift_bkp` location, which is generated by **PluginToAAR** script.
+4. Delete all the _.meta_ files associated with all the deleted files/directories in step-1 to step-3
+
+<Admonition type="info" title="Note">
+
+If you moved Helpshift SDK files to any other directory, then navigate to that directory and delete all the Helpshift SDK files.
+
+</Admonition>
+
+## Upgrade to 5.x SDK {#upgrade-to-5x}
+
+In order to use Helpshift Unity SDK v5.0.0+ for your app, Helpshift recommends you to follow the below steps. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+### Integration
+
+Remove all the old SDK files and import the Standard SDK **.unitypackage** in your app. Refer here:
+[Integration Guide](/unity/getting-started-android#getting-sdk)
+
+#### Code-related changes
+
+If your code-base has references to **Campaigns** code, then the compilation will fail after the upgrade. You will need to remove all the references to **Campaigns** code from the code-base.
+
+Remove **using Helpshift.Campaigns** class import and fix the build issues.
+
+## Moving the SDK configuration from GUI Editor to C# code. {#gui-editor-to-c}
+
+With Unity SDK 5.0.0, we have removed the GUI Configuration Editor for the Helpshift SDK. You can pass all the Helpshift SDK configurations from your C# code. Please find below the C# example codes for all the configuration which were present in the GUI Editor earlier.
+
+| Removed SDK Configuration from GUI Editor                                                                                                       | Replacement C# Code Example Link                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| ![unity_android_install.png](/static/books/unity/unity_android_install.png "Install Creds")                                                     | [Install call from C#](https://developers.helpshift.com/unity/getting-started-android#start-using)                           |
+| ![unity_android_game_object.png](/static/books/unity/unity_android_game_object.png "Game Object")                                               | <https://developers.helpshift.com/unity/sdk-configuration-android#unity-game-object>                                         |
+| ![unity_android_notification_icon.png](/static/books/unity/unity_android_notification_icon.png "Notification icon")                             | <https://developers.helpshift.com/unity/sdk-configuration-android#notificationIcon>                                          |
+| ![unity_android_large_notification_icon.png](/static/books/unity/unity_android_large_notification_icon.png "Large Notification icon")           | <https://developers.helpshift.com/unity/sdk-configuration-android#largeNotificationIcon>                                     |
+| ![unity_android_notification_sound.png](/static/books/unity/unity_android_notification_sound.png "Notification Sound")                          | <https://developers.helpshift.com/unity/sdk-configuration-android#notificationSound>                                         |
+| ![unity_android_custom_fonts.png](/static/books/unity/unity_android_custom_fonts.png "Custom Fonts")                                            | <https://developers.helpshift.com/unity/sdk-configuration-android#usingCustomFonts>                                          |
+| ![unity_android_support_channel_id.png](/static/books/unity/unity_android_support_channel_id.png "Support notification channel ID")             | <https://developers.helpshift.com/unity/sdk-configuration-android#notificationChannels>                                      |
+| ![unity_android_campaigns_channel_id.png](/static/books/unity/unity_android_campaigns_channel_id.png "Campaigns Notification channel ID")       | <https://developers.helpshift.com/unity/sdk-configuration-android#notificationChannels>                                      |
+| ![unity_ios_enable-in-app-notification.png](/static/books/unity/unity_ios_enable-in-app-notification.png "Enable In-app Notification")          | <https://developers.helpshift.com/unity/sdk-configuration-android#enableInAppNotification>                                   |
+| ![unity_ios_enable_fallback_language.png](/static/books/unity/unity_ios_enable_fallback_language.png "Enable Fallback Language")                | <https://developers.helpshift.com/unity/sdk-configuration-android#enableDefaultFallbackLanguage>                             |
+| ![unity_ios_disable_entry_exit_animation.png](/static/books/unity/unity_ios_disable_entry_exit_animation.png "Disable Entry Exit Animations")   | Check out iOS configuration guide: <https://developers.helpshift.com/unity/sdk-configuration-ios#disableEntryExitAnimations> |
+| ![unity_android_default_screen_orientation.png](/static/books/unity/unity_android_default_screen_orientation.png "Default Screen orientation")  | <https://developers.helpshift.com/unity/sdk-configuration-android#screenOrientation>                                         |
+| ![unity_ios_enable_logging.png](/static/books/unity/unity_ios_enable_logging.png "Enable Logging")                                              | <https://developers.helpshift.com/unity/sdk-configuration-android#enableLogging>                                             |
+| ![unity_ios_enable_inbox_polling.png](/static/books/unity/unity_ios_enable_inbox_polling.png "Enable Inbox Polling")                            | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableInboxPolling>                                            |
+| ![unity_enable_contact_us.png](/static/books/unity/unity_enable_contact_us.png "Enable Contact Us")                                             | <https://developers.helpshift.com/unity/sdk-configuration-android#enable-contact-us>                                         |
+| ![unity_goto_conversation_after_contact.png](/static/books/unity/unity_goto_conversation_after_contact.png "Goto Conversation After ContactUs") | <https://developers.helpshift.com/unity/sdk-configuration-android#gotoConversationAfterContactUs>                            |
+| ![unity_present_full_ipad.png](/static/books/unity/unity_present_full_ipad.png "Present Full screen on iPad")                                   | Check out iOS configuration guide: <https://developers.helpshift.com/unity/sdk-configuration-ios#presentFullScreenOniPad>    |
+| ![unity_require_email.png](/static/books/unity/unity_require_email.png "Require Email")                                                         | <https://developers.helpshift.com/unity/sdk-configuration-android#requireEmail>                                              |
+| ![unity_hide_name_email.png](/static/books/unity/unity_hide_name_email.png "Hide Name and Email")                                               | <https://developers.helpshift.com/unity/sdk-configuration-android#hideNameAndEmail>                                          |
+| ![unity_prefill_text.png](/static/books/unity/unity_prefill_text.png "Conversation Prefill Text")                                               | <https://developers.helpshift.com/unity/sdk-configuration-android#conversationPrefillText>                                   |
+| ![unity_enable_privacy.png](/static/books/unity/unity_enable_privacy.png "Enable Full Privacy")                                                 | <https://developers.helpshift.com/unity/sdk-configuration-android#enableFullPrivacy>                                         |
+| ![unity_show_search_results.png](/static/books/unity/unity_show_search_results.png "Show Search Results On New Conversation")                   | <https://developers.helpshift.com/unity/sdk-configuration-android#showSearchOnNewConversation>                               |
+| ![unity_show_resolution_question.png](/static/books/unity/unity_show_resolution_question.png "Show Conversation Resolution")                    | <https://developers.helpshift.com/unity/sdk-configuration-android#showConversationResolutionQuestion>                        |
+| ![unity_show_conversation_info.png](/static/books/unity/unity_show_conversation_info.png "Show Conversation Information")                       | <https://developers.helpshift.com/unity/sdk-configuration-android#showConversationInfoScreen>                                |
+| ![unity_enable_typing_indicator.png](/static/books/unity/unity_enable_typing_indicator.png "Enable Typing indicator")                           | <https://developers.helpshift.com/unity/sdk-configuration-android#enableTypingIndicator>                                     |
+| ![unity_supported_file_formats.png](/static/books/unity/unity_supported_file_formats.png "Supported File Formats")                              | <https://developers.helpshift.com/unity/delegates-android#display-attachment>                                                |
+
+## Migration from in-built GCM push support to FCM push notifcation {#gcm-to-fcm-migration}
+
+As of April 10, 2018, Google has deprecated GCM. The GCM server and client APIs are deprecated and will be removed as soon as May 29, 2019. Please migrate GCM apps to Firebase Cloud Messaging (FCM), which inherits the reliable and scalable GCM infrastructure, plus many new features. Keeping the above in mind, with Helpshift Unity SDK v5.0.0, we have removed in-built GCM support for push notifications.
+
+To use FCM push notification, please follow the FCM push integration guide: [FCM push support](/unity/notifications-android##fcm-push-support)
+
+## Customize themes and colors {#customize-theme}
+
+With Helpshift Unity SDK v5.0.0, we have improved Unity Android SDK packaging structure change from folder plugin to "aar". To customize theme and colors, please follow the steps mentioned in the following guide: [Theme customization guide](/unity/design-android#skinning)
+
+## Customize language translations for SDK strings {#customize-string-resources}
+
+With Helpshift Unity SDK v5.0.0, we have improved Unity Android SDK packaging structure change from folder plugin to "aar". To customize language translations, please follow the steps mentioned in the following guide: [String resource customization guide](/unity/string-customization-android#string-customization)
+
+## List of removed APIs {#removed-api}
+
+| Removed APIs                                                            | New API                                                                                                                                                                                                                                                                      |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HelpshiftSdk.registerForPush(string yourGcmSenderId)                    | Removed in-build GCM support, please manually integrate push with FCM.<br />Reference: <https://developers.helpshift.com/unity/notifications-android/>                                                                                                                       |
+| HelpshiftSdk.isConversationActive()                                     | HelpshiftSdk.checkIfConversationActive()<br />Reference: <https://developers.helpshift.com/unity/tracking-android#isConversationActive>                                                                                                                                      |
+| HelpshiftSdk.getNotificationCount()                                     | HelpshiftSdk.requestUnreadMessagesCount() <br />Reference: <https://developers.helpshift.com/unity/campaigns-android#request-unread-messages-count>                                                                                                                          |
+| Helpshift Delegate API "didReceiveNotificationCount"                    | Helpshift delegate API "didReceiveUnreadMessagesCount"<br />Reference: <https://developers.helpshift.com/unity/delegates-android#newmessage-recieved>                                                                                                                        |
+| HelpshiftSdk.install()                                                  | HelpshiftSdk.install(apiKey, domainName, appId, configDictionary) <br />Reference: <https://developers.helpshift.com/unity/getting-started-android#initializing>                                                                                                             |
+| HelpshiftSdk.install(apiKey, domainName, appId)                         | HelpshiftSdk.install(apiKey, domainName, appId, configDictionary) <br />Reference: <https://developers.helpshift.com/unity/getting-started-android#initializing>                                                                                                             |
+| HelpshiftSdk.showConversation()                                         | HelpshiftSdk.showConversation(configDictionary) <br />Reference: <https://developers.helpshift.com/unity/support-tools-android#conversation-view>                                                                                                                            |
+| HelpshiftSdk.showConversationWithMeta(configDictionary)                 | HelpshiftSdk.showConversation(configDictionary) <br />Reference: <https://developers.helpshift.com/unity/support-tools-android#conversation-view> <br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-android#metadata>                |
+| HelpshiftSdk.showFAQSection(sectionPublishId)                           | HelpshiftSdk.showFAQSection(sectionPublishId, configDictionary); <br />Reference: <https://developers.helpshift.com/unity/support-tools-android#faq-section-view>                                                                                                            |
+| HelpshiftSdk.showFAQSectionWithMeta(sectionPublishId, configDictionary) | HelpshiftSdk.showFAQSection(sectionPublishId, configDictionary);<br />Reference: <https://developers.helpshift.com/unity/support-tools-android#faq-section-view> <br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-android#metadata> |
+| HelpshiftSdk.showSingleFAQ(questionPublishId)                           | HelpshiftSdk.showSingleFAQ(questionPublishId, configDictionary) <br />Reference: <https://developers.helpshift.com/unity/support-tools-android#faq-question-view>                                                                                                            |
+| HelpshiftSdk.showSingleFAQWithMeta(questionPublishId, configDictionary) | HelpshiftSdk.showSingleFAQ(questionPublishId, configDictionary)<br />Reference: <https://developers.helpshift.com/unity/support-tools-android#faq-question-view><br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-android#metadata>  |
+| HelpshiftSdk.showFAQs()                                                 | HelpshiftSdk.showFAQs(configDictionary); <br />Reference: <https://developers.helpshift.com/unity/support-tools-android#faqs-view>                                                                                                                                           |
+| HelpshiftSdk.showFAQsWithMeta(configDictionary)                         | HelpshiftSdk.showFAQs(configDictionary);<br />Reference: <https://developers.helpshift.com/unity/support-tools-android#faqs-view><br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-android#metadata>                                 |
+| HelpshiftSdk.handlePushNotification(issueid)                            | HelpshiftSdk.handlePushNotification(pushNotificationDictionary)<br />Reference: <https://developers.helpshift.com/unity/notifications-android##manual-push-support>                                                                                                          |

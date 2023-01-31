@@ -1,0 +1,209 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "Or, follow these simple steps to add Helpshift in-app support to youriOS App right away -"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Getting Started {#getting-started}
+
+<Steps title="New to Helpshift? Try out sample projects in 3 clicks">
+  <Step
+    number="1"
+    title="Download samples"
+    subtitle="Ready to use XCode projects"
+    link="https://github.com/helpshift/helpshift-ios-sdk-examples/"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="Paste in your API key"
+    subtitle="A one-line change"
+    link="/ios/samples/#support-app"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="File your first ticket"
+    subtitle='Tap "Report issue" to talk to yourself'
+    link="/ios/samples#test-integration"
+    newTab={true}
+  />
+</Steps>
+
+<Intro>
+
+Or, follow these simple steps to add Helpshift in-app support to your
+iOS App right away -
+
+</Intro>
+
+## Requirements {#version-requirements}
+
+- Xcode 12.0 and above.
+- Cocoapods v1.10.0
+- Supported iOS versions:
+  - iOS 15, 14, 13, 12, 11 and 10
+
+<Admonition type="info" title="Note">
+
+If you are using the SDK version 7.7.x and want to upgrade to 7.8 or if you have already upgraded to 7.8.0 or 7.8.1, we highly recommend that you upgrade to 7.8.2.
+
+</Admonition>
+
+<Admonition type="info" title="Note">
+
+With version 7.5.0, Helpshift SDK has dropped support for iOS 9. If you wish to keep supporting iOS 9 devices for your apps, please read the [KB Article](https://support.helpshift.com/kb/article/what-are-the-minimum-ios-versions-supported-by-helpshift/) to support Helpshift on older OS versions.
+
+</Admonition>
+
+<Admonition type="info" title="Note">
+
+For versions 7.4.0 and below, due to a [bug](https://forums.developer.apple.com/thread/110393) in Xcode 10+, the Helpshift SDK will not be compatible with iOS versions below 9.3
+Unfortunately till the time Apple fixes the bug with Xcode 10.2 or higher, we have decided to drop support for iOS 9.2 and below for SDK version 7.4.0 and below
+
+</Admonition>
+
+### Automated Integration using Cocoapods {#cocoapods}
+
+To start using Helpshift `v[% ios.sdk_version  %]` in your project, add one of the following lines to your `Podfile` according to the version which you wish to integrate.
+
+```text
+
+    pod 'Helpshift', '[% ios.sdk_version  %]'            # For normal version
+    pod 'Helpshift', '[% ios.sdk_version  %]-bitcode'    # For bitcode version
+
+```
+
+And run `pod install` or `pod update` to refresh your
+[cocoapods](https://cocoapods.org/) dependencies.
+
+If your app does not contain any swift code, then set `Always Embed Swift Standard Libraries` in the `Build Settings` to YES
+
+You can now move on to [Initializing Helpshift in your App](#initializing).
+
+### Manual Integration {#manual-integration}
+
+#### Get the latest SDK zip {#getting-sdk}
+
+Download the latest for the Helpshift iOS SDK.
+
+<DownloadButton text="Download SDK" link="[% ios.sdk_url %]" classes="mb-4" />
+
+The zip file contains
+
+<div className="text-sm compact ">
+
+|                               |                                                                                                                                        |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Helpshift.xcframework         | Non bitcode version of Helpshift framework                                                                                             |
+| Bitcode/Helpshift.xcframework | Bitcode compatible version of Helpshift framework                                                                                      |
+| HelpshiftCustomLocalizations/ | Folder containing language translations which can be used to create the HelpshiftCustomLocalization bundle. This is just for reference |
+| HelpshiftCustomThemes/        | Folder containing skinning configuration to match the design of your app                                                               |
+| NOTICE.txt/                   | License information about third-party code.                                                                                            |
+
+</div>
+
+#### Add the latest stable SDK release to your project {#add-to-project}
+
+- Unzip the SDK and drag drop `Helpshift.xcframework` into the Frameworks, Libraries and Embedded content in the General section of your Xcode project.
+- If your app does not contain any swift code, set `Always Embed Swift Standard Libaries` under `Build Settings` to YES
+- With version 7.7.0, End-users will be able to send files such as pdf, video, etc. where before 7.7.0 end-users could only send images. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
+  &nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" />
+
+<Admonition type="info" title="Note">
+
+#### Add NSPhotoLibraryUsageDescription key in your application info plist file
+
+If your app does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause app rejection.
+
+**Description text:** “We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons.”
+
+Note that this is just a suggested description. If you need localisations for the same, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Admonition>
+
+<Admonition type="info" title="Note">
+
+Please replace all the old files with new files.
+
+</Admonition>
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app and ready to collect meaningful data about your users.
+
+### Initializing Helpshift in your app {#initializing}
+
+Helpshift uniquely identifies each registered App using a combination
+of 3 tokens:
+
+<div className=" compact">
+
+|                          |                                                                                                                        |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| <code>API Key</code>     | Your unique developer API Key                                                                                          |
+| <code>Domain Name</code> | Your Helpshift domain name without any http: or slashes. E.g. _happyapps_ if your account is _happyapps.helpshift.com_ |
+| <code>App ID</code>      | Your App's unique ID                                                                                                   |
+
+</div>
+
+You can find these tokens by navigating to `Settings`>`SDK (for Developers)` in
+your agent dashboard.
+Select your App and _the correct platform_ from the dropdowns and copy
+the 3 tokens to be passed when initializing Helpshift.
+
+<Image src="/static/books/common/settings-integration.png" width="full" />{" "}
+
+Initialize Helpshift by calling the `HelpshiftCore`'s `install` function:
+
+1. Initialize the `HelpshiftCore` with the Helpshift service that you want to use.
+2. Call the `HelpshiftCore`'s `install` function.
+
+```
+@import Helpshift;
+...
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    ...
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_HELPSHIFT_DOMAIN" appID:@"YOUR_APP_ID"];
+    ...
+    return YES;
+}
+```
+
+<Admonition type="danger" title="Important">
+
+** Placing the install call **
+
+You should not place the install call anywhere other than `application:didFinishLaunchingWithOptions:`
+Placing it elsewhere might cause unexpected runtime problems.
+From version 5.7.0 and above the Helpshift install call will throw InstallException in case the validation of the
+SDK keys fail.
+
+</Admonition>
+
+## Troubleshooting {#troubleshooting}
+
+If you are having issues with Helpshift integration, head over to the [Troubleshooting](/ios/troubleshooting#integration-issues) section for further information.

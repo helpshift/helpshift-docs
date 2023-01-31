@@ -1,0 +1,68 @@
+---
+sidebar_position: 90
+title: Impact Analysis
+description: "The following numbers are representative of a skeletal sample appintegrated with the Helpshift Unity plugin."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Impact Analysis {#performance}
+
+<Intro>
+
+The following numbers are representative of a skeletal sample app
+integrated with the Helpshift Unity plugin.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+**App Launch Time**
+
+Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
+
+</Admonition>
+
+## v10.1.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift android plugin will add `162 Kb` to your application's release APK.
+The `162 Kb` size includes total impact with all the resources and code.
+With the appcompat library which is required for the SDK, it will add around `1MB` of size.
+
+### Method count {#methods-count}
+
+The Helpshift SDK X will add 1088 methods to your dex:
+
+| Package           | Method Count |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1088` |
+
+### Memory usage {#memory-usage}
+
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `4.40`                          |                         `95-105` |
+| showConversation (conversational mode) | `5.80`                          |                            `135` |
+
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Google Pixel 4A running Android 11.
+
+</Admonition>

@@ -1,0 +1,155 @@
+---
+sidebar_position: 100
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+</Intro>
+
+## Helpshift Delegate implementation {#delegate-implementation}
+
+Bind the event delegate by using `BindEventDelegate()`
+
+<Centered width="full">
+
+![](/static/books/unreal/delegates.png)
+
+</Centered>
+
+You can listen to the events fired by Helpshift. All the events are defined in `HelpshiftConstants.h`
+
+<Centered width="full">
+
+![](/static/books/unreal/delegate_events.png)
+
+</Centered>
+
+## Events {#helpshift-events}
+
+### Helpshift session started event {#session-delegates}
+
+This event gets fired when the Helpshift session starts
+
+- Event name: `HelpshiftEventSDKSessionStarted`
+- Event data: `null`
+
+### Helpshift session ended event {#session-delegates}
+
+This event gets fired when the Helpshift session ends.
+
+- Event name: `HelpshiftEventSDKSessionEnded`
+- Event data: `null`
+
+### Unread Message Count Event {#unreadMessageCount}
+
+This event gets fired when you call `RequestUnreadMessageCount(FetchFromServer)` API to request unread messages count.
+
+- Event name: `HelpshiftEventReceivedUnreadMessageCount`
+- Event data keys:
+  - `HelpshiftEventDataMessageCount (int)`
+  - `HelpshiftEventDataMessageCountFromCache`
+
+### Conversation Status Event {#conversation-status}
+
+This event contains information about the current ongoing conversation.
+
+- Event name: `HelpshiftEventConversationStatus`
+- Event data:
+  - `HelpshiftEventDataLatestIssueId (string)`
+  - `HelpshiftEventDataLatestIssuePublishId (string)`
+  - `HelpshiftEventDataIsIssueOpen (bool)`
+
+### Widget Toggle Event {#widget-toggle-event}
+
+This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
+
+- Event name: `HelpshiftEventWidgetToggle`
+- Event data: `HelpshiftEventDataSDKVisible (bool)`
+
+### Conversation Start Event {#conversation-start-event}
+
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
+
+- Event name: `HelpshiftEventConversationStart`
+- Event data: `HelpshiftEventDataMessage (string)`
+
+### Message Add Event {#message-add-event}
+
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user. For your reference, see the below example.
+
+- Event name: `HelpshiftEventMessageAdd`
+- Event data keys:
+  - `HelpshiftEventDataMessageType` - `HelpshiftEventDataMessageTypeAttachment` or `HelpshiftEventDataMessageTypeText`
+  - `HelpshiftEventDataMessageBody (string)`
+
+### CSAT Submit Event {#csat-submit-event}
+
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
+
+- Event name: `HelpshiftEventCsatSubmit`
+- Event data keys:
+  - `HelpshiftEventDataCsatRating (int)`
+  - `HelpshiftEventDataAdditionalFeedback (string)`
+
+### Conversation End Event {#conversation-end-event}
+
+This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+
+- Event name: `HelpshiftEventConversationEnd()`
+- Event Data: `none`
+
+### Conversation Rejected Event {#conversation-rejected-event}
+
+This event is triggered when an agent rejects the conversation.
+
+- Event name: `HelpshiftEventConversationRejected`
+- Event data: `none`
+
+### Conversation Resolved Event {#conversation-resolved-event}
+
+This event is triggered when an agent resolves the conversation.
+
+- Event name: `HelpshiftEventConversationResolved`
+- Event data: `none`
+
+### Conversation Reopened Event {#conversation-reopened-event}
+
+When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+
+- Event name: `HelpshiftEventConversationReopened`
+- Event data: `none`
+
+### User Authentication Failed Event {#user-authentication-failed-event}
+
+If you have `user authentication feature` enabled on the Dashboard and if you pass an invalid token in the `Login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-unreal/users)
+
+You have to use `BindAuthFailureDelegate` to listen to Authentication failure events.
+
+The authentication failure reason is wrapped in an enum `EHelpshiftAuthenticationFailureReason` Example:
+
+Reason type :
+
+- `EHelpshiftAuthenticationFailureReason.REASON_INVALID_AUTH_TOKEN`
+- `EHelpshiftAuthenticationFailureReason.REASON_AUTH_TOKEN_NOT_PROVIDED`
+- `EHelpshiftAuthenticationFailureReason.UNKNOWN`

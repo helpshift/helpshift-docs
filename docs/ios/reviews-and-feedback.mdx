@@ -1,0 +1,66 @@
+---
+sidebar_position: 110
+title: Reviews & Feedback
+description: "Request your users to submit reviews for your app in the store, and get in touch with you for any feedback"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Reviews & Feedback {#review-and-feedback}
+
+<Intro>
+
+Request your users to submit reviews for your app in the store, and get in touch with you for any feedback
+
+</Intro>
+
+## Manually show App Rating alertview {#app-rating-api}
+
+Starting with SDK version 6.2.0, this feature has been deprecated. An explanation of why we made this change can be found [here](#review-reminder-changes).
+
+## Automatic app ratings {#automatic-review-request}
+
+Starting with SDK version 6.2.0, this feature has been deprecated. An explanation of why we made this change can be found [here](#review-reminder-changes).
+
+## Changes in Automatic app ratings and Manual show app rating features {#review-reminder-changes}
+
+The new review API from Apple ([details](https://developer.apple.com/documentation/storekit/skstorereviewcontroller/2851536-requestreview)) lets end users leave app ratings on the App Store without leaving the app. However, it also caps the maximum amount of such requests to 3 per year. End users can in turn choose to disable app review requests from the app settings on their device.
+
+Recently, Apple has mandated the usage of this new API, and also discouraged the usage of custom app review request prompts. As a result of this change in Apple’s app store policy, Helpshift has deprecated its review request API `showAlertToRateAppWithURL:withCompletionBlock:` in v6.2.0.
+
+If you plan to support the new Apple review API and would still like the option to request reviews after Issue resolutions, your developer can use our ["CSAT completed" delegate](#csat) and call the review API if an end user has given their conversation a rating of 4 or 5 stars.
+
+## Customer satisfaction survey {#csat}
+
+Customer satisfaction survey prompts your app users to rate their customer support experience with your agents. Enabling it, sends out a 5-star customer service rating request to your customers when an issue is resolved.
+
+To enable it, go to Settings in your agent dashboard, and then under app settings, select your app. You can enable `Customer satisfaction survey` from under SDK Configurations.
+
+![](/static/books/ios/csat-admin-enable.png)
+
+When an issue is resolved, and your customer accepts the resolution, then a Customer Satisfaction screen is shown.
+
+![](/static/books/ios/csat-iphone.png)
+
+Your customer can also (optionally) give feedback to help you improve the quality of your service.
+
+![](/static/books/ios/csat-service-rating.png)

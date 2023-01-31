@@ -1,0 +1,103 @@
+---
+sidebar_position: 10
+title: Upgrading from 1.6.0 to 1.7.0 / #upgrade-to-1.7.0 /
+description: "The Helpshift SDK v1.7.0 is a major update. Please note that we have deprecated some APIs. If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 1.6.0 to 1.7.0 {#upgrade-to-1}
+
+<Intro>
+
+The Helpshift SDK v1.7.0 is a major update. Please note that we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated API                                            | New API                                               |
+| --------------------------------------------------------- | ----------------------------------------------------- |
+| `HelpshiftCocos2dx::isConversationActive();`              | `HelpshiftCocos2dx::checkIfConversationActive(...);`  |
+| `HelpshiftCocos2dx::setSDKLanguage(...);`                 | `HelpshiftCocos2dx::setLanguage(...);`                |
+| `HelpshiftCocos2dx::getNotificationCountFromRemote(...);` | `HelpshiftCocos2dx::requestUnreadMessagesCount(...);` |
+
+## Check active Conversation {#check-active-conversation}
+
+On Plugin version 1.6.0 or below, you can check if an active Conversation exists as shown below :
+
+```cpp
+
+	if (HelpshiftCocos2dx::isConversationActive()) {
+		// Active Conversation.
+	} else {
+		// No open Conversation.
+	}
+
+```
+
+On Plugin version 1.7.0 and above, you can asyncronously check if an active Conversation exists as shown below :
+
+```cpp
+
+	void conversationActive(bool isActive) {
+		if (isActive == "true") {
+			// Active Conversation.
+		} else {
+			// No open Conversation.
+		}
+	}
+	HelpshiftCocos2dx::checkIfConversationActive(conversationActive);
+
+```
+
+## Set SDK language {#set-sdk-language}
+
+On Plugin version 1.6.0 and below, you can set the SDK language as shown below :
+
+```cpp
+
+	HelpshiftCocos2dx::setSDKLanguage("fr");
+
+```
+
+On Plugin version 1.7.0 and above, you can set the SDK language as shown below :
+
+```cpp
+
+	HelpshiftCocos2dx::setLanguage("fr");
+
+```
+
+## Get count of unread messages {#get-count-of-unread-messages}
+
+On Plugin version 1.6.0 and below, you can get the count of unread messages as shown below :
+
+```cpp
+
+	int notifCount = HelpshiftCocos2dx::getNotificationCountFromRemote(false);
+
+```
+
+On Plugin version 1.7.0 and below, you can get the count of unread messages as shown below :
+
+```cpp
+
+	void receivedMessageCount(int count) {
+		printf("Unread message count: %d\n", count);
+	}
+	HelpshiftCocos2dx::requestUnreadMessagesCount(false, receivedMessageCount);
+```

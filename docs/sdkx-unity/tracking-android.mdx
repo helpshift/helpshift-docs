@@ -1,0 +1,245 @@
+---
+sidebar_position: 220
+title: Tracking Android
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Tracking <small>Android</small> {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
+
+</Admonition>
+
+## Adding Tags to Conversations {#adding-tags}
+
+You can attach tags while reporting an issue by passing them to the `configMap` object at the time of calling `ShowConversation`. You can pass an **array of strings** with a key `"tags"` which will get added as Tags when the issue is created.
+
+For example:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+// configuration map
+void openHelpshift(){
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    // other configurations
+    // ..
+    configMap.Add("tags", new String[] { "tag1", "tag2" })
+
+    // open the support chat screen
+    help.ShowConversation(configMap);
+}
+
+```
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- The attached tags must exactly match the tags present on the dashboard.
+
+</Admonition>
+
+## Adding Custom Metadata to Conversations
+
+If you want to add Custom Metadata at the time of Issue creation, follow the steps.
+
+1. Initialize a top-level custom metadata `Dictionary`
+2. Define your custom metadata `Dictionary`
+3. Add the key-value pairs in that custom metadata `Dictionary`
+4. Add the custom metadata map to the top-level map
+5. Pass the map to `configMap` with key `"customMetadata"` to any of the SDK X APIs (like `ShowConversation(configMap)`).
+
+Use code:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+void openHelpshift(){
+    Dictionary<string, string> customMetadataDictionary = new Dictionary<string, string>();
+    customMetadataDictionary.Add("Level", "9");
+    customMetadataDictionary.Add("Spend", "46.55 USD");
+    customMetadataDictionary.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    // other configs...
+    //..
+    config.Add("customMetadata", customMetadataDictionary);
+
+    help.ShowConversation(configMap);
+}
+```
+
+<Admonition type="info" title="Note">
+
+Metadata should only be sent as String key-value pairs.
+
+</Admonition>
+
+## Set Custom Issue Fields {#set-custom-issue-fields}
+
+If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
+
+1. Initialise a top level custom issue fields' `Dictionary`
+2. Define your custom issue field `Dictionary`
+3. Add the `"type"` and `"value"` for that custom issue field
+4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
+5. Pass the map to `configMap` with key `"customIssueFields"` of the `ShowConversation(configMap)`
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+void openHelpshift(){
+
+    Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+    joiningDate.Add("type", "date");
+    joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+    Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+    stockLevel.Add("type", "number");
+    stockLevel.Add("value", "1505");
+
+    Dictionary<string, string> employeeName = new Dictionary<string, string>();
+    employeeName.Add("type", "singleline");
+    employeeName.Add("value", "Bugs helpshift");
+
+    Dictionary<string, string> isPro = new Dictionary<string, string>();
+    isPro.Add("type", "boolean");
+    isPro.Add("value", "true");
+
+    Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
+    cifDictionary.Add("joining_date", joiningDate);
+    cifDictionary.Add("stock_level", stockLevel);
+    cifDictionary.Add("employee_name", employeeName);
+    cifDictionary.Add("is_pro", isPro);
+
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    // other configs...
+    //..
+    config.Add("customIssueFields", cifDictionary);
+
+    help.ShowConversation(configMap);
+}
+```
+
+The following are the valid values for the `type` key of a Custom Issue Field.
+
+- "singleline"
+- "multiline"
+- "number"
+- "checkbox"
+- "dropdown"
+- "date"
+
+Compatibility table for type and values:
+
+| Type       | Value   | Comments                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | Character limit of 255                                          |
+| multiline  | string  | Character limit of 100,000                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
+| date       | number  | Epoch time. For example - **Date.now()**                        |
+| checkbox   | boolean |                                                                 |
+
+<Admonition type="info" title="Note">
+
+On Custom Issue Fields keys & compatibility
+
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+
+</Admonition>
+
+## Breadcrumbs {#breadcrumbs}
+
+<Admonition type="info" title="Note">
+
+** Applicable to SDK X v10.1.0 & above **
+
+</Admonition>
+
+Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs, use `LeaveBreadcrumb` API —
+
+For example:
+
+```java
+
+    help.LeaveBreadcrumb("<any-breadcrumb-string>");
+
+```
+
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `ClearBreadcrumbs` API —
+
+For example:
+
+```java
+
+    help.ClearBreadcrumbs();
+
+```
+
+## Debug Logs {#debug-logs}
+
+<Admonition type="info" title="Note">
+
+** Applicable to SDK X v10.1.0 & above **
+
+</Admonition>
+
+If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can instantiate and use the HelpshiftLog class and its methods which will provide varying degress of logging. For example, if you want to attach debug level logs please add the following code
+
+For example:
+
+```java
+
+    HelpshiftLog.d("<debug-tag>", "<debug-message>");
+
+```
+
+Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.

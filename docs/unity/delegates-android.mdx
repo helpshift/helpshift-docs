@@ -1,0 +1,321 @@
+---
+sidebar_position: 10
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+</Intro>
+
+All delegate callbacks will be sent as Unity-messages on the _[unityGameObject](/unity/sdk-configuration-android#unity-game-object)_ that you configure.
+If you want to connect to any of the below callbacks, please implement a public void method with a string as the only argument.
+This method needs to be implemented in the script which is attached to the _unityGameObject_ configured via install.
+
+Call the `HelpshiftSdk.registerDelegates` API to start listening to the Helpshift delegates.
+
+```csharp
+
+helpshift.registerDelegates();
+
+```
+
+## Helpshift Session delegates {#session-delegates}
+
+### Session begin
+
+**helpshiftSessionBegan**
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+```csharp
+
+public void helpshiftSessionBegan() {
+// your code here
+}
+
+```
+
+### Session end
+
+**helpshiftSessionEnded**
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+```csharp
+
+public void helpshiftSessionEnded() {
+// your code here
+}
+
+```
+
+## Helpshift Conversation Delegates {#conversation-delegates}
+
+### New conversation delegate {#delegate-new-conversation-started}
+
+**newConversationStarted**
+
+If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will get fired every time the user starts a new conversation. The delegate method will receive the conversation message in it's arguments.
+
+<Admonition type="info" title="Note">
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+</Admonition>
+
+For example:
+
+```csharp
+
+    public void newConversationStarted (string newConversationMessage) {
+      // your code here
+    }
+
+```
+
+### Conversation ended delegate {#delegate-conversation-ended}
+
+This delegate receives a callback when an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved in the Dashboard, rejected, timed out or archived.
+
+```csharp
+
+public void conversationEnded() {
+// your code here
+}
+
+```
+
+### New message delegate {#delegate-user-replied-to-conversation}
+
+**userRepliedToConversation**
+
+If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
+
+```csharp
+
+    public const String HSUserAcceptedTheSolution = "User accepted the solution";
+    public const String HSUserRejectedTheSolution = "User rejected the solution";
+    public const String HSUserSentScreenShot = "User sent a screenshot";
+    public const String HSUserReviewedTheApp = "User reviewed the app";
+
+```
+
+For example:
+
+```csharp
+
+    public void userRepliedToConversation (string newMessage) {
+      if (newMessage.equals(HelpshiftSdk.HSUserAcceptedTheSolution)) {
+        // your code here
+      }
+    }
+
+```
+
+<Admonition type="info" title="Note">
+
+All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
+
+</Admonition>
+
+### Customer satisfaction survey delegate {#csat-completed}
+
+**userCompletedCustomerSatisfactionSurvey**
+
+If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
+
+For example:
+
+```csharp
+
+    public void userCompletedCustomerSatisfactionSurvey (string json) {
+      // deserialize the json to get dictionary with rating and feedback keys
+    }
+
+```
+
+### New message received count delegate {#newmessage-recieved}
+
+This delegate is the response to the `requestUnreadMessagesCount` method. It provides the number of unread messages in the current conversation. If `isRemote` set to `true` the unread message count is retrieved from server else unread message count for locally stored messages is returned.
+
+Example usage:
+
+```csharp
+
+    public void didReceiveUnreadMessagesCount(string count) {
+        // your code here
+    }
+
+```
+
+### Conversation active delegate {#didCheckIfConversationActive}
+
+This delegate responds to the `checkIfConversationActive` to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
+
+Example usage:
+
+```csharp
+
+	public void didCheckIfConversationActive(string isActive) {
+		if (isActive.Equals("true")) {
+			//Active Conversation
+		} else {
+			//No open Conversation
+		}
+	}
+
+```
+
+### Display attachment delegate {#display-attachment}
+
+Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
+
+- Video files (3gp, m4v)
+- Audio files (mp3, mp4, aac)
+- Image files (jpg, png, gif)
+
+After the attachment is downloaded, helpshift checks for any app which can open it. if no such app is found than we fall back to passing the file to the delegate handler in the app.
+
+There are two possible variants of the path parameter in `displayAttachmentFile(string path)`, one is file path and the other one is Uri.
+
+- On Android version 10 & above, path value will be a Uri path because files are exposed with Uri objects by the OS.
+- On Android versions older than 10, path value will be the file path
+
+To use this delegate you need to specify the file extensions which will be handled by your app. So that if file with that extension is downloaded then automatically method in your app will be called. Helpshift SDK will not handle all the files with the mentioned file extensions.
+
+For example :
+
+```csharp
+
+
+
+    private HelpshiftSdk help;
+
+    help = HelpshiftSdk.getInstance();
+    // If you want that all files with extension token should be handled by your app.
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    configMap.Add("supportedFileFormats",new string [] {"token"});
+    help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>",configMap);
+    public void displayAttachmentFile(String filePathOrUri)
+    {
+        if (filePathOrUri.StartsWith("content://", StringComparison.OrdinalIgnoreCase))
+        {
+            // your code here to handle uri
+        } else {
+            // your code here to handle filePath
+        }
+    }
+
+```
+
+### Authentication failure delegate {#authetication-failure}
+
+If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
+
+<table>
+  <tr>
+    <th>Delegate</th>
+    <th>When is it called</th>
+    <th>When to use</th>
+  </tr>
+  <tr>
+    <td>AUTH_TOKEN_NOT_PROVIDED</td>
+    <td>When no 'user authentication token' is provided</td>
+    <td>
+      If you do not plan on sending a 'user authentication token' when
+      implementing Unity SDK 4.0.0, but plan on implementing it in the future,
+      you can use this failure delegate to show your own alerts to the user,
+      such as a prompt to update the app. You may want to use this if you are
+      using the login API without the 'user authentication token', since these
+      users will be considered unverified once 'Identity Verification' is
+      enabled on the Dashboard. Using this delegate is completely optional -
+      Helpshift will prevent unverified users from being able to file Issues, as
+      mentioned previously.
+    </td>
+  </tr>
+  <tr>
+    <td>INVALID_AUTH_TOKEN</td>
+    <td>When the 'user authentication token' is invalid</td>
+    <td>
+      For Unity SDK v4.0.0 and later, if the HMAC Digest being provided via
+      login API is invalid, then Helpshift will prevent the users from filing
+      Issues. The 'user authentication token' can be invalid if:
+      <ul>
+        <li>
+          You made a programming error. Check how to generate HMAC Digest{" "}
+          <a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
+            here
+          </a>
+        </li>
+        <li>
+          You regenerated the secret key on the Dashboard, but didn't update the
+          'user authentication token'.
+        </li>
+        <li>A 3rd party is trying to make requests.</li>
+      </ul>
+      When the 'user authentication token' is invalid, end-users will not able
+      to file Issues and an error is shown to them, as mentioned previously. You
+      can use this delegate if you want to show your own alerts or re-fetch the
+      correct auth token from your server.
+    </td>
+  </tr>
+</table>
+
+```csharp
+
+    public void authenticationFailed(string serializedJSONUserData) {
+        HelpshiftUser user = HelpshiftJSONUtility.getHelpshiftUser (serializedJSONUserData);
+        HelpshiftAuthFailureReason reason = HelpshiftJSONUtility.getAuthFailureReason (serializedJSONUserData);
+        if (reason == HelpshiftAuthFailureReason.AUTH_TOKEN_NOT_PROVIDED) {
+            ...
+        } else if (reason == HelpshiftAuthFailureReason.INVALID_AUTH_TOKEN) {
+            ...
+        }
+    }
+
+```
+
+### User click on action delegate {#user-click-action}
+
+This delegate method is called when user clicks on an action in Action Card bot.
+`HelpshiftUserAction` holds the deserialzed data for the action type and data.
+
+<div className="compact ">
+
+|            |                                                                                     |
+| ---------- | ----------------------------------------------------------------------------------- |
+| actionType | The type of action user clicked on. Can be one of: ActionType.CALL, ActionType.LINK |
+| actionData | The data associated with the action type. Can be a url link or a phone number.      |
+
+</div>
+
+For example:
+
+```csharp
+
+    public void userClickOnAction(string serializedJSONUserActionData)
+    {
+        HelpshiftUserAction userAction = HelpshiftJSONUtility.getUserActionData(serializedJSONUserActionData);
+        Debug.Log("User clicked on action: Type: " + userAction.actionType + ", Data: " + userAction.actionData);
+    }
+```

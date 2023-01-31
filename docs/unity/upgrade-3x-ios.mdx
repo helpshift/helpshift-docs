@@ -1,0 +1,54 @@
+---
+sidebar_position: 10
+title: Upgrading from 3.x to 4.x
+description: "The Helpshift SDK v7.x is a major update and we have deprecated some APIs. If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 3.x to 4.x {#upgrade-to-4x}
+
+<Intro>
+
+The Helpshift SDK v7.x is a major update and we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated API                | New API                            |
+| ----------------------------- | ---------------------------------- |
+| helpshift.login()             | helpshift.login:(HelpshiftUser \*) |
+| helpshift.setNameAndEmail()   | helpshift.login:(HelpshiftUser \*) |
+| helpshift.setUserIdentifier() | helpshift.login:(HelpshiftUser \*) |
+
+## Logging in users {#login-users}
+
+You can login your users using the new [login API](/unity/users-ios#logged-in-users).
+
+<Admonition type="info" title="Note">
+
+- Users will be able to continue speaking on an open issue only if you were using the Login API. If you were using setUserIdentifier (now deprecated), if the user has an open Issue, using the login API will result in the creation of a new Issue. However, the previous Issue will be available to Agents under 'Other Issues'
+
+</Admonition>
+
+## Setting Name and email {#name-and-email}
+
+It is expected that you will pass the user's name, email using the [login API](/unity/users-ios#logged-in-users).
+
+## Setting User Identifier {#user-id}
+
+It is expected that you will pass the user identifier using the [login API](/unity/users-ios#logged-in-users).

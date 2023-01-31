@@ -1,0 +1,52 @@
+---
+sidebar_position: 10
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Troubleshooting {#troubleshoot}
+
+## SDK integration {#integration-issues}
+
+### 3.5.0 SDK Update {#3}
+
+We found a bug for the following scenario - for SDK 3.5.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
+
+**Action needed:**
+
+- If you are planning to integrate or are in the process of integrating SDK 3.5.0, we recommend integrating with 3.5.1 instead.
+- If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [3.5.1 SDK](/xamarin/release-notes-xamarin#v351).
+
+### Application crash with NPE when calling Helpshift SDK API {#xamarin-npe-crash}
+
+If you get a crash with the following error then delete the `bin` and `obj` folders on the Android project and rebuild it.
+
+```
+Java.Lang.RuntimeException: Unable to start activity ComponentInfo{com.helpshift.helpshiftapiexample/com.helpshift.support.activities.ParentActivity}:
+java.lang.NullPointerException: Attempt to invoke virtual method 'void android.support.v7.widget.ContentFrameLayout.setId(int)' on a null object reference
+  at java.lang.NullPointerException: Attempt to invoke virtual method 'void android.support.v7.widget.ContentFrameLayout.setId(int)' on a null object reference
+  at at android.support.v7.app.AppCompatDelegateImpl.createSubDecor(AppCompatDelegateImpl.java:703)
+  at at android.support.v7.app.AppCompatDelegateImpl.ensureSubDecor(AppCompatDelegateImpl.java:518)
+  at at android.support.v7.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:466)
+....
+```
+
+Xamarin forum reference :
+
+1. <https://forums.xamarin.com/discussion/71530/resources-xml-files-cause-java-lang-nullpointerexception>
+1. <https://forums.xamarin.com/discussion/94043/exception-when-configuring-a-fileprovider>

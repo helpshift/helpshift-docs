@@ -1,0 +1,74 @@
+---
+sidebar_position: 95
+title: Outbound Support
+description: "With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Outbound Support {#outbound-support}
+
+<Intro>
+
+With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Init API](/sdkx-unreal/getting-started#initializing)
+
+</Admonition>
+
+The steps to use this feature are the following -
+
+To generate the link for outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+
+![](/static/books/helpshiftx/outbound-support.png)
+
+You should see a **Create link** button. Click on the Create link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
+
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
+
+At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
+
+YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp , myAppSupport, etc.
+
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
+
+## Local API config {#local-api-config}
+
+1. You may want to add configuration specific to the current user in your app when they click on the notification.
+
+2. Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime when the end user clicks on the notification.
+
+3. This local API config is exactly same as we would expect in other APIs like `HelpshiftLibrary::ShowConversation()` or `HelpshiftLibrary::ShowFAQs()`.
+
+4. We will use this configuration for current issue as well as next issue filed in same session.
+
+## Sending the generated link to device {#send-generated-link-to-device}
+
+1. Send push notification to the users you want to give proactive support using your app's existing push notification system. Embed the outbound support link in the notification payload.
+
+2. In your app, handle this notification such that when a user opens the app through the notification, you read the notification payload and pass this proactive link (as a simple string) to Helpshift SDK via `HelpshiftLibrary::HandleProactiveLink()` function.
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided while generating the link from the dashboard.
+
+## Example Blueprint {#example-blueprint-handleproactive}
+
+Below is an example blueprint. For demo purposes the example calls `Handle Proactive Link` function on a button click. Ideally, this should be handled as a part of a notification click from the user.
+
+<Image src="/static/books/unreal/proactive-link.png" width="full" />{" "}

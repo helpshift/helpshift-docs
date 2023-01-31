@@ -1,0 +1,515 @@
+---
+sidebar_position: 10
+title: Impact Analysis
+description: "The following numbers are representative of a skeletal sample appintegrated with the Helpshift Cocos2dx plugin for iOS."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Impact Analysis {#performance}
+
+<Intro>
+
+The following numbers are representative of a skeletal sample app
+integrated with the Helpshift Cocos2dx plugin for iOS.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+**App Launch Time**
+
+Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
+
+</Admonition>
+
+## v5.6.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 12 built demo app on iPhone X running iOS 14.0 . Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift xcframework, the increase in the size of IPA file is around `2.2 MB` for both bitcode and non-bitcode versions of the xcframework.
+
+If your app is not already using Swift, there will be an additional `4.6 MB` size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds <code>2.6 MB</code> of memory.                                                                         |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Adds <code>11.1 MB</code> of memory. (This depends on the number of FAQ sections and FAQs in each section). |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds <code>11 MB</code> of memory. (This depends on number of FAQs in the section).                         |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds <code>11.2 MB</code> of memory. (This depends on the FAQ content).                                     |
+| **Helpshift's Conversation screen (showConversation:)** | Adds around <code>5 MB</code> of memory. (This depends on number of messages on the chat screen).           |
+
+## v5.6.0-withCampaigns
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 12 built demo app on iPhone X running iOS 14.0 . Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift xcframework, the increase in the size of IPA file is around `2.4 MB` for both bitcode and non-bitcode versions of the xcframework.
+
+If your app is not already using swift, there will be an additional `4.8 MB` size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds <code>3.5 MB</code> of memory.                                                                         |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Adds <code>11.1 MB</code> of memory. (This depends on the number of FAQ sections and FAQs in each section). |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds <code>11.2 MB</code> of memory. (This depends on number of FAQs in the section).                       |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds <code>11.4 MB</code> of memory. (This depends on the FAQ content).                                     |
+| **Helpshift's Conversation screen (showConversation:)** | Adds around <code>5.2 MB</code> of memory. (This depends on number of messages on the chat screen).         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | Adds around <code>11.5 MB</code> of memory. (This depends on number of messages in the campaigns inbox).    |
+
+## v5.5.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 12 built demo app on iPhone X running iOS 14.0 . Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `2.1 MB` for both bitcode and non-bitcode versions of the framework.
+
+If your app is not already using Swift, there will be an additional `4.6 MB` size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds <code>2.7 MB</code> of memory.                                                                         |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Adds <code>11.2 MB</code> of memory. (This depends on the number of FAQ sections and FAQs in each section). |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds <code>11 MB</code> of memory. (This depends on number of FAQs in the section).                         |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds <code>11.4 MB</code> of memory. (This depends on the FAQ content).                                     |
+| **Helpshift's Conversation screen (showConversation:)** | Adds around <code>2.5 MB</code> of memory. (This depends on number of messages on the chat screen).         |
+
+## v5.5.0-withCampaigns
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 12 built demo app on iPhone X running iOS 14.0 . Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `2.3 MB` for both bitcode and non-bitcode versions of the framework.
+
+If your app is not already using swift, there will be an additional `4.8 MB` size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds <code>4 MB</code> of memory.                                                                           |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Adds <code>11.4 MB</code> of memory. (This depends on the number of FAQ sections and FAQs in each section). |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds <code>11.2 MB</code> of memory. (This depends on number of FAQs in the section).                       |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds <code>11.7 MB</code> of memory. (This depends on the FAQ content).                                     |
+| **Helpshift's Conversation screen (showConversation:)** | Adds around <code>2.1 MB</code> of memory. (This depends on number of messages on the chat screen).         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | Adds around <code>11 MB</code> of memory. (This depends on number of messages in the campaigns inbox).      |
+
+## v5.4.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 11.5 built demo app on iPhone X running iOS 13.5.1. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `2.1 MB` for both bitcode and non-bitcode versions of the framework.
+
+If your app is not already using Swift, there will be an additional `3.1 MB` size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds <code>2.6 MB</code> of memory.                                                                         |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Adds <code>11.1 MB</code> of memory. (This depends on the number of FAQ sections and FAQs in each section). |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds <code>11 MB</code> of memory. (This depends on number of FAQs in the section).                         |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds <code>11.2 MB</code> of memory. (This depends on the FAQ content).                                     |
+| **Helpshift's Conversation screen (showConversation:)** | Adds around <code>5 MB</code> of memory. (This depends on number of messages on the chat screen).           |
+
+## v5.4.0-withCampaigns
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 11.5 built demo app on iPhone X running iOS 13.5.1. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift framework, the increase in the size of IPA file is around `2.4 MB` for both bitcode and non-bitcode versions of the framework.
+
+If your app is not already using swift, there will be an additional `3.3 MB` size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                             |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds <code>3.8 MB</code> of memory.                                                                         |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Adds <code>11.2 MB</code> of memory. (This depends on the number of FAQ sections and FAQs in each section). |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds <code>11.1 MB</code> of memory. (This depends on number of FAQs in the section).                       |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds <code>11.5 MB</code> of memory. (This depends on the FAQ content).                                     |
+| **Helpshift's Conversation screen (showConversation:)** | Adds around <code>5.2 MB</code> of memory. (This depends on number of messages on the chat screen).         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | Adds around <code>11.4 MB</code> of memory. (This depends on number of messages in the campaigns inbox).    |
+
+## v5.3.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 11.3.1 built demo app on iPhone Xs Max running iOS 13.3. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.2 MB` for iOS 9 and above devices.
+
+If your app is not already using swift, there will be an additional 2 MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>3.4 MB</code> of memory with peak usage of <code>3.9 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>2.7 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>2.9 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>4.2 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>5.4 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+
+## v5.3.0-withCampaigns
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 11.3.1 built demo app on iPhone Xs Max running iOS 13.3. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.5 MB` for iOS 9 and above devices.
+
+If your app is not already using swift, there will be an additional 2 MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>3.5 MB</code> of memory with peak usage of <code>3.9 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>2.7 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>2.9 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>4.2 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>5.4 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>1.8 MB</code> of memory. The actual RAM usage depends on the number of Campaigns received and the resolution of the icon images used in the Campaigns.   |
+
+## v5.2.0
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 11.1 built demo app on iPhone Xs Max running iOS 13.2. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `1.9 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>3.4 MB</code> of memory with peak usage of <code>3.8 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>2.4 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>2.6 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>3.7 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>4.8 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+
+## v5.2.0-withCampaigns
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 11.1 built demo app on iPhone Xs Max running iOS 13.2. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.23 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>4.0 MB</code> of memory with peak usage of <code>4.4 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>4.2 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>3.0 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>4.4 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>4.6 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>1.8 MB</code> of memory. The actual RAM usage depends on the number of Campaigns received and the resolution of the icon images used in the Campaigns.   |
+
+## v5.1.0
+
+Sample app running on iPhone 7
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 10.2 built demo app on iPhone 7 running iOS 12.4. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.1 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>3.9 MB</code> of memory with peak usage of <code>4.7 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>4.4 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>4.4 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>4.4 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>4.5 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+
+## v5.1.0-withCampaigns
+
+Sample app running on iPhone 7
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.2, Xcode 10.2 built demo app on iPhone 6 running iOS 12.4. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.3 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>4.4 MB</code> of memory with peak usage of <code>5.5 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>4.4 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>4.4 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>4.0 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>4.5 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>4.0 MB</code> of memory. The actual RAM usage depends on the number of Campaigns received and the resolution of the icon images used in the Campaigns.   |
+
+## v5.0.0
+
+Sample app running on iPhone 6
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.1, Xcode 10.2.1 built demo app on iPhone 6 running iOS 12.2. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `1.6 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>2.9 MB</code> of memory with peak usage of <code>3.4 MB</code> (for 1-2 seconds).                                                                      |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>3.2 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                            |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>3 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>5 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+
+## v5.0.0-withCampaigns
+
+Sample app running on iPhone 6
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.17.1, Xcode 10.2.1 built demo app on iPhone 6 running iOS 12.2. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `1.7 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>3.1 MB</code> of memory with peak usage of <code>3.4 MB</code> (for 1-2 seconds).                                                                      |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>3 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>3 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>5 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.4 MB</code> of memory. The actual RAM usage depends on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v4.1.0
+
+Sample app running on iPhone 6S Plus
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.15.1, Xcode 10.0 built demo app on iPhone 6S Plus running iOS 12.0.1. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `1.8 MB` for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                            |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | Adds around <code>3.2 MB</code> of memory with peak usage of <code>3.6 MB</code> (for 1-2 seconds).                                                                        |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.3 MB</code> . The actual RAM usage depends upon the number of FAQ sections and FAQs in each section. |
+| **Helpshift's Single Section screen (showfaqsection:)** | Adds around <code>2.6 MB</code> of memory. The actual RAM usage depends on the number of FAQs in the section.                                                              |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | Adds around <code>2.9 MB</code> of memory. The actual RAM usage depends on the content of the FAQ.                                                                         |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>6.6 MB</code> of memory. The actual RAM usage depends of the number and type of messages on the conversation screen.                                     |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>2.1 MB</code> of memory. The actual RAM usage depends on the number of Campaigns received and the resolution of the icon images used in the Campaigns.   |
+
+## v4.0.0
+
+Sample app running on iPhone 7+
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.16, Xcode 9.3 built demo app on iPhone 7+ running iOS 11.3. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.7` MB for iOS 8 devices and around `1.6` MB for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>3 MB</code> of memory with peak usage of <code>3.2 MB</code> (for 1-2 seconds). Around <code>3.1 MB</code> of memory is used when a Helpshift screen is not engaged.                                                   |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.9</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.1 MB</code>, settled at <code>2.3 MB</code>.                                                                                                                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>4.1 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>6.2 MB</code> of memory at peak and settles at <code>3.1 MB</code>.                                                                                                                                                    |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>2.8 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v1.9.0
+
+Sample app running on iPhone 6S+
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with Cocos2d v3.15.1, Xcode 9.2 built demo app on iPhone 6S+ running iOS 11.2. Usage will increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2.5` MB for iOS 8 devices and around `1.6` MB for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>3.3 MB</code> of memory with peak usage of <code>3.8 MB</code> (for 1-2 seconds). Around <code>3.1 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.5</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>2.9 MB</code>, settled at <code>1.9 MB</code>.                                                                                                                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>3.7 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>3.3 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>2.8 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v1.8.0
+
+Sample app running on iPhone 6s
+
+### Disk space
+
+<Admonition type="info" title="Note">
+
+Tested with an Xcode 9 built demo app on iPhone 6s+ running iOS 11. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+When an Cocos2dx iOS app is integrated with Helpshift library, the increase in the size of IPA file is around `2` MB for iOS 8 devices and around `1.2` MB for iOS 9 and above devices.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>2.9 MB</code> of memory with peak usage of <code>3.2 MB</code> (for 1-2 seconds). Around <code>2.9 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.7</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.7 MB</code>, settled at <code>1.6 MB</code>.                                                                                                                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>4.0 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>3.1 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.0 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v1.7.0
+
+Sample app running on iPhone 6s
+
+### Disk space
+
+When an Cocos2dx iOS app is integrated with Helpshift, the increase in the size of IPA file is around `4.1 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>1.6 MB</code> of memory with peak usage of <code>1.8 MB</code> (for 1-2 seconds). Around <code>1.6 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>3.3</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.8 MB</code>, settled at <code>1.9 MB</code>.                                                                                                                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>3.2 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>3.0 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.6 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v1.6.0
+
+Sample app running on iPhone 6s
+
+### Disk space
+
+When an Cocos2dx iOS app is integrated with Helpshift, the increase in the size of IPA file is around `3.8 MB`.
+
+### RAM usage
+
+|                                                         |                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**        | adds around <code>1.9 MB</code> of memory with peak usage of <code>2.1 MB</code> (for 1-2 seconds). Around <code>1.9 MB</code> of memory is used when a Helpshift screen is not engaged.                                                 |
+| **Helpshift's FAQ screens (showFAQ:)**                  | Launching the FAQs screen increases the memory usage by about <code>2.5</code> MB. The actual RAM usage depends upon the number of FAQs.                                                                                                 |
+| **Helpshift's Single Section screen (showfaqsection:)** | adds peak of <code>3.8 MB</code>, settled at <code>1.8 MB</code>.                                                                                                                                                                        |
+| **Helpshift's Single FAQ screen (showsinglefaq:)**      | adds around <code>3.6 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Conversation screen (showConversation:)** | adds around <code>3.5 MB</code> of memory.                                                                                                                                                                                               |
+| **Helpshift's Campaigns Inbox screen (showInbox:)**     | adds around <code>3.1 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |

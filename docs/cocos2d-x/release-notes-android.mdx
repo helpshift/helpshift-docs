@@ -1,0 +1,514 @@
+---
+sidebar_position: 10
+title: Release Notes
+description: Read the Release Notes in detail
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Release Notes
+
+<Admonition type="danger" title="Important">
+
+With the transition to TLSv1.2 on Sep 20,2021, connections to a Helpshift SDK via any previous TLS version will not work as expected. Specifically, this means that:
+
+- Helpshift SDKs will not work or load on lower-end Android devices (meaning, Android 4.x and earlier), because these lower-end Android versions do not support TLSv1.2.
+- End-users on lower-end Android devices will not be able to access FAQs, raise new issues, or access their past support conversations.
+- On a lower-end Android device, the mobile app that embeds a Helpshift SDK will be prevented from communicating with the SDK for any purpose. However, this disconnect will not cause any malfunction or crash on the parent application.
+
+</Admonition>
+
+<Admonition type="danger" title="Important">
+
+- If you have released your Android app with `5.5.0` version, we highly recommend that you upgrade to `5.5.1` which fixes an important bug. Refer [here](/cocos2d-x/release-notes-android#v551).
+
+</Admonition>
+
+<LatestSdkVersion>
+
+## v5.7.1
+
+<DownloadButton
+  text="Download SDK"
+  link="[% cocos2d-x.android.sdk_url %]"
+  classes="mb-4"
+/>
+
+</LatestSdkVersion>
+
+_October 20, 2021_
+
+- Fixed a crash caused by PendingIntent flag requirements expected on apps targeting Android 12 (API level 31).
+
+## v5.7.0
+
+_September 28, 2021_
+
+- Updated to Android SDK `v7.11.0` [View](/android/release-notes#v7110)
+- Added support for customized feedback survey upon issue resolution. [Learn more](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/580-user-support-workflow-procedures-configure-the-issue-resolution-experience/?p=all)
+- Helpshift SDK is now fully compatible with Android 12.
+- Fixed runtime storage permission request flow issue according to Google guidelines.
+- Fixed updating the app header title accordingly when SDK language is changed.
+- Fixed FAQ search for non-alphaneumeric characters.
+- Fixed exception when Search Button on FAQs is clicked on first app launch.
+- Fixed downloading of attachments sent with bots when storage permissions are not given.
+- Fixed Portuguese translation for resolution question string.
+
+## v5.6.0
+
+_February 17, 2021_
+
+- Updated to Android SDK `v7.9.2` [View](/android/release-notes#v792)
+- Fixed a bug where accessing user data from the database led to App crash in rare scenarios.
+
+## v5.5.1
+
+_November 5, 2020_
+
+- Updated to Android SDK `v7.9.1` [View](/android/release-notes#v791)
+- Fixed an issue where option pills were not visible to end user when New Issue Automation (NIA) assigns to a Custom Bot and the first step is a Get Info from User with options.
+- Fixed an issue where the chat screen was not shown on clicking a notification, it was just opening the app.
+- The issue where publish ID is not visible until user closes and opens the chat screen had to be re-introduced. This bug was reproducible only when [showConversationInfoScreen](/cocos2d-x/sdk-configuration-android#showConversationInfoScreen) custom config was set to true. It will be fixed in upcoming releases.
+
+## v5.5.0
+
+_October 21st, 2020_
+
+- Updated to Android SDK `v7.9.0` [View](/android/release-notes#v790)
+- Helpshift Android SDK is now fully compatible with Android 11. We recommend you to use the latest SDK since apps using Older SDKs (<=7.8.1 version) will see the following degraded behavior for Helpshift messaging experience on Android 11 devices when the app’s targetSDKVersion is set to 30:
+  - App will crash when user starts a new conversation from a form-based experience.
+  - Image orientation changes on some Android 11 devices when the user uploads an image.
+  - If the issue filing flow is form-based then menu items are not clickable on the form when the app is in full screen mode. [View Impact](/android/troubleshooting#known-issues)
+  - The menu items on FAQ screens are not clickable in full screen mode. [View Impact](/android/troubleshooting#known-issues)
+  - Hyperlinks are broken in Action card, agent message and user message.
+- Fixed a bug in which custom config named [showConversationInfoScreen](/cocos2d-x/sdk-configuration-android#showConversationInfoScreen) was set to true and conversation publish ID was not shown in chat feed unless user closed and reopened the chat screen.
+- Fixed a bug in which image attachment was getting pixelated on the preview screen while attaching an image.
+
+## v5.4.1
+
+_August 12, 2020_
+
+- Updated to Android SDK version `v7.8.1`. [View](/android/release-notes#v781)
+- Fix a bug where Bots with Action card were not rendered on migrating from older versions of the SDK.
+
+## v5.4.0
+
+_July 30, 2020_
+
+- Updated to Android SDK version `v7.8.0`. [View](/android/release-notes#v780)
+- Don’t allow user to respond to conversation resolution question or CSAT after a certain interval. The interval is configurable on admin dashboard. Learn more about re-open window [here](https://support.helpshift.com/kb/article/what-is-re-open-time-window-and-how-do-i-use-it/) and CSAT [here](https://support.helpshift.com/kb/article/what-are-csat-customer-satisfaction-surveys/).
+- Added support for showing agent and bot personalized avatar with their messages. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience)
+- Added support to change title (Brand header text) for messaging experience from App Settings on Admin console instead of SDK string customization. The default value will be `<Company name> Support`, but you can change it to align the same with your current experience. [Learn more](https://support.helpshift.com/kb/article/how-do-i-show-agent-or-bot-avatars-in-the-helpshift-messaging-experience/)
+- Added support for bot messages with a customizable link and title. [Learn more.](https://support.helpshift.com/kb/article/how-do-i-send-deep-links-actions-using-custom-bots/)
+- Added a new delegate method that is invoked when user clicks on the action for a Rich Actions Bot. [Refer here](/cocos2d-x/delegates-android#user-click-action). Please update your code to implement this method.
+- Added a new design attribute for color of links in FAQ content. [Refer here](/cocos2d-x/design-android#styleable-attributes).
+- Improved UI for conversation started using Smart Intents.
+- Added search icon and clear button to smart intent search field.
+- Added check to ensure that Helpshift SDK fetches config at least once, before the user can see the conversation screen. This is done to avoid config mismatches which can lead to conversation behaviour different from the one the admins have configured.
+- Fix a crash that would occur when user launches the app from recents menu after the Android System has already killed it.
+- Handle conversation archival when user tries to upload an attachment on an archived conversation.
+- Fix a bug where the username was not updated on login for existing users.
+- Fixed a bug where toolbar title was overridden when using embeddable fragments.
+- Fixed a bug where styling for QuickSearch Bot suggestions was not working as expected.
+- Fixed an edge case bug where reply box was displayed along with resolution question.
+- Fixed a bug where FAQ screen used to flicker when Dark mode theme is selected.
+- Fixed a edge case crash which would occur when attachment upload and message sync would run at the same time.
+
+## v5.3.1
+
+_April 7th 2020_
+
+- Updated to iOS SDK version 7.7.1. [View](/ios/release-notes#771)
+- Built with Android SDK version v7.7.2. [View](/android/release-notes#v772)
+
+## v5.3.0
+
+_February 18th 2020_
+
+- Updated to Android SDK version `v7.7.2`. [View](/android/release-notes#v772)
+- Added support for suggesting AI-powered issue categories to your users at the start of a conversation. [Learn more](https://support.helpshift.com/kb/article/helpshift-smart-intents/)
+- Added ability for end-users to send files such as pdf, video, etc. during a conversation. [Learn more](https://support.helpshift.com/kb/article/how-do-i-restrict-file-types-and-attachments/)
+- Added support for sending files via Helpshift bots. [Learn more](https://support.helpshift.com/kb/article/how-do-i-send-attachments-in-bots/)
+- Added support for bots to display AI powered FAQ(s) depending on the user message. [Learn more](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them#add-ai-powered-faqs-to-bot-conversations)
+- Added support for Helpshift error reporting. [Learn more](/cocos2d-x/sdk-configuration-android#disableErrorReporting)
+- The resolution question for a conversation would be assumed to be off until configuration set on Helpshift Admin console is fetched.
+- Conversation screen now occupies full width on tablet devices. Please note that the existing keys for changing padding are deprecated and will not be functional moving forward.
+- Fixed jitters in loading the chat screen UI when multiple attachments are present in the conversation.
+- Removed support for linkifying selective map addresses in agent messages thus reducing the file descriptor count.
+- Fixed a crash when the user clicks on a link in agent message and there was no suitable app to handle it.
+- Fixed a bug where the skip label for list picker bot was not shown on some tablet devices.
+- Fixed a rare bug when an InstallException was thrown if the developer calls the `Core.install()` and other Helpshift API from different threads.
+- Fixed a rare crash which occurred when the user changes the time/timezone on the chat screen.
+- Fixed a bug where, if the app excludes the storage permission from the manifest and the user downloads an attachment, the file is incorrectly downloaded as a ".bin" file."
+- Fixed a bug where the user could reopen an Issue by retrying the last unsent reply to a bot.
+- Fixed a bug where the pre-fill text in the reply box, configured via conversationPrefillText API config, wasn't being updated if the developer updates the prefill text in later sessions.
+
+## v5.2.0
+
+_November 4th, 2019_
+
+- Updated to Android SDK version 7.6.3. [View](/android/release-notes#v763)
+- The delegate `registerDisplayAttachmentDelegate` will now be triggered with a Uri file path instead of a normal file path on Android 10 & above. For more details, refer [here](/cocos2d-x/delegates-android#display-attachment).
+- Added new themes to support [Dark Mode](/cocos2d-x/design-android#dark-mode-support).
+- Added new [API](/cocos2d-x/design-android#change-theme-runtime) for changing the Helpshift SDK theme at runtime.
+- Added support for customizing additional icons in the SDK. To view the updated list of customizable icons, refer [here](/cocos2d-x/design-android#styleable-attributes).
+- Added a character limit of 100,000 on user messages.
+- Fixed a crash which occurred when a user opens the chat screen containing an attachment message and hardware acceleration was explicitly disabled in the app.
+- Fixed a bug where a blank screen was shown instead of the FAQ content when opened through QuickSearch Bot for some languages.
+- Fixed a bug where the keyboard input type remains the same when a number/date input bot-message was interrupted by an agent.
+- Fixed a bug where the SDK UI was being displayed in the cutout area on some android phones with a notch.
+- Updated the [rate limiting](/cocos2d-x/notifications-android#showing-notification-count) algorithm for getNotificationCount API. The API will allow one call when the user closes the conversation screen. This is to accommodate any custom requirements for showing the notification count in the app.
+- By default, hardware acceleration is now explicitly enabled in the manifest file for the SDK's ParentActivity. This prevents rendering issues of WebView on Android OS 5.1.
+- Fixed an edge case crash which occurred when the user files an issue for the first time and user authentication failed.
+- Fixed a bug where the prefill text shown in the reply box via `conversationPrefillText` API config wasn't being updated if changed in conversational issue filing mode.
+- Fixed an edge case bug where duplicate issues were being created in bad network scenarios.
+- Fixed an edge case bug where the typing indicator was shown indefinitely when the user replies to a bot.
+- Fixed a bug where the QuickSearch Bot FAQ suggestions message wasn't shown as redacted while the user was on the chat screen.
+
+## v5.1.0
+
+_August 28, 2019_
+
+- Updated to Android SDK version 7.6.0. [View](/android/release-notes#v760)
+- Added support for targeting Android Q Beta 5 which includes support for the new [scoped storage](https://developer.android.com/preview/privacy/scoped-storage) changes.
+  Apps using Older SDKs (<=7.5 version ) will see the following degraded behavior for Helpshift messaging experience when they target Android Q beta:
+  _ End-users will not be able to send attachments.
+  _ End-user will not be able to view attachments/files sent by Agents.
+- Added support for messages and attachment redaction for SDKs. Messages and attachments which are redacted from the Agent dashboard will be removed from user's devices too.
+- Fixed an edge case crash that would occur when the chat screen is opened and an already downloaded attachment is not accessible by the SDK.
+- Fixed an edge case crash on opening any SDK screen when conflicting versions of support libraries are used.
+- Fixed an edge case crash which occurred on sending a message when both reply box and options pills would be visible at the same time.
+- Fixed an ANR which occurs in an edge case when searching through an FAQ which has a large number of media elements.
+- Fixed an edge case crash that would occur when user swipes through the FAQ sections view pager very quickly and "Don't keep activities" from Developer Options is turned ON.
+- Fixed an edge case crash which occurred when the user files an issue for the first time and user authentication failed.
+- Fixed a bug where the user incorrectly sees the authentication failure screen instead of the conversation if login API is used without email or userID and User Identity verification is enabled.
+- Fixed a bug where, in some network edge cases, the user wasn't able to send or receive messages if a bot was interrupted by another bot.
+- Fixed a bug where, in some network edge cases, user was not able to see the messages sent by the agent in the messaging experience.
+- Fixed a bug where the embedded media content was not visible in an FAQ on Android P and above.
+- Fixed a bug where the deep link to an FAQ was not working from another FAQ screen.
+- Fixed a bug where the image attachment wasn't visible on the chat screen when an issue is filed with an attachment via form based issue filing flow.
+- Fixed a bug where the user couldn't send the CSAT rating for a resolved conversation if conversation history was ON and if there was a login change between users.
+- Fixed a bug where the dot character at the end of a message (if present) would also be part of the link.
+- Fixed a bug where, in some network edge cases, the user was able to retry an older message which is not part of the running bot.
+
+## v5.0.0
+
+_May 17, 2019_
+
+- Updated to Android SDK version 7.5.0 [View](/android/release-notes#v750)
+- Introduced a new rich element for automation bots to let users choose from a list of selectable option responses if the number of selectable options is more than 5. For more details, refer [here](https://support.helpshift.com/kb/article/list-picker-for-bots-with-apis).
+- Users can modify their CSAT rating during the Feedback phase before submitting them. For more details, refer [here](/cocos2d-x/reviews-feedback-android#csat).
+- Added a configuration option, `hs__issue_description_min_chars` for setting the minimum number of characters required before you can send a message in conversational experience. For more details, refer [here](/cocos2d-x/sdk-configuration-android#minimum-issue-desc-length).
+- Added configuration option, `conversationPrefillText`, for pre-filling new conversation's description in the conversational issue filing experience. For more details, refer [here](/cocos2d-x/sdk-configuration-android#conversationPrefillText).
+- Fixed a bug where, in some network edge cases, SDK fails to download an image.
+- Fixed a bug where the user could reply to a previously assigned bot in the conversation.
+- Fixed a bug where in some network edge cases, the user can reply to a conversation while waiting for the next bot message.
+- Fixed a bug where the "Message Deleted" message text was getting clipped off from the right when using a custom font.
+- Fixed a bug where sometimes other messages were shown incorrectly in italics, if a message was redacted.
+- In debug mode, public APIs in Support, Campaigns and Core would log an error if the API is called before Core#install API.
+- Fixed a crash which occurs when [isConversationActive](/cocos2d-x/tracking-android#isConversationActive) API was called when the conversation is resolved and the user rejected the conversation resolution question.
+- Prevented a crash due to Android OS 8.0 [bug](https://issuetracker.google.com/issues/68454482) when using the [screenOrientation](/cocos2d-x/sdk-configuration-android#screenOrientation) configuration flag in the Install call.
+- Fixed a bug where the `notificationSound` configuration flag in the Install call wouldn't work correctly on Android OS 7.0 & above.
+- Fixed a bug, where in some rare scenarios, agent messages were not received by the SDK.
+- Fixed a bug, where in some rare scenarios, a user could not reply to a conversation if custom bot was assigned to it.
+- Fixed a bug, where in some scenarios, conversations weren't closed when the user rejected the resolution question and closed the conversation screen.
+- Fixed a bug, where sometimes, the `getNotificationCount` API would incorrectly return -1 when it should be 0.
+- Fixed a bug where the `getNotificationCount` API would incorrectly return 0 if Conversation History was enabled and conversation was resolved/rejected.
+- Fixed a bug where the [isConversationActive](/cocos2d-x/tracking-android#isConversationActive) API would incorrectly return true until the chat screen is opened if config for conversation resolution question is disabled.
+- Fixed a rare bug in the Form based issue filing experience in which the user was able to create multiple open conversations.
+- Fixed some memory leaks caused by launching of Conversation and FAQ UI.
+- Fixed a bug where the hyperlinks in CJK language messages were not showing correctly if the message text contained full-width parentheses.
+- Fixed a bug where an extra comma along side the date was displayed on the chat screen if agent name was empty.
+
+## v4.1.0
+
+_Oct 22, 2018_
+
+- Introduced support for [Custom Bots.](https://support.helpshift.com/kb/article/what-are-custom-bots-and-how-do-i-use-them/)
+- Introduced functionality for end users to view their past conversations. This can be managed via an Admin toggle available in the Dashboard on the App settings > In-app SDK configuration page. Review [this FAQ](https://support.helpshift.com/kb/article/how-do-i-allow-my-end-users-to-see-past-conversations/) to get started.
+- Introduced functionality for Admins to prevent users from being able to attach files in conversations. This can be managed via an Admin toggle available in the Dashboard on the app settings > In-app SDK configuration page.
+- Introduced support for Android P.
+- Introduced functionality for end users to be able to tap on an attachment that they sent to in order to view the image.
+- Added Campaigns delegate callbacks to track when a Helpshift campaigns session begins and when a session ends. Refer [Feature is redacted].
+- Fix a crash happening when trying to send metadata via the Helpshift FAQs or conversation API.
+- Fixed a bug where the Campaigns poller was not stopped when the app was in the background.
+- Fixed a bug where form-based Issue filing was not considered the default until the app configuration was received.
+- Fixed a bug where a duplicate attachment was sent again if the user turned off the internet while sending the attachment was in progress.
+- Fixed a bug where the name field was not updated if the same user logged in again with a different name.
+- Fixed an edge case crash that would occur as a result of the concurrent modification exception.
+- Fixed a bug where multiple taps on a button would open up multiple FAQ screens.
+- Fixed an edge case bug where the typing indicator was shown indefinitely during network connectivity problems.
+- Fixed an edge case bug where, if the end user sent an image attachment at the same time that the Agent rejected the Issue, the Issue would remain open on the end user side.
+- Fixed a bug where MetadataCallable was being called twice whenever a new Issue was created.
+- Fixed a bug where the typing indicator would show infinitely and the user was unable to send new messages on the chat screen.
+- Fixed an ANR error that would occur sometimes when the Campaigns' addProperty API was called after the Login API.
+- Fixed a NullPointerException crash that would occur when the user tried to access the Android System Services.
+- Fixed an edge case where a NullPointerException crash would occur when an end user tried to exit the chat screen while a view animation was running.
+- Fixed a bug where the date header view would show up multiple times in the chat screen when the device was in daylight savings mode.
+- Fixed an edge case bug where the typing indicator would not show when a Bot was running.
+- Fixed a bug where the search icon would be missing on the FAQ screen if the "Don't keep activities" developer option was on.
+
+## v4.0.0
+
+_May 24, 2018_
+
+- Introduced new updates to the in-app messaging experience. Here's our [guide](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/) on how to onboard to the new experience.
+- Introduced a new and enhanced [Login API](/cocos2d-x/users-android#logging-in-users) for name, email, user identifier for your end users.
+- Introduced the ability to use the 'Email' field as a means of identifying users, so that email addresses don't have to be passed to the 'UserID' field.
+- Introduced 'userauthtoken', which is an HMAC digest used to ensure that the requests are coming from an authentic source (and not a malicious 3rd party). Refer [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/).
+- Introduced [QuickSearch Bot](https://support.helpshift.com/kb/article/what-is-quicksearch-bot-and-how-does-it-work/) and [Identity Bot](https://support.helpshift.com/kb/article/what-is-the-identity-bot-and-how-does-it-work/) for in-app messaging SDKs.
+- Deprecated the `setNameAndEmail()`, `setUserIdentifier()` and the existing `login()` APIs. Please use the new Login API. [Link](/cocos2d-x/users-android#logging-in-users)
+- Deprecated the configurations `conversationPrefillText`, `requireEmail`, `hideNameAndEmail`, `goToConversationAfterContactUs`, `showSearchOnNewConversation`, `enableTypingIndicator` along with the Form-based Issue filing experience. All the details are mentioned [here](https://support.helpshift.com/kb/article/april-2018-sdks/).
+- Changed the default value of `showConversationResolutionQuestion` to false and made it customizable from the app settings Dashboard.
+- Fixed cases where multiple Issues can be created or duplicate messages can be sent from the SDK in case of client network errors.
+- Enhanced UI and support for voiceover.
+- Fixed multiple SQLite database access errors by optimizing our data reads and writes.
+- Fixed a NullPointerException when clicked on “Done" from a FAQ from search suggestions and if conversationPrefillText was also set.
+- Fixed an edge case where messages were not being sent in Issues from the SDK.
+- Fixed a bug where the badge count for unread messages on the FAQ screen was incorrect if the Issue was resolved and the app was killed & re-opened.
+- Fixed a bug where image attachment does not work when the app doesn’t have READ_EXTERNAL_STORAGE permission and when the user tries attaching an image and clicks on the 'cancel' button.
+- Fixed a rare bug where the user is stuck on a conversation due to race condition in network calls.
+- `customContactUsFlows` is now an unsupported config for the showConversation() & getConversationFragment() APIs.
+
+## v1.9.0
+
+_December 11, 2017_
+
+- Fixed a crash which occurred in the following case:
+  1.  `conversationPrefillText` is set in the config and the user tries to file an issue without changing the description.
+  2.  The flag `showSearchOnNewConversation` is also enabled and a FAQ is opened from search suggestion screen.
+  3.  User clicks on Done button on the FAQ screen, SDK crashes.
+
+## v1.8.0
+
+_November 28, 2017_
+
+- Updated to Android SDK version v6.4.0
+- Add support for notification channels introduced in Android Oreo. [View](/cocos2d-x/sdk-configuration-android#notification-channels)
+- Storage permission for user attachments is now optional. For more details on storage permission usage, [View](/android/sdk-configuration#app-permissions).
+- Added support for sending Custom Issue Fields when filing a new conversation. [View](/cocos2d-x/tracking-android#custom-issue-fields)
+- Added new Campaigns addLongLongProperty() API to support Long Long values.
+- Added new dynamic form API, showDynamicForm() to support taking in the title of the dynamic form as input.
+- Made improvements to the Campaign images downloading mechanism saving data for the user.
+- Added two new customizable color attributes for tab text on FAQ sections pager screen.
+- Fixed a crash where downloading attachments would result in NullPointerException.
+- Fixed a crash caused due to Package Manager runtime errors.
+- Fixed a rare NullPointerException crash caused when sending a text message.
+- Fixed a bug where embedded videos in FAQs would not fit on screen.
+- Fixed a bug where a Campaign notification with an open conversation action would do nothing if the user is on the Helpshift Support screen.
+- Fixed a bug where the conversation resolution question was not shown if the user was on the conversation info screen when the message was received.
+- Fixed a bug where subsequent conversationPrefillText updates were ignored after setting it once.
+- Fixed a bug where updating the app and then using the showConversation() API would show the user's previous conversations (open or closed) instead of showing new conversation screen.
+- Fixed a bug where clicking NO in the conversation resolution question would not show the new conversation button sometimes.
+- Fixed a bug where sdkSDKLanguage API was ineffective on Android Oreo.
+- Fixed a bug where the attachment icon in ActionBar would not disappear if 'Do not keep activities' in Android's developer settings was enabled.
+- Fixed an edge case bug where the user's attachment showed up as blank on the conversation screen if the user revoked storage permission while the attachment is uploading.
+- Fixed a crash that would occur in some specific devices with missing internet permission error.
+- Fixed some ExceptionInInitializerError exceptions occurring when running in a multi-process environment.
+- Fixed a crash that would occur with support library v26 when navigating to a deep link from an FAQ and pressing back.
+- Fixed a rare crash that would occur when starting the attachment picking flow in some specific devices.
+- Fixed a rare crash that would occur while trying to restore a backup in a re-install case.
+- Fixed a crash that would occur when an attachment selected from a gallery was changed and the "Don’t Keep Activities" flag was enabled.
+- Fixed a bug where the button to enter full screen mode in embedded videos wasn’t visible on the FAQ screen.
+- Fixed a bug where the user could reopen an Issue in cases where the conversation screen was opened from a notification within gallery.
+- Fixed a bug where Agent messages stopped appearing on the conversation screen in an edge case.
+- Fixed a bug where on passing null or empty values in the setNameAndEmail API didn’t clear the name & email fields on the Issue filing screen if a user draft was present.
+- Fixed a bug where the clicks on the attachment draft of the Issue filing screen were not getting disabled while Issue creation was in-progress.
+- Fixed a bug where two conversation screens could open up when launching from a notification in a case with support library v26.
+- Fixed a bug where the attachment icon was incorrectly visible on the information screen in an edge case.
+- Fixed a bug where passing null as the failure callback in the getNotificationCount API was leading to some errors.
+- Fixed a bug where passing the enableContactUs flag as Never, enabling showSearchOnNewConversation flag, and using showConversation() API resulted in the Send Anyway button being invisible.
+- Fixed some variants of a database SQLiteException occurring majorly on Android 4.x devices.
+- Fixed a bug where the dynamic form flow wouldn’t launch from a deep link on the FAQ screen.
+- Fixed a bug where an attachment sent from the Agent wasn’t visible if it was attached with a Request Screenshot message.
+- Fixed a bug where the resource integer value for `hs__issue_description_min_chars` did not change upon changing the language.
+
+## v1.7.0
+
+_September 06, 2017_
+
+- Updated to Android SDK version v6.1.0
+- Added support for Android O developer preview 4
+- Added flag for showing a typing indicator on Conversation screen. [View](/cocos2d-x/sdk-configuration-android#enableTypingIndicator)
+- Added a new High Contrast theme. [View](/cocos2d-x/design-android#skinning)
+- Added a new key for customizing the typing indicator color. [View](/cocos2d-x/design-android#styleable-attributes)
+- Added an API to asynchronously check if an active Conversation exists [View](/cocos2d-x/tracking-android#isConversationActive)
+- Setting the enableFullPrivacy API configuration to true will now hide the name and email address fields [View](/cocos2d-x/sdk-configuration-android#enableFullPrivacy)
+- Updated design for Conversation screen [View](/cocos2d-x/design-android/)
+- Deprecated the following APIs within the HelpshiftCocos2dx class: [View](/cocos2d-x/upgrade-1.6.0-android/#deprecated-api)
+  - isConversationActive
+  - setSDKLanguage
+- Fixed a crash that would occur when using Android support library v25.4.0
+- Fixed a crash that would occur when generating a signature for network requests
+- Fixed a crash that would occur when attaching a screenshot and disabling storage permission from the background
+- Fixed a bug where search results on new Conversations did not clear if the end user accepted the FAQ
+- Fixed a bug where the FAQ search would not work after screen rotation on Android support library v25.4.0
+- Fixed a bug where image attachment did not work with Android support library v25.4.0
+- Fixed a bug where the error snackbar view didn’t get hidden in some cases after pressing back from a screen
+- Fixed an edge case where the user might see multiple chat screens after clicking the notification
+- Fixed a bug where the image was not getting cleared on tap of the Remove button in preview screen
+- Fixed an edge case where the previous image draft was not getting cleared on enabling full privacy
+- Fixed an edge case where the image draft was not getting cleared if the user left the new Conversation screen while the Issue was getting filed
+- Fixed a bug where the message timestamp in the chat screen was not updated upon a change in the SDK language
+- Fixed a bug where the image was always shown in Sending state if the app was killed during image upload
+- Fixed some crashes due to SQLiteDatabase errors
+- Fixed I/O streams leak in network call in some cases
+- Fixed crash on using single quotes in login identifier
+- Fixed RejectedExecutionException occurring in some cases
+
+## v1.6.0
+
+_April 24, 2017_
+
+- Updated the Android native SDK to v4.9.1
+- Added support for programmatically setting screen orientation for the SDK. [View](/cocos2d-x/sdk-configuration-android#screenOrientation)
+- Users can now view the Issue ID for an ongoing Issue by navigating to the Issue Information screen by tapping the icon on the top right of the Conversation screen.
+- Added flag for showing Conversation info screen. [View](/cocos2d-x/sdk-configuration-android#showConversationInfoScreen)
+- SDK now supports logging to console. [View](/cocos2d-x/sdk-configuration-android#enableLogging)
+- Added support for customizing FAQ list item height.
+- Messages that fail to deliver can now be tapped to retry.
+- Introduced an API to check if a Conversation is active.[View](/cocos2d-x/tracking-android#isConversationActive)
+- Added a new delegate to notify when the Conversation has ended.[View](/cocos2d-x/delegates-android#delegate-conversation-ended)
+- Made image attachment upload more network-efficient.
+- Enabled TLS 1.2 as the default protocol for transferring data over internet for Android API levels 16(4.1.x) to 19(4.4.x).
+- Screenshot messages in Conversations now have timestamps.
+- Set max line limit to 3 for FAQ and sections list items.
+- The default value for enableInboxPolling is now true.[View](/cocos2d-x/sdk-configuration-android#enableInboxPolling)
+- Fixed a bug where Issue resolve requests could be bypassed because of failed messages.
+- Fixed a bug where 'Suggestions' title in Toolbar for FAQ search results for new Conversations was not shown.
+- Fixed a crash in the image attachment flow when "Don't keep activities" is enabled.
+- Fixed an edge-case bug where duplicate Issues could be filed by the user.
+- Fixed a bug where strings in the FAQ view were not being translated on Android N devices.
+- Fixed minor memory leaks.
+- Fixed a bug where sometimes the breadcrumbs and Issue logs were not sent to the server.
+- Fixed a bug where the cursor for a multi-line EditText was positioned incorrectly.
+- Fixed a bug with filing new Issues when Proguard is enabled.
+- Fixed a bug where Conversations with resolution questions delivered could be rejected multiple times.
+- Fixed a bug where the toolbar is hidden at times on the Conversation screen when the keyboard is visible.
+- Fixed a bug where the default value for enableDefaultLanguage was set to false instead of true.
+- Fixed an edge case that caused Agent messages to sometimes not load for users.
+- Fixed a bug where on some devices, "Was this question Helpful?" footer was shown after tapping on "Yes/No".
+- Improved handling of random database crashes.
+- Fixed some bugs that would cause the app to crash on startup.
+- Fixed an NPE in Campaigns for certain network failures.
+- Fixed a bug where multiple instances of Campaigns Inbox UI were being created.
+- Fixed a bug where push notifications for a Campaign were sometimes shown more than once.
+
+## v1.5.0
+
+_February 7, 2017_
+
+- Updated the Android native SDK to v4.8.1
+- Added support for setting expiry time to campaign messages.
+- Improved Syncing strategy for campaigns data.
+- Improved in-app FAQ search by making it faster and memory efficient.
+- Improved translations for SDK strings.
+- Improved Helpshift Log API to make it thread safe.
+- Improved SDK start-up time.
+- Reply box in chat screen now can be expanded up to four lines.
+- Fixed a bug where search keyword highlighting did not work on some devices.
+- Fixed a crash on Android N devices when opening attachments sent from agent dashboard.
+- Fixed a rare crash which occurred due to null arguments on launching the Helpshift screen.
+- Fixed a rare crash which occurred due to unexpected service wake-up on some devices.
+- Fixed a UI glitch in single question view on tablet devices where an unexpected vertical line was visible to user.
+- Fixed an ANR issue on clicking search icon when using android support library v25.1.0 and above.
+- Fixed a string localization issue in the FAQs screen which occurred on some 7" tablets.
+- Fixed a rare crash which occurred due to exceptionally large number of un-synced app sessions.
+
+## v1.4.0
+
+_October 7, 2016_
+
+- Update Android native SDK to v4.7.0
+- Add compatibility for Android Nougat.
+- Add support for push notifications with FCM (Firebase cloud messaging).
+- Add support for custom fonts in SDK.
+- Helpshift SDK now supports two more Chinese dialects: 'Chinese - Hong Kong' and 'Chinese - Singapore'.
+- Improve search algorithm where some results would not show up for important keywords.
+- Improve translations for the message string shown to user when issue is archived.
+- Fix a bug where carrier name was being collected in full privacy mode.
+- Fix a bug where sometimes clicking on notification would show "new conversation form" instead of the ongoing conversation.
+- Fix a crash in FAQ screen when an image is used as window background in Helpshift theme.
+- Fix intermittent database crash due to KeyValueStorage db locking.
+- Fix a crash in issue reporting with hideNameAndEmail and login api for the following cases :
+  1. Use login api with valid name and empty email. / Use login api with empty name and valid email.
+  2. Set hideNameAndEmail flag to true.
+  3. Click on send button to file an issue, SDK crashes.
+- Fix a crash in SDK with support library 24 for the following case :
+  1. Integrate Helpshift SDK with support library 24.
+  2. Launch any Helpshift Support screen (Faqs screen, Conversation screen, etc.)
+  3. Rotate the device, SDK crashes.
+
+## v1.3.0
+
+_September 16, 2016_
+
+- Support Issue Archival feature which will automatically archive issues which are in Resolved or Rejected state for more than 12 months.
+- Add strict validation for Helpshift Core's install(application, apiKey, domain, appId) API. This API will now throw Install Exception if there are validation issues in the key information.
+- Handle corrupt or unsupported file formats in In-App Campaigns.
+- Handle runtime revocation of storage permission for Campaigns.
+- Improve few string translations for French and Korean languages.
+- Support HTML entities in FAQs search.
+- Fix a bug where FAQ filtering did not work with embeddable fragments.
+- Fix a bug where image attachment orientation was getting changed on some devices.
+- Fix a memory leak in case of device orientation change.
+- Fix a stackoverflow crash caused by campaigns poller.
+- Fix a bug where custom deeplinks in agent's replies were not working on chat screen.
+- Fix a theme issue where "Send" button was not themed correctly.
+- Fix a bug where FAQs UI was not getting updated immediately with new data.
+- Send user-id and device-id with every new conversation to facilitate integration of the Support and Campaigns products.
+- Add support for notification when a conversation is resolved.
+- Remove SD card information from metadata due to data inaccuracy.
+- Add translations for Bengali, Bulgarian, Gujarati, Hindi, Kannada, Latvian, Malayalam, Marathi, Punjabi, Persian, Tamil and Telugu languages.
+- Improve localization strings according to customer feedback.
+- Fix a bug where Contact Us config is reset to default on activity restart due to high memory pressure.
+
+## v1.2.0
+
+_April 18, 2016_
+
+- Add support for Inbox functionality and rich in-app campaign messages.
+- Add config option for supporting Guided Issue Filing when user clicks on Contact Us from inside the SDK screens.
+
+## v1.1.0-support
+
+_January 15, 2015_
+
+- Add support for Nested dynamic forms.
+- Fix the missing appcompat lib in dependencies.
+- Fix thread leaks in android plugin code on app startup
+
+## v1.0.0-support
+
+_December 23, 2015_
+
+** Release Notes: **
+
+- Update iOS native SDK to v5.3.0
+- Update Android native SDK to v4.2.0
+
+## v3.8.0
+
+_April 16, 2015_
+
+- Allow admins and agents to attach files with replies
+- Allow admins and agents to reopen conversations
+- Added multi-user feature for support conversations
+- Added new delegate methods for conversation updates
+- Bug fixes
+- UI fixes
+
+---

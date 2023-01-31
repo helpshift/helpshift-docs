@@ -1,0 +1,625 @@
+---
+sidebar_position: 90
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
+
+</Admonition>
+
+## Helpshift Support Delegates implementation {#helpshift-delegates-implementation}
+
+You have to define a class which implements Helpshift Support Delegates and then pass this to Helpshift by setting the `delegate` property of the `sharedInstance`.
+
+### Example {#helpshift-delegate-example}
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+Class Definition:
+
+```objc
+
+    #import <Foundation/Foundation.h>
+    @import HelpshiftX;
+
+    @interface MyDelegates : NSObject <HelpshiftDelegate>
+    @end
+
+```
+
+Class Implementation
+
+```objc
+
+    #import <Foundation/Foundation.h>
+    #import "MyDelegates.h"
+
+    @implementation MyDelegates {
+
+    }
+
+    - (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+        // your code here
+    }
+
+    - (void) authenticationFailedForUserWithReason:(HelpshiftAuthenticationFailureReason)reason {
+        // your code here
+    }
+
+    @end
+
+```
+
+Class Usage:
+
+```objc
+
+	@property (strong, nonatomic) MyDelegate *delegate;
+	.
+	.
+	.
+	.
+    delegate = [[MyDelegates alloc] init];
+    Helpshift.sharedInstance.delegate = self;
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+Class Implementation
+
+```swift
+
+    import Foundation
+    import HelpshiftX
+
+    class HelpshiftDelegateHandler: HelpshiftDelegate {
+        func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+            // Your code here
+        }
+        func authenticationFailedForUser(with reason: HelpshiftAuthenticationFailureReason) {
+            // Your code here
+        }
+    }
+
+```
+
+Class Usage:
+
+```swift
+
+	var delegateHandler: HelpshiftDelegateHandler
+	.
+	.
+	.
+	.
+    delegateHandler = HelpshiftDelegateHandler()
+    Helpshift.sharedInstance().delegate =  delegateHandler
+```
+
+</TabItem>
+
+</Tabs>
+
+Please make sure you set the delegate before calling the Conversation API so that they can callback your delegate methods.
+
+## Helpshift Events {#helpshift-delegate-events}
+
+### Helpshift session started event {#session-delegates}
+
+This event gets fired when the Helpshift session starts
+
+Event name: `HelpshiftEventNameSessionStarted` <br />
+Event data: `nil`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameSessionStarted]) {
+        NSLog(@"Helpshift session started.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+        if eventName == HelpshiftEventNameSessionStarted {
+            print("Helpshift session started.")
+        }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Helpshift session ended event {#session-delegates}
+
+This event gets fired when you call the Helpshift session ends
+
+Event name: `HelpshiftEventNameSessionEnded` <br />
+Event data: `nil`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameSessionEnded]) {
+        NSLog(@"Helpshift session ended.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+        if eventName == HelpshiftEventNameSessionEnded {
+            print("Helpshift session ended.")
+        }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Unread Message Count Event {#unreadMessageCount}
+
+This event gets fired when you call `[Helpshift requestUnreadMesssageCount:];` to request unread messages count.
+
+Event name: `HelpshiftEventDataUnreadMessageCount` <br />
+Event data: `HelpshiftEventDataUnreadMessageCount` <br />
+Event data: `HelpshiftEventDataUnreadMessageCountIsFromCache`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameReceivedUnreadMessageCount]) {
+        int count = data[HelpshiftEventDataUnreadMessageCount];
+        NSLog(@"Unread count: %d", data[HelpshiftEventDataUnreadMessageCount]);
+        NSLog(@"Is unreadCount served from local cache : %d", data[HelpshiftEventDataUnreadMessageCountIsFromCache]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameReceivedUnreadMessageCount {
+        guard let data = data else { return }
+        let count = data[HelpshiftEventDataUnreadMessageCount] as? Int
+        let isFromCache = data[HelpshiftEventDataUnreadMessageCount] as? Bool
+        print("Count: \(count), fromCache: \(isFromCache)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+- If you now call the method `[Helpshift requestUnreadMessageCount:YES];` it will
+  return a notification count from server in the above delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+
+- If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to false, `[Helpshift requestUnreadMessageCount:NO];`. In this case, SDK returns the count of unread messages available locally in this delegate method.
+
+- Locally saved unread message count are useful for saving an additional network call.
+
+### Conversation Status Event {#conversationStatus}
+
+This event contains information about the current ongoing conversation.
+
+Event name: `HelpshiftEventNameConversationStatus` <br />
+Event Data: `HelpshiftEventDataLatestIssueId` <br />
+Event Data: `HelpshiftEventDataLatestIssuePublishId` <br />
+Event Data: `HelpshiftEventDataIsIssueOpen`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationStatus]) {
+        NSLog(@"Issue ID: %@", data[HelpshiftEventDataLatestIssueId]);
+        NSLog(@"Publish ID: %@", data[HelpshiftEventDataLatestIssuePublishId]);
+        NSLog(@"Is issue open: %@", data[HelpshiftEventDataIsIssueOpen]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationStatus {
+        guard let data = data else { return }
+        let issueId = data[HelpshiftEventDataLatestIssueId]
+        let publishId = data[HelpshiftEventDataLatestIssuePublishId]
+        let issueOpen = data[HelpshiftEventDataIsIssueOpen]
+
+        print("Issue id \(issueId), publishId: \(publishId), issueOpen: \(issueOpen)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Widget Toggle Event {#widgetToggle}
+
+This event is triggered when the user opens or exits the chat screen.
+
+Event name: `HelpshiftEventNameWidgetToggle` <br />
+Event Data: `HelpshiftEventDataVisible`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameWidgetToggle]) {
+        NSLog(@"Is chat screen visible: %@", data[HelpshiftEventDataVisible]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameWidgetToggle {
+        guard let data = data else { return }
+        let widgetStatus = data[HelpshiftEventDataVisible]
+        print("Is chat screen visible: \(widgetStatus)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Message Add Event {#messageAdd}
+
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
+
+Event name: `HelpshiftEventNameMessageAdd` <br />
+Event Data: `HelpshiftEventDataMessageType` <br />
+Event Data: `HelpshiftEventDataMessageTypeText` <br />
+Event Data: `HelpshiftEventDataMessageTypeAttachment` <br />
+Event Data: `HelpshiftEventDataMessageBody` <br />
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameMessageAdd]) {
+        NSLog(@"New message added with body: %@", data[HelpshiftEventDataMessageBody]);
+        NSLog(@"New message added with type: %@", data[HelpshiftEventDataMessageType]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameMessageAdd {
+        guard let data = data else { return }
+        let messageBody = data[HelpshiftEventDataMessageBody]
+        let messageType = data[HelpshiftEventDataMessageType]
+        print("Message: \(messageBody), type: \(messageType)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Conversation Start Event {#conversationStart}
+
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
+
+Event name: `HelpshiftEventNameConversationStart` <br />
+Event Data: `HelpshiftEventDataMessage` <br />
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationStart]) {
+        NSLog(@"Conversation started with text: %@", data[HelpshiftEventDataMessage]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationStart {
+        guard let data = data else { return }
+        let messageBody = data[HelpshiftEventDataMessage]
+        print("Conversation started with text: \(messageBody))")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### CSAT Submit Event {#csatSubmit}
+
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
+
+Event name: `HelpshiftEventNameCSATSubmit` <br />
+Event Data: `HelpshiftEventDataRating` <br />
+Event Data: `HelpshiftEventDataAdditionalFeedback`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameCSATSubmit]) {
+        NSLog(@"CSAT Submitted with rating: %@", data[HelpshiftEventDataRating]);
+        NSLog(@"CSAT Submitted with feedback: %@", data[HelpshiftEventDataAdditionalFeedback]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameCSATSubmit {
+        guard let data = data else { return }
+        let rating = data[HelpshiftEventDataRating]
+        let feedback = daat[HelpshiftEventDataAdditionalFeedback]
+        print("CSAT Rating: \(rating), feedback:\(feedback))")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Conversation End Event {#conversationEnd}
+
+This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+
+Event name: `HelpshiftEventNameConversationEnd` <br />
+Event Data: `nil`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationEnd]) {
+        NSLog(@"Conversation ended.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationEnd {
+        print("Conversation ended")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Conversation Rejected Event {#conversationRejected}
+
+This event is triggered when an agent rejects the conversation.
+
+Event name: `HelpshiftEventNameConversationRejected` <br />
+Event Data: `nil`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationRejected]) {
+        NSLog(@"Conversation rejected.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationRejected {
+        print("Conversation rejected")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Conversation Resolved Event {#conversationResolved}
+
+This event is triggered when an agent resolves the conversation.
+
+Event name: `HelpshiftEventNameConversationResolved` <br />
+Event Data: `nil`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationResolved]) {
+        NSLog(@"Conversation resolved.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationResolved {
+        print("Conversation resolved")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Conversation Reopened Event {#conversationReopened}
+
+When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+
+Event name: `HelpshiftEventNameConversationReopened` <br />
+Event Data: `nil`
+
+Example:
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationReopened]) {
+        NSLog(@"Conversation reopened.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationReopened {
+        print("Conversation reopened")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Authentication failure delegate {#authetication-failure}
+
+If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
+
+| Delegate                                                                                          | When it is called                                                 | How to use                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| - (void) authenticationFailedForUserWithReason:(AuthenticationFailureReason) AuthTokenNotProvided | When no 'user authentication token' is provided                   | If you do not plan on sending an 'user authentication token' but plan on implementing it in the future, you can use this failure delegate to show your own alerts to the userm such as a prompt to update the app. You may want to use this if you are using the login API without the 'user authentication token', as these users will be considered unverified once Identity Verification is enabled on the Dashboard. Using this delegate is completely optional - Helpshift will prevent unverified users from being able to file Issues, as mentioned previously.                                                                                                                                                                                                                                                        |
+| - (void) authenticationFailedForUserWithReason:(AuthenticationFailureReason)InvalidAuthToken      | <ul><li>When the 'user authentication token' is invalid</li></ul> | If the HMAC Digest being provided via LoginAPI is invalid, Helpshift will prevent the users from filing Issues. The 'user authentication token' can be invalid if:<ul><li>You made a programming error. [View](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification)</li></ul><ul><li>You regenerated the secret key on the Dashboard, but didn't update the 'user authentication token'.</li></ul><ul><li>A 3rd party is trying to make requests.</li></ul><ul><li>When the 'user authentication token' is invalid, end users are not able to file Issues and an error is shown to them, as mentioned previously. You can use this delegate if you want to show your own alerts or re-fetch the correct auth token from your server.</li></ul> |

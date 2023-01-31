@@ -1,0 +1,92 @@
+---
+sidebar_position: 10
+title: Upgrading from 4.x to 5.x
+description: Learn more about Upgrading from 4.x to 5.x
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 4.x to 5.x {#upgrade-to-5x}
+
+<Admonition type="danger" title="Important">
+
+When upgrading to 5.x, please replace all the old files with new files. If you have made changes in the `HelpshiftLocalizable.strings` or `HelpshiftConfig.plist` file, please make sure to port over those changes to the new versions.
+
+If you are looking to upgrade from a version older than 4.x, please make sure to go through the Upgrade guides for 3.x, 2.8.x, 2.7.0
+
+</Admonition>
+
+#### Integration-related changes
+
+Please remove all the old SDK files and add the Standard SDK zip file in your app.
+[Integration Guide](/unity/getting-started-ios#getting-sdk)
+
+#### Code-related changes
+
+If your code-base has references to `Campaigns` code, then the compilation fails after the upgrade. You will need to remove all the references to `Campaigns` code from the code-base.
+
+Following are the changes:
+
+1. Remove any HelpshiftCampaigns class imports and usage.
+2. If you initialize the SDK in ObjC layer, Replace `[HelpshiftCore initializeWithProvider:[HelpshiftAll sharedInstance]]` call with `[HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]]` call.
+
+## Moving the SDK configuration from GUI Editor to C# code. {#gui-editor-to-c}
+
+With Unity SDK 5.0.0, we have removed the GUI Configuration Editor for the Helpshift SDK. You can edit all the Helpshift SDK configuration from your C# code. Please find below the C# example codes for all the configuration which were present in the GUI Editor earlier.
+
+| Removed SDK Configuration from GUI Editor                                                                                                       | Replacement C# Code Example Link                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| ![unity_ios_install.png](/static/books/unity/unity_ios_install.png "Install Creds")                                                             | [Install call from C#](https://developers.helpshift.com/unity/getting-started-ios#csharp-install) |
+| ![unity_ios_game_object.png](/static/books/unity/unity_ios_game_object.png "Game Object")                                                       | <https://developers.helpshift.com/unity/sdk-configuration-ios#unity-game-object>                  |
+| ![unity_ios_enable-in-app-notification.png](/static/books/unity/unity_ios_enable-in-app-notification.png "Enable In-app Notification")          | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableInAppNotification>            |
+| ![unity_ios_enable_fallback_language.png](/static/books/unity/unity_ios_enable_fallback_language.png "Enable Fallback Language")                | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableDefaultFallbackLanguage>      |
+| ![unity_ios_disable_entry_exit_animation.png](/static/books/unity/unity_ios_disable_entry_exit_animation.png "Disable Entry Exit Animations")   | <https://developers.helpshift.com/unity/sdk-configuration-ios#disableEntryExitAnimations>         |
+| ![unity_ios_enable_logging.png](/static/books/unity/unity_ios_enable_logging.png "Enable Logging")                                              | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableLogging>                      |
+| ![unity_ios_enable_inbox_polling.png](/static/books/unity/unity_ios_enable_inbox_polling.png "Enable Inbox Polling")                            | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableInboxPolling>                 |
+| ![unity_enable_contact_us.png](/static/books/unity/unity_enable_contact_us.png "Enable Contact Us")                                             | <https://developers.helpshift.com/unity/sdk-configuration-ios#enable-contact-us>                  |
+| ![unity_goto_conversation_after_contact.png](/static/books/unity/unity_goto_conversation_after_contact.png "Goto Conversation After ContactUs") | <https://developers.helpshift.com/unity/sdk-configuration-ios#gotoConversationAfterContactUs>     |
+| ![unity_present_full_ipad.png](/static/books/unity/unity_present_full_ipad.png "Present Full screen on iPad")                                   | <https://developers.helpshift.com/unity/sdk-configuration-ios#presentFullScreenOniPad>            |
+| ![unity_require_email.png](/static/books/unity/unity_require_email.png "Require Email")                                                         | <https://developers.helpshift.com/unity/sdk-configuration-ios#requireEmail>                       |
+| ![unity_hide_name_email.png](/static/books/unity/unity_hide_name_email.png "Hide Name and Email")                                               | <https://developers.helpshift.com/unity/sdk-configuration-ios#hideNameAndEmail>                   |
+| ![unity_prefill_text.png](/static/books/unity/unity_prefill_text.png "Conversation Prefill Text")                                               | <https://developers.helpshift.com/unity/sdk-configuration-ios#conversationPrefillText>            |
+| ![unity_enable_privacy.png](/static/books/unity/unity_enable_privacy.png "Enable Full Privacy")                                                 | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableFullPrivacy>                  |
+| ![unity_show_search_results.png](/static/books/unity/unity_show_search_results.png "Show Search Results On New Conversation")                   | <https://developers.helpshift.com/unity/sdk-configuration-ios#showSearchOnNewConversation>        |
+| ![unity_show_resolution_question.png](/static/books/unity/unity_show_resolution_question.png "Show Conversation Resolution")                    | <https://developers.helpshift.com/unity/sdk-configuration-ios#showConversationResolutionQuestion> |
+| ![unity_show_conversation_info.png](/static/books/unity/unity_show_conversation_info.png "Show Conversation Information")                       | <https://developers.helpshift.com/unity/sdk-configuration-ios#showConversationInfoScreen>         |
+| ![unity_enable_typing_indicator.png](/static/books/unity/unity_enable_typing_indicator.png)                                                     | <https://developers.helpshift.com/unity/sdk-configuration-ios#enableTypingIndicator>              |
+| ![unity_supported_file_formats.png](/static/books/unity/unity_supported_file_formats.png "Supported File Formats")                              | <https://developers.helpshift.com/unity/delegates-ios#display-attachment>                         |
+
+## API Cleanup {#api-cleanup}
+
+| Removed API                                                                 | Replacement API                                                                                                                                                                                                                                                          |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| HelpshiftSdk.isConversationActive()                                         | HelpshiftSdk.checkIfConversationActive()<br />Reference: <https://developers.helpshift.com/unity/tracking-ios#isConversationActive>                                                                                                                                      |
+| HelpshiftSdk.getNotificationCount()                                         | HsAddFAQsToDeviceSearch.AfterViewingFAQs <br />Reference: <https://developers.helpshift.com/unity/campaigns-ios#request-unread-messages-count>                                                                                                                           |
+| Helpshift Delegate API "didReceiveNotificationCount"                        | Helpshift delegate API "didReceiveUnreadMessagesCount"<br />Reference: <https://developers.helpshift.com/unity/delegates-ios#newmessage-recieved>                                                                                                                        |
+| HelpshiftSdk.install()                                                      | HelpshiftSdk.install("<apiKey","domainName","<appId", "configDictionary") <br />Reference: <https://developers.helpshift.com/unity/getting-started-ios#initializing>                                                                                                     |
+| HelpshiftSdk.install("apiKey","domainName","appId")                         | HelpshiftSdk.install("apiKey","domainName","appId", "configDictionary") <br />Reference: <https://developers.helpshift.com/unity/getting-started-ios#initializing>                                                                                                       |
+| HelpshiftSdk.showConversation()                                             | HelpshiftSdk.showConversation("configDictionary") <br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#conversation-view>                                                                                                                          |
+| HelpshiftSdk.showConversationWithMeta("configDictionary")                   | HelpshiftSdk.showConversation("configDictionary") <br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#conversation-view> <br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-ios#metadata>                  |
+| HelpshiftSdk.showFAQSection("sectionPublishId")                             | HelpshiftSdk.showFAQSection("sectionPublishId", "configDictionary"); <br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#faq-section-view>                                                                                                        |
+| HelpshiftSdk.showFAQSectionWithMeta("sectionPublishId", "configDictionary") | HelpshiftSdk.showFAQSection("sectionPublishId", "configDictionary");<br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#faq-section-view> <br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-ios#metadata> |
+| HelpshiftSdk.showSingleFAQ("questionPublishId")                             | HelpshiftSdk.showSingleFAQ("questionPublishId", "configDictionary") <br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#faq-question-view>                                                                                                        |
+| HelpshiftSdk.showSingleFAQWithMeta("questionPublishId", "configDictionary") | HelpshiftSdk.showSingleFAQ("questionPublishId", "configDictionary")<br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#faq-question-view><br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-ios#metadata>  |
+| HelpshiftSdk.showFAQs()                                                     | HelpshiftSdk.showFAQs("configDictionary"); <br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#faqs-view>                                                                                                                                         |
+| HelpshiftSdk.showFAQsWithMeta("configDictionary")                           | HelpshiftSdk.showFAQs("configDictionary");<br />Reference: <https://developers.helpshift.com/unity/support-tools-ios#faqs-view><br />Meta-data configuration reference: <https://developers.helpshift.com/unity/tracking-ios#metadata>                                   |
+
+## Drop iOS 9 support {#drop-ios9}
+
+With version 5.0.0, Helpshift SDK has dropped support for iOS 9. If you wish to keep supporting iOS 9 devices for your apps, please read the [KB Article](https://support.helpshift.com/kb/article/can-i-install-an-older-version-of-the-helpshift-sdk/) to support Helpshift on older OS versions.

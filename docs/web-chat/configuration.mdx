@@ -1,0 +1,153 @@
+---
+sidebar_position: 30
+title: Configuration
+description: Learn more about Configuration
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Configuration
+
+<Intro>
+
+</Intro>
+
+## Widget Configuration {#widget-config}
+
+Helpshift allows you to configure the Web Chat widget by passing configuration options in the `helpshiftConfig` object.
+
+### Widget Options {#widget-options}
+
+To configure the widget's behavior, you'll need to add `widgetOptions` to the Embed Code. All of the widget specific options go here.
+
+```javascript
+(function () {
+  // The following part remains as it is in the Embed Code.
+  var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
+    DOMAIN = "<YOUR_DOMAIN>";
+
+  window.helpshiftConfig = {
+    platformId: PLATFORM_ID,
+    domain: DOMAIN,
+  };
+
+  /* Widget Options Start */
+  helpshiftConfig.widgetOptions = {
+    // All widget specific options go here.
+  };
+  /* Widget Options End */
+})();
+```
+
+#### Enable Fullscreen View for Pop-ups {#enable-full-screen}
+
+If you want to open the widget in full screen mode on a non-mobile device, you can pass through the `fullScreen` option in `widgetOptions`.
+
+```javascript
+helpshiftConfig.widgetOptions = {
+  // ...
+  fullScreen: true,
+};
+```
+
+<Admonition type="info" title="Note">
+
+On mobile devices and on low resolution tablets and desktops, the widget will open in full screen mode.
+
+</Admonition>
+
+#### Show/Hide Launcher {#show-launcher}
+
+You can hide the default launcher and use your own launcher. You can control opening and closing of the conversation window using the `open` and `close` APIs. Add the following option in `widgetOptions` to hide the default launcher.
+
+```javascript
+helpshiftConfig.widgetOptions = {
+  // ...
+  showLauncher: false,
+};
+```
+
+#### Widget Position {#widget-position}
+
+To set the widget's position, provide the `position` option in `widgetOptions`. Values allowed for `position` are:
+
+- bottom-right
+- bottom-left
+- top-left
+- top-right
+
+The default value is `bottom-right`.
+
+```javascript
+helpshiftConfig.widgetOptions = {
+  // ...
+  position: "bottom-left",
+};
+```
+
+#### Widget z-index {#widget-z-index}
+
+By default, Web Chat assigns a large `z-index` value to its widget (the launcher and conversation window). If you want to use a custom value of `z-index` for Web Chat, you can do so by setting the `zIndex` option in `widgetOptions`. You can only use a **number** with this option.
+
+```javascript
+helpshiftConfig.widgetOptions = {
+  // ...
+  zIndex: 50,
+};
+```
+
+## Theming {#theming}
+
+You can configure the Web Chat's greeting and color scheme directly from the Helpshift Dashboard. For more details, refer to [For Support Admins: Configure the User Experience](https://support.helpshift.com/kb/article/web-chat#section-three) in our Knowledge Base.
+
+## Bots {#bots}
+
+Bots can be enabled in Web Chat to automatically provide help and gather information from users to help your Agents resolve Issues faster. Helpshift has 3 default Bots:
+
+- **QuickSearch Bot** - deflect common problems by automatically suggesting relevant FAQs to users
+- **Identity Bot** - prompt your users for their name and/or email before they create an issue
+- **CSAT Bot** - automatically ask for feedback after an Issue is resolved
+
+For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/kb/article/web-chat#section-four) in our Knowledge Base.
+
+## Full Privacy {#full-privacy}
+
+In the `helpshiftConfig` object at the time of initialization, setting the `fullPrivacy` option to `true` ensures [COPPA](http://www.coppa.org/) compliance by:
+
+- Disabling user-initiated screenshots (users will not be able to attach files, including images, using Web Chat).
+- Making sure that Personally Identifiable Information (PII) such as name and email are not collected by Web Chat (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+<Admonition type="info" title="Note">
+
+If you are creating issues with the `fullPrivacy` option set to `true`, then don’t use `New Issue Automation` (Refer [here](https://support.helpshift.com/kb/article/how-do-i-set-up-new-issue-automations/)) to auto-resolve them on the Agent dashboard. [Use `Time based Automation` (Refer [here](https://support.helpshift.com/kb/article/what-are-time-based-automations-and-how-do-i-set-them-up/)) instead]
+
+</Admonition>
+
+###Example Embed Code
+
+```
+var PLATFORM_ID = "foo",
+    DOMAIN = "bar";
+
+window.helpshiftConfig = {
+  platformId: PLATFORM_ID,
+  domain: DOMAIN,
+  // other options, if applicable
+  fullPrivacy: true
+};
+```

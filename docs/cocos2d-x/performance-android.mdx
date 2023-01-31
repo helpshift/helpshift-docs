@@ -1,0 +1,740 @@
+---
+sidebar_position: 10
+title: Helpshift Cocos2d-x SDK performance
+description: "SDK payload size and memory usage"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Cocos2d-x SDK performance {#performance}
+
+<Intro>
+
+SDK payload size and memory usage
+
+</Intro>
+
+## v5.5.0
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.29 MB to your application apk.
+This number includes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+If your app already has appcompat, design, recycler-view and cardview, Helpshift SDK will add 1.39 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 8214 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `8214` |
+| **android.support:28.0.0** |      `21397` |
+
+### Memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.63` |
+| showFAQs                                     |                    `4.23` |
+| showFAQSection                               |                    `5.81` |
+| showSingleFAQ                                |                    `4.61` |
+| showConversation (with no open Conversation) |                    `4.33` |
+| showConversation (with an open Conversation) |                    `5.17` |
+| showConversation (conversational mode)       |                    `3.37` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.5.0-withCampaigns
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.50 MB to your application apk.
+This number includes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+If your app already has appcompat, design, recycler-view and cardview, Helpshift SDK will add 1.59 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 9345 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `9345` |
+| **android.support:28.0.0** |      `21397` |
+
+### Memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.68` |
+| showFAQs                                     |                    `4.63` |
+| showFAQSection                               |                    `5.19` |
+| showSingleFAQ                                |                    `4.38` |
+| showConversation (with no open Conversation) |                    `4.24` |
+| showConversation (with an open Conversation) |                    `5.33` |
+| showConversation (conversational mode)       |                    `3.69` |
+| showInbox (Campaigns)                        |                    `1.40` |
+| showMessage (Campaigns)                      |                    `4.79` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.4.0
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.30 MB to your application apk.
+This number includes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+If your app already has appcompat, design, recycler-view and cardview, Helpshift SDK will add 1.40 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 8330 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `8330` |
+| **android.support:28.0.0** |      `21397` |
+
+### Memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.61` |
+| showFAQs                                     |                    `4.46` |
+| showFAQSection                               |                    `5.72` |
+| showSingleFAQ                                |                    `4.16` |
+| showConversation (with no open Conversation) |                    `4.63` |
+| showConversation (with an open Conversation) |                    `5.21` |
+| showConversation (conversational mode)       |                    `3.32` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.4.0-withCampaigns
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.48 MB to your application apk.
+This number includes total impact with dependencies on Android Support Libraries (design, recycler-view and card-view).
+If your app already has appcompat, design, recycler-view and cardview, Helpshift SDK will add 1.58 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 9331 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `9331` |
+| **android.support:28.0.0** |      `21397` |
+
+### Memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.60` |
+| showFAQs                                     |                    `4.46` |
+| showFAQSection                               |                    `5.70` |
+| showSingleFAQ                                |                    `4.47` |
+| showConversation (with no open Conversation) |                    `4.36` |
+| showConversation (with an open Conversation) |                    `5.21` |
+| showConversation (conversational mode)       |                    `3.74` |
+| showInbox (Campaigns)                        |                    `1.32` |
+| showMessage (Campaigns)                      |                    `4.81` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on OnePlus 7 running Android 10. Usage will
+increase with number of FAQs and number of messages in a conversation.
+
+</Admonition>
+
+## v5.3.0
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.30 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.40 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 7956 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `7956` |
+| **android.support:28.0.0** |      `21397` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.64` |
+| showFAQs                                     |                    `1.46` |
+| showFAQSection                               |                    `2.70` |
+| showSingleFAQ                                |                    `1.55` |
+| showConversation (with no open Conversation) |                    `2.25` |
+| showConversation (with an open Conversation) |                    `2.65` |
+| showConversation (conversational mode)       |                    `1.60` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.3.0-withCampaigns
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.40 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.50 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 8919 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `8919` |
+| **android.support:28.0.0** |      `21397` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.64` |
+| showFAQs                                     |                    `1.46` |
+| showFAQSection                               |                    `2.70` |
+| showSingleFAQ                                |                    `1.55` |
+| showConversation (with no open Conversation) |                    `2.25` |
+| showConversation (with an open Conversation) |                    `2.65` |
+| showConversation (conversational mode)       |                    `1.60` |
+| showInbox (Campaigns)                        |                    `0.87` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.2.0
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.20 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.3 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 7098 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `7098` |
+| **android.support:28.0.0** |      `21397` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.65` |
+| showFAQs                                     |                    `1.45` |
+| showFAQSection                               |                    `2.75` |
+| showSingleFAQ                                |                    `1.65` |
+| showConversation (with no open Conversation) |                    `2.30` |
+| showConversation (with an open Conversation) |                    `2.60` |
+| showConversation (conversational mode)       |                    `1.68` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.2.0-withCampaigns
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.30 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.40 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 8076 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `8076` |
+| **android.support:28.0.0** |      `21397` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.68` |
+| showFAQs                                     |                    `1.45` |
+| showFAQSection                               |                    `2.75` |
+| showSingleFAQ                                |                    `1.65` |
+| showConversation (with no open Conversation) |                    `2.30` |
+| showConversation (with an open Conversation) |                    `2.60` |
+| showConversation (conversational mode)       |                    `1.68` |
+| showInbox (Campaigns)                        |                    `0.87` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.1.0
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.20 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 2.0 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 7185 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `7185` |
+| **android.support:28.0.0** |      `17318` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.68` |
+| showFAQs                                     |                    `1.50` |
+| showFAQSection                               |                    `2.70` |
+| showSingleFAQ                                |                    `1.80` |
+| showConversation (with no open Conversation) |                    `2.50` |
+| showConversation (with an open Conversation) |                    `2.54` |
+| showConversation (conversational mode)       |                    `1.71` |
+
+## v5.1.0-withCampaigns
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.50 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 2.30 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 8159 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `8159` |
+| **android.support:28.0.0** |      `17318` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.60` |
+| showFAQs                                     |                    `1.50` |
+| showFAQSection                               |                    `2.40` |
+| showSingleFAQ                                |                    `1.60` |
+| showConversation (with no open Conversation) |                    `2.40` |
+| showConversation (with an open Conversation) |                    `2.70` |
+| showConversation (conversational mode)       |                    `1.60` |
+| showInbox (Campaigns)                        |                    `0.85` |
+
+## v5.0.0
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.20 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.90 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 6992 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `6992` |
+| **android.support:26.0.2** |      `16154` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.68` |
+| showFAQs                                     |                    `1.48` |
+| showFAQSection                               |                    `2.80` |
+| showSingleFAQ                                |                    `1.90` |
+| showConversation (with no open Conversation) |                    `2.40` |
+| showConversation (with an open Conversation) |                    `2.62` |
+| showConversation (conversational mode)       |                    `1.80` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v5.0.0-withCampaigns
+
+### SDK payload in your app {#payload-size-5}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.50 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 2.20 MB.
+
+### Method count {#methods-count-5}
+
+The Helpshift Android SDK will add 7964 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `7964` |
+| **android.support:26.0.2** |      `16154` |
+
+### SDK memory usage {#memory-usage-5}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.60` |
+| showFAQs                                     |                    `1.40` |
+| showFAQSection                               |                    `2.52` |
+| showSingleFAQ                                |                    `1.56` |
+| showConversation (with no open Conversation) |                    `2.30` |
+| showConversation (with an open Conversation) |                    `2.80` |
+| showConversation (conversational mode)       |                    `1.64` |
+| showInbox (Campaigns)                        |                    `0.82` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v4.1.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift Cocos2d-x SDK for Android will add 3.20 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.70 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 7643 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `7643` |
+| **android.support:26.0.2** |      `16149` |
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.60` |
+| showFAQs                                     |                    `1.51` |
+| showFAQSection                               |                    `2.59` |
+| showSingleFAQ                                |                    `2.13` |
+| showConversation (with no open Conversation) |                    `2.28` |
+| showConversation (with an open Conversation) |                    `2.84` |
+| showConversation (conversational mode)       |                    `1.59` |
+| showInbox (Campaigns)                        |                    `0.81` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v4.0.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift Cocos2d-x SDK for Android will add 2.96 MB to your application apk. This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.60 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 7159 methods to your dex:
+
+| Package                    | Method Count |
+| -------------------------- | -----------: |
+| **com.helpshift**          |       `7159` |
+| **android.support:26.0.2** |      `16149` |
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.37` |
+| showFAQs                                     |                    `1.52` |
+| showFAQSection                               |                    `3.34` |
+| showSingleFAQ                                |                    `2.52` |
+| showConversation (with no open Conversation) |                    `2.61` |
+| showConversation (with an open Conversation) |                    `3.00` |
+| showConversation (conversational mode)       |                    `1.60` |
+| showInbox (Campaigns)                        |                    `1.60` |
+| showMessage (Campaigns)                      |                    `1.19` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v1.9.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift Cocos2d-x SDK for Android will add 2.46 MB to your application apk.This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.10 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 6119 methods to your dex:
+
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `6119` |
+| **android.support:23.4.0**               |      `17112` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9013` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6107` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1764` |
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.35` |
+| showFAQs                                     |                    `2.12` |
+| showFAQSection                               |                    `3.34` |
+| showSingleFAQ                                |                    `2.52` |
+| showConversation (with no open Conversation) |                    `2.61` |
+| showConversation (with an open Conversation) |                    `3.08` |
+| showInbox (Campaigns)                        |                    `0.66` |
+| showMessage (Campaigns)                      |                    `1.09` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v1.8.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift Cocos2d-x SDK for Android will add 2.46 MB to your application apk.This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.10 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 6119 methods to your dex:
+
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `6119` |
+| **android.support:23.4.0**               |      `17112` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9013` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6107` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1764` |
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.35` |
+| showFAQs                                     |                    `2.12` |
+| showFAQSection                               |                    `3.34` |
+| showSingleFAQ                                |                    `2.52` |
+| showConversation (with no open Conversation) |                    `2.61` |
+| showConversation (with an open Conversation) |                    `3.08` |
+| showInbox (Campaigns)                        |                    `0.66` |
+| showMessage (Campaigns)                      |                    `1.09` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v1.7.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift Cocos2d-x SDK for Android will add 2.45 MB to your application apk.This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1.09 MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 6335 methods to your dex:
+
+| Package                                  | Method Count |
+| ---------------------------------------- | -----------: |
+| **com.helpshift**                        |       `6335` |
+| **android.support:23.4.0**               |      `17112` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4     |       `9013` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7     |       `6107` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design |       `1764` |
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                    `0.35` |
+| showFAQs                                     |                    `3.84` |
+| showFAQSection                               |                    `3.95` |
+| showSingleFAQ                                |                    `2.52` |
+| showConversation (with no open Conversation) |                    `2.31` |
+| showConversation (with an open Conversation) |                    `2.62` |
+| showInbox (Campaigns)                        |                    `0.66` |
+| showMessage (Campaigns)                      |                    `1.09` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>
+
+## v1.6.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift Cocos2d-x SDK for Android will add 2.5 MB to your application apk.This number
+includes total impact with dependencies on Android Support Libraries (design,
+recycler-view and card-view). If your app already has appcompat, design,
+recycler-view and cardview, Helpshift SDK will add 1MB.
+
+### Method count {#methods-count}
+
+The Helpshift Android SDK will add 4700 methods to your dex:
+
+| Package                                      | Method Count |
+| -------------------------------------------- | -----------: |
+| **com.helpshift**                            |       `4700` |
+| **android.support:23.1.1**                   |      `18388` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v4         |       `9665` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.v7         |       `6497` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.design     |       `1895` |
+| &nbsp;&nbsp;&nbsp;&nbsp;- support.annotation |         `23` |
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK screen launches.
+
+| Support API launch                           | Memory Usage (approx. MB) |
+| -------------------------------------------- | ------------------------: |
+| After adding Helpshift install call          |                     `0.4` |
+| showFAQs                                     |                    `3.69` |
+| showFAQSection                               |                     `3.8` |
+| showSingleFAQ                                |                     `2.5` |
+| showConversation (with no open Conversation) |                     `2.6` |
+| showConversation (with an open Conversation) |                     `2.9` |
+| showInbox (Campaigns)                        |                    `0.55` |
+| showMessage (Campaigns)                      |                     `1.8` |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>

@@ -1,0 +1,310 @@
+---
+sidebar_position: 10
+title: Tracking Android
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Tracking <small>Android</small> {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+</Intro>
+
+## Name and email {#name-and-email}
+
+<Admonition type="info" title="Note">
+
+- This API is now deprecated with Cocos2d-x SDK v4.0.
+- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-android#identify-users) going forward.
+- Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up/). However, there will no impact on older SDK versions. They will keep on working as usual.
+
+</Admonition>
+
+## User Identifier {#user-id}
+
+<Admonition type="info" title="Note">
+
+- This API is now deprecated with Cocos2d-x SDK v4.0.
+- It is expected that developers will pass the Name, Email or User Identifier using the [login API](/cocos2d-x/users-android#identify-users) going forward.
+- Also, please note that there will no impact on older SDK versions and that they will keep on working as usual.
+
+</Admonition>
+
+## Multi Login {#multi-login}
+
+<Admonition type="info" title="Note">
+
+Details on User management are available [here](/cocos2d-x/users-android#identify-users).
+
+</Admonition>
+
+## App usage {#app-usage}
+
+Breadcrumbs will help you track events or user actions and when user
+starts a new conversation, these breadcrumbs can be seen along with the conversation in
+the admin site. To leave breadcrumbs can use `leaveBreadCrumb`. For example:
+
+```.cpp
+HelpshiftCocos2dx::leaveBreadCrumb("Went to Preferences Screen");
+```
+
+Breadcrumbs will be collected within the set breadcrumb limit. This is set in the **SDK Configurations** section for app settings in the agent dashboard.
+Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs queue, please use the `clearBreadCrumbs` API call. For example:
+
+```.cpp
+HelpshiftCocos2dx::clearBreadCrumbs();
+```
+
+## Attaching metadata to reported issues {#metadata}
+
+You can attach additional metadata to every new conversation started by the app user via a very
+simple mechanism provided by the SDK. This metadata can range from
+user-name, email etc to game scores, current game levels and any other
+data relevant to creating a suitable context to each new conversation.
+
+In all the API calls which launch the Help section, you can add a meta-data dictionary
+in the config dictionary parameter using the HS_META_DATA_KEY macro. This meta-data will be
+sent along with the next reported issue. When the user exits out of the Help section this meta-data will be dropped in favor of the meta-data sent in the next Helpshift API call.
+
+<Admonition type="info" title="Note">
+
+- While metadata can be set anytime, it will only be sent to the Admin Dashboard when an end user starts a new conversation.
+- As soon as an end user opens the conversation screen, that end user will see a greeting message, and the conversation is considered active.
+- Any modified metadata (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+
+</Admonition>
+
+### Attaching tags with metadata {#metadatatags}
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Tags must be lowercase.
+- Please do ensure that the tags you send via meta data, are **exact matches** of tags that exist in the admin site.
+
+</Admonition>
+
+<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
+
+You can attach tags with metadata to every reported issue via the
+`HS_TAGS_KEY` macro. This is used with the config dictionary as follows:
+
+**For cocos2d-x 3.x**
+/ .code-header /
+
+```cpp
+
+    ValueMap config;
+    ValueMap meta;
+    meta["usertype"] = Value("paid");
+    meta["level"] = Value("7");
+    meta["score"] = Value("12345");
+
+    ValueVector tags;
+    tags.push_back(Value("feedback"));
+    tags.push_back(Value("paid user"));
+
+    meta[HS_TAGS_KEY] = Value(tags);
+    config[HS_META_DATA_KEY] = Value(meta);
+
+    HelpshiftCocos2dx::showFAQs(config);
+
+```
+
+**For cocos2d-x 2.x**
+/ .code-header /
+
+```cpp
+
+    cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
+    cocos2d::CCDictionary *meta = new CCDictionary();
+    meta->setObject(new CCString("54$"), "Money spent");
+
+    cocos2d::CCArray *tags = new cocos2d::CCArray();
+    tags->addObject (new CCString("Whale"));
+    tags->addObject (new CCString("Cocos2d-x"));
+
+    meta->setObject(tags, HS_TAGS_KEY);
+    config->setObject(meta, HS_META_DATA_KEY);
+    HelpshiftCocos2dx::showFAQs(config);
+
+
+```
+
+## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+
+<Admonition type="info" title="Note">
+
+**Applicable to SDK v1.8.0 and above.**
+
+</Admonition>
+
+You can attach Custom Issue Fields to every new conversation started by the app user. A Custom Issue Field should have a key, a datatype, and a value. The SDK allows the addition of Custom Issue Fields by using the setCustomIssueFields method with the config dictionary passed to the SDK APIs.
+
+These Custom Issue Fields would be sent whenever a new issue is created.
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+Any modified Custom Issue Fields (updated during an active conversation) will only be sent within the next conversation that the end user starts.
+
+Possible datatypes to be passed into the config are:
+
+| Type | Comments                                                                                                                                                      |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | Single line string with character limit of 255                                                                                                                |
+| "ml" | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
+
+**For example:**
+
+<Tabs>
+
+<TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
+
+```cpp
+    ValueMap customIssueFields;
+    ValueVector singleLineData;
+    singleLineData.push_back(Value("sl"));
+    singleLineData.push_back(Value("John Doe"));
+    customIssueFields["name"] = Value(singleLineData);
+
+    ValueVector multiLineData;
+    multiLineData.push_back(Value("ml"));
+    multiLineData.push_back(Value("This is user's long bio"));
+    customIssueFields["address"] = Value(multiLineData);
+
+    ValueVector integerData;
+    integerData.push_back(Value("n"));
+    integerData.push_back(Value("42"));
+    customIssueFields["level"] = Value(integerData);
+
+    ValueVector booleanData;
+    booleanData.push_back(Value("b"));
+    booleanData.push_back(Value("true"));
+    customIssueFields["is_pro"] = Value(booleanData);
+
+    ValueVector dropdownData;
+    dropdownData.push_back(Value("dd"));
+    dropdownData.push_back(Value("Dollar"));
+    customIssueFields["currency"] = Value(dropdownData);
+
+    ValueVector dateData;
+    dateData.push_back(Value("dt"));
+    dateData.push_back(Value("1505927361535"));
+    customIssueFields["join_date"] = Value(dateData);
+
+    ValueMap config;
+    config[HS_CUSTOM_ISSUE_FIELDS] = Value(customIssueFields);
+
+    HelpshiftCocos2dx::showFAQs(config)
+```
+
+</TabItem>
+<TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
+
+```cpp
+    cocos2d::CCDictionary *customIssueFields = new CCDictionary();
+
+    cocos2d::CCArray *singleLineStringCIF = new cocos2d::CCArray();
+    singleLineStringCIF->addObject (new CCString("sl"));
+    singleLineStringCIF->addObject (new CCString("John Doe"));
+    customIssueFields->setObject(singleLineStringCIF, "employee_name");
+
+    cocos2d::CCArray *multiLineCIF = new cocos2d::CCArray();
+    multiLineCIF->addObject (new CCString("ml"));
+    multiLineCIF->addObject (new CCString("3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"));
+    customIssueFields->setObject(multiLineCIF, "employee_address");
+
+    cocos2d::CCArray *numberCif = new cocos2d::CCArray();
+    numberCif->addObject (new CCString("n"));
+    numberCif->addObject (new CCString("5"));
+    customIssueFields->setObject(numberCif, "stock_level");
+
+    cocos2d::CCArray *checkboxCif = new cocos2d::CCArray();
+    checkboxCif->addObject (new CCString("b"));
+    checkboxCif->addObject (new CCString("true"));
+    customIssueFields->setObject(checkboxCif, "is_pro");
+
+    cocos2d::CCArray *dropdownCif = new cocos2d::CCArray();
+    dropdownCif->addObject (new CCString("dd"));
+    dropdownCif->addObject (new CCString("Dollars"));
+    customIssueFields->setObject(dropdownCif, "salary_currency");
+
+    cocos2d::CCArray *dateCif = new cocos2d::CCArray();
+    dateCif->addObject (new CCString("dt"));
+    dateCif->addObject (new CCString("1505927361535"));
+    customIssueFields->setObject(dateCif, "joining_date");
+
+    config->setObject(customIssueFields, HS_CUSTOM_ISSUE_FIELDS);
+
+    HelpshiftCocos2dx::showFAQs(config);
+```
+
+</TabItem>
+
+</Tabs>
+
+## Debug logs {#debug-logs}
+
+If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can use the log functions of the Helpshift class which will provide varying degress of logging.
+For example, if you want to attach debug level logs please add the following code
+
+```cpp
+HelpshiftCocos2dx::logd("Helloworld", "This is the number : %d", 123);
+```
+
+## Issue Archival {#issue-archival}
+
+From version 1.3.0, Helpshift SDK includes support for archiving issues.
+Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
+Once archived, issues cannot be reopened. This improves dashboard performance.
+Archived issues will be accessible to agents through the dashboard for future reference.
+
+![issueArchival.png](/static/books/android/issuearchival.png "issueArchival.png")
+
+## Check if an active Conversation exists {#isConversationActive}
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK v1.7.0 and above.
+
+</Admonition>
+
+You can check if the user has any active Conversations on the device with `HelpshiftCocos2dx::checkIfConversationActive(...)` API. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+For Example:
+
+```cpp
+
+    void conversationActive(bool isActive) {
+        if (isActive == "true") {
+            // Active Conversation.
+        } else {
+            // No open Conversation.
+        }
+    }
+    HelpshiftCocos2dx::checkIfConversationActive(conversationActive);
+
+```

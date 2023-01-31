@@ -1,0 +1,122 @@
+---
+sidebar_position: 10
+title: Reviews & Feedback Android
+description: "Asking for reviews and feedback"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Reviews & Feedback <small>Android</small> {#review-and-feedback}
+
+<Intro>
+
+Asking for reviews and feedback
+
+</Intro>
+
+## Manually show App Rating alertview {#app-rating-api}
+
+<Admonition type="info" title="Note">
+
+Applicable for SDK version 3.4.1 and above
+
+</Admonition>
+
+Use the _showAlertToRateAppWithURL_ to display an alertview, which prompts the user to rate your app, or send feedback.
+
+To receive the response of the user on the Alert, please connect to the "alertToRateAppAction" message handler for the Unity game object registered with Helpshift.
+
+The **Send Feedback** button takes the user to [Conversation](/unity/support-tools-android#conversation-view) screen.
+
+In this way, you can reduce possible negative reviews into genuine problems to be solved.
+
+If you want to change the strings used in this alert view, head over to [String Customization](/android/string-customization/).
+
+![](/static/books/android/review-reminder.png)
+
+Example usage:
+
+API Call
+
+```csharp
+    help.showAlertToRateAppWithURL ("market://details?id=com.RunnerGames.game.YooNinja_Lite");
+```
+
+Unity message handler
+
+```csharp
+    public void alertToRateAppAction (string message) {
+        if (message == Helpshift.HS_RATE_ALERT_CLOSE) {
+            Debug.Log ("Alert was closed");
+        } else if (message == Helpshift.HS_RATE_ALERT_SUCCESS) {
+            Debug.Log ("User reviewed your app !");
+        }
+    }
+```
+
+## Configuring automatic review requests
+
+Automatic review requests can be triggered on two kinds of events:
+
+- after a specific number of app launches
+- after a specific number of days since the first app launch
+
+To enable automatic review requests, navigate to **SDK Configurations** for your app in agent dashboard and select a value from **Ask for review after every** dropdown.
+
+Automatic review requests, if enabled via admin, will be shown **once per app version**.
+
+<Image src="/static/books/android/review-settings.jpg" width="major" />{" "}
+
+<Admonition type="info" title="Note">
+
+You can also update the review URL for your app via **SDK Configurations** in agent dashboard.
+An app store URL should look like `itms-apps://itunes.apple.com/app/id12345678` where 12345678 is your Apple app ID (which is also shown in the iTunes Preview URL).
+This app store URL format will work for both iOS 6 & 7.
+
+</Admonition>
+
+## Review reminder in SDK
+
+Helpshift SDK adds a way for customers to send feedback in review reminders.
+
+The review remiender is shown if there is no on-going conversation with the user. It takes the user to [New Conversation](/unity/support-tools-android#conversation-view) screen.
+
+In this way, you can reduce possible negative reviews into genuine problems to be solved.
+
+![](/static/books/android/review-reminder.png)
+
+## Customer satisfaction survey {#csat}
+
+Customer satisfaction survey prompts your app users to rate their customer support experience with your agents. Enabling it, sends out a 5-star customer service rating request to your customers when an issue is resolved.
+
+To enable it, go to Settings in your agent dashboard, and then under app settings, select your app. You can enable `Customer satisfaction survey` from under SDK Configurations.
+
+<Image src="/static/books/android/review-settings.jpg" width="major" />{" "}
+
+When an issue is resolved, and your customer accepts the resolution, then a Customer Satisfaction screen is shown.
+
+![](/static/books/android/csat-android.png)
+
+Your customer can also (optionally) give feedback to help you improve the quality of your service.
+
+![](/static/books/android/csat-service-rating.png)
+
+<Admonition type="info" title="Note">
+
+You can also update the review URL for your app via **SDK Configurations** in agent dashboard.
+A google play store URL should look like `market://details?id=com.RunnerGames.game.YooNinja_Lite`.
+
+</Admonition>

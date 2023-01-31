@@ -1,0 +1,177 @@
+---
+sidebar_position: 10
+title: User identification  iOS
+description: Learn more about User identification  iOS
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# User identification <small>iOS</small> {#user-identification-ios}
+
+# How to Identify and Manage Users {#users}
+
+## Logged-in users {#logged-in-users}
+
+### Overview
+
+A logged-in user is someone who can contact your support team only after providing a username and password. If you have logged-in users, we highly recommend passing the user's identifiers (user ID and/or email) using the login API so that your Agents can provide a personalized support experience to your users, no matter which device your end user is using. Using the Login API also ensures that a user's conversations are available only to them when they log in.
+
+<Admonition type="info" title="Note">
+
+User's conversation will only be available on the device used to start the conversation. The conversation will not be available across devices.
+
+</Admonition>
+
+### What to provide as identifiers
+
+You can provide either userID and/or userEmail to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the userEmail field with the helpshiftConfig object. The following logic applies when you use both userID as well as userEmail:
+
+- When looking up users, the priority of userId is higher than that of userEmail
+- When the user ID matches an exisiting user, that user's email will be updated (if the email is provided)
+- When the email matches an existing user, the following logic applies:
+  - If the user ID does not exist for a user matched by email, then the user ID will be added for that user (if a user ID is provided)
+  - If the user ID already exists on the user matched by email, then a new user will be created (if a different user ID is provided)
+
+### How to use
+
+You should call Helpshift SDK's Login API whenever the user successfully logs into your app. The Login API takes the following parameters:
+
+| Parameter       | Required/Optional                                        | Description                                                                                                                                                                                                                                                                                                                                                                          | Important considerations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| --------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name            | Optional                                                 | Provide the name you'd like your Agents to use when interacting with end users. If you don't know the user's name, you can leave it blank, and the Identity Bot (when enabled) will ask that user for their name. If you provide a value, the Identity Bot will not ask the user for their name again.                                                                               | <ul><li>Max length: 255 characters. Values larger than this will be truncated.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| User ID         | Required as an identifier if email is not provided       | A user's unique identifier. User IDs must be unique. You should not use the same user ID for different users.                                                                                                                                                                                                                                                                        | <ul><li>Max length: 750 characters. Values larger than this will result in the creation of an anonymous user.</li></ul><ul><li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li></ul><ul><li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li></ul><ul><li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'Email'.</li></ul><ul><li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing email will return any profile if multiple profiles have the same email. </li></ul> |
+| User Auth Token | Optional                                                 | A user generated via Hash-Based Message Authentication Code (HMAC) using SHA256. You should provide an HMAC Digest if you want to ensure that 3rd parties cannot file Issues on behalf of your users or update their properties. [Details here.](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification) | <ul><li>A valid HMAC Digest should be provided in order to ensure your users can file Issues. [Details here.](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification) </li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Email           | Required as an identifier if the user ID is not provided | A user's email address. If you don't know the user's email, you can leave it blank and the Identity Bot (when enabled) will ask the user for their email. If you provide a value, then the Identity Bot will not ask the user for their email again.                                                                                                                                 | <ul><li>Email format should be valid (should be in the format "my@email.com". Invalid emails will result in the creation of an anonymous user.</li></ul><ul><li>Leading / trailing spaces are not allowed. Emails with leading / trailing spaces will result in the creation of an anonymous user.</li></ul><ul><li>Email is always case insensitive (eg. 'MY@EMAIL.COM' is same as 'my@email.com'). </li></ul>                                                                                                                                                                                                                                                                                                                                                     |
+
+For example:
+
+```cpp
+HelpshiftCocosUserBuilder *userBuilder = new HelpshiftCocosUserBuilder("unique-user-id-746501", "john.doe@app.co");
+userBuilder->setName("John Doe");
+HelpshiftCocosUser user = userBuilder->build();
+HelpshiftCocos2dx::login(&user);
+```
+
+<Admonition type="info" title="Note">
+
+- If you are setting enableFullPrivacy to be YES, you shouldn't be using email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+- If you were using setUserIdentifier API (now deprecated), if the user has an open Issue, using login API will result in the creation of a new Issue. However, the previous Issue will be available to Agents under 'Other Issues'
+
+</Admonition>
+
+## Logging out users {#logging-out-users}
+
+### Overview
+
+Once a user logs out from your app, you should call the Helpshift SDK logout API to ensure no one else can view this user's conversations.
+
+### How to use
+
+```
+HelpshiftCocos2dx::logout();
+```
+
+<Admonition type="info" title="Note">
+
+- The logout API is expected to be used in conjunction with the login API.
+- If you are using the leaveBreadCrumb API to pass user login related crumbs, please make sure to call the the clearBreadCrumbs API when you change the login.
+- If any of the Helpshift screens are currently being shown in the app, then any login/logout attempt will be ignored.
+- If the login API is called with different user identifier, then it will first log out the currently logged-in user, and then log in with the user identifier provided.
+- It is best to call the login API immediately when your app user logs in.
+
+</Admonition>
+
+## Anonymous Users {#anonymous-users}
+
+### Overview
+
+An anonymous user is someone who can access the app without a username and password. If a user identifier (UserID and/or Email) is not passed via the login API, then Helpshift assumes that the user is an anonymous user and is not currently logged in.
+
+If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the clearAnonymousUser API. If this API is used, then anonymous users will be cleared whenever a user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
+
+```
+HelpshiftCocos2dx::clearAnonymousUser();
+```
+
+<Admonition type="info" title="Note">
+
+- The clearAnonymousUser API does not impact logged-in users at all.
+- clearAnonymousUser API will only work if called from logged-in mode.
+
+</Admonition>
+
+# Verifying the identity of users {#verify-identity-of-users}
+
+## Configuring identity verification in your app {#configure-identity-verification}
+
+### Overview
+
+User Identity Verification is a security measure that verifies that all requests made from your app to Helpshift are coming from authentic end users. This prevents 3rd parties or hackers from impersonating your users. You can learn more about User Identity Verification and the steps to configure it [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up). In order to ensure your users are verified, you should provide a 'user authentication token' with the HelpshiftUser object at the time of login. You can find the steps to generate a 'user authentication token' [here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification). The 'user authentication token' is an HMAC Digest, which is generated via HMAC using SHA256.
+
+### Sending the HMAC Digest to verify users' identity
+
+You can send the 'user authentication token' with the login API call. If Identity Verification is enabled on the [Helpshift Dashboard](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification). Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and the user is able to file Issues.
+
+```
+HelpshiftCocosUserBuilder *userBuilder = new HelpshiftCocosUserBuilder("unique-user-id-746501", "john.doe@app.co");
+userBuilder->setAuthToken("generated-user-authentication-token");
+userBuilder->setName("John Doe");
+HelpshiftCocosUser user = userBuilder->build();
+HelpshiftCocos2dx::login(&user);
+```
+
+<Admonition type="info" title="Note">
+
+- If the secret key is regenerated for an app on the Dashboard, you should ensure that you update your endpoint code as well, in order to generate a valid 'user authentication token'. After this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
+- If you are setting enableFullPrivacy flag to YES, the 'user authentication token' should be generated only on the user ID.
+
+</Admonition>
+
+## Identity Verification failure {#identity-verification-failure}
+
+### Overview
+
+When Identity Verification is turned 'On' and a login request is made with no 'user authentication token' or with an invalid 'user authentication token' for Cocos2d-x plugin v4.0.0 & above, identity verification will fail. If identity verification fails, the following will hold true:
+
+- Anonymous users (users for whom the developer is not providing any identifiers) are always able to file Issues.
+- Logged-in users (users for whom the developer is providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the form or conversational UI.
+
+If the logged-in users are verified (i.e., a valid 'user authentication token' is provided), they are able to see the previous Issue or create a new Issue. The UI for verified, logged-in users looks & works exactly the same as it would if 'Identity verification' were turned off. Only unverified users get impacted as listed above.
+
+<Admonition type="info" title="Note">
+
+End-users on Cocos2d-x plugin 1.9.0 or lower are not impacted, even if 'Identity Verification' is enabled on the Dashboard.
+
+</Admonition>
+
+### How to use the failure delegates
+
+If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
+
+| Delegate                                                                                                                                                   | When it is called                               | How to use                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| void authenticationFailure(HelpshiftCocosUser \*user, HSAuthenticationFailureReason reason)reason == HSAuthenticationFailureReason::HSAuthTokenNotProvided | When no 'user authentication token' is provided | If you do not plan on sending a 'user authentication token' when implementing Cocos2d-x plugin 4.0.0, but plan on implementing it in the future, you can use this failure delegate to show your own alerts to the user, such as a prompt to update the app. You may want to use this if you are using the login API without the 'user authentication token', since these users will be considered unverified once 'Identity Verification' is enabled on the Dashboard. Using this delegate is completely optional - Helpshift will prevent unverified users from being able to file Issues, as mentioned previously.                                                                                                                                                                                                                                                                       |
+| void authenticationFailure(HelpshiftCocosUser \*user, HSAuthenticationFailureReason reason)reason == HSAuthenticationFailureReason::HSInvalidAuthToken     | When the 'user authentication token' is invalid | For Cocos2d-x plugin 4.0.0 and later, if the HMAC Digest being provided via Login API is invalid, then Helpshift will prevent the users from filing Issues. The 'user authentication token' can be invalid if:<ul><li>You made a programming error. Check how to generate HMAC Digest [Here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification).</li></ul><ul><li>You regenerated the secret key on the Dashboard, but didn't update the 'user authentication token'.</li></ul><ul><li>A 3rd party is trying to make requests.</li></ul>When the 'user authentication token' is invalid, end users are not able to file Issues and an error is shown to them, as mentioned previously. You can use this delegate if you want to show your own alerts or re-fetch the correct auth token from your server. |
+
+<Admonition type="info" title="Note">
+
+The error strings can be customised in the SDK.
+
+</Admonition>
+
+## Testing & Troubleshooting {#identity-verification-testing-troubleshooting}
+
+Steps to test that Identity Verification is correctly set up are available [here](https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly).

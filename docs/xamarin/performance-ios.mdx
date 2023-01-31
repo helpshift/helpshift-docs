@@ -1,0 +1,405 @@
+---
+sidebar_position: 10
+title: Helpshift Xamarin SDK performance
+description: Learn more about Helpshift Xamarin SDK performance
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Xamarin SDK performance {#performance}
+
+## 3.6.0
+
+The impact analysis was done on macOS 11.4 with Visual Studio for Mac Community Version 8.10.9.3 and Xcode 12.5.1. Version of NewtonSoft JSON.NET used was 13.0.1 and SwiftRuntimeSupport was v0.2.0.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `25.1 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `2.6 MB` in size. The size includes total impact with dependency on Newtonsoft.Json.
+
+If your app is not already using swift, there will be `5.0` MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+Memory usage (in release mode)
+
+|                                 |                                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Helpshift install call**      | adds around <code>3.8 MB</code> of memory when a Helpshift screen is not engaged.                       |
+| **Helpshift FAQ screen**        | adds around <code>4.6 MB</code> of memory. This depends on number of FAQs and sections in the host app. |
+| **Helpshift Single FAQ screen** | adds around <code>4.8 MB</code> of memory. This depends on number of FAQs and sections in the host app. |
+| **Helpshift Single FAQ screen** | adds around <code>5.3 MB</code> of memory. This depends on FAQ content.                                 |
+| **Helpshift chat screen**       | adds around <code>5.5 MB</code> of memory. This depends on number and type of messages on chat screen.  |
+
+## 3.5.0
+
+The impact analysis was done on macOS 10.15.6 with Visual Studio for Mac Community Version 8.7.8 (build 4) and Xcode 12.0. Version of NewtonSoft JSON.NET used was 12.0.3 and SwiftRuntimeSupport was v0.2.0.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `7.3 MB` for the normal version and `24.2 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `2.4 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `2.4 MB` in size. The size includes total impact with dependency on Newtonsoft.Json.
+
+If your app is not already using swift, there will be `4.8` MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                   |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>4.3 MB</code> of memory when a Helpshift screen is not engaged.                                                                                                                                                 |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>4.4 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>4.8 MB</code>, settling at <code>4.0 MB</code>.                                                                                                                                                                 |
+| **Single FAQ**                                      | adds <code>4.4 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's Chat screen (showConversation:)**     | adds: <code>6.9 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>5.2 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 3.4.0
+
+The impact analysis was done on macOS 10.15.5 with Visual Studio for Mac Community Version 8.6.7 (build 2) and Xcode 10.2. Version of NewtonSoft JSON.NET used was 12.0.3 and SwiftRuntimeSupport was v0.2.0.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `7.2 MB` for the normal version and `23.9 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `2.4 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `2.4 MB` in size. The size includes total impact with dependency on Newtonsoft.Json.
+
+If your app is not already using swift, there will be `2` MB size addition in the final downloaded IPA for OS versions below iOS 12.2.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>3.8 MB</code> of memory when a Helpshift screen is not engaged.                                                                                                                                                  |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~4.2 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>4.3 MB</code>, settling at <code>4.0 MB</code>.                                                                                                                                                                  |
+| **Single FAQ**                                      | adds <code>~2.9 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's Chat screen (showConversation:)**     | adds: <code>~6.8 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~3.1 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 3.3.0
+
+The impact analysis was done on macOS 10.15.2 with Visual Studio for Mac Community Version 8.4.2 (build 59), Mono 6.8.0.96 and Xcode 10.0. Version of NewtonSoft JSON.NET used was 12.0.3.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `46.3 MB` for the normal version and `88.7 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `2.2 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `2.2 MB` in size. The size includes total impact with dependency on Newtonsoft.Json.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>3.4 MB</code> of memory when a Helpshift screen is not engaged.                                                                                                                                                  |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~4.2 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>4.3 MB</code>, settling at <code>4.0 MB</code>.                                                                                                                                                                  |
+| **Single FAQ**                                      | adds <code>~2.9 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's Chat screen (showConversation:)**     | adds: <code>~4.8 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~3.1 MB</code> of memory for an average of 4 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 3.2.0
+
+The impact analysis was done on macOS 10.14.4 with Visual Studio Community Version 8.3.3 (build 8), Mono 6.4.0.208 and Xcode 11.1. Version of NewtonSoft JSON.NET used was 9.0.1.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `41.2 MB` for the normal version and `116.6 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `2 MB` in size if your app already contains Newtonsoft.Json.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                     |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>3.3 MB</code> of memory when a Helpshift screen is not engaged.                                                                                                                                                   |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~3.4 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                               |
+| **Single section:**                                 | adds <code>~4.1 MB</code> of memory. This depends on the number of FAQs in a section.                                                                                                                                               |
+| **Single FAQ**                                      | adds <code>~4.3 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                                |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~4.6 MB</code>                                                                                                                                                                                                          |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~5.1 MB</code> of memory for an average of 10 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 3.1.0
+
+The impact analysis was done on macOS 10.14 with Visual Studio Community Version 8.0.5 (build 9), Mono 5.18.1.3 and Xcode 10. Version of NewtonSoft JSON.NET used was 12.0.2.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `40 MB` for the normal version and `114 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `1.1 MB` in size if your app already contains Newtonsoft.Json.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                     |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>3 MB</code> of memory when a Helpshift screen is not engaged.                                                                                                                                                     |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~5.1 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                               |
+| **Single section:**                                 | adds a peak <code>3.9 MB</code>, settling at <code>3.6 MB</code>.                                                                                                                                                                   |
+| **Single FAQ**                                      | adds <code>~4.1 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                                |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~4.4 MB</code>                                                                                                                                                                                                          |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~5.2 MB</code> of memory for an average of 10 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 3.0.0
+
+The impact analysis was done on macOS 10.14 with Visual Studio Community Version 7.6.10 (build 27), Mono 5.2.0.215 and Xcode 10. Version of NewtonSoft JSON.NET used was 11.0.2.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `44.3 MB` for the normal version and `94 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `18.2 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `18.2 MB` in size.
+The `18.2 MB` size includes total impact with dependency on Newtonsoft.Json. If your app already contains Newtonsoft.Json, the Helpshift SDK will add `14.2 MB`.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                     |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>4.3 MB</code> of memory with peak usage of <code>4.7 MB</code> (for 1-2 seconds). Around <code>4.7 MB</code> of memory is used when a Helpshift screen is not engaged.                                            |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~4.4 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                               |
+| **Single section:**                                 | adds a peak <code>4.8 MB</code>, settling at <code>3.6 MB</code>.                                                                                                                                                                   |
+| **Single FAQ**                                      | adds <code>~4.4 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                                |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~3.7 MB</code>                                                                                                                                                                                                          |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~5.2 MB</code> of memory for an average of 10 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 2.6.0
+
+The impact analysis was done with Xamarin Studio Community Version 6.3 (build 864), Mono 5.2.0.215 and Xcode 9.2. Version of NewtonSoft JSON.NET used was 10.0.3.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `30.3 MB` for the normal version and `62.5 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `9.5 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `9.5 MB` in size.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>1.6 MB</code> of memory with peak usage of <code>2.8 MB</code> (for 1-2 seconds). Around <code>1.2 MB</code> of memory is used when a Helpshift screen is not engaged.                                           |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~4.0 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>6.2 MB</code>, settling at <code>1.2 MB</code>.                                                                                                                                                                  |
+| **Single FAQ**                                      | adds <code>~3.5 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~6.7 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~2.4 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 2.5.0
+
+The impact analysis was done on macOS 10.12.6 with Xamarin Studio Community Version 6.3 (build 864), Mono 5.2.0.215 and Xcode 8.3.3. Version of NewtonSoft JSON.NET used was 10.0.3.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `29.5 MB` for the normal version and `60.7 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `9.6 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `9.6 MB` in size.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>1.5 MB</code> of memory with peak usage of <code>2.3 MB</code> (for 1-2 seconds). Around <code>1.3 MB</code> of memory is used when a Helpshift screen is not engaged.                                           |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~3.1 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>7.5 MB</code>, settling at <code>1.4 MB</code>.                                                                                                                                                                  |
+| **Single FAQ**                                      | adds <code>~3.0 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~6.9 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~2.3 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 2.4.0
+
+The impact analysis was done with Xamarin Studio Community Version 6.3 (build 864), Mono 5.2.0.215 and Xcode 8.3.3.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `29.6 MB` for the normal version and `60.3 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `8.2 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `8.2 MB` in size.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>1.3 MB</code> of memory with peak usage of <code>2.2 MB</code> (for 1-2 seconds). Around <code>1.3 MB</code> of memory is used when a Helpshift screen is not engaged.                                           |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~3.3 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>8.4 MB</code>, settling at <code>1.12 MB</code>.                                                                                                                                                                 |
+| **Single FAQ**                                      | adds <code>~3.1 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~6.7 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~2.5 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 2.3.1
+
+The impact analysis was done with Xamarin Studio Community Version 6.3 (build 19), Mono 4.8.1 and Xcode 8.3.2.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `27.3 MB` for the normal version and `56.1 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `8.6 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `8.6 MB` in size.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>1.18 MB</code> of memory with peak usage of <code>2.11 MB</code> (for 1-2 seconds). Around <code>0.9 MB</code> of memory is used when a Helpshift screen is not engaged.                                         |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~3.01 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                             |
+| **Single section:**                                 | adds a peak <code>8.6 MB</code>, settling at <code>1.5 MB</code>.                                                                                                                                                                  |
+| **Single FAQ**                                      | adds <code>~1.9 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~7.1 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~2.5 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 2.3.0
+
+The impact analysis was done with Xamarin Studio Community Version 6.3 (build 19), Mono 4.8.1 and Xcode 8.3.2.
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `27.8 MB` for the normal version and `56 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `8.6 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `8.6 MB` in size.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>0.9 MB</code> of memory with peak usage of <code>1.87 MB</code> (for 1-2 seconds). Around <code>0.9 MB</code> of memory is used when a Helpshift screen is not engaged.                                          |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~3.4 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                              |
+| **Single section:**                                 | adds a peak <code>8.4 MB</code>, settling at <code>1.4 MB</code>.                                                                                                                                                                  |
+| **Single FAQ**                                      | adds <code>~3.1 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                               |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~6.6 MB</code>                                                                                                                                                                                                         |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~2.5 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## 2.2.0
+
+### Disk Space
+
+This is the amount of disk space the static library takes up. The total size of the library is `27.6 MB` for the normal version and `55.6 MB` for the bitcode version.
+
+When included in an app, the Helpshift library and all its resources will add around `6.8 MB` in size. If you are using the bitcode version of the library then Helpshift adds around `6.8 MB` in size.
+
+### RAM usage
+
+Memory usage (Bitcode enabled in release mode)
+
+|                                                     |                                                                                                                                                                                                                                  |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's install call (installForApiKey:)**    | adds around <code>0.9 MB</code> of memory with peak usage of <code>2.03 MB</code> (for 1-2 seconds). Around 0.9 MB of memory is used when a Helpshift screen is not engaged.                                                     |
+| **Helpshift's FAQ screens (showFAQs:)**             | adds <code>~3.75 MB</code> of memory. This depends on the number of FAQs and sections in the host app.                                                                                                                           |
+| **Single section:**                                 | adds a peak <code>2.92 MB</code>, settling at <code>1.5 MB</code>.                                                                                                                                                               |
+| **Single FAQ**                                      | adds <code>~1.73 MB</code> memory. This depends upon the FAQ content.                                                                                                                                                            |
+| **Helpshift's New Chat screen (showConversation:)** | adds: <code>~1.58 MB</code>                                                                                                                                                                                                      |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds <code>~3 MB</code> of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of Campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v2.0.0
+
+### Disk Space
+
+This is the amount of disk space the static library takes up.
+
+The total size of library is 25.8 MBs.
+
+The breakage is as follows:
+
+| Architecture | Size (MB) |
+| ------------ | --------- |
+| arm64        | 6.4       |
+| armv7        | 4.6       |
+| armv7s       | 4.6       |
+| simulator    | 9.2       |
+
+When included in an app, Helpshift library and all it resources will add around `2.15` MB size.
+If you are using the bitcode version of the library then Helpshift adds around `2.15` MB size.
+
+### Ram usage
+
+Memory usage (Bitcode enabled in debug mode)
+
+**Helpshift's `install call` (installForApiKey:)** : adds around 0.9 MB of memory with peak usage of 1 MB (for 1-2 seconds). So around 0.9MB of memory is used when a Helpshift screen in not engaged.
+
+**Helpshift's FAQ screens (showFAQs:)** adds: ~ 6 MB of memory. (This depends on the number of FAQs and section in the host app).
+
+**Single section**: adds peak 5 MB peak, settled at 1 MB.
+
+**Single faq**: adds ~ 4 MB memory (This depends upon the faq content).
+
+**Helpshift's New Chat screen (showConversation:)** adds: ~1 MB
+
+|                                                     |                                                                                                                                                                                                                           |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Helpshift's Campaigns Inbox screen (showInbox:)** | adds around 3 MB of memory for an average of 5 Campaigns on the device. Please note that this number will vary depending on the number of campaigns received and the resolution of the icon images used in the Campaigns. |
+
+## v1.0.0
+
+### Disk space
+
+The combined library size (libHelpshift.a) is 9.9 MB.
+The breakup is as follows:
+
+| Architecture              | Size (MB) |
+| ------------------------- | --------- |
+| i386 + x86_64 (simulator) | 4.6       |
+| armv7                     | 1.7       |
+| armv7s                    | 1.7       |
+| arm64                     | 2.4       |
+
+When compiled with an app for deployment on the app store, armv7, armv7s and arm64 will be taken up and i386+x86_64 or the simulator architectures will be ignored.
+
+### Sample compiled payload size using a demo app {#demoapp-payload-size}
+
+The app store size was estimated using Xcode's "Estimated App Store
+Size" feature for archived product build.
+
+On an average, Helpshift Unity SDK for iOS adds 550KB per architecture.
+
+### SDK memory usage {#memory-usage}
+
+Memory usage for the SDK support screen launches.
+
+| Support API launch                                   | Memory Usage (approx. MB) |
+| ---------------------------------------------------- | ------------------------- |
+| showConversation (with no Conversation)              | 6.01                      |
+| showConversation (with already running Conversation) | 6.56                      |
+| showFAQs                                             | 9.87                      |
+| showFAQSection                                       | 9.50                      |
+| showSingleFAQ                                        | 6.23                      |
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app. Usage will increase with number of FAQs and
+number of messages in a conversation.
+
+</Admonition>

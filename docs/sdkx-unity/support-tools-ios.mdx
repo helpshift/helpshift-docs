@@ -1,0 +1,197 @@
+---
+sidebar_position: 30
+title: Helpshift APIs iOS
+description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements.You can call only specific screens from the SDK based on thefunctionality you want to expose in your app."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift APIs <small>iOS</small> {#support-tools}
+
+<Intro>
+
+Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
+You can call only specific screens from the SDK based on the
+functionality you want to expose in your app.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)
+
+</Admonition>
+
+## Integrating Contact Us & In App Messaging {#conversation-view}
+
+<Centered width="major">
+
+![newConversation.png](/static/books/sdkx_ios/Show-Conversation.png "Show-Conversation.png")
+
+</Centered>
+
+You can use the API call `ShowConversation(configMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+
+To configure the conversation screen, you can pass various config options in a `Dictionary<string, object>`. Checkout more config options [here](/sdkx-unity/sdk-configuration-ios)
+
+Example :
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+// open the support chat screen
+help.ShowConversation(configMap);
+```
+
+## Integrating FAQs {#faqs-view}
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />{" "}
+
+</Centered>
+
+You can use the API call `ShowFAQs(configMap)` to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
+
+To configure the FAQs screen, you can pass various config options in a `Dictionary<string, object>`. Checkout more config options [here](/sdkx-unity/sdk-configuration-ios)
+
+Example :
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+// open the FAQs screen
+help.ShowFAQs(configMap);
+```
+
+## Showing a Particular FAQ Section {#faq-section-view}
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_section.png" width="full" />{" "}
+
+</Centered>
+
+You can use the API call `ShowFAQSection(sectionId, configMap)` to invoke a particular section of your FAQs with its FAQ section publish-id
+
+This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
+
+Example :
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+string sectionId = "your_section_id";
+
+// open the particular section
+help.ShowFAQSection(sectionId,configMap);
+```
+
+## Showing a Particular FAQ {#faq-view}
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_single_faq.png" width="full" />{" "}
+
+</Centered>
+
+You can use the API `ShowSingleFAQ(faqId,configMap)` to show a single FAQ. You will need to pass the `publish-id` of the FAQ to be shown to this API.
+
+Example :
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+string faqId = "your_faq_id";
+
+// open the particular FAQ
+help.ShowSingleFAQ(faqId,configMap);
+```
+
+### Set SDK language {#set-language-api}
+
+You can set the SDK language for the given locale using the method `SetLanguage("<language-code>")`
+For more info about languages you can refer [here](/sdkx-unity/i18n-ios/)
+
+For example :
+
+Setting SDK language for the given locale with only language code.
+
+```csharp
+HelpshiftSdk.GetInstance().SetLanguage("fr");
+```
+
+Setting the SDK language for the given locale with both language code and country code.
+
+```csharp
+HelpshiftSdk.GetInstance().SetLanguage("zh-SG");
+```

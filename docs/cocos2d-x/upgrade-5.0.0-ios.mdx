@@ -1,0 +1,47 @@
+---
+sidebar_position: 10
+title: Upgrading to 5.x
+description: Learn more about Upgrading to 5.x
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading to 5.x
+
+<Admonition type="danger" title="Important">
+
+If you are looking to upgrade from a version older than 4.x, Make sure to go through the upgrade guides for 1.6.x, 1.7.x and 3.x.
+
+</Admonition>
+
+#### Integration-related changes
+
+- When you integrate SDK manually, remove all the old SDK files and add the Standard SDK zip file in your app.
+
+#### Code-related changes
+
+<Admonition type="info" title="Note">
+
+The following changes ship by default in SDK v5.0.0. Save any necessary modifications made in helpshift files.
+
+</Admonition>
+
+If your Codebase has references to Campaigns code, then the compilation fails after the upgrade. You will need to remove all the references to campaigns code from the Codebase. Following are the changes:
+
+- Remove any `HelpshiftCampaigns.h` includes.
+- Remove any `HelpshiftAll.h` includes.
+- Remove any `HelpshiftCocos2dxCampaignsDelegate.h` includes.
+- Replace `[HelpshiftCore initializeWithProvider:[HelpshiftAll sharedInstance]]` call with `[HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]]` call.

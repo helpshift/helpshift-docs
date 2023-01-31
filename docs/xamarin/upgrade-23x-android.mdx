@@ -1,0 +1,148 @@
+---
+sidebar_position: 10
+title: Upgrading from 2.3.x to 2.4.0
+description: "The Helpshift SDK v2.4.0 is a major update. Please note the we have deprecated some APIs. If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 2.3.x to 2.4.0 {#upgrade-to-240}
+
+<Intro>
+
+The Helpshift SDK v2.4.0 is a major update. Please note the we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated API                                       | New API                                                  |
+| ---------------------------------------------------- | -------------------------------------------------------- |
+| HelpshiftApi.HelpshiftSupport IsConversationActive   | HelpshiftApi.HelpshiftSupport CheckIfConversationActive  |
+| HelpshiftApi.HelpshiftSupport GetNotificationCount   | HelpshiftApi.HelpshiftSupport RequestUnreadMessagesCount |
+| Helpshift Delegate API "DidReceiveNotificationCount" | Helpshift delegate API "DidReceiveUnreadMessagesCount"   |
+|                                                      |                                                          |
+
+## Check active Conversation {#check-active-conversation}
+
+On SDK version 2.3.1 or below, you can check if an active conversation exists as shown below:
+
+```
+HelpshiftApi.HelpshiftSupport.IsConversationActive();
+```
+
+Starting from SDK version 2.4.0, a new api and a delegate method is introduced to check if an active conversation exists.
+
+The example code is shown below:
+
+```
+HelpshiftApi.HelpshiftSupport.CheckIfConversationActive();
+```
+
+Implement the delegate interface method `DidCheckIfConversationActive`
+
+```
+public class  HSDelegate : Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate {
+
+    .
+    .
+    .
+    .
+    .
+    .
+
+    public void DidCheckIfConversationActive(bool isActive) {
+       // your code here
+    }
+}
+
+```
+
+For more information, see [Check Active Conversation)(/xamarin/tracking-android#checkifconversationactive)
+
+## Show count of unread messages saved locally {#unread-count-saved-locally-example-snippet}
+
+On SDK version 2.3.1 or below, unread messages count can be obtained both synchronously and asynchronously. This is changed in SDK version 2.4.0 and unread message count is always obtained asynchronously.
+
+As an example, if you want to get the locally saved unread messages count and you're on SDK 2.3.1 or earlier versions, you would use code like shown below:
+
+```
+HelpshiftApi.HelpshiftSupport.GetNotificationCount(false);
+```
+
+Starting from SDK version 2.4.0, you can retrieve the locally stored unread messages count as shown below:
+
+```
+HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(false);
+```
+
+Implement the delegate interface method `DidReceiveUnreadMessagesCount`
+
+```
+public class  HSDelegate : Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate {
+
+    .
+    .
+    .
+    .
+    .
+    .
+
+    public void DidReceiveUnreadMessagesCount(int count) {
+        // your code here
+    }
+}
+
+```
+
+For more information, see [Notifications Count](/xamarin/notifications-android#showing-notification-count)
+
+## Show count of unread messages from server {#unread-count-remote-example-snippet}
+
+On SDK version 2.3.1 or below, unread messages count can be obtained both synchronously and asynchronously. This is changed in SDK version 2.4.0 and unread message count is always obtained asynchronously.
+
+As an example, if you want to fetch the latest unread messages count from the server and you're on SDK 2.3.1 or earlier versions, you would use code like shown below:
+
+```
+HelpshiftApi.HelpshiftSupport.GetNotificationCount(true);
+```
+
+Starting from SDK version 2.4.0, you can retrieve the unread messages count from server as shown below:
+
+```
+HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(true);
+```
+
+Implement the delegate interface method `DidReceiveUnreadMessagesCount`
+
+```
+public class  HSDelegate : Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate {
+
+    .
+    .
+    .
+    .
+    .
+    .
+
+    public void DidReceiveUnreadMessagesCount(int count) {
+        // your code here
+    }
+}
+
+```
+
+For more information, see [Notifications Count](/xamarin/notifications-android#showing-notification-count)

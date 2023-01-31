@@ -1,0 +1,208 @@
+---
+sidebar_position: 10
+title: Notifications Android
+description: "Configure Push and In-app notifications."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Notifications <small>Android</small> {#notifications}
+
+<Intro>
+
+Configure Push and In-app notifications.
+
+</Intro>
+
+## Configure push notifications via Helpshift {#push-via-helpshift}
+
+![urbanAirshipNotif.png](/static/books/android/urbanairshipnotif.png "urbanAirshipNotif.png")
+
+Helpshift enables you to send notifications to your users. This is
+particularly useful when you have multiple users on multiple platforms
+like iOS and Android. Notifications are useful to tell your users when
+you reply to an issue that they submitted. When the app is backgrounded,
+the notification that is sent from Helpshift appears as a notification.
+
+To know more about the FCM Push, refer:-
+[Firebase Cloud Messaging for Android](https://firebase.google.com/docs/cloud-messaging/)
+
+### For Helpshift Admin Interface {#configure-helpshift-push-admin}
+
+To enable the Helpshift system to send push notifications to your users
+you will have to add your GCM Key and Bundle Name via the helpshift
+admin interface.
+
+Enter your Google Push notifications credentials per app, via the
+**Settings page > App listing in the left navigation > Scroll down to Push
+Notifications** settings section for the app.
+
+<Image
+  src="/static/books/android/helpshift-push-notifications.png"
+  width="full"
+  alt="helpshift-push-notifications.png"
+/>{" "}
+
+The API key can be found at your Google API Console.
+
+<Image
+  src="/static/books/android/fcm_console.png"
+  width="full"
+  alt="FCM Console.png"
+/>{" "}
+
+## Configure the Helpshift Xamarin SDK to handle notifications {#configure-helpshift-xamarin-sdk}
+
+### Prerequisites {#gcm-prerequisites}
+
+Implement FCM push in your app. Refer to the
+[Firebase Cloud Messaging for Xamarin Android](https://docs.microsoft.com/en-us/xamarin/android/data-cloud/google-messaging/firebase-cloud-messaging) documentation.
+
+### Configure Helpshift Android SDK {#configure-helpshift-android-sdk}
+
+<Admonition type="info" title="Note">
+
+- When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
+  You should call `HelpshiftApi.HelpshiftCore.RegisterDeviceToken()` API only after you have [configured the Helpshift dashboard](/xamarin/notifications-android#configure-helpshift-push-admin) for push notifications. Calling the `HelpshiftApi.HelpshiftCore.RegisterDeviceToken()` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+
+</Admonition>
+
+1. Send the device registration id to Helpshift via the `HelpshiftApi.HelpshiftCore.RegisterDeviceToken` API
+
+```csharp
+
+        HelpshiftApi.HelpshiftCore.RegisterDeviceToken(token);
+
+```
+
+1. Inside your FirebaseMessagingService's `OnMessageReceived` method check "origin" is "helpshift" and pass the bundle data to `HelpshiftApi.HelpshiftCore.HandlePushNotification` API.
+
+<Admonition type="info" title="Note">
+
+Applicable to version 3.0.0 and above.
+
+</Admonition>
+
+```csharp
+
+		public override void OnMessageReceived(RemoteMessage message)
+        {
+            IDictionary<string, string> data = message.Data;
+            string origin = data["origin"];
+            if (origin != null && origin.Equals("helpshift"))
+            {
+                HelpshiftApi.HelpshiftCore.HandlePushNotification(data);
+            }
+        }
+
+
+```
+
+## In-app notifications {#in-app-notifications}
+
+In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
+
+These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/xamarin/support-tools-android#conversation-view) when they tap on the notification.
+
+![](/static/books/android/i18n-in-app.png)
+
+<Admonition type="info" title="Note">
+
+If the GCM/FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
+
+</Admonition>
+
+## Configuring in-app notifications {#in-app}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `"no"`. The default value of this flag is `"yes"` i.e., in app notification will be enabled.
+
+- `Flag:` enableInAppNotification
+- `Values:` "yes"/"no"
+- `Default:` "yes"
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
+
+```csharp
+
+    HelpshiftInstallConfig config = new HelpshiftInstallConfig.Builder()
+                                                              .SetEnableInAppNotifications(true)
+                                                              .Build();
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftCore.Install ("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", config);
+
+```
+
+<Admonition type="info" title="Note">
+
+Applicable to version 3.0.0 and above.
+
+</Admonition>
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+```csharp
+
+    Dictionary<string,object> config = new Dictionary<string,object>();
+    config.Add("enableInAppNotification", "yes");
+    HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
+    HelpshiftApi.HelpshiftCore.Install ("<YOUR_API_KEY>",
+                      "<YOUR_COMPANY>.helpshift.com",
+                      "<YOUR_APP_ID>",
+                      config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## Showing notification count when replies are sent to the user {#showing-notification-count}
+
+### Via Helpshift API
+
+If you want to show your user notifications for replies sent by an Agent to their open Issues, you can use notification counts provided by the Helpshift SDK. These notification counts give you the total number of unread messages and display it as a badge. You can get notification counts asynchronously by implementing the Helpshift delegate method ["DidReceiveUnreadMessageCount"](/xamarin/delegates-android#helpshift-delegates-implementation) . Notifications are typically displayed as badges inside your app where a user clicks on the help section. These badges can be displayed anywhere in your app's interface to tell the user that they have unread replies/messages from you.
+
+For example
+
+```csharp
+
+    HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(false);
+
+```
+
+If you want to fetch the notification count from the server, you can call the `RequestUnreadMessagesCount` API with a `true` param value.
+
+For example
+
+```csharp
+
+    HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(true);
+
+```
+
+<Admonition type="info" title="Note">
+
+The notification count is fetched via this API from the SDK cache and Helpshift's servers. However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+
+</Admonition>
+
+You will receive the callback with the notification count in the delegate registered using `HelpshiftSupport.SetDelegate()` api in `DidReceiveUnreadMessagesCount` method.
+Refer [Support delegates](/xamarin/delegates-android#helpshift-delegates-implementation).

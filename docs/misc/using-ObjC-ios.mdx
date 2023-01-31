@@ -1,0 +1,307 @@
+---
+sidebar_position: 10
+title: SDK Configuration using Objective C
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK.These options are boolean flags which can be passed with the Helpshift Install API."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# SDK Configuration using Objective C
+
+<Intro>
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+These options are boolean flags which can be passed with the Helpshift Install API.
+
+</Intro>
+
+### unityGameObject {#unity-game-object}
+
+<div className=" compact">
+
+|        |                  |
+| ------ | ---------------- |
+| Flag   | unityGameObject  |
+| Values | Non-empty String |
+
+</div>
+
+The `unityGameObject` option is used to tell the Helpshift SDK which Game object to send the Unity messages to. Callbacks such as `didReceiveInAppNotificationCount` and `didReceiveNotificationCount` will be called on the object specified via this option.
+
+For example
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+|               |                                                 |
+| ------------- | ----------------------------------------------- |
+| Option:       | <code>enableInboxPolling</code>                 |
+| Values:       | <code>YES</code> / <code>NO</code>              |
+| Default:      | <code>YES</code>                                |
+| Supported by: | <code>installForApiKey:domainName:appId:</code> |
+
+Example:
+
+```
+	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.extraConfig = @{@"unityGameObject":@"Cube"};
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+|               |                                                 |
+| ------------- | ----------------------------------------------- |
+| Option:       | <code>enableInboxPolling</code>                 |
+| Values:       | <code>@"YES"</code> / <code>@"NO"</code>        |
+| Default:      | <code>@"NO"</code>                              |
+| Supported by: | <code>installForApiKey:domainName:appId:</code> |
+
+Example:
+
+```
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    NSDictionary *installConfig = @{ @"unityGameObject" : @"Cube"};
+
+    [HelpshiftCore installForApiKey:@"" domainName:@"" appID:@"" withOptions:installConfig];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### enableInAppNotification {#enableInAppNotification}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `no`. The default value of this flag is `yes` i.e., in app notification will be enabled.
+
+For example
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+|               |                                                 |
+| ------------- | ----------------------------------------------- |
+| Option:       | <code>enableInboxPolling</code>                 |
+| Values:       | <code>YES</code> / <code>NO</code>              |
+| Default:      | <code>YES</code>                                |
+| Supported by: | <code>installForApiKey:domainName:appId:</code> |
+
+Example:
+
+```
+	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.enableInAppNotifications = NO;
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+|               |                                                 |
+| ------------- | ----------------------------------------------- |
+| Option:       | <code>enableInboxPolling</code>                 |
+| Values:       | <code>@"YES"</code> / <code>@"NO"</code>        |
+| Default:      | <code>@"NO"</code>                              |
+| Supported by: | <code>installForApiKey:domainName:appId:</code> |
+
+Example:
+
+```
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    NSDictionary *installConfig = @{ @"enableInAppNotifications" : @"YES"};
+
+    [HelpshiftCore installForApiKey:@"" domainName:@"" appID:@"" withOptions:installConfig];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+
+<Admonition type="info" title="Note">
+
+Available from SDK version 1.3.0 and above
+
+</Admonition>
+
+You can enable or disable the SDK default fallback language when showing FAQs using this flag. When set to false, the Helpshift SDK will not fallback to the default language that is English, when showing FAQs.
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+|              |                                            |
+| ------------ | ------------------------------------------ |
+| Option       | <code>enableDefaultFallbackLanguage</code> |
+| Values       | <code>@"YES"</code> / <code>@"NO"</code>   |
+| Default      | <code>@"YES"</code>                        |
+| Min SDK      | v1.3.0                                     |
+| Supported by | <code>installForApiKey</code>              |
+
+Example:
+
+```objc
+
+	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+	installConfigBuilder.enableDefaultFallbackLanguage = NO;
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+|              |                                            |
+| ------------ | ------------------------------------------ |
+| Option       | <code>enableDefaultFallbackLanguage</code> |
+| Values       | <code>@"YES"</code> / <code>@"NO"</code>   |
+| Default      | <code>@"YES"</code>                        |
+| Min SDK      | v1.3.0                                     |
+| Supported by | <code>installForApiKey</code>              |
+
+Example:
+
+```objc
+
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
+                        withOptions:@{@"enableDefaultFallbackLanguage" : @"NO"}];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### disableEntryExitAnimations {#disableEntryExitAnimations}
+
+<Admonition type="info" title="Note">
+
+Applicable to version 2.1.1 and above.
+
+</Admonition>
+
+If you want to disable animations shown by the Helpshift SDK while entering and exit the Helpshift screens, please set this config option to `yes`.
+Default value is `no`, ie., Helpshift SDK **will show** animations if this value is not set.
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+|              |                                         |
+| ------------ | --------------------------------------- |
+| Option       | <code>disableEntryExitAnimations</code> |
+| Values       | <code>YES</code> / <code>NO</code>      |
+| Default      | <code>NO</code>                         |
+| Min SDK      | v2.1.1                                  |
+| Supported by | <code>installForApiKey</code>           |
+
+Example:
+
+```objc
+
+    HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.disableEntryExitAnimations = YES;
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
+
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+|              |                                          |
+| ------------ | ---------------------------------------- |
+| Option       | <code>disableEntryExitAnimations</code>  |
+| Values       | <code>@"YES"</code> / <code>@"NO"</code> |
+| Default      | <code>@"NO"</code>                       |
+| Min SDK      | v2.1.1                                   |
+| Supported by | <code>installForApiKey</code>            |
+
+Example:
+
+```objc
+
+    [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
+    withOptions:@{@"disableEntryExitAnimations" : @"YES"}];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### enableLogging {#enableLogging}
+
+Upon setting enableLogging to `yes`, Helpshift SDK logs will be generated in the Xcode console. Turning on logging can help developers resolve common integration issues.
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+|               |                                                 |
+| ------------- | ----------------------------------------------- |
+| Option:       | <code>enableLogging</code>                      |
+| Values:       | <code>YES</code> / <code>NO</code>              |
+| Default:      | <code>NO</code>                                 |
+| Supported by: | <code>installForApiKey:domainName:appId:</code> |
+
+Example:
+
+```
+    HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
+    installConfigBuilder.enableLogging = YES;
+
+    HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+|               |                                                 |
+| ------------- | ----------------------------------------------- |
+| Option:       | <code>enableLogging</code>                      |
+| Values:       | <code>@"YES"</code> / <code>@"NO"</code>        |
+| Default:      | <code>@"NO"</code>                              |
+| Supported by: | <code>installForApiKey:domainName:appId:</code> |
+
+Example:
+
+```
+    NSDictionary *installConfig = @{@"enableLogging" : @"yes"};
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [HelpshiftCore installForApiKey:"<YOUR_API_KEY>"
+                         domainName:"<YOUR_COMPANY>.helpshift.com"
+                              appID:"<YOUR_APP_ID>"
+                        withOptions:installConfig];
+
+```
+
+</TabItem>
+
+</Tabs>

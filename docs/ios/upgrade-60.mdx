@@ -1,0 +1,362 @@
+---
+sidebar_position: 250
+title: Upgrading from 6.0.0 to 6.1.0
+description: "The Helpshift SDK v6.1.0 is a major update and we have deprecated some APIs. If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Upgrading from 6.0.0 to 6.1.0 {#upgrade-to-610}
+
+<Intro>
+
+The Helpshift SDK v6.1.0 is a major update and we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+Please replace all the old files with new files
+
+</Admonition>
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated API                                             | New API                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------ |
+| [HelpshiftCore setSDKLanguage:]                            | [HelpshiftCore setLanguage:]                                 |
+| [HelpshiftSupport setSDKLanguage:]                         | [HelpshiftSupport setLanguage:]                              |
+| [HelpshiftSupport dynamicFormWithTitle:andFlows:]          | [HelpshiftSupport requestDynamicFormWithTitle:andFlows:]     |
+| [HelpshiftSupport isConversationActive]                    | [HelpshiftSupport checkIfConversationActive]                 |
+| [HelpshiftSupport getNotificationCountFromRemote:]         | [HelpshiftSupport requestUnreadMessagesCount:]               |
+| [[HelpshiftSupport delegate] didReceiveNotificationCount:] | [[HelpshiftSupport delegate] didReceiveUnreadMessagesCount:] |
+|                                                            |                                                              |
+
+## Set SDK language {#set-sdk-language}
+
+On SDK version 6.0.0 or below, the SDK language can be changed using below code:
+
+```
+#import "HelpshiftCore.h"
+
+@interface HelpshiftSDKHandler:NSObject
+
+@end
+
+@implementation HelpshiftSDKHandler
+
+- (void) changeSDKLanguage {
+    NSString *languageCode = @"fr"; // Retrieve language code to set
+    BOOL languageChanged = [HelpshiftCore setSDKLanguage:languageCode];
+
+    if (languageChanged) {
+        NSLog(@"SDK language changed");
+    } else {
+        NSLog(@"SDK language could not be changed");
+    }
+}
+
+```
+
+On SDK version 6.1.0, a new api is introduced to change SDK language as shown in the example code below:
+
+```
+#import "HelpshiftCore.h"
+
+@interface HelpshiftSDKHandler:NSObject
+
+@end
+
+@implementation HelpshiftSDKHandler
+
+- (void) changeSDKLanguage {
+    NSString *languageCode = @"fr"; // Retrieve language code to set
+    [HelpshiftCore setLanguage:languageCode];
+}
+
+```
+
+## Show dynamic form {#show-dynamic-form}
+
+On SDK version 6.0.0 or below, you can retrieve and display dynamic forms for guided ticket filing as shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController
+
+- (IBAction)showHelp:(id)sender; // Assuming a button added to view controller in storyboard or xib.
+
+@end
+
+@implementation MyViewController
+
+- (HelpshiftAPIConfig *) helpOptions {
+    HelpshiftAPIConfigBuilder *configOptions = [[HelpshiftAPIConfigBuilder alloc] init];
+    configOptions.enableContactUs = HsEnableContactUsAfterMarkingAnswerUnhelpful;
+    configOptions.gotoConversationAfterContactUs = YES;
+
+    return [configOptions build];
+}
+
+- (NSArray *) dynamicFormFlows {
+    id conversationFlow = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Call me" andConfig:[self helpOptions]];
+    id sectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1364" withDisplayText:@"New Stuff" andConfig:[self helpOptions]];
+    id singleFAQFlow1 = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2789" withDisplayText:@"Register for discount" andConfig:[self helpOptions]];
+
+    return @[conversationFlow, sectionFlow, singleFAQFlow1];
+}
+
+- (IBAction)showHelp:(id)sender {
+    NSArray *flows = [self dynamicFormFlows];
+    UIViewController *dynamicForm = [HelpshiftSupport dynamicFormWithTitle:@"Help" andFlows:flows];
+    [self presentViewController:dynamicForm animated:YES completion:NULL];
+}
+
+@end
+
+```
+
+On SDK version 6.1.0, you can retrieve and show dynamic form as shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController <HelpshiftSupportDelegate>
+
+- (IBAction)showHelp:(id)sender; // Assuming a button added to view controller in storyboard or xib.
+
+@end
+
+@implementation MyViewController
+
+- (HelpshiftAPIConfig *) helpOptions {
+    HelpshiftAPIConfigBuilder *configOptions = [[HelpshiftAPIConfigBuilder alloc] init];
+    configOptions.enableContactUs = HsEnableContactUsAfterMarkingAnswerUnhelpful;
+    configOptions.gotoConversationAfterContactUs = YES;
+
+    return [configOptions build];
+}
+
+- (NSArray *) dynamicFormFlows {
+    id conversationFlow = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Call me" andConfig:[self helpOptions]];
+    id sectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1364" withDisplayText:@"New Stuff" andConfig:[self helpOptions]];
+    id singleFAQFlow1 = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2789" withDisplayText:@"Register for discount" andConfig:[self helpOptions]];
+
+    return @[conversationFlow, sectionFlow, singleFAQFlow1];
+}
+
+- (IBAction)showHelp:(id)sender {
+
+    [[HelpshiftSupport sharedInstance] setDelegate:self];
+
+    NSArray *flows = [self dynamicFormFlows];
+    [HelpshiftSupport requestDynamicFormWithTitle:@"Help" andFlows:flows];
+}
+
+#pragma mark - HelpshiftSupportDelegate
+- (void) didCreateDynamicForm:(UINavigationController *)form {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:form animated:YES completion:NULL];
+    });
+}
+
+@end
+
+```
+
+## Check active Conversation {#check-active-conversation}
+
+On SDK version 6.0.0 or below, you can check if an active conversation exists as shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController
+
+@property (nonatomic, weak) IBOutlet UIButton *helpButton; // Assuming a button added to view controller in storyboard or xib.
+
+@end
+
+@implementation MyViewController
+
+- (void) viewDidLoad {
+    if ([HelpshiftSupport isConversationActive]) {
+        [self.helpButton setTitle:@"Show Active Conversation" forState:UIControlStateNormal];
+    } else {
+        [self.helpButton setTitle:@"Start New Conversation" forState:UIControlStateNormal];
+    }
+}
+
+@end
+
+
+```
+
+On SDK version 6.1.0, a new api and a delegate method is introduced to check if an active conversation exists. The example code is shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController <HelpshiftSupportDelegate>
+
+@property (nonatomic, weak) IBOutlet UIButton *helpButton; // Assuming a button added to view controller in storyboard or xib.
+
+@end
+
+@implementation MyViewController
+
+- (void) viewDidLoad {
+    [[HelpshiftSupport sharedInstance] setDelegate:self];
+    [HelpshiftSupport checkIfConversationActive];
+}
+
+#pragma mark - HelpshiftSupportDelegate
+- (void) didCheckIfConversationActive:(BOOL)isActive {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([HelpshiftSupport isConversationActive]) {
+            [self.helpButton setTitle:@"Show Active Conversation" forState:UIControlStateNormal];
+        } else {
+            [self.helpButton setTitle:@"Start New Conversation" forState:UIControlStateNormal];
+        }
+    });
+}
+
+@end
+
+
+```
+
+## Show count of unread messages saved locally {#unread-count-saved-locally-example-snippet}
+
+On SDK version 6.0.0 or below, unread messages count can be obtained both synchronously and asynchronously. This is changed in SDK version 6.1.0 and unread message count is always obtained asynchronously.
+
+As an example, if you want to show the locally saved unread messages in one of the view controllers and you're on SDK 6.0.0 or earlier versions, you would use code like shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController
+
+@property (nonatomic, weak) IBOutlet UILabel *label; // Label that will show unread messages count
+
+@end
+
+@implementation MyViewController
+- (void) viewDidLoad {
+    NSInteger count = [HelpshiftSupport getNotificationCountFromRemote:NO];
+    [self.label setText:[NSString stringWithFormat:@"%ld",(long)count]];
+}
+
+@end
+
+```
+
+On SDK version 6.1.0, you can retrieve the locally stored unread messages and display the count as shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController <HelpshiftSupportDelegate>
+
+@property (nonatomic, weak) IBOutlet UILabel *label; // Label that will show unread messages count
+
+@end
+
+@implementation MyViewController
+
+- (void) viewDidLoad {
+    [HelpshiftSupport sharedInstance] setDelegate:self];
+    [HelpshiftSupport requestUnreadMessagesCount:NO];
+}
+
+
+#pragma mark - HelpshiftSupportDelegate
+- (void) didReceiveUnreadMessagesCount:(NSInteger)count {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.label setText:[NSString stringWithFormat:@"%ld",(long)count]];
+    });
+}
+
+@end
+
+```
+
+## Show count of unread messages from server {#unread-count-remote-example-snippet}
+
+As an example, if you want to show the retrieve unread messages from server and display the count in one of the view controllers and you're on SDK 6.0.0 or earlier versions, you would use code like shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController <HelpshiftSupportDelegate>
+
+@property (nonatomic, weak) IBOutlet UILabel *label; // Label that will show unread messages count
+
+@end
+
+@implementation MyViewController
+- (void) viewDidLoad {
+    [HelpshiftSupport sharedInstance] setDelegate:self];
+    __unused NSInteger count = [HelpshiftSupport getNotificationCountFromRemote:YES];
+}
+
+#pragma mark - HelpshiftSupportDelegate
+- (void) didReceiveNotificationCount:(NSInteger)count {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.label setText:[NSString stringWithFormat:@"%ld",(long)count]];
+    });
+}
+
+@end
+
+```
+
+On SDK 6.1.0, you can retrieve unread messages from server and display the count as shown below:
+
+```
+#import "HelpshiftSupport.h"
+
+@interface MyViewController:UIViewController <HelpshiftSupportDelegate>
+
+@property (nonatomic, weak) IBOutlet UILabel *label; // Label that will show unread messages count
+
+@end
+
+@implementation MyViewController
+
+- (void) viewDidLoad {
+    [HelpshiftSupport sharedInstance] setDelegate:self];
+    [HelpshiftSupport requestUnreadMessagesCount:YES];
+}
+
+
+#pragma mark - HelpshiftSupportDelegate
+- (void) didReceiveUnreadMessagesCount:(NSInteger)count {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.label setText:[NSString stringWithFormat:@"%ld",(long)count]];
+    });
+}
+
+@end
+
+```

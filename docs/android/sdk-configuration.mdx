@@ -1,0 +1,1389 @@
+---
+sidebar_position: 30
+title: SDK Configuration
+description: "Helpshift provides several config options which can be used to customize behaviour of the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# SDK Configuration
+
+<Intro>
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 3.0.0 and above
+
+</Admonition>
+
+## notificationIcon {#notificationIcon}
+
+By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `install` call.
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                   .setNotificationIcon(R.drawable.notification_icon)
+                                   .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("notificationIcon", R.drawable.notification_icon);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                  config);
+```
+
+</TabItem>
+
+</Tabs>
+
+## largeNotificationIcon {#largeNotificationIcon}
+
+By default the application icon is used as the notification icon.
+If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                   .setLargeNotificationIcon(R.drawable.notification_icon_large)
+                                   .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("largeNotificationIcon", R.drawable.notification_icon_large);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                  config);
+```
+
+</TabItem>
+
+</Tabs>
+
+## enableInAppNotification {#enableInAppNotification}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
+
+- `Flag:` enableInAppNotification
+- `Values:` true/false
+- `Default:` true
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                   .setEnableInAppNotification(true)
+                                   .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("enableInAppNotification", true);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 config);
+```
+
+</TabItem>
+
+</Tabs>
+
+## notificationSound {#notificationSound}
+
+<Admonition type="info" title="Note">
+
+Available from SDK version 3.7.2 and above
+
+</Admonition>
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                   .setNotificationSound(R.raw.notification_sound)
+                                   .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("notificationSound", R.raw.notification_sound);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+```
+
+</TabItem>
+
+</Tabs>
+
+## Notification channels {#notificationChannels}
+
+<Admonition type="info" title="Note">
+
+Available from SDK version 6.2.0 and above
+
+</Admonition>
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
+
+```xml
+<string name="hs__default_notification_channel_name">Example Support Name</string>
+<string name="hs__default_notification_channel_desc">Example Support Description</string>
+```
+
+If you want to customize the notification channels, you can create your own custom channels and provide their channel IDs using the following config API:
+
+- `supportNotificationChannelId`
+
+For example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                   .setSupportNotificationChannelId("SUPPORT_CHANNEL_ID")
+                                   .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("supportNotificationChannelId", "SUPPORT_CHANNEL_ID");
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+```
+
+</TabItem>
+
+</Tabs>
+
+## enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+
+<Admonition type="info" title="Note">
+
+Available from SDK version 3.12.0 and above
+
+</Admonition>
+
+<div className="compact ">
+
+|         |                               |
+| ------- | ----------------------------- |
+| Flag    | enableDefaultFallbackLanguage |
+| values  | true/false                    |
+| default | true                          |
+
+</div>
+
+You can enable or disable the SDK default fallback language when showing FAQs using this flag. When set to false, the Helpshift SDK will not fallback to the default language that is English, when showing FAQs.
+
+<Admonition type="info" title="Note">
+
+This configuration does not apply to the QuickSearch Bot suggested FAQs.
+
+</Admonition>
+
+For Example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                    .setEnableDefaultFallbackLanguage(true)
+                                    .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("enableDefaultFallbackLanguage", true);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## Using Custom Fonts {#usingCustomFonts}
+
+<Admonition type="info" title="Note">
+
+Available from SDK version 4.7.0 and above
+
+</Admonition>
+
+**Step 1:** Add the font to your `assets` folder. You can do this from the file manager or by dragging the font file to the folder in Android Studio.
+
+<Image
+  src="/static/books/android/custom-fonts.png"
+  width="major"
+  centered
+/>{" "}
+
+**Step 2:** Pass the font location relative to the `assets` folder as follows during installation. If the font file `DancingScript-Regular.ttf` lies in the `fonts` folder inside the `assets` folder, then your path is `fonts/DancingScript-Regular.ttf`.
+
+For Example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    // Code 1
+    InstallConfig config = new InstallConfig.Builder()
+                        .setFont("fonts/DancingScript-Regular.ttf");
+                        .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 config);
+
+
+```
+
+</TabItem>
+<TabItem value="Using HashMap" label="Using HashMap">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("font", "fonts/DancingScript-Regular.ttf");
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+**Step 3:** Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
+
+<Image src="/static/books/android/font-in-use.png" width="quarter" centered />{" "}
+
+## screenOrientation {#screenOrientation}
+
+The screen orientation of Helpshift SDK screens can be fixed by setting the screenOrientation to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
+For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
+
+<div className="compact ">
+
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                                                                                      |
+| values  | integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class |
+| default | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                                            |
+
+For Example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                    .setScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
+                                    .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+</div>
+
+<Admonition type="info" title="Note">
+
+Due to a [bug](https://issuetracker.google.com/issues/68454482) in Android OS 8.0, setting the requested orientation when opening the Helpshift activity causes a crash. This happens only when the targetSDKVersion is greater than 26 and certain android theming flags (mentioned in the bug) are used for the Activity. On SDK v7.4.0 & above, calling this API would be a no-op if the android exception is thrown. On SDK v7.3.0 & below, as a workaround, apps need to turn off the flags for Helpshift's ParentActivity which will prevent the exception.
+
+</Admonition>
+
+## enableLogging {#enableLogging}
+
+Upon setting enableLogging to true, Helpshift SDK logs will be generated in the Android logcat. These will be useful for debugging the SDK during integration. Turning on this logging could help the developer resolve common integration issues.
+
+<div className="compact ">
+
+|         |               |
+| ------- | ------------- |
+| Flag    | enableLogging |
+| values  | true/false    |
+| default | false         |
+
+</div>
+
+For Example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                    .setEnableLogging(true)
+                                    .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("enableLogging", true);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## disableErrorReporting {#disableErrorReporting}
+
+Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK will collect internal error logs and report them to our systems to ensure that we become aware of runtime crashes and we have enough information to fix them.
+
+<div className="compact ">
+
+|         |                       |
+| ------- | --------------------- |
+| Flag    | disableErrorReporting |
+| values  | true/false            |
+| default | false                 |
+
+</div>
+
+For Example:
+
+<Tabs>
+
+<TabItem value="Using InstallConfig" label="Using InstallConfig">
+
+```java
+
+    InstallConfig installConfig = new InstallConfig.Builder()
+                                     .disableErrorReporting(true)
+                                    .build();
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "<YOUR_API_KEY>",
+                 "<YOUR_COMPANY>.helpshift.com",
+                 "<YOUR_APP_ID>",
+                 installConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("disableErrorReporting", true);
+    Core.init(Support.getInstance());
+    Core.install(this, // "this" should be the application object
+                 "YOUR_API_KEY",
+                 "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
+                 "YOUR_APP_ID",
+                 config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## enableContactUs {#enableContactUs}
+
+<Admonition type="info" title="Note">
+
+**Integer values**
+
+enableContactUs flag takes Integer values from SDK version 4.0.0 and
+above.
+
+|         |                                |
+| ------- | ------------------------------ |
+| Default | Support.EnableContactUs.ALWAYS |
+
+</Admonition>
+
+<Admonition type="info" title="Note">
+
+**Enumerated values**
+
+enableContactUs flag take enumerated values from SDK version 3.4.0 to 3.12.0.
+
+For 3.0.0 - 3.3.x use boolean values (true/false).
+
+</Admonition>
+
+<div className="compact ">
+
+|         |                                |
+| ------- | ------------------------------ |
+| Flag    | enableContactUs                |
+| Values  | a Integer value                |
+| Default | Support.EnableContactUs.ALWAYS |
+
+</div>
+
+Values for `enableContactUs` flag:
+
+<div className=" compact text-sm">
+
+|                                                        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Support.EnableContactUs.ALWAYS                         | show in the navigation bar, search, and after marking an FAQ unhelpful.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Support.EnableContactUs.AFTER_VIEWING_FAQS             | show only while searching, on FAQ screen and after marking an FAQ unhelpful.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Support.EnableContactUs.NEVER                          | do not show "Contact Us" button anywhere in the SDK.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Support.EnableContactUs.AFTER_MARKING_ANSWER_UNHELPFUL | The existing AFTER_VIEWING_FAQS option allows the user to start a conversation by going to an individual FAQ. There is no check in place to check if he actually was not able to find a solution to his problem in the FAQs. If your application requires another level of ticket deflection, we have added a new option to the enableContactUs flag from sdk version 4.1.0 onwards. When set to this value, the Helpshift SDK will make sure that the user will actually have to mark an FAQ as unhelpful for the Contact Us button to appear. This will also remove the Contact Us button from the search results screen. |
+
+</div>
+
+The `enableContactUs` flag will determine whether the `Contact Us`
+button is shown. The default value is
+`ALWAYS`, with the normal showFAQs call. So if you want to override
+that you can pass the arguments in a dictionary.
+This flag has no effect for the `showConversation` API call.
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setEnableContactUs(Support.EnableContactUs.ALWAYS)
+                           .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("enableContactUs", Support.EnableContactUs.ALWAYS);
+    Support.showFAQs(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+### Best Practices
+
+- Provide tier-based support by setting enableContactUs to `Support.EnableContactUs.ALWAYS` for paid users and `Support.EnableContactUs.AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `Support.EnableContactUs.ALWAYS` for local users and `Support.EnableContactUs.AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+
+```java
+
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String country = tm.getSimCountryIso();
+        Support.EnableContactUs value = Support.EnableContactUs.AFTER_VIEWING_FAQS;
+
+        if("<LOCAL_COUNTRY_CODE>".equals(country)) {
+            value = Support.EnableContactUs.ALWAYS;
+        }
+
+        HashMap config = new HashMap();
+        config.put("enableContactUs", value);
+        Support.showFAQs(MyActivity.this, config);
+
+```
+
+## gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+
+</Admonition>
+
+<div className=" compact">
+
+|         |                                |
+| ------- | ------------------------------ |
+| Flag    | gotoConversationAfterContactUs |
+| Values  | true/false                     |
+| Default | false                          |
+
+</div>
+
+The `gotoConversationAfterContactUs` flag will determine whether the
+user lands up in the conversation screen after starting a new
+conversation via "Contact Us". This only makes sense if the
+`enableContactUs` flag takes on the default value.
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setGotoConversationAfterContactUs(true)
+                           .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap ();
+    config.put("gotoConversationAfterContactUs", true);
+    Support.showConversation(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="Note">
+
+For `showFAQs`, `showFAQSection` and `showSingleFAQ`, setting `gotoConversationAfterContactUs` makes sense only if `enableContactUs` is not `Support.EnableContactUs.NEVER`.
+
+</Admonition>
+
+## requireEmail {#requireEmail}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+
+</Admonition>
+
+<div className=" compact">
+
+|         |              |
+| ------- | ------------ |
+| Flag    | requireEmail |
+| Values  | true/false   |
+| Default | false        |
+
+</div>
+
+If `requireEmail` flag is set to `true`, an e-mail address is required
+while starting a new conversation. Default value is `false` i.e. e-mail
+is optional.
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setRequireEmail(true)
+                           .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap ();
+    config.put("requireEmail", true);
+    Support.showConversation(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="Note">
+
+Once `requireEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+## hideNameAndEmail {#hideNameAndEmail}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.0. Read more about the new conversational experience [here](https://support.helpshift.com/kb/article/april-2018-sdks/)
+
+</Admonition>
+
+<div className=" compact">
+
+|         |                  |
+| ------- | ---------------- |
+| Flag    | hideNameAndEmail |
+| Values  | true/false       |
+| Default | false            |
+
+</div>
+
+The `hideNameAndEmail` flag will hide the name and email fields when the user starts a new conversation.
+
+When the flag is set to `true` the name and email fields will be hidden. If set to `false` the default behaviour will resume.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setHideNameAndEmail(true)
+                           .build();
+    Support.showConversation(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap ();
+    config.put("hideNameAndEmail", true);
+    Support.showConversation(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+If the [`requireEmail`](#requireEmail) flag is set to `true` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
+
+#### Interaction with Helpshift settings on agent dashboard {#hideNameEmailAdmin}
+
+If "New Issue Forwarding" or "Closed Issues Transcript Archiving" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the `setNameAndEmail` API, to supply the SDK with name and email in this case.
+
+If "Allow anonymous issues" is ON, under app settings in the agent dashboard, then this flag will be ignored.
+
+<Admonition type="info" title="Note">
+
+Once `hideNameAndEmail` flag is set, the SDK will use that value for all new conversations until it is changed again.
+
+</Admonition>
+
+## conversationPrefillText {#conversationPrefillText}
+
+If this config is used, it will fill the reply box with the given text when the chat screen is opened. It is useful if you want to minimise the user efforts to start a new support conversation. For example, if you already know that the user is trying to connect with support to fix the problem of billing process, then you can use the `conversationPrefillText` API option to prefill the billing specific information and start with a new conversation.
+
+For example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    String preFillText = "Hi! I want to report a Billing issue.";
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setConversationPrefillText(preFillText)
+                           .build();
+    Support.showConversation(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    String preFillText = "Hi! I want to report a Billing issue.";
+    HashMap config = new HashMap ();
+    config.put("conversationPrefillText", preFillText);
+    Support.showConversation(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## enableTypingIndicator {#enableTypingIndicator}
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 6.0.0 and above
+
+</Admonition>
+
+<div className=" compact">
+
+|         |                       |
+| ------- | --------------------- |
+| Flag    | enableTypingIndicator |
+| Values  | true/false            |
+| Default | false                 |
+
+</div>
+
+A graphical indicator is shown to the end user if an Agent is currently replying to the same conversation.
+The `enableTypingIndicator` flag will enable/disable the aforementioned indicator.
+
+<Admonition type="info" title="Note">
+
+This SDK configuration has been deprecated since this configuration has shifted to the In-App SDK configuration page. (Settings>App settings)
+
+For SDK v7.0 and above, Typing Indicator configuration ("Show Agent Typing Indicator") is a part of In-app SDK configurations page.
+
+If configuration is turned ON from the configurations page OR SDK configuration is used, Typing Indicator will shown to the end users.
+
+</Admonition>
+
+<Image
+  src="/static/books/misc/enable-typing-indicator-app-setting.png"
+  width="full"
+/>{" "}
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                            .setEnableTypingIndicator(true)
+                            .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap ();
+    config.put("enableTypingIndicator", true);
+    Support.showFAQs(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## enableFullPrivacy {#enableFullPrivacy}
+
+<Admonition type="info" title="Note">
+
+Applicable to SDK version 3.6.0 and above
+
+</Admonition>
+
+<div className="compact ">
+
+|         |                   |
+| ------- | ----------------- |
+| Flag    | enableFullPrivacy |
+| Values  | true/false        |
+| Default | false             |
+
+</div>
+
+In scenarios where the user attaches objectionable content in the screenshots, it becomes a huge [`COPPA`](http://www.coppa.org/) concern. The enableFullPrivacy option will help solve this problem.
+
+If enableFullPrivacy option is set to `true`, HS SDK does the following:
+
+1.  Disables user-initiated screenshots - players cannot send images without being requested by an Agent
+1.  Does not collect any of the following personal information:
+    -     Map with "private-data" key inside custom meta-data.
+    -     Country code.
+    -     Carrier name.
+
+To send personally identifiable information through custom meta-data, the information must be added inside a dictionary with a "private-data" key. If this option is set to `true`, this data will be removed when the user starts a new conversation.
+
+Example:
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setEnableFullPrivacy(true)
+                           .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap ();
+    config.put("enableFullPrivacy", true);
+    Support.showFAQs(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Best Practices
+
+In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to `true`. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
+
+<Admonition type="info" title="Note">
+
+1. Once enableFullPrivacy flag is set, the SDK will use that value for all further sessions until it is changed again.
+1. For SDK versions 6.0.0 and below, if the enableFullPrivacy flag is set, the email collection requirement is always set to optional. If requiredEmail is true, enableFullPrivacy will override this configuration and set the email requirement as optional. For hiding name and email for all users, developers enable a Dashboard configuration named "Allow anonymous issues".
+1. For SDK versions 6.1.0 and above, if the enableFullPrivacy flag is set, email and name will not be collected and the fields will be hidden. enableFullPrivacy will override all other flags pertaining to name and email fields. This will allow developers to hide name and email for a specific set of users exposed to the enableFullPrivacy flag.
+1. For SDK versions 7.0.0 and above, this flag is ignored in the flows created to show Dynamic forms. Following APIs do not honor this flag:
+   - `ConversationFlow`
+   - `FAQsFlow`
+   - `FAQSectionFlow`
+   - `SingleFAQFlow`
+
+</Admonition>
+
+## showConversationResolutionQuestion {#showConversationResolutionQuestion}
+
+The Helpshift Android SDK will show the conversation resolution question to the user to confirm if the conversation was resolved. After the Issue has been resolved, the user will be taken back to the "Start a new conversation" state.
+
+#### For v7.0 and above:
+
+This SDK configuration is deprecated with v7.0+ and default value will be treated as `false`. However if `true` value is passed, it will be respected.
+
+If you want to show the Resolution Question to your users when an issue is resolved, you can turn the feature `Resolution Question`, `ON` from the in-app configuration page on the Admin dashboard. `Settings > App settings`.
+
+Additionally, if you are passing this API config in any of the Helpshift APIs, make sure to either remove the flag or set it to `false`.
+
+The final behavior of the `showConversationResolutionQuestion` flag will depend on both the Dashboard side config and the API config flag.
+It will be turned _ON_ if any of the values is set to `true`.
+
+{" "}
+<Image
+  src="/static/books/android/conversation-resolution-flag.png"
+  width="full"
+/>{" "}
+
+#### For Older SDK versions between v3.11.0 to v7.0
+
+<div className="compact ">
+
+|         |                                    |
+| ------- | ---------------------------------- |
+| Flag    | showConversationResolutionQuestion |
+| Values  | true/false                         |
+| Default | true                               |
+
+</div>
+
+The Helpshift Android SDK will show the conversation resolution question to the user to confirm if the conversation was resolved. On resolving the conversation from the admin dashboard will now take the user directly to the "Start a new conversation" state. If you want to disable the conversation resolution question, set `showConversationResolutionQuestion` to `false`.
+
+Default value is `true`, ie., this feature will not be disabled unless you explicitly pass `false` for this flag.
+
+Example :
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setShowConversationResolutionQuestion(true)
+                           .build();
+    Support.showConversation(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("showConversationResolutionQuestion", false);
+    Support.showConversation(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## customContactUsFlows {#customContactUsFlows}
+
+<Admonition type="info" title="Note">
+
+Applicable to version 4.4.0 and above.
+
+</Admonition>
+
+<div className="compact ">
+
+|         |                                                                                                                                |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Option  | customContactUsFlows                                                                                                           |
+| Value   | List of Flows. Flows can be created by using the [<code>Guided Issue Filing</code>](/android/support-tools#dynamic-forms) APIs |
+| Default | There is no default value for this configuration.                                                                              |
+
+</div>
+
+This configuration allows you to override the Contact Us buttons inside the Helpshift SDK and show Guided Issue Filing when a user taps on the Contact Us buttons.
+
+Example :
+
+Let's say you want the users to see a particular FAQ section, a single FAQ and 2 different Contact Us flows with different prefill texts when they tap the Contact Us buttons within the Helpshift SDK. In this case, you would configure the `showHelp` button (a button which triggers Helpshift SDK) in the following way :
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    public void showHelp() {
+      Flow faqSectionFlow = new FAQSectionFlow("FAQ Section", "1", faqSectionFlowConfig);
+      Flow singleFAQFlow = new SingleFAQFlow("Single FAQ", "2", singleFAQFlowConfig);
+      Flow showConversationFlow1 = new ConversationFlow("Contact Us about our app", showConversationFlow1Config);
+      Flow showConversationFlow2 = new ConversationFlow("Contact Us about in-app purchases", showConversationFlow2Config);
+
+      List<Flow> customContactUsFlows = new ArrayList<>();
+      customContactUsFlows.add(faqSectionFlow);
+      customContactUsFlows.add(singleFAQFlow);
+      customContactUsFlows.add(showConversationFlow1);
+      customContactUsFlows.add(showConversationFlow2);
+
+      ApiConfig apiConfig = new ApiConfig.Builder()
+                             .setCustomContactUsFlows(customContactUsFlows)
+                             .build();
+      Support.showFAQs(yourActivity, apiConfig);
+    }
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    public void showHelp() {
+      Flow faqSectionFlow = new FAQSectionFlow("FAQ Section", "1", faqSectionFlowConfig);
+      Flow singleFAQFlow = new SingleFAQFlow("Single FAQ", "2", singleFAQFlowConfig);
+      Flow showConversationFlow1 = new ConversationFlow("Contact Us about our app", showConversationFlow1Config);
+      Flow showConversationFlow2 = new ConversationFlow("Contact Us about in-app purchases", showConversationFlow2Config);
+
+      List<Flow> customContactUsFlows = new ArrayList<>();
+      customContactUsFlows.add(faqSectionFlow);
+      customContactUsFlows.add(singleFAQFlow);
+      customContactUsFlows.add(showConversationFlow1);
+      customContactUsFlows.add(showConversationFlow2);
+
+      Map showFAQsConfig = new HashMap();
+      showFAQsConfig.put("customContactUsFlows", customContactUsFlows);
+      Support.showFAQs(yourActivity, showFAQsConfig);
+    }
+
+```
+
+</TabItem>
+
+</Tabs>
+
+Anytime the Helpshift SDK is presented via `showHelp` with this configuration, the Contact Us buttons in the SDK will redirect to Guided Issue Filing with the flows provided in the `customContactUsOptions` list.
+
+Once a particular flow is selected, the subsequent Contact Us buttons will not redirect to Guided Issue Filing again. They will function as normal Contact Us buttons. This is to avoid an infinite loop of Guided Issue Filing screens.
+
+Custom flows can be nested by passing another custom flows configuration while creating a flow.
+
+Example :
+
+Let's say you want to configure `singleFAQFlow` in the above example to show `showConversationFlow1` and `showConversationFlow2` through the Contact Us buttons inside it. In this case, you would configure the `showHelp` button (a button which triggers Helpshift SDK) in the following way :
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    public void showHelp() {
+      Flow faqSectionFlow = new FAQSectionFlow("FAQ Section", "1", faqSectionFlowConfig);
+
+      Flow showConversationFlow1 = new ConversationFlow("Contact Us about our app", showConversationFlow1Config);
+      Flow showConversationFlow2 = new ConversationFlow("Contact Us about in-app purchases", showConversationFlow2Config);
+      List<Flow> nestedCustomContactUsFlows = new ArrayList<>();
+      nestedCustomContactUsFlows.add(showConversationFlow1);
+      nestedCustomContactUsFlows.add(showConversationFlow2);
+      ApiConfig singleFAQFlowConfig = new ApiConfig.Builder()
+                                       .setCustomContactUsFlows(nestedCustomContactUsFlows)
+                                       .build();
+
+      Flow singleFAQFlow = new SingleFAQFlow("Single FAQ", "2", singleFAQFlowConfig);
+
+      List<Flow> customContactUsFlows = new ArrayList<>();
+      customContactUsFlows.add(faqSectionFlow);
+      customContactUsFlows.add(singleFAQFlow);
+
+      ApiConfig showFAQsConfig = new ApiConfig.Builder()
+                                  .setCustomContactUsFlows(customContactUsFlows)
+                                  .build();
+      Support.showFAQs(yourActivity, showFAQsConfig);
+    }
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    public void showHelp() {
+      Flow faqSectionFlow = new FAQSectionFlow("FAQ Section", "1", faqSectionFlowConfig);
+
+      Flow showConversationFlow1 = new ConversationFlow("Contact Us about our app", showConversationFlow1Config);
+      Flow showConversationFlow2 = new ConversationFlow("Contact Us about in-app purchases", showConversationFlow2Config);
+      List<Flow> nestedCustomContactUsFlows = new ArrayList<>();
+      nestedCustomContactUsFlows.add(showConversationFlow1);
+      nestedCustomContactUsFlows.add(showConversationFlow2);
+      Map singleFAQFlowConfig = new HashMap();
+      singleFAQFlowConfig.put("customContactUsFlows", nestedCustomContactUsFlows);
+      Flow singleFAQFlow = new SingleFAQFlow("Single FAQ", "2", singleFAQFlowConfig);
+
+      List<Flow> customContactUsFlows = new ArrayList<>();
+      customContactUsFlows.add(faqSectionFlow);
+      customContactUsFlows.add(singleFAQFlow);
+
+      Map showFAQsConfig = new HashMap();
+      showFAQsConfig.put("customContactUsFlows", customContactUsFlows);
+      Support.showFAQs(yourActivity, showFAQsConfig);
+    }
+
+```
+
+</TabItem>
+
+</Tabs>
+
+With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
+
+<Admonition type="info" title="Note">
+
+This configuration will work only when there is no open conversation for the user, otherwise every Contact Us button will transition to the chat screen.
+
+</Admonition>
+
+## showConversationInfoScreen {#showConversationInfoScreen}
+
+<Admonition type="info" title="Note">
+
+Applicable to version 4.9.1 and above.
+
+</Admonition>
+
+<div className="compact ">
+
+|         |                            |
+| ------- | -------------------------- |
+| Flag    | showConversationInfoScreen |
+| Values  | true/false                 |
+| Default | false                      |
+
+</div>
+The `showConversationInfoScreen` flag will determine if the user can see the Conversation info on the conversation feed. If set to `true`, the Conversation ID (Issue ID) will be shown in conversation feed.
+
+Example :
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setShowConversationInfoScreen(true)
+                           .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap config = new HashMap();
+    config.put("showConversationInfoScreen", true);
+    Support.showFAQs(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="Note">
+
+The Conversation ID (Issue ID) will only be visible when a conversation is actually created for support teams and Automations / Agents can act on it. (This is after QuickSearch Bot (if configured) and Identity Bot (if configured) complete their tasks.)
+
+</Admonition>
+
+## Minimum issue description length {#minimum-issue-desc-length}
+
+You can set the minimum length requirement of text for user while filing the new issue using the integer resource `hs__issue_description_min_chars`. It's default value is set to 1 for all languages and it can be configured per language.
+If number of characters are less than the defined minimum length requirement then an error is displayed to the user.
+
+Example :
+
+If you want to have minimum length as 5 characters for Korean language and 10 characters for all other languages then you can achieve this as shown below:
+
+Put the following integer resource in `integers.xml` of `values-ko` resource directory
+
+```
+<integer name="hs__issue_description_min_chars">5</integer>
+```
+
+and the following integer resource in `integers.xml` of `values` resource directory
+
+```
+<integer name="hs__issue_description_min_chars">10</integer>
+```
+
+## Configuration Summary {#config-summary}
+
+| Configuration / API                    | [showFAQs](/android/support-tools#faqs-view) | [showFAQSection](/android/support-tools#faq-section-view) | [showSingleFAQ](/android/support-tools#faq-question-view) | [showConversation](/android/support-tools#conversation-view) |
+| -------------------------------------- | -------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------ |
+| **enableContactUs**                    | Supported                                    | Supported                                                 | Supported                                                 | Not Supported                                                |
+| **enableFullPrivacy**                  | Supported                                    | Supported                                                 | Supported                                                 | Supported                                                    |
+| **showConversationResolutionQuestion** | Supported                                    | Supported                                                 | Supported                                                 | Supported                                                    |
+| **customContactUsFlows**               | Supported                                    | Supported                                                 | Supported                                                 | Not Supported                                                |
+| **showConversationInfoScreen**         | Supported                                    | Supported                                                 | Supported                                                 | Supported                                                    |
+| **enableTypingIndicator**              | Supported                                    | Supported                                                 | Supported                                                 | Supported                                                    |
+| **conversationPrefillText**            | No effect                                    | No effect                                                 | No effect                                                 | Supported                                                    |
+
+## Flexible permissioning adaptive to Android M and older versions {#app-permissions}
+
+Starting from Android 6.0 (API level 23), users grant permissions to apps while the app is running, not when they install the app. This approach streamlines the app install process, since the user does not need to grant permissions when they install or update the app. It also gives the user more control over the app's functionality; for example, a user could choose to give a camera app access to the camera, but not to the device location. The user can revoke the permissions at any time by going to the app's Settings screen.
+
+The storage permissions can be removed from AndroidManifest.xml in case you do want want to use them. You can remove the `WRITE_EXTERNAL_PERMISSION` permission with the following line in your AndroidManifest.xml:
+
+```xml
+<uses-permission android:name=“android.permission.WRITE_EXTERNAL_STORAGE” tools:node=“remove”/>
+```
+
+The Helpshift SDK has 4 features that require storage permissions. The following is the behavior for these 4 features based on whether the permission is present in AndroidManifest.xml or not.
+
+#### User side attach screenshot flow
+
+Starting from Helpshift SDK v6.2.0, user's screenshots can be attached independent of the storage permission being present in the manifest.
+
+#### Agent side attachment downloads
+
+| Storage Permission Status               | API 15 to 22                                                                                                                                                                                                                                                                                                        | API 23 and above                                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Permission declared in manifest**     | Works as normal (attachments are downloaded and rendered in chat screen by sdk's own download manager)                                                                                                                                                                                                              | <b>User granted the permission</b><ul><li>Works as normal</li></ul><br /><b>User did not grant the permission</b><ul><li>User is shown permission dialog. If user denies the permission then show a requirement description msg with intent to launch the app settings page (User can't download the attachment unless he grants the permission)</li></ul> |
+| **Permission not declared in manifest** | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer.Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen. | Uri will be passed to system provided download service and it will start download with progress bar in notification drawer.Helpshift Sdk will just show the toast indicating that download has started. User is allowed to trigger the download multiple times. Sdk would not show any progress in the chat screen.                                        |
+
+#### Image caching in single question screen
+
+| Storage Permission Status               | API 15 to 18                                                                                                   | API 19 and above |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Permission declared in manifest**     | Works as normal (images are cached)                                                                            | Works as normal. |
+| **Permission not declared in manifest** | Caching will not work. Image will be reloaded every time the user visits the particular single question screen | Works as normal. |
+
+#### Profile persistence across uninstalls for multi login
+
+| Storage Permission Status               | API 15 to 22                                         | API 23 and above                                                                                                                                                           |
+| --------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Permission declared in manifest**     | User profile will be persisted across uninstalls     | User granted the permission: User profile will be persisted across uninstalls<br />User did not grant the permission: User profile will not be persisted across uninstalls |
+| **Permission not declared in manifest** | User profile will not be persisted across uninstalls | User profile will not be persisted across uninstalls                                                                                                                       |

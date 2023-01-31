@@ -1,0 +1,48 @@
+---
+sidebar_position: 10
+title: Upgrading to 5.4.x and above
+description: "The Helpshift SDK v5.4.0 is a major update and we have made some important changes. For any queries or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading to 5.4.x and above {#upgrade-to-54x}
+
+<Intro>
+
+The Helpshift SDK v5.4.0 is a major update and we have made some important changes. For any queries or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+## Framework packaging for SDK
+
+With version 5.4.0, Helpshift SDK is packaged as a dynamic framework rather than a static library. Please follow the steps mentioned here if you are migrating from an older version of Helpshift SDK.
+
+### Integration changes
+
+1. Delete the old Helpshift files from your Assets directory and then import the new unitypackage.
+2. If you have customized Helpshift theming plist files, make a copy of them before deleting the old files.
+3. Once you have imported the new package, copy the files to `Assets/Plugings/Helpshift/iOS/HelpshiftCustomThemes`, replacing any existing files with same names.
+4. Uncomment the line `HelpshiftPostProcess.AddHelpshiftCustomThemes(project);` in `HelpshiftPostProcess.cs` to ensure the theming files are copied in the final Xcode project.
+
+### Code changes
+
+If you are using Helpshift headers in the generated Xcode project, replace their usages with the following -
+
+- Replace `#import "HelpshiftCore.h”` with `#import <Helpshift/HelpshiftCore.h>`
+- Replace `#import ”HelpshiftSupport.h”` with `#import <Helpshift/HelpshiftSupport.h>`
+
+If you are app is using [Helpshift delegates](/unity/delegates-ios/), call the `HelpshiftSdk.registerDelegates()` API to continue listening to the delegates. Call this method as early in the lifecycle of your game as possible. We recommend calling it in the `Start()` method of your game's first `GameObject`. You might already have this method call in your `GameObject` if you are using our Android plugin as well. In that case, simply remove the `#if UNITY_ANDROID` and `#endif` surrounding this call.

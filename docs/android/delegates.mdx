@@ -1,0 +1,288 @@
+---
+sidebar_position: 100
+title: Helpshift Support Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Helpshift Support Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+</Intro>
+
+## Helpshift Support Delegates implementation {#helpshift-delegates-implementation}
+
+You have to define a class which implements Helpshift Support Delegates and then
+set this delegate instance using `Support.setDelegate()` method.
+
+For example:
+
+Class Implementation:
+
+```java
+
+    import com.helpshift.support.Support.Delegate
+    ...
+    ...
+
+    class MyDelegates implements Delegate {
+      @Override
+      public void sessionBegan() {
+        // your code here
+      }
+
+      @Override
+      public void sessionEnded() {
+        // your code here
+      }
+
+      @Override
+      public void newConversationStarted(String newConversationMessage) {
+        // your code here
+      }
+
+      @Override
+      public void conversationEnded() {
+        // your code here
+      }
+
+      @Override
+      public void userRepliedToConversation(String newMessage) {
+        // your code here
+      }
+
+      @Override
+      public void userCompletedCustomerSatisfactionSurvey(int rating, String feedback) {
+        // your code here
+      }
+
+      @Override
+      public void displayAttachmentFile(File attachmentFile) {
+        // your code here
+      }
+
+      @Override
+      public void displayAttachmentFile(Uri attachmentUri) {
+        // your code here
+      }
+
+      @Override
+      public void didReceiveNotification(int newMessagesCount) {
+        // your code here
+      }
+
+      @Override
+      public void authenticationFailed(HelpshiftUser user, AuthenticationFailureReason reason) {
+          // your code here
+      }
+
+      @Override
+      public void userClickOnAction(ActionType actionType, String actionData) {
+          // your code
+      }
+
+    }
+
+```
+
+Class Usage:
+
+```java
+
+    MyDelegates delegates = new MyDelegates();
+    Support.setDelegate(delegates);
+
+```
+
+Please make sure you call `setDelegate` method before calling any Helpshift FAQ
+or Conversation API so that they can callback your delegate methods.
+
+To know more about Delegate methods, see [Helpshift Session delegates](#session-delegates).
+
+## Helpshift Session delegates {#session-delegates}
+
+### Session begin {#delegate-session-began}
+
+`sessionBegan`
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+### Session end {#delegate-session-ended}
+
+`sessionEnded`
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+## Conversation delegates {#conversation-delegates}
+
+### New Conversation Started {#delegate-new-conversation-started}
+
+`newConversationStarted`
+
+If you want to keep track of when your app users start a new conversation through Helpshift, you can implement this delegate callback . The delegate will get fired every time the user starts a new conversation. The delegate method will receive the conversation message in it's arguments.
+
+For issues filed via smart intents, the value newConversationMessage will be "Level 1 intent, level 2 intent"
+
+<Admonition type="info" title="Note">
+
+As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
+
+</Admonition>
+
+For example:
+
+```java
+
+    public void newConversationStarted (String newConversationMessage) {
+      // your code here
+    }
+
+```
+
+### Conversation Ended {#delegate-conversation-ended}
+
+`conversationEnded`
+
+This delegate callback can be implemented to check if an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved, rejected from the Dashboard, timed out or archived.
+
+For example:
+
+```java
+
+    public void conversationEnded () {
+      // your code here
+    }
+
+```
+
+### New message delegate {#delegate-user-replied-to-conversation}
+
+`userRepliedToConversation`
+
+If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
+
+```java
+
+    public static final String UserAcceptedTheSolution = "User accepted the solution";
+    public static final String UserRejectedTheSolution = "User rejected the solution";
+    public static final String UserSentScreenShot = "User sent a screenshot";
+    public static final String UserReviewedTheApp = "User reviewed the app";
+
+```
+
+For example:
+
+```java
+
+    public void userRepliedToConversation (String newMessage) {
+      if (newMessage.equals(Support.UserAcceptedTheSolution)) {
+        // your code here
+      }
+    }
+
+```
+
+<Admonition type="info" title="Note">
+
+All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also considered as new messages added by end users.
+
+</Admonition>
+
+### Customer satisfaction survey delegate {#csat-completed}
+
+`userCompletedCustomerSatisfactionSurvey`
+
+If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
+
+For example:
+
+```java
+
+    public void userCompletedCustomerSatisfactionSurvey (int rating, String feedback) {
+      if (rating < 3) {
+        // your code goes here
+      }
+    }
+
+```
+
+### Display attachment delegate {#display-attachment}
+
+`displayAttachmentFile`
+
+Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
+
+- Video files (3gp, m4v)
+- Audio files (mp3, mp4, aac)
+- Image files (jpg, png, gif)
+
+After the attachment is downloaded, helpshift checks for any app which can open it. If no such app is found than we fall back to passing the file to the delegate handler in the app.
+There are two variants of the `displayAttachmentFile` delegate - `displayAttachmentFile(File attachmentFile)` and `displayAttachmentFile(Uri attachmentUri)`.
+
+- On Android version 10 & above, `displayAttachmentFile(Uri attachmentUri)` will be called since Files are exposed with Uri objects by the OS.
+- On Android versions older than 10, `displayAttachmentFile(File attachmentFile)` will be called.
+
+### New message received count delegate {#newmessage-recieved}
+
+`didReceiveNotification`
+
+If you want to keep a count of all new messages recieved in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift recieves a new message in an existing conversation.
+You can also use this delegate to keep your badge counts updated.
+
+For example:
+
+```java
+
+    public void didReceiveNotification (int newMessagesCount) {
+        // your code goes here
+    }
+
+```
+
+### User click on action delegate {#user-click-action}
+
+`userClickOnAction`
+
+This delegate method is called when user clicks on an action in Action Card bot.
+
+<div className="compact ">
+
+|            |                                                                                     |
+| ---------- | ----------------------------------------------------------------------------------- |
+| actionType | The type of action user clicked on. Can be one of: ActionType.CALL, ActionType.LINK |
+| actionData | The data associated with the action type. Can be a url link or a phone number.      |
+
+</div>
+
+For example:
+
+```java
+
+    public void userClickOnAction(ActionType actionType, String actionData) {
+          // your code
+      }
+
+```

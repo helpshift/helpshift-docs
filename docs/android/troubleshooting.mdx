@@ -1,0 +1,368 @@
+---
+sidebar_position: 130
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Troubleshooting {#troubleshoot}
+
+## SDK Integration {#integration-issues}
+
+### UI issue with Androidx libraries
+
+We found a bug in following scenario when androidx fragment library is used by the client app:
+
+- Conversation history is off or `enableFullPrivacy` flag is used when opening chat screen.
+- Smart Intents are enabled.
+- Resolve an ongoing conversation.
+- Click "New Conversation" button.
+- When new conversation starts, smart intents selection sheet is collapsed automatically and user is not able to select any option.
+
+Androidx Fragment library, above version 1.2.0, has delayed the lifecyle callback of "onDestroyView" until transitions are completed.
+This broke lifecycle management for the SDK and some UI glicthes were found.
+
+To fix this issue, please disable transitions in the SDK by using the following config when initializing the SDK:
+
+Only fragment transition animations will be disabled, all other animations will work as expected.
+
+```
+InstallConfig.Builder config = new InstallConfig.Builder();
+
+Map<String, Object> map = new HashMap<>();
+map.put("disableAnimations", true);
+config.setExtras(map);
+
+Core.install(this, "apiKey",
+                   "domain",
+                   "platformId",
+                   config.build());
+```
+
+### 7.9.0 SDK Update {#7}
+
+We found a bug for the following scenario - for SDK 7.9.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
+
+**Action needed:**
+
+- If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
+- If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [7.9.1 SDK](/android/release-notes#v791).
+
+### Duplicate class error for `apache/commons/codec/language`
+
+If you get a dex error like below which indicates that the **apache/commons/codec/language** classes are being added to the app more than once
+
+You can remove these classes from the _Helpshift.jar_ in two possible ways :
+
+#### command line
+
+```
+
+    zip -d Helpshift.jar org/apache/commons/codec/language/**
+
+```
+
+#### custom ant task
+
+```xml
+<target name="clean-apache" >
+  <mkdir dir="./backup"/>
+  <copy file="./libs/Helpshift.jar" todir="./backup"/>
+  <jar destfile="./libs/Helpshift-temp.jar">
+    <zipfileset src="./libs/Helpshift.jar" excludes="org/apache/commons/codec/language/**"/>
+  </jar>
+  <rename src="./libs/Helpshift-temp.jar" dest="./libs/Helpshift.jar"/>
+</target>
+<target name="restore-helpshift" >
+  <move file="./backup/Helpshift.jar" todir="./libs"/>
+</target>
+```
+
+Once done you can run a `clean & compile`. As these classes are already included in your application lib; they will be compiled into the final APK build and will work fine with Helpshift.
+
+### Dex merger error
+
+If you get a dex merger error like below, enable the jumbo mode.
+
+```
+
+    UNEXPECTED TOP-LEVEL EXCEPTION:
+    com.android.dex.DexException: Cannot merge new index 68218 into a non-jumbo
+    instruction!
+
+
+```
+
+To enable jumbo mode in Gradle add the following to your build.gradle -
+
+```groovy
+
+    android {
+        dexOptions {
+            jumboMode = true
+        }
+    }
+
+```
+
+To enable jumbo mode in Ant add the following to your project.properties -
+
+```xml
+
+    dex.force.jumbo=true
+
+
+```
+
+### Duplicate class error for `Lcom/helpshift/BuildConfig`
+
+If you get a dex error like below,
+
+```
+
+    UNEXPECTED TOP-LEVEL EXCEPTION:
+    com.android.dex.DexException: Multiple dex files define
+    Lcom/helpshift/BuildConfig;
+
+```
+
+This indicates that two **BuildConfig** files are getting added to the
+App, once via the _Helpshift.jar_ file and then via the _helpshift-android-sdk_ resources
+
+You can resolve this by deleting the **BuildConfig** file which comes with the Helpshift.jar by using the following command -
+
+```
+
+    zip -d Helpshift.jar com/helpshift/BuildConfig.class
+
+```
+
+### InflateException: Binary XML file: Error inflating class com.helpshift.views.HSTextInputEditText
+
+If you get a crash with the following error, check the android support library version you use:
+
+```
+
+    java.lang.RuntimeException: Unable to resume activity {com.sampleimpactanalysis/com.helpshift.support.activities.ParentActivity}: android.view.InflateException:
+    Binary XML file line #7: Binary XML file line #35: Error inflating class com.helpshift.views.HSTextInputEditText
+
+    Suppressed: java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/design/widget/TextInputEditText;
+
+    Caused by: java.lang.ClassNotFoundException: Didn't find class "android.support.design.widget.TextInputEditText"
+
+```
+
+Helpshift SDK uses the "android.support.design.widget.TextInputEditText" class. Since this class was introduced in android support library v23.2.0, you would need to add dependencies for android support libraries equal to or higher than v23.2.0.
+
+## Push notifications {#push-notifications}
+
+In case the app is not receiving push notifications, you can look at the following sections.
+
+### IP whitelisting
+
+In order to receive push notifications from Helpshift, please note that that there should be no key restrictions on the key used with Helpshift. To ensure this:
+
+- Click on the API key to be used with Helpshift on your Google console dashboard.
+- Set the Key restriction option to `None`
+
+<Image src="/static/books/android/ip-whitelisting.gif" width="full" />{" "}
+
+## Multi-process apps {#multi-process-apps}
+
+In a multi-process Android app, the Application.onCreate() is called for every process. As the Helpshift SDK is initialized inside the Application.onCreate() method of the app, multi-process apps will lead to multiple instances of the SDK being initialized, which can lead to unexpected behavior. We recommend that the Helpshift SDK be initialized in the main process only. This can be done by checking the process name in which Application.onCreate() is called. You can refer to the example below for this:
+
+```java
+Application.onCreate() {
+    ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+    List<ActivityManager.RunningAppProcessInfo> infos = activityManager.getRunningAppProcesses();
+    int myPid = android.os.Process.myPid();
+    for (ActivityManager.RunningAppProcessInfo info : infos) {
+        if (myPid == info.pid) {
+        if (info.processName.equals(getApplicationInfo().packageName)) {
+            // This is running in the main process of the app.
+            Core.init(All.getInstance());
+            try {
+              Core.install(this,
+                           "YOUR_API_KEY",
+                           "YOUR_DOMAIN_NAME",
+                           "YOUR_APP_ID",
+                           installConfig);
+            } catch (InstallException e) {
+                Log.e(TAG, "invalid install credentials : ", e);
+            }
+        }
+    }
+}
+
+```
+
+## Miscellaneous {#miscellaneous}
+
+### Helpshift Logs with low priority DEBUG
+
+```
+
+    02-19 20:35:49.853: D/HelpShiftDebug(7651): org.json.JSONException: No value for pr
+    02-19 20:35:49.853: D/HelpShiftDebug(7651): at org.json.JSONObject.get(JSONObject.java:354)
+    02-19 20:35:49.853: D/HelpShiftDebug(7651): at
+
+```
+
+You can safely ignore the Helpshift SDK debug logs (log priority "DEBUG" / "Log.d") that are seen in DDMS / Android Monitor. These will not cause any issues with the proper functioning of the SDK.
+
+### Helpshift Warning with low priority
+
+```
+
+    03-13 16:49:52.667 30615-1447/? W/MessageQueue : Handler (com.helpshift.HSApiData$4){427f1eb8} sending message to a Handler on a dead thread
+
+```
+
+This is just a warning, and this has been handled by the helpshift SDK. You can safely ignore it. These will not cause any issues with the proper functioning of the SDK.
+
+## UI Issues {#ui-issues}
+
+### Cannot scroll FAQ list, cannot switch FAQ tabs, keyboard input not working when creating a new conversation etc.
+
+These UI issues are caused when hardware acceleration is turned off for Helpshift's activities. To ensure that hardware acceleration is turned on, add this to your AndroidManifest.xml file.
+
+```xml
+
+    <activity
+        android:name="com.helpshift.support.activities.ParentActivity"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Helpshift.Theme.Activity"/>
+
+```
+
+## Known Issues {#known-issues}
+
+<table>
+  <tr>
+    <th>No.</th>
+    <th>Known Issue</th>
+    <th>SDK <br />Version</th>
+    <th>Device OS Version</th>
+    <th>Occurs When &amp; Frequency</th>
+    <th>Workaround</th>
+  </tr>
+   <tr>
+    <td>1</td>
+    <td>On Android 11, Helpshift SDK will always operate in non full screen mode even if the host app is operating in full screen mode. 
+      <a href="/android/release-notes#v790">View</a></td>
+    <td>v7.9.0  </td>
+    <td>Android v11</td>
+    <td>
+      <p>Frequency : Always</p>
+    </td>
+    <td></td>
+  </tr>
+    <tr>
+    <td>2</td>
+    <td>Menu items for conversation screen and faq screen are shown together after device orientation changes when SDK is integrated with 23.x support library version</td>
+    <td>v6.0.0</td>
+    <td>All</td>
+    <td>
+      <p>Frequency: Always</p>
+    </td>
+    <td>Use support library version 24.x and above</td>
+</tr>
+
+  <tr>
+    <td>3</td>
+    <td>Clicking on search icon in FAQs screen causes an ANR when appcompat library version 25.1.0 is used.
+     This happens due to unprecedented fragment lifecycle changes introduced in appcompat 25.1.0.
+     <a href="https://code.google.com/p/android/issues/detail?id=230415">Link here</a></td>
+    <td>v4.7.0, v4.8.0</td>
+    <td>All</td>
+    <td>
+      <p>Frequency: Always</p>
+    </td>
+    <td>Use appcompat library version 25.0.1</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Helphift SDK redraws layout with animations in multi-window mode when user resizes the window	</td>
+    <td>v4.7.0	</td>
+    <td>Android v7.0</td>
+    <td>
+      <p>Frequency: Always</p>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Issue due to storage permission invoke-revoke action</td>
+    <td>v4.1.0	</td>
+    <td>Android v6.0</td>
+    <td>
+      <ul>
+        <li>Help -> Contact us -> Report conversation</li>
+        <li>Perform action like Revoke - invoke storage permission multiple times</li>
+        <li>Go to chat screen via help</li>
+        <li>You will notice that attach screenshot icon is not visible</li>
+        <li>Go back from chat screen.</li>
+        <li>Here you will have to press back button multiple times to go in main screen</li>
+      </ul>
+      <p>Frequency : Rare</p>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Crash due to FragmentTransaction animation on Samsung S3	</td>
+    <td>v4.1.0	</td>
+    <td>Samsung S3 (v4.3)	</td>
+    <td>
+      <p>Frequency : Always</p>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Chat screen goes up with keyboard while typing reply	</td>
+    <td>v4.1.0	</td>
+    <td>Any</td>
+    <td>
+      <p>Frequency: Rare</p>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Orientation for the Helpshift Activity launches in portrait and then switches to landscape
+when the calling activity is in landscape mode but the device is held in portrait mode.	</td>
+    <td>v4.9.0	</td>
+    <td>Android v7.1.1</td>
+    <td>
+      <ul>
+        <li>use `setScreenOrientation()` in InstallConfig to set the Helpshift screen to LANDSCAPE</li>
+        <li>Set orientation for app's activity to LANDSCAPE as well.</li>
+        <li>Now your activity is in landscape mode. Hold the device in portrait mode and call a Helpshift API like showFaqs().</li>
+        <li>The Helpshift SDK screen is first started in portrait mode and then switches to landscape mode, which was the requested orientation.</li>
+      </ul>
+      <p>Frequency : Always</p>
+    </td>
+    <td></td>
+  </tr>
+</table>

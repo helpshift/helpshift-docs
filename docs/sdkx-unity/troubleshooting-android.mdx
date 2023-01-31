@@ -1,0 +1,74 @@
+---
+sidebar_position: 280
+title: Troubleshooting
+description: Learn more about Troubleshooting
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Troubleshooting {#troubleshoot}
+
+## SDK integration {#integration-issues}
+
+### Using AndroidX support libraries {#steps-to-build-with-android-x}
+
+Helpshift Unity SDK X uses legacy android support libraries.
+If you want to use AndroidX libraries in your application please follow these steps to make Helpshift SDK compatible with AndroidX:
+
+1. We recommend to use the standalone jetifier tool mentioned [here](https://developer.android.com/studio/command-line/jetifier).
+1. To install Jetifier, [download the zip file](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta07/jetifier-standalone.zip) and extract it. Your development environment must have Java version 1.8 installed.
+1. Use `standalone jetifier` tool to manually jetify the Helpshift library files:
+   `<project>/Assets/Plugins/Android/Helpshift.aar`
+1. Replace the existing `Helpshift.aar` files with the files generated from the standalone jetifier tool.
+
+Example:
+
+`./jetifier-standalone -i <input path>Helpshift.aar -o <output path>/Helpshift.aar`
+
+Resolving AndroidX library dependencies:
+
+- When using `Unity Jar Resolver` plugin to resolve support library requirements:
+
+Update the `<project>/Assets/Helpshift/Editor/HelpshiftDependencies.xml` to use the androidx libraries:
+
+```
+<androidPackages>
+<androidPackage spec="com.google.android.material:material:1.0.0"> </androidPackage>
+</androidPackages>
+```
+
+- When using `Gradle` to resolve support library requirements:
+
+Update dependencies section of the `<project>/Assets/Plugins/Android/mainTemplate.gradle` or `build.gradle` file to use the androidx libraries as:
+
+```
+dependencies {
+...
+compile 'com.google.android.material:material:1.0.0'
+...
+}
+```
+
+After all these changes, run a clean build of your app and verify all the UI screens work as expected.
+
+## Sample Scene integration {#sample-scene-integration-issues}
+
+If the `HelpshiftExampleScript.cs` script is not already attached to the `HelpshiftExample.unity` scene, then you need to manually attach it.
+
+- Open the `Assets/Helpshift/Example/HelpshiftExample.unity` scene in Unity.
+- Attach the `HelpshiftExampleScript.cs` script to this scene.
+- Save the scene.
+- Run on device and check.

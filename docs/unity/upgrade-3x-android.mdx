@@ -1,0 +1,83 @@
+---
+sidebar_position: 10
+title: Upgrading from 3.x to 4.x
+description: "The Helpshift Unity SDK v4.x is a major update; we have deprecated some APIs, which are replaced by newer APIs.If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 3.x to 4.x
+
+<Intro>
+
+The Helpshift Unity SDK v4.x is a major update; we have deprecated some APIs, which are replaced by newer APIs.
+If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+## Support Libraries update
+
+In Helpshift Unity SDK 4.x, the support libraries are updated to 26.0.2. When upgrading from v3.x to v4.x, delete the following folders from `Assets/Plugins/Android`:
+
+- appcompat-v7-23.4.0
+- cardview-v7-23.4.0
+- design-23.4.0
+- recyclerview-v7-23.4.0
+- support-v4-23.4.0
+- support-vector-drawable-23.4.0
+
+After v4.x SDK is imported, following support libraries will be added to `Assets/Plugins/Android`:
+
+- appcompat-v7-26.0.2
+- cardview-v7-26.0.2
+- design-26.0.2
+- recyclerview-v7-26.0.2
+- support-annotations-26.0.2
+- support-compat-26.0.2
+- support-core-ui-26.0.2
+- support-core-utils-26.0.2
+- support-fragment-26.0.2
+- support-transition-26.0.2
+- support-v4-26.0.2
+- support-vector-drawable-26.0.2
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated APIs                                             | New API                               |
+| ----------------------------------------------------------- | ------------------------------------- |
+| `helpshift.setNameAndEmail(string userName, string email)`  | `helpshift.login(HelpshiftUser user)` |
+| `helpshift.setUserIdentifier(string userIdentifier)`        | `helpshift.login(HelpshiftUser user)` |
+| `helpshift.login(String userId, String name, String email)` | `helpshift.login(HelpshiftUser user)` |
+
+<Admonition type="info" title="Note">
+
+- Users will be able to continue speaking on an open issue only if you were using the Login API. If you were using setUserIdentifier (now deprecated), if the user has an open Issue, using the login API will result in the creation of a new Issue. However, the previous Issue will be available to Agents under 'Other Issues'
+
+- Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox. However, the user will be able to see messages in the Campaigns Inbox when you call Logout (and if the anonymous user hasn't been cleared via the clearAnonymousUser API).
+
+</Admonition>
+
+## New Login API
+
+```csharp
+
+    private HelpshiftSdk helpshift = HelpshiftSdk.getInstance();
+    HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.com")
+                                          .setAuthToken("generated-user-authentication-token")
+                                          .setName("John Doe")
+                                          .build();
+    helpshift.login(user);
+```

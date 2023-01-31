@@ -1,0 +1,84 @@
+---
+sidebar_position: 10
+title: Upgrading from 2.6.0 to 3.0.0
+description: "The Helpshift SDK v3.0.0 is a major update, and we have deprecated some APIs. If you have questions or feedback, please Contact Us"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Upgrading from 2.6.0 to 3.0.0 {#upgrade-to-3}
+
+<Intro>
+
+The Helpshift SDK v3.0.0 is a major update, and we have deprecated some APIs. If you have questions or feedback, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>
+
+</Intro>
+
+## List of deprecated APIs {#deprecated-api}
+
+| Deprecated API                                                                                                  | New API                                                                                                         |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| HelpshiftCore.Install(string apiKey, string domainName, string appId, Dictionary<string, object> installConfig) | HelpshiftCore.Install(string apiKey, string domainName, string appId, HelpshiftInstallConfig config)            |
+| HelpshiftSupport.ShowFAQs(Object uiParent, Dictionary<string, object> apiConfig)                                | HelpshiftSupport.ShowFAQs(Object uiParent, HelpshiftAPIConfig config)                                           |
+| HelpshiftSupport.ShowFAQSection(string sectionId, Object uiParent, Dictionary<string, object> apiConfig)        | HelpshiftSupport.ShowFAQSection(string sectionId, Object uiParent, HelpshiftAPIConfig config)                   |
+| HelpshiftSupport.ShowConversation(Object uiParent, Dictionary<string, object> apiConfig)                        | HelpshiftSupport.ShowConversation(Object uiParent, HelpshiftAPIConfig config)                                   |
+| HelpshiftSupport.ShowSingleFAQ(string faqId, Object uiParent, Dictionary<string, object> apiConfig)             | HelpshiftSupport.ShowSingleFAQ(string faqId, Object uiParent, HelpshiftAPIConfig config)                        |
+| HelpshiftSupport.GetNotificationCount(bool isAsync)                                                             | HelpshiftSupport.RequestUnreadMessagesCount(bool isRemote)                                                      |
+| HelpshiftSupport.SetSDKLanguage(string locale)                                                                  | HelpshiftCore.SetLanguage(string languageCode)                                                                  |
+| HelpshiftSupport.ShowDynamicForm(Object uiParent, string title, Dictionary<string, object>[] flows)             | HelpshiftSupport.ShowDynamicForm(Object uiParent, string title, `IList<Flow>` flows, HelpshiftAPIConfig config) |
+| HelpshiftSupport.SetMetaData(Dictionary<string, object> metaData)                                               | HelpshiftSupport.SetMetadata(HelpshiftSupportMetadata metadata)                                                 |
+| HelpshiftSupport.IsConversationActive()                                                                         | HelpshiftSupport.CheckIfConversationActive()                                                                    |
+| HelpshiftCampaigns.ShowInbox(Object uiParent, Dictionary<string, string> apiConfig)                             | HelpshiftCampaigns.ShowInbox(Object uiParent, HelpshiftAPIConfig config)                                        |
+| HelpshiftCore#SetNameAndEmail(string name, string email)                                                        | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
+| HelpshiftSupport#SetUserIdentifier(string userIdentifier)                                                       | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
+| HelpshiftCore#Login(String userId, String name, String email)                                                   | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
+
+<Admonition type="info" title="Note">
+
+- Users will be able to continue speaking on an open issue only if you were using the Login API. If you were using setUserIdentifier (now deprecated), if the user has an open Issue, using the login API will result in the creation of a new Issue. However, the previous Issue will be available to Agents under 'Other Issues'
+
+- Users will be able to see messages in the Campaigns Inbox only if you were using the Login API. If you were using the setUserIdentifier API (now deprecated), using the Login API will result in the creation of a new logged-in user and therefore a new Campaign Inbox. However, the user will be able to see messages in the Campaigns Inbox when you call Logout (and if the anonymous user hasn't been cleared via the clearAnonymousUser API).
+
+</Admonition>
+
+## List of removed APIs {#removed-api}
+
+| Removed API                                                                                                                | New API                                                                           |
+| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Com.Helpshift.Xamarin.Campaigns.Models.IHelpshiftInboxMessage                                                              | InboxMessage                                                                      |
+| HelpshiftInbox.SetInboxMessageDelegate(Com.Helpshift.Xamarin.Campaigns.IHelpshiftInboxMessageDelegate delegate);           | HelpshiftInbox.SetInboxMessageDelegate(IInboxMessageDelegate delegate);           |
+| HelpshiftCampaigns.SetInboxMessageDelegate(Com.Helpshift.Xamarin.Campaigns.IHelpshiftInboxMessageDelegate delegate);       | HelpshiftCampaigns.SetInboxMessageDelegate(IInboxMessageDelegate delegate);       |
+| HelpshiftInbox.SetInboxNotificationDelegate(Com.Helpshift.Xamarin.Campaigns.IHelpshiftInboxNotificationDelegate delegate); | HelpshiftInbox.SetInboxNotificationDelegate(IInboxNotificationDelegate delegate); |
+| HelpshiftCampaigns.SetCampaignsDelegate(Com.Helpshift.Xamarin.Campaigns.IHelpshiftCampaignsDelegate delegate);             | HelpshiftCampaigns.SetCampaignsDelegate(ICampaignsDelegate delegate);             |
+| HelpshiftSupport.SetDelegate(Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate delegate);                           | HelpshiftSupport.SetDelegate(ISupportDelegate delegate);                          |
+
+## New Login API
+
+```csharp
+
+	HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
+                                          .SetName("John Doe")
+                                          .Build();
+    HelpshiftCore.Login(user);
+
+```
+
+<Admonition type="info" title="Note">
+
+- If you are setting enableFullPrivacy to be true, you shouldn't be using email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+- If you were using setUserIdentifier (now deprecated), if the user has an open Issue, using login API will result in the creation of a new Issue. However, the previous Issue will be available to Agents under 'Other Issues'
+
+</Admonition>

@@ -1,0 +1,126 @@
+---
+sidebar_position: 10
+title: Integrating Helpshift SDK for Android with your Eclipse Project
+description: Learn more about Integrating Helpshift SDK for Android with your Eclipse Project
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Integrating Helpshift SDK for Android with your Eclipse Project {#integrate-eclipse}
+
+## Adding the latest stable release of the SDK to your project {#add-to-project}
+
+Helpshift Android SDK uses Android's Support Libraries for Material
+Design support. To add the Helpshift SDK to your **Android Application Project**, you
+will need to add following Andorid Support Libraries :
+
+1. [Design Library](http://android-developers.blogspot.in/2015/05/android-design-support-library.html)
+1. [v7 recyclerview library](http://developer.android.com/tools/support-library/features.html#v7-recyclerview)
+1. [v7 cardview library](http://developer.android.com/tools/support-library/features.html#v7-cardview)
+
+All these libraries are located in your Android SDK location
+_[Android/sdk/extras/android/support]_. We recommend you to add these dependencies first before you add Helpshift SDK.
+
+1.  Import **appcompat, cardview and recyclerview** library located at
+    _[Android/sdk/extras/android/support/v7]_. Go to **Project
+    Properties** and make sure that all of them are marked as **Is Library**
+
+    {" "}
+    <Image
+      src="/static/books/android/eclipse-supportLibrary.png"
+      width="major"
+      alt="Importing Support Library in Eclipse"
+    />{" "}
+
+1.  Import design library located at _[Android/sdk/extras/android/support]_.
+    Go to **Project Properties** of design library and add above 3 libraries
+    as its dependency.
+
+        <Image src="/static/books/android/eclipse-dependency.png"  width="major" alt="Adding Library dependency" />
+
+## Import Helpshift Android SDK {#import-helpshift}
+
+Just unzip the zip file you have downloaded, and import it in Eclipse :
+
+1. Replace the **${applicationId}** under **&lt;provider>** tag with your application identifier in AndroidManifest.xml in the unzipped folder.
+1. Select _File > Import_
+1. Select _Android > Existing Android Code Into Workspace_, and click _Next_.
+1. Click _Browse_ for **Root Directory** and Select path to
+   `helpshift-android-sdk` > _Finish_.
+1. Add **Design Library** as dependency to Helpshift SDK
+
+   <Image
+     src="/static/books/android/eclipse-helpshiftsdk.png"
+     width="major"
+     alt="Project import wizard"
+   />{" "}
+
+## Enable the flag for manifest merge {#enable-manifest}
+
+Set the flag for `manifestmerger.enabled` to `true` in your `project.properties`:
+
+```text
+
+    manifestmerger.enabled=true
+
+
+```
+
+## Add reference of the Helpshift SDK {#add-reference}
+
+To add reference to Helpshift SDK in your project:
+
+1. In the Package Explorer, right-click your project and select _Properties_.
+1. In the Properties window, select the **"Android"** properties group at left and locate the Library properties at right.
+1. Click _Add_ to open the Project Selection dialog. From the list of available library projects, select Helpshift SDK and click _OK_.
+1. Click _Apply_ and _OK_ in the Properties window.
+
+   <Image
+     src="/static/books/android/eclipse-helpshiftsdk-reference.png"
+     width="full"
+     alt="Properties dialog to add library references"
+   />{" "}
+
+Your Eclipse project is now integrated with Helpshift SDK for Android.
+
+Proceed further with **[initializing helpshift SDK in your app](/android/getting-started#initializing)**.
+
+<Admonition type="info" title="Note">
+
+For version 4.5.0 and above, follow step 5.
+
+</Admonition>
+
+## Copy the Helpshift assets to appropriate paths {#helpshift-assets}
+
+The Ant build system does not include a way to package a library's assets folder along with the Application APK.
+Since the Helpshift SDK ships with an assets folder, you will need to follow the steps given below to complete the integration process.
+
+1. Copy **hs\_\_data** from Helpshift/assets folder.
+
+   <Image
+     src="/static/books/android/copy-helpshift-assets-eclipse-1.png"
+     width="full"
+     alt="Copy Helpshift assets to your application."
+   />{" "}
+
+1. Paste **hs\_\_data** to your application's assets folder and delete the **hs\_\_data** file from Helpshift's assets folder.
+
+   <Image
+     src="/static/books/android/copy-helpshift-assets-eclipse-2.png"
+     width="full"
+     alt="Paste Helpshift assets to your application."
+   />{" "}

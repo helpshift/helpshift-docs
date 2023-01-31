@@ -1,0 +1,425 @@
+---
+sidebar_position: 90
+title: Tracking
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+<Admonition type="danger" title="Important">
+
+Helpshift’s Legacy SDKs (SDK Version <=7.x.x) will see end of life as of 31 Dec 2022 and end of support as of 31 March 2023.
+
+</Admonition>
+
+# Tracking {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+</Intro>
+
+## Name and email {#name-and-email}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.
+
+</Admonition>
+
+It is expected that you will pass the user's name, email or, user identifier using the [login API](/ios/users#logged-in-users).
+
+Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up). However, there will no impact on older SDK versions. They will keep on working as usual.
+
+## User Identifier {#user-id}
+
+<Admonition type="info" title="Note">
+
+This API is now deprecated with SDK v7.0.
+
+</Admonition>
+
+It is expected that you will pass the user's name, email or, user identifier using the [login API](/ios/users#logged-in-users).
+
+Also, please note that there will no impact on older SDK versions, and they will keep on working as usual.
+
+## Multi Login {#multi-login}
+
+Details on user management are available [here](/ios/users/).
+
+## App usage {#app-usage}
+
+Breadcrumbs will help you track events or user actions and when user starts a new conversation, these breadcrumbs can be seen along with the conversation in the admin site. To leave breadcrumbs can use `leaveBreadCrumb:`
+
+```
+[HelpshiftSupport leaveBreadCrumb:@"Custom String"];
+```
+
+Breadcrumbs will be collected within the set breadcrumb limit. This is set in the **SDK Configurations** section for app settings in the agent dashboard.
+Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs queue, please use the `clearBreadCrumbs` API call.
+
+## Attaching metadata to conversations {#metadata}
+
+You can attach additional metadata to every new conversation started by
+the app user via a very simple mechanism provided by the SDK. This
+metadata can range from user-name, email etc to game scores, current
+game levels and any other data relevant to creating a suitable context to each new conversation.
+
+<Admonition type="info" title="Note">
+
+- While metadata can be set anytime, it will only be sent to the Agent Dashboard when customer starts a new conversation.
+- As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
+- All the modified metadata (updated during an active conversation) will only be sent with the next conversation that end user starts.
+
+</Admonition>
+
+### Adding metadata with API options {#metadata-api-options}
+
+<Admonition type="info" title="Note">
+
+Metadata should only be sent as String key-value pairs.
+
+</Admonition>
+
+The iOS SDK allows adding of metadata by using reserved constant key `HelpshiftSupportCustomMetadataKey` and
+NSDictionary as its value in `withOptions:` param of support API's,
+
+- `showConversation:withOptions:`
+
+- `showFAQs:withOptions:`
+
+- `showFAQSection:withController:withOptions:`
+
+- `showSingleFAQ:withController:withOptions:`
+
+The SDK will send data which is given as NSDictionary in options as custom data for the new conversation.
+
+Example usages:
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+```
+HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
+builder.customMetaData = [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype":@"paid", @"level":@"7", @"score":@"12345"}];
+HelpshiftAPIConfig *apiConfig = [builder build];
+[HelpshiftSupport showFAQs:self withConfig:apiConfig];
+
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+```
+NSDictionary *metaData = @{@"usertype": @"paid", @"level":@"7", @"score":@"12345"]};
+
+[HelpshiftSupport showConversation:self
+                       withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
+```
+
+</TabItem>
+
+</Tabs>
+
+### Adding metadata using setMetadataBlock API {#metadata-block}
+
+<Admonition type="info" title="Note">
+
+Metadata should only be sent as String key-value pairs.
+
+</Admonition>
+
+Developers can still use the `setMetadataBlock:` API to provide a block which returns an `NSDictionary` object containing the key-value pairs which make up the metadata.The signature of the metadataBlock is `typedef NSDictionary* (^metadataBlock)(void);`
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+```
+[HelpshiftSupport setMetadataObjectBlock:^(void){
+	    return [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"name":@"xyz",
+	                                                                @"email":@"xyz@abc.com",
+                                                                    @"level":gameObject.level,
+                                                                    @"score":gameObject.score
+																	}];
+}];
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+```
+[HelpshiftSupport setMetadataBlock:^(void){
+        return [NSDictionary dictionaryWithObjectsAndKeys: @"xyz", @"name",
+                                                       @"xyz@abc.com", @"email",
+                                                       gameObject.level, @"level",
+                                                       gameObject.score, @"score",
+                                                       nil];
+}];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="Note">
+
+Please make sure that the objects and keys are NSStrings only. `HelpshiftSupportCustomMetadataKey` will take preference over `setMetadataBlock`
+
+</Admonition>
+
+### Attaching tags with metadata {#metadatatags}
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Applicable to SDK v4.0.0 & above.
+- HSTags must be created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- HSTags must be lowercase since the dashboard automatically converts tags to lowercase. The tags present on the dashboard must exactly match the HSTags.
+
+</Admonition>
+
+<Image src="/static/books/ios/metadata-tags.png" width="half" />{" "}
+
+You can attach tags with metadata to every new conversation via a reserved key constant `HelpshiftSupportTagsKey` to be used with `setMetadataBlock:` or to pass in `withOptions:` of support API's (supported from v4.2.0 and above) (of type `NSDictionary`) to pass `NSArray`(of only `NSStrings`) which get intepreted at server and added as Tags for the every new conversation.
+
+If an object in `NSArray` is not of type `NSString` then the object will be removed from Tags and
+will not be added for the new conversation.
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+```
+HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
+builder.customMetaData = [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype":@"paid", @"level":@"7", @"score":@"12345"}
+                                                                    andTags:@[@"feedback",@"paid user",@"v4.1"]];
+HelpshiftAPIConfig *apiConfig = [builder build];
+[HelpshiftSupport showFAQs:self withConfig:apiConfig];
+```
+
+Developers can still use the `setMetadataBlock:` API to pass tags.
+
+```
+[HelpshiftSupport setMetadataObjectBlock:^(void){
+    return [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype": @"paid",
+	                                                            @"level":@"7",
+                                                                @"score":@"12345"}
+	                                                  andTags:@[@"feedback",@"paid user",@"v4.1"];
+}];
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+```
+NSDictionary *metaDataWithTags = @{@"usertype": @"paid",
+                                   @"level":@"7",
+                                   @"score":@"12345",
+                                   HelpshiftSupportTagsKey:@[@"feedback",@"paid user",@"v4.1"]};
+
+[HelpshiftSupport showFAQs:self
+               withOptions:@{@"gotoConversationAfterContactUs":@"YES",
+       HelpshiftSupportCustomMetadataKey: metaDataWithTags}];
+```
+
+Developers can still use the `setMetadataBlock:` API to pass tags.
+
+```
+[HelpshiftSupport setMetadataBlock:^(void){
+    return [NSDictionary dictionaryWithObjectsAndKeys:@"xyz", @"name",
+           @"xyz@abc.com", @"email",
+           [NSArray arrayWithObjects:@"feedback",@"paid user",nil], HelpshiftSupportTagsKey, nil];
+}];
+```
+
+</TabItem>
+
+</Tabs>
+
+### Example of using a custom logging mechanism with metadata {#example-logs}
+
+Assume you have your own custom logging mechanism for apps that returns a URL (which takes you to your relevant log viewer), and you would want that URL to be sent with each new conversation the user initiates.
+Say you have a button "Send Feedback" in your application whose touch event is linked to a method sendFeedback: where you want to call Helpshift `showConversation:` or any other support session.Then you can implement something like:
+
+    - (IBAction) sendFeedback:(id) sender {
+
+        // Manage your UI for posting logs and retrieving URLs
+        // Post logs and retrieve URL
+        Send logs to your custom logs server
+        Retrieve log URL from response
+
+        // Set metadata with URL
+        [HelpshiftSupport setMetadataBlock:^(void){
+            return [NSDictionary dictionaryWithObjectsAndKeys: URL, @"logURL",nil];
+        }];
+
+        // Call Helpshift showConversation
+        [HelpshiftSupport showConversation:self];
+    }
+
+Please make sure that the metadata is already present before presenting any support session.
+
+## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+
+<Admonition type="info" title="Note">
+
+**On Custom Issue Fields keys & compatibility**
+
+- Applicable to SDK v6.3.0 & above.
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+
+</Admonition>
+
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` method in the ApiConfig object.
+These Custom Issue Fields would be sent whenever a new conversation is started by the end user.
+
+As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
+All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts.
+
+Possible datatypes to be passed into the config are:
+
+| Type | value  | Comments                                                                                                                                                      |
+| ---- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "sl" | string | Single line string with character limit of 255                                                                                                                |
+| "ml" | string | Multi line string with character limit of 100,000                                                                                                             |
+| "n"  | string | String representation of number. For eg. "12345"                                                                                                              |
+| "dd" | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "dt" | string | String representation of epoch time in milliseconds. For eg. "1505927361535"                                                                                  |
+| "b"  | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
+
+Example:-
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```
+NSMutableDictionary *customIssueFieldsDict = [NSMutableDictionary dictionary];
+/*The format for adding custom issue field is customIssueFieldsDict[@"<key>"] = @[@"<type>",@"<value>"];*/
+customIssueFieldsDict[@"name"] = @[@"sl",@"John Doe"];
+customIssueFieldsDict[@"address"] = @[@"ml",@"This is user's long bio"];
+customIssueFieldsDict[@"level"] = @[@"n",@"42"];
+customIssueFieldsDict[@"is_pro"] = @[@"b",@"true"];
+customIssueFieldsDict[@"currency"] = @[@"dd", @"Dollar"];
+customIssueFieldsDict[@"join_date"] = @[@"dt", @"1505927361535"];
+
+HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
+builder.customIssueFields = customIssueFieldsDict;
+HelpshiftAPIConfig *apiConfig = [builder build];
+[HelpshiftSupport showFAQs:self withConfig:apiConfig];
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+```
+NSMutableDictionary *customIssueFieldsDict = [NSMutableDictionary dictionary];
+/* The format for adding custom issue field is customIssueFieldsDict[@"<key>"] = @[@"<type>",@"<value>"];*/
+customIssueFieldsDict[@"name"] = @[@"sl",@"John Doe"];
+customIssueFieldsDict[@"address"] = @[@"ml",@"This is user's long bio"];
+customIssueFieldsDict[@"level"] = @[@"n",@"42"];
+customIssueFieldsDict[@"is_pro"] = @[@"b",@"true"];
+customIssueFieldsDict[@"currency"] = @[@"dd", @"Dollar"];
+customIssueFieldsDict[@"join_date"] = @[@"dt", @"1505927361535"];
+
+NSDictionary *config = @{@"customIssueFields" : customIssueFieldsDict};
+[HelpshiftSupport showFAQs:self withConfig:config];
+```
+
+</TabItem>
+
+</Tabs>
+
+## Debug logs {#debug-logs}
+
+<Admonition type="info" title="Note">
+
+Starting iOS 10, Apple has deprecated support for the ASL library that was used to collect logs from the system automatically.
+
+</Admonition>
+
+You may wish to send additional debug logs when an issue is filed. This can be acheived using HelpshiftSupport's `addLog:` API.
+
+```
++ (void) addLog:(NSString *)message;
+```
+
+Example usage
+
+```
+- (void) userUpdatedSomeSetting:(NSString *)settingName {
+    ...
+    NSString *message = [NSString stringWithFormat:@"User updated setting: %@", settingName];
+    [HelpshiftSupport addLog:message];
+    ...
+}
+```
+
+or,
+
+```
+- (void) userVisitedCheckoutPage {
+    ...
+        [HelpshiftSupport addLog:@"User went to checkout page"];
+    ...
+}
+```
+
+When an issue is filed by the user, these debug logs will be submitted as metadata.
+
+## Issue Archival {#issue-archival}
+
+From version 5.7.0, Helpshift SDK includes support for archiving issues.
+Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
+Once archived, issues cannot be reopened. This improves dashboard performance.
+Archived issues will be accessible to agents through the dashboard for future reference.
+
+![issueArchival.png](/static/books/ios/issuearchival.png "issueArchival.png")
+
+## Check if there is an active Conversation {#check-if-conversation-active}
+
+This API determines if there is currently an ongoing Conversation in the SDK. You can use `[HelpsiftSupport checkIfConversationActive]` and implement HelpshiftSupportDelegate method as shown below to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
+
+As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active.
+
+You can implement something like the following in the didCheckIfConversationActive delegate method:
+
+```
+- (void) didCheckIfConversationActive:(BOOL)isActive {
+    if (isActive) {
+        //Active Conversation
+    } else {
+        //No open Conversation
+    }
+}
+
+```
+
+## Check if an active Conversation has ended {#check-if-conversation-ended}
+
+If you want to keep track of when your users end an ongoing conversation, you can implement this delegate callback. This delegate is called whenever the ongoing conversation is resolved, rejected from the Dashboard, timed out or archived.
+
+```
+- (void) conversationEnded {
+    //Conversation has ended
+}
+```
