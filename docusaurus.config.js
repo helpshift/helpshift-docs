@@ -15,10 +15,23 @@ const getDocsDirectoriesForSearchPaths = (rootPath) =>
     .filter((dir) => dir.isDirectory())
     .map((dir) => dir.name);
 
+const PRODUCTION_URL = "https://developers.helpshift.com";
+
+const getDeployUrl = () => {
+  if (process.env.VERCEL_ENV === "production") {
+    return process.env.SEO_URL || PRODUCTION_URL;
+  }
+
+  if (process.env.VERCEL_ENV === "preview") {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  // Development
+  return "http://localhost:3000";
+};
+
 const isEnvProduction = process.env.VERCEL_ENV === "production";
-const deployUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const deployUrl = getDeployUrl();
 
 async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
