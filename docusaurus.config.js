@@ -15,10 +15,24 @@ const getDocsDirectoriesForSearchPaths = (rootPath) =>
     .filter((dir) => dir.isDirectory())
     .map((dir) => dir.name);
 
-const isEnvProduction = process.env.VERCEL_ENV === "production";
-const deployUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const PRODUCTION_URL = "https://developers.helpshift.com";
+const envIsProduction = process.env.VERCEL_ENV === "production";
+const envIsPreview = process.env.VERCEL_ENV === "preview";
+
+const getDeployUrl = () => {
+  if (envIsProduction) {
+    return process.env.SEO_URL || PRODUCTION_URL;
+  }
+
+  if (envIsPreview) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  // Development - this has no impact even if it's wrong during development
+  return "http://localhost:3000";
+};
+
+const deployUrl = getDeployUrl();
 
 async function createConfig() {
   /** @type {import('@docusaurus/types').Config} */
@@ -94,7 +108,7 @@ async function createConfig() {
         metadata: [
           {
             name: "robots",
-            content: isEnvProduction ? "index,follow" : "noindex,nofollow",
+            content: envIsProduction ? "index,follow" : "noindex,nofollow",
           },
           {
             name: "og:image",
