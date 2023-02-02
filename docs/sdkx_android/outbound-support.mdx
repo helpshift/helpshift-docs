@@ -64,7 +64,6 @@ For example -
 _Following code shows how to handle incoming push notification and posting it on the notification bar of the device_
 
 ```java
-
 @Override
 public void onMessageReceived(RemoteMessage remoteMessage) {
   Map<String, String> data = remoteMessage.getData();
@@ -104,7 +103,6 @@ public void onMessageReceived(RemoteMessage remoteMessage) {
       }
     }
 }
-
 ```
 
 When the user clicks on the notification, `HandleNotificationActivity` activity is started (as specified in the above code sample).
@@ -115,7 +113,6 @@ For Example -
 _Following code shows how to delegate push notification data by calling `Helpshift.handleProactiveLink()` to Helpshift SDK._
 
 ```java
-
 public class HandleNotificationActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,7 +125,6 @@ public class HandleNotificationActivity extends Activity {
         finish();
     }
 }
-
 ```
 
 ## Passing configuration specific to the current user {#user-specific-config}
@@ -156,7 +152,6 @@ For example -
 _Following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method._
 
 ```java
-
 public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector{
   @Override
   public void onCreate() {
@@ -192,5 +187,4 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
     return localConfig;
     }
 }
-
 ```

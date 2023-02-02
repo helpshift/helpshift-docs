@@ -45,8 +45,6 @@ For example:
     config.put("tags", new String[]{"foo", "bar"});
 
     Helpshift.showConversation(MainActivity.this, config);
-
-
 ```
 
 <Admonition type="info" title="Note">
@@ -65,7 +63,6 @@ You can attach additional metadata to every new conversation started by the app 
 Use code:
 
 ```java
-
 HashMap<String, String> customMetadata = new HashMap<String, String();
 customMetadata.put("usertype","paid");
 customMetadata.put("level","7");
@@ -94,7 +91,6 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 5. Pass the map to `configMap` with key `"customIssueFields"` of the `Helpshift.showConversation(this, configMap)`
 
 ```java
-
     Map<String, Object> joiningDate = new HashMap<>();
     joiningDate.put("type", "date");
     joiningDate.put("value", 1505927361535L);
@@ -124,8 +120,6 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     config.put("customIssueFields", cifMap);
 
     Helpshift.showConversation(MainActivity.this, config);
-
-
 ```
 
 The following are the valid values for the `type` key of a Custom Issue Field.
@@ -161,9 +155,7 @@ Breadcrumbs can be used to track events or end-user actions. It helps you to add
 For example:
 
 ```java
-
     Helpshift.leaveBreadCrumb("Any breadcrumb string");
-
 ```
 
 Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `clearBreadCrumbs` API —
@@ -171,9 +163,7 @@ Breadcrumbs are collected within the set breadcrumb limit. The limit is set unde
 For example:
 
 ```java
-
     Helpshift.clearBreadCrumbs();
-
 ```
 
 ## Debug Logs {#debug-logs}
@@ -189,9 +179,7 @@ You may wish to pass additional debug logs with every new conversation filed by 
 For example:
 
 ```java
-
     HSDebugLog.d("TAG", "Any Debug log string");
-
 ```
 
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.

@@ -78,7 +78,6 @@ For FCM users, the API key can be found at your
 1. Send the device registration id to Helpshift via the `Helpshift.registerDeviceToken` API
 
 ```java
-
         public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // ...
@@ -88,13 +87,11 @@ For FCM users, the API key can be found at your
           Helpshift.registerPushToken(newToken);
         }
       }
-
 ```
 
 2. Using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `Helpshift.handlePush` API which takes a Map argument.
 
 ```java
-
         @Override
         public void onMessageReceived(RemoteMessage message) {
           Map<String, String> data = message.getData();
@@ -103,9 +100,6 @@ For FCM users, the API key can be found at your
             Helpshift.handlePush(data);
           }
         }
-
-
-
 ```
 
 ## In-app notifications {#in-app-notifications}
@@ -131,7 +125,6 @@ If the FCM device token is registered for push notifications, then in-app notifi
 By default the application icon is used as the notification icon. You can customize the notification icons using the config in the `install` call.
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -149,8 +142,6 @@ By default the application icon is used as the notification icon. You can custom
                           configurations);
       }
     }
-
-
 ```
 
 ## Customizing notification sound {#notificationSound}
@@ -160,7 +151,6 @@ By default the default device notification sound is used for helpshift notificat
 For example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -177,7 +167,6 @@ For example:
                           configurations);
       }
     }
-
 ```
 
 ## Customizing notification channels {#notificationChannels}
@@ -187,7 +176,6 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 Example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -204,8 +192,6 @@ Example:
                           configurations);
       }
     }
-
-
 ```
 
 ## Configuring in-app notifications {#in-app}
@@ -219,7 +205,6 @@ If you do not want the in-app notification support provided by the Helpshift SDK
 Example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -236,8 +221,6 @@ Example:
                           configurations);
       }
     }
-
-
 ```
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
@@ -246,7 +229,6 @@ To fetch unread messages count from the server you can call `requestUnreadMessag
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.
 
 ```java
-
     private void updateAppBadgeCount(){
         Helpshift.requestUnreadMessageCount(true)
     }
@@ -267,8 +249,6 @@ Based on the value of `shouldFetchFromServer`, the locally stored count will be 
         }
       }
     // ...
-
-
 ```
 
 - The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
