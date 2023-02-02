@@ -1,5 +1,5 @@
 const envIsProduction = process.env.VERCEL_ENV === "production";
-const safeList = envIsProduction
+const safeList = !envIsProduction
   ? [
       {
         // Allow all margin and padding styles in development/preview
