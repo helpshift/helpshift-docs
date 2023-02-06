@@ -7,9 +7,8 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
-    date: "10 Nov 2022",
     title: "New dev docs launched!",
-    info: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation.`,
+    info: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation. Check it out on the link below!`,
     link: "https://old-developers.helpshift.com",
     linkTitle: "old-developers.helpshift.com",
   },
