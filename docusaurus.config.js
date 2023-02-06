@@ -73,6 +73,12 @@ async function createConfig() {
             ignorePatterns: ["/tags/**"],
             filename: "sitemap.xml",
           },
+          gtag: envIsProduction
+            ? {
+                trackingID: process.env.GTM,
+                anonymizeIP: true,
+              }
+            : undefined,
         },
       ],
     ],
