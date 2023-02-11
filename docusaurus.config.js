@@ -159,6 +159,9 @@ async function createConfig() {
         };
       },
       require.resolve("./src/plugins/webChat.js"),
+      !isEnvProduction
+        ? require.resolve("./src/plugins/webpackNodePolyfill.js")
+        : null,
     ],
   };
 
