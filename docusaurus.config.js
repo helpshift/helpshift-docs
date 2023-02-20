@@ -62,7 +62,7 @@ async function createConfig() {
             sidebarPath: require.resolve("./sidebars.js"),
             routeBasePath: "/",
             remarkPlugins: [[variables, { data: variablesData }]],
-            editUrl: "https://github.com/helpshift/helpshift-docs/edit/next",
+            editUrl: "https://github.com/helpshift/helpshift-docs/edit/main",
           },
           theme: {
             customCss: require.resolve("./src/css/custom.css"),
