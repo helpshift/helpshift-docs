@@ -8,7 +8,7 @@ Browse the existing Github issues or feel free to create a new Github issue if y
 
 ## Contributing
 
-You can contribute to this repository by opening a pull request against the `next` branch. Check the [Local development](#local-development) section for more information.
+You can contribute to this repository by opening a pull request against the `main` branch. Check the [Local development](#local-development) section for more information.
 
 ## Local development
 
@@ -27,7 +27,7 @@ This is a [Docusaurus](https://docusaurus.io) project, so Docusaurus-related com
 1. Run the local server with `npm run start` (starts on port 3000)
 2. Use `npm run lint` to check for or `npm run lint:fix` to take care of linter issues
 3. Make your changes
-4. Open a PR against the `next` branch
+4. Open a PR against the `main` branch
 
 The search plugin only works with the final output of Docusaurus. If you want to test changes against the search plugin, do the following:
 
