@@ -1,0 +1,101 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "You're 3 steps away from adding great in-app support to your React native application."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Getting Started {#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your React Native application.
+
+</Intro>
+
+Guide to integrating the React Native plugin for the Helpshift SDK X.
+
+## Requirements {#version-requirements}
+
+- Node v16 or above
+- Android Studio
+- Xcode 13 or above
+- Java 11 or above
+
+## Download Helpshift React native SDK {#getting-sdk}
+
+#### SDK X - In-app Customer Service {#standard-sdk}
+
+<DownloadButton
+  text="Download Plugin"
+  link="[% sdkx-react-native.plugin_url %]"
+  classes="mb-4"
+/>
+
+
+## Add Helpshift React native plugin to your React Native project {#adding-to-project}
+
+- Add helpshift react native plugin dependancy in your package.json file
+- npm i helpshift-plugin-sdkx-react-native
+- After that, re-run you react application and start using helpshift sdkx functions
+
+
+## Initializing Helpshift in your app {#initializing}
+
+1. First, create an app on the Helpshift Dashboard
+
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+
+2. Create an app with **Android** and **iOS** as selected `Platform`s
+   <Image
+     src="/static/books/helpshiftx/create_app_with_android_platform.png"
+     width="full"
+   />{" "}
+
+Helpshift uniquely identifies each registered App with a combination of 2 tokens:
+
+<div className=" compact">
+
+|                          |                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_                                      |
+| <code>Platform ID</code> | Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
+
+</div>
+You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
+Select your App and _check Android as a platform_ from the dropdowns and copy
+the 2 tokens to be passed when initializing Helpshift.
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
+
+You should now import `install` function from `helpshift-plugin-sdkx-react-native` -> Helpshift SDK and configure your specific project fields. Copy the `domain` and `platformId` from the dashboard.
+
+
+Call the `install` function before any other interaction with the Helpshift SDK (preferably in the Useeffect callback in react native call)
+
+
+The `install` call takes a 3 parameters. out of which appid and domain is mendatory and config parameter is optional, which means you can pass an empty map. The meaning of different keys and their possible values for Android can be found [here](/sdkx-react-native/sdk-configuration)
+
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated in your app. You should now use the support APIs for [conversation screens](/sdkx-react-native/support-tools#conversation-view) inside your app.
+
+<Admonition type="info" title="Note">
+
+Since the Helpshift plugin is meant for mobile devices only, you should put all Helpshift calls inside conditional checks to make sure they are only called when running on a device.
+
+</Admonition>
