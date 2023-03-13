@@ -1,0 +1,96 @@
+---
+sidebar_position: 20
+title: Helpshift APIs
+description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift APIs {#support-tools}
+
+<Intro>
+
+Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
+
+</Intro>
+
+## Integrating Contact Us & In App Messaging {#conversation-view}
+
+<Centered width="major">
+
+![newConversation.png](/static/books/sdkx_android/show_conversation.png "newConversation.png")
+
+</Centered>
+
+You can use this API call to allow a user to directly send feedback or start a new conversation without having to first view FAQs.
+
+This API call will show the conversation screen. Once a conversation is started, it will continue until it is resolved or rejected by the agent on Helpshift Dashboard.
+
+To configure SDK, you can pass various config options as a parameter. Checkout more config options [here](/sdkx-react-native/sdk-configuration)
+
+## Integrating FAQs {#faqs-view}
+
+<Centered >
+
+![showFAQs.png](/static/books/sdkx_android/show_faqs.png "showFAQs.png")
+
+</Centered>
+
+You can use this API to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
+
+To configure the FAQs screen, you can pass various config options as parameter. Checkout more config options [here](/sdkx-react-native/sdk-configuration)
+
+
+## Showing a Particular FAQ Section {#faq-section-view}
+
+<Centered >
+
+![showFAQSection.png](/static/books/sdkx_android/show_section.png "showFAQSection.png")
+
+</Centered>
+
+You can use this API to invoke a particular section of your FAQs with its FAQ section publish-id
+
+This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could link a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
+
+
+**You'll need the `publish-id` of the section in this case:**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+
+## Showing a Particular FAQ {#single-faq-view}
+
+<Centered >
+
+![showSingleFAQ.png](/static/books/sdkx_android/show_single_faq.png "showSingleFAQ.png")
+
+</Centered>
+
+You can use the API to show a single FAQ. You will need to pass the `publish-id` of the FAQ to be shown to this API.
+
+
+**You'll need the `publish-id` of the FAQ in this case:**
+
+<Centered width="full">
+
+![](/static/books/misc/faq-publish-id.png)
+
+</Centered>
+
+### Set SDK language {#set-language-api}
+
+You can set the SDK language for the given locale using the below API.
+For more info about languages you can refer [here](/sdkx-react-native/i18n/)

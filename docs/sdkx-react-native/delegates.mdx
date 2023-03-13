@@ -1,0 +1,218 @@
+---
+sidebar_position: 100
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+</Intro>
+
+## Helpshift Delegate implementation {#delegate-implementation}
+
+```
+const handleCallbacks = () => {
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'receivedUnreadMessageCount') {
+        try {
+          let countData =
+            Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
+          console.log(countData.count);
+        } catch (err) {
+          console.error('Parsing Error', err);
+        }
+      } else {
+        console.log(JSON.stringify(data));
+      }
+    });
+    helpshiftEmitter.addListener('onUserAuthenticationFailure', (data) => {
+      Toast.show({
+        type: 'error',
+        text1: JSON.stringify(data),
+      });
+    });
+  };
+```
+
+
+## Events {#helpshift-events}
+
+### Helpshift session started event {#session-delegates}
+
+This event gets fired when the Helpshift session starts
+
+```
+    helpshiftEmitter.addListener('helpshiftSessionStarted', (data) => {
+      if (data.eventName == 'conversationStart') {
+        //Your code here.
+      }
+    });  
+```
+
+### Helpshift session ended event {#session-delegates}
+
+This event gets fired when the Helpshift session ends.
+
+```
+    helpshiftEmitter.addListener('helpshiftSessionEnded', (data) => {
+      if (data.eventName == 'conversationStart') {
+        //Your code here.
+      }
+    });  
+```
+
+### Unread Message Count Event {#unreadMessageCount}
+
+This event gets fired when you call `RequestUnreadMessageCount(FetchFromServer)` API to request unread messages count.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'receivedUnreadMessageCount') {
+        //Your code here.
+      } 
+    });
+    helpshiftEmitter.addListener('onUserAuthenticationFailure', (data) => {
+       //Your code here.
+    });
+```
+### Conversation Status Event {#conversation-status}
+
+This event contains information about the current ongoing conversation.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'conversationStatus') {
+        //Your code here.
+        //Event data: `latestIssueId` , `latestIssuePublishId` , `open`
+      }
+    });  
+```
+### Widget Toggle Event {#widget-toggle-event}
+
+This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'widgetToggle') {
+        //Your code here.
+      }
+    });  
+```
+### Conversation Start Event {#conversation-start-event}
+
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'conversationStart') {
+        //Your code here.
+      }
+    });  
+```
+### Message Add Event {#message-add-event}
+
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user. For your reference, see the below example.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'messageAdd') {
+        //Your code here.
+        //Event data keys: 
+        //  -`type` or `attachment` or `text`
+        //  - `body`
+      }
+    });  
+```
+
+### CSAT Submit Event {#csat-submit-event}
+
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'csatSubmit') {
+        //Your code here.
+      }
+    });  
+```
+
+### Conversation End Event {#conversation-end-event}
+
+This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'conversationEnd') {
+        //Your code here.
+      }
+    });  
+```
+
+### Conversation Rejected Event {#conversation-rejected-event}
+
+This event is triggered when an agent rejects the conversation.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'conversationRejected') {
+        //Your code here.
+      }
+    });  
+```
+
+### Conversation Resolved Event {#conversation-resolved-event}
+
+This event is triggered when an agent resolves the conversation.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'conversationResolved') {
+        //Your code here.
+      }
+    });  
+```
+
+### Conversation Reopened Event {#conversation-reopened-event}
+
+When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+
+```
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'conversationReopened') {
+        //Your code here.
+      }
+    });  
+```
+
+### User Authentication Failed Event {#user-authentication-failed-event}
+
+If you have `user authentication feature` enabled on the Dashboard and if you pass an invalid token in the `Login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-unreal/users)
+
+You have to use `BindAuthFailureDelegate` to listen to Authentication failure events.
+
+The authentication failure reason is wrapped in an enum `EHelpshiftAuthenticationFailureReason` Example:
+
+Reason type :
+
+- `EHelpshiftAuthenticationFailureReason.REASON_INVALID_AUTH_TOKEN`
+- `EHelpshiftAuthenticationFailureReason.REASON_AUTH_TOKEN_NOT_PROVIDED`
+- `EHelpshiftAuthenticationFailureReason.UNKNOWN`

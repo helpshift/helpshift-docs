@@ -1,0 +1,164 @@
+---
+sidebar_position: 90
+title: Tracking
+description: "Track events and user actions when the user starts a new conversation.Attach custom metadata to every conversation started via the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Tracking {#tracking}
+
+<Intro>
+
+Track events and user actions when the user starts a new conversation.
+Attach custom metadata to every conversation started via the SDK.
+
+</Intro>
+
+## Adding Tags to Conversations {#adding-tags}
+
+You can attach tags while reporting an issue by passing them to the `Tags` parameter at the time of calling `ShowConversation` function. You can pass an **array of strings** which will get added as Tags when the issue is created.
+
+Pass this Map to `ShowConversation()` API. For eg:
+```
+const apiConfig = {
+    tags: {"foo","bar"},
+};
+showConversation(apiConfig);
+```
+
+
+
+Similarly, you can pass this configuration to other APIs (ie. `ShowSection`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- The attached tags must exactly match the tags present on the dashboard.
+
+</Admonition>
+
+## Set Custom Metadata {#set-custom-metadata}
+
+If you want to set Custom Metadata at the time of Issue creation, follow the steps.
+
+1. Define your custom metadata `Map` as key-value pairs.
+2. Add the custom metadata `Map` in the map expected in the `Parameters` argument with `customMetadata` as the key.
+
+Pass this Map to following APIs:
+
+`ShowConversation` API,
+
+```
+const CIFs = { stock_level: { type: 'number', value: '1505' } };
+ const apiConfig = {
+   customIssueFields: CIFs,
+};
+showConversation(apiConfig);
+```
+
+`showFAQsWithConfig` API,
+```
+const CIFs = { stock_level: { type: 'number', value: '1505' } };
+ const apiConfig = {
+   customIssueFields: CIFs,
+};
+showFAQsWithConfig(apiConfig);
+```
+
+`showFAQSectionWithConfig` API
+```
+const CIFs = { stock_level: { type: 'number', value: '1505' } };
+ const apiConfig = {
+   customIssueFields: CIFs,
+};
+showFAQSectionWithConfig(apiConfig);
+```
+
+## Set Custom Issue Fields {#set-custom-issue-fields}
+
+If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
+
+1. Initialise a top level custom issue fields' `Map`
+2. Define your custom issue field `Map`
+3. Add the `"type"` and `"value"` for that custom issue field
+   You can find the `type` in this constants class `HelpshiftCustomIssueFieldParameter`
+
+
+Pass this Map to `ShowConversation()` API.
+
+Similarly, you can pass this Map to other APIs (ie. `ShowSection`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
+
+The following are the valid values for the `type` key of a Custom Issue Field.
+
+- NewSingleLineParameter
+- NewMultiLineParameter
+- NewNumberParameter
+- NewCheckboxParameter
+- NewDropdownParameter
+- NewDateParameter
+
+Compatibility table for type and values:
+
+| Type                   | Value    | Comments                                                        |
+| ---------------------- | -------- | --------------------------------------------------------------- |
+| NewSingleLineParameter | string   | Character limit of 255                                          |
+| NewMultiLineParameter  | string   | Character limit of 100,000                                      |
+| NewNumberParameter     | int      |                                                                 |
+| NewDropdownParameter   | string   | Drop-down options should exist for the given Custom Issue Field |
+| NewDateParameter       | DateTime | Epoch time. For example - **Date.now()**                        |
+| NewCheckboxParameter   | boolean  |                                                                 |
+
+<Admonition type="info" title="Note">
+
+On Custom Issue Fields keys & compatibility
+
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
+
+</Admonition>
+
+<Admonition type="info" title="Note">
+
+In the **Breadcrumbs** and **Debug logs** APIs, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format.
+
+<p className="m-0">For example:</p>
+
+* "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
+* "key - value" - ** Simple string, This is supported **
+
+</Admonition>
+
+## Breadcrumbs {#breadcrumbs}
+
+Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs can use `LeaveBreadcrumb` API and pass a string to it. For example -
+
+```
+ leaveBreadCrumb(<breadCrumbString>)
+```
+
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `ClearBreadcrumbs` API. For example -
+```
+clearBreadcrumbs()
+```
+
+## Debug Logs {#debug-logs}
+
+You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
+
+
+Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
