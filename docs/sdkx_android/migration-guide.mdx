@@ -89,13 +89,11 @@ We don’t support the migration from SDK version < 6. If you move to SDK X from
 
 Change the Gradle import statement for Helpshift SDK as following:
 
-```
-
+```groovy
 dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.helpshift:helpshift-sdkx:10.1.0'
 }
-
 ```
 
 If you have added design, recyclerview, and cardview dependencies only for Helpshift SDK, then you can remove them because SDK X does not use those libraries.
@@ -118,8 +116,7 @@ For example:
 
 Update the `install` call as the following.
 
-```
-
+```java
 try {
     Helpshift.install(this,
                   "<App Id from the Helpshift Dashboard>",
@@ -128,7 +125,6 @@ try {
 } catch (UnsupportedOSVersionException e) {
     // Android OS versions prior to Lollipop (< SDK 21) are not supported.
 }
-
 ```
 
 Please refer to [SDK X Getting Started](/sdkx_android/getting-started#initializing) guide for more information.
@@ -202,7 +198,7 @@ Following deprecated configurations have been removed from the SDK:
 
 Replace the legacy SDK `login` code:
 
-```
+```java
 HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.co")
                                               .setName("John Doe")
                                               .setAuthToken("generated-user-authentication-token")
@@ -214,7 +210,7 @@ Core.login(user);
 
 SDK X `login` :
 
-```
+```java
 Map<String, Object> userData = new HashMap<>();
 userData.put("userId", "unique-user-id-746501");
 userData.put("userEmail", ""john.doe@app.co");
@@ -222,37 +218,33 @@ userData.put("userName", "John Doe");
 userData.put("userAuthToken", "generated-user-authentication-token");
 
 Helpshift.login(userData);
-
 ```
 
 ### Logout {#logout}
 
 Replace the legacy SDK `logout` code:
 
-```
+```java
 Core.logout()
-
 ```
 
 SDK X `logout` :
 
-```
+```java
 Helpshift.logout()
-
-
 ```
 
 ### Clear anonymous user {#clear-anon-user}
 
 Replace legacy SDK `clearAnonymousUser` code:
 
-```
+```java
 Core.clearAnonymousUser();
 ```
 
 SDK X API :
 
-```
+```java
 Helpshift.clearAnonymousUserOnLogin();
 ```
 
@@ -262,7 +254,7 @@ Replace authentication failure listener delegate with `HelpshiftEventListener` i
 
 Remove legacy SDK Delegate:
 
-```
+```java
 import com.helpshift.support.Support.Delegate
 ...
 ...
@@ -283,12 +275,11 @@ class MyDelegate implements Delegate {
 ...
 
 Support.setDelegate(new MyDelegate());
-
 ```
 
 Use SDK X's `HelpshiftEventListener` for authentication failure updates:
 
-```
+```java
 Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
@@ -344,7 +335,7 @@ Replace the following APIs from Legacy SDK to SDK X APIs for notification handli
 
 Asynchronous `requestUnreadMessageCount` result is provided as an event on `HelpshiftEventListener`:
 
-```
+```java
 Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
@@ -408,7 +399,6 @@ We recommened using [CIF](/sdkx_android/tracking#set-custom-issue-fields) instea
 Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/android/tracking#metadata)). Replace Legacy SDK code for attaching metadata with equivalent SDK X code -
 
 ```java
-
 HashMap<String, String> customMetadata = new HashMap<String, String();
 customMetadata.put("usertype","paid");
 customMetadata.put("level","7");
@@ -424,7 +414,7 @@ Helpshift.showConversation(MainActivity.this, config);
 
 To pass on `tags` as shown below in legacy SDK code:
 
-```
+```java
 String[] tags = new String[]{"foo", "bar"};
 
 HashMap<String, Object> userData = new HashMap<>();
@@ -439,7 +429,7 @@ private void showHelp () {
 
 Use the following SDK X API:
 
-```
+```java
 Map<String, Object> config = new HashMap<>();
     config.put("tags", new String[]{"foo", "bar"});
 
@@ -450,7 +440,7 @@ Map<String, Object> config = new HashMap<>();
 
 If you have following CIFs set in legacy SDK :
 
-```
+```java
 Map<String, String[]> customIssueFields = new HashMap<>();
 customIssueFields.put("join_date", new String[]{"dt", "1505927361535"});
 customIssueFields.put("level", new String[]{"n", "42"});
@@ -471,7 +461,7 @@ private void showHelp() {
 
 Use the following SDK X code to set CIFs as in above example:
 
-```
+```java
 Map<String, String> joiningDate = new HashMap<>();
     joiningDate.put("type", "date");
     joiningDate.put("value", "1505927361535");
@@ -530,7 +520,7 @@ Following events are not supported anymore from the legacy SDK:
 
 ## Review and Feedback {#review-feedback}
 
-- App review request is not supported in SDK X — [Review Request - Helpshift for Android](/android/reviews-and-feedback#review-and-feedback)
+- Manual App Review Request by Agent is Supported in SDK X — [Manual App Review Request by Agent](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
 
 - Manual app rating request is not supported in SDK X — [Manual App Rating - Helpshift for Android](/android/reviews-and-feedback#app-rating-api)
 

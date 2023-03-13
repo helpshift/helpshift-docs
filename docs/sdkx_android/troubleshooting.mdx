@@ -69,10 +69,9 @@ Helpshift SDK X uses legacy android support libraries. If you want to use Androi
 
 2. Add following lines in gradle.properties file.
 
-```
+```groovy
 android.useAndroidX=true
 android.enableJetifier=true
-
 ```
 
 Jetifier is a tool which migrates support-library-dependent libraries to rely on the equivalent AndroidX packages.
@@ -100,7 +99,6 @@ Access to XMLHttpRequest at 'https://api.helpshift.com/websdk/……' from origi
 header field accept-language is not allowed by Access-Control-Allow-Headers in
 preflight response. -- From line 0 of https://……...webchat.helpshift.com/latest/
 android/html/index.html?v=3.32.1&parent=https%3A%2F%2Flocalhost
-
 ```
 
 this could be because of an invalid language code passed to Helpshift SDK. To resolve the issue you can use `Helpshift.setLanguage(String language)` API to pass the valid language code to Helpshift SDK.

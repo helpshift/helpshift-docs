@@ -54,7 +54,6 @@ The default value of this flag is `true` i.e., the in-app notification will be e
 For example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -71,7 +70,6 @@ For example:
                           configurations);
       }
     }
-
 ```
 
 ## Enable Contact Us {#enableContactUs}
@@ -91,12 +89,10 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 For example
 
 ```java
-
     Map<String, Object> config = new HashMap<>();
     // .. other configs
     config.put("enableContactUs", "AFTER_VIEWING_FAQS");
     Helpshift.showFAQs(MainActivity.this, config);
-
 ```
 
 ### Best Practices
@@ -105,7 +101,6 @@ For example
 - Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
 
 ```java
-
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String country = tm.getSimCountryIso();
         String value = "ALWAYS";
@@ -117,7 +112,6 @@ For example
         HashMap config = new HashMap();
         config.put("enableContactUs", value);
         Support.showFAQs(MyActivity.this, config);
-
 ```
 
 ## Screen Orientation {#screen-orientation}
@@ -138,7 +132,6 @@ For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTA
 For example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -155,8 +148,6 @@ For example:
                           configurations);
       }
     }
-
-
 ```
 
 ## Enable Logging {#enable-logging}
@@ -176,7 +167,6 @@ Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in 
 For example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -193,8 +183,6 @@ For example:
                           configurations);
       }
     }
-
-
 ```
 
 ## Notification Icon {#notificationIcon}
@@ -204,7 +192,6 @@ By default the application icon is used as the notification icon. You can custom
 Example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -221,7 +208,6 @@ Example:
                           configurations);
       }
     }
-
 ```
 
 ## Large Notification Icon {#largeNotificationIcon}
@@ -232,7 +218,6 @@ If you want to specify the large notification icon also to show up in the notifi
 Example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -249,8 +234,6 @@ Example:
                           configurations);
       }
     }
-
-
 ```
 
 ## Notification Sound {#notificationSound}
@@ -260,7 +243,6 @@ By default the default device notification sound is used for helpshift notificat
 Example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -277,9 +259,6 @@ Example:
                           configurations);
       }
     }
-
-
-
 ```
 
 ## Notification channels {#notificationChannels}
@@ -289,7 +268,6 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 Example:
 
 ```java
-
     public class MainApplication extends Application {
 
       @Override
@@ -306,8 +284,6 @@ Example:
                           configurations);
       }
     }
-
-
 ```
 
 ## Full privacy {#fullprivacy}
@@ -322,13 +298,10 @@ Moreover, in scenarios where the user attaches objectionable content, it becomes
 For example
 
 ```java
-
     Map<String, Object> config = new HashMap<>();
     // .. other configs
     config.put("fullPrivacy", true);
     Helpshift.showConversation(MainActivity.this, config);
-
-
 ```
 
 ## Theming the SDK {#theming}

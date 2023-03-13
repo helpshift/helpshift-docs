@@ -107,15 +107,12 @@ In order to create a logged-in user in Helpshift, the use of either `userId` or 
 </Admonition>
 
 ```java
-
     Map<String, Object> userData = new HashMap<>();
     userData.put("userId", "12234454");
     userData.put("userEmail", "captain@example.com");
     userData.put("userName", "Captain Planet");
 
     Helpshift.login(userData);
-
-
 ```
 
 ### Logging out users {#logging-out-users}
@@ -128,12 +125,7 @@ _Note:_ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```java
-
     Helpshift.logout()
-
-
-
-
 ```
 
 ### Anonymous users {#anonymous-users}
@@ -157,9 +149,7 @@ If your use case involves multiple logged-in/anonymous users using the same devi
 #### How to use
 
 ```java
-
     Helpshift.clearAnonymousUserOnLogin(boolean clearAnonymousUser);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -182,7 +172,6 @@ In order to ensure your users are verified, you should provide a 'user authentic
 You can send the 'user authentication token' with the Login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
 ```java
-
     Map<String, Object> userData = new HashMap<>();
     userData.put("userId", "12234454");
     userData.put("userEmail", "captain@example.com");
@@ -190,8 +179,6 @@ You can send the 'user authentication token' with the Login API call. If Identit
     userData.put("userAuthToken", "generated-user-authentication-token");
 
     Helpshift.login(userData);
-
-
 ```
 
 <Admonition type="info" title="Note">
@@ -277,8 +264,7 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
 The authentication failure reason is wrapped in an enum `HelpshiftAuthenticationFailureReason`
 Example:
 
-````java
-
+```java
     // ...
     Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
       @Override
@@ -292,6 +278,5 @@ Example:
         // Your code here
       }
     });
-    // ...```
-
-````
+    // ...
+```
