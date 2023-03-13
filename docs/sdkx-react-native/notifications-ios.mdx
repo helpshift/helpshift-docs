@@ -120,23 +120,23 @@ import {
 } from 'react-native-notifications';
 ```
 
+#### For Register notifications:
 
 ```
-export const notificationListeneriOS = () => {
   Notifications.registerRemoteNotifications();
 
+  //Get Callback for registerRemoteNotifications.
   Notifications.events().registerRemoteNotificationsRegistered(
     (event: Registered) => {
       registerPushToken(event.deviceToken);
     }
   );
 
-  Notifications.events().registerRemoteNotificationsRegistrationFailed(
-    (event: RegistrationError) => {
-      console.error(event);
-    }
-  );
+```
 
+#### For handle Notification Received in Foreground:
+
+```
   Notifications.events().registerNotificationReceivedForeground(
     (notification: Notification, completion) => {
       const notificationData = notification.payload;
@@ -157,16 +157,16 @@ export const notificationListeneriOS = () => {
       }
     }
   );
+```
 
+####  When user tap on notifications:
+
+```
   Notifications.events().registerNotificationOpened(
     (notification: Notification, completion: () => void) => {
-      console.log('Notification opened', JSON.stringify(notification.payload));
 
       const notificationData = notification.payload;
-      console.log(
-        'registerNotificationOpened: registerNotificationReceivedBackground',
-        notificationData,
-      );
+      //This is for manage outbond support link.
       const doesNotificationDataHaveProactiveLink =
         notificationData.hasOwnProperty('helpshift_proactive_link');
       const doesNotificationDataHaveOrigin =
@@ -174,10 +174,7 @@ export const notificationListeneriOS = () => {
         notificationData?.origin == 'helpshift';
 
       if (doesNotificationDataHaveProactiveLink) {
-        handleProactiveLink(notificationData.helpshift_proactive_link, {
-          proactive: 1,
-          link: 2,
-        });
+        handleProactiveLink(notificationData.helpshift_proactive_link, <config_object>);
       } else if (doesNotificationDataHaveOrigin) {
         handlePush(notificationData);
       } else {
@@ -187,6 +184,11 @@ export const notificationListeneriOS = () => {
     }
   );
 
+```
+
+#### When user tap on notifications and app state is not-running/killed state:
+
+```
   Notifications.getInitialNotification()
     .then((notification) => {
       if (!notification) return;
@@ -199,10 +201,7 @@ export const notificationListeneriOS = () => {
         notificationData?.origin == 'helpshift';
 
       if (doesNotificationDataHaveProactiveLink) {
-        handleProactiveLink(notificationData.helpshift_proactive_link, {
-          proactive: 1,
-          link: 2,
-        });
+        handleProactiveLink(notificationData.helpshift_proactive_link,  <config_object>);
       } else if (doesNotificationDataHaveOrigin) {
         handlePush(notificationData, true);
       } else {
@@ -214,8 +213,7 @@ export const notificationListeneriOS = () => {
 
 ```
 
-
-On iOS, the push notifications are handled by the SDK itself, and no additional setup is required.
+On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
 
 ## In-app notifications {#in-app-notifications}
 
