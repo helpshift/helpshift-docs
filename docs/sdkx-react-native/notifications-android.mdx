@@ -136,12 +136,12 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
         try {
           let countData =
             Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-          Toast.show({ type: 'info', text1: 'Msg Count ' + countData.count }); // show toast to user for count
+          console.log(countData.count); // show toast to user for count
         } catch (err) {
           console.error('Parsing Error', err);
         }
       } else {
-        Toast.show({ type: 'info', text1: JSON.stringify(data) });
+        //Your code here.
       }
     });
 ```

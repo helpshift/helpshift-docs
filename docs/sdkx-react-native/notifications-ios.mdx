@@ -120,7 +120,7 @@ import {
 } from 'react-native-notifications';
 ```
 
-#### For Register notifications:
+#### For Register notifications
 
 ```
   Notifications.registerRemoteNotifications();
@@ -134,7 +134,7 @@ import {
 
 ```
 
-#### For handle Notification Received in Foreground:
+#### For handle notification received in foreground
 
 ```
   Notifications.events().registerNotificationReceivedForeground(
@@ -159,7 +159,7 @@ import {
   );
 ```
 
-####  When user tap on notifications:
+####  When user tap on notifications
 
 ```
   Notifications.events().registerNotificationOpened(
@@ -186,7 +186,7 @@ import {
 
 ```
 
-#### When user tap on notifications and app state is not-running/killed state:
+#### When user tap on notifications and app state is not-running/killed state
 
 ```
   Notifications.getInitialNotification()
@@ -254,10 +254,26 @@ flag is `true` i.e in-app notifications will be enabled.<br />
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
-To fetch unread messages count from the server you can call `RequestUnreadMessageCount(bool FetchFromServer);` API. This API will return unread messages count via delegate. Based on the value of `FetchFromServer`, the locally stored count will be returned if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the `BindEventDelegate(const FHelpshiftEventDelegate& Callback)` API.
+To fetch unread messages count from the server you can call `requestUnreadMessageCount(bool FetchFromServer);` API. This API will return unread messages count via delegate.
+Based on the value of `FetchFromServer`, the locally stored count will be returned if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the HelpshiftEventListner.
+```
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'receivedUnreadMessageCount') {
+        try {
+          let countData =
+            Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
+          Toast.show({ type: 'info', text1: 'Msg Count ' + countData.count }); // show toast to user for count
+        } catch (err) {
+          console.error('Parsing Error', err);
+        }
+      } else {
+        Toast.show({ type: 'info', text1: JSON.stringify(data) });
+      }
+    });
+```
 
 
-When you call this API, you receive the unread count in your event delegate `HelpshiftEventReceivedUnreadMessageCount()`
-Keys in event data: `HelpshiftEventDataMessageCount (int)`, `HelpshiftEventDataMessageCountFromCache (int)`
 
-- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `HelpshiftEventDataMessageCountFromCache (int)` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
+
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `HelpshiftEventDataMessageCountFromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
