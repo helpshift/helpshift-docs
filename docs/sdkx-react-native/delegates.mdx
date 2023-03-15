@@ -102,7 +102,7 @@ This event contains information about the current ongoing conversation.
     helpshiftEmitter.addListener('onEventOccurred', (data) => {
       if (data.eventName == 'conversationStatus') {
         //Your code here.
-        //Event data: `latestIssueId` , `latestIssuePublishId` , `open`
+        //Event data: `latestIssueId`, `latestIssuePublishId`, `open`
       }
     });  
 ```
@@ -130,14 +130,14 @@ This event triggers when the user sends the first message in a conversation. The
 ```
 ### Message Add Event {#message-add-event}
 
-This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user. For your reference, see the below example.
+This event is triggered when the user adds a message to a conversation. It might be a text message, a response via bot input, or an attachment. The event data object has the `type` and `body` keys, which indicate the type and body of the message added by the user. For your reference, see the below example.
 
 ```
     helpshiftEmitter.addListener('onEventOccurred', (data) => {
       if (data.eventName == 'messageAdd') {
         //Your code here.
         //Event data keys: 
-        //  -`type` or `attachment` or `text`
+        //  -` type` or `attachment` or `text`
         //  - `body`
       }
     });  
@@ -193,7 +193,7 @@ This event is triggered when an agent resolves the conversation.
 
 ### Conversation Reopened Event {#conversation-reopened-event}
 
-When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+When the resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
 ```
     helpshiftEmitter.addListener('onEventOccurred', (data) => {
@@ -204,6 +204,7 @@ When resolution question is enabled, the users are asked if they're satisfied wi
 ```
 
 ### User Authentication Failed Event {#user-authentication-failed-event}
+
 
 If you have `user authentication feature` enabled on the Dashboard and if you pass an invalid token in the `Login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-react-native/users)
 

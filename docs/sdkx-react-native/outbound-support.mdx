@@ -43,9 +43,9 @@ You should see a **Create link** button. Click on the Create link button and sel
 
 <Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
 
-At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
+At last, you will get a URL-encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
 
-YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp , myAppSupport, etc.
+YOUR_APP_IDENTIFIER: This can be any unique string that identifies your app. For example, like the scheme, you would use deep link URLs for your app like myApp, myAppSupport, etc.
 
 <Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
 
@@ -55,20 +55,14 @@ YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For exam
 
 2. Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime when the end user clicks on the notification.
 
-3. This local API config is exactly same as we would expect in other APIs like `HelpshiftLibrary::ShowConversation()` or `HelpshiftLibrary::ShowFAQs()`.
+3. This local API config is exactly the same as we would expect in other APIs like `HelpshiftLibrary::ShowConversation()` or `HelpshiftLibrary::ShowFAQs()`.
 
-4. We will use this configuration for current issue as well as next issue filed in same session.
+4. We will use this configuration for the current issue as well as the next issue filed in the same session.
 
 ## Sending the generated link to device {#send-generated-link-to-device}
 
-1. Send push notification to the users you want to give proactive support using your app's existing push notification system. Embed the outbound support link in the notification payload.
+1. Send push notifications to the users you want to give proactive support using your app's existing push notification system. Embed the outbound support link in the notification payload.
 
 2. In your app, handle this notification such that when a user opens the app through the notification, you read the notification payload and pass this proactive link (as a simple string) to Helpshift SDK via `HelpshiftLibrary::handleProactiveLink()` function.
 
 3. We will read the data from the link you provided and open Helpshift support with the configurations you provided while generating the link from the dashboard.
-
-
-
-
-
-

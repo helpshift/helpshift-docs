@@ -41,7 +41,7 @@ The following logic applies when you use both `userID` as well as `userEmail`:
     `userEmail`
   </li>
   <li>
-    When the user ID matches an exisiting user, that user's email will be
+    When the user ID matches an existing user, that user's email will be
     updated (if the email is provided)
   </li>
   <li>
@@ -78,7 +78,7 @@ You should call Helpshift SDK's `Login` API whenever the user successfully logs 
   </tr>
   <tr>
     <td>userId</td>
-    <td>Required as an identifier if email is not provided</td>
+    <td>Required as an identifier if the email is not provided</td>
     <td>A user's unique identifier. User IDs must be unique. You should not use the same user ID for different users.</td>
     <td>
       <ul>
@@ -86,7 +86,7 @@ You should call Helpshift SDK's `Login` API whenever the user successfully logs 
         <li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li>
         <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'Email'.</li>
-        <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing email will return any profile if multiple profiles have the same email.</li>
+        <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing an email will return any profile if multiple profiles have the same email.</li>
       </ul>
 </td>
   </tr>
@@ -98,7 +98,7 @@ You should call Helpshift SDK's `Login` API whenever the user successfully logs 
       <ul>
         <li>Email format should be valid (should be in the format "my@email.com". Invalid emails will result in the creation of an anonymous user.</li>
         <li>Leading / trailing spaces are not allowed. Emails with leading / trailing spaces will result in the creation of an anonymous user.</li>
-        <li>Email is always case insensitive (eg. 'MY@EMAIL.COM' is same as 'my@email.com').</li></ul>/n</td>
+        <li>Email is always case insensitive (eg. 'MY@EMAIL.COM' is same as 'my@email.com').</li></ul></td>
   </tr>
   <tr>
     <td>userAuthToken</td>
@@ -106,14 +106,14 @@ You should call Helpshift SDK's `Login` API whenever the user successfully logs 
     <td>A user authentication token generated via Hash-Based Message Authentication Code (HMAC) using SHA256. You should provide an HMAC Digest if you want to ensure that 3rd parties cannot file issues on behalf of your users or update their properties. Details <a href="https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/">here</a>.</td>
     <td>
       <ul>
-        <li>A valid HMAC Digest should be provided in order to ensure your users can file issues. Details <a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">here</a>.</li>
+        <li>A valid HMAC Digest should be provided to ensure your users can file issues. Details <a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">here</a>.</li>
       </ul>
 </td>
 
   </tr>
 </table>
 
-In order to create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
+To create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
 
 
 ### Logging out users {#logging-out-users}
@@ -132,13 +132,13 @@ The Logout API is expected to be used in conjunction with the Login API.
 
 #### Overview
 
-An anonymous user is someone who can access the app without a userId or userEmail. If a user identifier (user ID and/or email) is not passed via the `Login` API, then Helpshift assumes that the user is an anonymous user and is not currently logged in.
+An anonymous user is someone who can access the app without a userId or userEmail. If a user identifier (user ID and/or email) is not passed via the `Login` API, then Helpshift assumes that the user is anonymous and is not currently logged in.
 
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser(boolean clearAnonymousUser)` API.
 
 1. If clearAnonymousUser is true – anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again.
 
-2. If clearAnonymousUser is false – anonymous user data will be saved and if a logged-in user is logged out, you will see anonymous user’s conversation history.
+2. If clearAnonymousUser is false – anonymous user data will be saved and if a logged-in user is logged out, you will see the anonymous user’s conversation history.
 
 <Admonition type="info" title="Note">
 
@@ -155,18 +155,18 @@ If your use case involves multiple logged-in/anonymous users using the same devi
 
 User Identity Verification is a security measure that verifies that all requests made from your app to Helpshift are coming from authentic end users. This prevents 3rd parties or hackers from impersonating your users. You can learn more about User Identity Verification and the steps to configure it [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/).
 
-In order to ensure your users are verified, you should provide a 'user authentication token' with the `Login` API at the time of initialization. You can find the steps to generate a 'user authentication token' [here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The 'user authentication token' is an HMAC Digest, which is generated via HMAC using SHA256.
+To ensure your users are verified, you should provide a 'user authentication token' with the `Login` API at the time of initialization. You can find the steps to generate a 'user authentication token' [here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The 'user authentication token' is an HMAC Digest, which is generated via HMAC using SHA256.
 
 #### Sending the HMAC Digest to verify users' identity
 
-You can send the 'user authentication token' with the `Login` API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
+You can send the 'user authentication token' with the `Login` API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they can file Issues.
 
 You can use the `userAuthToken` key to pass into the `Login()` API map.
 
 
 <Admonition type="info" title="Note">
 
-- If the secret key is regenerated for an app on the Dashboard, you should ensure you update your endpoint code as well, in order to generate a valid 'user authentication token'. Following this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
+- If the secret key is regenerated for an app on the Dashboard, you should ensure you update your endpoint code as well, to generate a valid 'user authentication token'. Following this, your Admins should delete the old secret key from the Dashboard to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
 
 - If EnableFullPrivacy is 'On', then the 'user authentication token' should be generated only on the user ID.
 
@@ -181,7 +181,7 @@ When Identity Verification is turned 'On' and a login request is made with no 'u
 - Anonymous users (users for whom the developer is not providing any identifiers) are always able to file Issues.
 - Logged-in users (users for whom the developer is providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the conversation UI.
 
-If the logged-in users are verified (i.e. a valid 'user authentication token' is provided), they are able to see the previous issue or create a new issue. The UI for verified, logged-in users looks & works exactly the same as it would if 'Identity verification' were turned off. Only unverified users get impacted as listed above.
+If the logged-in users are verified (i.e. a valid 'user authentication token' is provided), they can see the previous issue or create a new issue. The UI for verified, logged-in users looks & works the same as it would if 'Identity verification' were turned off. Only unverified users get impacted as listed above.
 
 #### How to use the failure delegates
 
@@ -229,14 +229,14 @@ You can find these values in the `HelpshiftLibrary.h` file.
           </a>
         </li>
         <li>
-          You regenerated the secret key on the Dashboard, but didn't update the
+          You regenerated the secret key on the Dashboard but didn't update the
           'user authentication token'.
         </li>
         <li>A 3rd party is trying to make requests.</li>
       </ul>
-      When the 'user authentication token' is invalid, end-users will not able
+      When the 'user authentication token' is invalid, end-users will not be able
       to file Issues and an error is shown to them, as mentioned previously. You
-      can use this delegate if you want to show your own alerts or re-fetch the
+      can use this delegate if you want to show your alerts or re-fetch the
       correct auth token from your server.
     </td>
   </tr>

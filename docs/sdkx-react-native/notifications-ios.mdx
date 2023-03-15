@@ -45,18 +45,18 @@ the notification that is sent from Helpshift appears as a notification.
 
 You can configure this in 4 simple steps:
 
-Setup your application with Apple and enable Push notifications.
+Set up your application with Apple and enable Push notifications.
 
-You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. Its also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
+You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from the old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. It's also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
 
-Apple provides two variations of Apple Push Notification service SSL
+Apple provides two variations of the Apple Push Notification service SSL
 
 - Apple Push Notification service SSL (Sandbox)
 - Apple Push Notification service SSL (Sandbox & Production)
 
-After creating your certificate, download it. Double click on it to import it to the Keychain Access Application. In the Keychain Access Application, right click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
+After creating your certificate, download it. Double-click on it to import it to the Keychain Access Application. In the Keychain Access Application, right-click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
 
-To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added already). And then click on the push notifications option.
+To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added it already). And then click on the push notifications option.
 
 <Image
   src="/static/books/sdkx_ios/Add-platform.png"
@@ -74,19 +74,19 @@ Please note that you need to use the same bundle identifier in the app as the on
   alt="Add-certificate.png"
 />{" "}
 
-You can configure whether to send a badge or not, and sound alerts if you provided custom sounds bundled with your app to handle notifications. Save it and you're all set.
+You can configure whether to send a badge or not and sound alerts if you provided custom sounds bundled with your app to handle notifications. Save it and you're all set.
 
 #### Development (Sandbox) mode vs. Production mode
 
 When you build and run your app from Xcode, it is in development (Sandbox) mode. To test push notifications from Helpshift in this mode make sure you choose 'Development Mode' while uploading either of the above two certificate types.
 
-When you publish your app and download from App Store, your app is in Production mode. To test push notifications from Helpshift in production mode make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work on a production environment.
+When you publish your app and download it from App Store, your app is in Production mode. To test push notifications from Helpshift in production mode make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work in a production environment.
 
-We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing please use the credentials of the developement mode app. When you are ready to publish, please replace the credentials with those of the production level app.
+We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing please use the credentials of the development mode app. When you are ready to publish, please replace the credentials with those of the production-level app.
 
 <Admonition type="info" title="Note">
 
-Your Push Certificate has an expiry date, as indicated in the below screenshot. Helpshift will not send you a reminder when your Push Certificate expires, so please make sure that your developer keeps a tab on the expiry date to reupload the Push Certificate.
+Your Push Certificate has an expiry date, as indicated in the below screenshot. Helpshift will not send you a reminder when your Push Certificate expires, so please make sure that your developer keeps a tab on the expiry date to re-upload the Push Certificate.
 
 </Admonition>
 
@@ -100,7 +100,7 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project, too. First of all, you should enable the Use Push Notifications toggle in the Project Settings.
 
-Here we are provind an sample example for push notification using. [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package as per your organization uses.
+Here we are providing a sample example for push notification use. [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package your organization uses.
 
 To setup notificatoin using react-native-notifications please follow [this](https://wix.github.io/react-native-notifications/docs/getting-started)
 
@@ -233,8 +233,8 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 ### Configuring In-app notifications {#optional-flags}
 
-The Helpshift [Init](/sdkx-react-native/getting-started/) call supports flags for configuring SDK behaviour.
-Currently we support one flag i.e `HelpshiftConfigEnableInAppNotificationsKey`.
+The Helpshift [Init](/sdkx-react-native/getting-started/) call supports flags for configuring SDK behavior.
+Currently, we support one flag i.e `HelpshiftConfigEnableInAppNotificationsKey`.
 
 ### Enabling/Disabling In-app notifications {#enable-disable-in-app}
 
@@ -248,7 +248,7 @@ Currently we support one flag i.e `HelpshiftConfigEnableInAppNotificationsKey`.
 
 </div>
 
-If you do not want the in-app notifications support provided by the
+If you do not want the in-app notifications to support provided by the
 Helpshift SDK, please set this flag to `false`. The default value of this
 flag is `true` i.e in-app notifications will be enabled.<br />
 
@@ -272,8 +272,7 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
     });
 ```
 
-
-
 When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
 
-- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `HelpshiftEventDataMessageCountFromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `HelpshiftEventDataMessageCountFromCache (int)` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
+
