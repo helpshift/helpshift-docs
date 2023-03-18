@@ -29,14 +29,14 @@ Configure Push and In-app notifications.
 
 <Admonition type="info" title="Note">
 
-If you want to configure the notifications for Android - please refer [here](/sdkx-react-native/notifications-android)
+If you want to configure the notifications for Android, please refer [here](/sdkx-react-native/notifications-android).
 
 </Admonition>
 
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
 Helpshift enables you to send notifications to your users. This is
-particularly useful when you have multiple users on multiple platforms
+particularly useful when you have multiple users on multiple platforms,
 like iOS and Android. Notifications are useful to tell your users when
 you reply to an issue that they submitted. When the app is backgrounded,
 the notification that is sent from Helpshift appears as a notification.
@@ -47,7 +47,7 @@ You can configure this in 4 simple steps:
 
 Set up your application with Apple and enable Push notifications.
 
-You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from the old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. It's also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
+You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from the old type of certificates to the Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. It's also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
 
 Apple provides two variations of the Apple Push Notification service SSL
 
@@ -56,7 +56,7 @@ Apple provides two variations of the Apple Push Notification service SSL
 
 After creating your certificate, download it. Double-click on it to import it to the Keychain Access Application. In the Keychain Access Application, right-click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
 
-To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added it already). And then click on the push notifications option.
+To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added it already). And then click on the `Push Notifications` option.
 
 <Image
   src="/static/books/sdkx_ios/Add-platform.png"
@@ -74,15 +74,15 @@ Please note that you need to use the same bundle identifier in the app as the on
   alt="Add-certificate.png"
 />{" "}
 
-You can configure whether to send a badge or not and sound alerts if you provided custom sounds bundled with your app to handle notifications. Save it and you're all set.
+You can configure whether to send a badge or not and and whether to sound alerts if you've provided custom sounds bundled with your app to handle notifications. Save it, and you're all set.
 
 #### Development (Sandbox) mode vs. Production mode
 
-When you build and run your app from Xcode, it is in development (Sandbox) mode. To test push notifications from Helpshift in this mode make sure you choose 'Development Mode' while uploading either of the above two certificate types.
+When you use Xcode to build and run your app, it is in development (Sandbox) mode. To test push notifications from Helpshift in this mode make sure you choose 'Development Mode' while uploading either of the above two certificate types.
 
-When you publish your app and download it from App Store, your app is in Production mode. To test push notifications from Helpshift in production mode make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work in a production environment.
+When you publish your app and download it from the App Store, your app is in Production mode. To test push notifications from Helpshift in production mode, make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification Service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work in a production environment.
 
-We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing please use the credentials of the development mode app. When you are ready to publish, please replace the credentials with those of the production-level app.
+We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing, please use the credentials of the development mode app. When you are ready to publish, please replace the credentials with those of the production-level app.
 
 <Admonition type="info" title="Note">
 
@@ -100,9 +100,9 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project, too. First of all, you should enable the Use Push Notifications toggle in the Project Settings.
 
-Here we are providing a sample example for push notification use. [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package your organization uses.
+Here we are providing a sample example of push notification use. [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package your organization uses.
 
-To setup notificatoin using react-native-notifications please follow [this](https://wix.github.io/react-native-notifications/docs/getting-started)
+To setup notifications using react-native-notifications, please follow [this](https://wix.github.io/react-native-notifications/docs/getting-started)
 
 in **App.tsx**
 
