@@ -24,8 +24,15 @@ import {
 <Intro>
 
 Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
+You can call only specific screens from the SDK based on the functionality you want to expose in your app.
 
 </Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx-react-native/getting-started#start-using)
+
+</Admonition>
 
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
@@ -41,6 +48,17 @@ This API call will show the conversation screen. Once a conversation is started,
 
 To configure SDK, you can pass various config options as a parameter. Check out more config options [here](/sdkx-react-native/sdk-configuration)
 
+Example :
+
+```
+//Create your config here.
+const config = {};  
+
+// pass the config in the api
+showConversation(config);
+
+```
+
 ## Integrating FAQs {#faqs-view}
 
 <Centered >
@@ -53,7 +71,14 @@ You can use this API to provide a way for the user to invoke the purpose-built h
 
 To configure the FAQs screen, you can pass various config options as a parameter. Check out more config options [here](/sdkx-react-native/sdk-configuration)
 
+Example :
 
+```
+showFAQsWithConfig({
+  faq: <FAQ_SECTION_ID> 
+});
+
+```
 ## Showing a Particular FAQ Section {#faq-section-view}
 
 <Centered >
@@ -66,6 +91,14 @@ You can use this API to invoke a particular section of your FAQs with its FAQ se
 
 This feature works like a permalink for displaying specific FAQ sections as context-sensitive help in your app. For example, if your app requires the user to login to using email, Facebook, and Twitter, you could link a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
+Example :
+```
+showFAQSectionWithConfig(
+  <FAQ_SECTION_PUBLISH_ID>, {
+    sectionFaq: <DEFAULT_SECTION_ID>
+  }
+);
+```
 
 **You'll need the `publish-id` of the section in this case:**
 
@@ -90,7 +123,32 @@ You can use the API to show a single FAQ. You will need to pass the `publish-id`
 
 </Centered>
 
+Example: 
+
+```
+showSingleFaqWithConfig(
+  <FAQ_SECTION_PUBLISH_ID>, {
+    faqConfig: <DEFAULT_SECTION_ID>
+  }
+);
+```
+
 ### Set SDK language {#set-language-api}
 
-You can set the SDK language for the given locale using the below API.
+You can set the SDK language for the given locale using the `setLanguage(<language-code>)` method.
 For more info about languages you can refer [here](/sdkx-react-native/i18n/)
+
+For example :
+
+Setting SDK language for the given locale with only language code.
+
+```
+setLanguage('fr')
+```
+
+Setting the SDK language for the given locale with both language code and country code.
+
+```
+setLanguage('zh-SG')
+```
+

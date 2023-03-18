@@ -31,18 +31,33 @@ Helpshift provides several config options which can be used to customize the beh
 
 ### Enable Logging {#enableLogging}
 
-Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Android logcat / Xcode console. Turning on logging can help developers resolve common integration issues.
+Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Android logcat/ Xcode console. Turning on logging can help developers resolve common integration issues.
 
 <div className="compact ">
 
 |         |                                     |
 | ------- | ----------------------------------- |
-| Key     | Helpshift Config Enable Logging Key |
+| Key     | `enableLogging` |
 | values  | true/false                          |
 | default | true                                |
 
 </div>
 
+```
+let installConfig = {
+  'enableLogging': true,
+}
+let appId = Platform.select({
+  android: <Android_Platform_Id>,
+  ios: <iOS_Platform_Id>,
+});
+
+if (appId != null) {
+  install(appId, <domain>, installConfig);
+} else {
+  //Display your error here.
+}
+```
 ### Enable In-App Notifications {#enable-in-app-notifications}
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
@@ -55,13 +70,29 @@ The default value of this flag is `true` i.e., the in-app notification will be e
 
 <div className="compact ">
 
-|         |                                           |
-| ------- | ----------------------------------------- |
-| Key     | HelpshiftConfigEnableinAppNotificationKey |
-| values  | true/false                                |
-| default | true                                      |
+|         |                           |
+| ------- | --------------------------|
+| Key     | `enableInAppNotification` |
+| values  | true/false                |
+| default | true                      |
 
 </div>
+
+```
+let installConfig = {
+  'enableInAppNotification': true,
+}
+let appId = Platform.select({
+  android: <Android_Platform_Id>,
+  ios: <iOS_Platform_Id>,
+});
+
+if (appId != null) {
+  install(appId, <domain>, installConfig);
+} else {
+  //Display your error here.
+}
+```
 
 ## Full privacy {#fullprivacy}
 
@@ -69,10 +100,10 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 
 <div className="compact ">
 
-|        |                                     |
-| ------ | ----------------------------------- |
-| Flag   | HelpshiftConfigEnableFullPrivacyKey |
-| values | true/ false                         |
+|        |               |
+| ------ | --------------|
+| Flag   | `fullPrivacy` |
+| values | true/ false   |
 
 </div>
 
@@ -81,6 +112,21 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 
 Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
 This config is common for both iOS and Android.
+```
+let installConfig = {
+  'fullPrivacy': true,
+}
+let appId = Platform.select({
+  android: <Android_Platform_Id>,
+  ios: <iOS_Platform_Id>,
+});
+
+if (appId != null) {
+  install(appId, <domain>, installConfig);
+} else {
+  //Display your error here.
+}
+```
 
 ## Enable Contact Us {#enableContactUs}
 
@@ -90,11 +136,18 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 
 |         |                                                                                                                                  |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Key     | <code>"enableContactUs"</code>                                                                                                   |
+| Key     | <code>enableContactUs</code>                                                                                                   |
 | values  | <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code> |
 | default | none                                                                                                                             |
 
 </div>
+
+```
+showFAQsWithConfig({
+  faq: <FAQ_SECTION_ID>,
+  enableContactUs: `AFTER_VIEWING_FAQS`
+});
+```
 
 #### Best Practices
 
@@ -195,15 +248,24 @@ The screen orientation of Helpshift SDK screens can be fixed by setting the `Hel
 
 ### presentFullScreenOniPad {#presentFullScreenOniPad}
 
-The `HelpshiftConfigPresentFullScreenOniPadKey` will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config does not affect iPhones.
+The `presentFullScreenOniPad` will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config does not affect iPhones.
 
 The default value is `NO`, and presents support views as `UIModalPresentationFormSheet`. When the value is set to true, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
 
-|         |                                           |
-| ------- | ----------------------------------------- |
-| Option  | HelpshiftConfigPresentFullScreenOniPadKey |
-| Values  | true / false                              |
-| Default | false                                     |
+|         |                                |
+| ------- | -------------------------------|
+| Option  | `presentFullScreenOniPad`      |
+| Values  | true / false                   |
+| Default | false                          |
+
+//Create your config here. 
+let config = {
+  'presentFullScreenOniPad': true,
+}
+
+// pass the config in the api
+showConversation(config);
+
 
 ### inAppNotificationAppearance {#inAppNotificationAppearance}
 
@@ -211,9 +273,29 @@ The `HelpshiftConfigInAppNotificationAppearanceKey` represents the appearance of
 
 |              |                                                                                                         |
 | ------------ | ------------------------------------------------------------------------------------------------------- |
-| Option:      | HelpshiftConfigInAppNotificationAppearanceKey                                                           |
-| Sub-Options: | HelpshiftConfigInAppNotificationBannerBackgroundColorKey / HelpshiftConfigInAppNotificationTextColorKey |
+| Option:      | `inAppNotificationAppearance`                                                           |
+| Sub-Options: | `bannerBackgroundColor` / `textColor` |
 | Values:      | String representing hex color. Eg - "FFFEEF"                                                            |
+
+```
+let installConfig = {
+  'inAppNotificationAppearance': {
+    'bannerBackgroundColor': '000000',
+    'textColor': 'FFFFFF',
+  },
+}
+
+let appId = Platform.select({
+  android: <Android_Platform_Id>,
+  ios: <iOS_Platform_Id>,
+});
+
+if (appId != null) {
+  install(appId, <domain>, installConfig);
+} else {
+  //Display your error here.
+}
+```
 
 ## UI Configurations {#uiConfig}
 
