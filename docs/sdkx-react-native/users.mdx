@@ -115,13 +115,26 @@ You should call Helpshift SDK's `Login` API whenever the user successfully logs 
 
 To create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
 
+Example :
 
+```
+login({
+  userName: 'John Doe',
+  userEmail: 'john.doe@app.co',
+  userId: 'unique-user-id-746501' 
+  });
+
+```
 ### Logging out users {#logging-out-users}
 
 #### Overview
 
-Once a user logs out from your app, you should call the Helpshift SDK's `Logout` API to ensure no one else can view this user's conversations.
+Once a user logs out from your app, you should call the Helpshift SDK's `logout()` API to ensure no one else can view this user's conversations.
 
+Example :
+```
+logout()
+```
 <Admonition type="info" title="Note">
 
 The Logout API is expected to be used in conjunction with the Login API.
@@ -140,6 +153,10 @@ If your use case involves multiple logged-in/anonymous users using the same devi
 
 2. If clearAnonymousUser is false – anonymous user data will be saved and if a logged-in user is logged out, you will see the anonymous user’s conversation history.
 
+Example : 
+```
+clearAnonymousUser(true)
+```
 <Admonition type="info" title="Note">
 
 - The ClearAnonymousUserOnLogin API does not impact the logged-in user's experience at all
@@ -163,6 +180,16 @@ You can send the 'user authentication token' with the `Login` API call. If Ident
 
 You can use the `userAuthToken` key to pass into the `Login()` API map.
 
+Example :
+```
+login({
+  userName: 'John Doe',
+  userEmail: 'john.doe@app.co',
+  userId: 'unique-user-id-746501' ,
+  userAuthToken: 'generated-user-authentication-token',
+  });
+
+```
 
 <Admonition type="info" title="Note">
 
