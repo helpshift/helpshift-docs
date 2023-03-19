@@ -27,7 +27,7 @@ You're 3 steps away from adding great in-app support to your React Native applic
 
 </Intro>
 
-Guide to integrating the React Native plugin for the Helpshift SDK X.
+Guide to integrating the React Native plugin for the Helpshift SDK X. You can also refer `helpshift-plugin-sdkx-react-native` package [here](https://www.npmjs.com/package/helpshift-plugin-sdkx-react-native).
 
 ## Requirements {#version-requirements}
 
@@ -36,26 +36,50 @@ Guide to integrating the React Native plugin for the Helpshift SDK X.
 - Xcode 13 or above
 - Java 11 or above
 
-## Download Helpshift React native SDK {#getting-sdk}
+## Installation {#adding-to-project}
 
-#### SDK X - In-app Customer Service {#standard-sdk}
+Open a Terminal in your project's folder and run:
 
-<DownloadButton
-  text="Download Plugin"
-  link="[% sdkx-react-native.plugin_url %]"
-  classes="mb-4"
-/>
+<Tabs>
 
+<TabItem value="npm" label="npm">
 
-## Add Helpshift React native plugin to your React Native project {#adding-to-project}
+```npm
+$ npm i helpshift-plugin-sdkx-react-native
+```
 
-- Add Helpshift react native plugin dependency in your package.json file
-- npm i helpshift-plugin-sdkx-react-native
-- After that, re-run your react application and start using Helpshift sdkx functions
+</TabItem>
+<TabItem value="yarn" label="yarn">
 
-### For iOS: Info.plist changes - Addition of usage description strings {#plist-description-strings}
+```yarn 
+$ yarn add helpshift-plugin-sdkx-react-native
+```
 
-When the “User Attachments” feature is enabled from the In-app SDK Configuration section, the SDK allows the user to upload the attachments. The attachments can be picked from the Photo Library or can be captured directly using the camera. The options for these sources look like:
+</TabItem>
+
+</Tabs>
+
+- Additionaly for iOS platform there is a requirement to link the native parts of the library: 
+
+```$ npx pod-install```
+
+- After that, re-run your react application and start using Helpshift SDKX functions.
+
+<Admonition type="info" title="Note">
+
+Here you can validate that the `helpshift-plugin-sdkx-react-native` package should be added to the `package.json` 
+```
+"dependencies": {
+    .....
+    "helpshift-plugin-sdkx-react-native": <plugin-sdkx-version>,
+    .....
+  },
+```
+</Admonition>
+
+### For iOS: Info.plist changes: Addition of usage description strings {#plist-description-strings}
+
+When the “User Attachments” feature is enabled from the In-app SDK Configuration section, the SDK allows the user to upload the attachments. The attachments can be picked up from the Photo Library or Files. The options for these sources look like:
 
 <Image src="/static/books/sdkx_ios/attachment_picker_ios.png" width="half" />{" "}
 
@@ -79,26 +103,6 @@ To use the camera and photo library, Apple requires the app to have Usage Descri
       library for attaching photos.
     </td>
   </tr>
-  <tr>
-    <td>NSCameraUsageDescription</td>
-    <td>
-      “We need to access the camera to allow users to click images meant to be
-      sent as an attachment for help and support reasons.”
-    </td>
-    <td>
-      This key is needed for capturing a photo using camera and attaching it.
-    </td>
-  </tr>
-  <tr>
-    <td>NSMicrophoneUsageDescription</td>
-    <td>
-      “We need to access the microphone to allow users to record videos using
-      camera meant to be sent as an attachment for help and support reasons.”
-    </td>
-    <td>
-      This key is needed for capturing a video using camera and attaching it.
-    </td>
-  </tr>
 </table>
 
 Note that the above strings are just a suggested description. If you need localisations for the same, please Contact Us
@@ -116,7 +120,7 @@ End-users can attach files such as pdf, video, etc in their issues. For iOS 10 a
 
    <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
 
-2. Create an app with **Android** and **iOS** as selected `Platform`s
+2. Create an app with **Android** and **iOS** as selected `Platform`
    <Image
      src="/static/books/helpshiftx/create_app_with_android_platform.png"
      width="full"
@@ -129,20 +133,22 @@ Helpshift uniquely identifies each registered App with a combination of 2 tokens
 |                          |                                                                                            |
 | ------------------------ | ------------------------------------------------------------------------------------------ |
 | <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_                                      |
-| <code>Platform ID</code> | Your App's unique platform id (App's <code>App Id</code> on dashboard is your platform Id) |
-
+| <code>Platform ID</code> | Your App's unique Platform ID (App's <code>App ID</code> on dashboard is your Platform ID) |
+| <code>Config</code>      | An <code>NSDictionary</code> representing the configuration parameters for the installation. |
 </div>
+
 You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
-Select your App and _check Android as a platform_ from the dropdowns and copy
+Select your App and _check `Android` and `iOS` as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
+
 <Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
 
-You should now import `install` function from `helpshift-plugin-sdkx-react-native` -> Helpshift SDK and configure your specific project fields. Copy the `domain` and `platformId` from the dashboard.
+You should now import `install` function from `helpshift-plugin-sdkx-react-native`. Copy the `domain` and `platformID` from the dashboard and use in `install` function.
 
 
-Call the `install` function before any other interaction with the Helpshift SDK (preferably in the useEffect() callback in react native call)
+Call the `install` function before any other interaction with the Helpshift SDK in `App.tsx`.(preferably in the useEffect() callback in react native call)
 
-The `install` call takes a 3 parameters. out of which appid and domain is mendatory and config parameter is optional, which means you can pass an empty map. The meaning of different keys and their possible values for Android and iOS can be found [here](/sdkx-react-native/sdk-configuration)
+The `install` call takes 3 parameters - App ID, Domain and config. App ID and domain are mandatory, while config is optional, which means you can pass an empty map. The meaning of different keys and their possible values for Android and iOS can be found [here](/sdkx-react-native/sdk-configuration)
 
 ### Initialize
 ```
@@ -166,8 +172,8 @@ let installConfig = {
   'manualLifecycleTracking': false
 }
 let appId = Platform.select({
-  android: <Android_Platform_Id>,
-  ios: <iOS_Platform_Id>,
+  android: <Android_Platform_ID>,
+  ios: <iOS_Platform_ID>,
 });
 
 if (appId != null) {
