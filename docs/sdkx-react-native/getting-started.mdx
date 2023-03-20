@@ -146,23 +146,14 @@ the 2 tokens to be passed when initializing Helpshift.
 You should now import `install` function from `helpshift-plugin-sdkx-react-native`. Copy the `domain` and `platformID` from the dashboard and use in `install` function.
 
 
-Call the `install` function before any other interaction with the Helpshift SDK in `App.tsx`.(preferably in the useEffect() callback in react native call)
+Call the `install` function before any other interaction with the Helpshift SDK in `App.tsx`.(It should be used in the useEffect() hook callback in react native call)
 
 The `install` call takes 3 parameters - App ID, Domain and config. App ID and domain are mandatory, while config is optional, which means you can pass an empty map. The meaning of different keys and their possible values for Android and iOS can be found [here](/sdkx-react-native/sdk-configuration)
 
 ### Initialize
 ```
-// Import the methods required for your integration.
-// You can refer the index.tsx file to see the methods available
-// to import. In this example, we are not importing all the
-// methods.
-
 import {
-  install,
-  showConversation,
-  showFAQsWithConfig,
-  logout,
-  login
+  install
 } from 'helpshift-plugin-sdkx-react-native';
 ```
 ### Install

@@ -30,7 +30,7 @@ You can call only specific screens from the SDK based on the functionality you w
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx-react-native/getting-started#start-using)
+All the public APIs in the SDK should be called after initializing the SDK via [install](/sdkx-react-native/getting-started#start-using)
 
 </Admonition>
 
@@ -42,15 +42,18 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Centered>
 
-You can use this API call to allow a user to directly send feedback or start a new conversation without having to first view FAQs.
+You can use this API call `showConversation` to allow a user to directly send feedback or start a new conversation without having to first view FAQs.
+Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
 
-This API call will show the conversation screen. Once a conversation is started, it will continue until it is resolved or rejected by the agent on Helpshift Dashboard.
-
-To configure SDK, you can pass various config options as a parameter. Check out more configuration options [here].(/sdkx-react-native/sdk-configuration)
+To configure SDK, you can pass various config options as a parameter. Check out more configuration options [here](/sdkx-react-native/sdk-configuration).
 
 Example :
 
 ```
+import {
+  showConversation
+} from 'helpshift-plugin-sdkx-react-native';
+
 //Create your config here.
 const config = {};  
 
@@ -74,9 +77,15 @@ To configure the FAQs screen, you can pass various config options as a parameter
 Example :
 
 ```
-showFAQsWithConfig({
-  faq: <FAQ_SECTION_ID> 
-});
+
+import {
+  showFAQsWithConfig
+} from 'helpshift-plugin-sdkx-react-native';
+
+
+const config = {};  
+
+showFAQsWithConfig(config);
 
 ```
 ## Showing a Particular FAQ Section {#faq-section-view}
@@ -93,11 +102,13 @@ This feature works like a permalink for displaying specific FAQ sections as cont
 
 Example :
 ```
-showFAQSectionWithConfig(
-  <FAQ_SECTION_PUBLISH_ID>, {
-    sectionFaq: <DEFAULT_SECTION_ID>
-  }
-);
+import {
+  showFAQSectionWithConfig
+} from 'helpshift-plugin-sdkx-react-native';
+
+const config = {}; 
+
+showFAQSectionWithConfig(<FAQ_SECTION_PUBLISH_ID>, config);
 ```
 
 **You'll need the `publish-id` of the section in this case:**
@@ -126,11 +137,15 @@ You can use the API to show a single FAQ. You will need to pass the `publish-id`
 Example: 
 
 ```
-showSingleFaqWithConfig(
-  <FAQ_SECTION_PUBLISH_ID>, {
-    faqConfig: <DEFAULT_SECTION_ID>
-  }
-);
+
+import {
+  showSingleFaqWithConfig
+} from 'helpshift-plugin-sdkx-react-native';
+
+const config = {}; 
+
+showSingleFaqWithConfig(<QUESTION_PUBLISH_ID>, config)
+
 ```
 
 ### Set SDK language {#set-language-api}
@@ -139,6 +154,13 @@ You can set the SDK language for the given locale using the `setLanguage(<langua
 For more info about languages you can refer [here](/sdkx-react-native/i18n/)
 
 For example :
+
+```
+import {
+  setLanguage,
+} from 'helpshift-plugin-sdkx-react-native';
+
+```
 
 Setting SDK language for the given locale with only language code.
 
