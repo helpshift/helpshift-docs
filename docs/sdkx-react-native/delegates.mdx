@@ -29,6 +29,14 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 ## Helpshift Delegate implementation {#delegate-implementation}
 
+- To use Helpshift Delegate please import `helpshiftEmitter`
+```
+import {
+  helpshiftEmitter,
+} from 'helpshift-plugin-sdkx-react-native';
+
+```
+
 ```
 const handleCallbacks = () => {
     helpshiftEmitter.addListener('onEventOccurred', (data) => {
@@ -61,8 +69,8 @@ const handleCallbacks = () => {
 This event gets fired when the Helpshift session starts
 
 ```
-    helpshiftEmitter.addListener('helpshiftSessionStarted', (data) => {
-      if (data.eventName == 'conversationStart') {
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'helpshiftSessionStarted') {
         //Your code here.
       }
     });  
@@ -73,8 +81,8 @@ This event gets fired when the Helpshift session starts
 This event gets fired when the Helpshift session ends.
 
 ```
-    helpshiftEmitter.addListener('helpshiftSessionEnded', (data) => {
-      if (data.eventName == 'conversationStart') {
+    helpshiftEmitter.addListener('onEventOccurred', (data) => {
+      if (data.eventName == 'helpshiftSessionEnded') {
         //Your code here.
       }
     });  
