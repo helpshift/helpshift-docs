@@ -43,24 +43,18 @@ Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in 
 
 </div>
 
-```
+Example : 
+
+```javascript
 let installConfig = {
   'enableLogging': true,
 }
-let appId = Platform.select({
-  android: <Android_Platform_Id>,
-  ios: <iOS_Platform_Id>,
-});
 
-if (appId != null) {
-  install(appId, <domain>, installConfig);
-} else {
-  //Display your error here.
-}
+install(<appId>, <domain>, installConfig);
 ```
 ### Enable In-App Notifications {#enable-in-app-notifications}
 
-If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set `enableInAppNotification` flag to `false`.
 
 For Android, setting this flag as `false` will stop showing notifications in the notification tray of the device but it will fetch messages in the background.
 
@@ -78,20 +72,13 @@ The default value of this flag is `true` i.e., the in-app notification will be e
 
 </div>
 
-```
+Example : 
+```javascript
 let installConfig = {
   'enableInAppNotification': true,
 }
-let appId = Platform.select({
-  android: <Android_Platform_Id>,
-  ios: <iOS_Platform_Id>,
-});
 
-if (appId != null) {
-  install(appId, <domain>, installConfig);
-} else {
-  //Display your error here.
-}
+install(<appId>, <domain>, <installConfig>);
 ```
 
 ## Full privacy {#fullprivacy}
@@ -112,20 +99,15 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 
 Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
 This config is common for both iOS and Android.
-```
+
+Example : 
+
+```javascript
 let installConfig = {
   'fullPrivacy': true,
 }
-let appId = Platform.select({
-  android: <Android_Platform_Id>,
-  ios: <iOS_Platform_Id>,
-});
 
-if (appId != null) {
-  install(appId, <domain>, installConfig);
-} else {
-  //Display your error here.
-}
+install(<appId>, <domain>, installConfig);
 ```
 
 ## Enable Contact Us {#enableContactUs}
@@ -142,9 +124,10 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 
 </div>
 
-```
+Example : 
+
+```javascript
 showFAQsWithConfig({
-  faq: <FAQ_SECTION_ID>,
   enableContactUs: `AFTER_VIEWING_FAQS`
 });
 ```
@@ -250,7 +233,7 @@ The screen orientation of Helpshift SDK screens can be fixed by setting the `Hel
 
 The `presentFullScreenOniPad` will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config does not affect iPhones.
 
-The default value is `NO`, and presents support views as `UIModalPresentationFormSheet`. When the value is set to true, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
+The default value is `false`, and presents support views as `UIModalPresentationFormSheet`. When the value is set to true, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
 
 |         |                                |
 | ------- | -------------------------------|
@@ -258,18 +241,19 @@ The default value is `NO`, and presents support views as `UIModalPresentationFor
 | Values  | true / false                   |
 | Default | false                          |
 
-//Create your config here. 
-let config = {
+Example : 
+
+```javascript
+let installConfig = {
   'presentFullScreenOniPad': true,
 }
 
-// pass the config in the api
-showConversation(config);
-
+install(<appId>, <domain>, installConfig);
+```
 
 ### inAppNotificationAppearance {#inAppNotificationAppearance}
 
-The `HelpshiftConfigInAppNotificationAppearanceKey` represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this map
+The `inAppNotificationAppearance` represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this map
 
 |              |                                                                                                         |
 | ------------ | ------------------------------------------------------------------------------------------------------- |
@@ -277,24 +261,17 @@ The `HelpshiftConfigInAppNotificationAppearanceKey` represents the appearance of
 | Sub-Options: | `bannerBackgroundColor` / `textColor` |
 | Values:      | String representing hex color. Eg - "FFFEEF"                                                            |
 
-```
+Example : 
+
+```javascript
 let installConfig = {
   'inAppNotificationAppearance': {
-    'bannerBackgroundColor': '000000',
-    'textColor': 'FFFFFF',
+    'bannerBackgroundColor': <HEX_COLOUR>,
+    'textColor': <HEX_COLOUR>,
   },
 }
 
-let appId = Platform.select({
-  android: <Android_Platform_Id>,
-  ios: <iOS_Platform_Id>,
-});
-
-if (appId != null) {
-  install(appId, <domain>, installConfig);
-} else {
-  //Display your error here.
-}
+install(<appId>, <domain>, installConfig);
 ```
 
 ## UI Configurations {#uiConfig}

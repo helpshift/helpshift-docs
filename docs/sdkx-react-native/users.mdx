@@ -27,13 +27,13 @@ import {
 
 #### Overview
 
-A logged-in user is someone who can contact your support team only after providing appropriate credentials. If you have logged-in users, we highly recommend passing the user's identifiers (user ID and/or email) using the `Login` API so that your Agents can provide a personalized support experience to your users, no matter which device your end user is using. Using the `Login` API also ensures that a user's conversations are available only to them when they log in.
+A logged-in user is someone who can contact your support team only after providing appropriate credentials. If you have logged-in users, we highly recommend passing the user's identifiers (user ID and/or email) using the `login` API so that your Agents can provide a personalized support experience to your users, no matter which device your end user is using. Using the `login` API also ensures that a user's conversations are available only to them when they log in.
 
 #### What to provide as identifiers
 
-You can provide either `userID` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field.
+You can provide either `userId` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field.
 
-The following logic applies when you use both `userID` as well as `userEmail`:
+The following logic applies when you use both `userId` as well as `userEmail`:
 
 <ul>
   <li>
@@ -61,7 +61,7 @@ The following logic applies when you use both `userID` as well as `userEmail`:
 
 #### How to use
 
-You should call Helpshift SDK's `Login` API whenever the user successfully logs into your app. The `Login` API takes the following parameters:
+You should call Helpshift SDK's `login` API whenever the user successfully logs into your app. The `login` API takes the following parameters:
 
 <table>
   <tr>
@@ -85,7 +85,7 @@ You should call Helpshift SDK's `Login` API whenever the user successfully logs 
         <li>Max length: 750 characters. Values larger than this will result in the creation of an anonymous user.</li>
         <li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li>
-        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'Email'.</li>
+        <li>Do not provide the user's email address as 'userId'. If you use email addresses to identify users, provide them as 'Email'.</li>
         <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing an email will return any profile if multiple profiles have the same email.</li>
       </ul>
 </td>
@@ -117,27 +117,39 @@ To create a logged-in user in Helpshift, the use of either `userId` or `userEmai
 
 Example :
 
-```
-login({
+```javascript
+import {
+  login
+} from 'helpshift-plugin-sdkx-react-native';
+
+let config = {
   userName: 'John Doe',
   userEmail: 'john.doe@app.co',
-  userId: 'unique-user-id-746501' 
-  });
+  userId: 'unique-user-id-746501'
+}
+
+login(config);
 
 ```
 ### Logging out users {#logging-out-users}
 
 #### Overview
 
-Once a user logs out from your app, you should call the Helpshift SDK's `logout()` API to ensure no one else can view this user's conversations.
+Once a user logs out from your app, you should call the Helpshift SDK's `logout` API to ensure no one else can view this user's conversations.
 
 Example :
-```
+
+```javascript
+import {
+  logout
+} from 'helpshift-plugin-sdkx-react-native';
+
 logout()
 ```
+
 <Admonition type="info" title="Note">
 
-The Logout API is expected to be used in conjunction with the Login API.
+The `logout` API is expected to be used in conjunction with the `login` API.
 
 </Admonition>
 
@@ -145,16 +157,21 @@ The Logout API is expected to be used in conjunction with the Login API.
 
 #### Overview
 
-An anonymous user is someone who can access the app without a userId or userEmail. If a user identifier (user ID and/or email) is not passed via the `Login` API, then Helpshift assumes that the user is anonymous and is not currently logged in.
+An anonymous user is someone who can access the app without a `userId` or `userEmail`. If a user identifier (user ID and/or email) is not passed via the `login` API, then Helpshift assumes that the user is anonymous and is not currently logged in.
 
-If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser(boolean clearAnonymousUser)` API.
+If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser` API.
 
-1. If clearAnonymousUser is true – anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again.
+1. If `clearAnonymousUser` is **true** – anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again.
 
-2. If clearAnonymousUser is false – anonymous user data will be saved and if a logged-in user is logged out, you will see the anonymous user’s conversation history.
+2. If `clearAnonymousUser` is **false** – anonymous user data will be saved and if a logged-in user is logged out, you will see the anonymous user’s conversation history.
 
-Example : 
-```
+Example :
+
+```javascript
+import {
+  clearAnonymousUser
+} from 'helpshift-plugin-sdkx-react-native';
+
 clearAnonymousUser(true)
 ```
 <Admonition type="info" title="Note">
@@ -172,23 +189,29 @@ clearAnonymousUser(true)
 
 User Identity Verification is a security measure that verifies that all requests made from your app to Helpshift are coming from authentic end users. This prevents 3rd parties or hackers from impersonating your users. You can learn more about User Identity Verification and the steps to configure it [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/).
 
-To ensure your users are verified, you should provide a 'user authentication token' with the `Login` API at the time of initialization. You can find the steps to generate a 'user authentication token' [here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The 'user authentication token' is an HMAC Digest, which is generated via HMAC using SHA256.
+To ensure your users are verified, you should provide a `user authentication token` with the `login` API at the time of initialization. You can find the steps to generate a 'user authentication token' [here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The 'user authentication token' is an HMAC Digest, which is generated via HMAC using SHA256.
 
 #### Sending the HMAC Digest to verify users' identity
 
-You can send the 'user authentication token' with the `Login` API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they can file Issues.
+You can send the `user authentication token` with the `login` API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they can file Issues.
 
-You can use the `userAuthToken` key to pass into the `Login()` API map.
+You can use the `userAuthToken` key to pass into the `login` API map.
 
 Example :
-```
-login({
+
+```javascript
+import {
+  login
+} from 'helpshift-plugin-sdkx-react-native';
+
+let config = {
   userName: 'John Doe',
   userEmail: 'john.doe@app.co',
-  userId: 'unique-user-id-746501' ,
-  userAuthToken: 'generated-user-authentication-token',
-  });
+  userId: 'unique-user-id-746501',
+  userAuthToken: 'generated-user-authentication-token'
+}
 
+login(config);
 ```
 
 <Admonition type="info" title="Note">

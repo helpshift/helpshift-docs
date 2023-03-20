@@ -100,13 +100,15 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project, too. First of all, you should enable the Use Push Notifications toggle in the Project Settings.
 
-Here we are providing a sample example of push notification use. [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package your organization uses.
+Here we are providing a sample example of push notification use, [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package of your choice.
 
 To setup notifications using react-native-notifications, please follow [this](https://wix.github.io/react-native-notifications/docs/getting-started)
 
-in **App.tsx**
+Example :
 
-```
+**App.tsx**
+
+```javascript
 import {
   handleProactiveLink,
   handlePush,
@@ -122,7 +124,7 @@ import {
 
 #### For Register notifications
 
-```
+```javascript
   Notifications.registerRemoteNotifications();
 
   //Get Callback for registerRemoteNotifications.
@@ -131,13 +133,12 @@ import {
       registerPushToken(event.deviceToken);
     }
   );
-
 ```
 
 #### For handle notification received in foreground
 
-```
-  Notifications.events().registerNotificationReceivedForeground(
+```javascript
+Notifications.events().registerNotificationReceivedForeground(
     (notification: Notification, completion) => {
       const notificationData = notification.payload;
 
@@ -161,8 +162,8 @@ import {
 
 ####  When user tap on notifications
 
-```
-  Notifications.events().registerNotificationOpened(
+```javascript
+Notifications.events().registerNotificationOpened(
     (notification: Notification, completion: () => void) => {
 
       const notificationData = notification.payload;
@@ -183,37 +184,31 @@ import {
       completion();
     }
   );
-
 ```
 
 #### When user tap on notifications and app state is not-running/killed state
 
-```
-  Notifications.getInitialNotification()
-    .then((notification) => {
-      if (!notification) return;
-
-      const notificationData = notification.payload;
-      const doesNotificationDataHaveProactiveLink =
-        notificationData.hasOwnProperty('helpshift_proactive_link');
-      const doesNotificationDataHaveOrigin =
-        notificationData.hasOwnProperty('origin') &&
-        notificationData?.origin == 'helpshift';
-
-      if (doesNotificationDataHaveProactiveLink) {
+```javascript
+ Notifications.getInitialNotification()
+  .then((notification) => {
+    if (!notification) return;
+    const notificationData = notification.payload;
+     const doesNotificationDataHaveProactiveLink = notificationData.hasOwnProperty('helpshift_proactive_link');
+     const doesNotificationDataHaveOrigin = notificationData.hasOwnProperty('origin') && notificationData?.origin == 'helpshift';
+     if (doesNotificationDataHaveProactiveLink) {
         handleProactiveLink(notificationData.helpshift_proactive_link,  <config_object>);
       } else if (doesNotificationDataHaveOrigin) {
         handlePush(notificationData, true);
       } else {
         console.log('getInitialNotification: customer-app notification');
       }
-    })
-    .catch((err) => console.error('getInitialNotifiation() failed', err));
-};
-
+    }
+  )
+  .catch((err) => console.error('getInitialNotifiation() failed', err)
+);
 ```
 
-On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
+On iOS, **Helpshift push notifications** are handled by the SDK itself, and no additional setup is required.
 
 ## In-app notifications {#in-app-notifications}
 
@@ -233,8 +228,8 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 ### Configuring In-app notifications {#optional-flags}
 
-The Helpshift [Init](/sdkx-react-native/getting-started/) call supports flags for configuring SDK behavior.
-Currently, we support one flag i.e `HelpshiftConfigEnableInAppNotificationsKey`.
+The Helpshift [install](/sdkx-react-native/getting-started/) call supports flags for configuring SDK behavior.
+Currently, we support one flag i.e `enableInAppNotification`.
 
 ### Enabling/Disabling In-app notifications {#enable-disable-in-app}
 
@@ -242,7 +237,7 @@ Currently, we support one flag i.e `HelpshiftConfigEnableInAppNotificationsKey`.
 
 |         |                                            |
 | ------- | ------------------------------------------ |
-| Flag    | HelpshiftConfigEnableInAppNotificationsKey |
+| Flag    | `enableInAppNotification` |
 | Values  | true / false                               |
 | Default | true                                       |
 
@@ -254,25 +249,37 @@ flag is `true` i.e in-app notifications will be enabled.<br />
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
-To fetch unread messages count from the server you can call `requestUnreadMessageCount(bool FetchFromServer);` API. This API will return unread messages count via delegate.
-Based on the value of `FetchFromServer`, the locally stored count will be returned if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the HelpshiftEventListner.
-```
+To fetch unread messages count from the server you can call `requestUnreadMessageCount` API. This API will return unread messages count via observer.
+Based on the parameter, if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. 
+
+1. If `requestUnreadMessageCount(true)`: unread messages count will fetch from the server.
+
+2. If `requestUnreadMessageCount(false)`:  unread messages count will fetch the locally stored count will be returned.
+
+An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the observer for Helpshift events by calling the HelpshiftEventListner.
+
+```javascript
+import {
+  helpshiftEmitter
+} from 'helpshift-plugin-sdkx-react-native';
+
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
-      if (data.eventName == 'receivedUnreadMessageCount') {
-        try {
-          let countData =
-            Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-          Toast.show({ type: 'info', text1: 'Msg Count ' + countData.count }); // show toast to user for count
-        } catch (err) {
-          console.error('Parsing Error', err);
-        }
-      } else {
-        Toast.show({ type: 'info', text1: JSON.stringify(data) });
-      }
-    });
+  if (data.eventName == 'receivedUnreadMessageCount') {
+    try {
+      let countData = Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
+      console.log(countData.count); 
+    } catch (err) {
+      console.error('Parsing Error', err);
+    }
+  } else {
+    .
+    .
+  }
+  }
+);
 ```
 
 When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
 
-- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `HelpshiftEventDataMessageCountFromCache (int)` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
 
