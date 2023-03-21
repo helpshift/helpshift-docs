@@ -141,10 +141,9 @@ showFAQsWithConfig({
 
 ### Notification Icon {#notificationIcon}
 
-By default, the application icon is used as the notification icon. You can customize the notification icon in the `Install` call.
+By default, the application icon is used as the notification icon. You can customize the notification icon in the `install` call.
 
-Pass the name of the file placed in the folder that is configured as `Drawable Path` in the `Plugin Settings`.
-You do not need to specify the file extension for the icon image. If your icon image's file name is "icon.png", you just need to pass "icon" to the Helpshift config.
+You do not need to specify the file extension for the icon image. If your icon image's file name is "icon.png", you just need to pass "icon" to helpshift config and add the "icon.png" file at `<project-dir>/android/src/main/res/drawable`.
 
 <div className="compact ">
 
@@ -156,13 +155,21 @@ You do not need to specify the file extension for the icon image. If your icon i
 
 </div>
 
+Example:
+```javascript
+let installConfig = {
+  'notificationIcon': 'icon',
+}
+
+install(<appId>, <domain>, installConfig);
+```
+
 ### Large Notification Icon {#largeNotificationIcon}
 
 By default, the application icon is used as the notification icon.
-If you want to specify the large notification icon also to show up in the notification tray, you can specify that in the `Install` call.
+If you want to specify the large notification icon also to show up in the notification tray, you can specify that in the `install` call.
 
-Pass the name of the file placed in the folder that is configured as `Drawable Path` in the `Plugin Settings`.
-You do not need to specify the file extension for the icon image. If your large icon image's file name is "large_icon.png", you just need to pass "large_icon" to the Helpshift config.
+You do not need to specify the file extension for the icon image. If your icon image's file name is "large_icon.png", you just need to pass "large_icon" to helpshift config and add the "icon.png" file at `<project-dir>/android/src/main/res/drawable`.
 
 <div className="compact ">
 
@@ -173,6 +180,15 @@ You do not need to specify the file extension for the icon image. If your large 
 | default | Application Icon                        |
 
 </div>
+Example:
+
+```javascript
+let installConfig = {
+   'notificationLargeIcon': 'large_icon',
+}
+
+install(<appId>, <domain>, installConfig);
+```
 
 ### Notification Sound {#notificationSound}
 
@@ -184,10 +200,9 @@ You do not need to specify the file extension for the icon image. If your large 
 
 </Admonition>
 
-By default, the default device notification sound is used for Helpshift notifications. You can customize the notification sound in the `Install` call.
+By default, the default device notification sound is used for Helpshift notifications. You can customize the notification sound in the `install` call.
 
-Pass the name of the file placed in the folder that is configured as `Sound Path` in the `Plugin Settings` (e.g. “sound” for sound.mp3);
-You do not need to specify the file extension for the sound file. If your sound file name is "notificaton_sound.mp3", you just need to pass "notification_sound" to the Helpshift config.
+You do not need to specify the file extension for the sound file. If your sound file name is "notificaton_sound.mp3", you just need to pass "notification_sound" to the Helpshift config and add the "notification_sound.mp3" file at `<project-dir>/android/src/main/res/raw`.
 
 <div className="compact ">
 
@@ -198,6 +213,15 @@ You do not need to specify the file extension for the sound file. If your sound 
 | default | Device Notification Sound             |
 
 </div>
+Example:
+
+```javascript
+let installConfig = {
+   'notificationSoundId': 'notificaton_sound',
+}
+
+install(<appId>, <domain>, installConfig);
+```
 
 ### Notification Channels {#notificationChannels}
 
@@ -213,19 +237,15 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 
 </div>
 
-### Screen Orientation {#screen-orientation}
+Example:
 
-The screen orientation of Helpshift SDK screens can be fixed by setting the `HelpshiftConfigScreenOrientationKey` to constants available - `HelpshiftConfigScreenOrientationLandscape or HelpshiftConfigScreenOrientationPortrait`.
+```javascript
+let installConfig = {
+   'notificationChannelId': 'your channel name here',
+}
 
-<div className="compact ">
-
-|         |                                                                                       |
-| ------- | ------------------------------------------------------------------------------------- |
-| Flag    | HelpshiftConfigScreenOrientationKey                                                   |
-| values  | HelpshiftConfigScreenOrientationLandscape or HelpshiftConfigScreenOrientationPortrait |
-| default | HelpshiftConfigScreenOrientationPortrait                                              |
-
-</div>
+install(<appId>, <domain>, installConfig);
+```
 
 ## iOS Specific Configurations
 
