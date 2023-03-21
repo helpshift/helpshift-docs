@@ -85,6 +85,9 @@ install(<appId>, <domain>, <installConfig>);
 
 In the `config` dictionary of the `showConversation` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
 
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Make sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
 <div className="compact ">
 
 |        |               |
@@ -93,9 +96,6 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 | values | true/ false   |
 
 </div>
-
-1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
-2. Make sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
 
 Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
 This config is common for both iOS and Android.
