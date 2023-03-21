@@ -30,19 +30,18 @@ Attach custom metadata to every conversation started via the SDK.
 
 ## Adding Tags to Conversations {#adding-tags}
 
-You can attach tags while reporting an issue by passing them to the `Tags` parameter at the time of calling `ShowConversation` function. You can pass an **array of strings** which will get added as Tags when the issue is created.
+You can attach tags while reporting an issue by passing them to the `tags` parameter at the time of calling `showConversation` function. You can pass an **array of strings** which will get added as `tags` when the issue is created.
 
-Pass this Map to `ShowConversation()` API. For eg:
-```
+Pass this Map to `showConversation` API. For eg:
+
+```javascript
 const apiConfig = {
     tags: {"foo", "bar"},
 };
 showConversation(apiConfig);
 ```
 
-
-
-Similarly, you can pass this configuration to other APIs (ie. `ShowSection`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
+Similarly, you can pass this configuration to other APIs (ie. `showConversation`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
 
 <Admonition type="info" title="Note">
 
@@ -62,9 +61,9 @@ If you want to set Custom Metadata at the time of Issue creation, follow the ste
 
 Pass this Map to the following APIs:
 
-`ShowConversation` API,
+`showConversation` API,
 
-```
+```javascript
 const CIFs = { stock_level: { type: 'number', value: '1505' } };
  const apiConfig = {
    customIssueFields: CIFs,
@@ -73,7 +72,7 @@ showConversation(apiConfig);
 ```
 
 `showFAQsWithConfig` API,
-```
+```javascript
 const CIFs = { stock_level: { type: 'number', value: '1505' } };
  const apiConfig = {
    customIssueFields: CIFs,
@@ -82,7 +81,7 @@ showFAQsWithConfig(apiConfig);
 ```
 
 `showFAQSectionWithConfig` API
-```
+```javascript
 const CIFs = { stock_level: { type: 'number', value: '1505' } };
  const apiConfig = {
    customIssueFields: CIFs,
@@ -100,9 +99,9 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
    You can find the `type` in this constants class `HelpshiftCustomIssueFieldParameter`
 
 
-Pass this Map to `ShowConversation()` API.
+Pass this Map to `showConversation` API.
 
-Similarly, you can pass this Map to other APIs (ie. `ShowSection`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
+Similarly, you can pass this Map to other APIs (ie. `showConversation`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
 
 The following are the valid values for the `type` key of a Custom Issue Field.
 
@@ -145,20 +144,27 @@ In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings
 
 ## Breadcrumbs {#breadcrumbs}
 
-Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs can use `LeaveBreadcrumb` API and pass a string to it. For example -
+Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs can use `leaveBreadCrumb` API and pass a string to it. For example -
 
-```
- leaveBreadCrumb(<breadCrumbString>)
+```javascript
+import {
+  leaveBreadCrumb
+} from 'helpshift-plugin-sdkx-react-native';
+
+leaveBreadCrumb(<breadCrumbString>)
 ```
 
-Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `ClearBreadcrumbs` API. For example -
-```
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `clearBreadcrumbs` API. For example -
+```javascript
+import {
+  clearBreadcrumbs
+} from 'helpshift-plugin-sdkx-react-native';
+
 clearBreadcrumbs()
 ```
 
 ## Debug Logs {#debug-logs}
 
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
-
 
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
