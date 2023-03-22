@@ -37,7 +37,7 @@ import {
 } from 'helpshift-plugin-sdkx-react-native';
 
 ```
-This event contains information about the Message count and how to handle the data based on the platform.
+To handle helpshift events, you can use following listener.
 
 ```javascript
 const handleCallbacks = () => {
@@ -117,9 +117,11 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
         Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
       if(eventData.hasOwnProperty('latestIssueId')){
           console.log(eventData.latestIssueId);
-      }else if(eventData.hasOwnProperty('latestIssuePublishId'){
+      }
+      if(eventData.hasOwnProperty('latestIssuePublishId'){
           console.log(eventData.latestIssuePublishId);
-      }else if(eventData.hasOwnProperty('open'){
+      }
+      if(eventData.hasOwnProperty('open'){
           console.log(eventData.open);
       }
     } catch (err) {
@@ -178,7 +180,8 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
         Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
       if(eventData.hasOwnProperty('body')){
           console.log(eventData.body);
-      }else if(eventData.hasOwnProperty('type')){
+      }
+      if(eventData.hasOwnProperty('type')){
           console.log(eventData.type);
       }
     } catch (err) {
@@ -200,7 +203,8 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
         Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
       if(eventData.hasOwnProperty('rating')){
           console.log(eventData.rating);
-      }else if(eventData.hasOwnProperty('additionalFeedback')){
+      }
+      if(eventData.hasOwnProperty('additionalFeedback')){
           console.log(eventData.additionalFeedback);
       }
     } catch (err) {
