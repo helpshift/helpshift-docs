@@ -64,27 +64,27 @@ Pass this Map to the following APIs:
 `showConversation` API,
 
 ```javascript
-const CIFs = { stock_level: { type: 'number', value: '1505' } };
+const customMetadata = { usertype:'paid', level:'7', score: '1505' } };
  const apiConfig = {
-   customIssueFields: CIFs,
+   customMetadata: customMetadata,
 };
 showConversation(apiConfig);
 ```
 
 `showFAQsWithConfig` API,
 ```javascript
-const CIFs = { stock_level: { type: 'number', value: '1505' } };
+const customMetadata = { usertype:'paid', level:'7', score: '1505' } };
  const apiConfig = {
-   customIssueFields: CIFs,
+   customMetadata: customMetadata,
 };
 showFAQsWithConfig(apiConfig);
 ```
 
 `showFAQSectionWithConfig` API
 ```javascript
-const CIFs = { stock_level: { type: 'number', value: '1505' } };
+const customMetadata = { usertype:'paid', level:'7', score: '1505' } };
  const apiConfig = {
-   customIssueFields: CIFs,
+   customMetadata: customMetadata,
 };
 showFAQSectionWithConfig(apiConfig);
 ```
@@ -96,49 +96,46 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 1. Initialise a top-level custom issue fields `Map`
 2. Define your custom issue field `Map`
 3. Add the `"type"` and `"value"` for that custom issue field
-   You can find the `type` in this constants class `HelpshiftCustomIssueFieldParameter`
-
+   
 
 Pass this Map to `showConversation` API.
+
+Example:
+```javascript
+const CIFs = { stock_level: { type: 'number', value: '1505' } };
+const apiConfig = {
+  customIssueFields: CIFs,
+};
+showConversation(apiConfig);
+```
 
 Similarly, you can pass this Map to other APIs (ie. `showConversation`, `showFAQsWithConfig`, `showFAQSectionWithConfig`).
 
 The following are the valid values for the `type` key of a Custom Issue Field.
 
-- NewSingleLineParameter
-- NewMultiLineParameter
-- NewNumberParameter
-- NewCheckboxParameter
-- NewDropdownParameter
-- NewDateParameter
+- "singleline"
+- "multiline"
+- "number"
+- "checkbox"
+- "dropdown"
+- "date"
 
 Compatibility table for type and values:
 
-| Type                   | Value    | Comments                                                        |
-| ---------------------- | -------- | --------------------------------------------------------------- |
-| NewSingleLineParameter | string   | Character limit of 255                                          |
-| NewMultiLineParameter  | string   | Character limit of 100,000                                      |
-| NewNumberParameter     | int      |                                                                 |
-| NewDropdownParameter   | string   | Drop-down options should exist for the given Custom Issue Field |
-| NewDateParameter       | DateTime | Epoch time. For example - **Date.now()**                        |
-| NewCheckboxParameter   | boolean  |                                                                 |
+| Type       | Value    | Comments                                                        |
+| ---------- | -------- | --------------------------------------------------------------- |
+| singleline | string   | Character limit of 255                                          |
+| multiline  | string   | Character limit of 100,000                                      |
+| number     | int      |                                                                 |
+| dropdown   | string   | Drop-down options should exist for the given Custom Issue Field |
+| date       | DateTime | Epoch time. For example - **Date.now()**                        |
+| checkbox   | boolean  |                                                                 |
 
 <Admonition type="info" title="Note">
 
 On Custom Issue Fields keys & compatibility
 
 - Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/)
-
-</Admonition>
-
-<Admonition type="info" title="Note">
-
-In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format.
-
-<p className="m-0">For example:</p>
-
-* "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
-* "key - value" - ** Simple string, This is supported **
 
 </Admonition>
 
@@ -162,7 +159,16 @@ import {
 
 clearBreadcrumbs()
 ```
+<Admonition type="info" title="Note">
 
+In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format.
+
+<p className="m-0">For example:</p>
+
+* "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
+* "key - value" - ** Simple string, This is supported **
+
+</Admonition>
 ## Debug Logs {#debug-logs}
 
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
