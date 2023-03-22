@@ -82,7 +82,7 @@ For FCM users, the API key can be found at your
 
 ### Push notifications {#push-notifications}
 
-#### Configure FCM push notification plugins {#}
+#### Configure FCM push notification plugins
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project, too.
 
@@ -93,19 +93,41 @@ First of all, you will need to set up the firebase push notification plugin wher
 Then you will have to call the `Register Push Token` function once your application receives a push token from your provider:
 `registerPushToken(<token>)`
 
-For example with [React Native plugin](https://rnfirebase.io/messaging/usage), you can call the `const token = await requestNotificationPermission()` function to fetch the push registration token. Register this token with Helpshift SDK via the `Register Push Token` function.
+For example with [React Native plugin](https://rnfirebase.io/messaging/usage), you can call the `const token = await requestNotificationPermission()` function to fetch the push registration token. Register this token with Helpshift SDK via the `registerPushToken(<token>)` function.
+
+Example:
+```javascript
+const token = await requestNotificationPermission();
+if (token !== '') {
+    registerPushToken(token);
+}
+```
 
 To handle the incoming push notifications on Android you will have to call `handlePush(<remoteMessage.data>)`.
 
+Example:
+```javascript
+const notificationData = remoteMessage.data;
+if (notificationData != undefined) {
+  const doesNotificationDataHaveOrigin =
+    notificationData.hasOwnProperty('origin') &&
+    notificationData?.origin == 'helpshift';
+  if (doesNotificationDataHaveOrigin) {
+    handlePush(remoteMessage?.data || {});
+  } else {
+    //handle your notification
+  }
+}
+```    
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift"`, the notification is a Helpshift notification.
 
 To handle notifications from the background we recommend calling `setBackgroundMessageHandler` inside the index.js file where your AppRegistry.registerComponent is called.
-```
+```javascript
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    init();
-    handlePush(remoteMessage.data);
-  });
+  init();
+  handlePush(remoteMessage.data);
+});
   ```
 
 ## In-app notifications {#in-app-notifications}
@@ -134,9 +156,15 @@ Based on the value of `FetchFromServer`, the locally stored count will be return
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == 'receivedUnreadMessageCount') {
     try {
-      let countData =
+      let eventData =
         Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      console.log(countData.count); // show toast to user for count
+
+      if(eventData.hasOwnProperty('count')){
+          console.log(eventData.count);
+      }
+      if(eventData.hasOwnProperty('fromCache'){
+          console.log(eventData.fromCache);
+      }
     } catch (err) {
       console.error('Parsing Error', err);
     }
@@ -150,4 +178,4 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 
 When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
 
-- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `HelpshiftEventDataMessageCountFromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
