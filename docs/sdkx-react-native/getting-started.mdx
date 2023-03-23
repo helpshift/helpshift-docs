@@ -1,0 +1,172 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "You're 3 steps away from adding great in-app support to your React native application."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Getting Started {#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your React Native application.
+
+</Intro>
+
+Guide to integrating the React Native plugin for the Helpshift SDK X. You can also refer `helpshift-plugin-sdkx-react-native` package [here](https://www.npmjs.com/package/helpshift-plugin-sdkx-react-native).
+
+## Requirements {#version-requirements}
+
+- Node v16 or above
+- Android Studio
+- Xcode 10 or above
+- Java Development Kit
+
+## Installation {#adding-to-project}
+
+Open a Terminal in your project's folder and run:
+
+<Tabs groupId="js-package-manager">
+
+<TabItem value="npm" label="npm">
+
+```npm
+$ npm i helpshift-plugin-sdkx-react-native
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```yarn 
+$ yarn add helpshift-plugin-sdkx-react-native
+```
+
+</TabItem>
+
+</Tabs>
+
+- Additionally, for the iOS platform, there is a requirement to link the native parts of the library
+
+```$ npx pod-install```
+
+- After that, re-run your react application and start using Helpshift SDKX functions.
+
+<Admonition type="info" title="Note">
+
+Here, You should verify that `helpshift-plugin-sdkx-react-native` has been added to `package.json`
+```javascript
+"dependencies": {
+    .....
+    "helpshift-plugin-sdkx-react-native": <plugin-sdkx-version>,
+    .....
+  },
+```
+</Admonition>
+
+### For iOS: Info.plist changes: Addition of usage description strings {#plist-description-strings}
+
+When the “User Attachments” feature is enabled from the In-app SDK Configuration section, the SDK allows the user to upload the attachments. The attachments can be picked up from the Photo Library or Files. The options for these sources look like:
+
+<Image src="/static/books/react-native/attachment_picker_ios.png" width="half" />{" "}
+
+To use the photo library, Apple requires the app to have Usage Description strings in the Info.plist while. Failing to add these strings might result in app rejection. The following strings are needed for the attachment feature:
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Suggested string</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>NSPhotoLibraryUsageDescription</td>
+    <td>
+      “We need to access photos library to allow users manually pick images
+      meant to be sent as an attachment for help and support reasons.”
+    </td>
+    <td>
+      This is not needed if your app is iOS 11 or above. Below iOS 11, this key
+      is compulsory else the app may crash when user tries to open the photo
+      library for attaching photos.
+    </td>
+  </tr>
+</table>
+
+Note that the above strings are just a suggested description. If you need localisations for the same, please [Contact Us](https://support.helpshift.com/hc/en/13-helpshift-technical-support/contact-us/?p=all&contact=1)
+
+## Initializing Helpshift in your app {#initializing}
+
+1. First, create an app on the Helpshift Dashboard
+
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+
+2. Create an app with **Android** and **iOS** as selected `Platform`
+   <Image
+     src="/static/books/helpshiftx/create_app_with_android_platform.png"
+     width="full"
+   />{" "}
+
+Helpshift uniquely identifies each registered App with a combination of 2 tokens:
+
+<div className=" compact">
+
+|                          |                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_                                      |
+| <code>Platform ID</code> | Your App's unique Platform ID (App's <code>App ID</code> on dashboard is your Platform ID) |
+
+</div>
+
+You can find these by navigating to `Settings`>`SDKs (for Developers)` in your agent dashboard.
+Select your App and _check `Android` and `iOS` as a platform_ from the dropdowns and copy
+the 2 tokens to be passed when initializing Helpshift.
+
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
+
+
+Initialize SDK by calling `install` method before any other interaction with the Helpshift SDK in `App.tsx`.(It should be used in the `useEffect` hook in react native call). For more details [click here](/sdkx-react-native/sdk-configuration)
+
+### Initialize
+```javascript
+import {
+  install
+} from 'helpshift-plugin-sdkx-react-native';
+
+let installConfig = {
+  'enableLogging': true,
+  'manualLifecycleTracking': false
+}
+let appId = Platform.select({
+  android: <Android_Platform_ID>,
+  ios: <iOS_Platform_ID>,
+});
+
+if (appId != null) {
+  install(appId, <domain>, installConfig);
+} else {
+  //Display your error here.
+}
+```
+
+## Start using Helpshift {#start-using}
+
+Helpshift is now integrated with your app. You should now use the support APIs for [conversation screens](/sdkx-react-native/support-tools#conversation-view) inside your app.
+
+<Admonition type="info" title="Note">
+
+Since the Helpshift plugin is meant for mobile devices only, you should put all Helpshift calls inside conditional checks to make sure they are only called when running on a device.
+
+</Admonition>

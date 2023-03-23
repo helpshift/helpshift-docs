@@ -1,0 +1,277 @@
+---
+sidebar_position: 70
+title: Notifications iOS
+description: "Configure Push and In-app notifications."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Notifications <small>iOS</small> {#notifications}
+
+<Intro>
+
+Configure Push and In-app notifications.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+If you want to configure the notifications for Android, please refer [here](/sdkx-react-native/notifications-android).
+
+</Admonition>
+
+## Configure push notifications via Helpshift {#push-via-helpshift}
+
+Helpshift enables you to send notifications to your users. This is
+particularly useful when you have multiple users on multiple platforms,
+like iOS and Android. Notifications are useful to tell your users when
+you reply to an issue that they submitted. When the app is backgrounded,
+the notification that is sent from Helpshift appears as a notification.
+
+### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
+
+You can configure this in 4 simple steps:
+
+Set up your application with Apple and enable Push notifications.
+
+You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from the old type of certificates to the Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. It's also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
+
+Apple provides two variations of the Apple Push Notification service SSL
+
+- Apple Push Notification service SSL (Sandbox)
+- Apple Push Notification service SSL (Sandbox & Production)
+
+After creating your certificate, download it. Double-click on it to import it to the Keychain Access Application. In the Keychain Access Application, right-click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
+
+To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added it already). And then click on the `Push Notifications` option.
+
+<Image
+  src="/static/books/sdkx_ios/Add-platform.png"
+  width="full"
+  alt="Add-platform.png"
+/>{" "}
+
+After export, login and upload the .p12 file in your app in the Helpshift admin panel. Provide the same password you used while exporting to .p12 format.
+
+Please note that you need to use the same bundle identifier in the app as the one you used to create the APNS certificate.
+
+<Image
+  src="/static/books/sdkx_ios/Add-certificate.png"
+  width="full"
+  alt="Add-certificate.png"
+/>{" "}
+
+You can configure whether to send a badge or not and and whether to sound alerts if you've provided custom sounds bundled with your app to handle notifications. Save it, and you're all set.
+
+#### Development (Sandbox) mode vs. Production mode
+
+When you use Xcode to build and run your app, it is in development (Sandbox) mode. To test push notifications from Helpshift in this mode make sure you choose 'Development Mode' while uploading either of the above two certificate types.
+
+When you publish your app and download it from the App Store, your app is in Production mode. To test push notifications from Helpshift in production mode, make sure you choose 'Production Mode' while uploading a certificate of 'Apple Push Notification Service SSL (Sandbox & Production)' type. Sandbox mode certificate will not work in a production environment.
+
+We do not support using the same certificate for both sandbox and production apps. In these cases we recommend you create two separate apps on our dashboard, one in 'Production mode' and the other in 'Development mode'. While testing, please use the credentials of the development mode app. When you are ready to publish, please replace the credentials with those of the production-level app.
+
+<Admonition type="info" title="Note">
+
+Your Push Certificate has an expiry date, as indicated in the below screenshot. Helpshift will not send you a reminder when your Push Certificate expires, so please make sure that your developer keeps a tab on the expiry date to re-upload the Push Certificate.
+
+</Admonition>
+
+<Image
+  src="/static/books/sdkx_ios/cert-expiry.png"
+  width="full"
+  alt="cert-expiry.png"
+/>{" "}
+
+### Configure the Helpshift React Native Plugin SDK to handle notifications {#configure-helpshift-react-native-sdk}
+
+After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project.
+
+In the examples below, we are using [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package for push notifications. You can use any package of your choice.
+
+To setup notifications using react-native-notifications, please follow [this guide](https://wix.github.io/react-native-notifications/docs/getting-started)
+
+Example :
+
+**App.tsx**
+
+```javascript
+import {
+  handleProactiveLink,
+  handlePush,
+  registerPushToken,
+} from 'helpshift-plugin-sdkx-react-native';
+import {
+  Notification,
+  Notifications,
+  Registered,
+  RegistrationError,
+} from 'react-native-notifications';
+```
+
+#### For Register notifications
+
+```javascript
+  Notifications.registerRemoteNotifications();
+
+  //Get Callback for registerRemoteNotifications.
+  Notifications.events().registerRemoteNotificationsRegistered(
+    (event: Registered) => {
+      registerPushToken(event.deviceToken);
+    }
+  );
+```
+
+#### For handle notification received in foreground
+
+```javascript
+Notifications.events().registerNotificationReceivedForeground(
+    (notification: Notification, completion) => {
+      const notificationData = notification.payload;
+
+      const doesNotificationDataHaveOrigin =
+        notificationData.hasOwnProperty('origin') &&
+        notificationData?.origin == 'helpshift';
+
+      if (doesNotificationDataHaveOrigin) {
+        // Handle Helpshift notification here.
+        handlePush(notificationData, false);
+        completion({ alert: false, sound: false, badge: false });
+      } else {
+        completion({ alert: true, sound: true, badge: false });
+      }
+    }
+  );
+```
+
+####  When user tap on notifications
+
+```javascript
+Notifications.events().registerNotificationOpened(
+    (notification: Notification, completion: () => void) => {
+
+      const notificationData = notification.payload;
+      
+      const doesNotificationDataHaveOrigin =
+        notificationData.hasOwnProperty('origin') &&
+        notificationData?.origin == 'helpshift';
+
+      if (doesNotificationDataHaveOrigin) {
+        // Handle Helpshift notification here.
+        handlePush(notificationData);
+      } else {
+        console.log('registerNotificationOpened: customer-app notification');
+      }
+      completion();
+    }
+  );
+```
+
+#### When user tap on notifications and app state is not-running/killed state
+
+```javascript
+ Notifications.getInitialNotification()
+  .then((notification) => {
+    if (!notification) return;
+    const notificationData = notification.payload;
+    const doesNotificationDataHaveOrigin = notificationData.hasOwnProperty('origin') && notificationData?.origin == 'helpshift';
+    if (doesNotificationDataHaveOrigin) {
+       handlePush(notificationData, true);
+     } else {
+       console.log('getInitialNotification: customer-app notification');
+     }
+    }
+  )
+  .catch((err) => console.error('getInitialNotifiation() failed', err)
+);
+```
+
+On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
+
+## In-app notifications {#in-app-notifications}
+
+In-app notifications, unlike push notifications, appear within your app when it is in use by the user.
+
+These notifications are sent when an agent replies to a customer's issue. Your customers can click on these banners to go straight into the conversation screen.
+
+<SideBySide>
+
+<Image
+  src="/static/books/sdkx_ios/In-app-notification.png"
+  width="half"
+  alt="In-app-notification.png"
+/>{" "}
+
+</SideBySide>
+
+### Configuring In-app notifications {#optional-flags}
+
+The Helpshift [install](/sdkx-react-native/getting-started/) call supports flags for configuring SDK behavior.
+Currently, we support one flag i.e `enableInAppNotification`.
+
+### Enabling/Disabling In-app notifications {#enable-disable-in-app}
+
+<div className="compact ">
+
+|         |                                            |
+| ------- | ------------------------------------------ |
+| Flag    | `enableInAppNotification` |
+| Values  | true / false                               |
+| Default | true                                       |
+
+</div>
+
+If you do not want the in-app notifications to support provided by the
+Helpshift SDK, please set this flag to `false`. The default value of this
+flag is `true` i.e in-app notifications will be enabled.<br />
+
+## Showing notification count when replies are sent to the user {#showing-notification-count}
+
+To fetch unread messages count from the server you can call `requestUnreadMessageCount` API. This API will return unread messages count via observer.
+Based on the parameter, if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. 
+
+1. If `requestUnreadMessageCount(true)`: unread messages count will fetch from the server.
+
+2. If `requestUnreadMessageCount(false)`:  unread messages count will fetch the locally stored count will be returned.
+
+An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the observer for Helpshift events by calling the HelpshiftEventListner.
+
+```javascript
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
+  if (data.eventName == 'receivedUnreadMessageCount') {
+    try {
+      let eventData =
+        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
+
+      if(eventData.hasOwnProperty('count')){
+          console.log(eventData.count);
+      }
+      if(eventData.hasOwnProperty('fromCache'){
+          console.log(eventData.fromCache);
+      }
+    } catch (err) {
+      console.error('Parsing Error', err);
+    }
+  } else {
+    //Your code here.
+  }
+});
+```
+
+When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
+
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
+

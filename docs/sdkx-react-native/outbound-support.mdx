@@ -1,0 +1,113 @@
+---
+sidebar_position: 95
+title: Outbound Support
+description: "With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Outbound Support {#outbound-support}
+
+<Intro>
+
+With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install API](/sdkx-react-native/getting-started#initializing)
+
+</Admonition>
+
+The steps to use this feature are the following -
+
+To generate the link for outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+
+![](/static/books/helpshiftx/outbound-support.png)
+
+You should see a **Create link** button. Click on the Create link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
+
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
+
+At last, you will get a URL-encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
+
+YOUR_APP_IDENTIFIER: This can be any unique string that identifies your app. For example, like the scheme, you would use deep link URLs for your app like myApp, myAppSupport, etc.
+
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
+
+## Delegate push notification data to Helpshift {#delegate-notification-data}
+
+To pass the outbound support data to Helpshift, follow these steps -
+
+1. Send push notification to the users you want to give outbound support using your app's existing push notification system
+
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the outbound support link in your notification data to Helpshift SDK by calling `handleProactiveLink(String link,{})`.
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
+
+For example -
+
+_Following code shows how to handle incoming push notification and posting it on the notification bar of the device. Here `helpshift_proactive_link` key is used as an example_
+
+```javascript
+import {
+  handleProactiveLink,
+  handlePush
+} from 'helpshift-plugin-sdkx-react-native';
+
+function onNotificationOpenedApp( remoteMessage ){
+  const notificationData = remoteMessage.data;
+  if (notificationData != undefined) {
+    const isHandleProactiveLink = notificationData != undefined && Object.hasOwn(notificationData, 'helpshift_proactive_link');
+    if (isHandleProactiveLink) {
+      handleProactiveLink(notificationData.helpshift_proactive_link, <LOCAL_API_CONFIG>);
+    }else {
+      //handle your notification
+    }
+  }
+}
+```
+
+## Local API config {#local-api-config}
+
+1. You may want to add configuration specific to the current user in your app when they click on the notification.
+
+2. Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime when the end user clicks on the notification.
+
+3. This local API config is exactly the same as we would expect in other APIs like `showConversation()` or `showFAQs()`. Check out configuration options [here](/sdkx-react-native/sdk-configuration)
+
+4. We will use this configuration for the current issue as well as the next issue filed in the same session.
+
+Example :
+
+```javascript
+const cifs = { stock_level: { type: 'number', value: '1505' } };
+
+const localConfig = { 
+  tags:<Tags_Array>,
+  customIssueFields: cifs' 
+};
+
+handleProactiveLink(notificationData.helpshift_proactive_link, localConfig);
+```
+## Sending the generated link to device {#send-generated-link-to-device}
+
+1. Send push notifications to the users you want to give proactive support using your app's existing push notification system. Embed the outbound support link in the notification payload.
+
+2. In your app, handle this notification such that when a user opens the app through the notification, you read the notification payload and pass this proactive link (as a simple string) to Helpshift SDK via `handleProactiveLink(<PROACTIVE_LINK>,<LOCAL_API_CONFIG>)` function.
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided while generating the link from the dashboard.
