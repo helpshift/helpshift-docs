@@ -100,9 +100,9 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project.
 
-Here we are providing a sample example of push notification use, [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package. You can use any package of your choice.
+In the examples below, we are using [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package for push notifications. You can use any package of your choice.
 
-To setup notifications using react-native-notifications, please follow [this](https://wix.github.io/react-native-notifications/docs/getting-started)
+To setup notifications using react-native-notifications, please follow [this guide](https://wix.github.io/react-native-notifications/docs/getting-started)
 
 Example :
 
@@ -142,15 +142,12 @@ Notifications.events().registerNotificationReceivedForeground(
     (notification: Notification, completion) => {
       const notificationData = notification.payload;
 
-      const doesNotificationDataHaveProactiveLink =
-        notificationData.hasOwnProperty('helpshift_proactive_link');
       const doesNotificationDataHaveOrigin =
         notificationData.hasOwnProperty('origin') &&
         notificationData?.origin == 'helpshift';
 
-      if (doesNotificationDataHaveProactiveLink) {
-        completion({ alert: true, sound: false, badge: false });
-      } else if (doesNotificationDataHaveOrigin) {
+      if (doesNotificationDataHaveOrigin) {
+        // Handle Helpshift notification here.
         handlePush(notificationData, false);
         completion({ alert: false, sound: false, badge: false });
       } else {
@@ -167,16 +164,13 @@ Notifications.events().registerNotificationOpened(
     (notification: Notification, completion: () => void) => {
 
       const notificationData = notification.payload;
-      //This is for manage outbond support link.
-      const doesNotificationDataHaveProactiveLink =
-        notificationData.hasOwnProperty('helpshift_proactive_link');
+      
       const doesNotificationDataHaveOrigin =
         notificationData.hasOwnProperty('origin') &&
         notificationData?.origin == 'helpshift';
 
-      if (doesNotificationDataHaveProactiveLink) {
-        handleProactiveLink(notificationData.helpshift_proactive_link, <config_object>);
-      } else if (doesNotificationDataHaveOrigin) {
+      if (doesNotificationDataHaveOrigin) {
+        // Handle Helpshift notification here.
         handlePush(notificationData);
       } else {
         console.log('registerNotificationOpened: customer-app notification');
@@ -193,22 +187,19 @@ Notifications.events().registerNotificationOpened(
   .then((notification) => {
     if (!notification) return;
     const notificationData = notification.payload;
-     const doesNotificationDataHaveProactiveLink = notificationData.hasOwnProperty('helpshift_proactive_link');
-     const doesNotificationDataHaveOrigin = notificationData.hasOwnProperty('origin') && notificationData?.origin == 'helpshift';
-     if (doesNotificationDataHaveProactiveLink) {
-        handleProactiveLink(notificationData.helpshift_proactive_link,  <config_object>);
-      } else if (doesNotificationDataHaveOrigin) {
-        handlePush(notificationData, true);
-      } else {
-        console.log('getInitialNotification: customer-app notification');
-      }
+    const doesNotificationDataHaveOrigin = notificationData.hasOwnProperty('origin') && notificationData?.origin == 'helpshift';
+    if (doesNotificationDataHaveOrigin) {
+       handlePush(notificationData, true);
+     } else {
+       console.log('getInitialNotification: customer-app notification');
+     }
     }
   )
   .catch((err) => console.error('getInitialNotifiation() failed', err)
 );
 ```
 
-On iOS, **Helpshift push notifications** are handled by the SDK itself, and no additional setup is required.
+On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
 
 ## In-app notifications {#in-app-notifications}
 
