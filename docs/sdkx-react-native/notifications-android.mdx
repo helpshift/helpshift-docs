@@ -125,7 +125,7 @@ To check whether this notification is being sent from the Helpshift's push notif
 To handle notifications from the background we recommend calling `setBackgroundMessageHandler` inside the index.js file where your AppRegistry.registerComponent is called.
 ```javascript
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  init();
+  install(<APP_ID>, <DOMAIN>, <LOCAL_CONFIG>);
   handlePush(remoteMessage.data);
 });
   ```
