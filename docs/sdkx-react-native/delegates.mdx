@@ -42,18 +42,7 @@ To handle helpshift events, you can use following listener.
 ```javascript
 const handleCallbacks = () => {
     helpshiftEmitter.addListener('onEventOccurred', (data) => {
-      if (data.eventName == 'receivedUnreadMessageCount') {
-        try {
-          let countData =
-            Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-          console.log(countData.count);
-        } catch (err) {
-          console.error('Parsing Error', err);
-        }
-      } else {
-        // and so on...
-        //the list of events is given below
-      }
+      //handle helpshift events using data.eventname
     });
     helpshiftEmitter.addListener('onUserAuthenticationFailure', (data) => {
       //your code here
