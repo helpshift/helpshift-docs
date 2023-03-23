@@ -234,7 +234,7 @@ If the logged-in users are verified (i.e. a valid 'user authentication token' is
 
 #### How to use the failure delegates
 
-If identity verification fails, the SDK will invoke the `AuthenticationFailedForUser(...)` delegate to notify the application of the failure:
+If identity verification fails, the SDK will invoke the `onUserAuthenticationFailure` listner to notify the application of the failure:
 We defined these values in the Helpshift SDKX. 
 
 <table>
@@ -245,8 +245,8 @@ We defined these values in the Helpshift SDKX.
   </tr>
   <tr>
     <td>
-      HelpshiftAuthenticationFailureReason <br />
-      .REASON_AUTH_TOKEN_NOT_PROVIDED
+      
+      REASON_AUTH_TOKEN_NOT_PROVIDED
     </td>
     <td>When no 'user authentication token' is provided</td>
     <td>
@@ -262,8 +262,7 @@ We defined these values in the Helpshift SDKX.
   </tr>
   <tr>
     <td>
-      HelpshiftAuthenticationFailureReason <br />
-      .REASON_INVALID_AUTH_TOKEN
+      REASON_INVALID_AUTH_TOKEN
     </td>
     <td>When the 'user authentication token' is invalid</td>
     <td>
@@ -290,7 +289,7 @@ We defined these values in the Helpshift SDKX.
     </td>
   </tr>
   <tr>
-    <td>HelpshiftAuthenticationFailureReason.UNKNOWN</td>
+    <td>UNKNOWN</td>
     <td>When the reason for the authentication failure is unknown</td>
   </tr>
 </table>
