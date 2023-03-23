@@ -250,24 +250,25 @@ Based on the parameter, if `FetchFromServer` is `false` else from the server by 
 An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the observer for Helpshift events by calling the HelpshiftEventListner.
 
 ```javascript
-import {
-  helpshiftEmitter
-} from 'helpshift-plugin-sdkx-react-native';
-
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == 'receivedUnreadMessageCount') {
     try {
-      let countData = Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      console.log(countData.count); 
+      let eventData =
+        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
+
+      if(eventData.hasOwnProperty('count')){
+          console.log(eventData.count);
+      }
+      if(eventData.hasOwnProperty('fromCache'){
+          console.log(eventData.fromCache);
+      }
     } catch (err) {
       console.error('Parsing Error', err);
     }
   } else {
-    .
-    .
+    //Your code here.
   }
-  }
-);
+});
 ```
 
 When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
