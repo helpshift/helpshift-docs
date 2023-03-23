@@ -61,7 +61,7 @@ To pass the outbound support data to Helpshift, follow these steps -
 
 For example -
 
-_Following code shows how to handle incoming push notification and posting it on the notification bar of the device_
+_Following code shows how to handle incoming push notification and posting it on the notification bar of the device. Here `helpshift_proactive_link` key is used as an example_
 
 ```javascript
 import {
@@ -69,20 +69,17 @@ import {
   handlePush
 } from 'helpshift-plugin-sdkx-react-native';
 
-const notificationData = remoteMessage.data;
-if (notificationData != undefined) {
-      const isHandleProactiveLink = notificationData != undefined && Object.hasOwn(notificationData, 'helpshift_proactive_link');
-      const doesNotificationDataHaveOrigin =
-        notificationData.hasOwnProperty('origin') &&
-        notificationData?.origin == 'helpshift';
-      if (isHandleProactiveLink) {
-        handleProactiveLink(notificationData.helpshift_proactive_link, <LOCAL_API_CONFIG>);
-      } else if (doesNotificationDataHaveOrigin) {
-        handlePush(remoteMessage?.data || {});
-      } else {
-        //handle your notification
-      }
+function onNotificationOpenedApp( remoteMessage ){
+  const notificationData = remoteMessage.data;
+  if (notificationData != undefined) {
+    const isHandleProactiveLink = notificationData != undefined && Object.hasOwn(notificationData, 'helpshift_proactive_link');
+    if (isHandleProactiveLink) {
+      handleProactiveLink(notificationData.helpshift_proactive_link, <LOCAL_API_CONFIG>);
+    }else {
+      //handle your notification
     }
+  }
+}
 ```
 
 ## Local API config {#local-api-config}
@@ -105,6 +102,7 @@ const localConfig = {
   customIssueFields: cifs' 
 };
 
+handleProactiveLink(notificationData.helpshift_proactive_link, localConfig);
 ```
 ## Sending the generated link to device {#send-generated-link-to-device}
 
