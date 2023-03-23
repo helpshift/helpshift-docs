@@ -93,11 +93,11 @@ First of all, you will need to set up the firebase push notification plugin wher
 Then you will have to call the `Register Push Token` function once your application receives a push token from your provider:
 `registerPushToken(<token>)`
 
-For example with [React Native plugin](https://rnfirebase.io/messaging/usage), you can call the `const token = await requestNotificationPermission()` function to fetch the push registration token. Register this token with Helpshift SDK via the `registerPushToken(<token>)` function.
+For example with [React Native plugin](https://rnfirebase.io/messaging/usage), you can call the `const token = await messaging().getToken();` function to fetch the push registration token. Register this token with Helpshift SDK via the `registerPushToken(<token>)` function.
 
 Example:
 ```javascript
-const token = await requestNotificationPermission();
+const token = await messaging().getToken();
 if (token !== '') {
     registerPushToken(token);
 }
