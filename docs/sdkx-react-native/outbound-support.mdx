@@ -76,7 +76,7 @@ if (notificationData != undefined) {
         notificationData.hasOwnProperty('origin') &&
         notificationData?.origin == 'helpshift';
       if (isHandleProactiveLink) {
-        handleProactiveLink(notificationData.helpshift_proactive_link || '', <LOCAL_API_CONFIG>);
+        handleProactiveLink(notificationData.helpshift_proactive_link, <LOCAL_API_CONFIG>);
       } else if (doesNotificationDataHaveOrigin) {
         handlePush(remoteMessage?.data || {});
       } else {
@@ -95,6 +95,17 @@ if (notificationData != undefined) {
 
 4. We will use this configuration for the current issue as well as the next issue filed in the same session.
 
+Example :
+
+```javascript
+const cifs = { stock_level: { type: 'number', value: '1505' } };
+
+const localConfig = { 
+  tags:<Tags_Array>,
+  customIssueFields: cifs' 
+};
+
+```
 ## Sending the generated link to device {#send-generated-link-to-device}
 
 1. Send push notifications to the users you want to give proactive support using your app's existing push notification system. Embed the outbound support link in the notification payload.
