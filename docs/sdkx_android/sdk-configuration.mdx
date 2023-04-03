@@ -304,6 +304,19 @@ For example
     Helpshift.showConversation(MainActivity.this, config);
 ```
 
+## Initiate Chat on widget load {#initiate-chat}
+
+In `config` map of `Helpshift.showConversation(this, config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+For example
+
+```java
+    Map<String, Object> config = new HashMap<>();
+    // .. other configs
+    config.put("initiateChatOnLoad", true);
+    Helpshift.showConversation(MainActivity.this, config);
+```
+
 ## Theming the SDK {#theming}
 
 Please check the [design](/sdkx_android/design/) page to apply your styles and theming to SDK.
