@@ -35,9 +35,9 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## showConversation {#conversation-view}
+## Integrating Contact Us & In App Messaging {#conversation-view}
 
-You can use the API call `showConversationWith:config:` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+You can use the API call `showConversationWith:config:` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
 
 <Centered width="major">
 
@@ -80,6 +80,8 @@ You can use the API call `showFAQsWith:config:` to provide a way for the user to
 
 </Centered>
 
+This View Controller combines the FAQ, Search and Contact Us functionality together in a single interface. In this view, a user can search for a specific question in the FAQ failing which they can report an issue. When you respond back to their question from the Helpshift Agent Dashboard, the reply will be shown as a count besides Contact Us, clicking on which will open up the conversation.
+
 <Tabs>
 
 <TabItem value="Objective-c Example" label="Objective-c Example">
@@ -103,15 +105,21 @@ You can use the API call `showFAQsWith:config:` to provide a way for the user to
 
 </Tabs>
 
+Supports these [API Options](/sdkx_ios/sdk-configuration/).
+
 ## Showing a Particular FAQ Section {#faq-section-view}
 
-You can use the API call `showFAQSection:with:config:` to invoke a particular section of your FAQs with its FAQ section publish-id
+You can use the API call `showFAQSection:with:config:` to show FAQs from a particular FAQ section.
 
 <Centered >
 
 <Image src="/static/books/sdkx_ios/show_section.png" width="full" />{" "}
 
 </Centered>
+
+**You will need the `publish-id` of the FAQ section to use this API:**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -136,15 +144,21 @@ This feature works like a permalink for displaying specific FAQ sections as cont
 
 </Tabs>
 
+Supports these [API Options](/sdkx_ios/sdk-configuration/).
+
 ## Showing a Particular FAQ {#faq-view}
 
-You can use the API `showSingleFAQ:with:config:` to show a single FAQ. You will need to pass the `publish-id` of the FAQ to be shown to this API.
+You can use the API `showSingleFAQ:with:config:` to show a single FAQ.
 
 <Centered >
 
 <Image src="/static/books/sdkx_ios/show_single_faq.png" width="full" />{" "}
 
 </Centered>
+
+**You'll need the `publish-id` of the FAQ to use this API:**
+
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
 <Tabs>
 
@@ -167,16 +181,16 @@ You can use the API `showSingleFAQ:with:config:` to show a single FAQ. You will 
 
 </Tabs>
 
-Publish ID of FAQ which is shown when you expand a single FAQ on admin side (**yourcompanyname**.helpshift.com/admin/faq/)
+Supports these [API Options](/sdkx_ios/sdk-configuration/).
 
-## setLanguage {#set-language}
+## Set SDK language {#set-language}
 
-You can set the SDK language using the `setLanguage:` method. By default, the device's prefered language is used by the SDK. The call will fail in the following cases :
+You can set the SDK language using the `setLanguage:` method. By default, the device's preferred language is used by the SDK. The call will fail in the following cases :
 
 - If a Helpshift session is already active at the time of invocation
 - Language code is incorrect
 
-For more info about languages you can refer [here](/sdkx_ios/internationalization/)
+For more info about languages you can refer [here](/sdkx_ios/internationalization/).
 
 <Tabs>
 
