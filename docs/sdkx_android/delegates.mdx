@@ -33,30 +33,30 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Helpshift Events Listener/Delegate implementation {#helpshift-delegates-implementation}
+## Helpshift Events Listener/Delegates implementation {#helpshift-delegates-implementation}
 
 You can set `HelpshiftEventsListener` by calling the `Helpshift.setHelpshiftEventsListener()` method.
 
 For example:
 
 ```java
-     Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.CONVERSATION_START:
-            //your code here
-          break;
-          // and so on...
-          //the list of events is given below
-        }
-      }
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+ @Override
+ public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+   switch(eventName){
+     case HelpshiftEvent.CONVERSATION_START:
+       //your code here
+     break;
+     // and so on...
+     //the list of events is given below
+   }
+ }
 
-      @Override
-      public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
-        // your code here
-      }
-    });
+ @Override
+ public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
+   // your code here
+ }
+);
 ```
 
 Class Implementation:
@@ -64,30 +64,29 @@ You have to define a class which implements `HelpshiftEventsListener`
 and then set this event listener instance using `Helpshift.setHelpshiftEventsListener()` method.
 
 ```java
-    class MyEventListener implements HelpshiftEventsListener{
+class MyEventListener implements HelpshiftEventsListener{
 
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.CONVERSATION_START:
-            //your code here
-          break;
-          // and so on...
-          //the list of events is given below
-        }
-      }
-
-      @Override
-      public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
-        // your code here
-      }
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.CONVERSATION_START:
+        //your code here
+      break;
+      // and so on...
+      //the list of events is given below
     }
 
-    MyEventListener listener = new MyEventListener();
-    Helpshift.setHelpshiftEventsListener(listener);
+  @Override
+  public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
+    // your code here
+  }
+}
+
+MyEventListener listener = new MyEventListener();
+Helpshift.setHelpshiftEventsListener(listener);
 ```
 
-## Events {#helpshift-events}
+## Helpshift Events {#helpshift-events}
 
 ### Conversation Status Event {#conversation-status}
 
@@ -100,21 +99,19 @@ This event contains information about the current ongoing conversation.
   - `HelpshiftEvent.DATA_IS_ISSUE_OPEN`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.CONVERSATION_STATUS:
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID));
-        }
-      }
-      // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.CONVERSATION_STATUS:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID));
+    }
+  }
 ```
 
 ### Widget Toggle Event {#widget-toggle-event}
 
-This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
+This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key.
 
 - Event name: `HelpshiftEvent.WIDGET_TOGGLE`
 - Event data: `HelpshiftEvent.DATA_SDK_VISIBLE`
@@ -134,28 +131,25 @@ This event is triggered when the user opens or exits the chat screen. This event
 
 ### Conversation Start Event {#conversation-start-event}
 
-This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
 
 - Event name: `HelpshiftEvent.CONVERSATION_START`
 - Event data: `HelpshiftEvent.DATA_MESSAGE`
 
 ```java
-
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.CONVERSATION_START:
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE));
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.CONVERSATION_START:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE));
+    }
+  }
 ```
 
 ### Message Add Event {#message-add-event}
 
-This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user. For your reference, see the below example.
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
 
 - Event name: `HelpshiftEvent.MESSAGE_ADD`
 - Event data:
@@ -165,25 +159,22 @@ This event is triggered when the user adds a message in a conversation. It might
   - `HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.MESSAGE_ADD:
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE_BODY));
-
-            if(data.get(HelpshiftEvent.DATA_MESSAGE_TYPE).equals(HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT)){
-              Log.d(TAG, "user sent an attachment");
-            }
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.MESSAGE_ADD:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE_BODY));
+        if(data.get(HelpshiftEvent.DATA_MESSAGE_TYPE).equals(HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT)){
+          Log.d(TAG, "user sent an attachment");
         }
-      }
-    // ...
+    }
+  }
 ```
 
 ### CSAT Submit Event {#csat-submit-event}
 
-This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
 
 - Event name: `HelpshiftEvent.CSAT_SUBMIT`
 - Event data:
@@ -191,18 +182,15 @@ This event is triggered when the user submits a CSAT rating after the conversati
   - `HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case "HelpshiftEvent.CSAT_SUBMIT":
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_CSAT_RATING));
-
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK));
-
-        }
-      }
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CSAT_SUBMIT":
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_CSAT_RATING));
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK));
+    }
+  }
 ```
 
 ### Conversation End Event {#conversation-end-event}
@@ -212,16 +200,14 @@ This event is triggered when the conversation ends (resolved or rejected) and it
 - Event name: `HelpshiftEvent.CONVERSATION_END`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case "HelpshiftEvent.CONVERSATION_END":
-            //data will be empty
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_END":
+        //data will be empty
+    }
+  }
 ```
 
 ### Conversation Rejected Event {#conversation-rejected-event}
@@ -231,16 +217,14 @@ This event is triggered when an agent rejects the conversation.
 - Event name: `HelpshiftEvent.CONVERSATION_REJECTED`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case "HelpshiftEvent.CONVERSATION_REJECTED":
-            //data will be empty
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_REJECTED":
+        //data will be empty
+    }
+  }
 ```
 
 ### Conversation Resolved Event {#conversation-resolved-event}
@@ -250,16 +234,14 @@ This event is triggered when an agent resolves the conversation.
 - Event name: `HelpshiftEvent.CONVERSATION_RESOLVED`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case "HelpshiftEvent.CONVERSATION_RESOLVED":
-            //data will be empty
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_RESOLVED":
+        //data will be empty
+    }
+  }
 ```
 
 ### Conversation Reopened Event {#conversation-reopened-event}
@@ -269,24 +251,21 @@ When resolution question is enabled, the users are asked if they're satisfied wi
 - Event name: `HelpshiftEvent.CONVERSATION_REOPENED`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case "HelpshiftEvent.CONVERSATION_REOPENED":
-            //data will be empty
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_REOPENED":
+        //data will be empty
+    }
+  }
 ```
 
 ### User Authentication Failed Event {#user-authentication-failed-event}
 
-If you have `user authentication feature` enabled on the Dashboard and if you pass an invalid token in the `Helpshift.login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx_android/users)
+If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `Helpshift.login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx_android/users).
 
-Reason type :
-
+Reason type:
 - `HelpshiftAuthenticationFailureReason.REASON_INVALID_AUTH_TOKEN`
 - `HelpshiftAuthenticationFailureReason.REASON_AUTH_TOKEN_NOT_PROVIDED`
 - `HelpshiftAuthenticationFailureReason.UNKNOWN`
@@ -304,47 +283,44 @@ Reason type :
 
 ### Helpshift session delegates {#session-delegates}
 
-**Helpshift Session Started**
+#### Helpshift Session Started
 
 If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
 
 - Event Name: `HelpshiftEvent.SDK_SESSION_STARTED`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.SDK_SESSION_STARTED:
-            //sdk session started
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.SDK_SESSION_STARTED:
+        //sdk session started
+    }
+  }
 ```
 
-**Helpshift Session Ended**
+#### Helpshift Session Ended
 
 If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
 - Event Name: `HelpshiftEvent.SDK_SESSION_ENDED`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.SDK_SESSION_ENDED:
-            //sdk session ended
-        }
-      }
-    // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.SDK_SESSION_ENDED:
+        //sdk session ended
+    }
+  }
 ```
 
 ### Unread Message Count {#unread-message-count}
 
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(final boolean shouldFetchFromServer)`.
+
 The count of the number of messages will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
 
 - Event Name: `HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT`
@@ -352,20 +328,24 @@ The count of the number of messages will be conveyed to your app via this event.
   `HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE`
 
 ```java
-    // call requestUnreadMessageCount() api first
+// call requestUnreadMessageCount() api first
+Helpshift.requestUnreadMessageCount(true);
 
-    Helpshift.requestUnreadMessageCount(true);
-
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
-            int count = (int) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT);
-            boolean fromCache = (boolean) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE);
-            Log.d(TAG, "Message Count : " + count + ", From Cache: " + fromCache);
-        }
-      }
-    // ...
+// ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
+        int count = (int) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT);
+        boolean fromCache = (boolean) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE);
+        Log.d(TAG, "Message Count : " + count + ", From Cache: " + fromCache);
+    }
+  }
 ```
+
+If you call the method `requestUnreadMessageCount(true)` it will return a notification count from server in the above delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+
+If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to false, `requestUnreadMessageCount(false)`. In this case, SDK returns the count of unread messages available locally in this delegate method.
+
+Locally saved unread message count are useful for saving an additional network call.
