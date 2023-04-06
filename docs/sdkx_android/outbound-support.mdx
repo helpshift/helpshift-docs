@@ -59,9 +59,7 @@ To pass the outbound support data to Helpshift, follow these steps -
 
 3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
 
-For example -
-
-_Following code shows how to handle incoming push notification and posting it on the notification bar of the device_
+For example, following code shows how to handle incoming push notification and posting it on the notification bar of the device -
 
 ```java
 @Override
@@ -147,9 +145,7 @@ You will have to implement the method `getAPIConfig()` where you can add any use
 
 We will merge this config and the config embedded in the outbound support link. We will append data of config from outbound support link to local config like **Tags, CIFs**, etc. In case of conflicts, outbound support config will get the precedence.
 
-For example -
-
-_Following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method._
+For example, following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method -
 
 ```java
 public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector{
@@ -185,6 +181,6 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
     localConfig.put("customIssueFields", cifMap);
     ..etc
     return localConfig;
-    }
+  }
 }
 ```
