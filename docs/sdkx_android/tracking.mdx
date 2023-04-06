@@ -41,10 +41,9 @@ You can attach tags while reporting an issue by passing them to the `configMap` 
 For example:
 
 ```java
-    Map<String, Object> config = new HashMap<>();
-    config.put("tags", new String[]{"foo", "bar"});
-
-    Helpshift.showConversation(MainActivity.this, config);
+Map<String, Object> config = new HashMap<>();
+config.put("tags", new String[]{"foo", "bar"});
+Helpshift.showConversation(MainActivity.this, config);
 ```
 
 <Admonition type="info" title="Note">
@@ -58,9 +57,9 @@ For example:
 
 ## Adding Custom Metadata to Conversations
 
-You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation. You can attach custom metadata by passing it to the `configMap` object at the time of calling any of the SDK X APIs (`showConversation`, `showFAQs`, `showSingleFAQ`, `showFAQSection`) like `Helpshift.showConversation(this, configMap)`.
+You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation. You can attach custom metadata by passing it to the `configMap` object at the time of calling any of the SDK X APIs (`showConversation`, `showFAQs`, `showSingleFAQ`, `showFAQSection`).
 
-Use code:
+Example:
 
 ```java
 HashMap<String, String> customMetadata = new HashMap<String, String();
@@ -76,17 +75,29 @@ Helpshift.showConversation(MainActivity.this, config);
 
 <Admonition type="info" title="Note">
 
-Metadata should only be sent as String key-value pairs.
+- Metadata should only be sent as String key-value pairs.
+- Once customMetadata is set, if you want to reset it, then you’ll have to call the SDK X API with an empty map, i.e.
+
+```java
+HashMap<String, String> customMetadata = new HashMap<String, String();
+HashMap<String, Object> config = new HashMap<>();
+config.put("customMetadata", customMetadata);
+Helpshift.showConversation(MainActivity.this, config);
+```
 
 </Admonition>
 
-## Set Custom Issue Fields {#set-custom-issue-fields}
+## Attaching Custom Issue Fields to conversations {#set-custom-issue-fields}
 
-If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` key in API config map. These Custom Issue Fields would be sent whenever a new conversation is started by the end user.
+
+As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active. All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts.
+
+If you want to set Custom Issue Fields at the time of Issue creation, follow the steps:
 
 1. Initialise a top level custom issue fields' `Map`
-2. Define your custom issue field `Map`
-3. Add the `"type"` and `"value"` for that custom issue field
+2. For each custom issue field, define your custom issue field `Map`
+3. Add the `"type"` and `"value"` for that custom issue field in custom issue field map.
 4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
 5. Pass the map to `configMap` with key `"customIssueFields"` of the `Helpshift.showConversation(this, configMap)`
 
@@ -122,75 +133,69 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     Helpshift.showConversation(MainActivity.this, config);
 ```
 
-The following are the valid values for the `type` key of a Custom Issue Field.
+Possible datatypes to be passed into the config are:
 
-- "singleline"
-- "multiline"
-- "number"
-- "checkbox"
-- "dropdown"
-- "date"
-
-Compatibility table for type and values:
-
-| Type       | Value   | Comments                                                        |
-| ---------- | ------- | --------------------------------------------------------------- |
-| singleline | string  | Character limit of 255                                          |
-| multiline  | string  | Character limit of 100,000                                      |
-| number     | string  |                                                                 |
-| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
-| date       | number  | Epoch time. For example - **Date.now()**                        |
-| checkbox   | boolean |                                                                 |
+| Type         | value         | Comments                                                                                                                                                      |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "singleline" | string        | Single line string with character limit of 255                                                                                                                |
+| "multiline"  | string        | Multi line string with character limit of 100,000                                                                                                             |
+| "number"     | string        | String representation of number. For eg. "12345"                                                                                                              |
+| "dropdown"   | string        | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "date"       | long long int | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
+| "checkbox"   | string        | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 <Admonition type="info" title="Note">
 
-In the **Breadcrumbs** and **Debug logs** APIs, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format.
+**On Custom Issue Fields keys & compatibility**
 
-<p className="m-0">For example:</p>
-
-* "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
-* "key - value" - ** Simple string, This is supported **
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
 
 </Admonition>
 
 ## Breadcrumbs {#breadcrumbs}
-
-<Admonition type="info" title="Note">
-
-** Applicable to SDK X v10.1.0 & above **
-
-</Admonition>
 
 Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs, use `leaveBreadCrumb` API —
 
 For example:
 
 ```java
-    Helpshift.leaveBreadCrumb("Any breadcrumb string");
+Helpshift.leaveBreadCrumb("Any breadcrumb string");
 ```
 
-Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `clearBreadCrumbs` API —
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the **SDK Configurations** section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `clearBreadCrumbs` API —
 
 For example:
 
 ```java
-    Helpshift.clearBreadCrumbs();
+Helpshift.clearBreadCrumbs();
 ```
-
-## Debug Logs {#debug-logs}
 
 <Admonition type="info" title="Note">
 
-** Applicable to SDK X v10.1.0 & above **
+- Applicable to SDK X v10.1.0 & above
+- In the `leaveBreadcrumb` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
+  - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
+  - `"key - value"` - ** Simple string, This is supported **
 
 </Admonition>
+
+## Debug Logs {#debug-logs}
 
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. This can be achieved by using `com.helpshift.HSDebugLog`.
 
 For example:
 
 ```java
-    HSDebugLog.d("TAG", "Any Debug log string");
+HSDebugLog.d("TAG", "Any Debug log string");
 ```
 
-Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
+Debug logs are collected within the set debug logs limit. The limit is set under the **SDK Configurations** section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
+
+<Admonition type="info" title="Note">
+
+- Applicable to SDK X v10.1.0 & above
+- In the `leaveBreadcrumb` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
+  - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
+  - `"key - value"` - ** Simple string, This is supported **
+
+</Admonition>
