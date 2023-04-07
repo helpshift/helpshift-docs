@@ -337,6 +337,50 @@ Helpshift.showConversation(with:self, config:config)
 
 In your registration process, ask your user for his/her age. If the user's age is 13 or younger, set enableFullPrivacy to YES. This way, you comply with COPPA for your children users, but collect valuable user and device data for your other users.
 
+## initiateChatOnLoad {#initiateChatOnLoad}
+
+In config, setting the `initiateChatOnLoad` option to `YES` will start a new conversation, if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+<Tabs>
+
+<TabItem value="Configuration details" label="Configuration details">
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| Option:       | <code>initiateChatOnLoad</code>                   |
+| Values:       | <code>YES</code> / <code>NO</code>                |
+| Default:      | <code>NO</code>                                   |
+| Min SDK       | v10.0.0                                           |
+| Supported by: | <code>showConversation</code>                     |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"initiateChatOnLoad": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initiateChatOnLoad": true]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+</TabItem>
+
+</Tabs>
+
+
 ## Theming the SDK {#theming}
 
 Please check [design](/sdkx_ios/design) page to apply your styles and theming to the SDK.
