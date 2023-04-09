@@ -101,6 +101,11 @@ async function createConfig() {
       /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
       ({
         ...navbar,
+        docs: {
+          sidebar: {
+            hideable: true,
+          },
+        },
         footer: {
           style: "light",
           links: footerLinks,
