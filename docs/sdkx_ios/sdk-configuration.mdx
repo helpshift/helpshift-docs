@@ -58,8 +58,8 @@ Example:
 ```objc
 NSDictionary *config = @{ @"enableLogging":@YES };
 
-[Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
-                          domain:@"YOUR_DOMAIN_NAME"
+[Helpshift installWithPlatformId:@"<PLATFORM_ID>"
+                          domain:@"<DOMAIN>"
                           config:config];
 ```
 
@@ -68,7 +68,7 @@ NSDictionary *config = @{ @"enableLogging":@YES };
 
 ```swift
 let config = ["enableLogging": true]
-Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
 ```
 
 </TabItem>
@@ -119,6 +119,10 @@ Helpshift.showFAQs(self, config: config)
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
 - Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
 
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
 ```objc
 CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
 CTCarrier *carrier = [netinfo subscriberCellularProvider];
@@ -128,6 +132,24 @@ if([[carrier mobileCountryCode] isEqualToString:@"<LOCAL_COUNTRY_CODE>"]) {
 }
 NSDictionary *config = @{ @"enableContactUs": enableContactUsValue };[Helpshift showFAQs:self config:config];
 ```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let netinfo = CTTelephonyNetworkInfo()
+let carrier = netinfo.subscriberCellularProvider
+var enableContactUsValue = "AFTER_VIEWING_FAQS"
+if carrier.mobileCountryCode == "<LOCAL_COUNTRY_CODE>" {
+    enableContactUsValue = "ALWAYS"
+}
+let config = ["enableContactUs": enableContactUsValue]
+Helpshift.showFAQs(self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Full privacy {#enableFullPrivacy}
 
@@ -205,8 +227,8 @@ Example:
 ```objc
 NSDictionary *config = @{ @"enableInAppNotification": @YES };
 
-[Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
-                          domain:@"YOUR_DOMAIN_NAME"
+[Helpshift installWithPlatformId:@"<PLATFORM_ID>"
+                          domain:@"<DOMAIN>"
                           config:config];
 ```
 
@@ -215,7 +237,7 @@ NSDictionary *config = @{ @"enableInAppNotification": @YES };
 
 ```swift
 let config = ["enableInAppNotification": true]
-Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
 ```
 
 </TabItem>
@@ -246,8 +268,8 @@ NSDictionary *config = @{ @"inAppNotificationAppearance": @{
                             }
                         };
 
-[Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID"
-                          domain:@"YOUR_DOMAIN_NAME"
+[Helpshift installWithPlatformId:@"<PLATFORM_ID>"
+                          domain:@"<DOMAIN>"
                           config:config];
 ```
 
@@ -256,7 +278,7 @@ NSDictionary *config = @{ @"inAppNotificationAppearance": @{
 
 ```swift
 let config = ["inAppNotificationAppearance": ["bannerBackgroundColor":"000000", "textColor":"FFFFFF"]]
-Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
 ```
 
 </TabItem>
@@ -328,7 +350,7 @@ NSDictionary *config = @{ @"presentFullScreenOniPad": @YES };
 
 ```swift
 let config = ["presentFullScreenOniPad": true]
-Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
 ```
 
 </TabItem>

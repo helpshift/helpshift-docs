@@ -84,7 +84,7 @@ Example:
 
 <TabItem value="Objective-C" label="Objective-C">
 
-```
+```objc
 NSDictionary *customMetadata = @{ @"usertype": @"paid",
                                   @"level": @"7",
                                   @"score": @"12345"
@@ -171,7 +171,7 @@ Possible datatypes to be passed into the config are:
 | "multiline"  | string        | Multi line string with character limit of 100,000                                                                                                             |
 | "number"     | string        | String representation of number. For eg. "12345"                                                                                                              |
 | "dropdown"   | string        | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "date"       | long long int | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
+| "date"       | NSNumber      | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
 | "checkbox"   | string        | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 <Admonition type="info" title="Note">
@@ -264,7 +264,7 @@ Debug logs are collected within the set debug logs limit. The limit is set under
 <Admonition type="info" title="Note">
 
 - Applicable to SDK X v10.1.0 & above
-- In the `leaveBreadcrumb` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
+- In the `addLog` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
   - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
   - `"key - value"` - ** Simple string, This is supported **
 
