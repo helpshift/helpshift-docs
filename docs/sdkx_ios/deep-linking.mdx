@@ -64,7 +64,11 @@ To handle the custom URLs in your iOS app, make sure first that your app's Info.
 
 You will then need to implement,`application:openURL:sourceApplication:annotation:` in your app delegate, to handle and take the required action. For example:
 
-```
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
     // URL is myapp://discount-scheme/id304
@@ -78,3 +82,25 @@ You will then need to implement,`application:openURL:sourceApplication:annotatio
     return YES;
 }
 ```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+    
+    // URL is myapp://discount-scheme/id304
+    if url.scheme == "myapp" {
+        if url.relativePath == "/id304" {
+            // Handle deep link in app. Do something inside your app.
+            MyApp.doSomething()
+        }
+    }
+
+    return true
+}
+```
+
+</TabItem>
+
+</Tabs>
