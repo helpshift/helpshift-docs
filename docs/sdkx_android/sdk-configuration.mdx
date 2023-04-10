@@ -183,6 +183,19 @@ public class MainApplication extends Application {
 }
 ```
 
+## Initiate new conversation on chat screen load {#initiate-chat}
+
+In `config` map of `Helpshift.showConversation(this, config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+Example:
+
+```java
+Map<String, Object> config = new HashMap<>();
+// .. other configs
+config.put("initiateChatOnLoad", true);
+Helpshift.showConversation(MainActivity.this, config);
+```
+
 ## Screen Orientation {#screen-orientation}
 
 The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
@@ -302,19 +315,6 @@ public class MainApplication extends Application {
                       configurations);
   }
 }
-```
-
-## Initiate new conversation on chat screen load {#initiate-chat}
-
-In `config` map of `Helpshift.showConversation(this, config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
-
-Example:
-
-```java
-Map<String, Object> config = new HashMap<>();
-// .. other configs
-config.put("initiateChatOnLoad", true);
-Helpshift.showConversation(MainActivity.this, config);
 ```
 
 ## Theming the SDK {#theming}

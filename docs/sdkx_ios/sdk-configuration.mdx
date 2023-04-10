@@ -222,7 +222,7 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 
 </Tabs>
 
-## inAppNotificationAppearance {#inAppNotificationAppearance}
+## In-App Notificaton Appearance {#inAppNotificationAppearance}
 
 This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary
 
@@ -263,7 +263,42 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 
 </Tabs>
 
-## presentFullScreenOniPad {#presentFullScreenOniPad}
+## Initiate new conversation on chat screen load {#initiateChatOnLoad}
+
+In config dictionary of `showConversation:`, setting the `initiateChatOnLoad` option to `YES` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| Option:       | <code>initiateChatOnLoad</code>                   |
+| Values:       | <code>YES</code> / <code>NO</code>                |
+| Default:      | <code>NO</code>                                   |
+| Min SDK       | v10.0.0                                           |
+| Supported by: | <code>showConversation</code>                     |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"initiateChatOnLoad": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initiateChatOnLoad": true]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## Full Screen on iPad {#presentFullScreenOniPad}
 
 The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
 
@@ -294,42 +329,6 @@ NSDictionary *config = @{ @"presentFullScreenOniPad": @YES };
 ```swift
 let config = ["presentFullScreenOniPad": true]
 Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
-```
-
-</TabItem>
-
-</Tabs>
-
-
-## Initiate new conversation on chat screen load {#initiateChatOnLoad}
-
-In config dictionary of `showConversation:`, setting the `initiateChatOnLoad` option to `YES` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
-
-|               |                                                   |
-| ------------- | ------------------------------------------------- |
-| Option:       | <code>initiateChatOnLoad</code>                   |
-| Values:       | <code>YES</code> / <code>NO</code>                |
-| Default:      | <code>NO</code>                                   |
-| Min SDK       | v10.0.0                                           |
-| Supported by: | <code>showConversation</code>                     |
-
-Example:
-
-<Tabs groupId="ios-languages">
-
-<TabItem value="Objective-C" label="Objective-C">
-
-```objc
-NSDictionary *config = @{ @"initiateChatOnLoad": @YES };
-[Helpshift showConversationWith:self config:config];
-```
-
-</TabItem>
-<TabItem value="Swift" label="Swift">
-
-```swift
-let config = ["initiateChatOnLoad": true]
-Helpshift.showConversation(with:self, config:config)
 ```
 
 </TabItem>
