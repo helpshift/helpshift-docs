@@ -300,6 +300,42 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 
 </Tabs>
 
+
+## Initiate new conversation on chat screen load {#initiateChatOnLoad}
+
+In config dictionary of `showConversation:`, setting the `initiateChatOnLoad` option to `YES` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| Option:       | <code>initiateChatOnLoad</code>                   |
+| Values:       | <code>YES</code> / <code>NO</code>                |
+| Default:      | <code>NO</code>                                   |
+| Min SDK       | v10.0.0                                           |
+| Supported by: | <code>showConversation</code>                     |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"initiateChatOnLoad": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initiateChatOnLoad": true]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Theming the SDK {#theming}
 
 Please check [design](/sdkx_ios/design) page to apply your styles and theming to the SDK.
