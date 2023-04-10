@@ -23,7 +23,8 @@ import {
 
 <Intro>
 
-Getting started with integrating Helpshift in your app.
+Follow these simple steps to add Helpshift in-app support to your
+iOS app right away.
 
 </Intro>
 
@@ -38,10 +39,8 @@ Getting started with integrating Helpshift in your app.
 
 To start using SDK X `v[% sdkx_ios.sdk_version  %]` in your project, add the following line to your `Podfile`
 
-```text
-
-    pod 'HelpshiftX', '[% sdkx_ios.sdk_version  %]'
-
+```ruby
+pod 'HelpshiftX', '[% sdkx_ios.sdk_version  %]'
 ```
 
 And run `pod install` or `pod update` to refresh your
@@ -54,9 +53,7 @@ You can now move on to [Initializing Helpshift in your App](#initializing).
 To start using Helpshift `v[% sdkx_ios.sdk_version  %]` in your SPM project, add the following package URL to your project's "Package Dependencies" section
 
 ```text
-
-    https://github.com/helpshift/HelpshiftX
-
+https://github.com/helpshift/HelpshiftX
 ```
 
 For version rules, we recommend using either "Exact" or "Up to Next Minor" and manually updating the version number when a major version of Helpshift SDK X is released.
@@ -82,7 +79,7 @@ The zip file contains
 |                        |                                             |
 | ---------------------- | ------------------------------------------- |
 | HelpshiftX.xcframework | The HelpshiftX framework                    |
-| NOTICE.txt/            | License information about third-party code. |
+| NOTICE.txt             | License information about third-party code. |
 
 </div>
 
@@ -152,23 +149,24 @@ Helpshift is now integrated in your app and ready to collect meaningful data abo
    <Image src="/static/books/sdkx_ios/select_platform.png" width="full" />{" "}
 
 Helpshift uniquely identifies each registered App using a combination
-of 2 tokens:
+of 2 tokens.
 
 <div className=" compact">
 
 |                          |                                                                                              |
 | ------------------------ | -------------------------------------------------------------------------------------------- |
-| <code>Platform ID</code> | This is your platform Id.                                                                    |
-| <code>Domain Name</code> | This is your Helpshift domain name e.g. _happyapps.helpshift.com_                            |
-| <code>Config</code>      | An <code>NSDictionary</code> representing the configuration parameters for the installation. |
+| `Platform ID` | Your App's unique platform id (App's `App Id` on dashboard is your platform Id) |
+| `Domain Name` | This is your Helpshift domain name e.g. _happyapps.helpshift.com_                            |
 
 </div>
 
-You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard.
-Select your App and _check `iOS` as a platform_ from the dropdowns and copy
-the 2 tokens to be passed when initializing Helpshift.
+You can find these by navigating to `Settings`>`SDK (for Developers)` in your agent dashboard. Select your App and _check `iOS` as a platform_ from the dropdowns and copy the 2 tokens to be passed when initializing Helpshift.
 
 <Image src="/static/books/sdkx_ios/copy_keys.png" width="full" />{" "}
+
+Initialize SDK by calling `installWithPlatformId:` method.
+
+ You can optionally pass to configuration dictionary to `installWithPlatformId:` API. To see supported configurations, check the [SDK Configuration](/sdkx_ios/sdk-configuration.mdx) page.
 
 <Tabs>
 
