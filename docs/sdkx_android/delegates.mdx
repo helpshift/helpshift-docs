@@ -321,7 +321,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(final boolean shouldFetchFromServer)`.
 
-The count of the number of messages will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
+The unread message count will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
 
 - Event Name: `HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT`
 - Event Data: `HelpshiftEvent.DATA_MESSAGE_COUNT`
@@ -344,8 +344,8 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }
 ```
 
-If you call the method `requestUnreadMessageCount(true)` it will return a notification count from server in the above delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+If you call the method `Helpshift.requestUnreadMessageCount(true)` it will return a notification count from server in the above delegate method asynchronously. The notification count here can be fetched either from the cache or from the Helpshift servers. The count from Helpshift’s servers is rate limited and it returns the latest value only if a subsequent call is made to the API after the reset timeout or when the user just closes the chat screen (whichever is earlier). If the API is called within the rate limit period then it returns value from local cache. For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
 
-If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to false, `requestUnreadMessageCount(false)`. In this case, SDK returns the count of unread messages available locally in this delegate method.
+If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to false, `Helpshift.requestUnreadMessageCount(false)`. In this case, SDK returns the count of unread messages available locally in this delegate method.
 
 Locally saved unread message count are useful for saving an additional network call.

@@ -151,8 +151,8 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
 
-- Event name: `HelpshiftEvent.WIDGET_TOGGLE`
-- Event data: `HelpshiftEvent.DATA_SDK_VISIBLE`
+- Event name: `HelpshiftEventNameWidgetToggle`
+- Event data: `HelpshiftEventDataVisible`
 
 <Tabs groupId="ios-languages">
 
@@ -188,8 +188,8 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
 
-- Event name: `HelpshiftEventNameConversationStart` <br />
-- Event Data: `HelpshiftEventDataMessage` <br />
+- Event name: `HelpshiftEventNameConversationStart`
+- Event Data: `HelpshiftEventDataMessage`
 
 <Tabs groupId="ios-languages">
 
@@ -225,12 +225,12 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
 
-- Event name: `HelpshiftEventNameMessageAdd` <br />
+- Event name: `HelpshiftEventNameMessageAdd`
 - Event Data: 
-    - `HelpshiftEventDataMessageType` <br />
-    - `HelpshiftEventDataMessageTypeText` <br />
-    - `HelpshiftEventDataMessageTypeAttachment` <br />
-    - `HelpshiftEventDataMessageBody` <br />
+    - `HelpshiftEventDataMessageType`
+    - `HelpshiftEventDataMessageTypeText`
+    - `HelpshiftEventDataMessageTypeAttachment`
+    - `HelpshiftEventDataMessageBody`
 
 <Tabs groupId="ios-languages">
 
@@ -546,7 +546,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 If you want a count of all new messages received in an existing conversation, you can call this API `[Helpshift requestUnreadMesssageCount:];`.
 
-The count of the number of messages will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
+The unread message count will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
 
 - Event name: `HelpshiftEventDataUnreadMessageCount`
 - Event data: 
@@ -588,7 +588,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-If you call the method `[Helpshift requestUnreadMessageCount:YES];` it will return a notification count from server in the above delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+If you call the method `[Helpshift requestUnreadMessageCount:YES];` it will return a notification count from server in the above delegate method asynchronously. The notification count here can be fetched either from the cache or from the Helpshift servers. The count from Helpshift’s servers is rate limited and it returns the latest value only if a subsequent call is made to the API after the reset timeout or when the user just closes the chat screen (whichever is earlier). If the API is called within the rate limit period then it returns value from local cache. For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
 
 If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to false, `[Helpshift requestUnreadMessageCount:NO];`. In this case, SDK returns the count of unread messages available locally in this delegate method.
 
