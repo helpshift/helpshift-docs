@@ -1,7 +1,7 @@
 ---
 sidebar_position: 140
 title: Migration Guide
-description: "SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates. This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X."
+description: "This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X."
 ---
 
 import {
@@ -23,7 +23,9 @@ import {
 
 <Intro>
 
-SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates. This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X.
+SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates. 
+
+This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X.
 
 </Intro>
 
@@ -107,7 +109,7 @@ If you try to compile your project after updating the Helpshift dependency, you 
 
 Remove the existing Helpshift install call and replace it with following -
 
-```
+```objc
 @import HelpshiftX;
 ...
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -174,9 +176,9 @@ Replace the following APIs for user login/logout -
 
 Replace legacy SDK login code -
 
-```
-HelpshiftUserBuilder *userBuilder = [[HelpshiftUserBuilder alloc] initWithIdentifier:@"unique-user-id-746501"
-                                                                            andEmail:@"john.doe@app.co"];
+```objc
+HelpshiftUserBuilder *userBuilder = [[HelpshiftUserBuilder alloc] initWithIdentifier:@"unique-user-id-746501" 
+          andEmail:@"john.doe@app.co"];
 userBuilder.name = @"John Doe";
 userBuilder.authToken = @"generated-user-authentication-token";
 HelpshiftUser *user = userBuilder.build;
@@ -185,7 +187,7 @@ HelpshiftUser *user = userBuilder.build;
 
 with SDK X login code -
 
-```
+```objc
 NSDictionary *userDetails = @{ HelpshiftUserName:@"John Doe",
                               HelpshiftUserEmail:@"john.doe@app.co",
                          HelpshiftUserIdentifier:@"unique-user-id-746501",
@@ -234,7 +236,7 @@ The API signatures have changed. Update existing API calls with new ones as ment
 
 The delegate method that receives the unread message count has also changed from -
 
-```
+```objc
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         [yourView setTextLabel:[NSString stringWithFormat:@"%d",count];
@@ -244,7 +246,7 @@ The delegate method that receives the unread message count has also changed from
 
 to -
 
-```
+```objc
 - (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
     ...
     if([eventName isEqualToString:HelpshiftEventNameReceivedUnreadMessageCount]) {
@@ -260,7 +262,7 @@ to -
 
 To handle notification clicks, replace legacy SDK code -
 
-```
+```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
   willPresentNotification:(UNNotification *)notification
   withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
@@ -275,7 +277,7 @@ To handle notification clicks, replace legacy SDK code -
 
 with SDK X code -
 
-```
+```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
   willPresentNotification:(UNNotification *)notification
   withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
@@ -323,7 +325,7 @@ We advise using CIFs instead of metadata.
 
 Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/ios/tracking#metadata)). Replace Legacy SDK code for attaching metadata with equivalent SDK X code -
 
-```
+```objc
 NSDictionary *customMetadata = @{ @"usertype": @"paid",
                                   @"level": @"7",
                                   @"score": @"12345"
@@ -337,7 +339,7 @@ NSDictionary *config = @{ @"customMetadata" : customMetadata };
 
 Legacy SDK leveraged metadata APIs to attach tags to conversation. Replace legacy SDK code for attaching tags -
 
-```
+```objc
 HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
 builder.customMetaData = [[HelpshiftSupportMetaData alloc] initWithMetaData:@{ /* ... */ }
                                                                     andTags:@[@"feedback",@"paid user",@"v4.1"]];
@@ -347,7 +349,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 
 with equivalent SDK X code -
 
-```
+```objc
 NSArray *tags = @[@"feedback",@"paid user",@"v4.1"];
 NSDictionary *config = @{@"tags":tags};
 [Helpshift showConversationWith:self config:config];
@@ -357,7 +359,7 @@ NSDictionary *config = @{@"tags":tags};
 
 Replace legacy SDK code -
 
-```
+```objc
 NSMutableDictionary *customIssueFieldsDict = [NSMutableDictionary dictionary];
 customIssueFieldsDict[@"name"] = @[@"sl",@"John Doe"];
 customIssueFieldsDict[@"address"] = @[@"ml",@"This is user's long bio"];
@@ -374,7 +376,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 
 with SDK X code -
 
-```
+```objc
 NSDictionary *cifs = @{ @"name": @{ @"type":@"singleline", @"value":@"John Doe" },
                      @"address": @{ @"type":@"multiline", @"value":@"This is user's long bio" },
                        @"level": @{ @"type":@"number", @"value":@"42" },

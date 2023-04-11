@@ -39,7 +39,7 @@ To generate the link for outbound support, on your Helpshift dashboard, go to **
 
 ![](/static/books/helpshiftx/outbound-support.png)
 
-You should see a **Create link** button. Click on the Create link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
+You should see a **New link** button. Click on the New link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
 
 <Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
 
@@ -59,9 +59,7 @@ To pass the outbound support data to Helpshift, follow these steps -
 
 3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
 
-For example -
-
-_Following code shows how to handle incoming push notification and posting it on the notification bar of the device_
+For example, following code shows how to handle incoming push notification and posting it on the notification bar of the device -
 
 ```java
 @Override
@@ -147,9 +145,7 @@ You will have to implement the method `getAPIConfig()` where you can add any use
 
 We will merge this config and the config embedded in the outbound support link. We will append data of config from outbound support link to local config like **Tags, CIFs**, etc. In case of conflicts, outbound support config will get the precedence.
 
-For example -
-
-_Following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method._
+For example, following code shows how to implement `HelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `getAPIConfig()` method -
 
 ```java
 public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector{
@@ -185,6 +181,6 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
     localConfig.put("customIssueFields", cifMap);
     ..etc
     return localConfig;
-    }
+  }
 }
 ```

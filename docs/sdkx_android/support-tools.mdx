@@ -1,7 +1,7 @@
 ---
 sidebar_position: 20
 title: Helpshift APIs
-description: "Helpshift provides a way to use functional element of the SDK based on your requirements."
+description: Helpshift provides a way to use each functional element of the SDK separately based on your requirements.
 ---
 
 import {
@@ -35,14 +35,13 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
+You can call `Helpshift.showConversation(MyActivity.this, configurationMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+
 <Centered width="major">
 
 ![newConversation.png](/static/books/sdkx_android/show_conversation.png "newConversation.png")
 
 </Centered>
-
-You can call `Helpshift.showConversation(MyActivity.this, configurationMap)` to lead your user to your support and help section.
-You can pass the various configurations while opening the conversation screen which can be found [here](/sdkx_android/sdk-configuration/)
 
 Example:
 
@@ -70,10 +69,11 @@ Example:
 
 `Helpshift.showConversation(MyActivity.this, configMap);` where `MyActivity.this` is the Activity you're calling Helpshift from and `configMap` is the configuration map that you want to pass to configure the SDK.
 
+Supports these [API Options](/sdkx_android/sdk-configuration/).
+
 ## Integrating FAQs {#faqs-view}
 
-Example:
-`Helpshift.showFAQs(MyActivity.this, configMap);` where MyActivity.this is the Activity you're calling Helpshift from
+You can use the API call `Helpshift.showFAQs(Activity a, Map<String, Object> configMap)` to provide a way for the user to invoke the purpose built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this api call to a **"Help"** or **"Support"** action in your app.
 
 <Centered >
 
@@ -81,16 +81,17 @@ Example:
 
 </Centered>
 
-You can use the api call `Helpshift.showFAQs(Activity a, Map<String, Object> configMap)` to provide a way for the user to invoke the purpose built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface.
-_You can wire this api call to a **"Help"** or **"Support"** action in your app._ This Activity combines the FAQ, Search and Contact Us functionality together in a single interface. In this view a user has to search for a specific question in the FAQ failing which they can report an issue. When you respond back to their question from the Helpshift Agent Dashboard, the reply will be shown as a count besides Contact Us, clicking on which will open up the conversation.
+This Activity combines the FAQ, Search and Contact Us functionality together in a single interface. In this view, a user can search for a specific question in the FAQ failing which they can report an issue. When you respond back to their question from the Helpshift Agent Dashboard, the reply will be shown as a count besides Contact Us, clicking on which will open up the conversation.
 
-Check out [SDK Configuration](/sdkx_android/sdk-configuration/) for more.
+Example:
+`Helpshift.showFAQs(MyActivity.this, configMap);` where `MyActivity.this` is the Activity you're calling Helpshift from and `configMap` is the configuration map that you want to pass to configure the SDK.
+
+Supports these [API Options](/sdkx_android/sdk-configuration/).
 
 ## Showing a Particular FAQ Section {#faq-section-view}
 
-Example:
-`Helpshift.showFAQSection(MyActivity.this, "11", configMap);` where MyActivity.this is the
-Activity you're calling Helpshift from and "11" is the FAQ section `publish-id`
+You can use the API call
+`Helpshift.showFAQSection(Activity a, String sectionPublishId,  Map<String, Object> configMap)` to show FAQs from a particular FAQ section.
 
 <Centered >
 
@@ -98,22 +99,20 @@ Activity you're calling Helpshift from and "11" is the FAQ section `publish-id`
 
 </Centered>
 
-You can use the api call
-`Helpshift.showFAQSection(Activity a, String sectionPublishId,  Map<String, Object> configMap)` to show faqs from a particular FAQ section.
-
-**You'll need the `publish-id` of the section in this case:**
+**You will need the `publish-id` of the FAQ section to use this API:**
 
 <Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
-Check out [SDK Configuration](/sdkx_android/sdk-configuration/) for more.
-
-## Showing a Particular FAQ Question {#faq-question-view}
-
 Example:
-`Helpshift.showSingleFAQ(MyActivity.this, "51", configMap);` where MyActivity.this is the
-Activity you're calling Helpshift from and "51" is the FAQ publish-id
+`Helpshift.showFAQSection(MyActivity.this, "11", configMap);` where `MyActivity.this` is the Activity you're calling Helpshift from and "11" is the FAQ section `publish-id`
+
+Supports these [API Options](/sdkx_android/sdk-configuration/).
+
+## Showing a Particular FAQ {#faq-question-view}
+
+You can use the API call `Helpshift.showSingleFAQ(Activity a, String questionPublishId,  Map<String, Object> configMap)` to show a single FAQ.
 
 <Centered >
 
@@ -121,17 +120,22 @@ Activity you're calling Helpshift from and "51" is the FAQ publish-id
 
 </Centered>
 
-You can use the api call
-`Helpshift.showSingleFAQ(Activity a, String questionPublishId,  Map<String, Object> configMap)` to show a single faq.
-
-**You'll need the `publish-id` of the FAQ in this case:**
+**You'll need the `publish-id` of the FAQ to use this API:**
 
 <Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
 
-### Set SDK language {#set-language-api}
+Example: `Helpshift.showSingleFAQ(MyActivity.this, "51", configMap);` where `MyActivity.this` is the Activity you're calling Helpshift from and "51" is the FAQ publish-id.
 
-You can set the SDK language for the given locale using the method `setLanguage("<language-code>")`
-For more info about languages you can refer [here](/sdkx_android/i18n/)
+Supports these [API Options](/sdkx_android/sdk-configuration/).
+
+## Set SDK language {#set-language-api}
+
+You can set the SDK language using the `setLanguage("<language-code>")` API. By default, the device's preferred language is used by the SDK. The call will fail in the following cases:
+
+- If a Helpshift session is already active at the time of invocation
+- Language code is incorrect
+
+For more info about languages you can refer [here](/sdkx_android/i18n/).
 
 For example :
 
