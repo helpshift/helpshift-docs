@@ -147,11 +147,12 @@ async function createConfig() {
         ],
         zoom: {
           selector: ".markdown img",
+          background: {
+            light: "rgb(50, 50, 50)",
+            dark: "rgb(50, 50, 50)",
+          },
           config: {
-            background: {
-              light: "rgb(255, 255, 255)",
-              dark: "rgb(50, 50, 50)",
-            },
+            margin: 20,
           },
         },
       }),
