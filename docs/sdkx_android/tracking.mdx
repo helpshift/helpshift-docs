@@ -89,7 +89,14 @@ Helpshift.showConversation(MainActivity.this, config);
 
 ## Attaching Custom Issue Fields to conversations {#set-custom-issue-fields}
 
-You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` key in API config map. These Custom Issue Fields would be sent whenever a new conversation is started by the end user.
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `cifs` key in API config map.
+
+<Admonition type="info" title="Note">
+  We are deprecating the use of the "customIssueFields" key and introducing a
+  new key called "cifs" to pass custom issue fields.
+</Admonition>
+
+These custom issue fields will be sent whenever an end user starts a new conversation or creates an issue via Smart FAQs.
 
 As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active. All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts.
 
@@ -99,7 +106,7 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 2. For each custom issue field, define your custom issue field `Map`
 3. Add the `"type"` and `"value"` for that custom issue field in custom issue field map.
 4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
-5. Pass the map to `configMap` with key `"customIssueFields"` of the `Helpshift.showConversation(this, configMap)`
+5. Pass the map to `configMap` with key `"cifs"` of the `Helpshift.showConversation(this, configMap)`
 
 ```java
 Map<String, Object> joiningDate = new HashMap<>();
@@ -127,21 +134,21 @@ cifMap.put("is_pro", isPro);
 Map<String, Object> config = new HashMap<>();
 // other configs...
 //..
-config.put("customIssueFields", cifMap);
+config.put("cifs", cifMap);
 
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
 Possible datatypes to be passed into the config are:
 
-| Type         | value         | Comments                                                                                                                                                      |
-| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "singleline" | string        | Single line string with character limit of 255                                                                                                                |
-| "multiline"  | string        | Multi line string with character limit of 100,000                                                                                                             |
-| "number"     | string        | String representation of number. For eg. "12345"                                                                                                              |
-| "dropdown"   | string        | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "date"       | long          | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
-| "checkbox"   | string        | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
+| Type         | value  | Comments                                                                                                                                                      |
+| ------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "singleline" | string | Single line string with character limit of 255                                                                                                                |
+| "multiline"  | string | Multi line string with character limit of 100,000                                                                                                             |
+| "number"     | string | String representation of number. For eg. "12345"                                                                                                              |
+| "dropdown"   | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "date"       | long   | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
+| "checkbox"   | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 <Admonition type="info" title="Note">
 

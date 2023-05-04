@@ -174,7 +174,7 @@ Update the configuration passed in conversation and FAQ APIs as following.
 | Legacy SDK ApiConfig                                    | SDK X: Key in Map                                                                                                       |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | ApiConfig.Builder.setEnableFullPrivacy                  | "fullPrivacy"                                                                                                           |
-| ApiConfig.Builder.setCustomIssueFields                  | "customIssueFields"                                                                                                     |
+| ApiConfig.Builder.setCustomIssueFields                  | "cifs"                                                                                                                  |
 | ApiConfig.Builder.setShowConversationResolutionQuestion | Moved to Helpshift Admin Dashboard. <br /> Under App settings → Resolution Experience → Resolution Question toggle      |
 | ApiConfig.Builder.setEnableTypingIndicator              | Moved to Helpshift Admin Dashboard. <br /> Under App settings → Support Experience → Show Agent Typing Indicator toggle |
 | Other configs from `ApiConfig` have been removed        | Currently, other configs are not supported                                                                              |
@@ -436,20 +436,20 @@ Map<String, Object> config = new HashMap<>();
 If you have following CIFs set in legacy SDK :
 
 ```java
-Map<String, String[]> customIssueFields = new HashMap<>();
-customIssueFields.put("join_date", new String[]{"dt", "1505927361535"});
-customIssueFields.put("level", new String[]{"n", "42"});
-customIssueFields.put("name", new String[]{"sl", "John Doe"});
-customIssueFields.put("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
-customIssueFields.put("is_pro", new String[]{"b", "true"});
-customIssueFields.put("currency", new String[]{"dd", "Dollar"});
+Map<String, String[]> cifs = new HashMap<>();
+cifs.put("join_date", new String[]{"dt", "1505927361535"});
+cifs.put("level", new String[]{"n", "42"});
+cifs.put("name", new String[]{"sl", "John Doe"});
+cifs.put("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+cifs.put("is_pro", new String[]{"b", "true"});
+cifs.put("currency", new String[]{"dd", "Dollar"});
 
 ...
 ...
 
 private void showHelp() {
          ApiConfig apiConfig = new ApiConfig.Builder()
-                                            .setCustomIssueFields(customIssueFields)
+                                            .setCustomIssueFields(cifs)
                                             .build();
         Support.showFAQs(MainActivity.this, apiConfig);
 ```
@@ -493,7 +493,7 @@ Map<String, String> joiningDate = new HashMap<>();
     Map<String, Object> config = new HashMap<>();
     // other configs...
     //..
-    config.put("customIssueFields", cifMap);
+    config.put("cifs", cifMap);
 
     Helpshift.showFAQs(MainActivity.this, config);
 ```
