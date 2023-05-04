@@ -223,10 +223,10 @@ String customization is yet to be supported. It will move to Helpshift Dashboard
 
 The API signatures have changed. Update existing API calls with new ones as mentioned -
 
-| Action                       | Legacy SDK Unity plugin API                                     | SDK X Unity plugin API                                          |
-| ---------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| Action                       | Legacy SDK Unity plugin API                                     | SDK X Unity plugin API                                        |
+| ---------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
 | Register device token        | `HelpshiftSdk.GetInstance().registerDeviceToken ("fcm-token");` | `HelpshiftSdk.GetInstance().RegisterPushToken ("fcm-token");` |
-| Request unread message count | `requestUnreadMessagesCount(isAsync)`                           | `RequestUnreadMessageCount(shouldFetchFromServer)`              |
+| Request unread message count | `requestUnreadMessagesCount(isAsync)`                           | `RequestUnreadMessageCount(shouldFetchFromServer)`            |
 
 The delegate method that receives the unread message count has also changed, Legacy SDK Code -
 
@@ -425,7 +425,7 @@ cifDictionary.Add("is_pro", isPro);
 cifDictionary.Add("currency", currency);
 
 Map<String, Object> config = new HashMap<>();
-config.put("customIssueFields", cifMap);
+config.put("cifs", cifMap);
 _support.ShowFAQs(MainActivity.this, config);
 ```
 
