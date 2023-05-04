@@ -136,7 +136,7 @@ Example:
     isPro.put("value", "true");
     cifMap.put("is_pro", isPro);
 
-    config.put("customIssueFields", cifMap);
+    config.put("cifs", cifMap);
     config.put("initialUserMessage", "Give Feedback");
 
     //..etc
@@ -203,7 +203,7 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 2. Define your custom issue field `Map`
 3. Add the `"type"` and `"value"` for that custom issue field
 4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
-5. Pass the map to `configMap` with key `"customIssueFields"` of the `Helpshift.showConversation(this, configMap)`
+5. Pass the map to `configMap` with key `"cifs"` of the `Helpshift.showConversation(this, configMap)`
 
 ```java
 
@@ -233,7 +233,7 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     Map<String, Object> config = new HashMap<>();
     // other configs...
     //..
-    config.put("customIssueFields", cifMap);
+    config.put("cifs", cifMap);
 
     Helpshift.showConversation(MainActivity.this, config);
 

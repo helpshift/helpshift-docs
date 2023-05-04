@@ -312,7 +312,7 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 2. Define your custom issue field `Dictionary`
 3. Add the `"type"` and `"value"` for that custom issue field
 4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
-5. Pass the map to `configMap` with key `"customIssueFields"` of the `ShowConversation(configMap)`
+5. Pass the map to `configMap` with key `"cifs"` of the `ShowConversation(configMap)`
 
 ```csharp
 using Helpshift;
@@ -351,7 +351,7 @@ void openHelpshift(){
     Dictionary<string, object> config = new Dictionary<string, object>();
     // other configs...
     //..
-    config.Add("customIssueFields", cifDictionary);
+    config.Add("cifs", cifDictionary);
 
     help.ShowConversation(configMap);
 }
