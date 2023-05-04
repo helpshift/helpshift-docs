@@ -23,7 +23,7 @@ import {
 
 <Intro>
 
-SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates. 
+SDK X is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates.
 
 This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X.
 
@@ -161,7 +161,7 @@ The conversation and FAQ APIs in SDK X take a dictionary parameter rather than `
 | ---------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
 | presentFullScreenOniPad            | presentFullScreenOniPad  | -                                                                                                     |
 | enableFullPrivacy                  | enableFullPrivacy        | -                                                                                                     |
-| customIssueFields                  | customIssueFields        | -                                                                                                     |
+| customIssueFields                  | cifs                     | -                                                                                                     |
 | showConversationResolutionQuestion | -                        | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
 | enableTypingIndicator              | -                        | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
 |                                    |                          |                                                                                                       |
@@ -177,7 +177,7 @@ Replace the following APIs for user login/logout -
 Replace legacy SDK login code -
 
 ```objc
-HelpshiftUserBuilder *userBuilder = [[HelpshiftUserBuilder alloc] initWithIdentifier:@"unique-user-id-746501" 
+HelpshiftUserBuilder *userBuilder = [[HelpshiftUserBuilder alloc] initWithIdentifier:@"unique-user-id-746501"
           andEmail:@"john.doe@app.co"];
 userBuilder.name = @"John Doe";
 userBuilder.authToken = @"generated-user-authentication-token";
@@ -384,7 +384,7 @@ NSDictionary *cifs = @{ @"name": @{ @"type":@"singleline", @"value":@"John Doe" 
                     @"currency": @{ @"type":@"dropdown", @"value":@"Dollar" },
                    @"join_date": @{ @"type":@"date", @"value":@"1505927361535" } };
 
-NSDictionary *config = @{ @"customIssueFields" : cifs };
+NSDictionary *config = @{ @"cifs" : cifs };
 [Helpshift showConversationWith:self config:config];
 ```
 

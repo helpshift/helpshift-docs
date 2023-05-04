@@ -177,7 +177,7 @@ For example, following code shows how to implement `HelpshiftProactiveAPIConfigC
 // Delegate callback
 - (nonnull NSDictionary *) getAPIConfig {
     NSDictionary *config = @{ @"tags":tagsArray,
-                              @"customIssueFields": cifDictionary };
+                              @"cifs": cifDictionary };
     ..
     return localConfig;
 }
@@ -194,7 +194,7 @@ Helpshift.sharedInstance.setProactiveAPIConfigCollectorDelegate(self)
 func getAPIConfig() -> Dictionary<String, Any> {
     var config: [String: Any] = [
         "tags": tagsArray,
-        "customIssueFields": cifDictionary
+        "cifs": cifDictionary
     ]
     ...
     return config

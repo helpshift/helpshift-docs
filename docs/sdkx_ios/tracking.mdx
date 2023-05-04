@@ -124,7 +124,14 @@ Helpshift.showConversation(with: self, config: config)
 
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
 
-You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` key in API config dictionary. These Custom Issue Fields would be sent whenever a new conversation is started by the end user.
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `cifs` key in API config dictionary.
+
+<Admonition type="info" title="Note">
+  We are deprecating the use of the "customIssueFields" key and introducing a
+  new key called "cifs" to pass custom issue fields.
+</Admonition>
+
+These custom issue fields will be sent whenever an end user starts a new conversation or creates an issue via Smart FAQs.
 
 As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active. All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts.
 
@@ -141,7 +148,7 @@ NSDictionary *cifs = @{ @"joining_date": @{ @"type":@"date", @"value":@150592736
                     @"employee_address": @{ @"type":@"multiline", @"value":@"303,Joy plaza,Park street,Viman nagar.Pune-432123" },
                      @"salary_currency": @{ @"type":@"dropdown", @"value":@"Dollars" } };
 
-NSDictionary *config = @{ @"customIssueFields" : cifs };
+NSDictionary *config = @{ @"cifs" : cifs };
 [Helpshift showConversationWith:self config:config];
 ```
 
@@ -155,7 +162,7 @@ let cifs = [ "joining_date": ["type":"date", "value":1505927361535],
              "employee_name": ["type":"singleline", "value":"ABC"],
              "employee_address": ["type":"multiline", "value":"303,Joy plaza,Park street,Viman nagar.Pune-432123"],
              "salary_currency": ["type":"dropdown", "value":"Dollars"]];
-let config = ["customIssueFields":cifs]
+let config = ["cifs":cifs]
 Helpshift.showConversation(with: self, config: config)
 ```
 
@@ -165,14 +172,14 @@ Helpshift.showConversation(with: self, config: config)
 
 Possible datatypes to be passed into the config are:
 
-| Type         | value         | Comments                                                                                                                                                      |
-| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "singleline" | string        | Single line string with character limit of 255                                                                                                                |
-| "multiline"  | string        | Multi line string with character limit of 100,000                                                                                                             |
-| "number"     | string        | String representation of number. For eg. "12345"                                                                                                              |
-| "dropdown"   | string        | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
-| "date"       | NSNumber      | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
-| "checkbox"   | string        | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
+| Type         | value    | Comments                                                                                                                                                      |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "singleline" | string   | Single line string with character limit of 255                                                                                                                |
+| "multiline"  | string   | Multi line string with character limit of 100,000                                                                                                             |
+| "number"     | string   | String representation of number. For eg. "12345"                                                                                                              |
+| "dropdown"   | string   | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "date"       | NSNumber | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
+| "checkbox"   | string   | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 <Admonition type="info" title="Note">
 
