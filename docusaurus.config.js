@@ -150,6 +150,16 @@ async function createConfig() {
             content: "400",
           },
         ],
+        zoom: {
+          selector: ".markdown img",
+          background: {
+            light: "rgb(50, 50, 50)",
+            dark: "rgb(50, 50, 50)",
+          },
+          config: {
+            margin: 20,
+          },
+        },
       }),
     plugins: [
       async function tailwindPlugin() {
@@ -164,6 +174,7 @@ async function createConfig() {
         };
       },
       require.resolve("./src/plugins/webChat.js"),
+      require.resolve("docusaurus-plugin-image-zoom"),
     ],
   };
 
