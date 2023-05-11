@@ -1,0 +1,350 @@
+---
+sidebar_position: 10
+title: Helpshift APIs
+description: "Run Helpshift smoothly with PC and Console apps/games using Webview or QR Code Integration."
+---
+
+## Generate Support Experience Link and QR Code
+
+- **/console/qrcode:** This is the main API that is used to generate the support link and the QR code. When the API is called, the response will be a shortlink URL that launches to web chat directly as well as a PNG or SVG that can be used for the QR code (more information in the API information below). It is used as follows by passing the necessary parameters.
+
+**GET /v1/<domain\>/console/qrcode**
+
+<Admonition type="info" title="Note">
+
+<domain\> needs to be replaced by your helpshift domain name.
+
+</Admonition>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+<tr>
+<td>app_id</td>
+<td>Yes</td>
+<td>The App Publish ID for the app with web chat enabled.&nbsp;</td>
+</tr>
+<tr>
+<td>format</td>
+<td>No</td>
+<td>
+Output format for the QR code. Supported formats are (case sensitive) -&nbsp;
+<ul>
+<li>
+png - a PNG image, encoded as a base64 encoded{" "}
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs">
+Data URL
+</a>
+</li>
+<li>svg - SVG encoded vector image</li>
+</ul>
+If nothing is passed; the default will be png
+</td>
+</tr>
+<tr>
+<td>expiry</td>
+<td>No</td>
+<td>
+A JSON encoded map -
+
+```json
+{"time": <time based expiry value>,
+"viewcount": integer}
+```
+
+Time based expiry value can be either -
+
+- A Unix timestamp specifying exact time (in the future) when the link expires.
+  e.g. 1640422800000 - "2021-12-25T09:00:00.000 +0000"
+- A string containing a number followed by a suffix, one of
+
+  - m - minutes
+  - h - hours
+  - d - days
+    This is an easier way to specify expiry relative to current time.
+    (e.g. 2m = 2 minutes, 6h = 6 hours).
+
+  If not provided, the default expiry is 24 hours.
+  View count based expiry value is a simple integer (max 32767). The shortlink will expire after it has been
+  clicked/viewed this many times.
+  If not provided, the shortlink will not expire based on number of views (basically, unlimited views).
+
+  Examples
+
+  ```json
+  {"time": 1640422800000} ;; time based expiry only
+  {"viewcount": 10}         ;; viewcount based expiry
+  {"time": "2h",
+  "viewcount": 10}         ;; both time and viewcount based expiry
+  ```
+
+</td>
+</tr>
+<tr>
+<td>uid</td>
+<td rowspan="3">At least one of these fields is required to identify an end user. If nothing is provided then the webchat session will be considered anonymous.</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td>email</td>
+<td>User's Email</td>
+</tr>
+<tr>
+<td>phone_number</td>
+<td>User's Phone Number (must be a valid phone number in E.164 format e.g. +919876543210)</td>
+</tr>
+<tr>
+<td>user_auth_token</td>
+<td>No</td>
+<td>
+<Admonition type="caution" >
+If Identity Verification is enabled and the token is not provided or invalid, the QR code will be generated and returned, but the webchat will not start.
+</Admonition>
+</td>
+</tr>
+<tr>
+<td>name</td>
+<td>No</td>
+<td>User's Full Name</td>
+</tr>
+<tr>
+<td>language</td>
+<td>No</td>
+<td>Issue language Provide a value to override the language used on user's browser.</td>
+</tr>
+<tr>
+<td>first_user_message</td>
+<td>No</td>
+<td>
+The message to be used/auto-send on user&apos;s behalf when creating the webchat issue.
+Maximum 500 characters.
+</td>
+</tr>
+<tr>
+<td>custom_fields</td>
+<td>No</td>
+<td>
+JSON encoded map of custom issue fields. e.g.
+
+```json
+{"age": 23, "paiduser": false}
+```
+
+The values should match the type of the CIF. To set a CIF of type date, the value must be
+a valid date in ISO 8601 format. CIFs will be validated when creating the shortlink, and any
+invalid CIFs will be dropped.
+
+</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>No</td>
+<td>
+JSON encoded string of tags to be added to the issue automatically. Invalid/archived
+tags will be dropped silently.
+</td>
+</tr>
+<tr>
+<td>help_section</td>
+<td>No</td>
+<td>
+Optional Section publish ID to indicate what Section ID to display from help center. If provided, the help center will show the help section indicated.
+</td>
+</tr>
+<tr>
+<td>help_faq</td>
+<td>No</td>
+<td>
+Optional FAQ publish ID to indicate if a help article should be displayed. If provided, the help center will show the help article indicated. Note: If both help_section and help_faq are provided, help_faq will take precedence.
+</td>
+</tr>
+<tr>
+<td>help_search</td>
+<td>No</td>
+<td>
+Optional parameter to provide a search text when starting the help center. This will allow developers to pass in specific search keys (such as an error code) without knowing before-hand what specific help_article to display. When used the Help center will perform a search and show results from the search.
+</td>
+</tr>
+<tr>
+<td>intent</td>
+<td>No</td>
+<td>
+Optional parameter to start a conversation with a specific intent (based on text) from a smart intent tree. This allows developers to create flows that automatically start common experiences
+
+<Admonition type="info">Currently not implemented.</Admonition>
+
+</td>
+</tr>
+<tr>
+<td>webchat_widget</td>
+<td>No</td>
+<td>
+Whether to automatically open the webchat widget when the helpcenter page loads. Valid values -
+
+- open - Webchat widget will be opened automatically
+- minimize - Webchat widget will be visible, but not opened automatically.
+- hide - Webchat widget will be hidden (even if enabled on the help center page).
+
+</td>
+</tr>
+<tr>
+<td>includes</td>
+<td>No</td>
+<td>
+
+What extra information should be included in the response. A JSON array of strings. Valid values -
+
+- unread_messages - if the user has any active conversations, the API response will<br />contain the issue ID and number of unread messages.
+
+</td>
+</tr>
+</table>
+
+The API will return a status code of 201 for successful response, 400 for invalid requests. The response will have the following:
+
+<table>
+  <tr>
+    <th>
+      <p>Field Name</p>
+    </th>
+    <th>
+      <p>Sample Value</p>
+    </th>
+    <th>
+      <p>Description</p>
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <p>url</p>
+    </td>
+    <td>
+      <p>
+        <strong>&lt;patented support experience link&gt;</strong>
+      </p>
+    </td>
+    <td>
+      <p>The shortlink contained in the QR code.</p>
+    </td>
+  </tr>
+<tr>
+<td>qrcode</td>
+<td>
+
+```json
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKCAIAAAD0S4FSAAAGQElEQVR42u
+3aQUIDMQwEwf3/p8MfIKxmpOp7IFgqc/HzkbS0xxFIeEvCWxLekvCWhLckvCW8JeEtCW9JeEvCWxLeEt
+6S8JaEtyS8JeEtCW8Jb0l4S8JbEt6S8JaEtyS8Jbwl4S0Jb0l4S8JbEt4S3pLwloS3JLwl4S0JbwlvSX
+h/5xeva+o0/vKTp76V3cAbb7ztBt5444033njjjTfeeOONtxHijTfeRoi33cAbb7ztBt5444033njjjX
+cW709kmVSmmNmN/O+MN954422EeOONtxHibTfwxhtvu4E33njjjTfeeNtnvPHGG2+88cYbbyPE227gPU
+8l84FnI7PMa6VxN/DGG2+88cYbb7zxxhtvvPHGG2+8jRBvvPHGG2+7gTfeeOONN95444033njjjfeV75
+y50HjjjTfeeOONN95444033njjjTfeeBsh3nYDb7zxxhtvvPHGG2+88cYbb7zxxhvvyRE+QzVeHHjjjT
+feeOONN95444033ngbId54422EeNsNvPHGG2+88cYbb7zxxhtvvPHGG++m42jkvW/d7QbeeONtN/DGG2
++8HQfeeOONN954422EeOONtxHibTfwxhtvu4E33njbZ7zxxhvvt4+jscx13/fZfbuBN94+izfeeOONN9
+5444033njjjTfeiOKNN94+azfwxttn8cYbb7zxxhtvvPFW1nX2f5C0fOscAd7CW3gLb+EtvPHGW3jjjb
+fwxhtv4Y238Bbewlt4C+/qpZx6aLnvO2eeRuOzU7zxxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7
+zxxhtvvPHGG2+88cZ7ntk1SFOnMbXujWeFN95444033njjjTfeeOONN95444033njjjTfeeOONN95444
+033njjjTfeeM/zbly7zIV2yeZfwXjjjTfeeOONN95444033njjjTfeeOONN95444033njjjTfeeOONN9
+544413Ou/Ga2XfYjU+d22cL95444033njjjTfeeOONN95444033njjjTfeeOONN95444033njjjTfeeO
+M9X+Oj1H1du87wxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYb7828940/k0
+rmNZp5fTcCxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7xh+P6VNPXsNP
+NB67XTwBtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cbbQjsNvPHGG2+88cYbb7zxxhvved5Tn732F02t+7
+6fjDfeeOONN95444033njjjTfeeOONN95444033njjjTfeeOONN95444033nh3855aSouVcM7XThJvvP
+HGG2+88cYbb7zxxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7zx1tvX2bUHno3/NvDGG2+88cYbb7
+zxxhtvvPHGG2+8hTfeeAtvvPEW3njjjTfeeOONN954p/N+1tWI/9p1du1awRtvvPHGG2+88cYbb7zxxh
+tvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7zTj2Pf6niU+s4VjDfeeOONN95444033njjjTfeeOONN9
+5444033njjjTfeeOONN95444033nhv5j31sLRxdTLPOfPhcOaDZbzxxhtvvPHGG2+88cYbb7zxxhtvvP
+HGG2+88cYbb7zxxhtvvPHGG2+88cYb77d5N87o2mngjTfeeOONN95444033njjjTfeeOONN95444033n
+jjjTfeeOONN95444033ng38c78exsRThHFG2+88cYbb7zxxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88c
+Ybb7zxxhtvvDfzvvadGwFPQfKQFm+88cYbb7zxxhtvvPHGG2+88cYbb7zxxhtvvPHGG2+88cYbb7zxxh
+tvvPH+/pAyqxw/hKuf6OKNN95444033njjjTfeeOONN95444033njjjTfeeOONN95444033njjjTfekv
+CWhLckvCW8JeEtCW9JeEvCWxLeEt6S8JaEtyS8JeEtCW9JeEt4S8JbEt6S8JaEtyS8Jbwl4S0Jb0l4S8
+JbEt4S3pLwloS3JLwl4S0Jb0l4S3hLwlsS3pLwlvTLfgBg2rHiuzgrwQAAAABJRU5ErkJggg==
+```
+
+</td>
+<td>QR Code in one of the formats described above.</td>
+</tr>
+<tr>
+<td>active_issue</td>
+<td>
+	
+When there is an open issue for the end user -
+
+```json
+{"issue_id": 78, "unread_messages": 2}
+```
+
+When there are no open issues for the end user -
+
+```json
+nil
+```
+
+</td>
+<td>
+Only if requested by by specifying - <code>includes: ["unread_messages"]</code> in the request parameters.
+</td>
+</tr>
+</table>
+
+## Get unread messages
+
+- **/console/messages/unread:** This is an optional supporting API that is used to determine if there are any unread messages. This is used so that the application or game can display a notice if there are waiting unread messages support messages.
+
+**GET /v1/<domain\>/console/messages/unread**
+
+<table>
+  <tr>
+    <th>parameters</th>
+    <th>Required</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td>app_id</td>
+    <td>Yes</td>
+    <td>The App Publish ID for the app with web chat enabled.</td>
+  </tr>
+  <tr>
+    <td>uid</td>
+    <td rowspan="3">At least one of these fields is required to identify an end user.</td>
+    <td>User ID</td>
+  </tr>
+  <tr>
+    <td>email</td>
+    <td>User's Email</td>
+  </tr>
+  <tr>
+    <td>phone_number</td>
+    <td>User's Phone Number</td>
+  </tr>
+</table>
+
+The API will return a status code of 200 for successful response, 400 for invalid requests.
+
+<table>
+<tr>
+<th>Field Name</th>
+<th>Sample Value</th>
+</tr>
+<tr>
+<td>active_issue</td>
+<td>
+When there is an open issue for the end user -
+
+```json
+{"issue_id": 78, "unread_messages": 2}
+```
+
+When there are no open issues for the end user -
+
+```
+nil
+```
+
+</td>
+</tr>
+</table>
