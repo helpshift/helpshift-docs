@@ -8,8 +8,16 @@ import { Admonition } from "@site/src/components/forDocs";
 export default function SideBySide() {
   return (
     <Admonition type="danger" title="Important">
-      Helpshift’s Legacy SDKs (SDK Version &lt;=7.x.x) will see end of life as
-      of 31 Dec 2022 and end of support as of 31 March 2023.
+      Helpshift’s Legacy SDKs (SDK Version &lt;=7.x.x) reached their end of life
+      on 31 Dec 2022, and end of support on 31 March 2023. Please upgrade to the{" "}
+      <a
+        href="https://developers.helpshift.com"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Latest SDK
+      </a>{" "}
+      if you haven&apos;t already.
     </Admonition>
   );
 }
