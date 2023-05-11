@@ -123,7 +123,7 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 2. Define your custom issue field `Dictionary`
 3. Add the `"type"` and `"value"` for that custom issue field
 4. Add the custom issue field map to top level map (with key as your configured key and value as custom issue field map)
-5. Pass the map to `configMap` with key `"customIssueFields"` of the `ShowConversation(configMap)`
+5. Pass the map to `configMap` with key `"cifs"` of the `ShowConversation(configMap)`
 
 ```csharp
 using Helpshift;
@@ -162,11 +162,17 @@ void openHelpshift(){
     Dictionary<string, object> config = new Dictionary<string, object>();
     // other configs...
     //..
-    config.Add("customIssueFields", cifDictionary);
+    config.Add("cifs", cifDictionary);
 
     help.ShowConversation(configMap);
 }
 ```
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>
 
 The following are the valid values for the `type` key of a Custom Issue Field.
 
@@ -202,8 +208,8 @@ In the **Breadcrumbs** and **Debug logs** APIs, passing of formatted strings is 
 
 <p className="m-0">For example:</p>
 
-* "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
-* "key - value" - ** Simple string, This is supported **
+- "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
+- "key - value" - ** Simple string, This is supported **
 
 </Admonition>
 
