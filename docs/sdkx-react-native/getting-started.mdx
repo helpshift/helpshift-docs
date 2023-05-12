@@ -51,7 +51,7 @@ $ npm i helpshift-plugin-sdkx-react-native
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
-```yarn 
+```yarn
 $ yarn add helpshift-plugin-sdkx-react-native
 ```
 
@@ -61,13 +61,14 @@ $ yarn add helpshift-plugin-sdkx-react-native
 
 - Additionally, for the iOS platform, there is a requirement to link the native parts of the library
 
-```$ npx pod-install```
+`$ npx pod-install`
 
 - After that, re-run your react application and start using Helpshift SDKX functions.
 
 <Admonition type="info" title="Note">
 
 Here, You should verify that `helpshift-plugin-sdkx-react-native` has been added to `package.json`
+
 ```javascript
 "dependencies": {
     .....
@@ -75,13 +76,17 @@ Here, You should verify that `helpshift-plugin-sdkx-react-native` has been added
     .....
   },
 ```
+
 </Admonition>
 
 ### For iOS: Info.plist changes: Addition of usage description strings {#plist-description-strings}
 
 When the “User Attachments” feature is enabled from the In-app SDK Configuration section, the SDK allows the user to upload the attachments. The attachments can be picked up from the Photo Library or Files. The options for these sources look like:
 
-<Image src="/static/books/react-native/attachment_picker_ios.png" width="half" />{" "}
+<Image
+  src="/static/books/react-native/attachment_picker_ios.png"
+  width="half"
+/>{" "}
 
 To use the photo library, Apple requires the app to have Usage Description strings in the Info.plist while. Failing to add these strings might result in app rejection. The following strings are needed for the attachment feature:
 
@@ -134,12 +139,12 @@ You can find these by navigating to `Settings`>`SDKs (for Developers)` in your a
 Select your App and _check `Android` and `iOS` as a platform_ from the dropdowns and copy
 the 2 tokens to be passed when initializing Helpshift.
 
-<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
-
+<Image src="/static/books/helpshiftx/copy_install_keys.png" width="full" />
 
 Initialize SDK by calling `install` method before any other interaction with the Helpshift SDK in `App.tsx`.(It should be used in the `useEffect` hook in react native call). For more details [click here](/sdkx-react-native/sdk-configuration)
 
 ### Initialize
+
 ```javascript
 import {
   install

@@ -72,6 +72,7 @@ showConversation(config);
 ```
 
 `showFAQsWithConfig` API,
+
 ```javascript
 const customMetadata = { usertype:'paid', level:'7', score: '1505' } };
  const config = {
@@ -81,6 +82,7 @@ showFAQsWithConfig(config);
 ```
 
 `showFAQSectionWithConfig` API
+
 ```javascript
 const customMetadata = { usertype:'paid', level:'7', score: '1505' } };
  const config = {
@@ -96,13 +98,13 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 1. Initialise a top-level custom issue fields `Map`
 2. Define your custom issue field `Map`
 3. Add the `"type"` and `"value"` for that custom issue field
-   
 
 Pass this Map to `showConversation` API.
 
 Example:
+
 ```javascript
-const CIFs = { stock_level: { type: 'number', value: '1505' } };
+const CIFs = { stock_level: { type: "number", value: "1505" } };
 const config = {
   customIssueFields: CIFs,
 };
@@ -152,21 +154,21 @@ leaveBreadCrumb(<breadCrumbString>)
 ```
 
 Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `clearBreadcrumbs` API. For example -
-```javascript
-import {
-  clearBreadcrumbs
-} from 'helpshift-plugin-sdkx-react-native';
 
-clearBreadcrumbs()
+```javascript
+import { clearBreadcrumbs } from "helpshift-plugin-sdkx-react-native";
+
+clearBreadcrumbs();
 ```
+
 <Admonition type="info" title="Note">
 
 In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format.
 
 <p className="m-0">For example:</p>
 
-* "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
-* "key - value" - ** Simple string, This is supported **
+- "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
+- "key - value" - ** Simple string, This is supported **
 
 </Admonition>
 
@@ -175,25 +177,22 @@ In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
 
 ```javascript
-
-import {
-  HelpshiftLog,
-} from 'helpshift-plugin-sdkx-react-native';
+import { HelpshiftLog } from "helpshift-plugin-sdkx-react-native";
 
 const tag = "Tag";
 const debugMsg = "Debug Message";
 
-if (logLevel == 'Verbose') {
+if (logLevel == "Verbose") {
   HelpshiftLog.v(tag, debugMsg);
-} else if (logLevel == 'Debug') {
+} else if (logLevel == "Debug") {
   HelpshiftLog.d(tag, debugMsg);
-} else if (logLevel == 'Info') {
+} else if (logLevel == "Info") {
   HelpshiftLog.i(tag, debugMsg);
-} else if (logLevel == 'Warn') {
+} else if (logLevel == "Warn") {
   HelpshiftLog.w(tag, debugMsg);
-} else if (logLevel == 'Error') {
+} else if (logLevel == "Error") {
   HelpshiftLog.e(tag, debugMsg);
 }
-
 ```
+
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.

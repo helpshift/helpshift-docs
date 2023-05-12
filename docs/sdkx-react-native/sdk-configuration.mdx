@@ -35,15 +35,15 @@ Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in 
 
 <div className="compact ">
 
-|         |                                     |
-| ------- | ----------------------------------- |
+|         |                 |
+| ------- | --------------- |
 | Key     | `enableLogging` |
-| values  | true/false                          |
-| default | false                               |
+| values  | true/false      |
+| default | false           |
 
 </div>
 
-Example : 
+Example :
 
 ```javascript
 let installConfig = {
@@ -52,6 +52,7 @@ let installConfig = {
 
 install(<appId>, <domain>, installConfig);
 ```
+
 ### Enable In-App Notifications {#enable-in-app-notifications}
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set `enableInAppNotification` flag to `false`.
@@ -65,14 +66,15 @@ The default value of this flag is `true` i.e., the in-app notification will be e
 <div className="compact ">
 
 |         |                           |
-| ------- | --------------------------|
+| ------- | ------------------------- |
 | Key     | `enableInAppNotification` |
 | values  | true/false                |
 | default | true                      |
 
 </div>
 
-Example : 
+Example :
+
 ```javascript
 let installConfig = {
   'enableInAppNotification': true,
@@ -91,7 +93,7 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 <div className="compact ">
 
 |        |               |
-| ------ | --------------|
+| ------ | ------------- |
 | Flag   | `fullPrivacy` |
 | values | true/ false   |
 
@@ -100,7 +102,7 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
 This config is common for both iOS and Android.
 
-Example : 
+Example :
 
 ```javascript
 let installConfig = {
@@ -118,17 +120,17 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 
 |         |                                                                                                                                  |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Key     | <code>enableContactUs</code>                                                                                                   |
+| Key     | <code>enableContactUs</code>                                                                                                     |
 | values  | <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code> |
 | default | none                                                                                                                             |
 
 </div>
 
-Example : 
+Example :
 
 ```javascript
 showFAQsWithConfig({
-  enableContactUs: `AFTER_VIEWING_FAQS`
+  enableContactUs: `AFTER_VIEWING_FAQS`,
 });
 ```
 
@@ -147,15 +149,16 @@ You do not need to specify the file extension for the icon image. If your icon i
 
 <div className="compact ">
 
-|         |                                    |
-| ------- | ---------------------------------- |
-| Key     | notificationIcon                   |
-| values  | string - Name of the file          |
-| default | Application Icon                   |
+|         |                           |
+| ------- | ------------------------- |
+| Key     | notificationIcon          |
+| values  | string - Name of the file |
+| default | Application Icon          |
 
 </div>
 
 Example:
+
 ```javascript
 let installConfig = {
   'notificationIcon': 'icon',
@@ -173,11 +176,11 @@ You do not need to specify the file extension for the icon image. If your icon i
 
 <div className="compact ">
 
-|         |                                         |
-| ------- | --------------------------------------- |
-| Key     | `notificationLargeIcon`                 |
-| values  | string - Name of the file               |
-| default | Application Icon                        |
+|         |                           |
+| ------- | ------------------------- |
+| Key     | `notificationLargeIcon`   |
+| values  | string - Name of the file |
+| default | Application Icon          |
 
 </div>
 Example:
@@ -206,11 +209,11 @@ You do not need to specify the file extension for the sound file. If your sound 
 
 <div className="compact ">
 
-|         |                                       |
-| ------- | ------------------------------------- |
-| Key     | `notificationSoundId`                 |
-| values  | string - Name of the file             |
-| default | Device Notification Sound             |
+|         |                           |
+| ------- | ------------------------- |
+| Key     | `notificationSoundId`     |
+| values  | string - Name of the file |
+| default | Device Notification Sound |
 
 </div>
 Example:
@@ -229,11 +232,11 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 
 <div className="compact ">
 
-|         |                                       |
-| ------- | ------------------------------------- |
-| Key     | `notificationChannelId`               |
-| values  | string - Name of the channel          |
-| default | "In-app Support"                      |
+|         |                              |
+| ------- | ---------------------------- |
+| Key     | `notificationChannelId`      |
+| values  | string - Name of the channel |
+| default | "In-app Support"             |
 
 </div>
 
@@ -255,13 +258,13 @@ The `presentFullScreenOniPad` will determine whether to present support views in
 
 The default value is `false`, and presents support views as `UIModalPresentationFormSheet`. When the value is set to true, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
 
-|         |                                |
-| ------- | -------------------------------|
-| Option  | `presentFullScreenOniPad`      |
-| Values  | true / false                   |
-| Default | false                          |
+|         |                           |
+| ------- | ------------------------- |
+| Option  | `presentFullScreenOniPad` |
+| Values  | true / false              |
+| Default | false                     |
 
-Example : 
+Example :
 
 ```javascript
 let installConfig = {
@@ -275,13 +278,13 @@ install(<appId>, <domain>, installConfig);
 
 The `inAppNotificationAppearance` represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this map
 
-|              |                                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------------- |
-| Option:      | `inAppNotificationAppearance`                                                           |
-| Sub-Options: | `bannerBackgroundColor` / `textColor` |
-| Values:      | String representing hex color. Eg - "FFFEEF"                                                            |
+|              |                                              |
+| ------------ | -------------------------------------------- |
+| Option:      | `inAppNotificationAppearance`                |
+| Sub-Options: | `bannerBackgroundColor` / `textColor`        |
+| Values:      | String representing hex color. Eg - "FFFEEF" |
 
-Example : 
+Example :
 
 ```javascript
 let installConfig = {

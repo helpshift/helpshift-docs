@@ -41,8 +41,8 @@ The following logic applies when you use both `userId` as well as `userEmail`:
     `userEmail`
   </li>
   <li>
-    When the user ID matches an existing user, that user's email will be
-    updated (if the email is provided)
+    When the user ID matches an existing user, that user's email will be updated
+    (if the email is provided)
   </li>
   <li>
     When the email matches an existing user, the following logic applies:
@@ -118,19 +118,17 @@ To create a logged-in user in Helpshift, the use of either `userId` or `userEmai
 Example :
 
 ```javascript
-import {
-  login
-} from 'helpshift-plugin-sdkx-react-native';
+import { login } from "helpshift-plugin-sdkx-react-native";
 
 let config = {
-  userName: 'John Doe',
-  userEmail: 'john.doe@app.co',
-  userId: 'unique-user-id-746501'
-}
+  userName: "John Doe",
+  userEmail: "john.doe@app.co",
+  userId: "unique-user-id-746501",
+};
 
 login(config);
-
 ```
+
 ### Logging out users {#logging-out-users}
 
 #### Overview
@@ -140,11 +138,9 @@ Once a user logs out from your app, you should call the Helpshift SDK's `logout`
 Example :
 
 ```javascript
-import {
-  logout
-} from 'helpshift-plugin-sdkx-react-native';
+import { logout } from "helpshift-plugin-sdkx-react-native";
 
-logout()
+logout();
 ```
 
 <Admonition type="info" title="Note">
@@ -168,12 +164,11 @@ If your use case involves multiple logged-in/anonymous users using the same devi
 Example :
 
 ```javascript
-import {
-  clearAnonymousUser
-} from 'helpshift-plugin-sdkx-react-native';
+import { clearAnonymousUser } from "helpshift-plugin-sdkx-react-native";
 
-clearAnonymousUser(true)
+clearAnonymousUser(true);
 ```
+
 <Admonition type="info" title="Note">
 
 - The ClearAnonymousUserOnLogin API does not impact the logged-in user's experience at all
@@ -199,16 +194,14 @@ You can use the `userAuthToken` key to pass into the `login` API map.
 Example :
 
 ```javascript
-import {
-  login
-} from 'helpshift-plugin-sdkx-react-native';
+import { login } from "helpshift-plugin-sdkx-react-native";
 
 let config = {
-  userName: 'John Doe',
-  userEmail: 'john.doe@app.co',
-  userId: 'unique-user-id-746501',
-  userAuthToken: 'generated-user-authentication-token'
-}
+  userName: "John Doe",
+  userEmail: "john.doe@app.co",
+  userId: "unique-user-id-746501",
+  userAuthToken: "generated-user-authentication-token",
+};
 
 login(config);
 ```
@@ -235,7 +228,7 @@ If the logged-in users are verified (i.e. a valid 'user authentication token' is
 #### How to use the failure delegates
 
 If identity verification fails, the SDK will invoke the `onUserAuthenticationFailure` listner to notify the application of the failure:
-We defined these values in the Helpshift SDKX. 
+We defined these values in the Helpshift SDKX.
 
 <table>
   <tr>
@@ -244,10 +237,7 @@ We defined these values in the Helpshift SDKX.
     <th>When to use</th>
   </tr>
   <tr>
-    <td>
-      
-      REASON_AUTH_TOKEN_NOT_PROVIDED
-    </td>
+    <td>REASON_AUTH_TOKEN_NOT_PROVIDED</td>
     <td>When no 'user authentication token' is provided</td>
     <td>
       If you do not plan on sending a 'user authentication token', but plan on
@@ -261,9 +251,7 @@ We defined these values in the Helpshift SDKX.
     </td>
   </tr>
   <tr>
-    <td>
-      REASON_INVALID_AUTH_TOKEN
-    </td>
+    <td>REASON_INVALID_AUTH_TOKEN</td>
     <td>When the 'user authentication token' is invalid</td>
     <td>
       If the HMAC Digest being provided via login API is invalid, then Helpshift
@@ -282,10 +270,10 @@ We defined these values in the Helpshift SDKX.
         </li>
         <li>A 3rd party is trying to make requests.</li>
       </ul>
-      When the 'user authentication token' is invalid, end-users will not be able
-      to file Issues and an error is shown to them, as mentioned previously. You
-      can use this delegate if you want to show your alerts or re-fetch the
-      correct auth token from your server.
+      When the 'user authentication token' is invalid, end-users will not be
+      able to file Issues and an error is shown to them, as mentioned
+      previously. You can use this delegate if you want to show your alerts or
+      re-fetch the correct auth token from your server.
     </td>
   </tr>
   <tr>

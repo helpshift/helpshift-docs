@@ -43,7 +43,6 @@ You have to define a class which implements Helpshift Support Delegates and then
 
 <TabItem value="Objective-C" label="Objective-C">
 
-
 ```objc
 // Class implementation
 #import <Foundation/Foundation.h>
@@ -108,9 +107,9 @@ This event contains information about the current ongoing conversation.
 
 - Event name: `HelpshiftEventNameConversationStatus` <br />
 - Event Data:
-    - `HelpshiftEventDataLatestIssueId` <br />
-    - `HelpshiftEventDataLatestIssuePublishId` <br />
-    - `HelpshiftEventDataIsIssueOpen`
+  - `HelpshiftEventDataLatestIssueId` <br />
+  - `HelpshiftEventDataLatestIssuePublishId` <br />
+  - `HelpshiftEventDataIsIssueOpen`
 
 <Tabs groupId="ios-languages">
 
@@ -226,11 +225,11 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
 
 - Event name: `HelpshiftEventNameMessageAdd`
-- Event Data: 
-    - `HelpshiftEventDataMessageType`
-    - `HelpshiftEventDataMessageTypeText`
-    - `HelpshiftEventDataMessageTypeAttachment`
-    - `HelpshiftEventDataMessageBody`
+- Event Data:
+  - `HelpshiftEventDataMessageType`
+  - `HelpshiftEventDataMessageTypeText`
+  - `HelpshiftEventDataMessageTypeAttachment`
+  - `HelpshiftEventDataMessageBody`
 
 <Tabs groupId="ios-languages">
 
@@ -269,9 +268,9 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
 
 - Event name: `HelpshiftEventNameCSATSubmit`
-- Event Data: 
-    - `HelpshiftEventDataRating`
-    - `HelpshiftEventDataAdditionalFeedback`
+- Event Data:
+  - `HelpshiftEventDataRating`
+  - `HelpshiftEventDataAdditionalFeedback`
 
 <Tabs groupId="ios-languages">
 
@@ -446,6 +445,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `Helpshift.login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx_ios/users).
 
 Reason type:
+
 - `HelpshiftAuthenticationFailureReasonAuthTokenNotProvided`
 - `HelpshiftAuthenticationFailureReasonInvalidAuthToken`
 
@@ -512,7 +512,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
-- Event name: `HelpshiftEventNameSessionEnded` 
+- Event name: `HelpshiftEventNameSessionEnded`
 
 <Tabs groupId="ios-languages">
 
@@ -549,9 +549,9 @@ If you want a count of all new messages received in an existing conversation, yo
 The unread message count will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
 
 - Event name: `HelpshiftEventDataUnreadMessageCount`
-- Event data: 
-    - `HelpshiftEventDataUnreadMessageCount`
-    - `HelpshiftEventDataUnreadMessageCountIsFromCache`
+- Event data:
+  - `HelpshiftEventDataUnreadMessageCount`
+  - `HelpshiftEventDataUnreadMessageCountIsFromCache`
 
 Example:
 

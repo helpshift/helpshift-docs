@@ -30,25 +30,25 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 ## Helpshift Delegate implementation {#delegate-implementation}
 
 - To use Helpshift Delegate please import `helpshiftEmitter`
-For example:
-```javascript
-import {
-  helpshiftEmitter,
-} from 'helpshift-plugin-sdkx-react-native';
+  For example:
 
+```javascript
+import { helpshiftEmitter } from "helpshift-plugin-sdkx-react-native";
 ```
+
 To handle helpshift events, you can use following listener.
 
 ```javascript
 const handleCallbacks = () => {
-    helpshiftEmitter.addListener('onEventOccurred', (data) => {
-      //handle helpshift events using data.eventname
-    });
-    helpshiftEmitter.addListener('onUserAuthenticationFailure', (data) => {
-      //your code here
-    });
-  };
+  helpshiftEmitter.addListener("onEventOccurred", (data) => {
+    //handle helpshift events using data.eventname
+  });
+  helpshiftEmitter.addListener("onUserAuthenticationFailure", (data) => {
+    //your code here
+  });
+};
 ```
+
 We need add a listener with helpshiftEmitter for "onEventOccurred" and "onUserAuthenticationFailure".
 
 ## Events {#helpshift-events}
@@ -58,11 +58,11 @@ We need add a listener with helpshiftEmitter for "onEventOccurred" and "onUserAu
 This event gets fired when the Helpshift session starts
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-   if (data.eventName == 'helpshiftSessionStarted') {
-     //Your code here.
-    }
-});  
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "helpshiftSessionStarted") {
+    //Your code here.
+  }
+});
 ```
 
 ### Helpshift session ended event {#session-delegates}
@@ -70,11 +70,11 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 This event gets fired when the Helpshift session ends.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'helpshiftSessionEnded') {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "helpshiftSessionEnded") {
     //Your code here.
   }
-});  
+});
 ```
 
 ### Unread Message Count Event {#unreadMessageCount}
@@ -82,18 +82,19 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(shouldFetchFromServer: boolean)`. The count of the number of messages will be conveyed to your app via this event.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'receivedUnreadMessageCount') {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "receivedUnreadMessageCount") {
     try {
       let countData =
-        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
+        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
       console.log(countData.count);
     } catch (err) {
-      console.error('Parsing Error', err);
+      console.error("Parsing Error", err);
     }
-  } 
+  }
 });
 ```
+
 ### Conversation Status Event {#conversation-status}
 
 This event contains information about the current ongoing conversation.
@@ -117,67 +118,70 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
       console.error('Parsing Error', err);
     }
   }
-});  
+});
 ```
+
 ### Widget Toggle Event {#widget-toggle-event}
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'widgetToggle') {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "widgetToggle") {
     try {
       let eventData =
-        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      if(eventData.hasOwnProperty('visible')){
-          console.log(eventData.visible);
+        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
+      if (eventData.hasOwnProperty("visible")) {
+        console.log(eventData.visible);
       }
     } catch (err) {
-      console.error('Parsing Error', err);
-    }    
+      console.error("Parsing Error", err);
+    }
   }
-});  
+});
 ```
+
 ### Conversation Start Event {#conversation-start-event}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'conversationStart') {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "conversationStart") {
     try {
       let eventData =
-        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      if(eventData.hasOwnProperty('message')){
-          console.log(eventData.message);
+        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
+      if (eventData.hasOwnProperty("message")) {
+        console.log(eventData.message);
       }
     } catch (err) {
-      console.error('Parsing Error', err);
-    } 
+      console.error("Parsing Error", err);
+    }
   }
-});  
+});
 ```
+
 ### Message Add Event {#message-add-event}
 
 This event is triggered when the user adds a message to a conversation. It might be a text message, a response via bot input, or an attachment. The event data object has the `type` and `body` keys, which indicate the type and body of the message added by the user. For your reference, see the below example.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'messageAdd') {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "messageAdd") {
     try {
       let eventData =
-        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      if(eventData.hasOwnProperty('body')){
-          console.log(eventData.body);
+        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
+      if (eventData.hasOwnProperty("body")) {
+        console.log(eventData.body);
       }
-      if(eventData.hasOwnProperty('type')){
-          console.log(eventData.type);
+      if (eventData.hasOwnProperty("type")) {
+        console.log(eventData.type);
       }
     } catch (err) {
-      console.error('Parsing Error', err);
-    } 
+      console.error("Parsing Error", err);
+    }
   }
-});  
+});
 ```
 
 ### CSAT Submit Event {#csat-submit-event}
@@ -185,22 +189,22 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'csatSubmit') {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "csatSubmit") {
     try {
       let eventData =
-        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      if(eventData.hasOwnProperty('rating')){
-          console.log(eventData.rating);
+        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
+      if (eventData.hasOwnProperty("rating")) {
+        console.log(eventData.rating);
       }
-      if(eventData.hasOwnProperty('additionalFeedback')){
-          console.log(eventData.additionalFeedback);
+      if (eventData.hasOwnProperty("additionalFeedback")) {
+        console.log(eventData.additionalFeedback);
       }
     } catch (err) {
-      console.error('Parsing Error', err);
-    } 
+      console.error("Parsing Error", err);
+    }
   }
-});  
+});
 ```
 
 ### Conversation End Event {#conversation-end-event}
@@ -208,11 +212,11 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'conversationEnd') {
-     console.log('Conversation Ended');
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "conversationEnd") {
+    console.log("Conversation Ended");
   }
-});  
+});
 ```
 
 ### Conversation Rejected Event {#conversation-rejected-event}
@@ -220,11 +224,11 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 This event is triggered when an agent rejects the conversation.
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
-  if (data.eventName == 'conversationRejected') {
-    console.log('Conversation Rejected');
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "conversationRejected") {
+    console.log("Conversation Rejected");
   }
-});  
+});
 ```
 
 ### Conversation Resolved Event {#conversation-resolved-event}
@@ -232,11 +236,11 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 This event is triggered when an agent resolves the conversation.
 
 ```javascript
- helpshiftEmitter.addListener('onEventOccurred', (data) => {
-   if (data.eventName == 'conversationResolved') {
-     console.log('Conversation Resolved');
-   }
- });  
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "conversationResolved") {
+    console.log("Conversation Resolved");
+  }
+});
 ```
 
 ### Conversation Reopened Event {#conversation-reopened-event}
@@ -244,15 +248,14 @@ This event is triggered when an agent resolves the conversation.
 When the resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
 ```javascript
- helpshiftEmitter.addListener('onEventOccurred', (data) => {
-   if (data.eventName == 'conversationReopened') {
-     console.log('Conversation Reopened');
-   }
- });  
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
+  if (data.eventName == "conversationReopened") {
+    console.log("Conversation Reopened");
+  }
+});
 ```
 
 ### User Authentication Failed Event {#user-authentication-failed-event}
-
 
 If you have `User Authentication` enabled on the Dashboard and if you pass an invalid token in the `login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-react-native/users/#overview-4)
 
@@ -261,13 +264,13 @@ You need add a listener with helpshiftEmitter for "onUserAuthenticationFailure".
 You will receive various string name on onUserAuthenticationFailure event as shown in example.
 
 ```javascript
-helpshiftEmitter.addListener('onUserAuthenticationFailure', (data) => {
-  if (data.eventName == 'REASON_AUTH_TOKEN_NOT_PROVIDED') {
-    console.log('no user authentication token provided');
-  } else if (data.eventName == 'REASON_INVALID_AUTH_TOKEN') {
-    console.log('user authentication token is invalid');
-  } else if (data.eventName == 'UNKNOWN') {
-    console.log('the reason for the authentication failure is unknown');
+helpshiftEmitter.addListener("onUserAuthenticationFailure", (data) => {
+  if (data.eventName == "REASON_AUTH_TOKEN_NOT_PROVIDED") {
+    console.log("no user authentication token provided");
+  } else if (data.eventName == "REASON_INVALID_AUTH_TOKEN") {
+    console.log("user authentication token is invalid");
+  } else if (data.eventName == "UNKNOWN") {
+    console.log("the reason for the authentication failure is unknown");
   }
 });
 ```

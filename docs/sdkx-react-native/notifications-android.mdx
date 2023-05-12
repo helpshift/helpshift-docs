@@ -88,47 +88,48 @@ After you have configured the push notifications in the Helpshift console, you w
 
 First of all, you will need to set up the firebase push notification plugin where you will be getting the firebase token
 
-
-
 Then you will have to call the `Register Push Token` function once your application receives a push token from your provider:
 `registerPushToken(<token>)`
 
 For example with [React Native plugin](https://rnfirebase.io/messaging/usage), you can call the `const token = await messaging().getToken();` function to fetch the push registration token. Register this token with Helpshift SDK via the `registerPushToken(<token>)` function.
 
 Example:
+
 ```javascript
 const token = await messaging().getToken();
-if (token !== '') {
-    registerPushToken(token);
+if (token !== "") {
+  registerPushToken(token);
 }
 ```
 
 To handle the incoming push notifications on Android you will have to call `handlePush(<remoteMessage.data>)`.
 
 Example:
+
 ```javascript
 const notificationData = remoteMessage.data;
 if (notificationData != undefined) {
   const doesNotificationDataHaveOrigin =
-    notificationData.hasOwnProperty('origin') &&
-    notificationData?.origin == 'helpshift';
+    notificationData.hasOwnProperty("origin") &&
+    notificationData?.origin == "helpshift";
   if (doesNotificationDataHaveOrigin) {
     handlePush(remoteMessage?.data || {});
   } else {
     //handle your notification
   }
 }
-```    
+```
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift"`, the notification is a Helpshift notification.
 
 To handle notifications from the background we recommend calling `setBackgroundMessageHandler` inside the index.js file where your AppRegistry.registerComponent is called.
+
 ```javascript
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   install(<APP_ID>, <DOMAIN>, <LOCAL_CONFIG>);
   handlePush(remoteMessage.data);
 });
-  ```
+```
 
 ## In-app notifications {#in-app-notifications}
 
@@ -152,6 +153,7 @@ If the FCM device token is registered for push notifications, then in-app notifi
 
 To fetch the unread messages count from the server you can call `requestUnreadMessageCount(bool FetchFromServer);` API. This API will return the unread messages count via delegate.
 Based on the value of `FetchFromServer`, the locally stored count will be returned if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the HelpshiftEventListner.
+
 ```javascript
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == 'receivedUnreadMessageCount') {
@@ -173,8 +175,6 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
   }
 });
 ```
-
-
 
 When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
 
