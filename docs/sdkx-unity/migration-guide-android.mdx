@@ -101,7 +101,7 @@ If you try to build an Xcode project from Unity after updating the Helpshift dep
 
 Remove the existing Helpshift install call and replace it with the following -
 
-```
+```csharp
 using Helpshift;
 ...
 public class MyGameControl : MonoBehaviour
@@ -165,7 +165,7 @@ Replace the following APIs for user login/logout -
 
 Replace legacy SDK login code -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.getInstance();
 ...
 HelpshiftUser user = new HelpshiftUser.Builder ("unique-user-id-746501", "john.doe@app.com")
@@ -176,7 +176,7 @@ _support.login(user);
 
 with SDK X login code -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.GetInstance();
 ...
 Dictionary<string, string> userDetails = new Dictionary<string, string>
@@ -230,7 +230,7 @@ The API signatures have changed. Update existing API calls with new ones as ment
 
 The delegate method that receives the unread message count has also changed, Legacy SDK Code -
 
-```
+```csharp
 using Helpshift;
 ...
 private HelpshiftSdk _support;
@@ -245,7 +245,7 @@ public void didReceiveUnreadMessagesCount(string count) {
 
 SDK X code -
 
-```
+```csharp
 public class HSEventsListener : IHelpshiftEventsListener
 {
     ...
@@ -268,7 +268,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 
 To handle notification clicks, replace legacy SDK code -
 
-```
+```csharp
 public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
         IDictionary<string, string> pushData = e.Message.Data;
         if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
@@ -283,7 +283,7 @@ public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedE
 
 with SDK X code -
 
-```
+```csharp
 public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
     IDictionary<string, string> pushData = e.Message.Data;
     if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
@@ -328,7 +328,7 @@ Replace the following APIs from the legacy SDK Unity plugin -
 
 Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/unity/tracking-android#metadata)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.getInstance();
 ...
 Dictionary<string, string> customMetadataDictionary = new Dictionary<string, string>();
@@ -346,7 +346,7 @@ _support.ShowFAQs(configMap);
 
 Legacy SDK leveraged metadata APIs to attach tags to the conversation. SDK X does not support metadata but supports attaching tags. Replace legacy SDK code for attaching tags -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.getInstance();
 ...
 Dictionary<string, object> configD = new Dictionary<string, object>();
@@ -358,7 +358,7 @@ _support.showFAQs(configD);
 
 with equivalent SDK X code -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.getInstance();
 ...
 Dictionary<string, object> configMap = new Dictionary<string, object>();
@@ -370,7 +370,7 @@ _support.ShowFAQs(configMap);
 
 Replace legacy SDK code -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.getInstance();
 ...
 Dictionary<string, object> configD = new Dictionary<string, object>();
@@ -389,7 +389,7 @@ _support.showFAQs(configD);
 
 with SDK X code -
 
-```
+```csharp
 private HelpshiftSdk _support = HelpshiftSdk.getInstance();
 ...
 Dictionary<string, object> joiningDate = new Dictionary<string, object>();
