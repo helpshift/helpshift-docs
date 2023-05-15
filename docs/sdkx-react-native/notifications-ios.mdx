@@ -113,90 +113,89 @@ import {
   handleProactiveLink,
   handlePush,
   registerPushToken,
-} from 'helpshift-plugin-sdkx-react-native';
+} from "helpshift-plugin-sdkx-react-native";
 import {
   Notification,
   Notifications,
   Registered,
   RegistrationError,
-} from 'react-native-notifications';
+} from "react-native-notifications";
 ```
 
 #### For Register notifications
 
 ```javascript
-  Notifications.registerRemoteNotifications();
+Notifications.registerRemoteNotifications();
 
-  //Get Callback for registerRemoteNotifications.
-  Notifications.events().registerRemoteNotificationsRegistered(
-    (event: Registered) => {
-      registerPushToken(event.deviceToken);
-    }
-  );
+//Get Callback for registerRemoteNotifications.
+Notifications.events().registerRemoteNotificationsRegistered(
+  (event: Registered) => {
+    registerPushToken(event.deviceToken);
+  }
+);
 ```
 
 #### For handle notification received in foreground
 
 ```javascript
 Notifications.events().registerNotificationReceivedForeground(
-    (notification: Notification, completion) => {
-      const notificationData = notification.payload;
+  (notification: Notification, completion) => {
+    const notificationData = notification.payload;
 
-      const doesNotificationDataHaveOrigin =
-        notificationData.hasOwnProperty('origin') &&
-        notificationData?.origin == 'helpshift';
+    const doesNotificationDataHaveOrigin =
+      notificationData.hasOwnProperty("origin") &&
+      notificationData?.origin == "helpshift";
 
-      if (doesNotificationDataHaveOrigin) {
-        // Handle Helpshift notification here.
-        handlePush(notificationData, false);
-        completion({ alert: false, sound: false, badge: false });
-      } else {
-        completion({ alert: true, sound: true, badge: false });
-      }
+    if (doesNotificationDataHaveOrigin) {
+      // Handle Helpshift notification here.
+      handlePush(notificationData, false);
+      completion({ alert: false, sound: false, badge: false });
+    } else {
+      completion({ alert: true, sound: true, badge: false });
     }
-  );
+  }
+);
 ```
 
-####  When user tap on notifications
+#### When user tap on notifications
 
 ```javascript
 Notifications.events().registerNotificationOpened(
-    (notification: Notification, completion: () => void) => {
+  (notification: Notification, completion: () => void) => {
+    const notificationData = notification.payload;
 
-      const notificationData = notification.payload;
-      
-      const doesNotificationDataHaveOrigin =
-        notificationData.hasOwnProperty('origin') &&
-        notificationData?.origin == 'helpshift';
+    const doesNotificationDataHaveOrigin =
+      notificationData.hasOwnProperty("origin") &&
+      notificationData?.origin == "helpshift";
 
-      if (doesNotificationDataHaveOrigin) {
-        // Handle Helpshift notification here.
-        handlePush(notificationData);
-      } else {
-        console.log('registerNotificationOpened: customer-app notification');
-      }
-      completion();
+    if (doesNotificationDataHaveOrigin) {
+      // Handle Helpshift notification here.
+      handlePush(notificationData);
+    } else {
+      console.log("registerNotificationOpened: customer-app notification");
     }
-  );
+    completion();
+  }
+);
 ```
 
 #### When user tap on notifications and app state is not-running/killed state
 
 ```javascript
- Notifications.getInitialNotification()
+Notifications.getInitialNotification()
   .then((notification) => {
     if (!notification) return;
     const notificationData = notification.payload;
-    const doesNotificationDataHaveOrigin = notificationData.hasOwnProperty('origin') && notificationData?.origin == 'helpshift';
+    const doesNotificationDataHaveOrigin =
+      notificationData.hasOwnProperty("origin") &&
+      notificationData?.origin == "helpshift";
     if (doesNotificationDataHaveOrigin) {
-       handlePush(notificationData, true);
-     } else {
-       console.log('getInitialNotification: customer-app notification');
-     }
+      handlePush(notificationData, true);
+    } else {
+      console.log("getInitialNotification: customer-app notification");
     }
-  )
-  .catch((err) => console.error('getInitialNotifiation() failed', err)
-);
+  })
+  .catch((err) => console.error("getInitialNotifiation() failed", err));
 ```
 
 On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
@@ -226,11 +225,11 @@ Currently, we support one flag i.e `enableInAppNotification`.
 
 <div className="compact ">
 
-|         |                                            |
-| ------- | ------------------------------------------ |
+|         |                           |
+| ------- | ------------------------- |
 | Flag    | `enableInAppNotification` |
-| Values  | true / false                               |
-| Default | true                                       |
+| Values  | true / false              |
+| Default | true                      |
 
 </div>
 
@@ -241,11 +240,11 @@ flag is `true` i.e in-app notifications will be enabled.<br />
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
 To fetch unread messages count from the server you can call `requestUnreadMessageCount` API. This API will return unread messages count via observer.
-Based on the parameter, if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. 
+Based on the parameter, if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`.
 
 1. If `requestUnreadMessageCount(true)`: unread messages count will fetch from the server.
 
-2. If `requestUnreadMessageCount(false)`:  unread messages count will fetch the locally stored count will be returned.
+2. If `requestUnreadMessageCount(false)`: unread messages count will fetch the locally stored count will be returned.
 
 An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the observer for Helpshift events by calling the HelpshiftEventListner.
 
@@ -274,4 +273,3 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 When you call this API, you receive the unread count in your event delegate `onEventOccurred` Listener
 
 - The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout, or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute, and 5 minutes for inactive issues.
-

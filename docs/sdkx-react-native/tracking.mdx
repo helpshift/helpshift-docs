@@ -183,25 +183,22 @@ In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
 
 ```javascript
-
-import {
-  HelpshiftLog,
-} from 'helpshift-plugin-sdkx-react-native';
+import { HelpshiftLog } from "helpshift-plugin-sdkx-react-native";
 
 const tag = "Tag";
 const debugMsg = "Debug Message";
 
-if (logLevel == 'Verbose') {
+if (logLevel == "Verbose") {
   HelpshiftLog.v(tag, debugMsg);
-} else if (logLevel == 'Debug') {
+} else if (logLevel == "Debug") {
   HelpshiftLog.d(tag, debugMsg);
-} else if (logLevel == 'Info') {
+} else if (logLevel == "Info") {
   HelpshiftLog.i(tag, debugMsg);
-} else if (logLevel == 'Warn') {
+} else if (logLevel == "Warn") {
   HelpshiftLog.w(tag, debugMsg);
-} else if (logLevel == 'Error') {
+} else if (logLevel == "Error") {
   HelpshiftLog.e(tag, debugMsg);
 }
-
 ```
+
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
