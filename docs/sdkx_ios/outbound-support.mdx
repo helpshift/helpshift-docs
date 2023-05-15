@@ -177,11 +177,17 @@ For example, following code shows how to implement `HelpshiftProactiveAPIConfigC
 // Delegate callback
 - (nonnull NSDictionary *) getAPIConfig {
     NSDictionary *config = @{ @"tags":tagsArray,
-                              @"customIssueFields": cifDictionary };
+                              @"cifs": cifDictionary };
     ..
     return localConfig;
 }
 ```
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>
 
 </TabItem>
 <TabItem value="Swift" label="Swift">
@@ -194,12 +200,18 @@ Helpshift.sharedInstance.setProactiveAPIConfigCollectorDelegate(self)
 func getAPIConfig() -> Dictionary<String, Any> {
     var config: [String: Any] = [
         "tags": tagsArray,
-        "customIssueFields": cifDictionary
+        "cifs": cifDictionary
     ]
     ...
     return config
 }
 ```
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>
 
 </TabItem>
 

@@ -350,7 +350,7 @@ Helpshift.showConversation(with: self, config: config)
 
 </Admonition>
 
-You can attach Custom Issue Fields to every new feedback started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `customIssueFields` method in the ApiConfig object.
+You can attach Custom Issue Fields to every new feedback started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `cifs` method in the ApiConfig object.
 These Custom Issue Fields would be sent whenever a new feedback is started by the end user.
 
 As soon as an end user opens the feedback screen, they see a greeting message, and the feedback is considered active.
@@ -384,7 +384,7 @@ NSDictionary *cifs = @{ @"joining_date": @{ @"type":@"date", @"value":@150592736
                     @"employee_address": @{ @"type":@"multiline", @"value":@"303,Joy plaza,Park street,Viman nagar.Pune-432123" },
                      @"salary_currency": @{ @"type":@"dropdown", @"value":@"Dollars" } };
 
-NSDictionary *config = @{ @"customIssueFields" : cifs };
+NSDictionary *config = @{ @"cifs" : cifs };
 [Helpshift showConversationWith:self config:config];
 ```
 
@@ -397,7 +397,7 @@ let cifs = [ "joining_date": [ "type":"date", "value":1505927361535 ],
                                "employee_name": [ "type":"singleline", "value":"ABC" ],
                             "employee_address": [ "type":"multiline", "value":"303,Joy plaza,Park street,Viman nagar.Pune-432123" ],
                              "salary_currency": [ "type":"dropdown", "value":"Dollars" ] ];
-let config = ["customIssueFields":cifs]
+let config = ["cifs":cifs]
 Helpshift.showConversation(with: self, config: config)
 ```
 
@@ -408,3 +408,9 @@ Helpshift.showConversation(with: self, config: config)
 </TabItem>
 
 </Tabs>
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>

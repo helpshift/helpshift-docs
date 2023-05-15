@@ -161,7 +161,7 @@ The conversation and FAQ APIs in SDK X take a dictionary parameter rather than `
 | ---------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
 | presentFullScreenOniPad            | presentFullScreenOniPad  | -                                                                                                     |
 | enableFullPrivacy                  | enableFullPrivacy        | -                                                                                                     |
-| customIssueFields                  | customIssueFields        | -                                                                                                     |
+| customIssueFields                  | cifs                     | -                                                                                                     |
 | showConversationResolutionQuestion | -                        | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
 | enableTypingIndicator              | -                        | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
 |                                    |                          |                                                                                                       |
@@ -384,9 +384,15 @@ NSDictionary *cifs = @{ @"name": @{ @"type":@"singleline", @"value":@"John Doe" 
                     @"currency": @{ @"type":@"dropdown", @"value":@"Dollar" },
                    @"join_date": @{ @"type":@"date", @"value":@"1505927361535" } };
 
-NSDictionary *config = @{ @"customIssueFields" : cifs };
+NSDictionary *config = @{ @"cifs" : cifs };
 [Helpshift showConversationWith:self config:config];
 ```
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>
 
 ##### Breadcrumbs & Debug logs
 
