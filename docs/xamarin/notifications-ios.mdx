@@ -84,7 +84,7 @@ application delegate method
 `RegisteredForRemoteNotifications`
 In your app delegate file it will look something like this:
 
-```CSharp
+```csharp
 public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 {
     HelpshiftCore.RegisterDeviceToken(deviceToken);
@@ -107,7 +107,7 @@ the `AppDelegate` class), as shown in the code below :
 
 Example usage:
 
-```CSharp
+```csharp
 
 public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 {
@@ -169,7 +169,7 @@ public override void DidReceiveRemoteNotification(UIApplication application, NSD
 
 For the Helpshift SDK to work with the Helpshift push notification service, you will need to invoke the `HelpshiftApi.HelpshiftCore.RegisterDeviceTokenapi` call inside of the application delegate method `RegisteredForRemoteNotifications`. In your app delegate file it will look something like this:
 
-```CSharp
+```csharp
 public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
 {
     HelpshiftCore.RegisterDeviceToken(deviceToken);
@@ -187,7 +187,7 @@ Example usage:
 
 For the `WillPresentNotification` callback of `IUNUserNotificationCenterDelegate`
 
-```CSharp
+```csharp
 public void handleHelpshiftNotification(NSDictionary userInfo, bool isAppLaunch)
 {
 	var vc = UIApplication.SharedApplication.Delegate.GetWindow().RootViewController;
@@ -211,7 +211,7 @@ public void WillPresentNotification(UNUserNotificationCenter center, UNNotificat
 
 For the `DidReceiveNotificationResponse` callback of `IUNUserNotificationCenterDelegate`
 
-```CSharp
+```csharp
 public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
 {
 	if (response.Notification.Request.Content.UserInfo.ObjectForKey((NSString)"origin").IsEqual((NSString)"helpshift"))

@@ -80,7 +80,7 @@ Once a user logs out from your app, you should call the Helpshift SDK logout API
 
 ### How to use
 
-```
+```cpp
 HelpshiftCocos2dx::logout();
 ```
 
@@ -102,7 +102,7 @@ An anonymous user is someone who can access the app without a username and passw
 
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the clearAnonymousUser API. If this API is used, then anonymous users will be cleared whenever a user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
-```
+```cpp
 HelpshiftCocos2dx::clearAnonymousUser();
 ```
 
@@ -125,7 +125,7 @@ User Identity Verification is a security measure that verifies that all requests
 
 You can send the 'user authentication token' with the login API call. If Identity Verification is enabled on the [Helpshift Dashboard](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification). Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and the user is able to file Issues.
 
-```
+```cpp
 HelpshiftCocosUserBuilder *userBuilder = new HelpshiftCocosUserBuilder("unique-user-id-746501", "john.doe@app.co");
 userBuilder->setAuthToken("generated-user-authentication-token");
 userBuilder->setName("John Doe");

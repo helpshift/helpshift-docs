@@ -254,7 +254,7 @@ If you need to handle badge reset in the application icon, you can do
 something like below in the `applicationDidBecomeActive:` delegate
 method:
 
-```
+```objc
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -337,7 +337,7 @@ If you want to show your user notifications for replies you send to the issues t
 
 You can implement something like the following in the notification count delegate method:
 
-```
+```objc
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         [yourView setTextLabel:[NSString stringWithFormat:@"%d",count];
@@ -348,7 +348,7 @@ You can implement something like the following in the notification count delegat
 Similarly for a `UITabBarItem` in the notification count delegate method
 you can implement something like:
 
-```
+```objc
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",count];
@@ -358,13 +358,13 @@ you can implement something like:
 
 These will update your view or UITabBarItem whenever a new notification arrives in the delegate method. The situation can vary depending upon your app UI. **Showing notification counts at appropriate places would help you draw in your users so that you can engage them more in conversations and hence solve their problems better**. To display the notification count of unread messages stored locally to your users, you can call `requestUnreadMessagesCount`:
 
-```
+```objc
 [HelpshiftSupport requestUnreadMessagesCount:NO]
 ```
 
 to retrieve the unread messages count stored locally and display the unread count like:
 
-```
+```objc
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         [yourView setTextLabel:[NSString stringWithFormat:@"%d",count];
@@ -375,7 +375,7 @@ to retrieve the unread messages count stored locally and display the unread coun
 
 or
 
-```
+```objc
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",count];

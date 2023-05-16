@@ -66,7 +66,7 @@ Details on user management are available [here](/ios/users/).
 
 Breadcrumbs will help you track events or user actions and when user starts a new conversation, these breadcrumbs can be seen along with the conversation in the admin site. To leave breadcrumbs can use `leaveBreadCrumb:`
 
-```
+```objc
 [HelpshiftSupport leaveBreadCrumb:@"Custom String"];
 ```
 
@@ -115,7 +115,7 @@ Example usages:
 
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
-```
+```objc
 HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
 builder.customMetaData = [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype":@"paid", @"level":@"7", @"score":@"12345"}];
 HelpshiftAPIConfig *apiConfig = [builder build];
@@ -126,7 +126,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-```
+```objc
 NSDictionary *metaData = @{@"usertype": @"paid", @"level":@"7", @"score":@"12345"]};
 
 [HelpshiftSupport showConversation:self
@@ -151,7 +151,7 @@ Developers can still use the `setMetadataBlock:` API to provide a block which re
 
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
-```
+```objc
 [HelpshiftSupport setMetadataObjectBlock:^(void){
 	    return [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"name":@"xyz",
 	                                                                @"email":@"xyz@abc.com",
@@ -164,7 +164,7 @@ Developers can still use the `setMetadataBlock:` API to provide a block which re
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-```
+```objc
 [HelpshiftSupport setMetadataBlock:^(void){
         return [NSDictionary dictionaryWithObjectsAndKeys: @"xyz", @"name",
                                                        @"xyz@abc.com", @"email",
@@ -208,7 +208,7 @@ will not be added for the new conversation.
 
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
-```
+```objc
 HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
 builder.customMetaData = [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype":@"paid", @"level":@"7", @"score":@"12345"}
                                                                     andTags:@[@"feedback",@"paid user",@"v4.1"]];
@@ -218,7 +218,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 
 Developers can still use the `setMetadataBlock:` API to pass tags.
 
-```
+```objc
 [HelpshiftSupport setMetadataObjectBlock:^(void){
     return [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype": @"paid",
 	                                                            @"level":@"7",
@@ -230,7 +230,7 @@ Developers can still use the `setMetadataBlock:` API to pass tags.
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-```
+```objc
 NSDictionary *metaDataWithTags = @{@"usertype": @"paid",
                                    @"level":@"7",
                                    @"score":@"12345",
@@ -243,7 +243,7 @@ NSDictionary *metaDataWithTags = @{@"usertype": @"paid",
 
 Developers can still use the `setMetadataBlock:` API to pass tags.
 
-```
+```objc
 [HelpshiftSupport setMetadataBlock:^(void){
     return [NSDictionary dictionaryWithObjectsAndKeys:@"xyz", @"name",
            @"xyz@abc.com", @"email",
@@ -312,7 +312,7 @@ Example:-
 
 <TabItem value="Using ApiConfig" label="Using ApiConfig">
 
-```
+```objc
 NSMutableDictionary *customIssueFieldsDict = [NSMutableDictionary dictionary];
 /*The format for adding custom issue field is customIssueFieldsDict[@"<key>"] = @[@"<type>",@"<value>"];*/
 customIssueFieldsDict[@"name"] = @[@"sl",@"John Doe"];
@@ -331,7 +331,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-```
+```objc
 NSMutableDictionary *customIssueFieldsDict = [NSMutableDictionary dictionary];
 /* The format for adding custom issue field is customIssueFieldsDict[@"<key>"] = @[@"<type>",@"<value>"];*/
 customIssueFieldsDict[@"name"] = @[@"sl",@"John Doe"];
@@ -359,13 +359,13 @@ Starting iOS 10, Apple has deprecated support for the ASL library that was used 
 
 You may wish to send additional debug logs when an issue is filed. This can be acheived using HelpshiftSupport's `addLog:` API.
 
-```
+```objc
 + (void) addLog:(NSString *)message;
 ```
 
 Example usage
 
-```
+```objc
 - (void) userUpdatedSomeSetting:(NSString *)settingName {
     ...
     NSString *message = [NSString stringWithFormat:@"User updated setting: %@", settingName];
@@ -376,7 +376,7 @@ Example usage
 
 or,
 
-```
+```objc
 - (void) userVisitedCheckoutPage {
     ...
         [HelpshiftSupport addLog:@"User went to checkout page"];
@@ -403,7 +403,7 @@ As soon as an end user opens the conversation screen, they see a greeting messag
 
 You can implement something like the following in the didCheckIfConversationActive delegate method:
 
-```
+```objc
 - (void) didCheckIfConversationActive:(BOOL)isActive {
     if (isActive) {
         //Active Conversation
@@ -418,7 +418,7 @@ You can implement something like the following in the didCheckIfConversationActi
 
 If you want to keep track of when your users end an ongoing conversation, you can implement this delegate callback. This delegate is called whenever the ongoing conversation is resolved, rejected from the Dashboard, timed out or archived.
 
-```
+```objc
 - (void) conversationEnded {
     //Conversation has ended
 }

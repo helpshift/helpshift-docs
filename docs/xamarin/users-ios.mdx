@@ -56,7 +56,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
 
 For example:
 
-```
+```csharp
 HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
                                       .SetName("John Doe")
                                       .Build();
@@ -78,7 +78,7 @@ Once a user logs out from your app, you should call the Helpshift SDK logout API
 
 ### How to use
 
-```
+```csharp
 HelpshiftCore.Logout();
 ```
 
@@ -100,7 +100,7 @@ An anonymous user is someone who can access the app without a username and passw
 
 If your use case involves multiple logged in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the ClearAnonymousUser API. When this API is used, anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
-```
+```csharp
 HelpshiftCore.ClearAnonymousUser();
 ```
 
@@ -123,7 +123,7 @@ User Identity Verification is a security measure that verifies that all requests
 
 You can send the 'user authentication token' with the Login API call. If Identity Verification is enabled on the [Helpshift Dashboard](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification). Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and the user is able to file Issues.
 
-```
+```csharp
 HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
                                                   .SetName("John Doe")
                                                   .SetAuthToken("generated-user-authentication-token")
@@ -166,7 +166,7 @@ If identity verification fails, the SDK will invoke one of the following delegat
 
 Example:
 
-```
+```csharp
 public void AuthenticationFailed(HelpshiftUser user, AuthenticationFailureReason reason)
 {
     if(reason == AuthenticationFailureReason.AuthTokenNotProvided)
