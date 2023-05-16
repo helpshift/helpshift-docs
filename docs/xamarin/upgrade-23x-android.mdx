@@ -40,7 +40,7 @@ The Helpshift SDK v2.4.0 is a major update. Please note the we have deprecated s
 
 On SDK version 2.3.1 or below, you can check if an active conversation exists as shown below:
 
-```
+```java
 HelpshiftApi.HelpshiftSupport.IsConversationActive();
 ```
 
@@ -48,13 +48,13 @@ Starting from SDK version 2.4.0, a new api and a delegate method is introduced t
 
 The example code is shown below:
 
-```
+```java
 HelpshiftApi.HelpshiftSupport.CheckIfConversationActive();
 ```
 
 Implement the delegate interface method `DidCheckIfConversationActive`
 
-```
+```csharp
 public class  HSDelegate : Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate {
 
     .
@@ -79,19 +79,19 @@ On SDK version 2.3.1 or below, unread messages count can be obtained both synchr
 
 As an example, if you want to get the locally saved unread messages count and you're on SDK 2.3.1 or earlier versions, you would use code like shown below:
 
-```
+```java
 HelpshiftApi.HelpshiftSupport.GetNotificationCount(false);
 ```
 
 Starting from SDK version 2.4.0, you can retrieve the locally stored unread messages count as shown below:
 
-```
+```java
 HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(false);
 ```
 
 Implement the delegate interface method `DidReceiveUnreadMessagesCount`
 
-```
+```csharp
 public class  HSDelegate : Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate {
 
     .
@@ -116,19 +116,19 @@ On SDK version 2.3.1 or below, unread messages count can be obtained both synchr
 
 As an example, if you want to fetch the latest unread messages count from the server and you're on SDK 2.3.1 or earlier versions, you would use code like shown below:
 
-```
+```java
 HelpshiftApi.HelpshiftSupport.GetNotificationCount(true);
 ```
 
 Starting from SDK version 2.4.0, you can retrieve the unread messages count from server as shown below:
 
-```
+```java
 HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(true);
 ```
 
 Implement the delegate interface method `DidReceiveUnreadMessagesCount`
 
-```
+```csharp
 public class  HSDelegate : Com.Helpshift.Xamarin.Support.HelpshiftSupport.IDelegate {
 
     .
