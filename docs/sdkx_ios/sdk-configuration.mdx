@@ -326,13 +326,13 @@ The `presentFullScreenOniPad` flag will determine whether to present support vie
 
 The default value is NO, which presents support views in `UIModalPresentationFormSheet`. When the value is set to `YES`, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
 
-|              |                                      |
-| ------------ | ------------------------------------ |
-| Option       | <code>presentFullScreenOniPad</code> |
-| Values       | <code>YES</code> / <code>NO</code>   |
-| Default      | <code>NO</code>                      |
-| Min SDK      | v10.0.0                              |
-| Supported by | <code>showConversation</code>        |
+|              |                                                      |
+| ------------ | ------------------------------------                 |
+| Option       | <code>presentFullScreenOniPad</code>                 |
+| Values       | <code>YES</code> / <code>NO</code>                   |
+| Default      | <code>NO</code>                                      |
+| Min SDK      | v10.0.0                                              |
+| Supported by | <code>showConversation</code>, <code>showFAQs</code> |
 
 Example:
 
@@ -350,7 +350,7 @@ NSDictionary *config = @{ @"presentFullScreenOniPad": @YES };
 
 ```swift
 let config = ["presentFullScreenOniPad": true]
-Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
+Helpshift.showConversation(with: self, config: config)
 ```
 
 </TabItem>
