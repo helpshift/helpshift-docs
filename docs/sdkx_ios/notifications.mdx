@@ -43,9 +43,8 @@ If your app does not already use push, you will need to enable push for your app
 
 <TabItem value="Objective-C" label="Objective-C">
 
-```objc
 UNNotification framework:
-
+```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -57,9 +56,10 @@ UNNotification framework:
     [UIApplication sharedApplication registerForRemoteNotifications];
     ...
 }
+```
 
 UI Notifications (Deprecated):
-
+```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
@@ -79,9 +79,8 @@ UI Notifications (Deprecated):
 
 <TabItem value="Swift" label="Swift">
 
-```swift
 UNNotification framework:
-
+```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 	...
     let center = UNUserNotificationCenter.current()
