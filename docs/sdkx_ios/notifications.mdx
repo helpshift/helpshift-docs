@@ -41,9 +41,11 @@ If your app does not already use push, you will need to enable push for your app
 
 <Tabs>
 
-<TabItem value="UNNotification framework" label="UNNotification framework">
+<TabItem value="Objective-C" label="Objective-C">
 
 ```objc
+UNNotification framework:
+
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -55,12 +57,9 @@ If your app does not already use push, you will need to enable push for your app
     [UIApplication sharedApplication registerForRemoteNotifications];
     ...
 }
-```
 
-</TabItem>
-<TabItem value="UI Notifications (Deprecated)" label="UI Notifications (Deprecated)">
+UI Notifications (Deprecated):
 
-```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
@@ -72,6 +71,25 @@ If your app does not already use push, you will need to enable push for your app
     } else {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     }
+    ...
+}
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+UNNotification framework:
+
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+	...
+    let center = UNUserNotificationCenter.current()
+    center.delegate = self
+    center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
+        ...
+    }
+    UIApplication.shared.registerForRemoteNotifications()
     ...
 }
 ```
