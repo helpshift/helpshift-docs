@@ -25,14 +25,14 @@ import {
 
 ### Using AndroidX support libraries {#steps-to-build-with-android-x}
 
-Helpshift Unity SDK X uses legacy android support libraries.
+Helpshift Unity SDK X uses legacy Android support libraries.
 If you want to use AndroidX libraries in your application please follow these steps to make Helpshift SDK compatible with AndroidX:
 
 1. We recommend to use the standalone jetifier tool mentioned [here](https://developer.android.com/studio/command-line/jetifier).
-1. To install Jetifier, [download the zip file](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta07/jetifier-standalone.zip) and extract it. Your development environment must have **Java version 1.8** installed.
-1. Use `standalone jetifier` tool to manually jetify the Helpshift library file:
+2. To install Jetifier, [download the zip file](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta07/jetifier-standalone.zip) and extract it. Your development environment must have **Java version 1.8** installed.
+3. Use `standalone jetifier` tool to manually jetify the Helpshift library file:
    `<project>/Assets/Plugins/Android/Helpshift.aar`
-1. Replace the existing `Helpshift.aar` files with the **file generated from the standalone jetifier tool**.
+4. Replace the existing `Helpshift.aar` files with the **file generated from the standalone jetifier tool**.
 
 Example:
 
@@ -44,7 +44,7 @@ Example:
 
 If you are using **`Unity Jar Resolver`** plugin to resolve support library requirements:
 
-- Update the `<project>/Assets/Helpshift/Editor/HelpshiftDependencies.xml` to only use the androidx library and remove legacy android support library:
+- Update the `<project>/Assets/Helpshift/Editor/HelpshiftDependencies.xml` to only use the androidx library and remove legacy Android support library:
 
 - Your `HelpshiftDependencies.xml` file should look like - 
 
@@ -57,7 +57,7 @@ If you are using **`Unity Jar Resolver`** plugin to resolve support library requ
 
 If you are using **`Gradle`** to resolve support library requirements:
 
-- Update dependencies section of the `<project>/Assets/Plugins/Android/mainTemplate.gradle` or `build.gradle` file to use the androidx material library as:
+- Update dependencies section of the `<project>/Assets/Plugins/Android/mainTemplate.gradle` or `build.gradle` file to use the Androidx material library as:
 
 ```
 dependencies {
@@ -67,7 +67,7 @@ dependencies {
 }
 ```
 
-After all these changes, **ensure there are no legacy android support libraries present** in your project. Build your app and verify if all the UI screens are working as expected.
+After all these changes, **ensure there are no legacy Android support libraries present** in your project. Build your app and verify if all the UI screens are working as expected.
 
 ## Sample Scene integration {#sample-scene-integration-issues}
 
