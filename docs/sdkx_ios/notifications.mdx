@@ -43,7 +43,7 @@ If your app does not already use push, you will need to enable push for your app
 
 <TabItem value="Objective-C" label="Objective-C">
 
-UNNotification framework:
+#### UNNotification framework:
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
@@ -58,7 +58,7 @@ UNNotification framework:
 }
 ```
 
-UI Notifications (Deprecated):
+#### UI Notifications (Deprecated):
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
@@ -79,7 +79,7 @@ UI Notifications (Deprecated):
 
 <TabItem value="Swift" label="Swift">
 
-UNNotification framework:
+#### UNNotification framework:
 ```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 	...
@@ -88,6 +88,18 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
     center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
         ...
     }
+    UIApplication.shared.registerForRemoteNotifications()
+    ...
+}
+```
+
+#### UI Notifications (Deprecated):
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+	...
+    let notificationType: UIUserNotificationType = [.badge, .alert]
+    let notificationSettings = UIUserNotificationSettings(types: notificationType, categories: nil)
+    UIApplication.shared.registerUserNotificationSettings(notificationSettings)
     UIApplication.shared.registerForRemoteNotifications()
     ...
 }
