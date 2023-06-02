@@ -51,7 +51,7 @@ The Helpshift SDK X plugin contains the following:
 
 ## Add Helpshift to your Cocos2dx project {#adding-to-project}
 
-Copy the `helpshift-plugin-cocos2dx` folder to the root directory of your project.
+Copy the `helpshiftx-plugin-cocos2dx` folder to the root directory of your project.
 
 ## Adding the Helpshift Android plugin {#adding-android}
 
@@ -62,10 +62,11 @@ Copy the `helpshift-plugin-cocos2dx` folder to the root directory of your projec
 ### Add Helpshift dependencies in your project
 
 
-1.  Copy the Helpshift.aar file from the `android/proj.android-studio/libs` present inside plugin folder to the libs directory of your android project.
+1.  Copy the `Helpshift.aar` file from the `android/proj.android-studio/libs` present inside plugin folder to the `libs` directory of your android project.
 
 2.  Add dependency to Helpshift SDK in your `app/build.gradle` file.
 
+    ```
         repositories {
             //your other repositories
             flatDir { dirs 'libs' }
@@ -77,6 +78,7 @@ Copy the `helpshift-plugin-cocos2dx` folder to the root directory of your projec
             implementation 'com.android.support:appcompat-v7:28.0.0'
             implementation(name: 'Helpshift', ext:'aar')
         }
+    ```
 
 4.  Link Helpshift files in your project as source depending on your build system.
 
@@ -113,7 +115,7 @@ Copy the `helpshift-plugin-cocos2dx` folder to the root directory of your projec
 
 <Admonition type="info" title="Note">
 
-Use HelpshiftCocosBridge.install(...); with the required arguments immediately after the `super.onCreate()` of your Cocos2d-x Activity.
+Use `HelpshiftCocosBridge.install(...);` with the required arguments immediately after the `super.onCreate();` of your Cocos2d-x Activity.
 
 </Admonition>
 
@@ -128,7 +130,7 @@ Helpshift SDK uniquely identifies your App with the combination of:
 
 </div>
 
-To get the `Domain Name` and the `App ID`, navigate to `Settings`>`SDK (for Developers)` in your agent dashboard and scroll down to **Initializing Helpshift** section. <Image src="/static/books/common/settings-integration.png"  width="full" />
+To get the `Domain Name` and the `App ID`, navigate to `Settings` > `SDK (for Developers)` in your agent dashboard and scroll down to **Initializing Helpshift** section. <Image src="/static/books/common/settings-integration.png"  width="full" />
 
 Select your App from the dropdown and copy the tokens to be passed when initializing Helpshift.
 
