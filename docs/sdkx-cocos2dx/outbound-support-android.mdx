@@ -1,0 +1,195 @@
+---
+sidebar_position: 85
+title: Outbound Support
+description: "With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Outbound Support {#outbound-support}
+
+<Intro>
+
+With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android#initializing)
+
+</Admonition>
+
+The steps to use this feature are the following -
+
+To generate the link for outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+
+![](/static/books/helpshiftx/outbound-support.png)
+
+You should see a **New link** button. Click on the New link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
+
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
+
+At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
+
+YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp , myAppSupport, etc.
+
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
+
+## Delegate push notification data to Helpshift {#delegate-notification-data}
+
+To pass the outbound support data to Helpshift, follow these steps -
+
+1. Send push notification to the users you want to give outbound support using your app's existing push notification system
+
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the outbound support link in your notification data to Helpshift SDK by calling `HelpshiftCocosBridge.handleProactiveLink(String link)`.
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
+
+For example, following code shows how to handle incoming push notification and posting it on the notification bar of the device -
+
+```java
+@Override
+public void onMessageReceived(RemoteMessage remoteMessage) {
+  Map<String, String> data = remoteMessage.getData();
+    String origin = data.get("origin");
+
+    // This is a notification from Helpshift push notification system
+    if (origin != null && origin.equals("helpshift")) {
+      HelpshiftCocosBridge.handlePush(data);
+    } else {
+    // This is not a notification from Helpshift system
+    // This is your existing push notification system
+
+    // Sample key in notification data where you will put the proactive support link generated from Helpshift dashboard
+    String proactiveUrl = data.get("proactive_link");
+
+    // Sample code to generate Push notification
+    Context context = getApplicationContext();
+    Intent intent = new Intent(context, HandleNotificationActivity.class); // Your notification handling class
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.putExtra("proactiveNotification", true);
+    intent.putExtra("proactiveLink", proactiveUrl);
+    int pendingIntentFlag = Build.VERSION.SDK_INT < 23 ? 0 : PendingIntent.FLAG_IMMUTABLE;
+    PendingIntent pendingIntent = PendingIntent.getActivity(
+            context, new Random().nextInt(), intent, pendingIntentFlag);
+
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+            .setContentTitle(data.get("title"))
+            .setContentText(data.get("message"))
+            .setSmallIcon(R.drawable.icon) // Set your icon for notification
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .setChannelId(CHANNEL_ID); // Set your app's channelId
+      if (builder != null) {
+        Notification notification = builder.build();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
+      }
+    }
+}
+```
+
+When the user clicks on the notification, `HandleNotificationActivity` activity is started (as specified in the above code sample).
+To delegate push notification data to Helpshift SDK, call `HelpshiftCocosBridge.handleProactiveLink()` in **HandleNotificationActivity's onCreate()** method.
+
+For Example -
+
+_Following code shows how to delegate push notification data by calling `HelpshiftCocosBridge.handleProactiveLink()` to Helpshift SDK._
+
+```java
+public class HandleNotificationActivity extends Activity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.getBoolean("proactiveNotification")) {
+            String url = bundle.getString("proactiveLink");
+            HelpshiftCocosBridge.handleProactiveLink(url);
+        }
+        finish();
+    }
+}
+```
+
+## Passing configuration specific to the current user {#user-specific-config}
+
+You may want to add configuration specific to the current user in your app when they click on the notification.
+
+Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime. This local API config is exactly same as we would expect in other APIs like `showConversation()` or `showFAQs()`.
+
+We will use this configuration for current issue as well as next issue filed in same session.
+
+<Admonition type="info" title="Note">
+
+You need to call this API after [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android/#initializing) and before HelpshiftCocosBridge.handleProactiveLink()
+
+</Admonition>
+
+You will have to implement the method `getAPIConfig()` where you can add any user specific config in the same format as you add in other public APIs like `showConversation()` or `showFAQs()`.
+
+We will merge this config and the config embedded in the outbound support link. We will append data of config from outbound support link to local config like **Tags, CIFs**, etc. In case of conflicts, outbound support config will get the precedence.
+
+For example, following code shows how to set proactive config collector using `setHelpshiftProactiveConfigCollector` delegate and how to add user specific configurations using `getAPIConfig()` method -
+
+```cpp
+cocos2d::ValueMap createValueMap(const std::string& type, Value value) {
+    cocos2d::ValueMap valueMap;
+    valueMap["type"] = cocos2d::Value(type);
+    valueMap["value"] = cocos2d::Value(std::move(value));
+    return valueMap;
+}
+
+cocos2d::ValueMap getCifs() {
+    cocos2d::ValueMap cifMap;
+    cifMap["joining_date"] = createValueMap("date", Value("1684747527945"));
+    cifMap["stock_level"] = createValueMap("n", Value(150));
+    cifMap["employee_name"] = createValueMap("sl", Value("Cocos helpshift"));
+    return cifMap;
+}
+cocos2d::ValueMap getAPIConfig() {
+    cocos2d::ValueMap configMap;
+
+    ValueVector tags;
+    tags.push_back(Value("Testing"));
+    tags.push_back(Value("Cocos2dx"));
+
+    configMap["tags"] = tags;
+    configMap["cifs"] = getCifs();
+
+    return configMap;
+}
+
+// init method of your UI
+bool HelloWorld::init()
+{
+    //////////////////////////////
+    // 1. super init first
+    if ( !Scene::init() )
+    {
+        return false;
+    }
+    ...
+    ...
+    HelpshiftCocos2dx::setHelpshiftProactiveConfigCollector(getAPIConfig);
+}
+```
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>
