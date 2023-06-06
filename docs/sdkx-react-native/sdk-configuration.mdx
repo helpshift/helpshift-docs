@@ -19,6 +19,8 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -95,7 +97,7 @@ In the `config` dictionary of the `showConversation` API at the time of calling 
 |        |               |
 | ------ | ------------- |
 | Flag   | `fullPrivacy` |
-| values | true/ false   |
+| values | true/false    |
 
 </div>
 
@@ -106,7 +108,7 @@ Example :
 
 ```javascript
 let installConfig = {
-  'fullPrivacy': true,
+  fullPrivacy: true,
 }
 
 install(<appId>, <domain>, installConfig);
@@ -130,7 +132,7 @@ Example :
 
 ```javascript
 showFAQsWithConfig({
-  enableContactUs: `AFTER_VIEWING_FAQS`,
+  enableContactUs: "AFTER_VIEWING_FAQS",
 });
 ```
 
@@ -138,6 +140,29 @@ showFAQsWithConfig({
 
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
 - Provide country-based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
+
+## Conversation prefill text {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+<div className="compact ">
+
+|        |                           |
+| ------ | ------------------------- |
+| Flag   | `conversationPrefillText` |
+| values | Any string value          |
+
+</div>
+
+Example:
+
+```javascript
+let installConfig = {
+  conversationPrefillText: "",
+}
+
+install(<appId>, <domain>, installConfig);
+```
 
 ## Android Specific Configurations
 
