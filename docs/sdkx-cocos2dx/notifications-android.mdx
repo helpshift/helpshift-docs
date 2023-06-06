@@ -246,6 +246,8 @@ To fetch unread messages count from the server you can call `requestUnreadMessag
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.
 
 ```cpp
+  #include "HelpshiftEvent.h"
+
   void getUnreadMessageCount(Ref *pSender) {
     bool shouldFetchFromServer = true;
     HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
@@ -256,12 +258,13 @@ Based on the value of `shouldFetchFromServer`, the locally stored count will be 
   }
 
   void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
-      if (eventName == "receivedUnreadMessageCount") {
-          if (eventData.find("count") != eventData.end()) {
-              int count = eventData["count"].asInt();
-              // Use the 'count' variable for further processing
-              updateBadgeCount(count);
-          }
+      if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+          if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+            int count = eventData[DATA_MESSAGE_COUNT].asInt();
+            bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+            // Use the 'count' variable for further processing
+            updateBadgeCount(count);
+        }
       }
   }
 ```
