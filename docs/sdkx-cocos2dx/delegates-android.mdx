@@ -1,0 +1,333 @@
+---
+sidebar_position: 90
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift Delegates {#delegates}
+
+<Intro>
+
+The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android#initializing)
+
+</Admonition>
+
+## Helpshift Events Listener/Delegates implementation {#helpshift-delegates-implementation}
+
+You can set `HelpshiftEventsListener` by calling the `HelpshiftCocos2dx::setHelpshiftEventsListener()` method.
+
+For example:
+
+```cpp
+
+#include "HelpshiftEvent.h"
+
+void handleAuthFailureEvent(HSAuthenticationFailureReason reason) {
+    // your code here
+    // ...
+}
+
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    
+    if (strcmp(eventName, SDK_SESSION_STARTED) == 0) {
+        // your code here 
+        //...
+    }
+    if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+        // your code here
+        //...
+    }
+    // ... and so on
+    // list of events given below
+}
+
+// init method of your UI
+bool HelloWorld::init()
+{
+    //////////////////////////////
+    // 1. super init first
+    if ( !Scene::init() )
+    {
+        return false;
+    }
+
+    HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent,
+                                                  handleAuthFailureEvent);
+
+    // Your code here 
+    // ...
+}
+```
+
+## Helpshift Events {#helpshift-events}
+
+You can find list of all Helpshift Events in `HelpshiftEvent.h` file.
+
+To use Helpshift Events, include `HelpshiftEvent.h` in your UI file.
+
+```cpp
+#include "HelpshiftEvent.h"
+```
+
+### Conversation Status Event {#conversation-status}
+
+This event contains information about the current ongoing conversation.
+
+- Event name: `CONVERSATION_STATUS`
+- Event data:
+  - `DATA_LATEST_ISSUE_ID`
+  - `DATA_LATEST_ISSUE_PUBLISH_ID`
+  - `DATA_IS_ISSUE_OPEN`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CONVERSATION_STATUS) == 0) {
+        std::string publishId = eventData[DATA_LATEST_ISSUE_PUBLISH_ID].asString();
+        // your code here
+        //...
+    }
+}
+```
+
+### Widget Toggle Event {#widget-toggle-event}
+
+This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key.
+
+- Event name: `WIDGET_TOGGLE`
+- Event data: `DATA_SDK_VISIBLE`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, WIDGET_TOGGLE) == 0) {
+        std::string data = eventData[DATA_SDK_VISIBLE].asString();
+        // your code here
+        //...
+    }
+}
+```
+
+### Conversation Start Event {#conversation-start-event}
+
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
+
+- Event name: `CONVERSATION_START`
+- Event data: `DATA_MESSAGE`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CONVERSATION_START) == 0) {
+        std::string data = eventData[DATA_MESSAGE].asString();
+        // your code here
+        //...
+    }
+}
+```
+
+### Message Add Event {#message-add-event}
+
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
+
+- Event name: `MESSAGE_ADD`
+- Event data:
+  - `DATA_MESSAGE_TYPE`
+  - `DATA_MESSAGE_BODY`
+  - `DATA_MESSAGE_TYPE_ATTACHMENT`
+  - `DATA_MESSAGE_TYPE_TEXT`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, MESSAGE_ADD) == 0) {
+        std::string data = eventData[DATA_MESSAGE_TYPE_ATTACHMENT].asString();
+        CCLOG("User sent an attachment");
+        // your code here
+        //...
+    }
+}
+```
+
+### CSAT Submit Event {#csat-submit-event}
+
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
+
+- Event name: `CSAT_SUBMIT`
+- Event data:
+  - `DATA_CSAT_RATING`
+  - `DATA_ADDITIONAL_FEEDBACK`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CSAT_SUBMIT) == 0) {
+        std::string data = eventData[DATA_CSAT_RATING].asString();
+        // your code here
+        //...
+    }
+}
+```
+
+### Conversation End Event {#conversation-end-event}
+
+This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+
+- Event name: `CONVERSATION_END`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CONVERSATION_END) == 0) {
+        // your code here
+        //...
+    }
+}
+```
+
+### Conversation Rejected Event {#conversation-rejected-event}
+
+This event is triggered when an agent rejects the conversation.
+
+- Event name: `CONVERSATION_REJECTED`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CONVERSATION_REJECTED) == 0) {
+        // your code here
+        //...
+    }
+}
+```
+
+### Conversation Resolved Event {#conversation-resolved-event}
+
+This event is triggered when an agent resolves the conversation.
+
+- Event name: `CONVERSATION_RESOLVED`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CONVERSATION_RESOLVED) == 0) {
+        // your code here
+        //...
+    }
+}
+```
+
+### Conversation Reopened Event {#conversation-reopened-event}
+
+When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+
+- Event name: `CONVERSATION_REOPENED`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, CONVERSATION_REOPENED) == 0) {
+        // your code here
+        //...
+    }
+}
+```
+
+### User Authentication Failed Event {#user-authentication-failed-event}
+
+If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `HelpshiftCocos2dx::login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-cocos2dx/users-android).
+
+Reason type:
+
+- `HelpshiftAuthenticationFailureReason.REASON_INVALID_AUTH_TOKEN`
+- `HelpshiftAuthenticationFailureReason.REASON_AUTH_TOKEN_NOT_PROVIDED`
+- `HelpshiftAuthenticationFailureReason.UNKNOWN`
+
+```cpp
+void handleAuthFailureEvent(HSAuthenticationFailureReason reason) {
+    // your code here
+    // ...
+}
+```
+
+### Helpshift session delegates {#session-delegates}
+
+#### Helpshift Session Started
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+- Event Name: `SDK_SESSION_STARTED`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, SDK_SESSION_STARTED) == 0) {
+        // your code here
+        //...
+    }
+}
+```
+
+#### Helpshift Session Ended
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+- Event Name: `SDK_SESSION_ENDED`
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, SDK_SESSION_ENDED) == 0) {
+        // your code here
+        //...
+    }
+}
+```
+
+### Unread Message Count {#unread-message-count}
+
+If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(final boolean shouldFetchFromServer)`.
+
+The unread message count will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
+
+- Event Name: `RECEIVED_UNREAD_MESSAGE_COUNT`
+- Event Data: `DATA_MESSAGE_COUNT` and `DATA_MESSAGE_COUNT_FROM_CACHE`
+
+```cpp
+  // Call to get unread message count from Helpshift
+  void getUnreadMessageCount(Ref *pSender) {
+    bool shouldFetchFromServer = true;
+    HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
+  }
+
+  void updateBadgeCount(int count) {
+    // Your UI Logic here
+  }
+
+  void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+      if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+          if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+            int count = eventData[DATA_MESSAGE_COUNT].asInt();
+            bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+            // Use the 'count' variable for further processing
+            updateBadgeCount(count);
+        }
+      }
+  }
+```
+
+If you call the method `HelpshiftCocos2dx::requestUnreadMessageCount(true)` it will return a notification count from server in the above delegate method asynchronously. The notification count here can be fetched either from the cache or from the Helpshift servers. The count from Helpshift’s servers is rate limited and it returns the latest value only if a subsequent call is made to the API after the reset timeout or when the user just closes the chat screen (whichever is earlier). If the API is called within the rate limit period then it returns value from local cache. For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+
+If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to `false`, `HelpshiftCocos2dx::requestUnreadMessageCount(false)`. In this case, SDK returns the count of unread messages available locally in this delegate method.
+
+Locally saved unread message count are useful for saving an additional network call.
