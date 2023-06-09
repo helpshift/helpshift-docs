@@ -217,3 +217,54 @@ Placing it elsewhere might cause unexpected runtime problems.
 Helpshift install call will throw `InstallException` in case the validation of the SDK keys fail.
 
 </Admonition>
+
+#### Initializing Helpshift in your app for China {#chinaSupport}
+
+SDKs add support for a new install config `isForChina`
+The config key accepts boolean values. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+Add the following code in your AppDelegate class -
+
+<Tabs>
+
+<TabItem value="Using Objective-C" label="Using Objective-C">
+
+```objc
+@import HelpshiftX;
+...
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    ...
+    NSDictionary *config = @{
+        ...
+        @"isForChina" : @YES,
+        ...
+    };
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" domain:@"YOUR_DOMAIN" config:config];
+    ...
+    return YES;
+}
+```
+
+</TabItem>
+<TabItem value="Using Swift" label="Using Swift">
+
+```swift
+import HelpshiftX
+...
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        ...
+        let config = [
+            ...
+            "isForChina": true
+            ...
+        ]
+        Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+        ...
+        return true
+    }
+...
+```
+</TabItem>
+
+</Tabs>
