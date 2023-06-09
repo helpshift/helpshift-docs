@@ -129,3 +129,32 @@ Calling any API before the install call would throw an unchecked `HelpshiftIniti
 Calling `install()` below Android SDK version 21 will throw this checked exception. All the APIs will be non operable.
 
 </Admonition>
+
+#### Initializing Helpshift in your app for China {#chinasupport}
+
+SDKs add support for a new install config `isForChina`
+The config key accepts boolean values. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+```java
+    public class MainApplication extends Application {
+    @Override
+      public void onCreate() {
+        super.onCreate();
+        // Add install configs in the config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("isForChina", true);
+        //...
+        // Install call
+        try {
+            Helpshift.install(this,
+                      "<App Id from the Helpshift Dashboard>",
+                      "<Domain name from the Helpshift Dashboard>",
+                      config);
+        } catch (UnsupportedOSVersionException e) {
+            // Android OS versions prior to Lollipop (< SDK 21) are not supported.
+        }
+      }
+    }
+```
+
+You can refer our existing developer documentation for more information on how to pass config in `Helpshift.install()` API. To see supported configurations, check the [SDK Configuration](/sdkx_android/sdk-configuration.mdx) page.
