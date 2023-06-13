@@ -237,6 +237,20 @@ If you do not want the in-app notifications to support provided by the
 Helpshift SDK, please set this flag to `false`. The default value of this
 flag is `true` i.e in-app notifications will be enabled.<br />
 
+### Pausing In-app notifications {#pause-in-app}
+
+If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotification` to pause/resume the notifications. When `true` is passed to this method, display of in-app notifications is paused even if they arrive. When you pass `false`, the in-app notifications start displaying.
+
+Example :
+
+```javascript
+import { pauseDisplayOfInAppNotification } from "helpshift-plugin-sdkx-react-native";
+
+pauseDisplayOfInAppNotification(true); // To temporarily pause in-app notifications
+pauseDisplayOfInAppNotification(false); // To resume showing the in-app notifications
+
+```
+
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
 To fetch unread messages count from the server you can call `requestUnreadMessageCount` API. This API will return unread messages count via observer.
