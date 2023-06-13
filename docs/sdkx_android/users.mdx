@@ -58,12 +58,13 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
     <th>Parameter</th>
     <th>Require/Optional</th>
     <th>SDK Description</th>
-    <th>Inportant Considerations</th>
+    <th>Important Considerations</th>
   </tr>
   <tr>
     <td>userName</td>
     <td>Optional</td>
-    <td>Provide the name you'd like your Agents to use when interacting with end users. If you don't know the user's name, you can leave it blank, and the Identity Bot (when enabled) will ask that user for their name. If you provide a value, the Identity Bot will not ask the user for their name again.</td>
+    <td>Provide the name you'd like your Agents to use when interacting with end users. If you don't know the user's name, you can leave it blank, and the Identity Bot (when enabled) will ask that user for their name. If you provide a value, the Identity Bot will not ask the user for their name again. <li> Note: If the value of userName is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
+    </td>
     <td>Max length: 255 characters. Values larger than this will be truncated.</td>
   </tr>
   <tr>
@@ -74,8 +75,9 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
       <ul>
         <li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li>
-        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'Email'.</li>
+        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'userEmail'.</li>
         <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing email will return any profile if multiple profiles have the same email.</li>
+        <li> If the value of "userId" is empty string, ater trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
     </td>
   </tr>
@@ -88,6 +90,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
         <li>Email format should be valid (should be in the format "my@email.com". Invalid emails will result in the creation of an anonymous user.</li>
         <li>Leading / trailing spaces are not allowed. Emails with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>Email is always case insensitive (eg. 'MY@EMAIL.COM' is same as 'my@email.com').</li>
+        <li> If the value of "userEmail" is empty string, ater trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
 </td>
   </tr>
@@ -98,6 +101,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
     <td>
       <ul>
         <li>A valid HMAC Digest should be provided in order to ensure your users can file issues. Details <a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">here</a>.</li>
+        <li> If the value of "userAuthToken" is empty string, ater trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
 </td>
 
@@ -116,9 +120,27 @@ Example:
 
 ```java
 Map<String, Object> userData = new HashMap<>();
-userData.put("userId", "12234454");
-userData.put("userEmail", "captain@example.com");
-userData.put("userName", "Captain Planet");
+
+String userId = generateUserId();
+String userEmail = fetchUserEmail();
+String userName = fetchUserName();
+
+if (TextUtils.isEmpty(userId) && TextUtils.isEmpty(userEmail)) {
+  throw new Exception("userId and userEmail both are empty. Invalid login! ");
+}
+
+if (!TextUtils.isEmpty(userId)) {
+  userData.put("userId", userId);  
+}
+
+if (!TextUtils.isEmpty(userEmail)) {
+  userData.put("userEmail", userEmail);  
+}
+
+if (!TextUtils.isEmpty(userName)) {
+  userData.put("userName", userName);  
+}
+
 Helpshift.login(userData);
 ```
 
@@ -194,10 +216,32 @@ Example:
 
 ```java
 Map<String, Object> userData = new HashMap<>();
-userData.put("userId", "12234454");
-userData.put("userEmail", "captain@example.com");
-userData.put("userName", "Captain Planet");
-userData.put("userAuthToken", "generated-user-authentication-token");
+
+String userId = generateUserId();
+String userEmail = fetchUserEmail();
+String userName = fetchUserName();
+
+if (TextUtils.isEmpty(userId) && TextUtils.isEmpty(userEmail)) {
+  throw new Exception("userId and userEmail both are empty. Invalid login! ");
+}
+
+if (!TextUtils.isEmpty(userId)) {
+  userData.put("userId", userId);  
+}
+
+if (!TextUtils.isEmpty(userEmail)) {
+  userData.put("userEmail", userEmail);  
+}
+
+if (!TextUtils.isEmpty(userName)) {
+  userData.put("userName", userName);  
+}
+
+String userAuthToken = generateUserAuthToken();
+if (!TextUtils.isEmpty(userAuthToken)) {
+  userData.put("userAuthToken", userAuthToken);  
+}
+
 Helpshift.login(userData);
 ```
 
