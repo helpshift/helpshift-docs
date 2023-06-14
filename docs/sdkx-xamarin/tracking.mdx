@@ -1,0 +1,187 @@
+---
+sidebar_position: 80
+title: Tracking
+description: "Track events and user actions when the user starts a new conversation. Attach custom metadata to every conversation started via the SDK."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Tracking {#tracking}
+
+<Intro>{frontMatter.description}</Intro>
+
+<br/>
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install()](/sdkx-xamarin/getting-started#initialize) API.
+
+</Admonition>
+
+## Adding Tags to Conversations {#adding-tags}
+
+You can attach tags while reporting an issue by passing them to the `config` dictionary at the time of calling `Helpshift.ShowConversation(this, config)`. You can pass an **array of strings** with a key `tags` which will get added as Tags when the issue is created.
+
+For example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("tags", new String[]{"foo", "bar"});
+Helpshift.ShowConversation(this, config);
+```
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- The attached tags must exactly match the tags present on the dashboard.
+
+</Admonition>
+
+## Adding Custom Metadata to Conversations
+
+You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation. You can attach custom metadata by passing it to the `config` dictionary at the time of calling any of the SDK X APIs (`ShowConversation`, `ShowFAQs`, `ShowSingleFAQ`, `ShowFAQSection`).
+
+Example:
+
+```csharp
+Dictionary<string, string> metadata = new Dictionary<string, string>();
+metadata.Add("usertype","paid");
+metadata.Add("level","7");
+metadata.Add("score","12345");
+
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("customMetadata", metadata);
+
+Helpshift.ShowConversation(this, config);
+```
+
+<Admonition type="info" title="Note">
+
+- Metadata should only be sent as String key-value pairs.
+- Once customMetadata is set, if you want to reset it, then you’ll have to call the SDK X API with an empty dictionary, i.e.
+
+```csharp
+Dictionary<string, string> metadata = new Dictionary<string, string>();
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("customMetadata", metadata);
+Helpshift.ShowConversation(this, config);
+```
+
+</Admonition>
+
+## Attaching Custom Issue Fields to conversations {#set-custom-issue-fields}
+
+You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `cifs` key in API config dictionary.
+
+These custom issue fields will be sent whenever an end user starts a new conversation or creates an issue via Smart FAQs.
+
+As soon as an end user opens the conversation screen, they see a greeting message, and the conversation is considered active. All the modified Custom Issue Fields (updated during an active conversation) will only be sent with the next conversation that end user starts.
+
+If you want to set Custom Issue Fields at the time of Issue creation, follow the steps:
+
+1. Initialise a top level custom issue fields' `Dictionary`
+2. For each custom issue field, define your custom issue field `Dictionary`
+3. Add the `"type"` and `"value"` for that custom issue field in custom issue field dictionary.
+4. Add the custom issue field dictionary to top level dictionary (with key as your configured key and value as custom issue field dictionary)
+5. Pass the dictionary to `config` with key `"cifs"` of the `Helpshift.ShowConversation(this, config)`
+
+```csharp
+Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+joiningDate.Add("type", "date");
+joiningDate.Add("value", 1505927361535);
+
+Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+stockLevel.Add("type", "number");
+stockLevel.Add("value", "1505");
+
+Dictionary<string, string> employeeName= new Dictionary<string, string>();
+employeeName.Add("type", "singleline");
+employeeName.Add("value", "Bugs helpshift");
+
+Dictionary<string, string> isPro = new Dictionary<string, string>();
+isPro.Add("type", "boolean");
+isPro.Add("value", "true");
+
+Dictionary<string, object> cifs = new Dictionary<string, object>();
+cifs.Add("joining_date", joiningDate);
+cifs.Add("stock_level", stockLevel);
+cifs.Add("employee_name", employeeName);
+cifs.Add("is_pro", isPro);
+
+Dictionary<string, object> config = new Dictionary<string, object>();
+// other configs...
+//..
+config.Add("cifs", cifs);
+
+Helpshift.ShowConversation(this, config);
+```
+
+Possible datatypes to be passed into the config are:
+
+| Type         | value  | Comments                                                                                                                                                      |
+| ------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "singleline" | string | Single line string with character limit of 255                                                                                                                |
+| "multiline"  | string | Multi line string with character limit of 100,000                                                                                                             |
+| "number"     | string | String representation of number. For eg. "12345"                                                                                                              |
+| "dropdown"   | string | Drop-down options should exist for the given Custom Issue Field on dashboard. Value should be one of the values specified on the dashbaord for that dropdown. |
+| "date"       | long   | Epoch time in milliseconds. For eg. `1505927361535`                                                                                                           |
+| "checkbox"   | string | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
+
+<Admonition type="info" title="Note">
+
+**On Custom Issue Fields keys & compatibility**
+
+- Custom Issue Fields must be created in the Helpshift Dashboard (Settings → Custom Issue Fields), otherwise they will be ignored. Read more [here](https://support.helpshift.com/kb/article/custom-issue-fields/).
+
+</Admonition>
+
+## Breadcrumbs {#breadcrumbs}
+
+Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs, use `LeaveBreadCrumb` API —
+
+For example:
+
+```java
+Helpshift.LeaveBreadCrumb("Any breadcrumb string");
+```
+
+Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the **SDK Configurations** section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `ClearBreadCrumbs` API —
+
+For example:
+
+```java
+Helpshift.ClearBreadCrumbs();
+```
+
+<Admonition type="info" title="Note">
+
+- In the `LeaveBreadcrumb` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
+  - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
+  - `"key - value"` - ** Simple string, This is supported **
+
+</Admonition>
+
+## Debug Logs {#debug-logs}
+
+You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. This can be achieved by using `HelpshiftLogger`.
+
+For example:
+
+```java
+HelpshiftLogger.d("TAG", "Any Debug log string");
+```
+
+Debug logs are collected within the set debug logs limit. The limit is set under the **SDK Configurations** section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
+
+<Admonition type="info" title="Note">
+
+- In the `HelpshiftLogger` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
+  - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
+  - `"key - value"` - ** Simple string, This is supported **
+
+</Admonition>
