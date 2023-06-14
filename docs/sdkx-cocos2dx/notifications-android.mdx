@@ -98,8 +98,18 @@ For FCM users, the API key can be found at your
       Map<String, String> data = message.getData();
       String origin = data.get("origin");
       if (origin != null && origin.equals("helpshift")) {
-        HelpshiftCocosBridge.handlePush(data);
-      }
+            try {
+                Map<String, Object> config = new HashMap<>();
+                config.put("enableLogging", true);
+                Helpshift.install(getApplication(), 
+                        "<APP_ID>",
+                        "<DOMAIN_NAME>",
+                        config);
+            } catch (UnsupportedOSVersionException e) {
+                Log.e(TAG, "install() called on the OS version: " + VERSION.SDK_INT + " is not supported");
+            }
+            HelpshiftCocosBridge.handlePushNotification(data);
+        }
     }
 ```
 

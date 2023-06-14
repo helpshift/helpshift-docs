@@ -1,0 +1,539 @@
+---
+sidebar_position: 270
+title: Migration Guide
+description: "SDK X Cocos2dx plugin is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end-users without any downtime or app updates. This migration guide will walk you through the steps you need to take to migrate from the Helpshift legacy SDK cocos2dx plugin to the SDK X cocos2dx plugin."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Migration Guide
+
+<Intro>
+
+SDK X Cocos2dx plugin is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end-users without any downtime or app updates. This migration guide will walk you through the steps you need to take to migrate from the Helpshift legacy SDK Cocos2dx plugin to the SDK X Cocos2dx plugin.
+
+</Intro>
+
+## Steps to migrate to SDK X Cocos2dx plugin {#steps-to-migrate}
+
+<Steps title="Migrate from legacy SDK Cocos2dx plugin to SDK X Cocos2dx plugin">
+  <Step
+    number="1"
+    title="Check migration support"
+    subtitle="Go through migration guide"
+    link="/sdkx-cocos2dx/migration-guide-android/#unsupported-features"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="Update to SDK X Cocos2dx plugin"
+    subtitle="Migrate code/features step by step"
+    link="/sdkx-cocos2dx/migration-guide-android#update-helpshift-dependencies"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="Test the migration"
+    subtitle="Validate the functionality"
+  />
+</Steps>
+
+## Unsupported features {#unsupported-features}
+
+We recommend to hold off on SDK X migration if you are currently using the following APIs/features -
+
+- [Guided issue filing](/cocos2d-x/support-tools-android/#dynamic-forms)
+- [FAQ filtering by tags](/cocos2d-x/support-tools-android/#faq-filtering)
+- [Minimum Issue description length](/cocos2d-x/sdk-configuration-android/#minimum-issue-desc-length)
+- [SDK UI strings customization](/cocos2d-x/string-customization-android/)
+- [Switching between light and dark themes](/cocos2d-x/design-android/#skinning)
+
+These features are yet to be developed, and we may add them to our future roadmap. You can reach out to [support@helpshift.com](mailto:support@helpshift.com) to raise any query for the above.
+
+## Supported SDK Versions {#supported-sdk-versions}
+
+A successful migration indicates maintaining users’ data and chat history when they move from one SDK version to another. We support the migration of the SDK Cocos2dx plugin from version 4.x+ to the SDK X Cocos2dx plugin.
+
+<Admonition type="info" title="Note">
+
+** Migration from SDK Cocos2dx plugin version < 3.x **
+
+We don’t support the migration from SDK Cocos2dx plugin version < 4.x. If you move to SDK X Cocos2dx plugin from version < 4.x, SDK X will function correctly, but the logged-in user information will be lost, and a new default user will be created. You can log the current user in again, but the corresponding data for that user will not be migrated. It will be treated as a new user in the Helpshift system.
+
+</Admonition>
+
+## Update Helpshift dependencies {#update-helpshift-dependencies}
+
+### Requirements
+
+- Cocos2d-x 3.x and above.
+- Supported Android OS version: 21 and above
+
+### Integration
+
+- Remove the existing Helpshift `helpshift-plugin-cocos2dx` content from your project.
+- Make sure the following files/directories are removed from your project before you integrate the SDK X Cocos2dx plugin -
+  - `proj.android/app/src/com/helpshift/` or `proj.android-studio/app/src/com/helpshift/` 
+  - `proj.android/app/libs/Helpshift.aar` or `proj.android-studio/app/libs/Helpshift.aar`
+  - `Classes/HelpshiftCocos2dx.cpp`
+  - `Classes/HelpshiftUtil.cpp`
+  - `Classes/HelpshiftCocos2dxUser.cpp`
+  - `Classes/HelpshiftCocos2dx.h`
+  - `Classes/HelpshiftUtil.h`
+  - `Classes/HelpshiftCocos2dxUser.h`
+
+
+- Follow the instructions [here](/sdkx-cocos2dx/getting-started-android/#adding-to-project) to add Helpshift SDK X to your project.
+
+## Code Changes {#code-changes}
+
+If you try to build an Android project from Cocos2dx after updating the Helpshift dependency, you will get compilation errors. This is because some API method names and signatures have changed between legacy SDK and SDK X.
+
+### Helpshift `install` call
+
+Remove the existing Helpshift install call and replace it with the following -
+
+```cpp
+
+    import com.helpshift.HelpshiftBridge;
+    import com.helpshift.exceptions.InstallException;
+
+    public class MyActivity extends Cocos2dxActivity {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            try {
+              HelpshiftBridge.install(this,
+                                      "YOUR_API_KEY",
+                                      "YOUR_DOMAIN_NAME",
+                                      "YOUR_APP_ID");
+            } catch (InstallException e) {
+              Log.e(TAG, "invalid install credentials : ", e);
+            }
+        }
+    }
+
+```
+
+Refer to SDK X Cocos2dx plugin’s [Getting Started](/sdkx-cocos2dx/getting-started-android/) guide for more information.
+
+### Helpshift install call configuration
+
+The mapping of install config dictionary keys are -
+
+| Legacy SDK Cocos2dx plugin install config dictionary key | SDK X Cocos2dx plugin install config dictionary key |
+| -----------------------------------------------------    | ------------------------------------------------    |
+| `enableLogging`                                          | `enableLogging`                                     |
+| `enableInAppNotification`                                | `enableInAppNotification`                           |
+
+All other deprecated configurations have been removed and are not supported anymore. For more information about install configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration-android/) guide.
+
+### Helpshift Conversation and FAQ APIs
+
+The API signatures have changed. Update existing API calls with new ones as follows -
+
+| Legacy SDK Cocos2dx plugin API                        | SDK X Cocos2dx plugin API                           |
+| ----------------------------------------------------- | --------------------------------------------------- |
+| `HelpshiftCocos2dx::showConversation()`               | `HelpshiftCocos2dx::showConversation(configMap)`    |
+| `HelpshiftCocos2dx::showFAQs();`                      | `HelpshiftCocos2dx::showFAQs(configMap)`            |
+| `HelpshiftCocos2dx::showFAQSection(sectionPublishId)` | `HelpshiftCocos2dx::ShowFAQSection(sectionId,configMap)`               |
+| `HelpshiftCocos2dx::showSingleFAQ(questionPublishId)` | `HelpshiftCocos2dx::ShowSingleFAQ(faqId,configMap)`                    |
+| FAQ Filtering by tags                                 | Currently not supported                             |
+| Guided issue filing                                   | Currently not supported                             |
+
+For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-cocos2dx/support-tools-android/) guide.
+
+### Conversation and FAQ API Configuration
+
+The mapping of config dictionary keys are -
+
+| Legacy SDK Cocos2dx plugin config dictionary key | SDK X Cocos2dx plugin config dictionary key | Notes                                                                                           |
+| --------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `enableFullPrivacy`                           | `fullPrivacy`                            | -                                                                                                     |
+| `enableTypingIndicator`                       | -                                        | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
+| `showConversationResolutionQuestion`          | -                                        | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
+
+All other configurations have been deprecated and are no longer supported. For more information about API configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration-android/) guide.
+
+### Helpshift User Management APIs
+
+Replace the following APIs for user login/logout -
+
+#### Login
+
+Replace legacy SDK login code -
+
+```cpp
+    HelpshiftCocosUserBuilder *userBuilder = new HelpshiftCocosUserBuilder("unique-user-id-746501", "john.doe@app.co");
+    userBuilder->setName("John Doe");
+    HelpshiftCocosUser user = userBuilder->build();
+    HelpshiftCocos2dx::login(&user);
+
+```
+
+with SDK X login code -
+
+```cpp
+cocos2d::ValueMap user;
+user["userName"] = "Captain Planet";
+user["userEmail"] = "captain@example.com";
+user["userId"] = "12234454";
+HelpshiftCocos2dx::login(user);
+```
+
+<Admonition type="info" title="Note">
+
+We recommend that on migration to SDK X Cocos2dx plugin, you should login the active user again to avoid potential inconsistencies.
+
+</Admonition>
+
+Other user management APIs have also changed -
+
+| Action               | Legacy SDK Cocos2dx plugin API | SDK X Cocos2dx plugin API |
+| -------------------- | --------------------------- | ---------------------- |
+| Logout               | `HelpshiftCocos2dx::logout()`                  | `HelpshiftCocos2dx::logout()`             |
+| Clear anonymous user | `HelpshiftCocos2dx::clearAnonymousUser()`      | `HelpshiftCocos2dx::clearAnonymousUserOnLogin(bool clearAnonymousUser)` |
+
+For more information on User management in the SDK X Cocos2dx plugin, refer to [Users](/sdkx-cocos2dx/users-android/) guide.
+
+### Design and Theming
+
+SDK’s design and theming have been completely moved to the admin dashboard in SDK X. Please remove all calls to theming APIs and all theming-related files from your project. Removed APIs -
+
+- `HelpshiftCocos2dx::setThemes(lightThemeFileName, darkThemeFileName)`
+
+- `HelpshiftCocos2dx::setTheme(themeName)`
+
+Theming can be configured from the admin dashboard. You can find more details in the [SDK X theming](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/) guide.
+
+### String Customization
+
+String customization is yet to be supported. It will move to Helpshift Dashboard. Remove all Helpshift SDK related string customizations done in your project as they will no longer reflect in SDK X.
+
+### Notification APIs
+
+The API signatures have changed. Update existing API calls with new ones as mentioned -
+
+| Action                       | Legacy SDK Cocos2dx plugin API                                     | SDK X Cocos2dx plugin API                                        |
+| ---------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
+| Register device token        | `Core.registerDeviceToken(context, regid);` | `HelpshiftCocosBridge.registerPushToken ("fcm-token");` |
+| Request unread message count | `HelpshiftCocos2dx::getNotificationCount(true/false, didReceiveNotificationCountListenerArg)`                           | `HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer)`            |
+
+The delegate method that receives the unread message count has also changed, Legacy SDK Code -
+
+```cpp
+
+    void didReceiveNotificationCountListenerArg(int count) {
+        CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
+    }
+    // Get count synchronously from cache.
+    HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
+    // OR
+    // asynchronously from the server.
+    HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
+
+```
+
+SDK X code -
+
+```cpp
+ void getUnreadMessageCount(Ref *pSender) {
+    bool shouldFetchFromServer = true;
+    HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
+  }
+
+  void updateBadgeCount(int count) {
+    // Your UI Logic here
+  }
+
+  void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+      if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+          if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+            int count = eventData[DATA_MESSAGE_COUNT].asInt();
+            bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+            // Use the 'count' variable for further processing
+            updateBadgeCount(count);
+        }
+      }
+  }
+```
+Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates-android/#unread-message-count).
+
+#### Handle notification
+
+To handle notification clicks, replace legacy SDK code -
+
+```cpp
+
+        @Override
+        public void onMessageReceived(RemoteMessage message) {
+          Map<String, String> data = message.getData();
+          String origin = data.get("origin");
+          if (origin != null && origin.equals("helpshift")) {
+            Core.init(Support.getInstance());
+            try {
+               Core.install(getApplication(),
+                            <API_KEY>,
+                            <DOMAIN_NAME>,
+                            <APP_ID>,
+                            config);
+              } catch (InstallException e) {
+                // install credentials are incorrect
+              }
+            Core.handlePush(this, data);
+          }
+        }
+```
+
+with SDK X code -
+
+```cpp
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+      Map<String, String> data = message.getData();
+      String origin = data.get("origin");
+      if (origin != null && origin.equals("helpshift")) {
+            try {
+                Map<String, Object> config = new HashMap<>();
+                config.put("enableLogging", true);
+                Helpshift.install(getApplication(), 
+                        "<APP_ID>",
+                        "<DOMAIN_NAME>",
+                        config
+                    );
+            } catch (UnsupportedOSVersionException e) {
+                Log.e(TAG, "install() called on the OS version: " + VERSION.SDK_INT + " is not supported");
+            }
+            HelpshiftCocosBridge.handlePushNotification(data);
+        }
+    }
+```
+
+<Admonition type="info" title="Note">
+
+If you are using push notifications, we recommend that you register the push token again with SDK X after your app has been upgraded to avoid potential inconsistencies.
+
+</Admonition>
+
+For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-cocos2dx/notifications-android/) guide. 
+For more information on delegates in SDK X, refer to [Delegates](/sdkx-cocos2dx/delegates-android/) guide.
+
+### Internationalization
+
+The API to set SDK language has changed -
+
+| Legacy SDK Cocos2dx plugin API | SDK X Cocos2dx plugin API   |
+| --------------------------- | ------------------------ |
+| `HelpshiftCocos2dx::setLanguage("zh_CN");`    | `HelpshiftCocos2dx::setLanguage("zh-CN");` |
+
+<Admonition type="info" title="Note">
+
+We recommend that you set the SDK language again on upgrading your app with SDK X to avoid potential inconsistencies.
+
+</Admonition>
+
+For more information on internationalization in SDK X and a list of supported languages, refer [Internationalization](/sdkx-cocos2dx/i18n-android/) guide.
+
+### Tracking
+
+Replace the following APIs from the legacy SDK Cocos2dx plugin -
+
+#### Metadata and Tags
+
+Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/cocos2d-x/tracking-android#metadata)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
+
+```cpp
+
+    ValueMap config;
+    ValueMap meta;
+    meta["usertype"] = Value("paid");
+    meta["level"] = Value("7");
+    meta["score"] = Value("12345");
+
+    ValueVector tags;
+    tags.push_back(Value("feedback"));
+    tags.push_back(Value("paid user"));
+
+    meta[HS_TAGS_KEY] = Value(tags);
+    config[HS_META_DATA_KEY] = Value(meta);
+
+    HelpshiftCocos2dx::showFAQs(config);
+
+```
+
+with equivalent SDK X code -
+
+```cpp
+    ValueMap config;
+    ValueMap meta;
+    meta["usertype"] = Value("paid");
+    meta["level"] = Value("7");
+    meta["score"] = Value("12345");
+
+    ValueVector tags;
+    tags.push_back(Value("foo"));
+    tags.push_back(Value("bar"));
+
+    config["tags"] = tags;
+    config["customMetadata"] = Value(meta);
+
+    HelpshiftCocos2dx::showFAQs(config);
+```
+
+#### Custom Issue Fields
+
+Replace legacy SDK code -
+
+```cpp
+    ValueMap customIssueFields;
+    ValueVector singleLineData;
+    singleLineData.push_back(Value("sl"));
+    singleLineData.push_back(Value("John Doe"));
+    customIssueFields["name"] = Value(singleLineData);
+
+    ValueVector multiLineData;
+    multiLineData.push_back(Value("ml"));
+    multiLineData.push_back(Value("This is user's long bio"));
+    customIssueFields["address"] = Value(multiLineData);
+
+    ValueVector integerData;
+    integerData.push_back(Value("n"));
+    integerData.push_back(Value("42"));
+    customIssueFields["level"] = Value(integerData);
+
+    ValueVector booleanData;
+    booleanData.push_back(Value("b"));
+    booleanData.push_back(Value("true"));
+    customIssueFields["is_pro"] = Value(booleanData);
+
+    ValueVector dropdownData;
+    dropdownData.push_back(Value("dd"));
+    dropdownData.push_back(Value("Dollar"));
+    customIssueFields["currency"] = Value(dropdownData);
+
+    ValueVector dateData;
+    dateData.push_back(Value("dt"));
+    dateData.push_back(Value("1505927361535"));
+    customIssueFields["join_date"] = Value(dateData);
+
+    ValueMap config;
+    config[HS_CUSTOM_ISSUE_FIELDS] = Value(customIssueFields);
+
+    HelpshiftCocos2dx::showFAQs(config)
+```
+
+with SDK X code -
+
+```cpp
+
+cocos2d::ValueMap createValueMap(const std::string& type, Value value) {
+    cocos2d::ValueMap valueMap;
+    valueMap["type"] = cocos2d::Value(type);
+    valueMap["value"] = cocos2d::Value(std::move(value));
+    return valueMap;
+}
+
+cocos2d::ValueMap getCifs() {
+    cocos2d::ValueMap cifMap;
+    cifMap["joining_date"] = createValueMap("date", Value("1684747527945"));
+    cifMap["stock_level"] = createValueMap("number", Value("1500"));
+    cifMap["employee_name"] = createValueMap("singleline", Value("Captain Marvel"));
+    cifMap["is_pro"] = createValueMap("boolean", Value("true"));
+    cifMap["salary_currency"] = createValueMap("dropdown", Value("Dollars"));
+    cifMap["essay"] = createValueMap("multiline", Value("Education holds the key to unlocking our potential and shaping a better future. It equips individuals with knowledge, skills, and critical thinking abilities necessary for personal growth and societal progress. Through education, we gain a broader understanding of the world and develop empathy and compassion. It empowers us to challenge existing norms, break barriers, and create meaningful change. Education is not merely confined to classrooms; it is a lifelong journey of exploration and self-discovery. Let us embrace the transformative power of education and strive for a brighter tomorrow."));
+
+    return cifMap;
+}
+
+
+cocos2d::ValueMap getConfig() {
+    cocos2d::ValueMap configMap;
+
+    ValueVector tags;
+    tags.push_back(Value("foo"));
+    tags.push_back(Value("bar"));
+
+    configMap["tags"] = tags;
+    configMap["cifs"] = getCifs();
+
+    return configMap;
+}
+
+void HelloWorld::showConversation(Ref *pSender) {
+    cocos2d::ValueMap chatConfig = getConfig();
+    HelpshiftCocos2dx::showConversation(chatConfig);
+}
+```
+
+<Admonition type="info" title="Note">
+  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
+  key will be deprecated. We strongly recommend transitioning to using the{" "}
+  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
+</Admonition>
+
+#### Breadcrumbs
+
+The APIs for breadcrumbs  not changed -
+
+| Action            | Legacy SDK Cocos2dx plugin API   | SDK X Cocos2dx plugin API        |
+| ----------------- | ----------------------------- | ----------------------------- |
+| Leave breadcrumbs | `HelpshiftCocos2dx::leaveBreadCrumb(breadCrumb)` | `HelpshiftCocos2dx::leaveBreadCrumb(breadcrumb)` |
+| Clear breadcrumbs | `HelpshiftCocos2dx::clearBreadCrumbs()`          | `HelpshiftCocos2dx::clearBreadCrumbs()`          |
+
+#### Debug Logs
+
+We have the class named as `HelpshiftLog` in SDK X Cocos2dx plugin for adding logs. You can use its methods for adding logs.
+You can find more details in the [Tracking](/sdkx-cocos2dx/tracking-android/#debug-logs) guide.
+
+### Helpshift Delegates
+
+The API to register Helpshift delegate has been changed -
+
+| Legacy SDK Cocos2dx plugin API | SDK X Cocos2dx plugin API                       |
+| --------------------------- | -------------------------------------------- |
+| `HelpshiftCocos2dx::registerDelegates()`       | `HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent, handleAuthFailureEvent)` |
+
+Each SDK event had a separate method in the legacy SDK Cocos2dx plugin. In SDK X Cocos2dx plugin, all events are received in the delegate’s `handleHelpshiftEvent(eventName,eventData)` method. For a list of events, refer to [this guide](/sdkx-cocos2dx/delegates-android/#helpshift-events).
+
+Legacy SDK Cocos2dx plugin methods that are unsupported in SDK X Cocos2dx plugin and don't have a corresponding event are -
+
+- `userClickOnAction(serializedJSONUserActionData)`
+
+- `displayAttachmentFile(path)`
+
+- `didCheckIfConversationActive(isActive)`
+
+### Reviews & Feedback
+
+App Review by an agent is supported in SDK X. You can learn more about this feature [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
+  
+Following have been deprecated in SDK X:
+- [App review request](/cocos2d-x/reviews-and-feedback-android/#review-reminder-in-sdk)
+- [Manual App Rating request ](/cocos2d-x/reviews-and-feedback-android/#app-rating-api)
+- [Automatic Reviews request](/cocos2d-x/reviews-and-feedback-android/#configuring-automatic-review-requests)
+
+## Troubleshooting
+
+** Compilation errors after upgrading to SDK X Cocos2dx plugin **
+
+- For supported APIs or configurations, make sure you have replaced all legacy SDK Cocos2dx plugin code with the corresponding SDK X Cocos2dx plugin code as mentioned in this guide.
+
+- For unsupported APIs or configurations, make sure you have removed all legacy SDK Cocos2dx plugin code as mentioned in this guide.
+
+## Contact Us
+
+If you face any issues regarding the migration from the legacy SDK Cocos2dx plugin to the SDK X Cocos2dx plugin, please contact us at [support@helpshift.com](mailto:support@helpshift.com).
