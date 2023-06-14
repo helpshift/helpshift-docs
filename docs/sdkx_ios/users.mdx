@@ -64,7 +64,10 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
     <td>userName</td>
     <td>Optional</td>
     <td>Provide the name you'd like your Agents to use when interacting with end users. If you don't know the user's name, you can leave it blank, and the Identity Bot (when enabled) will ask that user for their name. If you provide a value, the Identity Bot will not ask the user for their name again.</td>
-    <td>Max length: 255 characters. Values larger than this will be truncated.</td>
+   <td>
+      Max length: 255 characters. Values larger than this will be truncated.
+      <li> If the value of userName is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
+    </td>
   </tr>
   <tr>
     <td>userId</td>
@@ -74,8 +77,9 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
       <ul>
         <li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li>
-        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'Email'.</li>
+        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'userEmail'.</li>
         <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing email will return any profile if multiple profiles have the same email.</li>
+         <li> If the value of "userId" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
     </td>
   </tr>
@@ -88,6 +92,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
         <li>Email format should be valid (should be in the format "my@email.com". Invalid emails will result in the creation of an anonymous user.</li>
         <li>Leading / trailing spaces are not allowed. Emails with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>Email is always case insensitive (eg. 'MY@EMAIL.COM' is same as 'my@email.com').</li>
+        <li> If the value of "userEmail" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
 </td>
   </tr>
@@ -98,6 +103,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
     <td>
       <ul>
         <li>A valid HMAC Digest should be provided in order to ensure your users can file issues. Details <a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">here</a>.</li>
+        <li> If the value of "userAuthToken" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
 </td>
 
@@ -119,21 +125,58 @@ Example:
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-NSDictionary *userDetails = @{ HelpshiftUserName:@"name1",
-                              HelpshiftUserEmail:@"email1@email.com",
-                              HelpshiftUserIdentifier:@"id1" };
+NSMutableDictionary *userData = [[NSMutableDictionary alloc] init];
 
-[Helpshift loginUser:userDetails];
+NSString *userId = generateUserId();
+NSString *userEmail = fetchUserEmail();
+NSString *userName = fetchUserName();
+
+if ([userId length] == 0 && [userEmail length] == 0) {
+    @throw [NSException exceptionWithName:@"InvalidLoginException" reason:@"userId and userEmail both are empty. Invalid login!" userInfo:nil];
+}
+
+if ([userId length] > 0) {
+    [userData setObject:userId forKey:@"userId"];
+}
+
+if ([userEmail length] > 0) {
+    [userData setObject:userEmail forKey:@"userEmail"];
+}
+
+if ([userName length] > 0) {
+    [userData setObject:userName forKey:@"userName"];
+}
+
+[Helpshift login:userData];
 ```
 
 </TabItem>
 <TabItem value="Swift" label="Swift">
 
 ```swift
-let userDetails = [HelpshiftUserName : "name1",
-                   HelpshiftUserEmail : "email1@email.com",
-                   HelpshiftUserIdentifier : "id1"]
-Helpshift.loginUser(userDetails)
+var userData: [String: Any] = [:]
+
+let userId = generateUserId()
+let userEmail = fetchUserEmail()
+let userName = fetchUserName()
+
+if userId.isEmpty && userEmail.isEmpty {
+    throw NSError(domain: "InvalidLoginException", code: 0, userInfo: [NSLocalizedDescriptionKey: "userId and userEmail both are empty. Invalid login!"])
+}
+
+if !userId.isEmpty {
+    userData["userId"] = userId
+}
+
+if !userEmail.isEmpty {
+    userData["userEmail"] = userEmail
+}
+
+if !userName.isEmpty {
+    userData["userName"] = userName
+}
+
+Helpshift.login(userData)
 ```
 
 </TabItem>
@@ -245,23 +288,68 @@ Example:
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-NSDictionary *userDetails = @{ HelpshiftUserName:@"John Doe",
-                              HelpshiftUserEmail:@"john.doe@app.co",
-                         HelpshiftUserIdentifier:@"unique-user-id-746501",
-                          HelpshiftUserAuthToken:@"generated-user-authentication-token" };
+NSMutableDictionary *userData = [[NSMutableDictionary alloc] init];
 
-[Helpshift loginUser:userDetails];
+NSString *userId = generateUserId();
+NSString *userEmail = fetchUserEmail();
+NSString *userName = fetchUserName();
+NSString *userAuthToken = generateUserAuthToken();
+
+if ([userId length] == 0 && [userEmail length] == 0) {
+    @throw [NSException exceptionWithName:@"InvalidLoginException" reason:@"userId and userEmail both are empty. Invalid login!" userInfo:nil];
+}
+
+if ([userId length] > 0) {
+    [userData setObject:userId forKey:@"userId"];
+}
+
+if ([userEmail length] > 0) {
+    [userData setObject:userEmail forKey:@"userEmail"];
+}
+
+if ([userName length] > 0) {
+    [userData setObject:userName forKey:@"userName"];
+}
+
+if ([userAuthToken length] > 0) {
+    [userData setObject:userAuthToken forKey:@"userAuthToken"];
+}
+
+[Helpshift login:userData];
 ```
 
 </TabItem>
 <TabItem value="Swift" label="Swift">
 
 ```swift
-let userDetails = [HelpshiftUserName: "name1",
-                   HelpshiftUserEmail: "email1@email.com",
-                   HelpshiftUserIdentifier: "id1",
-                   HelpshiftUserAuthToken: "generated-user-authentication-token"]
-Helpshift.loginUser(userDetails)
+var userData: [String: Any] = [:]
+
+let userId = generateUserId()
+let userEmail = fetchUserEmail()
+let userName = fetchUserName()
+let userAuthToken = generateUserAuthToken()
+
+if userId.isEmpty && userEmail.isEmpty {
+    throw NSError(domain: "InvalidLoginException", code: 0, userInfo: [NSLocalizedDescriptionKey: "userId and userEmail both are empty. Invalid login!"])
+}
+
+if !userId.isEmpty {
+    userData["userId"] = userId
+}
+
+if !userEmail.isEmpty {
+    userData["userEmail"] = userEmail
+}
+
+if !userName.isEmpty {
+    userData["userName"] = userName
+}
+
+if !userAuthToken.isEmpty {
+    userData["userAuthToken"] = userAuthToken
+}
+
+Helpshift.login(userData)
 ```
 
 </TabItem>
