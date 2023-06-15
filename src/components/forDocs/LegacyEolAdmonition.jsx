@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { Admonition } from "@site/src/components/forDocs";
 
-export default function SideBySide() {
+export default function LegacyEolAdmonition() {
   const [newBookLink, setNewBookLink] = useState("");
 
   const legacyToNewBookPaths = {
