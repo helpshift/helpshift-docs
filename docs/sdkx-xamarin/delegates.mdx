@@ -1,0 +1,333 @@
+---
+sidebar_position: 90
+title: Helpshift Delegates
+description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Helpshift Delegates {#delegates}
+
+<Intro>{frontMatter.description}</Intro>
+
+<br/>
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install()](/sdkx-xamarin/getting-started#initialize) API.
+
+</Admonition>
+
+## Helpshift Events Listener/Delegates implementation {#helpshift-delegates-implementation}
+
+You can set `HelpshiftEventsListener` by calling the `Helpshift.SetHelpshiftEventsListener()` method.
+
+For example:
+
+```csharp
+public class HelpshiftEventsListener : IHelpshiftEventsListener
+{
+    public HelpshiftEventsListener()
+    {
+        Helpshift.SetHelpshiftEventsListener(this);
+    }
+
+    public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+    {
+        // Handle Helpshift SDK events here
+        // The list of event names is given below
+    }
+
+    public void OnUserAuthenticationFailure(HelpshiftUserAuthFailureReason authFailureReason)
+    {
+        // Handle Helpshift user authentication failure here
+    }
+}
+```
+
+## Helpshift Events {#helpshift-events}
+
+### Conversation Status Event {#conversation-status}
+
+This event contains information about the current ongoing conversation.
+
+- Event name: `HelpshiftEvent.CONVERSATION_STATUS`
+- Event data:
+  - `HelpshiftEvent.DATA_LATEST_ISSUE_ID`
+  - `HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID`
+  - `HelpshiftEvent.DATA_IS_ISSUE_OPEN`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CONVERSATION_STATUS:
+            Console.WriteLine(data[HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID]);
+            break;
+        // other events...
+    }
+}
+```
+
+### Widget Toggle Event {#widget-toggle-event}
+
+This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key.
+
+- Event name: `HelpshiftEvent.WIDGET_TOGGLE`
+- Event data: `HelpshiftEvent.DATA_SDK_VISIBLE`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.WIDGET_TOGGLE:
+            Console.WriteLine(data[HelpshiftEvent.DATA_SDK_VISIBLE]);
+            break;
+        // other events...
+    }
+}
+```
+
+### Conversation Start Event {#conversation-start-event}
+
+This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
+
+- Event name: `HelpshiftEvent.CONVERSATION_START`
+- Event data: `HelpshiftEvent.DATA_MESSAGE`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CONVERSATION_START:
+            Console.WriteLine(data[HelpshiftEvent.DATA_MESSAGE]);
+            break;
+        // other events...
+    }
+}
+```
+
+### Message Add Event {#message-add-event}
+
+This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
+
+- Event name: `HelpshiftEvent.MESSAGE_ADD`
+- Event data:
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE`
+  - `HelpshiftEvent.DATA_MESSAGE_BODY`
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT`
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.MESSAGE_ADD:
+            Console.WriteLine(data[HelpshiftEvent.DATA_MESSAGE_BODY]);
+            if (data[HelpshiftEvent.DATA_MESSAGE_TYPE].Equals(HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT))
+            {
+                Console.WriteLine("User sent an attachment");
+            }
+            break;
+        // other events...
+    }
+}
+```
+
+### CSAT Submit Event {#csat-submit-event}
+
+This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
+
+- Event name: `HelpshiftEvent.CSAT_SUBMIT`
+- Event data:
+  - `HelpshiftEvent.DATA_CSAT_RATING`
+  - `HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CSAT_SUBMIT:
+            Console.WriteLine(data[HelpshiftEvent.DATA_CSAT_RATING]);
+            Console.WriteLine(data[HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK]);
+            break;
+        // other events...
+    }
+}
+```
+
+### Conversation End Event {#conversation-end-event}
+
+This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+
+- Event name: `HelpshiftEvent.CONVERSATION_END`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CONVERSATION_END:
+            // No data for this event
+            break;
+        // other events...
+    }
+}
+```
+
+### Conversation Rejected Event {#conversation-rejected-event}
+
+This event is triggered when an agent rejects the conversation.
+
+- Event name: `HelpshiftEvent.CONVERSATION_REJECTED`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CONVERSATION_REJECTED:
+            // No data for this event
+            break;
+        // other events...
+    }
+}
+```
+
+### Conversation Resolved Event {#conversation-resolved-event}
+
+This event is triggered when an agent resolves the conversation.
+
+- Event name: `HelpshiftEvent.CONVERSATION_RESOLVED`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CONVERSATION_RESOLVED:
+            // No data for this event
+            break;
+        // other events...
+    }
+}
+```
+
+### Conversation Reopened Event {#conversation-reopened-event}
+
+When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+
+- Event name: `HelpshiftEvent.CONVERSATION_REOPENED`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.CONVERSATION_REOPENED:
+            // No data for this event
+            break;
+        // other events...
+    }
+}
+```
+
+### User Authentication Failed Event {#user-authentication-failed-event}
+
+If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `Helpshift.Login()`, then you will receive this event with reason string. Check [here for more info](/sdkx_xamarin/users).
+
+Reason type:
+
+- `HelpshiftUserAuthFailureReason.REASON_INVALID_AUTH_TOKEN`
+- `HelpshiftUserAuthFailureReason.REASON_AUTH_TOKEN_NOT_PROVIDED`
+- `HelpshiftUserAuthFailureReason.UNKNOWN`
+
+```csharp
+public void OnUserAuthenticationFailure(HelpshiftUserAuthFailureReason authFailureReason)
+{
+    Console.WriteLine($"Helpshift user auth failed with reason - {authFailureReason}");
+}
+```
+
+### Helpshift session delegates {#session-delegates}
+
+#### Helpshift Session Started
+
+If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
+
+- Event Name: `HelpshiftEvent.SDK_SESSION_STARTED`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.SDK_SESSION_STARTED:
+            // SDK session has started
+            break;
+        // other events...
+    }
+}
+```
+
+#### Helpshift Session Ended
+
+If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
+
+- Event Name: `HelpshiftEvent.SDK_SESSION_ENDED`
+
+```csharp
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.SDK_SESSION_ENDED:
+            // SDK session has ended
+            break;
+        // other events...
+    }
+}
+```
+
+### Unread Message Count {#unread-message-count}
+
+If you want a count of all new messages received in an existing conversation, you can call this API `RequestUnreadMessageCount(bool shouldFetchFromServer)`.
+
+The unread message count will be conveyed to your app via this event. You can also use this event to keep your badge counts updated.
+
+- Event Name: `HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT`
+- Event Data: 
+  - `HelpshiftEvent.DATA_MESSAGE_COUNT`
+  - `HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE`
+
+```csharp
+// call RequestUnreadMessageCount() API first
+Helpshift.RequestUnreadMessageCount(true);
+
+// In your IHelpshiftEventsListener implementation...
+public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+{
+    switch(eventName)
+    {
+        case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
+            Console.WriteLine($"Message count - {data[HelpshiftEvent.DATA_MESSAGE_COUNT]}");
+            Console.WriteLine($"From cache? - {data[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]}");
+            break;
+        // other events...
+    }
+}
+```
+
+If you call the method `Helpshift.RequestUnreadMessageCount(true)` it will return a notification count from server in the above delegate method asynchronously. The notification count here can be fetched either from the cache or from the Helpshift servers. The count from Helpshift’s servers is rate limited and it returns the latest value only if a subsequent call is made to the API after the reset timeout or when the user just closes the chat screen (whichever is earlier). If the API is called within the rate limit period then it returns value from local cache. For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
+
+If you want to retrieve the current notification count stored locally, you can call the same method with the parameter set to false, `Helpshift.RequestUnreadMessageCount(false)`. In this case, SDK returns the count of unread messages available locally in this delegate method.
+
+Locally saved unread message count are useful for saving an additional network call.
