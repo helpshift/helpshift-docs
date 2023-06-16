@@ -1,0 +1,119 @@
+---
+sidebar_position: 100
+title: Deep Linking in FAQs
+description: "Using custom URL schemes to support deep linking in your app."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Intro,
+  Image
+} from "@site/src/components/forDocs";
+
+# Deep Linking in FAQs {#android-deep-links}
+
+<Intro>{frontMatter.description}</Intro>
+
+<br/>
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install()](/sdkx-xamarin/getting-started#initialize) API.
+
+</Admonition>
+
+Use custom URL schemes to direct users to particular link in your app from Helpshift FAQs.
+You can use these schemes to provide a more seamless experience for the user.
+For example, if your Xamarin app has a registration screen, clicking on a registration link in an FAQ can directly take the user to that screen.
+
+## Insert custom URL schemes in FAQs {#custom-url-in-faqs}
+
+When editing your FAQ, select the text and then click on create a link.
+
+<Image
+  src="/static/books/android/add-android-deep-link-1.png"
+  width="half"
+  alt="add-android-deep-link-1.png"/>
+
+In the dialog that pops up, enter your custom URL and save the FAQ.
+
+<Image
+  src="/static/books/android/add-android-deep-link-2.png"
+  width="half"
+  alt="add-android-deep-link-2.png"/>
+
+## Handle deep links in your Xamarin App {#handle-deep-link}
+
+Deep linking is a custom linking URL that gives the developers the freedom to decide what the URL can do when the user clicks on a Custom
+URL. 
+Examples of deep linking includes instances when the user needs to be redirected to a review page from the chat screen, or from the chat screen to an FAQ page or an FAQ section.
+
+In deep linking, you are allowed to set Custom URL schemes like `myscheme://example.com`.
+For example, the URL `myscheme://example.com/?faqid=95` (where faqid is the publish ID of an FAQ) will open up the relevant FAQ.
+The URL `myscheme://example.com/?sectionid=8` (where sectionid is the publish id of any Section), will open up relevant section.
+In order for the developers to handle `myscheme`, they will have to call `showSingleFAQ` and `showFAQSection` api with the corresponding FAQ ID and SECTION ID respectively.
+
+### Deep links in Xamarin Android app {#handle-deep-link-android}
+
+You will need to implement following things in your Android app to handle deeplinks -
+
+```java
+//AndroidManifest.xml
+<activity android:name=".DeepLinkActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="myscheme" android:host="example.com"/>
+     </intent-filter>
+</activity>
+```
+
+```java
+//DeepLinkActivity.java
+public class DeepLinkActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.deep_link);
+
+    TextView deepLinkUrl = (TextView) findViewById(R.id.deep_link_url);
+
+    Intent intent = getIntent();
+    Uri data = intent.getData();
+
+    if (data.getQueryParameter("faqid") != null) {
+      Helpshift.showSingleFAQ(this, data.getQueryParameter("faqid"));
+      finish();
+    } else if (data.getQueryParameter("sectionid") != null) {
+      Helpshift.showFAQSection(this, data.getQueryParameter("sectionid"));
+      finish();
+    } else {
+      deepLinkUrl.setText("Deep link received - " + data);
+    }
+  }
+}
+```
+
+### Deep links in Xamarin iOS app {#handle-deep-link-ios}
+
+To handle the custom URLs in your iOS app, make sure first that your app's Info.plist supports the custom URL scheme that you've provided in the FAQs. [More information](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app)
+
+You will then need to implement,`OpenUrl(UIApplication, NSUrl, NSDictionary, NSObject)` in your app delegate, to handle and take the required action. For example:
+
+```csharp
+[Export("application:openURL:sourceApplication:annotation:")]
+public bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+{
+    var components = NSUrlComponents.FromUrl(url, true);
+    // URL is myscheme://example.com/?faqid=95
+    foreach (var query in components.QueryItems)
+    {
+        if (query.Name.Equals("faqid"))
+        {
+            var config = // Helpshift config dictionary...
+            Helpshift.ShowSingleFAQ(query.Value, viewController, config);
+        }
+    }
+}
+```
