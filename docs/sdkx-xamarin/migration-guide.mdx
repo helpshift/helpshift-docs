@@ -1,0 +1,527 @@
+---
+sidebar_position: 140
+title: Migration Guide
+description: "This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy SDK to SDK X."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Intro,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Migration Guide
+
+<Intro>
+
+SDK X Xamarin plugin is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end users without any downtime or app updates.
+
+This migration guide will walk you through the steps you need to take in order to migrate from Helpshift legacy Xamarin plugin to SDK X Xamarin plugin.
+
+</Intro>
+
+## Steps to migrate to SDK X {#steps-to-migrate}
+
+<Steps title="Migrate from legacy SDK to SDK X">
+  <Step
+    number="1"
+    title="Check migration support"
+    subtitle="Go through migration guide"
+    link="/sdkx-xamarin/migration-guide/#unsupported-features"
+    newTab={true}/>
+  <Step
+    number="2"
+    title="Update to SDK X"
+    subtitle="Migrate code/features step by step"
+    link="/sdkx-xamarin/migration-guide/#update-helpshift-dependencies"
+    newTab={true}/>
+  <Step
+    number="3"
+    title="Test the migration"
+    subtitle="Validate the functionality"/>
+</Steps>
+
+## Unsupported features {#unsupported-features}
+
+We recommend to hold off on SDK X migration if you are currently using the following APIs/features -
+
+- Guided issue filing ([iOS](/xamarin/support-tools-ios/#dynamic-forms)) ([Android](/xamarin/support-tools-android/#dynamic-forms)).
+- FAQ filtering by tags ([iOS](/xamarin/support-tools-ios/#faq-filtering)) ([Android](/xamarin/support-tools-android/#faq-filtering)).
+- Minimum Issue description length ([iOS](/xamarin/sdk-configuration-ios/#issue-description-minimum-length)) ([Android](localhost:3000/xamarin/sdk-configuration-android/#minimum-issue-desc-length)).
+- SDK UI strings customization ([iOS](/xamarin/string-customization-ios/)) ([Android](/xamarin/string-customization-android/)).
+- Automated review requests ([iOS](/xamarin/reviews-and-feedback-ios/#configuring-automatic-review-requests)) ([Android](/xamarin/reviews-and-feedback-android/#configure-review-request)).
+- Switching between light and dark themes ([iOS](/xamarin/design-ios/#skinning)) ([Android](/xamarin/design-android/#skinning)).
+
+These features are yet to be developed, and we may add them to our roadmap. You can reach out to support@helpshift.com to raise any query for the above.
+
+## Supported SDK Versions {#support-sdk-versions}
+
+A successful migration indicates maintaining user’s data and chat history when they move from an SDK version to another. We support migration of legacy SDK Xamarin plugin from version 3.0.0+ to SDK X Xamarin 10.2.0+
+
+<Admonition type="info" title="Note">
+
+Migration from legacy SDK Xamarin plugin version < 3.0.0
+
+We don’t support the migration from legacy SDK Xamarin plugin version < 3.0.0. If you move to SDK X from version < 3.0.0, SDK X will function correctly, but the logged-in user information will be lost, and a new default user will be created. You can log the current user in again, but the corresponding data for that user will not be migrated. It will be treated as a new user in the Helpshift system.
+
+</Admonition>
+
+## Update Helpshift dependencies {#update-helpshift-dependencies}
+
+### Integration
+
+Remove the existing helpshift DLLs from your Xamarin projects. The DLLs are -
+
+- `HelpshiftApi.dll` in the common Xamarin project
+- `HelpshiftApi.dll` in the Xamarin Android project
+- `HelpshiftApi.dll` in the Xamarin iOS project
+- `Helpshift.IOS.dll` in the Xamarin iOS project
+
+After removing the dlls, follow the instructions [here](/sdkx-xamarin/getting-started/#add-to-project) to add Helpshift SDK X to your project.
+
+### Code Changes
+
+If you try to build an your Xamarin project after updating the Helpshift dependency, you will get compilation errors. This is because some API method names and signatures have changed between legacy SDK and SDK X.
+
+#### Helpshift `Install` call
+
+Remove the existing Helpshift install call and replace it with the following -
+
+<Tabs>
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    public class AppDelegate : UIApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            // Add any install config parameters to installConfig
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            // Add any install config parameters to installConfig
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+Please refer to [Getting Started](/sdkx-xamarin/getting-started/#initialize) guide for more information.
+
+#### Helpshift install call configuration
+
+The mapping of install config dictionary keys are -
+
+| Legacy SDK Xamarin plugin install config dictionary key | SDK X Xamarin plugin install config dictionary key |
+| ------------------------------------------------------- | -------------------------------------------------- |
+| `"enableLogging"`                                       | `"enableLogging"`                                  |
+| `"enableInAppNotification"`                             | `"enableInAppNotification"`                        |
+
+All other deprecated configurations have been removed and are not supported anymore. For more information about install configurations, check the [configuration](/sdkx-xamarin/sdk-configuration/) guide.
+
+#### Conversation and FAQ APIs
+
+The API signatures have changed. Update existing API calls with new ones as follows -
+
+| Legacy SDK Xamarin plugin API                        | SDK X Xamarin plugin API                     |
+| ---------------------------------------------------- | -------------------------------------------- |
+| `ShowConversation(object, HelpshiftAPIConfig)`       | `ShowConversation(object, Dictionary)`       |
+| `ShowFAQs(object, HelpshiftAPIConfig)`               | `ShowFAQs(object, Dictionary)`               |
+| `ShowFAQSection(string, object, HelpshiftAPIConfig)` | `ShowFAQSection(string, object, Dictionary)` |
+| `showSingleFAQ(string, object, HelpshiftAPIConfig)`  | `ShowSingleFAQ(string, object, Dictionary)`  |
+| FAQ Filtering by tags                                | Currently not supported                      |
+| Guided issue filing                                  | Currently not supported                      |
+
+For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-xamarin/support-tools/) guide.
+
+#### Conversation and FAQ API Configuration
+
+The mapping of config dictionary keys are -
+
+| Legacy SDK Xamarin plugin builder API/config dictionary key | SDK X Xamarin plugin config dictionary key | Notes                                                                                                 |
+| --------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HelpshiftAPIConfig.Builder.SetCustomissueFields()`             | `cifs`                                   | -                                                                                                     |
+| `HelpshiftAPIConfig.Builder.SetEnableFullPrivacy(bool)`                           | `fullPrivacy`                            | -                                                                                                     |
+| `presentFullScreenOniPad`                     | `presentFullScreenOniPad`                | -                                                                                                     |
+| `HelpshiftAPIConfig.Builder.SetEnableTypingIndicator(bool)`                       | -                                        | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
+| `HelpshiftAPIConfig.Builder.SetShowConversationResolutionQuestion(bool)`          | -                                        | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
+
+All other configurations have been deprecated and are no longer supported. For more information about API configurations, check the [configuration](/sdkx-xamarin/sdk-configuration/) guide.
+
+#### User Management APIs
+
+Replace the legacy SDK `login` code:
+
+```csharp
+HelpshiftUser user = new HelpshiftUser.Builder("user-id", "user-email")
+                                      .SetName("user-name")
+                                      .SetAuthToken("auth-token")
+                                      .Build();
+HelpshiftCore.Login(user);
+```
+
+SDK X `login` :
+
+```csharp
+Dictionary<string, string> data = new Dictionary<string, string>();
+data["userId"] = "user-id";
+data["userEmail"] = "user-email";
+data["userName"] = "user-name";
+data["userAuthToken"] = "auth-token";
+Helpshift.Login(data);
+```
+
+<Admonition type="info" title="Note">
+
+We recommend that on migration to SDK X Xamarin plugin, you should login the active user again to avoid potential inconsistencies.
+
+</Admonition>
+
+Other user management APIs have also changed -
+
+| Action               | Legacy SDK Xamarin plugin API        | SDK X Xamarin plugin API            |
+| -------------------- | ------------------------------------ | ----------------------------------- |
+| Logout               | `HelpshiftCore.Logout()`             | `Helpshift.Logout()`                |
+| Clear anonymous user | `HelpshiftCore.ClearAnonymousUser()` | `Helpshift.ClearAnonymousUser(bool)`|
+
+For more information about User management, check the [Users](/sdkx-xamarin/users/) guide.
+
+#### Design and Theming
+
+SDK’s design and theming have been completely moved to the admin dashboard in SDK X. Please remove all calls to theming APIs and all theming-related files from your project. Removed APIs -
+
+- `SetThemes(lightThemeFileName, darkThemeFileName)`
+
+- `SetTheme(themeName)`
+
+Theming can be configured from the admin dashboard. You can find more details in the [SDK X theming](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/) guide.
+
+#### String Customization
+
+String customization is yet to be supported. It will move to Helpshift Dashboard. Remove all Helpshift SDK related string customizations done in your project as they will no longer reflect in SDK X.
+
+#### Notification APIs
+
+The API signatures have changed. Update existing API calls with new ones as mentioned -
+
+| Action                       | Legacy SDK Xamarin plugin API                       | SDK X Xamarin plugin API                           |
+| ---------------------------- | -------------------------------------------------   | -------------------------------------------------- |
+| Register push token          | `HelpshiftCore.RegisterDeviceToken(string)`         | `Helpshift.RegisterPushToken(string)`              |
+| Request unread message count | `HelpshiftSupport.RequestUnreadMessagesCount(bool)` | `Helpshift.RequestUnreadMessageCount(bool)`        |
+
+The delegate method that receives the unread message count has also changed from -
+
+```csharp
+// Define Helpshift support delegate
+public class  HSDelegate : ISupportDelegate 
+{
+    public void DidReceiveUnreadMessagesCount(int count)
+    {
+      // Legacy SDK unread message count handling here
+    }
+}
+
+// Register delegate with Helpshift
+HSDelegate delegateObject = new HSDelegate();
+HelpshiftSupport.SetDelegate(delegateObject);
+
+// Request unread message count
+HelpshiftSupport.RequestUnreadMessagesCount(true);
+```
+
+to -
+
+```csharp
+// Define Helpshift events listener
+public class  HSDelegate : IHelpshiftEventsListener 
+{
+  public void OnEventOccurred(string eventName, IDictionary<string, object> data)
+  {
+    switch(eventName)
+    {
+      case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
+        // SDK X unread message count handling here
+        break;
+    }
+  }
+}
+
+// Register events listener with Helpshift
+Helpshift.SetHelpshiftEventsListener(new HSDelegate());
+Helpshift.SetHelpshiftEventsListener(this);
+
+// Request unread message count
+Helpshift.RequestUnreadMessageCount(true);
+```
+
+#### Handle push notification clicks
+
+To handle notification clicks, replace legacy SDK code -
+
+```csharp
+public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+{
+  //  Check if the app is launched through a push notification
+  if (launchOptions != null && launchOptions.Keys != null && launchOptions.ContainsKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")))
+  {
+    NSDictionary userInfo = launchOptions.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
+
+    //  Check if the notification belongs to Helpshift
+    if (userInfo.ObjectForKey((NSString)"origin").IsEqual((NSString)"helpshift"))
+    {
+      var vc = // Get root ViewController of your app
+      HelpshiftCore.HandlePushNotification(userInfo, true, vc);
+    }
+  }
+}
+
+public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, System.Action<UIBackgroundFetchResult> completionHandler)
+{
+  NSObject originVal = userInfo.ObjectForKey((NSString)"origin");
+  // Check if the notification belongs to Helpshift
+  // Check if it was not handled from FinishedLaunching
+  if (originVal != null && originVal.IsEqual((NSString)"helpshift") && !pushHandledFromFinishedLaunching)
+  {
+    var vc = // Get root ViewController of your app
+    // Call the push handler API
+    HelpshiftCore.HandlePushNotification(userInfo, false, vc);
+  }
+
+  // Reset the boolean flag (This flag can be a member of the AppDelegate class)
+  pushHandledFromFinishedLaunching = false;
+}
+```
+
+with SDK X code -
+
+```csharp
+public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
+{
+    var userInfo = notification.Request.Content.UserInfo;
+    if (userInfo["origin"] != null && userInfo["origin"].IsEqual((NSString)"helpshift"))
+    {
+        Helpshift.HandlePush(userInfo, false);
+        completionHandler(UNNotificationPresentationOptions.None);
+    }
+    else
+    {
+      // Handle non-helpshift notifications
+    }
+}
+
+public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+{
+    var userInfo = response.Notification.Request.Content.UserInfo;
+    if (userInfo["origin"] != null && userInfo["origin"].IsEqual((NSString)"helpshift"))
+    {
+        Helpshift.HandlePush(userInfo, true);
+    }
+    else
+    {
+      // Handle non-helpshift notifications
+    }
+    completionHandler();
+}
+```
+
+<Admonition type="info" title="Note">
+
+If you are using push notifications, we recommend that you register the push token again with SDK X after your app has been upgraded to avoid potential inconsistencies.
+
+</Admonition>
+
+For more information on Notification APIs in SDK X Xamarin, refer to Notifications guides for [iOS]((/sdkx-xamarin/notifications-ios/)) and [Android](/sdkx-xamarin/notifications-android/). For more information on delegates in SDK X, refer to [Delegates](/sdkx-xamarin/delegates/) guide.
+
+#### SDK Language
+
+The API to set SDK language has changed -
+
+| Legacy SDK Xamarin plugin API | SDK X Xamarin plugin API |
+| ----------------------------- | ------------------------ |
+| `SetSDKLanguage(string)`      | `SetLanguage(string)`    |
+
+<Admonition type="info" title="Note">
+
+We recommend that you set the SDK language again on upgrading your app with SDK X to avoid potential inconsistencies.
+
+</Admonition>
+
+For more information on internationalization in SDK X and a list of supported languages, refer [Internationalization](/sdkx-xamarin/i18n/) guide.
+
+#### Metadata
+
+Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/xamarin/tracking-ios/#metadata)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
+
+```csharp
+Dictionary<string, string> customMetadataDictionary = new Dictionary<string, string>();
+customMetadataDictionary.Add("Level", "9");
+customMetadataDictionary.Add("Spend", "46.55 USD");
+customMetadataDictionary.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+
+Dictionary<string, object> configDictionary = new Dictionary<string, object>();
+
+configDictionary.Add("customMetadata", customMetadataDictionary)
+Helpshift.ShowFAQs(ui, configDictionary);
+```
+
+#### Tags
+
+Legacy SDK leveraged metadata APIs to attach tags to the conversation. Replace legacy SDK code for attaching tags with equivalent SDK X code -
+
+```csharp
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+coconfigDictionarynfigMap.Add("tags", new String[] {"Whale"})
+Helpshift.ShowFAQs(ui, configDictionary);
+```
+
+#### Custom Issue Fields
+
+Replace legacy SDK code -
+
+```csharp
+Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]>();
+
+// The format for calling Add is customIssueFields.Add(<key>, new string[]{<datatype>, <value>});
+customIssueFields.Add("join_date", new string[]{"dt", "1505927361535"});
+customIssueFields.Add("level", new string[]{"n", "42"});
+customIssueFields.Add("name", new string[]{"sl", "John Doe"});
+customIssueFields.Add("address", new string[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+customIssueFields.Add("is_pro", new string[]{"b", "true"});
+customIssueFields.Add("currency", new string[]{"dd", "Dollar"});
+
+HelpshiftAPIConfig apiConfig = new HelpshiftAPIConfig.Builder()
+                                                     .SetCustomIssueFields(customIssueFields)
+                                                     .Build();
+HelpshiftSupport.ShowFAQs(ui, apiConfig);
+```
+
+with SDK X code -
+
+```csharp
+Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
+
+Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+joiningDate.Add("type", "date");
+joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+stockLevel.Add("type", "number");
+stockLevel.Add("value", "42");
+
+Dictionary<string, string> employeeName = new Dictionary<string, string>();
+employeeName.Add("type", "singleline");
+employeeName.Add("value", "John Doe");
+
+Dictionary<string, string> address = new Dictionary<string, string>();
+address.Add("type", "multiline");
+address.Add("value", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128");
+
+Dictionary<string, string> isPro = new Dictionary<string, string>();
+isPro.Add("type", "boolean");
+isPro.Add("value", "true");
+
+Dictionary<string, string> currency = new Dictionary<string, string>();
+isPro.Add("type", "dropdown");
+isPro.Add("value", "Dollar");
+
+cifDictionary.Add("join_date", joiningDate);
+cifDictionary.Add("level", stockLevel);
+cifDictionary.Add("name", employeeName);
+cifDictionary.Add("address", address);
+cifDictionary.Add("is_pro", isPro);
+cifDictionary.Add("currency", currency);
+
+Dictionary<string, bbject> config = new Dictionary<string, object>();
+config.Add("cifs", cifDictionary);
+Helpshift.ShowFAQs(ui, config);
+```
+
+For more information on Metadata, Tags and Custom Issue Fields in SDK X, refer [Tracking](sdkx-xamarin/tracking/) guide.
+
+#### Breadcrumb & Debug Logs
+
+The APIs for breadcrumbs have changed -
+
+| Action            | Legacy SDK Xamarin plugin API              | SDK X Xamarin plugin API           |
+| ----------------- | ------------------------------------------ | ---------------------------------- |
+| Leave breadcrumbs | `HelpshiftSupport.LeaveBreadCrumb(string)` | `Helpshift.LeaveBreadCrumb(string)`|
+| Clear breadcrumbs | `HelpshiftSupport.ClearBreadCrumbs()`      | `Helpshift.ClearBreadCrumbs()`     |
+
+The API signature for adding debug log hasn’t changed. We have the same class named as `HelpshiftLogger` in SDK X Xamarin plugin for adding logs. You can use its methods for adding logs.
+
+You can find more details in the [Tracking](/sdkx-xamarin/tracking/#debug-logs/) guide.
+
+#### Helpshift Delegates
+
+The API to register Helpshift delegate has been changed -
+
+| Legacy SDK Xamarin plugin API                    | SDK X Xamarin plugin API                                         |
+| ------------------------------------------------ | ---------------------------------------------------------------- |
+| `HelpshiftSupport.SetDelegate(ISupportDelegate)` | `Helpshift.SetHelpshiftEventsListener(IHelpshiftEventsListener)` |
+
+Each SDK event had a separate method in the legacy SDK Xamarin plugin. In SDK X Xamarin plugin, all events are received in the delegate’s `OnEventOccurred(string,IDictionary<string, object>)` method. For a list of events, refer to [this guide](/sdkx-xamarin/delegates/#helpshift-events).
+
+Legacy SDK Xamarin plugin methods that are unsupported in SDK X Xamarin plugin and don't have a corresponding event are -
+
+- `UserDidClickOnActionWithTypeAndData(HelpshiftActionType, string)`
+- `HandleTapOnAttachmentFile(string)`
+- `DidCheckIfConversationActive(bool)`
+
+You can find more details about delegates in the [Delegates](/sdkx-xamarin/delegates/) guide.
+
+#### Reviews & Feedback
+
+App Review by an agent is supported in SDK X. You can learn more about this feature [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
+
+Following have been deprecated in SDK X:
+
+- Manual App Rating request
+- Automatic Reviews request
+
+#### Deep linking
+
+Deep links are supported in SDK X, similar to Legacy SDK. Refer to [deep links](/sdkx-xamarin/deep-linking/) guide for more information.
+
+### Troubleshooting
+
+** Compilation errors after upgrading to SDK X Xamarin plugin **
+
+- For supported APIs or configurations, make sure you have replaced all legacy SDK Xamarin plugin code with the corresponding SDK X Xamarin plugin code as mentioned in this guide.
+
+- For unsupported APIs or configurations, make sure you have removed all legacy SDK Xamarin plugin code as mentioned in this guide.
+
+### Contact Us
+
+If you face any issues regarding the migration from the legacy SDK Xamarin plugin to the SDK X Xamarin plugin, please contact us at [support@helpshift.com](mailto:support@helpshift.com).
