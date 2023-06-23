@@ -29,7 +29,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 The steps to use this feature are the following -
 
-To generate the link for outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+To generate the link for Outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
 
 <Image src="/static/books/helpshiftx/outbound-support.png" width="full" />
 
@@ -52,9 +52,9 @@ To pass the outbound support data to Helpshift, follow these steps -
 
 1. Send push notification to the users you want to give proactive support using your app's push notification system
 
-2. In your app, handle this notification such that when a user opens the app through notification, you pass the notification data to Helpshift SDK by calling `HandleProactiveLink(string)` API in `IUNUserNotificationCenterDelegate.DidReceiveNotificationResponse` or `IUNUserNotificationCenterDelegate.didReceiveRemoteNotification:WillPresentNotification` delegates
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the notification data to Helpshift SDK by calling `HandleProactiveLink(string)` API in `IUNUserNotificationCenterDelegate.DidReceiveNotificationResponse` delegate
 
-3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard
 
 ```csharp
 [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
@@ -64,21 +64,15 @@ public void WillPresentNotification(UNUserNotificationCenter center, UNNotificat
     if (userInfo.ObjectForKey((NSString)"origin").IsEqual((NSString)"helpshift"))
     {
         // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
         HandleHelpshiftNotification(notification.Request.Content.UserInfo, false);
         completionHandler(UNNotificationPresentationOptions.None);
     }
     else
     {
-        var proactiveLink = userInfo.ObjectForKey((NSString)"helpshift_proactive_link");
-        if (proactiveLink is NSString && !String.IsNullOrWhiteSpace((NSString)proactiveLink))
-        {
-            // This is your app's push notification system containing a Helpshift proactive link
-            Helpshift.HandleProactiveLink((NSString)proactiveLink);
-        } 
-        else 
-        {
-            // This is your app's push notification system.
-        }
+        // Notification is not from Helpshift. You should handle this in a way
+        // that best suits your app's needs. Here, we show the standard iOS
+        // system notification banner.
         completionHandler(UNNotificationPresentationOptions.Banner);
     }
 }
@@ -89,6 +83,8 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
     var userInfo = response.Notification.Request.Content.UserInfo;
     if (userInfo.ObjectForKey((NSString)"origin").IsEqual((NSString)"helpshift"))
     {
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
         HandleHelpshiftNotification(response.Notification.Request.Content.UserInfo, true);
     }
     else
@@ -98,7 +94,7 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
         {
             // This is your app's push notification system containing a Helpshift proactive link
             Helpshift.HandleProactiveLink((NSString)proactiveLink);
-        } 
+        }
         else 
         {
             // This is your app's push notification system.

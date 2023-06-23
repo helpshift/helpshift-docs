@@ -31,7 +31,7 @@ User's conversation will only be available on the device used to start the conve
 
 #### What to provide as identifiers
 
-You can provide either `userID` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field as a map in the `Helpshift.Login(Dictionary<string, string>)` API. The following logic applies when you use both `userID` as well as `userEmail`:
+You can provide either `userId` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field as a map in the `Helpshift.Login(Dictionary<string, string>)` API. The following logic applies when you use both `userId` as well as `userEmail`:
 
 - When looking up users, the priority of `userId` is higher than that of `userEmail`
 - When the user ID matches an exisiting user, that user's email will be updated (if the email is provided)
@@ -68,7 +68,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
       <ul>
         <li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li>
         <li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li>
-        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'userEmail'.</li>
+        <li>Do not provide the user's email address as 'userId'. If you use email addresses to identify users, provide them as 'userEmail'.</li>
         <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing email will return any profile if multiple profiles have the same email.</li>
         <li> If the value of "userId" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>

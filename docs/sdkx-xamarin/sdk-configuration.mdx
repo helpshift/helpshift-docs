@@ -16,7 +16,7 @@ import {
 
 <Intro>
 
-Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/sdkx_xamarin/support-tools/).
+Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/sdkx-xamarin/support-tools/).
 
 </Intro>
 
@@ -32,7 +32,7 @@ Common configurations apply to both iOS and Android platforms.
 
 ### Enable Logging {#enableLogging}
 
-Upon setting `enableLogging` to `YES`, Helpshift SDK logs will be generated in the Xcode console. These logs can be useful for debugging the SDK during integration. Turning on logging can help the developer resolve common integration issues.
+Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Visual Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
 
 <div className="compact ">
 
@@ -197,7 +197,7 @@ Helpshift.ShowConversation(this, config);
 
 #### Best Practices
 
-In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to YES. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
+In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to `true`. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
 
 ### Enable In-App Notifications {#enableInAppNotification}
 
@@ -272,7 +272,7 @@ namespace App
 
 ### Initiate new conversation on chat screen load {#initiateChatOnLoad}
 
-In config dictionary of `ShowConversation()`, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+In config dictionary of `ShowConversation()`, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the **New Conversation** button or going through the post resolution flows like feedback bots of the previous issue.
 
 |               |                                        |
 | ------------- | ---------------------------------------|
@@ -286,7 +286,7 @@ Example:
 
 ```csharp
 Dictionary<string, object> config = new Dictionary<string, object>();
-config.Add("initiateChatOnLoad", "true");
+config.Add("initiateChatOnLoad", true);
 // other configs...
 Helpshift.ShowConversation(this, config);
 ```
@@ -340,7 +340,7 @@ Example:
 
 ```csharp
 Dictionary<string, object> config = new Dictionary<string, object>();
-config.Add("presentFullScreenOniPad", "true");
+config.Add("presentFullScreenOniPad", true);
 // other configs...
 Helpshift.ShowConversation(this, config);
 ```
@@ -491,8 +491,8 @@ namespace App
 
 ## Theming the SDK {#theming}
 
-Please check [design](/sdkx_xamarin/design) page to apply your styles and theming to the SDK.
+Please check [design](/sdkx-xamarin/design) page to apply your styles and theming to the SDK.
 
 ## Tracking {#tracking}
 
-This config represents the tracking of user actions. For more information, please check [tracking](/sdkx_xamarin/tracking).
+This config represents the tracking of user actions. For more information, please check [tracking](/sdkx-xamarin/tracking).

@@ -87,7 +87,7 @@ Once you have these two tokens, you are all set to initialize the SDK in your ap
 using HelpshiftApi;
 ```
 
-Initialize the SDK by calling `Install()` method before any other interaction with the Helpshift SDK. You can optionally pass the configuration dictionary to `Install()` API. To see supported configurations, check the [SDK Configuration](/sdkx_xamarin/sdk-configuration.mdx) page.
+Initialize the SDK by calling `Install()` method before any other interaction with the Helpshift SDK. You can optionally pass the configuration dictionary to `Install()` API. To see supported configurations, check the [SDK Configuration](/sdkx-xamarin/sdk-configuration.mdx) page.
 
 <Tabs>
 
@@ -103,8 +103,7 @@ namespace App
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             Dictionary<string, object> installConfig = new Dictionary<string, object>();
-            installConfig.Add("enableLogging", true);
-            // Add any other install config parameters
+            // Add any install configurations to installConfig dictionary
             Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
         }
     }
@@ -126,8 +125,7 @@ namespace App
         {
             base.OnCreate();
             Dictionary<string, object> installConfig = new Dictionary<string, object>();
-            installConfig.Add("enableLogging", true);
-            // Add any other install config parameters
+            // Add any install configurations to installConfig dictionary
             Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
         }
     }
@@ -144,6 +142,6 @@ Helpshift is now integrated with your app! You can now use other [SDK APIs](/sdk
 
 ** Placing the install call **
 
-You should not place the install call anywhere other than `UIApplicationDelegate.FinishedLaunching()` for iOS / `Application.OnCreate()` for Android. Placing it elsewhere might cause unexpected runtime problems. Helpshift install call will throw an exception in case the validation of the SDK keys fail.
+You should not place the `Install` call anywhere other than `UIApplicationDelegate.FinishedLaunching()` for iOS / `Application.OnCreate()` for Android. Placing it elsewhere might cause unexpected runtime problems. Helpshift install call will throw an exception in case the validation of the SDK keys fail.
 
 </Admonition>
