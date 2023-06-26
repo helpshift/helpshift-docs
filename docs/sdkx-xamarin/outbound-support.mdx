@@ -118,13 +118,15 @@ To pass the outbound support data to Helpshift, follow these steps -
 
 For example, following code shows how to handle incoming push notification and posting it on the notification bar of the device -
 
+
 ```csharp
+// Function which receives notification message from FCM
 public override void OnMessageReceived(RemoteMessage remoteMessage)
 {
     IDictionary<string, string> data = remoteMessage.Data;
     string origin = data["origin"];
 
-    // This is a notification from Helpshift push notification system
+    // This is a notification from Helpshift push notification system for messages sent by agent
     if (origin != null && origin.Equals("helpshift"))
     {
         Helpshift.HandlePush(data);
@@ -135,57 +137,72 @@ public override void OnMessageReceived(RemoteMessage remoteMessage)
         // This is your existing push notification system
 
         // Sample key in notification data where you will put the proactive support link generated from Helpshift dashboard
-        string proactiveUrl = data["proactive_link"];
+        string proactiveLink = data.ContainsKey("helpshift_proactive_link") ? data["helpshift_proactive_link"] : null;
 
-        // Sample code to generate Push notification
-        Context context = ApplicationContext;
-        Intent intent = new Intent(context, typeof(HandleNotificationActivity)); // Your notification handling class
-        intent.SetFlags(ActivityFlags.NewTask);
-        intent.PutExtra("proactiveNotification", true);
-        intent.PutExtra("proactiveLink", proactiveUrl);
-        PendingIntent pendingIntent = PendingIntent.GetActivity(
-            context, new Random().Next(), intent, PendingIntentFlags.Immutable);
-        
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-            .SetContentTitle(data["title"])
-            .SetContentText(data["message"])
-            .SetSmallIcon(Resource.Drawable.icon) // Set your icon for notification
-            .SetContentIntent(pendingIntent)
-            .SetAutoCancel(true);
-
-        if (builder != null)
+        if (proactiveLink != null)
         {
-            Notification notification = builder.Build();
-            NotificationManager notificationManager = (NotificationManager)GetSystemService(NotificationService);
-            notificationManager.Notify(0, notification);
-        }
+                var valuesForActivity = new Bundle();
+                valuesForActivity.PutString("helpshift_proactive_link", proactiveLink);
+
+                // When the user clicks the notification, ProactiveNotificationHandlerActivity will start up.
+                var resultIntent = new Intent(this, typeof(ProactiveNotificationHandlerActivity));
+
+                // Pass the values to ProactiveNotificationHandlerActivity:
+                resultIntent.PutExtras(valuesForActivity);
+                resultIntent.SetFlags(ActivityFlags.NewTask);
+
+                PendingIntentFlags flag = Build.VERSION.SdkInt < BuildVersionCodes.M ? 0 : PendingIntentFlags.Immutable;
+
+                // Create the PendingIntent and update current if there is already a pendingIntent created earlier.
+                var resultPendingIntent = PendingIntent.GetActivity(this, 0, resultIntent, flag | PendingIntentFlags.UpdateCurrent);
+
+                // Build the notification:
+                var builder = new NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
+                              .SetAutoCancel(true)
+                              .SetContentIntent(resultPendingIntent) // Start up this activity when the user clicks the intent.
+                              .SetContentTitle("Proactive Notification") // Set the title
+                              .SetSmallIcon(HelpshiftApiExample.Droid.Resource.Drawable.app_icon) // This is the icon to display
+                              .SetContentText("Click to see proactive in action!"); // the message to display.
+
+                // Finally, publish the notification:
+                var notificationManager = NotificationManagerCompat.From(this);
+                notificationManager.Notify(1, builder.Build());
+         }
     }
 }
 ```
 
-When the user clicks on the notification, `HandleNotificationActivity` activity is started (as specified in the above code sample).
-To delegate push notification data to Helpshift SDK, call `Helpshift.HandleProactiveLink()` in **HandleNotificationActivity's onCreate()** method.
+When the user clicks on the notification, `ProactiveNotificationHandlerActivity` activity is started (as specified in the above code sample).
+To delegate push notification data to Helpshift SDK, call `Helpshift.HandleProactiveLink()` in **ProactiveNotificationHandlerActivity's onCreate()** method.
 
 For Example -
 
-_Following code shows how to delegate push notification data by calling `Helpshift.handleProactiveLink()` to Helpshift SDK._
+_Following code shows how to delegate push notification data by calling `Helpshift.HandleProactiveLink()` to Helpshift SDK._
 
 ```csharp
-[Activity(Label = "HandleNotificationActivity")]
-public class HandleNotificationActivity : Activity
+[Activity(Label = "ProactiveNotificationHandlerActivity", MainLauncher = false)]
+public class ProactiveNotificationHandlerActivity : Activity
 {
     protected override void OnCreate(Bundle savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
 
-        Bundle bundle = Intent.Extras;
-        if (bundle != null && bundle.GetBoolean("proactiveNotification"))
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            string url = bundle.GetString("proactiveLink");
-            Helpshift.HandleProactiveLink(url);
-        }
+            base.OnCreate(savedInstanceState);
+            string proactiveLink = intent.Extras.GetString("helpshift_proactive_link");
+            if (!string.IsNullOrEmpty(proactiveLink))
+            {
+                HelpshiftApi.Helpshift.HandleProactiveLink(proactiveLink);
+                Finish();
+                return;
+            }
 
-        Finish();
+            // Toast in case of incorrect activity invocation.
+            Android.Widget.Toast.MakeText(this, "Empty Proactive link", Android.Widget.ToastLength.Short).Show();
+
+            Finish();
+        }
     }
 }
 ```
