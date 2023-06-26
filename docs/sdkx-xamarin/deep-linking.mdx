@@ -58,7 +58,7 @@ In order for the developers to handle `myscheme`, they will have to call `ShowSi
 You will need to implement the following in your Android app to handle deeplinks -
 
 ```java
-//AndroidManifest.xml
+//AndroidManifest.xml for DeepLinkActivity
 <activity android:name=".DeepLinkActivity">
     <intent-filter>
         <action android:name="android.intent.action.VIEW" />
@@ -69,29 +69,43 @@ You will need to implement the following in your Android app to handle deeplinks
 </activity>
 ```
 
-```java
-//DeepLinkActivity.java
-[Activity (Label = "DeepLinkActivity")]			
-	public class DeepLinkActivity : Activity
-	{
-        protected override void OnCreate(Bundle savedInstanceState)
+```csharp
+// DeepLinkActivity that handles deeplink click by the user
+[Activity (Label = "DeepLinkActivity"), IntentFilter(actions: new String[] {"android.intent.action.VIEW" },
+        DataScheme = "myscheme", DataHost = "example.com", Categories = new String[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" })]			
+public class DeepLinkActivity : Activity
+{        
+	protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             Android.Net.Uri data = Intent.Data;
+            string scheme = data.Scheme;
+            string host = data.Host;
 
-            if (data.GetQueryParameter("faqid") != null)
+            // Example deeplink: myscheme://example.com/?faqid=12
+            if (scheme.Equals("myscheme") && host.Equals("example.com"))
             {
-                HelpshiftApi.Helpshift.ShowSingleFAQ(data.GetQueryParameter("faqid"), this, null);
+                if (data.GetQueryParameter("faqid") != null)
+                {
+                    HelpshiftApi.Helpshift.ShowSingleFAQ(data.GetQueryParameter("faqid"), this);
+                }
+                else if (data.GetQueryParameter("sectionid") != null)
+                {
+                    HelpshiftApi.Helpshift.ShowFAQSection(data.GetQueryParameter("sectionid"), this);
+                }
+                else
+                {
+                    HelpshiftApi.Helpshift.ShowFAQs(this);
+                }
+                Finish();
             }
-            else if (data.GetQueryParameter("sectionid") != null)
+            else
             {
-                HelpshiftApi.Helpshift.ShowFAQSection(data.GetQueryParameter("sectionid"), this, null);
+                Toast.MakeText(this, "Invalid link to handle", ToastLength.Short).Show();
             }
-
-            Finish();
         }
-  }
+}
 ```
 
 ### Deep links in Xamarin iOS app {#handle-deep-link-ios}
