@@ -71,28 +71,27 @@ You will need to implement following things in your Android app to handle deepli
 
 ```java
 //DeepLinkActivity.java
-public class DeepLinkActivity extends AppCompatActivity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.deep_link);
+[Activity (Label = "DeepLinkActivity")]			
+	public class DeepLinkActivity : Activity
+	{
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
 
-    TextView deepLinkUrl = (TextView) findViewById(R.id.deep_link_url);
+            Android.Net.Uri data = Intent.Data;
 
-    Intent intent = getIntent();
-    Uri data = intent.getData();
+            if (data.GetQueryParameter("faqid") != null)
+            {
+                HelpshiftApi.Helpshift.ShowSingleFAQ(data.GetQueryParameter("faqid"), this, null);
+            }
+            else if (data.GetQueryParameter("sectionid") != null)
+            {
+                HelpshiftApi.Helpshift.ShowFAQSection(data.GetQueryParameter("sectionid"), this, null);
+            }
 
-    if (data.getQueryParameter("faqid") != null) {
-      Helpshift.showSingleFAQ(this, data.getQueryParameter("faqid"));
-      finish();
-    } else if (data.getQueryParameter("sectionid") != null) {
-      Helpshift.showFAQSection(this, data.getQueryParameter("sectionid"));
-      finish();
-    } else {
-      deepLinkUrl.setText("Deep link received - " + data);
-    }
+            Finish();
+        }
   }
-}
 ```
 
 ### Deep links in Xamarin iOS app {#handle-deep-link-ios}
