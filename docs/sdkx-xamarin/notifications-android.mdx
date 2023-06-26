@@ -1,5 +1,5 @@
 ---
-sidebar_position: 200
+sidebar_position: 45
 title: Notifications Android
 description: "Configure Push notifications."
 ---
@@ -29,7 +29,7 @@ Configure Push notifications.
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.Install() API](/sdkx-xamarin/getting-started#initialize)
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.Install() API](/sdkx-xamarin/getting-started#initialize)
 
 </Admonition>
 
@@ -79,19 +79,21 @@ For FCM users, the API key can be found at your
 
 <Image src="/static/books/android/fcm_console.png" width="full" />{" "}
 
-## Configure the Helpshift Unity SDK to handle notifications {#configure-helpshift-unity-sdk}
+## Configure the Helpshift Xamarin SDK to handle notifications {#configure-helpshift-xamarin-sdk}
 
 ### Push notifications {#push-notifications}
 
-#### Configure FCM push notification plugins {#}
+#### Configure FCM push notification plugins
 
 **Before you begin**
 
 1. Integrate FCM Xamarin Android as documented here: [Firebase Cloud Messaging Guide](https://learn.microsoft.com/en-us/xamarin/android/data-cloud/google-messaging/remote-notifications-with-fcm)
 
-If you have already integrated push notifications, Use the **HelpshiftSdk.RegisterPushToken(string deviceToken)** API to register the device token with the Helpshift SDK. Helpshift can now start sending push notifications to your app.
+If you have already integrated push notifications, Use the **Helpshift.RegisterPushToken(string deviceToken)** API to register the device token with the Helpshift SDK. Helpshift can now start sending push notifications to your app.
 
-Once this is done, you can use the **HelpshiftSdk.HandlePush(Dictionary<string, object\> pushNotificationData)** API to send the payload received in the notification.
+Once this is done, you can use the **Helpshift.HandlePush(object pushNotificationData, bool isAppLaunch)** API to send the payload received in the notification.
+
+Note that `pushNotificationData` needs to be of `IDictionary<string, string>` type and `iAppLaunch` paramater is ignored for Android.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift`, the notification is a Helpshift notification.
 
@@ -139,7 +141,7 @@ public class MyFirebaseMessagingService : FirebaseMessagingService
 
 In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
 
-These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/sdkx_android/support-tools#conversation-view) when they tap on the notification.
+These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/sdkx-xamarin/support-tools/#conversation-view) when they tap on the notification.
 
 <Centered >
 
@@ -177,13 +179,13 @@ namespace HelpshiftXamarinTestApp.Droid
         {
             base.OnCreate();
 
-            Dictionary<String, Object> installC = new Dictionary<String, Object>();
-            installC.Add("enableLogging", true);
-            installC.Add("screenOrientation", ScreenOrientation.Portrait);
-            installC.Add("notificationIcon", Resource.Drawable.app_icon);
+            Dictionary<String, Object> installConfig = new Dictionary<String, Object>();
+            installConfig.Add("enableLogging", true);
+            installConfig.Add("screenOrientation", ScreenOrientation.Portrait);
+            installConfig.Add("notificationIcon", Resource.Drawable.app_icon);
             Helpshift.Install("gayatri_platform_20181018063833353-6d863ba814cb367",
                 "gayatri.helpshift.com",
-                installC);
+                installConfig);
 
             Helpshift.SetHelpshiftEventsListener(new ExampleHelpshiftEventListener());
         }
