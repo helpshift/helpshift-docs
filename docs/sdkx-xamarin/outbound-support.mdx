@@ -17,7 +17,7 @@ import {
 
 <Intro>
 
-With outbound support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
+With Outbound Support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
 
 </Intro>
 
@@ -29,7 +29,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 The steps to use this feature are the following -
 
-To generate the link for Outbound support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+To generate the link for Outbound Support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
 
 <Image src="/static/books/helpshiftx/outbound-support.png" width="full" />
 
@@ -37,7 +37,7 @@ You should see a **New link** button. Click on the New link button and select an
 
 <Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />
 
-At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing Push notification system.
+At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing push notification system.
 
 YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp, myAppSupport etc.
 
@@ -48,7 +48,7 @@ YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For exam
 <Tabs groupId="xamarin">
 <TabItem value="iOS" label="iOS">
 
-To pass the outbound support data to Helpshift, follow these steps -
+To pass the Outbound Support data to Helpshift, follow these steps -
 
 1. Send push notification to the users you want to give proactive support using your app's push notification system
 
@@ -108,7 +108,7 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
 
 <TabItem value="Android" label="Android">
 
-To pass the outbound support data to Helpshift, follow these steps -
+To pass the Outbound Support data to Helpshift, follow these steps -
 
 1. Send push notification to the users you want to give outbound support using your app's existing push notification system
 
@@ -223,7 +223,7 @@ Implement public interface `IHelpshiftProactiveAPIConfigCollector` and call `Hel
 
 You will have to implement the method `GetAPIConfig()` where you can add any user specific config in the same format as you add in other public APIs like `ShowConversation()` or `ShowFAQs()`.
 
-We will merge this config and the config embedded in the outbound support link. We will append data of config from outbound support link to local config like **Tags, CIFs**, etc. In case of conflicts, outbound support config will get the precedence.
+We will merge this config and the config embedded in the Outbound Support link. We will append data of config from Outbound Support link to local config like **Tags, CIFs**, etc. In case of conflicts, Outbound Support config will get the precedence.
 
 For example, following code shows how to implement `IHelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `GetAPIConfig()` method -
 

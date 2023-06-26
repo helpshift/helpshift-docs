@@ -46,16 +46,16 @@ public override bool FinishedLaunching(UIApplication application, NSDictionary l
 
 You can configure this in 4 simple steps:
 
-Setup your application with Apple and enable Push notifications.
+Setup your application with Apple and enable push notifications.
 
-You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. Its also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
+You need to generate certificates for APNS on Apple's portal that you can later provide to Helpshift. This lets Helpshift send push notifications to your users. Apple has moved away from old type of certificates to Apple Push Notification service SSL. There is another option to create Apple Push Notification Authentication Key, but Helpshift does not support this option yet. It's also possible that you still have the old type of certificate that has not yet expired, this is also supported by Helpshift.
 
 Apple provides two variations of Apple Push Notification service SSL
 
 - Apple Push Notification service SSL (Sandbox)
 - Apple Push Notification service SSL (Sandbox & Production)
 
-After creating your certificate, download it. Double click on it to import it to the Keychain Access Application. In the Keychain Access Application, right click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
+After creating your certificate, download it. Double click on it to import it to the Keychain Access application. In the Keychain Access application, right click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
 
 To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added already). And then click on the push notifications option.
 
@@ -103,7 +103,7 @@ You should call `RegisterDeviceToken()` API only after you have [configured the 
 
 </Admonition>
 
-For Helpshift SDK to work with the Helpshift push notification service, you will need to invoke the `registerDeviceToken:` api call inside the application delegate method `RegisteredForRemoteNotifications(UIApplication, NSData)`
+For Helpshift SDK to work with the Helpshift push notification service, you will need to invoke the `registerDeviceToken:` API call inside the application delegate method `RegisteredForRemoteNotifications(UIApplication, NSData)`
 
 In your app delegate file it will look something like this:
 
