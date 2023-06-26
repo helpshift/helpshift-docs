@@ -155,7 +155,7 @@ string country = tm.SimCountryIso;
 string value = "AFTER_VIEWING_FAQS";
 if ("<LOCAL_COUNTRY_CODE>".Equals(country))
 {
-    value = "ALWAYs";
+    value = "ALWAYS";
 }
 Dictionary<string, object> config = new Dictionary<string, object>();
 config.Add("enableContactUs", value);
@@ -190,7 +190,7 @@ Example:
 
 ```csharp
 Dictionary<string, object> config = new Dictionary<string, object>();
-config.Add("fullPrivacy", "true");
+config.Add("fullPrivacy", true);
 // other configs...
 Helpshift.ShowConversation(this, config);
 ```
@@ -349,16 +349,17 @@ Helpshift.ShowConversation(this, config);
 
 ### Screen Orientation {#screen-orientation}
 
-The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
-For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
+The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the `Android.Content.PM.ScreenOrientation` class.
+
+For example, you may want to fix the orientation to `ScreenOrientation.Portrait` for mobile users and `ScreenOrientation.Landscape` for tablet users.
 
 <div className="compact ">
 
 |         |                                                                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Flag    | screenOrientation                                                                                                                      |
-| values  | integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class |
-| default | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                                            |
+| values  | integer values for orientation from `Android.Content.PM.ScreenOrientation` class |
+| default | ScreenOrientation.Unspecified                                                                                            |
 
 </div>
 
@@ -367,6 +368,7 @@ Example:
 
 ```csharp
 using HelpshiftApi;
+using Android.Content.PM;
 
 namespace App
 {
@@ -377,7 +379,7 @@ namespace App
         {
             base.OnCreate();
             Dictionary<string, object> installConfig = new Dictionary<string, object>();
-            installConfig.Add("screenOrientation", ActivityInfo.ScreenOrientation.Portrait);
+            installConfig.Add("screenOrientation", ScreenOrientation.Portrait);
             // Add any other install config parameters
             Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
         }
