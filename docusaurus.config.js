@@ -173,9 +173,13 @@ async function createConfig() {
           },
         };
       },
-      require.resolve("./src/plugins/webChat.js"),
       require.resolve("docusaurus-plugin-image-zoom"),
     ],
+    customFields: {
+      hsPid: process.env.HS_PID,
+      hsDomain: process.env.HS_DOMAIN,
+      envIsProduction,
+    },
   };
 
   return config;
