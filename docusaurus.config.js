@@ -29,7 +29,7 @@ const getDeployUrl = () => {
   }
 
   // Development - this has no impact even if it's wrong during development
-  return "http://localhost:3000";
+  return "http://localhost:3100";
 };
 
 const deployUrl = getDeployUrl();
