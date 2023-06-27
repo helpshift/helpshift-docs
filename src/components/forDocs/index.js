@@ -13,6 +13,7 @@ export { default as LatestSdkVersion } from "./LatestSdkVersion";
 export { default as SideBySide } from "./SideBySide";
 export { default as Step } from "./Step";
 export { default as Steps } from "./Steps";
+export { default as LegacyEolAdmonition } from "./LegacyEolAdmonition";
 
 // Existing Docusaurus components
 export { default as Admonition } from "@theme/Admonition";
