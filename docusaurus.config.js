@@ -29,7 +29,7 @@ const getDeployUrl = () => {
   }
 
   // Development - this has no impact even if it's wrong during development
-  return "http://localhost:3000";
+  return "http://localhost:3100";
 };
 
 const deployUrl = getDeployUrl();
@@ -173,9 +173,13 @@ async function createConfig() {
           },
         };
       },
-      require.resolve("./src/plugins/webChat.js"),
       require.resolve("docusaurus-plugin-image-zoom"),
     ],
+    customFields: {
+      hsPid: process.env.HS_PID,
+      hsDomain: process.env.HS_DOMAIN,
+      envIsProduction,
+    },
   };
 
   return config;
