@@ -103,17 +103,7 @@ For example, following code shows how to handle incoming push notification and p
         [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo isAppLaunch:NO withController:self.window.rootViewController];
         completionHandler(UNNotificationPresentationOptionNone);
     } else {
-        NSString* proactiveLink = [[notification.request.content.userInfo objectForKey:@"aps"] objectForKey:@"helpshift_proactive_link"];
-        if (proactiveLink != nil) {
-            // This is notification for handling Helpshift proactive link
-            [Helpshift handleProactiveLink:proactiveLink];
-            completionHandler(UNNotificationPresentationOptionNone);
-        } else  {
-            // This is not a notification from Helpshift system
-            // This is your existing push notification system
-            // Manage other normal notification here
-            completionHandler(UNNotificationPresentationOptionAlert);
-        }
+        completionHandler(UNNotificationPresentationOptionAlert);
     }
 }
 ```
