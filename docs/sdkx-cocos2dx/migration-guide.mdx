@@ -140,7 +140,7 @@ The mapping of install config dictionary keys are -
 | `enableLogging`                                          | `enableLogging`                                     |
 | `enableInAppNotification`                                | `enableInAppNotification`                           |
 
-All other deprecated configurations have been removed and are not supported anymore. For more information about install configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration-android/) guide.
+All other deprecated configurations have been removed and are not supported anymore. For more information about install configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration/) guide.
 
 ### Helpshift Conversation and FAQ APIs
 
@@ -155,7 +155,7 @@ The API signatures have changed. Update existing API calls with new ones as foll
 | FAQ Filtering by tags                                 | Currently not supported                                  |
 | Guided issue filing                                   | Currently not supported                                  |
 
-For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-cocos2dx/support-tools-android/) guide.
+For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-cocos2dx/support-tools/) guide.
 
 ### Conversation and FAQ API Configuration
 
@@ -167,7 +167,7 @@ The mapping of config dictionary keys are -
 | `enableTypingIndicator`                          | -                                           | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
 | `showConversationResolutionQuestion`             | -                                           | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
 
-All other configurations have been deprecated and are no longer supported. For more information about API configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration-android/) guide.
+All other configurations have been deprecated and are no longer supported. For more information about API configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration/) guide.
 
 ### Helpshift User Management APIs
 
@@ -208,7 +208,7 @@ Other user management APIs have also changed -
 | Logout               | `HelpshiftCocos2dx::logout()`             | `HelpshiftCocos2dx::logout()`                                           |
 | Clear anonymous user | `HelpshiftCocos2dx::clearAnonymousUser()` | `HelpshiftCocos2dx::clearAnonymousUserOnLogin(bool clearAnonymousUser)` |
 
-For more information on User management in the SDK X Cocos2dx plugin, refer to [Users](/sdkx-cocos2dx/users-android/) guide.
+For more information on User management in the SDK X Cocos2dx plugin, refer to [Users](/sdkx-cocos2dx/users) guide.
 
 ### Design and Theming
 
@@ -272,7 +272,7 @@ SDK X code -
   }
 ```
 
-Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates-android/#unread-message-count).
+Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates/#unread-message-count).
 
 #### Handle notification
 
@@ -331,7 +331,7 @@ If you are using push notifications, we recommend that you register the push tok
 </Admonition>
 
 For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-cocos2dx/notifications-android/) guide.
-For more information on delegates in SDK X, refer to [Delegates](/sdkx-cocos2dx/delegates-android/) guide.
+For more information on delegates in SDK X, refer to [Delegates](/sdkx-cocos2dx/delegates/) guide.
 
 ### Internationalization
 
@@ -347,7 +347,7 @@ We recommend that you set the SDK language again on upgrading your app with SDK 
 
 </Admonition>
 
-For more information on internationalization in SDK X and a list of supported languages, refer [Internationalization](/sdkx-cocos2dx/i18n-android/) guide.
+For more information on internationalization in SDK X and a list of supported languages, refer [Internationalization](/sdkx-cocos2dx/i18n/) guide.
 
 ### Tracking
 
@@ -355,7 +355,7 @@ Replace the following APIs from the legacy SDK Cocos2dx plugin -
 
 #### Metadata and Tags
 
-Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/cocos2d-x/tracking-android#metadata)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
+Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/sdkx-cocos2dx/tracking#adding-custom-metadata-to-conversations)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
 
 ```cpp
 
@@ -498,7 +498,7 @@ The APIs for breadcrumbs not changed -
 #### Debug Logs
 
 We have the class named as `HelpshiftLog` in SDK X Cocos2dx plugin for adding logs. You can use its methods for adding logs.
-You can find more details in the [Tracking](/sdkx-cocos2dx/tracking-android/#debug-logs) guide.
+You can find more details in the [Tracking](/sdkx-cocos2dx/tracking/#debug-logs) guide.
 
 ### Helpshift Delegates
 
@@ -508,7 +508,7 @@ The API to register Helpshift delegate has been changed -
 | ---------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `HelpshiftCocos2dx::registerDelegates()` | `HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent, handleAuthFailureEvent)` |
 
-Each SDK event had a separate method in the legacy SDK Cocos2dx plugin. In SDK X Cocos2dx plugin, all events are received in the delegate’s `handleHelpshiftEvent(eventName,eventData)` method. For a list of events, refer to [this guide](/sdkx-cocos2dx/delegates-android/#helpshift-events).
+Each SDK event had a separate method in the legacy SDK Cocos2dx plugin. In SDK X Cocos2dx plugin, all events are received in the delegate’s `handleHelpshiftEvent(eventName,eventData)` method. For a list of events, refer to [this guide](/sdkx-cocos2dx/delegates/#helpshift-events).
 
 Legacy SDK Cocos2dx plugin methods that are unsupported in SDK X Cocos2dx plugin and don't have a corresponding event are -
 
