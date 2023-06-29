@@ -119,14 +119,8 @@ func userNotificationCenter(_ center: UNUserNotificationCenter,
         // This is a notification from Helpshift push notification system
         Helpshift.handleNotification(withUserInfoDictionary: userInfo, isAppLaunch: false, with: rootViewController)
         completionHandler([])
-    } else if let proactiveLink = notification.request.content.userInfo["aps"]["helpshift_proactive_link"] as? String {
-        // This is notification for handling Helpshift proactive link
-        Helpshift.handleProactiveLink(proactiveLink)
-        completionHandler([])
     } else {
-        // This is not a notification from Helpshift system
-        // This is your existing push notification system
-        // Manage other normal notification here
+        // present notification
         completionHandler(.alert)
     }
 }
