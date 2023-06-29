@@ -1,6 +1,6 @@
 ---
 sidebar_position: 50
-title: Notifications
+title: Notifications Android
 description: "Learn more about configuring push and in-app notifications."
 ---
 
@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Notifications {#notifications}
+# Notifications Android {#notifications}
 
 <Intro>
 
@@ -29,7 +29,7 @@ Configure Push notifications
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android#initializing)
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started#initializing)
 
 </Admonition>
 
@@ -101,7 +101,7 @@ For FCM users, the API key can be found at your
             try {
                 Map<String, Object> config = new HashMap<>();
                 config.put("enableLogging", true);
-                Helpshift.install(getApplication(), 
+                Helpshift.install(getApplication(),
                         "<APP_ID>",
                         "<DOMAIN_NAME>",
                         config);
@@ -143,7 +143,7 @@ By default the application icon is used as the notification icon. You can custom
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            
+
             // Add largeNotificationIcon config in install config map
             Map<String, Object> config = new HashMap<>();
             config.put("notificationIcon", "icon-image-file-name");
@@ -154,7 +154,7 @@ By default the application icon is used as the notification icon. You can custom
                 this,
                 "<App Id from the Helpshift Dashboard>",
                 "<Domain name from the Helpshift Dashboard>",
-                config);  
+                config);
         }
     }
 ```
@@ -173,7 +173,7 @@ For example:
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            
+
             // Add notificationSound config in install config map
             Map<String, Object> config = new HashMap<>();
             config.put("notificationSound", "<notification-sound-file-name>");
@@ -183,7 +183,7 @@ For example:
                 this,
                 "<App Id from the Helpshift Dashboard>",
                 "<Domain name from the Helpshift Dashboard>",
-                config);  
+                config);
         }
     }
 ```
@@ -202,7 +202,7 @@ Example:
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            
+
             // Add notification Channel Id config in install config map
             Map<String, Object> config = new HashMap<>();
             config.put("notificationChannelId", "your channel name here");
@@ -212,7 +212,7 @@ Example:
                 this,
                 "<App Id from the Helpshift Dashboard>",
                 "<Domain name from the Helpshift Dashboard>",
-                config);  
+                config);
         }
     }
 ```
@@ -235,7 +235,7 @@ Example:
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            
+
             // Add enableInAppNotification config in install config map
             Map<String, Object> config = new HashMap<>();
             config.put("enableInAppNotification", false);
@@ -245,7 +245,7 @@ Example:
                 this,
                 "<App Id from the Helpshift Dashboard>",
                 "<Domain name from the Helpshift Dashboard>",
-                config);  
+                config);
         }
     }
 ```

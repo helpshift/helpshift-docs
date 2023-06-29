@@ -1,5 +1,5 @@
 ---
-sidebar_position: 90
+sidebar_position: 110
 title: Helpshift Delegates
 description: "The Helpshift SDK provides delegate callbacks to help app developers track a user's activities within the help section."
 ---
@@ -29,7 +29,7 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android#initializing)
+All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-cocos2dx/getting-started#initializing)
 
 </Admonition>
 
@@ -49,9 +49,9 @@ void handleAuthFailureEvent(HSAuthenticationFailureReason reason) {
 }
 
 void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
-    
+
     if (strcmp(eventName, SDK_SESSION_STARTED) == 0) {
-        // your code here 
+        // your code here
         //...
     }
     if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
@@ -75,7 +75,7 @@ bool HelloWorld::init()
     HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent,
                                                   handleAuthFailureEvent);
 
-    // Your code here 
+    // Your code here
     // ...
 }
 ```

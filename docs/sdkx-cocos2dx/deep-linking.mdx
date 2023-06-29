@@ -1,5 +1,5 @@
 ---
-sidebar_position: 100
+sidebar_position: 120
 title: Deep Linking in FAQs
 description: "Using custom URL schemes to support deep linking in your app."
 ---
@@ -29,7 +29,7 @@ Using custom URL schemes to support deep linking in your app
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android#initializing)
+All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-cocos2dx/getting-started#initializing)
 
 </Admonition>
 
@@ -117,6 +117,27 @@ public class DeepLinkActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Invalid link to handle", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+}
+```
+
+### Deep links in Cococs2dx iOS app {#handle-deep-link-ios}
+
+To handle the custom URLs in your iOS app, first, make sure that your app's `info.plist` supports the custom URL scheme that you've provided in the FAQs. [More information](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app)
+
+You will then need to implement,`application:(UIApplication *)app openURL:(NSURL *)url options:` in your `Appcontroller.mm`, to handle and take the required action. For example:
+
+```csharp
+[Export("application:openURL:sourceApplication:annotation:")]
+public bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:false];
+    // URL is myscheme://example.com/?faqid=95
+   for (NSURLQueryItem *query in components.queryItems) {
+        if ([query.name isEqualToString:@"faqid"]) {
+            NSDictionary *config = @{ /* Helpshift config dictionary... */ };
+            [Helpshift showSingleFAQ:query.value withViewController:self.window.rootViewController withConfig:config];
         }
     }
 }

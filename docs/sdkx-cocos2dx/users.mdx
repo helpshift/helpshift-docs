@@ -21,7 +21,7 @@ import {
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started-android#initializing)
+All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-cocos2dx/getting-started#initializing)
 
 </Admonition>
 
@@ -142,12 +142,6 @@ HelpshiftCocos2dx.logout();
 
 ## Anonymous users {#anonymous-users}
 
-<Admonition type="info" title="Note">
-
-clearAnonymousUserOnLogin() API is deprecated. We have added a new API to manage anonymous users.
-
-</Admonition>
-
 #### Overview
 
 An anonymous user is someone who can access the app without a username and password. If a user identifier (user ID and/or email) is not passed via the login API, then Helpshift assumes that the user is an anonymous user and is not currently logged in.
@@ -224,9 +218,9 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
   </tr>
   <tr>
     <td>
-      HelpshiftAuthenticationFailureReason
+      HSAuthenticationFailureReason
       <br />
-      .REASON_AUTH_TOKEN_NOT_PROVIDED
+      .HSAuthTokenNotProvided
     </td>
     <td>When no 'user authentication token' is provided</td>
     <td>
@@ -243,9 +237,9 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
   </tr>
   <tr>
     <td>
-      HelpshiftAuthenticationFailureReason
+      HSAuthenticationFailureReason
       <br />
-      .REASON_INVALID_AUTH_TOKEN
+      .HSInvalidAuthToken
     </td>
     <td>When the 'user authentication token' is invalid</td>
     <td>
@@ -274,7 +268,7 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
   </tr>
 </table>
 
-The authentication failure reason is wrapped in an enum `HelpshiftAuthenticationFailureReason`.
+The authentication failure reason is wrapped in an enum `HSAuthenticationFailureReason`.
 
 Example:
 

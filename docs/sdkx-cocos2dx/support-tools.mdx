@@ -1,0 +1,149 @@
+---
+sidebar_position: 20
+title: Helpshift APIs
+description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift APIs {#support-tools}
+
+<Intro>
+
+Helpshift provides a way to use each functional element of the SDK separately based on your requirements. You can call only specific screens from the SDK based on the functionality you want to expose in your app.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-cocos2dx/getting-started#initializing)
+
+</Admonition>
+
+## Integrating Contact Us & In App Messaging {#conversation-view}
+
+You can use the API call `HelpshiftCocos2dx::showConversation(configMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+To configure SDK, you can pass various config options in a `cocos2d::ValueMap`. Checkout more config options [here](/sdkx-cocos2dx/sdk-configuration).
+
+<Centered width="major">
+
+![newConversation.png](/static/books/sdkx_android/show_conversation.png "newConversation.png")
+
+</Centered>
+
+Example :
+
+```cpp
+cocos2d::ValueMap getConfig() {
+    cocos2d::ValueMap configMap;
+
+    ValueVector tags;
+    tags.push_back(Value("foo"));
+    tags.push_back(Value("bar"));
+
+    configMap["tags"] = tags;
+    return configMap;
+}
+
+cocos2d::ValueMap chatConfig = getConfig();
+HelpshiftCocos2dx::showConversation(chatConfig);
+```
+
+## Integrating FAQs {#faqs-view}
+
+You can use the API call `HelpshiftCocos2dx::showFAQs(configMap)` to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
+
+<Centered >
+
+![showFAQs.png](/static/books/sdkx_android/show_faqs.png "showFAQs.png")
+
+</Centered>
+
+To configure the FAQs screen, you can pass various config options in a `cocos2d::ValueMap`. Checkout more config options [here](/sdkx-cocos2dx/sdk-configuration).
+
+Example :
+
+```cpp
+cocos2d::ValueMap faqConfig = getConfig();
+HelpshiftCocos2dx::showFAQs(faqConfig);
+```
+
+## Showing a Particular FAQ Section {#faq-section-view}
+
+You can use the API call `HelpshiftCocos2dx::showFAQSection(sectionId, configMap)` to invoke a particular section of your FAQs with its FAQ section id. Checkout more config options[API Options](/sdkx-cocos2dx/sdk-configuration/).
+
+This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
+
+<Centered >
+
+![showFAQSection.png](/static/books/sdkx_android/show_section.png "showFAQSection.png")
+
+</Centered>
+
+Example :
+
+**You'll need the `publish-id` of the section in this case:**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+
+```cpp
+cocos2d::ValueMap faqConfig = getConfig();
+HelpshiftCocos2dx::showFAQSection(sectionId, faqConfig);
+```
+
+## Showing a Particular FAQ {#faq-view}
+
+<Centered >
+
+![showSingleFAQ.png](/static/books/sdkx_android/show_single_faq.png "showSingleFAQ.png")
+
+</Centered>
+
+**You'll need the `publish-id` of the FAQ in this case:**
+
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+
+You can use the API `HelpshiftCocos2dx::showSingleFAQ(publishId, faqConfig)` to show a single FAQ. You will need to pass the `publish-id` of the FAQ to be shown to this API. Checkout more config options [here](/sdkx-cocos2dx/sdk-configuration).
+
+Example :
+
+```cpp
+cocos2d::ValueMap faqConfig = getConfig();
+HelpshiftCocos2dx::showSingleFAQ(publishId, faqConfig);
+```
+
+### Set SDK language {#set-language}
+
+You can set the SDK language using the `HelpshiftCocos2dx::setLanguage("<language-code>")` API. By default, the device's preferred language is used by the SDK. The call will fail in the following cases :
+
+- If a Helpshift session is already active at the time of invocation
+- Language code is incorrect
+
+For more info about languages you can refer [here](/sdkx-cocos2dx/i18n).
+
+Example :
+
+Setting SDK language for the given locale with only language code.
+
+```cpp
+HelpshiftCocos2dx::setLanguage("fr");
+```
+
+Setting the SDK language for the given locale with both language code and country code.
+
+```cpp
+HelpshiftCocos2dx::setLanguage("zh-SG");
+```

@@ -86,7 +86,8 @@ We don’t support the migration from SDK Cocos2dx plugin version < 4.x. If you 
 
 - Remove the existing Helpshift `helpshift-plugin-cocos2dx` content from your project.
 - Make sure the following files/directories are removed from your project before you integrate the SDK X Cocos2dx plugin -
-  - `proj.android/app/src/com/helpshift/` or `proj.android-studio/app/src/com/helpshift/` 
+
+  - `proj.android/app/src/com/helpshift/` or `proj.android-studio/app/src/com/helpshift/`
   - `proj.android/app/libs/Helpshift.aar` or `proj.android-studio/app/libs/Helpshift.aar`
   - `Classes/HelpshiftCocos2dx.cpp`
   - `Classes/HelpshiftUtil.cpp`
@@ -95,8 +96,7 @@ We don’t support the migration from SDK Cocos2dx plugin version < 4.x. If you 
   - `Classes/HelpshiftUtil.h`
   - `Classes/HelpshiftCocos2dxUser.h`
 
-
-- Follow the instructions [here](/sdkx-cocos2dx/getting-started-android/#adding-to-project) to add Helpshift SDK X to your project.
+- Follow the instructions [here](/sdkx-cocos2dx/getting-started/#adding-to-project) to add Helpshift SDK X to your project.
 
 ## Code Changes {#code-changes}
 
@@ -129,14 +129,14 @@ Remove the existing Helpshift install call and replace it with the following -
 
 ```
 
-Refer to SDK X Cocos2dx plugin’s [Getting Started](/sdkx-cocos2dx/getting-started-android/) guide for more information.
+Refer to SDK X Cocos2dx plugin’s [Getting Started](/sdkx-cocos2dx/getting-started/) guide for more information.
 
 ### Helpshift install call configuration
 
 The mapping of install config dictionary keys are -
 
 | Legacy SDK Cocos2dx plugin install config dictionary key | SDK X Cocos2dx plugin install config dictionary key |
-| -----------------------------------------------------    | ------------------------------------------------    |
+| -------------------------------------------------------- | --------------------------------------------------- |
 | `enableLogging`                                          | `enableLogging`                                     |
 | `enableInAppNotification`                                | `enableInAppNotification`                           |
 
@@ -146,14 +146,14 @@ All other deprecated configurations have been removed and are not supported anym
 
 The API signatures have changed. Update existing API calls with new ones as follows -
 
-| Legacy SDK Cocos2dx plugin API                        | SDK X Cocos2dx plugin API                           |
-| ----------------------------------------------------- | --------------------------------------------------- |
-| `HelpshiftCocos2dx::showConversation()`               | `HelpshiftCocos2dx::showConversation(configMap)`    |
-| `HelpshiftCocos2dx::showFAQs();`                      | `HelpshiftCocos2dx::showFAQs(configMap)`            |
-| `HelpshiftCocos2dx::showFAQSection(sectionPublishId)` | `HelpshiftCocos2dx::ShowFAQSection(sectionId,configMap)`               |
-| `HelpshiftCocos2dx::showSingleFAQ(questionPublishId)` | `HelpshiftCocos2dx::ShowSingleFAQ(faqId,configMap)`                    |
-| FAQ Filtering by tags                                 | Currently not supported                             |
-| Guided issue filing                                   | Currently not supported                             |
+| Legacy SDK Cocos2dx plugin API                        | SDK X Cocos2dx plugin API                                |
+| ----------------------------------------------------- | -------------------------------------------------------- |
+| `HelpshiftCocos2dx::showConversation()`               | `HelpshiftCocos2dx::showConversation(configMap)`         |
+| `HelpshiftCocos2dx::showFAQs();`                      | `HelpshiftCocos2dx::showFAQs(configMap)`                 |
+| `HelpshiftCocos2dx::showFAQSection(sectionPublishId)` | `HelpshiftCocos2dx::ShowFAQSection(sectionId,configMap)` |
+| `HelpshiftCocos2dx::showSingleFAQ(questionPublishId)` | `HelpshiftCocos2dx::ShowSingleFAQ(faqId,configMap)`      |
+| FAQ Filtering by tags                                 | Currently not supported                                  |
+| Guided issue filing                                   | Currently not supported                                  |
 
 For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-cocos2dx/support-tools-android/) guide.
 
@@ -161,11 +161,11 @@ For more information about Conversation and FAQs APIs, check the [Helpshift APIs
 
 The mapping of config dictionary keys are -
 
-| Legacy SDK Cocos2dx plugin config dictionary key | SDK X Cocos2dx plugin config dictionary key | Notes                                                                                           |
-| --------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `enableFullPrivacy`                           | `fullPrivacy`                            | -                                                                                                     |
-| `enableTypingIndicator`                       | -                                        | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
-| `showConversationResolutionQuestion`          | -                                        | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
+| Legacy SDK Cocos2dx plugin config dictionary key | SDK X Cocos2dx plugin config dictionary key | Notes                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `enableFullPrivacy`                              | `fullPrivacy`                               | -                                                                                                     |
+| `enableTypingIndicator`                          | -                                           | Moved to admin dashboard under App settings → Support Experience → Show Agent Typing Indicator toggle |
+| `showConversationResolutionQuestion`             | -                                           | Moved to admin dashboard under App settings → Resolution Experience → Resolution Question toggle      |
 
 All other configurations have been deprecated and are no longer supported. For more information about API configurations, check the [configuration](/sdkx-cocos2dx/sdk-configuration-android/) guide.
 
@@ -203,10 +203,10 @@ We recommend that on migration to SDK X Cocos2dx plugin, you should login the ac
 
 Other user management APIs have also changed -
 
-| Action               | Legacy SDK Cocos2dx plugin API | SDK X Cocos2dx plugin API |
-| -------------------- | --------------------------- | ---------------------- |
-| Logout               | `HelpshiftCocos2dx::logout()`                  | `HelpshiftCocos2dx::logout()`             |
-| Clear anonymous user | `HelpshiftCocos2dx::clearAnonymousUser()`      | `HelpshiftCocos2dx::clearAnonymousUserOnLogin(bool clearAnonymousUser)` |
+| Action               | Legacy SDK Cocos2dx plugin API            | SDK X Cocos2dx plugin API                                               |
+| -------------------- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| Logout               | `HelpshiftCocos2dx::logout()`             | `HelpshiftCocos2dx::logout()`                                           |
+| Clear anonymous user | `HelpshiftCocos2dx::clearAnonymousUser()` | `HelpshiftCocos2dx::clearAnonymousUserOnLogin(bool clearAnonymousUser)` |
 
 For more information on User management in the SDK X Cocos2dx plugin, refer to [Users](/sdkx-cocos2dx/users-android/) guide.
 
@@ -228,10 +228,10 @@ String customization is yet to be supported. It will move to Helpshift Dashboard
 
 The API signatures have changed. Update existing API calls with new ones as mentioned -
 
-| Action                       | Legacy SDK Cocos2dx plugin API                                     | SDK X Cocos2dx plugin API                                        |
-| ---------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
-| Register device token        | `Core.registerDeviceToken(context, regid);` | `HelpshiftCocosBridge.registerPushToken ("fcm-token");` |
-| Request unread message count | `HelpshiftCocos2dx::getNotificationCount(true/false, didReceiveNotificationCountListenerArg)`                           | `HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer)`            |
+| Action                       | Legacy SDK Cocos2dx plugin API                                                                | SDK X Cocos2dx plugin API                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Register device token        | `Core.registerDeviceToken(context, regid);`                                                   | `HelpshiftCocosBridge.registerPushToken ("fcm-token");`               |
+| Request unread message count | `HelpshiftCocos2dx::getNotificationCount(true/false, didReceiveNotificationCountListenerArg)` | `HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer)` |
 
 The delegate method that receives the unread message count has also changed, Legacy SDK Code -
 
@@ -271,6 +271,7 @@ SDK X code -
       }
   }
 ```
+
 Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates-android/#unread-message-count).
 
 #### Handle notification
@@ -310,7 +311,7 @@ with SDK X code -
             try {
                 Map<String, Object> config = new HashMap<>();
                 config.put("enableLogging", true);
-                Helpshift.install(getApplication(), 
+                Helpshift.install(getApplication(),
                         "<APP_ID>",
                         "<DOMAIN_NAME>",
                         config
@@ -329,16 +330,16 @@ If you are using push notifications, we recommend that you register the push tok
 
 </Admonition>
 
-For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-cocos2dx/notifications-android/) guide. 
+For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-cocos2dx/notifications-android/) guide.
 For more information on delegates in SDK X, refer to [Delegates](/sdkx-cocos2dx/delegates-android/) guide.
 
 ### Internationalization
 
 The API to set SDK language has changed -
 
-| Legacy SDK Cocos2dx plugin API | SDK X Cocos2dx plugin API   |
-| --------------------------- | ------------------------ |
-| `HelpshiftCocos2dx::setLanguage("zh_CN");`    | `HelpshiftCocos2dx::setLanguage("zh-CN");` |
+| Legacy SDK Cocos2dx plugin API             | SDK X Cocos2dx plugin API                  |
+| ------------------------------------------ | ------------------------------------------ |
+| `HelpshiftCocos2dx::setLanguage("zh_CN");` | `HelpshiftCocos2dx::setLanguage("zh-CN");` |
 
 <Admonition type="info" title="Note">
 
@@ -487,10 +488,10 @@ void HelloWorld::showConversation(Ref *pSender) {
 
 #### Breadcrumbs
 
-The APIs for breadcrumbs  not changed -
+The APIs for breadcrumbs not changed -
 
-| Action            | Legacy SDK Cocos2dx plugin API   | SDK X Cocos2dx plugin API        |
-| ----------------- | ----------------------------- | ----------------------------- |
+| Action            | Legacy SDK Cocos2dx plugin API                   | SDK X Cocos2dx plugin API                        |
+| ----------------- | ------------------------------------------------ | ------------------------------------------------ |
 | Leave breadcrumbs | `HelpshiftCocos2dx::leaveBreadCrumb(breadCrumb)` | `HelpshiftCocos2dx::leaveBreadCrumb(breadcrumb)` |
 | Clear breadcrumbs | `HelpshiftCocos2dx::clearBreadCrumbs()`          | `HelpshiftCocos2dx::clearBreadCrumbs()`          |
 
@@ -503,9 +504,9 @@ You can find more details in the [Tracking](/sdkx-cocos2dx/tracking-android/#deb
 
 The API to register Helpshift delegate has been changed -
 
-| Legacy SDK Cocos2dx plugin API | SDK X Cocos2dx plugin API                       |
-| --------------------------- | -------------------------------------------- |
-| `HelpshiftCocos2dx::registerDelegates()`       | `HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent, handleAuthFailureEvent)` |
+| Legacy SDK Cocos2dx plugin API           | SDK X Cocos2dx plugin API                                                                     |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `HelpshiftCocos2dx::registerDelegates()` | `HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent, handleAuthFailureEvent)` |
 
 Each SDK event had a separate method in the legacy SDK Cocos2dx plugin. In SDK X Cocos2dx plugin, all events are received in the delegate’s `handleHelpshiftEvent(eventName,eventData)` method. For a list of events, refer to [this guide](/sdkx-cocos2dx/delegates-android/#helpshift-events).
 
@@ -520,8 +521,9 @@ Legacy SDK Cocos2dx plugin methods that are unsupported in SDK X Cocos2dx plugin
 ### Reviews & Feedback
 
 App Review by an agent is supported in SDK X. You can learn more about this feature [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
-  
+
 Following have been deprecated in SDK X:
+
 - [App review request](/cocos2d-x/reviews-feedback-android/#review-reminder-in-sdk)
 - [Manual App Rating request ](/cocos2d-x/reviews-feedback-android/#app-rating-api)
 - [Automatic Reviews request](/cocos2d-x/reviews-feedback-android/#configuring-automatic-review-requests)
