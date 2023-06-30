@@ -25,7 +25,7 @@ export default function LegacyEolAdmonition() {
     const { path, androidPath, iosPath } = bookInfo;
 
     const baseUrl = location.origin;
-    const legacyBookPage = location.pathname.split("/")[2];
+    const legacyBookPage = location?.pathname?.split("/")[2];
 
     // Plugins usually have Android and iOS docs in a flat
     // hierarchy in the file system, so we need to check for page suffix
@@ -50,11 +50,13 @@ export default function LegacyEolAdmonition() {
   };
 
   useEffect(() => {
-    const legacyBookPath = location.pathname.split("/")[1];
-    const newBookInfo = legacyToNewBookPaths[legacyBookPath];
+    const legacyBookPath = location?.pathname?.split("/")[1];
 
-    setNewBookLink(getNewBookLink(newBookInfo));
-  });
+    if (legacyBookPath) {
+      const newBookInfo = legacyToNewBookPaths[legacyBookPath];
+      setNewBookLink(getNewBookLink(newBookInfo));
+    }
+  }, []);
 
   return (
     <Admonition type="danger" title="Important">
