@@ -88,19 +88,19 @@ public class MyActivity extends Cocos2dxActivity {
 
 ```cpp
 
-    #include "HelpshiftCocos2dx.h"
+#include "HelpshiftCocos2dx.h"
+...
+
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    ValueMap config;
+    config["enableLogging"] = true
+
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
     ...
-
-    bool AppDelegate::applicationDidFinishLaunching() {
-
-        ValueMap config;
-        config["enableLogging"] = true
-
-        HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
-                                    "<Domain name from the Helpshift Dashboard>",
-                                    config);
-        ...
-    }
+}
 ```
 
 </TabItem>

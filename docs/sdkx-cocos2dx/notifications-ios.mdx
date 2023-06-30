@@ -112,7 +112,7 @@ In your `AppController.mm` file it will look something like this:
 
 ```objc
 #import <HelpshiftX/Helpshift.h>
-
+...
 - (void) application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [Helpshift registerDeviceToken:deviceToken];
 }
@@ -132,6 +132,8 @@ Example usage:
 When receiving remote notifications when the app starts for the first time, or after being killed by the user:
 
 ```objc
+#import <HelpshiftX/Helpshift.h>
+...
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     ...
@@ -151,6 +153,8 @@ When receiving remote notifications when the app starts for the first time, or a
 For the `didReceiveRemoteNotification:` delegate -
 
 ```objc
+#import <HelpshiftX/Helpshift.h>
+...
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
         [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
