@@ -134,7 +134,7 @@ public void WillPresentNotification(UNUserNotificationCenter center, UNNotificat
     var userInfo = notification.Request.Content.UserInfo;
     if (userInfo["origin"] != null && userInfo["origin"].IsEqual((NSString)"helpshift"))
     {
-        HandleHelpshiftNotification(notification.Request.Content.UserInfo, false);
+        Helpshift.HandlePush(notification.Request.Content.UserInfo, false);
         completionHandler(UNNotificationPresentationOptions.None);
     }
     else
@@ -152,7 +152,7 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
     var userInfo = response.Notification.Request.Content.UserInfo;
     if (userInfo["origin"] != null && userInfo["origin"].IsEqual((NSString)"helpshift"))
     {
-        HandleHelpshiftNotification(response.Notification.Request.Content.UserInfo, true);
+        Helpshift.HandlePush(response.Notification.Request.Content.UserInfo, true);
     }
     else
     {

@@ -20,8 +20,7 @@ import {
 <DownloadButton
   text="Download SDK X for Xamarin"
   link="[% sdkx-xamarin.plugin_url %]"
-  classes="mb-4"
-/>
+  classes="mb-4"/>
 
 The Helpshift SDK X Xamarin package contains the following files:
 
@@ -44,6 +43,16 @@ The Helpshift SDK X Xamarin package contains the following files:
 - Add the following packages to your app for Android:
     - Newtonsoft JSON.Net
     - Xamarin.Android.Support.v7.AppCompat - 28.0.0
+
+<Admonition type="info" title="Note">
+
+#### Add `NSPhotoLibraryUsageDescription` key in your iOS application's `Info.plist` file
+
+If your iOS app does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause app rejection.
+
+**NSPhotoLibraryUsageDescription Description text:** "We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons."
+
+</Admonition>
 
 <Admonition type="info" title="Note">
 
@@ -89,7 +98,7 @@ using HelpshiftApi;
 
 Initialize the SDK by calling `Install()` method before any other interaction with the Helpshift SDK. You can optionally pass the configuration dictionary to `Install()` API. To see supported configurations, check the [SDK Configuration](/sdkx-xamarin/sdk-configuration.mdx) page.
 
-<Tabs>
+<Tabs groupId="xamarin">
 
 <TabItem value="iOS" label="iOS">
 
@@ -137,6 +146,60 @@ namespace App
 </Tabs>
 
 Helpshift is now integrated with your app! You can now use other [SDK APIs](/sdkx-xamarin/support-tools) inside your app.
+
+#### Initializing Helpshift in your app for China {#chinasupport}
+
+A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
+This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+Add the following code in your AppDelegate class -
+
+<Tabs groupId="xamarin">
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    public class AppDelegate : UIApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("isForChina", true);
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("isForChina", true);
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 <Admonition type="danger" title="Important">
 

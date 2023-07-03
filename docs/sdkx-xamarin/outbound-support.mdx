@@ -56,6 +56,8 @@ To pass the Outbound Support data to Helpshift, follow these steps -
 
 3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard
 
+Reference implementation of `IUNUserNotificationCenterDelegate.WillPresentNotification` -
+
 ```csharp
 [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
 public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
@@ -65,7 +67,7 @@ public void WillPresentNotification(UNUserNotificationCenter center, UNNotificat
     {
         // This is a notification from helpshift push notification system
         // for messages sent from agent from Helpshift Dashboard
-        HandleHelpshiftNotification(notification.Request.Content.UserInfo, false);
+        Helpshift.HandlePush(notification.Request.Content.UserInfo, false);
         completionHandler(UNNotificationPresentationOptions.None);
     }
     else
@@ -76,7 +78,11 @@ public void WillPresentNotification(UNUserNotificationCenter center, UNNotificat
         completionHandler(UNNotificationPresentationOptions.Banner);
     }
 }
+```
 
+Reference implementation of `IUNUserNotificationCenterDelegate.DidReceiveNotificationResponse` -
+
+```csharp
 [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
 public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
 {
@@ -85,7 +91,7 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
     {
         // This is a notification from helpshift push notification system
         // for messages sent from agent from Helpshift Dashboard
-        HandleHelpshiftNotification(response.Notification.Request.Content.UserInfo, true);
+        Helpshift.HandlePush(response.Notification.Request.Content.UserInfo, true);
     }
     else
     {
