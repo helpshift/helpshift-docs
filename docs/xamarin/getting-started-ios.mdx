@@ -91,9 +91,7 @@ The Helpshift SDK _.zip_ file contains the following files:
 To use Helpshift's APIs, please import the Helpshift's namespace as given below.
 
 ```csharp
-
-    using HelpshiftApi;
-
+  using HelpshiftApi;
 ```
 
 Helpshift SDK uniquely identifies your App with the combination of:
@@ -118,7 +116,7 @@ And, initialize Helpshift by calling the _Install(apiKey, domain, appId)_. For e
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
 
-    ::::csharp
+    ```csharp
     using HelpshiftApi;
     .
     .
@@ -126,11 +124,12 @@ And, initialize Helpshift by calling the _Install(apiKey, domain, appId)_. For e
     HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
     HelpshiftInstallConfig config = new HelpshiftInstallConfig.Builder().Build();
     HelpshiftCore.Install ("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", config);
+    ```
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
-    ::::csharp
+    ```csharp
     using HelpshiftApi;
     .
     .
@@ -138,6 +137,7 @@ And, initialize Helpshift by calling the _Install(apiKey, domain, appId)_. For e
     HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
     Dictionary<string, object> config = new Dictionary<string, object>();
     HelpshiftCore.Install ("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", config);
+    ```
 
 </TabItem>
 
@@ -156,18 +156,19 @@ Sample usage for FAQs and conversation APIs:
 
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
 
-    ::::chsarp
-    HelpshiftAPIConfig faqApiConfig = new HelpshiftAPIConfig.Builder().Build();
-    helpBtn.Click += delegate
-    {
-    HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, faqApiConfig);
-    };
+```csharp
+HelpshiftAPIConfig faqApiConfig = new HelpshiftAPIConfig.Builder().Build();
+helpBtn.Click += delegate
+{
+HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, faqApiConfig);
+};
 
-    HelpshiftAPIConfig convApiConfig = new HelpshiftAPIConfig.Builder().Build();
-    contactBtn.Click += delegate
-    {
-        HelpshiftApi.HelpshiftSupport.ShowConversation(activity, convApiConfig);
-    };
+HelpshiftAPIConfig convApiConfig = new HelpshiftAPIConfig.Builder().Build();
+contactBtn.Click += delegate
+{
+    HelpshiftApi.HelpshiftSupport.ShowConversation(activity, convApiConfig);
+};
+```
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">

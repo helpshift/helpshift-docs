@@ -1,0 +1,289 @@
+---
+sidebar_position: 85
+title: Outbound Support
+description: "With outbound support, you can proactively engage with consumers to solve problems within the app."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Image,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Outbound Support {#outbound-support}
+
+<Intro>
+
+With Outbound Support, you can proactively engage with consumers to solve problems within the app. Read more about the feature **[here](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install()](/sdkx-xamarin/getting-started#initialize) API.
+
+</Admonition>
+
+The steps to use this feature are the following -
+
+To generate the link for Outbound Support, on your Helpshift dashboard, go to **Settings** > **Workflows** > **Outbound Support**.
+
+<Image src="/static/books/helpshiftx/outbound-support.png" width="full" />
+
+You should see a **New link** button. Click on the New link button and select an action like **Chat, Help Center, Single FAQ or FAQ Section** and other data like **CIFs, Tags, First User Message** you want to send as payload to Helpshift SDK.
+
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />
+
+At last, you will get a URL encoded payload link. Send this link to your end-users embedded in a notification payload using your existing push notification system.
+
+YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For example, like the scheme you would use in deep link URLs for your app like myApp, myAppSupport etc.
+
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />
+
+## Delegate push notification data to Helpshift {#delegate-notification-data}
+
+<Tabs groupId="xamarin">
+<TabItem value="iOS" label="iOS">
+
+To pass the Outbound Support data to Helpshift, follow these steps -
+
+1. Send push notification to the users you want to give proactive support using your app's push notification system
+
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the notification data to Helpshift SDK by calling `HandleProactiveLink(string)` API in `IUNUserNotificationCenterDelegate.DidReceiveNotificationResponse` delegate
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard
+
+Reference implementation of `IUNUserNotificationCenterDelegate.WillPresentNotification` -
+
+```csharp
+[Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
+public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
+{
+    var userInfo = notification.Request.Content.UserInfo;
+    if (userInfo.ObjectForKey((NSString)"origin").IsEqual((NSString)"helpshift"))
+    {
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
+        Helpshift.HandlePush(notification.Request.Content.UserInfo, false);
+        completionHandler(UNNotificationPresentationOptions.None);
+    }
+    else
+    {
+        // Notification is not from Helpshift. You should handle this in a way
+        // that best suits your app's needs. Here, we show the standard iOS
+        // system notification banner.
+        completionHandler(UNNotificationPresentationOptions.Banner);
+    }
+}
+```
+
+Reference implementation of `IUNUserNotificationCenterDelegate.DidReceiveNotificationResponse` -
+
+```csharp
+[Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
+public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+{
+    var userInfo = response.Notification.Request.Content.UserInfo;
+    if (userInfo.ObjectForKey((NSString)"origin").IsEqual((NSString)"helpshift"))
+    {
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
+        Helpshift.HandlePush(response.Notification.Request.Content.UserInfo, true);
+    }
+    else
+    {
+        var proactiveLink = userInfo.ObjectForKey((NSString)"helpshift_proactive_link");
+        if (proactiveLink is NSString && !String.IsNullOrWhiteSpace((NSString)proactiveLink))
+        {
+            // This is your app's push notification system containing a Helpshift proactive link
+            Helpshift.HandleProactiveLink((NSString)proactiveLink);
+        }
+        else 
+        {
+            // This is your app's push notification system.
+        }
+    }
+    completionHandler();
+}
+```
+
+</TabItem>
+
+<TabItem value="Android" label="Android">
+
+To pass the Outbound Support data to Helpshift, follow these steps -
+
+1. Send push notification to the users you want to give outbound support using your app's existing push notification system
+
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the outbound support link in your notification data to Helpshift SDK by calling `Helpshift.HandleProactiveLink(string)`.
+
+3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
+
+For example, following code shows how to handle incoming push notification and posting it on the notification bar of the device -
+
+
+```csharp
+// Function which receives notification message from FCM
+public override void OnMessageReceived(RemoteMessage remoteMessage)
+{
+    IDictionary<string, string> data = remoteMessage.Data;
+    string origin = data["origin"];
+
+    // This is a notification from Helpshift push notification system for messages sent by agent
+    if (origin != null && origin.Equals("helpshift"))
+    {
+        Helpshift.HandlePush(data);
+    }
+    else
+    {
+        // This is not a notification from Helpshift system
+        // This is your existing push notification system
+
+        // Sample key in notification data where you will put the proactive support link generated from Helpshift dashboard
+        string proactiveLink = data.ContainsKey("helpshift_proactive_link") ? data["helpshift_proactive_link"] : null;
+
+        if (proactiveLink != null)
+        {
+                var valuesForActivity = new Bundle();
+                valuesForActivity.PutString("helpshift_proactive_link", proactiveLink);
+
+                // When the user clicks the notification, ProactiveNotificationHandlerActivity will start up.
+                var resultIntent = new Intent(this, typeof(ProactiveNotificationHandlerActivity));
+
+                // Pass the values to ProactiveNotificationHandlerActivity:
+                resultIntent.PutExtras(valuesForActivity);
+                resultIntent.SetFlags(ActivityFlags.NewTask);
+
+                PendingIntentFlags flag = Build.VERSION.SdkInt < BuildVersionCodes.M ? 0 : PendingIntentFlags.Immutable;
+
+                // Create the PendingIntent and update current if there is already a pendingIntent created earlier.
+                var resultPendingIntent = PendingIntent.GetActivity(this, 0, resultIntent, flag | PendingIntentFlags.UpdateCurrent);
+
+                // Build the notification:
+                var builder = new NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
+                              .SetAutoCancel(true)
+                              .SetContentIntent(resultPendingIntent) // Start up this activity when the user clicks the intent.
+                              .SetContentTitle("Proactive Notification") // Set the title
+                              .SetSmallIcon(HelpshiftApiExample.Droid.Resource.Drawable.app_icon) // This is the icon to display
+                              .SetContentText("Click to see proactive in action!"); // the message to display.
+
+                // Finally, publish the notification:
+                var notificationManager = NotificationManagerCompat.From(this);
+                notificationManager.Notify(1, builder.Build());
+         }
+    }
+}
+```
+
+When the user clicks on the notification, `ProactiveNotificationHandlerActivity` activity is started (as specified in the above code sample).
+To delegate push notification data to Helpshift SDK, call `Helpshift.HandleProactiveLink()` in **ProactiveNotificationHandlerActivity's onCreate()** method.
+
+For Example -
+
+_Following code shows how to delegate push notification data by calling `Helpshift.HandleProactiveLink()` to Helpshift SDK._
+
+```csharp
+[Activity(Label = "ProactiveNotificationHandlerActivity", MainLauncher = false)]
+public class ProactiveNotificationHandlerActivity : Activity
+{
+	protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            string proactiveLink = intent.Extras.GetString("helpshift_proactive_link");
+            if (!string.IsNullOrEmpty(proactiveLink))
+            {
+                HelpshiftApi.Helpshift.HandleProactiveLink(proactiveLink);
+                Finish();
+                return;
+            }
+
+            // Toast in case of incorrect activity invocation.
+            Android.Widget.Toast.MakeText(this, "Empty Proactive link", Android.Widget.ToastLength.Short).Show();
+
+            Finish();
+        }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Passing configuration specific to the current user {#user-specific-config}
+
+You may want to add configuration specific to the current user in your app when they click on the notification.
+
+Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime. This local API config is exactly same as we would expect in other APIs like `ShowConversation()` or `ShowFAQs()`.
+
+We will use this configuration for current issue as well as next issue filed in same session.
+
+<Admonition type="info" title="Note">
+
+You need to call this API after `Helpshift.Install()` and before `Helpshift.HandleProactiveLink()`
+
+</Admonition>
+
+Implement public interface `IHelpshiftProactiveAPIConfigCollector` and call `Helpshift.SetHelpshiftProactiveConfigCollector(<IHelpshiftProactiveAPIConfigCollector instance>)` method to initialize the config collector.
+
+You will have to implement the method `GetAPIConfig()` where you can add any user specific config in the same format as you add in other public APIs like `ShowConversation()` or `ShowFAQs()`.
+
+We will merge this config and the config embedded in the Outbound Support link. We will append data of config from Outbound Support link to local config like **Tags, CIFs**, etc. In case of conflicts, Outbound Support config will get the precedence.
+
+For example, following code shows how to implement `IHelpshiftProactiveAPIConfigCollector` interface and how to add user specific configurations using `GetAPIConfig()` method -
+
+<Tabs groupId="xamarin">
+<TabItem value="iOS" label="iOS">
+
+```csharp
+public partial class ViewController : UIViewController, IHelpshiftProactiveAPIConfigCollector
+{
+    public ViewController(IntPtr p) : base(p)
+	{
+        Helpshift.SetHelpshiftProactiveConfigCollector(this);
+	}
+
+    public Dictionary<string, object> GetAPIConfig()
+    {
+        Dictionary<string, object> configDictionary = new Dictionary<string, object>();
+        Dictionary<string, object> cif = new Dictionary<string, object>();
+        cif.Add("age", new Dictionary<string, string>{
+            { "type", "number" },
+            { "value", "42" }
+        });
+        configDictionary.Add("cifs", cif);
+        return configDictionary;
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="Android" label="Android">
+
+```csharp
+[Activity(Label = "MainActivity")]
+public class MainActivity : Activity, IHelpshiftProactiveAPIConfigCollector
+{
+    protected override void OnCreate(Bundle savedInstanceState)
+    {
+        Helpshift.SetHelpshiftProactiveConfigCollector(this);
+    }
+
+    public Dictionary<string, object> GetAPIConfig()
+    {
+        Dictionary<string, object> configDictionary = new Dictionary<string, object>();
+        Dictionary<string, object> cif = new Dictionary<string, object>();
+        cif.Add("age", new Dictionary<string, string>{
+            { "type", "number" },
+            { "value", "42" }
+        });
+        configDictionary.Add("cifs", cif);
+        return configDictionary;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
