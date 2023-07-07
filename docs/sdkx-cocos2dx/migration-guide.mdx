@@ -1,5 +1,5 @@
 ---
-sidebar_position: 270
+sidebar_position: 150
 title: Migration Guide
 description: "SDK X Cocos2dx plugin is a Hybrid SDK that helps you roll out innovation faster by enabling most of the updates over the air that flow to end-users without any downtime or app updates. This migration guide will walk you through the steps you need to take to migrate from the Helpshift legacy SDK cocos2dx plugin to the SDK X cocos2dx plugin."
 ---
@@ -106,7 +106,10 @@ If you try to build an Android project from Cocos2dx after updating the Helpshif
 
 Remove the existing Helpshift install call and replace it with the following -
 
-```cpp
+<Tabs groupId="platform">
+<TabItem value="android" label="Android">
+
+```java
 
     import com.helpshift.HelpshiftBridge;
     import com.helpshift.exceptions.InstallException;
@@ -128,6 +131,31 @@ Remove the existing Helpshift install call and replace it with the following -
     }
 
 ```
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+Initialize Helpshift by including `HelpshiftCocos2dx.h` and
+calling `HelpshiftCocos2dx::install` in the `AppDelegate::applicationDidFinishLaunching()` function of your `AppDelegate.cpp`:
+
+```cpp
+
+    #include "HelpshiftCocos2dx.h"
+    ...
+
+    bool AppDelegate::applicationDidFinishLaunching() {
+
+        HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                    "<Domain name from the Helpshift Dashboard>",
+                                    config);
+        ...
+
+    }
+
+```
+
+</TabItem>
+</Tabs>
 
 Refer to SDK X Cocos2dx plugin’s [Getting Started](/sdkx-cocos2dx/getting-started/) guide for more information.
 
@@ -224,7 +252,7 @@ Theming can be configured from the admin dashboard. You can find more details in
 
 String customization is yet to be supported. It will move to Helpshift Dashboard. Remove all Helpshift SDK related string customizations done in your project as they will no longer reflect in SDK X.
 
-### Notification APIs
+### Notification APIs Android
 
 The API signatures have changed. Update existing API calls with new ones as mentioned -
 
@@ -324,13 +352,90 @@ with SDK X code -
     }
 ```
 
+### Notification APIs iOS
+
+The API signatures have changed. Update existing API calls with new ones as mentioned -
+
+| Action                       | Legacy SDK Cocos2dx plugin API                                                                | SDK X Cocos2dx plugin API                                             |
+| ---------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Register device token        | `[HelpshiftCore registerDeviceToken:deviceToken];`                                            | `[Helpshift registerDeviceToken:deviceToken];`                        |
+| Request unread message count | `HelpshiftCocos2dx::getNotificationCount(true/false, didReceiveNotificationCountListenerArg)` | `HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer)` |
+
+The delegate method that receives the unread message count has also changed, Legacy SDK Code -
+
+```cpp
+  void didReceiveNotificationCountListenerArg(int count) {
+      CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
+  }
+  // Get count synchronously from cache.
+  HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
+  // OR
+  // asynchronously from the server.
+  HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
+
+```
+
+SDK X code -
+
+```cpp
+void getUnreadMessageCount(Ref *pSender) {
+  bool shouldFetchFromServer = true;
+  HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
+}
+
+void updateBadgeCount(int count) {
+  // Your UI Logic here
+}
+
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+        if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+          int count = eventData[DATA_MESSAGE_COUNT].asInt();
+          bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+          // Use the 'count' variable for further processing
+          updateBadgeCount(count);
+      }
+    }
+}
+```
+
+#### Handle notification
+
+To handle notification clicks, replace legacy SDK code -
+
+```objc
+#import <HelpshiftX/Helpshift.h>
+...
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [HelpshiftCore handleRemoteNotification:userInfo
+                                isAppLaunch:false
+                              withController:self.window.rootViewController];
+    }
+}
+```
+
+SDK X code -
+
+```objc
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [HelpshiftCore handleRemoteNotification:userInfo
+                                isAppLaunch:false
+                              withController:self.window.rootViewController];
+    }
+}
+```
+
+Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates/#unread-message-count).
+
 <Admonition type="info" title="Note">
 
 If you are using push notifications, we recommend that you register the push token again with SDK X after your app has been upgraded to avoid potential inconsistencies.
 
 </Admonition>
 
-For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-cocos2dx/notifications-android/) guide.
+For more information on Notification APIs in SDK X, refer to [Notifications](/sdkx-cocos2dx/notifications-ios/) guide.
 For more information on delegates in SDK X, refer to [Delegates](/sdkx-cocos2dx/delegates/) guide.
 
 ### Internationalization
