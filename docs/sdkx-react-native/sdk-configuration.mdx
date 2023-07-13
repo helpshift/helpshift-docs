@@ -21,6 +21,8 @@ import {
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
 
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -107,11 +109,11 @@ This config is common for both iOS and Android.
 Example :
 
 ```javascript
-let installConfig = {
+let config = {
   fullPrivacy: true,
 }
 
-install(<appId>, <domain>, installConfig);
+showConversation(config);
 ```
 
 ## Enable Contact Us {#enableContactUs}
@@ -149,19 +151,42 @@ showFAQsWithConfig({
 
 |        |                           |
 | ------ | ------------------------- |
-| Flag   | `conversationPrefillText` |
-| values | Any string value          |
+| Key   | `conversationPrefillText` |
+| Value | Any string value          |
 
 </div>
 
 Example:
 
 ```javascript
-let installConfig = {
+let config = {
   conversationPrefillText: "<INSERT YOUR CONVERSATION PREFILL TEXT HERE>",
 }
 
-install(<appId>, <domain>, installConfig);
+showConversation(config);
+```
+
+## Conversation Initial User Message {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+<div className="compact ">
+
+|        |                           |
+| ------ | ------------------------- |
+| Key   | `initialUserMessage` |
+| Value | Any string value          |
+
+</div>
+
+Example:
+
+```javascript
+let config = {
+  initialUserMessage: "<INSERT YOUR INITIAL MESSAGE HERE>",
+}
+
+showConversation(config);
 ```
 
 ## Android Specific Configurations
