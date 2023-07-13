@@ -141,6 +141,77 @@ string sectionId = "your_section_id";
 // open the particular section
 help.ShowFAQSection(sectionId,configMap);
 ```
+### FAQ Filtering by tags {#faq-filtering}
+
+Starting v4.14.0 onwards, we have introduced FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are :
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />{" "}
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+#### How to use FAQ filtering
+
+This will be a config option which will be supported by the showFAQs and showFAQSection APIs.
+
+The withTagsMatching option will be a dictionary containing 2 keys
+
+- operator : one of and, or, not which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query
+
+The withTagsMatching option will be should be added as an object against key “withTagsMatching ” in the dictionary optionsDictionary that is taken by showFAQs and showFAQSection APIs.
+
+<Tabs>
+
+<TabItem value="Using Api Config object" label="Using Api Config object">
+
+```objc
+
+	//If the developer wants to show all FAQs with tags iPad or iPhone
+	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
+	apiBuilder.withTagsMatching = [[HelpshiftFAQFilter alloc] initWithFilterOperator:HsOperatorOr / HsOperatorAnd / HsOperatorNot andTags:@[@"tag1",@"tag2",...]];
+	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
+	[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
+
+```
+
+</TabItem>
+<TabItem value="Using Dictionary" label="Using Dictionary">
+
+```objc
+
+	//If the developer wants to show all FAQs with tags iPad or iPhone
+	NSDictionary * optionsDictionary = @{ @"withTagsMatching" : @{ @"operator" : @"or",
+                                                                   @"tags" : @[@"iPhone",@"iPad"]}};
+	[HelpshiftSupport showFAQs:self withOptions:optionsDictionary];
+
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="Note">
+
+As of v4.14.0 you can have only one tag filter config which will be respected on showFAQs and showFAQSection. Also the tag filtering respects only one operator.
+
+</Admonition>
 
 ## Showing a Particular FAQ {#faq-view}
 
