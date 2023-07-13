@@ -117,16 +117,14 @@ This event is triggered when the user opens or exits the chat screen. This event
 - Event data: `HelpshiftEvent.DATA_SDK_VISIBLE`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.WIDGET_TOGGLE:
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_SDK_VISIBLE));
-        }
-      }
-      // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.WIDGET_TOGGLE:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_SDK_VISIBLE));
+    }
+  }
 ```
 
 ### Conversation Start Event {#conversation-start-event}
@@ -186,7 +184,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CSAT_SUBMIT":
+      case HelpshiftEvent.CSAT_SUBMIT:
         Log.d(TAG, data.get(HelpshiftEvent.DATA_CSAT_RATING));
         Log.d(TAG, data.get(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK));
     }
@@ -204,7 +202,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_END":
+      case HelpshiftEvent.CONVERSATION_END:
         //data will be empty
     }
   }
@@ -221,7 +219,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_REJECTED":
+      case HelpshiftEvent.CONVERSATION_REJECTED:
         //data will be empty
     }
   }
@@ -238,7 +236,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_RESOLVED":
+      case HelpshiftEvent.CONVERSATION_RESOLVED:
         //data will be empty
     }
   }
@@ -255,7 +253,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_REOPENED":
+      case HelpshiftEvent.CONVERSATION_REOPENED:
         //data will be empty
     }
   }

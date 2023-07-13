@@ -21,12 +21,7 @@ import {
 
 # Getting Started {#getting-started}
 
-<Intro>
-
-Follow these simple steps to add Helpshift in-app support to your
-iOS app right away.
-
-</Intro>
+<Intro>{frontMatter.description}</Intro>
 
 ## Requirements {#version-requirements}
 
@@ -204,6 +199,58 @@ import HelpshiftX
 ...
 ```
 
+</TabItem>
+
+</Tabs>
+
+
+#### Initializing Helpshift in your app for China {#chinasupport}
+
+A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
+This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+Add the following code in your AppDelegate class -
+
+<Tabs>
+
+<TabItem value="Using Objective-C" label="Using Objective-C">
+
+```objc
+@import HelpshiftX;
+...
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    ...
+    NSDictionary *config = @{
+        ...
+        @"isForChina" : @YES,
+        ...
+    };
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" domain:@"YOUR_DOMAIN" config:config];
+    ...
+    return YES;
+}
+```
+
+</TabItem>
+<TabItem value="Using Swift" label="Using Swift">
+
+```swift
+import HelpshiftX
+...
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        ...
+        let config = [
+            ...
+            "isForChina": true
+            ...
+        ]
+        Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+        ...
+        return true
+    }
+...
+```
 </TabItem>
 
 </Tabs>
