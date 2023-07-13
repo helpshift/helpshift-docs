@@ -1,0 +1,518 @@
+---
+sidebar_position: 30
+title: SDK Configuration
+description: Helpshift provides several configuration options that you can use to customize the behavior of the SDK.
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Intro,
+} from "@site/src/components/forDocs";
+
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationPrefillTextCode from "@site/docs/_partials/_convInitialUserMessageXamarinCode.mdx";
+
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ConversationInitialUserMessageCode from "@site/docs/_partials/_convInitialUserMessageXamarinCode.mdx";
+
+# SDK Configuration
+
+<Intro>
+
+Helpshift provides several configuration options that you can use to customize the behavior of the SDK. Use these options in conjunction with our [Helpshift APIs](/sdkx-xamarin/support-tools/).
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install()](/sdkx-xamarin/getting-started#initialize) API.
+
+</Admonition>
+
+## Common configurations {#common-config}
+
+Common configurations apply to both iOS and Android platforms.
+
+### Enable Logging {#enableLogging}
+
+Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Visual Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
+
+<div className="compact ">
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| Option:       | <code>enableLogging</code>                        |
+| Values:       | <code>true</code> / <code>false</code>            |
+| Default:      | <code>false</code>                                |
+| Min SDK       | v10.2.0                                           |
+| Supported by: | <code>Install()</code>                            |
+
+</div>
+
+Example:
+
+<Tabs groupId="xamarin">
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    public class AppDelegate : UIApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("enableLogging", true);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("enableLogging", true);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Enable Contact Us {#enable-contact-us}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+<div className="compact ">
+
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Option       | <code>enableContactUs</code>                                                                                                     |
+| Values       | <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code> |
+| Default      | <code>null</code>                                                                                                                |
+| Min SDK      | v10.2.0                                                                                                                          |
+| Supported by | <code>ShowFAQs()</code>, <code>ShowFAQSection()</code>, <code>ShowSingleFAQ()</code>                                             |
+
+</div>
+
+Example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("enableContactUs", "AFTER_VIEWING_FAQS");
+// other configs...
+Helpshift.ShowFAQs(this, config);
+```
+
+#### Best Practices
+
+- Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+
+<Tabs groupId="xamarin">
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using CoreTelephony;
+
+CTTelephonyNetworkInfo netinfo = new CTTelephonyNetworkInfo();
+CTCarrier carrier = netinfo.SubscriberCellularProvider;
+string enableContactUsValue = "AFTER_VIEWING_FAQS";
+if (carrier.MobileCountryCode == "<LOCAL_COUNTRY_CODE>")
+{
+    enableContactUsValue = "ALWAYS";
+}
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("enableContactUs", value);
+Helpshift.ShowFAQs(this, config);
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+TelephonyManager tm = (TelephonyManager)GetSystemService(Context.TelephonyService);
+string country = tm.SimCountryIso;
+string value = "AFTER_VIEWING_FAQS";
+if ("<LOCAL_COUNTRY_CODE>".Equals(country))
+{
+    value = "ALWAYS";
+}
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("enableContactUs", value);
+Helpshift.ShowFAQs(this, config);
+```
+
+</TabItem>
+
+</Tabs>
+
+### Full privacy {#enableFullPrivacy}
+
+Full privacy option helps ensure [COPPA](http://www.coppa.org/) compliance by:
+
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Making sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, and with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+3. Not collecting any of the following personal information:
+   - Mobile country code, mobile network code and carrier name.
+   - Custom meta-data that is labeled "private-data".
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+|              |                                                      |
+| ------------ | ---------------------------------------------------- |
+| Option       | <code>fullPrivacy</code>                             |
+| Values       | <code>true</code> / <code>false</code>               |
+| Default      | <code>false</code>                                   |
+| Min SDK      | v10.2.0                                              |
+| Supported by | <code>ShowConversation</code>, <code>ShowFAQs</code> |
+
+Example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("fullPrivacy", true);
+// other configs...
+Helpshift.ShowConversation(this, config);
+```
+
+#### Best Practices
+
+In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to `true`. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
+
+### Enable In-App Notifications {#enable-in-app-notification}
+
+If you do not want the in-app notifications support provided by the Helpshift SDK, set this flag to `false`.
+
+On setting this flag to `false`, the SDK will stop showing notifications in the notification tray of the device but it will fetch messages in background.
+
+The default value of this flag is `true` i.e., the in-app notifications will be enabled.
+
+<div className="compact ">
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| Option:       | <code>enableInAppNotification</code>              |
+| Values:       | <code>true</code> / <code>false</code>            |
+| Default:      | <code>true</code>                                 |
+| Min SDK       | v10.2.0                                           |
+| Supported by: | <code>Install()</code>                            |
+
+</div>
+
+Example:
+
+<Tabs groupId="xamarin">
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    public class AppDelegate : UIApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("enableInAppNotification", true);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("enableInAppNotification", true);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Initiate new conversation on chat screen load {#initiate-chat-on-load}
+
+In config dictionary of `ShowConversation()`, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the **New Conversation** button or going through the post resolution flows like feedback bots of the previous issue.
+
+|               |                                        |
+| ------------- | ---------------------------------------|
+| Option:       | <code>initiateChatOnLoad</code>        |
+| Values:       | <code>true</code> / <code>false</code> |
+| Default:      | <code>false</code>                     |
+| Min SDK       | v10.2.0                                |
+| Supported by: | <code>ShowConversation()</code>        |
+
+Example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("initiateChatOnLoad", true);
+// other configs...
+Helpshift.ShowConversation(this, config);
+```
+
+### Conversation prefill text {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+<ConversationPrefillTextCode />
+
+### Conversation Initial User Message {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+<ConversationInitialUserMessageCode />
+
+## iOS Specific Configurations
+
+### In-App Notificaton Appearance {#in-app-notification-appearance}
+
+This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary.
+
+|               |                                                             |
+| ------------- | ----------------------------------------------------------- |
+| Option:       | <code>inAppNotificationAppearance</code>                    |
+| Sub-Options:  | <code>bannerBackgroundColor</code> / <code>textColor</code> |
+| Min SDK       | v10.2.0                                                     |
+| Supported by: | <code>Install()</code>                                      |
+
+Example:
+
+```csharp
+var config = new Dictionary<string, Dictionary<string, string>>
+{
+    {
+        "inAppNotificationAppearance", new Dictionary<string, string>
+        {
+            { "bannerBackgroundColor", "000000" },
+            { "textColor", "FFFFFF" }
+        }
+    }
+};
+
+Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", config);
+```
+
+
+### Full Screen on iPad {#present-full-screen-on-ipad}
+
+The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
+
+The default value is false, which presents support views in `UIModalPresentationFormSheet`. When the value is set to `true`, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
+
+|              |                                                          |
+| ------------ | ---------------------------------------------------------|
+| Option       | <code>presentFullScreenOniPad</code>                     |
+| Values       | <code>true</code> / <code>false</code>                   |
+| Default      | <code>false</code>                                       |
+| Min SDK      | v10.2.0                                                  |
+| Supported by | <code>ShowConversation()</code>, <code>ShowFAQs()</code> |
+
+Example:
+
+```csharp
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("presentFullScreenOniPad", true);
+// other configs...
+Helpshift.ShowConversation(this, config);
+```
+
+## Android specific configurations
+
+### Screen Orientation {#screen-orientation}
+
+The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the `Android.Content.PM.ScreenOrientation` class.
+
+For example, you may want to fix the orientation to `ScreenOrientation.Portrait` for mobile users and `ScreenOrientation.Landscape` for tablet users.
+
+<div className="compact ">
+
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                                                                                      |
+| values  | integer values for orientation from `Android.Content.PM.ScreenOrientation` class |
+| default | ScreenOrientation.Unspecified                                                                                            |
+
+</div>
+
+Example:
+
+
+```csharp
+using HelpshiftApi;
+using Android.Content.PM;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("screenOrientation", ScreenOrientation.Portrait);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+### Notification Icon {#notification-icon}
+
+By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `Install()` call.
+
+Example:
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("notificationIcon", Resource.Drawable.notification_icon);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+### Large Notification Icon {#large-notification-icon}
+
+By default the application icon is used as the notification icon. If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `Install()` call.
+
+Example:
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("notificationLargeIcon", Resource.Drawable.large_icon);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+### Notification Sound {#notification-sound}
+
+By default the default device notification sound is used for Helpshift notifications. You can customize the notification sound using the config in the install call.
+
+Example:
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("notificationSoundId", Resource.Raw.notification_sound);
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+### Notification channels {#notification-channels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `Install()` call.
+
+Example:
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("notificationChannelId", "your channel name here");
+            // Add any other install config parameters
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+## Theming the SDK {#theming}
+
+Please check [design](/sdkx-xamarin/design) page to apply your styles and theming to the SDK.
+
+## Tracking {#tracking}
+
+This config represents the tracking of user actions. For more information, please check [tracking](/sdkx-xamarin/tracking).

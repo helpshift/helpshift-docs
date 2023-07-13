@@ -1,0 +1,216 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: You're 3 steps away from adding great in-app support to your Xamarin application.
+---
+
+import {
+  Intro,
+  DownloadButton,
+  Admonition,
+  Image,
+  Tabs,
+  TabItem
+} from "@site/src/components/forDocs";
+
+<Intro>{frontMatter.description}</Intro>
+
+## Requirements
+
+- Visual Studio 2022 or higher
+- Supported iOS versions - iOS 13 and above
+- Supported Android versions - API level 24 and above
+
+## Step 1 - Download Helpshift SDK X for Xamarin {#download}
+
+<DownloadButton
+  text="Download SDK X for Xamarin"
+  link="[% sdkx-xamarin.plugin_url %]"
+  classes="mb-4"/>
+
+The Helpshift SDK X Xamarin package contains the following files:
+
+<div className="text-sm compact ">
+
+|                                  |                                                                                                                                                                 |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HelpshiftApi.dll                 | The platform independent dll. Only needs to be added for API reference in a cross platform project. This dll should not be packaged with the final application. |
+| Android/HelpshiftApi.dll         | The Android specific dll.                                                                                                                                       |
+| iOS/Helpshift.IOS.dll            | The iOS binding library dll.                                                                                                                                    |
+| iOS/HelpshiftApi.dll             | The iOS specific api dll.                                                                                                                                       |
+
+</div>
+
+## Step 2 - Add Helpshift to your Xamarin project {#add-to-project}
+
+- Add the `HelpshiftApi.dll` to the References in platform independent project in your multi-platform Xamarin project. This dll should not be packaged with the final application.
+- Add the `iOS/HelpshiftApi.dll` and `iOS/Helpshift.IOS.dll` to the References in your iOS specific project.
+- Add the `Android/HelpshiftApi.dll` to the References in your Android specific project.
+- Add the following packages to your app for Android:
+    - Newtonsoft JSON.Net
+    - Xamarin.Android.Support.v7.AppCompat - 28.0.0
+
+<Admonition type="info" title="Note">
+
+#### Add `NSPhotoLibraryUsageDescription` key in your iOS application's `Info.plist` file
+
+If your iOS app does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause app rejection.
+
+**NSPhotoLibraryUsageDescription Description text:** "We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons."
+
+</Admonition>
+
+<Admonition type="info" title="Note">
+
+ When the application is compiled, the platform specific dlls - i.e `iOS/HelpshiftApi.dll` and `Android/HelpshiftApi.dll` - will automatically replace the `HelpshiftApi.dll` (since they have the same assembly name and version) referenced in the first step. This serves application development around common API's across different platforms.
+
+</Admonition>
+
+## Step 3 - Initialize Helpshift in your app {#initialize}
+
+First, create an app on the Helpshift Dashboard
+
+<Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+
+Create an app with **Android** and **iOS** as selected `Platform`
+
+<Image src="/static/books/helpshiftx/create_app_with_android_platform.png" width="full"/>{" "}
+
+Helpshift uniquely identifies each app with a combination of 2 tokens:
+
+<div className=" compact">
+
+|                          |                                                       |
+| ------------------------ | ------------------------------------------------------|
+| <code>Domain Name</code> | Your Helpshift domain. E.g. _happyapps.helpshift.com_ |
+| <code>Platform ID</code> | Your App's unique App ID                              |
+
+</div>
+
+To obtain these values:
+
+1. Go to your Helpshift dashboard
+2. Navigate to `Settings` > `SDKs (for Developers)`
+3. Select your App and from the dropdown
+4. Copy the two tokens present in the "iOS" and "Android" tables
+
+<Image src="/static/books/helpshiftx/copy_install_keys.png" width="full" />
+
+Once you have these two tokens, you are all set to initialize the SDK in your app. Please import the Helpshift namespace as given below -
+
+```csharp
+using HelpshiftApi;
+```
+
+Initialize the SDK by calling `Install()` method before any other interaction with the Helpshift SDK. You can optionally pass the configuration dictionary to `Install()` API. To see supported configurations, check the [SDK Configuration](/sdkx-xamarin/sdk-configuration.mdx) page.
+
+<Tabs groupId="xamarin">
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    public class AppDelegate : UIApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            // Add any install configurations to installConfig dictionary
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            // Add any install configurations to installConfig dictionary
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+Helpshift is now integrated with your app! You can now use other [SDK APIs](/sdkx-xamarin/support-tools) inside your app.
+
+#### Initializing Helpshift in your app for China {#chinasupport}
+
+A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
+This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+Add the following code in your AppDelegate class -
+
+<Tabs groupId="xamarin">
+
+<TabItem value="iOS" label="iOS">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    public class AppDelegate : UIApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("isForChina", true);
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Android" label="Android">
+
+```csharp
+using HelpshiftApi;
+
+namespace App
+{
+    [Application]
+    public class MyApplication : Application
+    {
+        override public void OnCreate()
+        {
+            base.OnCreate();
+            Dictionary<string, object> installConfig = new Dictionary<string, object>();
+            installConfig.Add("isForChina", true);
+            Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="danger" title="Important">
+
+** Placing the install call **
+
+You should not place the `Install` call anywhere other than `UIApplicationDelegate.FinishedLaunching()` for iOS / `Application.OnCreate()` for Android. Placing it elsewhere might cause unexpected runtime problems. Helpshift install call will throw an exception in case the validation of the SDK keys fail.
+
+</Admonition>

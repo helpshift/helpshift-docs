@@ -19,6 +19,9 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -320,6 +323,76 @@ Helpshift.showConversation(with:self, config:config)
 
 </Tabs>
 
+## Conversation prefill text {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+|               |                                      |
+| ------------- | ------------------------------------ |
+| Option:       | <code>conversationPrefillText</code> |
+| Values:       | Any string value                     |
+| Default:      | <code>""</code>                      |
+| Min SDK       | v10.0.0                              |
+| Supported by: | <code>showConversation</code>        |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"conversationPrefillText": @"INSERT YOUR PREFILL TEXT" };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["conversationPrefillText": "INSERT YOUR PREFILL TEXT"]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## Conversation Initial User Message {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+|               |                                      |
+| ------------- | ------------------------------------ |
+| Option:       | <code>initialUserMessage</code> |
+| Values:       | Any string value                     |
+| Default:      | <code>""</code>                      |
+| Min SDK       | v10.0.0                              |
+| Supported by: | <code>showConversation</code> <code>showFAQs</code> |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"initialUserMessage": @"INSERT YOUR INITIAL USER MESSAGE" };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initialUserMessage": "INSERT YOUR INITIAL USER MESSAGE"]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
 ## Full Screen on iPad {#presentFullScreenOniPad}
 
 The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
@@ -327,7 +400,7 @@ The `presentFullScreenOniPad` flag will determine whether to present support vie
 The default value is NO, which presents support views in `UIModalPresentationFormSheet`. When the value is set to `YES`, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
 
 |              |                                                      |
-| ------------ | ------------------------------------                 |
+| ------------ | ---------------------------------------------------- |
 | Option       | <code>presentFullScreenOniPad</code>                 |
 | Values       | <code>YES</code> / <code>NO</code>                   |
 | Default      | <code>NO</code>                                      |

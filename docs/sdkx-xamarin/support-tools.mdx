@@ -1,0 +1,124 @@
+---
+sidebar_position: 20
+title: Helpshift APIs
+description: "Helpshift provides a way to use each functional element of the SDK separately based on your requirements."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Centered,
+  Image,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Helpshift APIs {#support-tools}
+
+<Intro>
+
+Helpshift provides a way to use each functional element of the SDK separately based on your requirements. You can call only specific screens from the SDK based on the functionality you want to expose in your app.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Install()](/sdkx-xamarin/getting-started#initialize) API.
+
+</Admonition>
+
+## Integrating Contact Us & In App Messaging {#conversation-view}
+
+You can use the API call `ShowConversation(Object, Dictionary<string, object>)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+
+<Centered>
+
+<Image src="/static/books/sdkx_ios/Show-Conversation.png" width="full" />
+
+</Centered>
+
+|              |                    |
+| ------------ | -------------------|
+| Definition   | `Helpshift.ShowConversation(Object, Dictionary<string, object>)` |
+| Example Code | `Helpshift.ShowConversation(this, config)` where `this` is the iOS ViewController/Android Activity you're calling Helpshift from and `config` is a `Dictionary` that represents the configuration that needs to be set to the conversation. |
+| Use with     | "Contact Us" or "Send Feedback" button |
+
+Supports these [API Options](/sdkx-xamarin/sdk-configuration/).
+
+## Integrating FAQs {#faqs-view}
+
+You can use the API call `ShowFAQs(Object, Dictionary<string, object>)` to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
+
+<Centered>
+
+<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />
+
+</Centered>
+
+This View Controller combines the FAQ, Search and Contact Us functionality together in a single interface. In this view, a user can search for a specific question in the FAQ failing which they can report an issue. When you respond back to their question from the Helpshift Agent Dashboard, the reply will be shown as a count besides Contact Us, clicking on which will open up the conversation.
+
+|              |     |
+| ------------ | ----|
+| Definition   | `ShowFAQs(Object, Dictionary<string, object>)` |
+| Example Code | `Helpshift.ShowFAQs(this, config)` where `this` is the iOS ViewController/Android Activity you're calling Helpshift from and `config` is a `Dictionary` that represents the configuration that needs to be set to the FAQ screen. |
+| Use with     | "Help Us" or "Support" button |
+
+
+Supports these [API Options](/sdkx-xamarin/sdk-configuration/).
+
+## Showing a Particular FAQ Section {#faq-section-view}
+
+You can use the API call `ShowFAQSection(string, Object, Dictionary<string, object>)` to show FAQs from a particular FAQ section.
+
+<Centered>
+
+<Image src="/static/books/sdkx_ios/show_section.png" width="full" />
+
+</Centered>
+
+**You will need the `publish-id` of the FAQ section to use this API:**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
+
+This feature works like a permalink for displaying specific FAQ sections as context-sensitive help in your app. For example, if your app requires the user to log in to using email, Facebook and Twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to log in methods.
+
+|              |     |
+| ------------ | ----|
+| Definition   | `ShowFAQSection(string, Object, Dictionary<string, object>)` |
+| Example Code | `ShowFAQSection(sectionId, this, config)` where `sectionId` is the section publish ID, `this` is the iOS ViewController/Android Activity you're calling Helpshift from and `config` is a `Dictionary` that represents the configuration that needs to be set to the FAQ screen. |
+
+Supports these [API Options](/sdkx-xamarin/sdk-configuration/).
+
+## Showing a Particular FAQ {#faq-view}
+
+You can use the API `ShowSingleFAQ(string, Object, Dictionary<string, object>)` to show a single FAQ.
+
+<Centered>
+
+<Image src="/static/books/sdkx_ios/show_single_faq.png" width="full" />
+
+</Centered>
+
+**You'll need the `publish-id` of the FAQ to use this API:**
+
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
+
+|              |     |
+| ------------ | ----|
+| Definition   | `ShowSingleFAQ(string, Object, Dictionary<string, object>)` |
+| Example Code | `ShowSingleFAQ(faqId, this, config)` where `faqId` is the FAQ publish ID, `this` is the iOS ViewController/Android Activity you're calling Helpshift from and `config` is a `Dictionary` that represents the configuration that needs to be set to the FAQ screen. |
+
+Supports these [API Options](/sdkx-xamarin/sdk-configuration/).
+
+## Set SDK language {#set-language}
+
+You can set the SDK language using the `SetLanguage(string)` API. By default, the device's preferred language is used by the SDK. The call will fail in the following cases :
+
+- If a Helpshift session is already active at the time of invocation
+- Language code is incorrect
+
+For more info about languages you can refer [here](/sdkx-xamarin/i18n).
+
+|              |     |
+| ------------ |-----|
+| Definition   | `SetLanguage(string)` |
+| Example Code | `Helpshift.SetLanguage("fr")` where `fr` is the language code. You can also pass a language code and a country code like `Helpshift.SetLanguage("zh-SG")` |
