@@ -107,6 +107,109 @@ void ShowFAQs(){
 
 }
 ```
+### FAQ Filtering by tags {#faq-filtering}
+
+Starting v3.11.0 onwards, we have introduced FAQ filtering capability by tags. With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
+Typical cases why you would want to use FAQ filtering are :
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for Tablet vs. Phone
+
+FAQ filtering is a 2 step approach
+
+1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘phone’ & ‘tablet’.
+   <Image src="/static/books/android/faq-filtering.png" width="full" />{" "}
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly `Issue Tags` & `Search Tags`.
+
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+#### How to use FAQ filtering
+
+This will be a config option which will be supported by the showFAQs and showFAQSection APIs.
+
+Usage :
+
+<Tabs>
+
+<TabItem value="Using ApiConfig" label="Using ApiConfig">
+
+```java
+
+    String operator = FaqTagFilter.Operator.AND / FaqTagFilter.Operator.OR / FaqTagFilter.Operator.NOT;
+    String[] filterTags = new String[]{"tag1", "tag2"};
+    FaqTagFilter faqTagFilter = new FaqTagFilter(operator, filterTags);
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setWithTagsMatching(faqTagFilter)
+                           .build();
+
+```
+
+The `withTagsMatching` option will take a FaqTagFilter object which takes two parameters
+
+- operator : one of `FaqTagFilter.Operator.AND`, `FaqTagFilter.Operator.OR`, `FaqTagFilter.Operator.NOT` which will serve as conditional operators for the given tags (String).
+- tags : the actual tags in the query (String Array)
+
+Example :
+
+```java
+
+    //If the developer wants to show all FAQs with tags “android-phone” or “android-tablet”
+    String operator = FaqTagFilter.Operator.OR;
+    String[] filterTags = new String[]{"android-phone", "android-tablet"};
+    FaqTagFilter faqTagFilter = new FaqTagFilter(operator, filterTags);
+    ApiConfig apiConfig = new ApiConfig.Builder()
+                           .setWithTagsMatching(faqTagFilter)
+                           .build();
+    Support.showFAQs(MyActivity.this, apiConfig);
+
+```
+
+</TabItem>
+<TabItem value="Using Map" label="Using Map">
+
+```java
+
+    HashMap<String, Object> map = new HashMap<>();
+    String operator = "and/or/not";
+    String[] filterTags = new String[]{"tag1", "tag2"};
+    map.put("operator", operator);
+    map.put("tags", filterTags);
+    HashMap config = new HashMap();
+    config.put("withTagsMatching", map);
+
+```
+
+The `withTagsMatching` option will be a HashMap containing 2 keys
+
+- operator : one of “and”, “or”, “not” which will serve as conditional operators for the given tags (String).
+- tags : the actual tags in the query (String Array)
+
+Example :
+
+```java
+
+    //If the developer wants to show all FAQs with tags “android-phone” or “android-tablet”
+    HashMap<String, Object> map = new HashMap<>();
+    String operator = "or";
+    String[] filterTags = new String[]{"android-phone", "android-tablet"};
+    map.put("operator", operator);
+    map.put("tags", filterTags);
+    HashMap config = new HashMap();
+    config.put("withTagsMatching", map);
+    Support.showFAQs(MyActivity.this, config);
+
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Showing a Particular FAQ Section {#faq-section-view}
 
