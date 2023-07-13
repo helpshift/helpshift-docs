@@ -19,6 +19,12 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationPrefillTextSdkxUnityCode from "@site/docs/_partials/_conversationPrefillTextSdkxUnityCode.mdx";
+
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ConversationInitialUserMessageCode from "@site/docs/_partials/_convInitialUserMessageUnityCode.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -169,6 +175,18 @@ public class MyGameControl : MonoBehaviour
 }
 ```
 
+## Conversation prefill text {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+<ConversationPrefillTextSdkxUnityCode />
+
+## Conversation Initial User Message {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+<ConversationInitialUserMessageCode />
+
 #### Best Practices
 
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
@@ -200,6 +218,74 @@ public class MyGameControl : MonoBehaviour
     void OpenHelpshift() {
       Dictionary<string, object> configMap = new Dictionary<string, object>();
       configMap.Add("fullPrivacy", "true");
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## Full Screen on iPad {#presentFullScreenOniPad}
+
+The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
+
+The default value is `false`, which presents support views in `UIModalPresentationFormSheet`. When the value is set to `true`, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
+
+|              |                                                                     |
+| ------------ | ------------------------------------------------------------------- |
+| Option       | <code>presentFullScreenOniPad</code>                                |
+| Values       | <code>true</code> / <code>false</code>                              |
+| Default      | <code>false</code>                                                  |
+| Min SDK      | v10.0.0                                                             |
+| Supported by | <code>showConversation/showFAQs/showFAQSection/showSingleFAQ</code> |
+
+For example
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("presentFullScreenOniPad", true);
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## Initiate new conversation on chat screen load {#initiateChatOnLoad}
+
+In config dictionary of `showConversation:`, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| Option:       | <code>initiateChatOnLoad</code>        |
+| Values:       | <code>true</code> / <code>false</code> |
+| Default:      | <code>false</code>                     |
+| Min SDK       | v10.0.0                                |
+| Supported by: | <code>showConversation</code>          |
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("initiateChatOnLoad", true);
       help.ShowConversation(configMap);
     }
 }
