@@ -6,17 +6,10 @@ description: "With outbound support, you can proactively engage with consumers t
 
 import {
   Admonition,
-  CodeBlock,
   Tabs,
   TabItem,
-  LatestSdkVersion,
-  Centered,
   Image,
   Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
 } from "@site/src/components/forDocs";
 
 # Outbound Support {#outbound-support}
@@ -82,7 +75,7 @@ public void onMessageReceived(RemoteMessage remoteMessage) {
 
     // Sample code to generate Push notification
     Context context = getApplicationContext();
-    
+
     Intent intent = new Intent(context, HandleNotificationActivity.class); // Your notification handling class
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra("proactiveNotification", true);
@@ -122,7 +115,7 @@ public class HandleNotificationActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        
+
         if (bundle != null && bundle.getBoolean("proactiveNotification")) {
             String url = bundle.getString("proactiveLink");
             HelpshiftCocosBridge.handleProactiveLink(getApplicationContext(), url);
@@ -143,13 +136,13 @@ public class HandleNotificationActivity extends Activity {
     willPresentNotification:(UNNotification *)notification
     withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
     if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-      
+
       // This is a notification from Helpshift push notification system
       [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo isAppLaunch:NO withController:self.window.rootViewController];
-      
+
       completionHandler(UNNotificationPresentationOptionNone);
     } else {
-      
+
       // Present Notification Alert
       completionHandler(UNNotificationPresentationOptionAlert);
     }
@@ -166,7 +159,7 @@ To delegate push notification data to Helpshift SDK, call `[Helpshift handleProa
     didReceiveNotificationResponse:(UNNotificationResponse *)response
     withCompletionHandler:(void (^)(void))completionHandler {
     if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        
+
         // This is a notification from helpshift push notification system
         // for messages sent from agent from Helpshift Dashboard
         [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
@@ -175,10 +168,10 @@ To delegate push notification data to Helpshift SDK, call `[Helpshift handleProa
     } else {
         NSString* proactiveLink = [response.notification.request.content.userInfo objectForKey:@"helpshift_proactive_link"];
         if (proactiveLink != nil) {
-            
+
             // This is your app's push notification system containing a Helpshift proactive link
             [Helpshift handleProactiveLink:proactiveLink];
-            
+
         } else {
             // This is your app's push notification system.
         }
