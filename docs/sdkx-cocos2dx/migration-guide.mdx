@@ -110,27 +110,40 @@ Remove the existing Helpshift install call and replace it with the following -
 <TabItem value="android" label="Android">
 
 ```java
+import com.helpshift.HelpshiftBridge;
+import com.helpshift.exceptions.InstallException;
+import com.helpshift.HelpshiftCocosBridge;
 
-    import com.helpshift.HelpshiftCocosBridge;
+public class MyActivity extends Cocos2dxActivity {
 
-    public class MyActivity extends Cocos2dxActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            // Add install configs in the config map
-            Map<String, Object> config = new HashMap<>();
-            //...
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Add install configs in the config map
+        Map<String, Object> config = new HashMap<>();
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
+}
 
+@Override
+public void onCreate(Bundle savedInstanceState) {
+  super.onCreate(savedInstanceState);
+  try {
+    HelpshiftBridge.install(this,
+                            "YOUR_API_KEY",
+                            "YOUR_DOMAIN_NAME",
+                            "YOUR_APP_ID");
+  } catch (InstallException e) {
+    Log.e(TAG, "invalid install credentials : ", e);
+  }
+}
 ```
 
 </TabItem>
@@ -140,19 +153,17 @@ Initialize Helpshift by including `HelpshiftCocos2dx.h` and
 calling `HelpshiftCocos2dx::install` in the `AppDelegate::applicationDidFinishLaunching()` function of your `AppDelegate.cpp`:
 
 ```cpp
+#include "HelpshiftCocos2dx.h"
+...
 
-    #include "HelpshiftCocos2dx.h"
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
     ...
 
-    bool AppDelegate::applicationDidFinishLaunching() {
-
-        HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
-                                    "<Domain name from the Helpshift Dashboard>",
-                                    config);
-        ...
-
-    }
-
+}
 ```
 
 </TabItem>
@@ -175,14 +186,14 @@ All other deprecated configurations have been removed and are not supported anym
 
 The API signatures have changed. Update existing API calls with new ones as follows -
 
-| Legacy SDK Cocos2dx plugin API                        | SDK X Cocos2dx plugin API                                |
-| ----------------------------------------------------- | -------------------------------------------------------- |
-| `HelpshiftCocos2dx::showConversation()`               | `HelpshiftCocos2dx::showConversation(configMap)`         |
-| `HelpshiftCocos2dx::showFAQs();`                      | `HelpshiftCocos2dx::showFAQs(configMap)`                 |
+| Legacy SDK Cocos2dx plugin API                        | SDK X Cocos2dx plugin API                                 |
+| ----------------------------------------------------- | --------------------------------------------------------- |
+| `HelpshiftCocos2dx::showConversation()`               | `HelpshiftCocos2dx::showConversation(configMap)`          |
+| `HelpshiftCocos2dx::showFAQs();`                      | `HelpshiftCocos2dx::showFAQs(configMap)`                  |
 | `HelpshiftCocos2dx::showFAQSection(sectionPublishId)` | `HelpshiftCocos2dx::ShowFAQSection(sectionId, configMap)` |
 | `HelpshiftCocos2dx::showSingleFAQ(questionPublishId)` | `HelpshiftCocos2dx::ShowSingleFAQ(faqId, configMap)`      |
-| FAQ Filtering by tags                                 | Currently not supported                                  |
-| Guided issue filing                                   | Currently not supported                                  |
+| FAQ Filtering by tags                                 | Currently not supported                                   |
+| Guided issue filing                                   | Currently not supported                                   |
 
 For more information about Conversation and FAQs APIs, check the [Helpshift APIs](/sdkx-cocos2dx/support-tools/) guide.
 
@@ -265,39 +276,39 @@ The delegate method that receives the unread message count has also changed, Leg
 
 ```cpp
 
-    void didReceiveNotificationCountListenerArg(int count) {
-        CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
-    }
-    // Get count synchronously from cache.
-    HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
-    // OR
-    // asynchronously from the server.
-    HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
+void didReceiveNotificationCountListenerArg(int count) {
+    CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
+}
+// Get count synchronously from cache.
+HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
+// OR
+// asynchronously from the server.
+HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
 
 ```
 
 SDK X code -
 
 ```cpp
- void getUnreadMessageCount(Ref *pSender) {
-    bool shouldFetchFromServer = true;
-    HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
-  }
+void getUnreadMessageCount(Ref *pSender) {
+  bool shouldFetchFromServer = true;
+  HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
+}
 
-  void updateBadgeCount(int count) {
-    // Your UI Logic here
-  }
+void updateBadgeCount(int count) {
+  // Your UI Logic here
+}
 
-  void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
-      if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
-          if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
-            int count = eventData[DATA_MESSAGE_COUNT].asInt();
-            bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
-            // Use the 'count' variable for further processing
-            updateBadgeCount(count);
-        }
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+        if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+          int count = eventData[DATA_MESSAGE_COUNT].asInt();
+          bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+          // Use the 'count' variable for further processing
+          updateBadgeCount(count);
       }
-  }
+    }
+}
 ```
 
 Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates/#unread-message-count).
@@ -306,39 +317,38 @@ Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates/#u
 
 To handle notification clicks, replace legacy SDK code -
 
-```cpp
-
-        @Override
-        public void onMessageReceived(RemoteMessage message) {
-          Map<String, String> data = message.getData();
-          String origin = data.get("origin");
-          if (origin != null && origin.equals("helpshift")) {
-            Core.init(Support.getInstance());
-            try {
-               Core.install(getApplication(),
-                            <API_KEY>,
-                            <DOMAIN_NAME>,
-                            <APP_ID>,
-                            config);
-              } catch (InstallException e) {
-                // install credentials are incorrect
-              }
-            Core.handlePush(this, data);
-          }
-        }
+```java
+@Override
+public void onMessageReceived(RemoteMessage message) {
+  Map<String, String> data = message.getData();
+  String origin = data.get("origin");
+  if (origin != null && origin.equals("helpshift")) {
+    Core.init(Support.getInstance());
+    try {
+        Core.install(getApplication(),
+                    <API_KEY>,
+                    <DOMAIN_NAME>,
+                    <APP_ID>,
+                    config);
+      } catch (InstallException e) {
+        // install credentials are incorrect
+      }
+    Core.handlePush(this, data);
+  }
+}
 ```
 
 with SDK X code -
 
 ```cpp
-    @Override
-    public void onMessageReceived(RemoteMessage message) {
-      Map<String, String> data = message.getData();
-      String origin = data.get("origin");
-      if (origin != null && origin.equals("helpshift")) {
-        HelpshiftCocosBridge.handlePushNotification(getApplicationContext(), data);
-      }
-    }
+@Override
+public void onMessageReceived(RemoteMessage message) {
+  Map<String, String> data = message.getData();
+  String origin = data.get("origin");
+  if (origin != null && origin.equals("helpshift")) {
+    HelpshiftCocosBridge.handlePushNotification(getApplicationContext(), data);
+  }
+}
 ```
 
 ### Notification APIs iOS
@@ -353,15 +363,14 @@ The API signatures have changed. Update existing API calls with new ones as ment
 The delegate method that receives the unread message count has also changed, Legacy SDK Code -
 
 ```cpp
-  void didReceiveNotificationCountListenerArg(int count) {
-      CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
-  }
-  // Get count synchronously from cache.
-  HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
-  // OR
-  // asynchronously from the server.
-  HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
-
+void didReceiveNotificationCountListenerArg(int count) {
+    CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
+}
+// Get count synchronously from cache.
+HelpshiftCocos2dx::getNotificationCount(false, didReceiveNotificationCountListenerArg);
+// OR
+// asynchronously from the server.
+HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
 ```
 
 SDK X code -
@@ -452,41 +461,39 @@ Replace the following APIs from the legacy SDK Cocos2dx plugin -
 Legacy SDK leveraged metadata APIs to attach metadata to the conversation (Refer [here](/sdkx-cocos2dx/tracking#adding-custom-metadata-to-conversations)). Replace legacy SDK code for attaching metadata with equivalent SDK X code -
 
 ```cpp
+ValueMap config;
+ValueMap meta;
+meta["usertype"] = Value("paid");
+meta["level"] = Value("7");
+meta["score"] = Value("12345");
 
-    ValueMap config;
-    ValueMap meta;
-    meta["usertype"] = Value("paid");
-    meta["level"] = Value("7");
-    meta["score"] = Value("12345");
+ValueVector tags;
+tags.push_back(Value("feedback"));
+tags.push_back(Value("paid user"));
 
-    ValueVector tags;
-    tags.push_back(Value("feedback"));
-    tags.push_back(Value("paid user"));
+meta[HS_TAGS_KEY] = Value(tags);
+config[HS_META_DATA_KEY] = Value(meta);
 
-    meta[HS_TAGS_KEY] = Value(tags);
-    config[HS_META_DATA_KEY] = Value(meta);
-
-    HelpshiftCocos2dx::showFAQs(config);
-
+HelpshiftCocos2dx::showFAQs(config);
 ```
 
 with equivalent SDK X code -
 
 ```cpp
-    ValueMap config;
-    ValueMap meta;
-    meta["usertype"] = Value("paid");
-    meta["level"] = Value("7");
-    meta["score"] = Value("12345");
+ValueMap config;
+ValueMap meta;
+meta["usertype"] = Value("paid");
+meta["level"] = Value("7");
+meta["score"] = Value("12345");
 
-    ValueVector tags;
-    tags.push_back(Value("foo"));
-    tags.push_back(Value("bar"));
+ValueVector tags;
+tags.push_back(Value("foo"));
+tags.push_back(Value("bar"));
 
-    config["tags"] = tags;
-    config["customMetadata"] = Value(meta);
+config["tags"] = tags;
+config["customMetadata"] = Value(meta);
 
-    HelpshiftCocos2dx::showFAQs(config);
+HelpshiftCocos2dx::showFAQs(config);
 ```
 
 #### Custom Issue Fields
@@ -494,41 +501,41 @@ with equivalent SDK X code -
 Replace legacy SDK code -
 
 ```cpp
-    ValueMap customIssueFields;
-    ValueVector singleLineData;
-    singleLineData.push_back(Value("sl"));
-    singleLineData.push_back(Value("John Doe"));
-    customIssueFields["name"] = Value(singleLineData);
+ValueMap customIssueFields;
+ValueVector singleLineData;
+singleLineData.push_back(Value("sl"));
+singleLineData.push_back(Value("John Doe"));
+customIssueFields["name"] = Value(singleLineData);
 
-    ValueVector multiLineData;
-    multiLineData.push_back(Value("ml"));
-    multiLineData.push_back(Value("This is user's long bio"));
-    customIssueFields["address"] = Value(multiLineData);
+ValueVector multiLineData;
+multiLineData.push_back(Value("ml"));
+multiLineData.push_back(Value("This is user's long bio"));
+customIssueFields["address"] = Value(multiLineData);
 
-    ValueVector integerData;
-    integerData.push_back(Value("n"));
-    integerData.push_back(Value("42"));
-    customIssueFields["level"] = Value(integerData);
+ValueVector integerData;
+integerData.push_back(Value("n"));
+integerData.push_back(Value("42"));
+customIssueFields["level"] = Value(integerData);
 
-    ValueVector booleanData;
-    booleanData.push_back(Value("b"));
-    booleanData.push_back(Value("true"));
-    customIssueFields["is_pro"] = Value(booleanData);
+ValueVector booleanData;
+booleanData.push_back(Value("b"));
+booleanData.push_back(Value("true"));
+customIssueFields["is_pro"] = Value(booleanData);
 
-    ValueVector dropdownData;
-    dropdownData.push_back(Value("dd"));
-    dropdownData.push_back(Value("Dollar"));
-    customIssueFields["currency"] = Value(dropdownData);
+ValueVector dropdownData;
+dropdownData.push_back(Value("dd"));
+dropdownData.push_back(Value("Dollar"));
+customIssueFields["currency"] = Value(dropdownData);
 
-    ValueVector dateData;
-    dateData.push_back(Value("dt"));
-    dateData.push_back(Value("1505927361535"));
-    customIssueFields["join_date"] = Value(dateData);
+ValueVector dateData;
+dateData.push_back(Value("dt"));
+dateData.push_back(Value("1505927361535"));
+customIssueFields["join_date"] = Value(dateData);
 
-    ValueMap config;
-    config[HS_CUSTOM_ISSUE_FIELDS] = Value(customIssueFields);
+ValueMap config;
+config[HS_CUSTOM_ISSUE_FIELDS] = Value(customIssueFields);
 
-    HelpshiftCocos2dx::showFAQs(config)
+HelpshiftCocos2dx::showFAQs(config)
 ```
 
 with SDK X code -
@@ -556,16 +563,16 @@ cocos2d::ValueMap getCifs() {
 
 
 cocos2d::ValueMap getConfig() {
-    cocos2d::ValueMap configMap;
+  cocos2d::ValueMap configMap;
 
-    ValueVector tags;
-    tags.push_back(Value("foo"));
-    tags.push_back(Value("bar"));
+  ValueVector tags;
+  tags.push_back(Value("foo"));
+  tags.push_back(Value("bar"));
 
-    configMap["tags"] = tags;
-    configMap["cifs"] = getCifs();
+  configMap["tags"] = tags;
+  configMap["cifs"] = getCifs();
 
-    return configMap;
+  return configMap;
 }
 
 void HelloWorld::showConversation(Ref *pSender) {

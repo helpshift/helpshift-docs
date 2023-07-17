@@ -80,27 +80,27 @@ For FCM users, the API key can be found at your
 1. Send the device registration id to Helpshift via the `HelpshiftCocosBridge.registerDeviceToken` API
 
 ```java
-      public class MyFirebaseMessagingService extends FirebaseMessagingService {
-        // ...
-        @Override
-        public void onNewToken(String newToken) {
-          // your logic to save the token here for the app
-          HelpshiftCocosBridge.registerPushToken(newToken);
-        }
-      }
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+  // ...
+  @Override
+  public void onNewToken(String newToken) {
+    // your logic to save the token here for the app
+    HelpshiftCocosBridge.registerPushToken(newToken);
+  }
+}
 ```
 
 2. Using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `HelpshiftCocosBridge.handlePush` API which takes a Map argument.
 
 ```java
-    @Override
-    public void onMessageReceived(RemoteMessage message) {
-      Map<String, String> data = message.getData();
-      String origin = data.get("origin");
-      if (origin != null && origin.equals("helpshift")) {
-          HelpshiftCocosBridge.handlePushNotification(getApplicationContext(), data);
-      }
-    }
+@Override
+public void onMessageReceived(RemoteMessage message) {
+  Map<String, String> data = message.getData();
+  String origin = data.get("origin");
+  if (origin != null && origin.equals("helpshift")) {
+      HelpshiftCocosBridge.handlePushNotification(getApplicationContext(), data);
+  }
+}
 ```
 
 ## In-app notifications {#in-app-notifications}
@@ -126,27 +126,27 @@ If the FCM device token is registered for push notifications, then in-app notifi
 By default the application icon is used as the notification icon. You can customize the notification icons using the config in the `install` call.
 
 ```java
-    import com.helpshift.HelpshiftCocosBridge;
+import com.helpshift.HelpshiftCocosBridge;
 
-    public class MyActivity extends Cocos2dxActivity {
+public class MyActivity extends Cocos2dxActivity {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            // Add largeNotificationIcon config in install config map
-            Map<String, Object> config = new HashMap<>();
-            config.put("notificationIcon", "icon-image-file-name");
-            config.put("largeNotificationIcon", "<large-icon-image-file-name>");
-            //...
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Add largeNotificationIcon config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationIcon", "icon-image-file-name");
+        config.put("largeNotificationIcon", "<large-icon-image-file-name>");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
+}
 ```
 
 ## Customizing notification sound {#notificationSound}
@@ -156,26 +156,26 @@ By default the default device notification sound is used for helpshift notificat
 For example:
 
 ```java
-    import com.helpshift.HelpshiftCocosBridge;
+import com.helpshift.HelpshiftCocosBridge;
 
-    public class MyActivity extends Cocos2dxActivity {
+public class MyActivity extends Cocos2dxActivity {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            // Add notificationSound config in install config map
-            Map<String, Object> config = new HashMap<>();
-            config.put("notificationSound", "<notification-sound-file-name>");
-            //...
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Add notificationSound config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationSound", "<notification-sound-file-name>");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
+}
 ```
 
 ## Customizing notification channels {#notificationChannels}
@@ -185,26 +185,26 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 Example:
 
 ```java
-    import com.helpshift.HelpshiftCocosBridge;
+import com.helpshift.HelpshiftCocosBridge;
 
-    public class MyActivity extends Cocos2dxActivity {
+public class MyActivity extends Cocos2dxActivity {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            // Add notification Channel Id config in install config map
-            Map<String, Object> config = new HashMap<>();
-            config.put("notificationChannelId", "your channel name here");
-            //...
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Add notification Channel Id config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationChannelId", "your channel name here");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
+}
 ```
 
 ## Configuring in-app notifications {#in-app}
@@ -218,26 +218,26 @@ If you do not want the in-app notification support provided by the Helpshift SDK
 Example:
 
 ```java
-    import com.helpshift.HelpshiftCocosBridge;
+import com.helpshift.HelpshiftCocosBridge;
 
-    public class MyActivity extends Cocos2dxActivity {
+public class MyActivity extends Cocos2dxActivity {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            // Add enableInAppNotification config in install config map
-            Map<String, Object> config = new HashMap<>();
-            config.put("enableInAppNotification", false);
-            //...
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Add enableInAppNotification config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("enableInAppNotification", false);
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
+}
 ```
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
@@ -246,27 +246,27 @@ To fetch unread messages count from the server you can call `requestUnreadMessag
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.
 
 ```cpp
-  #include "HelpshiftEvent.h"
+#include "HelpshiftEvent.h"
 
-  void getUnreadMessageCount(Ref *pSender) {
-    bool shouldFetchFromServer = true;
-    HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
-  }
+void getUnreadMessageCount(Ref *pSender) {
+  bool shouldFetchFromServer = true;
+  HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
+}
 
-  void updateBadgeCount(int count) {
-    // Your UI Logic here
-  }
+void updateBadgeCount(int count) {
+  // Your UI Logic here
+}
 
-  void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
-      if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
-          if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
-            int count = eventData[DATA_MESSAGE_COUNT].asInt();
-            bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
-            // Use the 'count' variable for further processing
-            updateBadgeCount(count);
-        }
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+        if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+          int count = eventData[DATA_MESSAGE_COUNT].asInt();
+          bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+          // Use the 'count' variable for further processing
+          updateBadgeCount(count);
       }
-  }
+    }
+}
 ```
 
 - The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

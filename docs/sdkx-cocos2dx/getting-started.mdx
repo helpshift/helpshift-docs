@@ -23,7 +23,7 @@ import {
 
 <Intro>
 
-You're 3 steps away from adding great in-app support to your Xamarin application.
+You're 3 steps away from adding great in-app support to your Cocos2dx application.
 
 </Intro>
 
@@ -51,19 +51,19 @@ You're 3 steps away from adding great in-app support to your Xamarin application
 
 2.  Add dependency to Helpshift SDK in your `app/build.gradle` file.
 
-    ```
-        repositories {
-            //your other repositories
-            flatDir { dirs 'libs' }
-        }
+```
+repositories {
+    //your other repositories
+    flatDir { dirs 'libs' }
+}
 
-        dependencies {
-            // your other dependencies
+dependencies {
+    // your other dependencies
 
-            implementation 'com.android.support:appcompat-v7:28.0.0'
-            implementation(name: 'Helpshift', ext:'aar')
-        }
-    ```
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation(name: 'Helpshift', ext:'aar')
+}
+```
 
 3.  Link Helpshift files in your project as source depending on your build system.
 
@@ -186,27 +186,25 @@ Initialize Helpshift by importing `com.helpshift.HelpshiftCocosBridge` and
 calling the `HelpshiftCocosBridge.install` in the `onCreate` of your `Cocos2dxActivity`:
 
 ```java
+import com.helpshift.HelpshiftCocosBridge;
 
-    import com.helpshift.HelpshiftCocosBridge;
+public class MyActivity extends Cocos2dxActivity {
 
-    public class MyActivity extends Cocos2dxActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            // Add install configs in the config map
-            Map<String, Object> config = new HashMap<>();
-            //...
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Add install configs in the config map
+        Map<String, Object> config = new HashMap<>();
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
-
+}
 ```
 
 </TabItem>
@@ -217,19 +215,17 @@ Initialize Helpshift by including `HelpshiftCocos2dx.h` and
 calling `HelpshiftCocos2dx::install` in the `AppDelegate::applicationDidFinishLaunching()` function of your `AppDelegate.cpp`:
 
 ```cpp
+#include "HelpshiftCocos2dx.h"
+...
 
-    #include "HelpshiftCocos2dx.h"
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
     ...
 
-    bool AppDelegate::applicationDidFinishLaunching() {
-
-        HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
-                                    "<Domain name from the Helpshift Dashboard>",
-                                    config);
-        ...
-
-    }
-
+}
 ```
 
 </TabItem>
@@ -245,25 +241,25 @@ This config key accepts a boolean value. Pass `true` if you are integrating the 
 <TabItem value="android" label="Android">
 
 ```java
-    import com.helpshift.HelpshiftCocosBridge;
+import com.helpshift.HelpshiftCocosBridge;
 
-    public class MyActivity extends Cocos2dxActivity {
+public class MyActivity extends Cocos2dxActivity {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            Map<String, Object> config = new HashMap<>();
-            config.put("isForChina", true);
+        Map<String, Object> config = new HashMap<>();
+        config.put("isForChina", true);
 
-            // Install call
-            HelpshiftCocosBridge.install(
-                this,
-                "<App Id from the Helpshift Dashboard>",
-                "<Domain name from the Helpshift Dashboard>",
-                config);
-        }
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
     }
+}
 ```
 
 <Admonition type="danger" title="Important">
@@ -286,21 +282,19 @@ Calling `install()` below Android SDK version 21 will throw this checked excepti
 <TabItem value="ios" label="iOS">
 
 ```cpp
+#include "HelpshiftCocos2dx.h"
+...
 
-    #include "HelpshiftCocos2dx.h"
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    ValueMap config;
+    config["isForChina"] = Value("yes");
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
     ...
 
-    bool AppDelegate::applicationDidFinishLaunching() {
-
-        ValueMap config;
-        config["isForChina"] = Value("yes");
-        HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
-                                    "<Domain name from the Helpshift Dashboard>",
-                                    config);
-        ...
-
-    }
-
+}
 ```
 
 <Admonition type="danger" title="Important">
