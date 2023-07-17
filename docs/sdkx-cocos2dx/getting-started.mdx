@@ -245,24 +245,24 @@ This config key accepts a boolean value. Pass `true` if you are integrating the 
 <TabItem value="android" label="Android">
 
 ```java
-    public class MainApplication extends Application {
-    @Override
-      public void onCreate() {
-        super.onCreate();
-        // Add install configs in the config map
-        Map<String, Object> config = new HashMap<>();
-        config.put("isForChina", true);
-        //...
-        // Install call
-        try {
-            Helpshift.install(this,
-                      "<App Id from the Helpshift Dashboard>",
-                      "<Domain name from the Helpshift Dashboard>",
-                      config);
-        } catch (UnsupportedOSVersionException e) {
-            // Android OS versions prior to Lollipop (< SDK 21) are not supported.
+    import com.helpshift.HelpshiftCocosBridge;
+
+    public class MyActivity extends Cocos2dxActivity {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            Map<String, Object> config = new HashMap<>();
+            config.put("isForChina", true);
+
+            // Install call
+            HelpshiftCocosBridge.install(
+                this,
+                "<App Id from the Helpshift Dashboard>",
+                "<Domain name from the Helpshift Dashboard>",
+                config);
         }
-      }
     }
 ```
 
@@ -270,7 +270,7 @@ This config key accepts a boolean value. Pass `true` if you are integrating the 
 
 ** Placing the install call **
 
-You should not place the install call anywhere other than `Application.onCreate`. Placing it elsewhere might cause unexpected runtime problems.
+Use HelpshiftCocosBridge.install(...); with the required arguments immediately after the super.onCreate() of your Cocos2dx Activity. Placing it elsewhere might cause unexpected runtime problems.
 
 **HelpshiftInitializationException**
 

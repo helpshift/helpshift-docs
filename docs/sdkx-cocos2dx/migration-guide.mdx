@@ -111,22 +111,23 @@ Remove the existing Helpshift install call and replace it with the following -
 
 ```java
 
-    import com.helpshift.HelpshiftBridge;
-    import com.helpshift.exceptions.InstallException;
+    import com.helpshift.HelpshiftCocosBridge;
 
     public class MyActivity extends Cocos2dxActivity {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            try {
-              HelpshiftBridge.install(this,
-                                      "YOUR_API_KEY",
-                                      "YOUR_DOMAIN_NAME",
-                                      "YOUR_APP_ID");
-            } catch (InstallException e) {
-              Log.e(TAG, "invalid install credentials : ", e);
-            }
+
+            // Add install configs in the config map
+            Map<String, Object> config = new HashMap<>();
+            //...
+            // Install call
+            HelpshiftCocosBridge.install(
+                this,
+                "<App Id from the Helpshift Dashboard>",
+                "<Domain name from the Helpshift Dashboard>",
+                config);
         }
     }
 
@@ -178,8 +179,8 @@ The API signatures have changed. Update existing API calls with new ones as foll
 | ----------------------------------------------------- | -------------------------------------------------------- |
 | `HelpshiftCocos2dx::showConversation()`               | `HelpshiftCocos2dx::showConversation(configMap)`         |
 | `HelpshiftCocos2dx::showFAQs();`                      | `HelpshiftCocos2dx::showFAQs(configMap)`                 |
-| `HelpshiftCocos2dx::showFAQSection(sectionPublishId)` | `HelpshiftCocos2dx::ShowFAQSection(sectionId,configMap)` |
-| `HelpshiftCocos2dx::showSingleFAQ(questionPublishId)` | `HelpshiftCocos2dx::ShowSingleFAQ(faqId,configMap)`      |
+| `HelpshiftCocos2dx::showFAQSection(sectionPublishId)` | `HelpshiftCocos2dx::ShowFAQSection(sectionId, configMap)` |
+| `HelpshiftCocos2dx::showSingleFAQ(questionPublishId)` | `HelpshiftCocos2dx::ShowSingleFAQ(faqId, configMap)`      |
 | FAQ Filtering by tags                                 | Currently not supported                                  |
 | Guided issue filing                                   | Currently not supported                                  |
 
@@ -210,7 +211,6 @@ Replace legacy SDK login code -
     userBuilder->setName("John Doe");
     HelpshiftCocosUser user = userBuilder->build();
     HelpshiftCocos2dx::login(&user);
-
 ```
 
 with SDK X login code -
@@ -336,19 +336,8 @@ with SDK X code -
       Map<String, String> data = message.getData();
       String origin = data.get("origin");
       if (origin != null && origin.equals("helpshift")) {
-            try {
-                Map<String, Object> config = new HashMap<>();
-                config.put("enableLogging", true);
-                Helpshift.install(getApplication(),
-                        "<APP_ID>",
-                        "<DOMAIN_NAME>",
-                        config
-                    );
-            } catch (UnsupportedOSVersionException e) {
-                Log.e(TAG, "install() called on the OS version: " + VERSION.SDK_INT + " is not supported");
-            }
-            HelpshiftCocosBridge.handlePushNotification(data);
-        }
+        HelpshiftCocosBridge.handlePushNotification(getApplicationContext(), data);
+      }
     }
 ```
 
