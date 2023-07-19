@@ -103,8 +103,6 @@ Remove the existing Helpshift install call and replace it with the following -
 <TabItem value="android" label="Android">
 
 ```java
-import com.helpshift.HelpshiftBridge;
-import com.helpshift.exceptions.InstallException;
 import com.helpshift.HelpshiftCocosBridge;
 
 public class MyActivity extends Cocos2dxActivity {
@@ -123,19 +121,6 @@ public class MyActivity extends Cocos2dxActivity {
             "<Domain name from the Helpshift Dashboard>",
             config);
     }
-}
-
-@Override
-public void onCreate(Bundle savedInstanceState) {
-  super.onCreate(savedInstanceState);
-  try {
-    HelpshiftBridge.install(this,
-                            "YOUR_API_KEY",
-                            "YOUR_DOMAIN_NAME",
-                            "YOUR_APP_ID");
-  } catch (InstallException e) {
-    Log.e(TAG, "invalid install credentials : ", e);
-  }
 }
 ```
 
