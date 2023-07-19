@@ -110,40 +110,40 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 ```cpp
 
 cocos2d::ValueMap createValueMap(const std::string& type, Value value) {
-cocos2d::ValueMap valueMap;
-valueMap["type"] = cocos2d::Value(type);
-valueMap["value"] = cocos2d::Value(std::move(value));
-return valueMap;
+  cocos2d::ValueMap valueMap;
+  valueMap["type"] = cocos2d::Value(type);
+  valueMap["value"] = cocos2d::Value(std::move(value));
+  return valueMap;
 }
 
 cocos2d::ValueMap getCifs() {
-cocos2d::ValueMap cifMap;
-cifMap["joining_date"] = createValueMap("date", Value("1684747527945"));
-cifMap["stock_level"] = createValueMap("number", Value("1500"));
-cifMap["employee_name"] = createValueMap("singleline", Value("Captain Marvel"));
-cifMap["is_pro"] = createValueMap("boolean", Value("true"));
-cifMap["salary_currency"] = createValueMap("dropdown", Value("Dollars"));
-cifMap["essay"] = createValueMap("multiline", Value("Education holds the key to unlocking our potential and shaping a better future. It equips individuals with knowledge, skills, and critical thinking abilities necessary for personal growth and societal progress. Through education, we gain a broader understanding of the world and develop empathy and compassion. It empowers us to challenge existing norms, break barriers, and create meaningful change. Education is not merely confined to classrooms; it is a lifelong journey of exploration and self-discovery. Let us embrace the transformative power of education and strive for a brighter tomorrow."));
+  cocos2d::ValueMap cifMap;
+  cifMap["joining_date"] = createValueMap("date", Value("1684747527945"));
+  cifMap["stock_level"] = createValueMap("number", Value("1500"));
+  cifMap["employee_name"] = createValueMap("singleline", Value("Captain Marvel"));
+  cifMap["is_pro"] = createValueMap("boolean", Value("true"));
+  cifMap["salary_currency"] = createValueMap("dropdown", Value("Dollars"));
+  cifMap["essay"] = createValueMap("multiline", Value("Education holds the key to unlocking our potential and shaping a better future. It equips individuals with knowledge, skills, and critical thinking abilities necessary for personal growth and societal progress. Through education, we gain a broader understanding of the world and develop empathy and compassion. It empowers us to challenge existing norms, break barriers, and create meaningful change. Education is not merely confined to classrooms; it is a lifelong journey of exploration and self-discovery. Let us embrace the transformative power of education and strive for a brighter tomorrow."));
 
-return cifMap;
+  return cifMap;
 }
 
 
 cocos2d::ValueMap getConfig() {
-cocos2d::ValueMap configMap;
+  cocos2d::ValueMap configMap;
 
-ValueVector tags;
-tags.push_back(Value("foo"));
-tags.push_back(Value("bar"));
+  ValueVector tags;
+  tags.push_back(Value("foo"));
+  tags.push_back(Value("bar"));
 
-configMap["tags"] = tags;
-configMap["cifs"] = getCifs();
+  configMap["tags"] = tags;
+  configMap["cifs"] = getCifs();
 
-return configMap;
+  return configMap;
 }
 
 cocos2d::ValueMap chatConfig = getConfig();
-HelpshiftCocos2dx::showConversation(chatConfig);
+  HelpshiftCocos2dx::showConversation(chatConfig);
 
 ```
 
@@ -186,7 +186,6 @@ HelpshiftCocos2dx::clearBreadCrumbs();
 
 <Admonition type="info" title="Note">
 
-- Applicable to SDK X v10.1.0 & above
 - In the `leaveBreadcrumb` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
   - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
   - `"key - value"` - ** Simple string, This is supported **
@@ -207,7 +206,6 @@ Debug logs are collected within the set debug logs limit. The limit is set under
 
 <Admonition type="info" title="Note">
 
-- Applicable to SDK X v10.1.0 & above
 - In the `HelpshiftLog` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
   - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
   - `"key - value"` - ** Simple string, This is supported **

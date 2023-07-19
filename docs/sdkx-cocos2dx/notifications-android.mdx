@@ -128,8 +128,8 @@ public class MyActivity extends Cocos2dxActivity {
 
         // Add largeNotificationIcon config in install config map
         Map<String, Object> config = new HashMap<>();
-        config.put("notificationIcon", "icon-image-file-name");
-        config.put("largeNotificationIcon", "<large-icon-image-file-name>");
+        config.put("notificationIcon", "resourceId of notification icon");
+        config.put("largeNotificationIcon", "resourceId of large notification icon");
         //...
         // Install call
         HelpshiftCocosBridge.install(
@@ -158,7 +158,7 @@ public class MyActivity extends Cocos2dxActivity {
 
         // Add notificationSound config in install config map
         Map<String, Object> config = new HashMap<>();
-        config.put("notificationSound", "<notification-sound-file-name>");
+        config.put("notificationSound", "resourceId of notification sound file");
         //...
         // Install call
         HelpshiftCocosBridge.install(
@@ -234,7 +234,10 @@ public class MyActivity extends Cocos2dxActivity {
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
 
-To fetch unread messages count from the server you can call `requestUnreadMessageCount(boolean shouldFetchFromServer)` API. This API will return unread messages count via delegate.
+To fetch unread messages count from the server you can call `requestUnreadMessageCount(boolean shouldFetchFromServer)` API. This API will return unread messages count via Helpshift delegate. 
+
+You need to register Helpshift delegate listener for this via `HelpshiftCocos2dx::setHelpshiftEventsListener()`. For more details refer [here](/sdkx-cocos2dx/delegates#delegates).
+
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.
 
 ```cpp
@@ -249,6 +252,8 @@ void updateBadgeCount(int count) {
   // Your UI Logic here
 }
 
+// The implementation shown here is of delegate listener
+
 void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
     if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
         if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
@@ -259,6 +264,14 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
       }
     }
 }
+
+void handleAuthFailureEvent(HSAuthenticationFailureReason reason) {
+  ...
+}
+
+// This should be done after HelpshiftCocosBridge.install() in your Cocos2dxActivity
+
+HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent, handleAuthFailureEvent);
 ```
 
 - The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
