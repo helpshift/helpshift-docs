@@ -200,6 +200,28 @@ If you intend to initialize the SDK from Xcode using Objective C, You can specif
     }
 
 ```
+#### Initializing Helpshift in your app for China {#chinasupport}
+
+A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
+This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+Add the following code in your AppDelegate class -
+
+```objc
+
+    #import <HelpshiftX/HelpshiftX.h>
+    #import "HelpshiftX-Unity.h"
+    ...
+    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+        // Set install configurations
+        NSDictionary *installConfig = @{@"isForChina":@YES};
+
+        // Make install call
+        [Helpshift installWithPlatformId:@"<your_platform_id>" domain:@"<your_domain_name>" config:installConfig];
+        return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    }
+
+```
 
 ## Start using Helpshift {#start-using}
 

@@ -19,6 +19,8 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
 # Migration Guide
 
 <Intro>
@@ -61,7 +63,6 @@ We recommend to hold off on SDK X migration if you are currently using the follo
 - [Embedded messaging experience](/ios/support-tools#embed-messaging)
 - [FAQ filtering by tags](/ios/support-tools#faq-filtering)
 - [Minimum Issue description length](/ios/sdk-configuration#issue-description-minimum-length)
-- [Conversation pre-fill text](/ios/sdk-configuration#conversationPrefillText)
 - [SDK UI strings customization](/ios/string-customization/)
 - [Switching between light and dark themes](/ios/design#skinning)
 
@@ -388,11 +389,7 @@ NSDictionary *config = @{ @"cifs" : cifs };
 [Helpshift showConversationWith:self config:config];
 ```
 
-<Admonition type="info" title="Note">
-  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
-  key will be deprecated. We strongly recommend transitioning to using the{" "}
-  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
-</Admonition>
+<CustomIssueFieldsKeyDeprecationNotice />
 
 ##### Breadcrumbs & Debug logs
 
@@ -422,9 +419,12 @@ Legacy SDK methods that are unsupported in SDK X and don't have a corresponding 
 
 ## Review and Feedback {#review-feedback}
 
-- Manual App Review Request by Agent is Supported in SDK X — [Manual App Review Request by Agent](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
-- Manual app rating request is not supported in SDK X — [Manual App Rating - Helpshift for iOS](https://developers.helpshift.com/ios/reviews-and-feedback/#app-rating-api)
-- Automatic review request is not supported in SDK X — [Automatic Reviews - Helpshift for iOS](https://developers.helpshift.com/ios/reviews-and-feedback/#automatic-review-request)
+App Review by an agent is supported in SDK X. You can learn more about this feature [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
+
+Following have been deprecated in SDK X:
+
+- [Manual App Rating request ](/ios/reviews-and-feedback/#app-rating-api)
+- [Automatic Reviews request](/ios/reviews-and-feedback/#automatic-review-request)
 
 #### Deep linking
 

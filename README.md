@@ -24,7 +24,7 @@ If you are making changes to docs, it is possible to use the Github code editor 
 
 This is a [Docusaurus](https://docusaurus.io) project, so Docusaurus-related commands apply.
 
-1. Run the local server with `npm run start` (starts on port 3000)
+1. Run the local server with `npm run start` (starts on port **3100**)
 2. Use `npm run lint` to check for or `npm run lint:fix` to take care of linter issues
 3. Make your changes
 4. Open a PR against the `main` branch

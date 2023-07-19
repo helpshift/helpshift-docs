@@ -173,9 +173,37 @@ Initialize Helpshift by calling the method _install(appId, domain)_ API
         ...
     }
 
+```
 
+#### Initializing Helpshift in your app for China {#chinasupport}
+
+A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
+This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
+
+```csharp
+
+    using Helpshift;
+    .
+    .
+    .
+    public class MyGameControl : MonoBehaviour
+    {
+        private HelpshiftSdk help;
+        ...
+
+        void Awake() {
+            help = HelpshiftSdk.GetInstance();
+            var configMap = new Dictionary<string, object>();
+            //..
+            configMap.Add("isForChina", true);
+
+            help.Install(appId, domainName, configMap);
+        }
+        ...
+    }
 
 ```
+
 
 <Admonition type="danger" title="Important">
 

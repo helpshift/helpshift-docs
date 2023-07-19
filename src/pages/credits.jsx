@@ -102,6 +102,30 @@ const icons = [
     linkTitle: "clock icons",
     text: "Clock icons created by Uniconlabs - Flaticon",
   },
+  {
+    name: "react.png",
+    link: "https://icons8.com/icon/35989/react-native",
+    linkTitle: "react icons",
+    text: "React Native icon by Icons8",
+  },
+  {
+    name: "unity.png",
+    link: "https://icons8.com/icon/39848/unity",
+    linkTitle: "unity icons",
+    text: "Unity icon by Icons8",
+  },
+  {
+    name: "unreal.png",
+    link: "https://icons8.com/icon/26027/unreal-engine",
+    linkTitle: "unreal icons",
+    text: "Unreal Engine icon by Icons8",
+  },
+  {
+    name: "xamarin.png",
+    link: "https://icons8.com/icon/24558/xamarin",
+    linkTitle: "xamarin icons",
+    text: "Xamarin icon by Icons8",
+  },
 ];
 
 export default function CreditsPage() {
