@@ -122,11 +122,40 @@ You need to be aware of some considerations when using the `HelpshiftCocos2dx::l
 Example:
 
 ```cpp
-cocos2d::ValueMap user;
-user["userName"] = "Captain Planet";
-user["userEmail"] = "captain@example.com";
-user["userId"] = "12234454";
-HelpshiftCocos2dx::login(user);
+cocos2d::ValueMap userData;
+
+std::string userId = generateUserId();
+std::string userEmail = fetchUserEmail();
+std::string userName = fetchUserName();
+
+if (userId.empty() && userEmail.empty())
+{
+    cocos2d::log("userId and userEmail both are empty. Invalid login!");
+    return;
+}
+
+if (!userId.empty())
+{
+    userData["userId"] = cocos2d::Value(userId);
+}
+
+if (!userEmail.empty())
+{
+    userData["userEmail"] = cocos2d::Value(userEmail);
+}
+
+if (!userName.empty())
+{
+    userData["userName"] = cocos2d::Value(userName);
+}
+
+std::string userAuthToken = generateUserAuthToken();
+if (!userAuthToken.empty())
+{
+    userData["userAuthToken"] = cocos2d::Value(userAuthToken);
+}
+
+HelpshiftCocos2dx::login(userData);
 ```
 
 ### Logging out users {#logging-out-users}
@@ -194,12 +223,39 @@ You can send the 'user authentication token' with the Login API call. If Identit
 Example:
 
 ```cpp
-cocos2d::ValueMap user;
-user["userName"] = "Captain Planet";
-user["userEmail"] = "captain@example.com";
-user["userId"] = "12234454";
-user["userAuthToken"] = "generated-user-authentication-token";
-HelpshiftCocos2dx::login(user);
+cocos2d::ValueMap userData;
+
+std::string userId = generateUserId();
+std::string userEmail = fetchUserEmail();
+std::string userName = fetchUserName();
+
+if (userId.empty() && userEmail.empty())
+{
+    cocos2d::log("userId and userEmail both are empty. Invalid login!");
+    return;
+}
+
+if (!userId.empty())
+{
+    userData["userId"] = cocos2d::Value(userId);
+}
+
+if (!userEmail.empty())
+{
+    userData["userEmail"] = cocos2d::Value(userEmail);
+}
+
+if (!userName.empty())
+{
+    userData["userName"] = cocos2d::Value(userName);
+}
+
+std::string userAuthToken = generateUserAuthToken();
+if (!userAuthToken.empty())
+{
+    userData["userAuthToken"] = cocos2d::Value(userAuthToken);
+}
+HelpshiftCocos2dx::login(userData);
 ```
 
 ## Identity Verification Failure {#identity-verification-failure}

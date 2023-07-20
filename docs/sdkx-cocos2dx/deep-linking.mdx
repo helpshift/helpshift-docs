@@ -27,7 +27,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 Use custom URL schemes to direct users to particular link in your app
 from Helpshift FAQs. You can use these schemes to provide a more
-seamless experience for the user. For example, if your android app has a
+seamless experience for the user. For example, if your cocos app has a
 registration screen, clicking on a registration link in an FAQ can
 directly take the user to that screen.
 
@@ -68,7 +68,7 @@ You will then need to implement following things in your app to handle and take 
 
 For Example:
 
-```java
+```xml
 //AndroidManifest.xml
 <activity android:name="<path-to-DeepLinkActivity>/DeepLinkActivity">
     <intent-filter>
@@ -120,7 +120,7 @@ To handle the custom URLs in your iOS app, first, make sure that your app's `inf
 
 You will then need to implement,`application:(UIApplication *)app openURL:(NSURL *)url options:` in your `Appcontroller.mm`, to handle and take the required action. For example:
 
-```csharp
+```objc
 [Export("application:openURL:sourceApplication:annotation:")]
 public bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
 {
