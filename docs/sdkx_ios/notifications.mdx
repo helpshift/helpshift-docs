@@ -41,8 +41,9 @@ If your app does not already use push, you will need to enable push for your app
 
 <Tabs>
 
-<TabItem value="UNNotification framework" label="UNNotification framework">
+<TabItem value="Objective-C" label="Objective-C">
 
+#### UNNotification framework:
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
@@ -57,9 +58,7 @@ If your app does not already use push, you will need to enable push for your app
 }
 ```
 
-</TabItem>
-<TabItem value="UI Notifications (Deprecated)" label="UI Notifications (Deprecated)">
-
+#### UI Notifications (Deprecated):
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
@@ -72,6 +71,36 @@ If your app does not already use push, you will need to enable push for your app
     } else {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     }
+    ...
+}
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+#### UNNotification framework:
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+	...
+    let center = UNUserNotificationCenter.current()
+    center.delegate = self
+    center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
+        ...
+    }
+    UIApplication.shared.registerForRemoteNotifications()
+    ...
+}
+```
+
+#### UI Notifications (Deprecated):
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+	...
+    let notificationType: UIUserNotificationType = [.badge, .alert]
+    let notificationSettings = UIUserNotificationSettings(types: notificationType, categories: nil)
+    UIApplication.shared.registerUserNotificationSettings(notificationSettings)
+    UIApplication.shared.registerForRemoteNotifications()
     ...
 }
 ```
