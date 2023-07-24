@@ -6,7 +6,7 @@ description: "Learn more about configuring push and in-app notifications in your
 
 import { Admonition, Image, Intro } from "@site/src/components/forDocs";
 
-# Notifications iOS{#notifications}
+# Notifications iOS
 
 <Intro>{frontMatter.description}</Intro>
 
@@ -113,6 +113,52 @@ In your `AppController.mm` file it will look something like this:
 }
 ```
 
+#### If your app uses UNNotification framework {#unnotification-framework}
+
+To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
+
+1. If a notification arrives while your app is in the foreground, UNUserNotificationCenterDelegate's `WillPresentNotification(UNUserNotificationCenter, UNNotification, Action<UNNotificationPresentationOptions>)` is called.
+1. The system does not call the `WillPresentNotification(UNUserNotificationCenter, UNNotification, Action<UNNotificationPresentationOptions>)` method when your app is in the background or is not running. In those cases, the system alerts the user according to the information in the notification itself.
+1. When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `DidReceiveNotificationResponse(UNUserNotificationCenter, UNNotificationResponse, Action)` method.
+
+In all of the above cases, you should check the "origin" field of the notification dictionary and call Helpshift's `HandlePush(object, bool)` API if the origin of the notification is "helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The `isAppLaunch` boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true.
+
+Example usage:
+
+For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` delegate -
+
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+    willPresentNotification:(UNNotification *)notification
+    withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+    if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
+                                                isAppLaunch:false
+                                             withController:self.window.rootViewController];
+        completionHandler(UNNotificationPresentationOptionNone);
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+    }
+}
+```
+
+For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate -
+
+```objc
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+    if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
+                                                isAppLaunch:YES
+                                             withController:self.window.rootViewController];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in background or killed
+    }
+    completionHandler();
+}
+```
+
 #### If your app uses UINotification framework (Deprecated) {#uinotification-framework}
 
 When a push notification is received, the application delegate `didReceiveRemoteNotification:` is called. Additionally:
@@ -165,15 +211,11 @@ In-app notifications are similar to Apple's push notification banners. Unlike pu
 
 These notifications are sent when an agent replies to a customer's issue. Your customers can click on these banners to go straight into the conversation screen.
 
-<SideBySide>
-
 <Image
   src="/static/books/sdkx_ios/In-app-notification.png"
   width="half"
   alt="In-app-notification.png"
-/>{" "}
-
-</SideBySide>
+/>
 
 ## Configuring In-app notifications {#optional-flags}
 
@@ -193,8 +235,8 @@ Currently we support one flag i.e `enableInAppNotification`.
 </div>
 
 If you do not want the in-app notifications support provided by the
-Helpshift SDK, please set this flag to `NO`. The default value of this
-flag is `YES` i.e in-app notifications will be enabled.<br />
+Helpshift SDK, please set this flag to `false`. The default value of this
+flag is `true` i.e in-app notifications will be enabled.<br />
 
 Example:
 

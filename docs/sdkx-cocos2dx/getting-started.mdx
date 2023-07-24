@@ -21,6 +21,12 @@ You're 3 steps away from adding great in-app support to your Cocos2dx Game.
 
 </Intro>
 
+# Requirements {#version-requirements}
+
+- Xcode 12.0 and above.
+- Supported iOS versions - iOS 12 and above
+- Supported Android versions - API level 21 and above
+
 ## Step 1 - Download the Cocos2d-x plugin for Helpshift {#download}
 
 <DownloadButton
@@ -28,6 +34,21 @@ You're 3 steps away from adding great in-app support to your Cocos2dx Game.
   link="[% sdkx-cocos2dx.plugin_url %]"
   classes="mb-4"
 />
+
+The Helpshift SDK X Cocos package contains the following files:
+
+<div className="text-sm compact ">
+
+|                               |                                           |
+| ----------------------------- | ----------------------------------------- |
+| `android/Classes`             | Plugin files specific to android platform |
+| `android/proj.android`        | Android build support files               |
+| `android/proj.android-studio` | Android SDK X Package                     |
+| `android/src/com/helpshift`   | Android Proxy classes                     |
+| `ios/Classes`                 | Plugin files specific to iOS platform     |
+| `iOS/sdk`                     | iOS SDK X Framework                       |
+
+</div>
 
 ## Step 2 - Add Helpshift Plugin to your Cocos2dx project {#add-to-project}
 
@@ -45,7 +66,7 @@ You're 3 steps away from adding great in-app support to your Cocos2dx Game.
 
 2.  Add dependency to Helpshift SDK in your `app/build.gradle` file.
 
-```
+```groovy
 repositories {
     //your other repositories
     flatDir { dirs 'libs' }
@@ -98,15 +119,12 @@ dependencies {
 </TabItem>
 <TabItem value="ios" label="iOS">
 
-1. Unzip the package, add the contents of the `ios/Classes` folder into your Xcode project.
-2. From `ios/sdk` folder drag & drop `Helpshift.xcframework` into the Frameworks, Libraries and Embedded content in the General section of your Xcode project.
+1. Unzip the package and add the contents of the `ios/Classes` folder into your Xcode project.
+2. From `ios/sdk` folder, drag & drop `Helpshift.xcframework` into the "Frameworks, Libraries and Embedded content" in the General section of your Xcode project.
 3. If your game does not contain any swift code, set `Always Embed Swift Standard Libaries` under `Build Settings` to YES.
 4. In the Build Settings of your Xcode project, add `-fmodules` and `-fcxx-modules` flags under the `Other C Flags` section in both Debug and Release. Be careful while adding these flags in Debug and Release, because if you override the default flags you might face build errors. The `Other C Flags` section would look this after adding mentioned flags:
    &nbsp;&nbsp; <Image src="/static/books/cocos/integration-c-flag.png"  width="full" />
-
-#### If you are cocos2dx 4.x add extra flag:
-
-In the Build Settings of your Xcode project, add `-fmodules` and `-fcxx-modules` flags under the `Other C++ Flags` section in both Debug and Release. Be careful while adding these flags in Debug and Release, because if you override the default flags you might face build errors.
+5. In the Build Settings of your Xcode project, add `-fmodules` and `-fcxx-modules` flags under the `Other C++ Flags` section in both Debug and Release. Be careful while adding these flags in Debug and Release, because if you override the default flags you might face build errors.
 
 <Admonition type="info" title="Note">
 
@@ -115,12 +133,6 @@ In the Build Settings of your Xcode project, add `-fmodules` and `-fcxx-modules`
 If your game does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause game rejection.
 
 **NSPhotoLibraryUsageDescription Description text:** "We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons."
-
-</Admonition>
-
-<Admonition type="caution" title="Warning">
-
-Attachments uploads are not supported on iOS 10.x and below due to issues with permissions.
 
 </Admonition>
 
@@ -202,6 +214,8 @@ calling `HelpshiftCocos2dx::install` in the `AppDelegate::applicationDidFinishLa
 
 bool AppDelegate::applicationDidFinishLaunching() {
 
+    cocos2d::ValueMap config;
+    // Add install configs in the config map
     HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
                                 "<Domain name from the Helpshift Dashboard>",
                                 config);
