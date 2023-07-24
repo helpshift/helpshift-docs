@@ -1,0 +1,306 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "Cocos2d-x plugin for Helpshift SDK X helps you utilize Helpshift from your game's C++ codebase."
+---
+
+import {
+  Admonition,
+  Tabs,
+  TabItem,
+  Image,
+  Intro,
+  DownloadButton,
+} from "@site/src/components/forDocs";
+
+# Getting Started {#getting-started}
+
+<Intro>
+
+You're 3 steps away from adding great in-app support to your Cocos2dx Game.
+
+</Intro>
+
+# Requirements {#version-requirements}
+
+- Xcode 12.0 and above.
+- Supported iOS versions - iOS 12 and above
+- Supported Android versions - API level 21 and above
+
+## Step 1 - Download the Cocos2d-x plugin for Helpshift {#download}
+
+<DownloadButton
+  text="Download SDK X for Cocos2d-x"
+  link="[% sdkx-cocos2dx.plugin_url %]"
+  classes="mb-4"
+/>
+
+The Helpshift SDK X Cocos package contains the following files:
+
+<div className="text-sm compact ">
+
+|                               |                                           |
+| ----------------------------- | ----------------------------------------- |
+| `android/Classes`             | Plugin files specific to android platform |
+| `android/proj.android`        | Android build support files               |
+| `android/proj.android-studio` | Android SDK X Package                     |
+| `android/src/com/helpshift`   | Android Proxy classes                     |
+| `ios/Classes`                 | Plugin files specific to iOS platform     |
+| `iOS/sdk`                     | iOS SDK X Framework                       |
+
+</div>
+
+## Step 2 - Add Helpshift Plugin to your Cocos2dx project {#add-to-project}
+
+<Tabs groupId="platform">
+
+<TabItem value="android" label="Android">
+
+1. Copy the `android/src/com/helpshift` folder to the `src/com/` folder of Android project of your Cococs2dx game.
+
+2. Copy the contents of the `android/Classes` folder to the `Classes` folder of your Cocos2dx game.
+
+## Add Helpshift dependencies in your project
+
+1.  Copy the `Helpshift.aar` file from the `android/proj.android-studio/libs` present inside plugin folder to the `libs` directory of your android project.
+
+2.  Add dependency to Helpshift SDK in your `app/build.gradle` file.
+
+```groovy
+repositories {
+    //your other repositories
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    // your other dependencies
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation(name: 'Helpshift', ext:'aar')
+}
+```
+
+3.  Link Helpshift files in your project as source depending on your build system.
+
+<Tabs>
+
+<TabItem value="Using CMake" label="Using CMake">
+
+    # Add Helpshift files to CMakeLists.txt, under the Android dependency
+    if(ANDROID)
+      list(APPEND GAME_SOURCE
+           <other dependency files>
+           Classes/HelpshiftCocos2dx.cpp
+           Classes/HelpshiftUtil.cpp
+           Classes/HelpshiftLog.cpp
+           )
+      list(APPEND GAME_HEADER
+          <other dependency files>
+          Classes/HelpshiftCocos2dx.h
+          Classes/HelpshiftUtil.h
+          Classes/HelpshiftLog.h
+          Classes/HelpshiftEvent.h
+          )
+    endif()
+
+</TabItem>
+<TabItem value="Using ndk-build" label="Using ndk-build">
+
+    # Add Helpshift files to makefile (Android.mk), under the LOCAL_SRC_FILES rule
+    LOCAL_SRC_FILES := hellocpp/main.cpp \
+                      ../../../Classes/HelpshiftCocos2dx.cpp \
+                      ../../../Classes/HelpshiftUtil.cpp \
+                      ../../../Classes/HelpshiftLog.cpp \
+
+</TabItem>
+
+</Tabs>
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+1. Unzip the package and add the contents of the `ios/Classes` folder into your Xcode project.
+2. From `ios/sdk` folder, drag & drop `Helpshift.xcframework` into the "Frameworks, Libraries and Embedded content" in the General section of your Xcode project.
+3. If your game does not contain any swift code, set `Always Embed Swift Standard Libaries` under `Build Settings` to YES.
+4. In the Build Settings of your Xcode project, add `-fmodules` and `-fcxx-modules` flags under the `Other C Flags` section in both Debug and Release. Be careful while adding these flags in Debug and Release, because if you override the default flags you might face build errors. The `Other C Flags` section would look this after adding mentioned flags:
+   &nbsp;&nbsp; <Image src="/static/books/cocos/integration-c-flag.png"  width="full" />
+5. In the Build Settings of your Xcode project, add `-fmodules` and `-fcxx-modules` flags under the `Other C++ Flags` section in both Debug and Release. Be careful while adding these flags in Debug and Release, because if you override the default flags you might face build errors.
+
+<Admonition type="info" title="Note">
+
+#### Add `NSPhotoLibraryUsageDescription` key in your application's info.plist file
+
+If your game does not use this permission, you would need to add this key as well as description for the same. Not adding this key-description pair might cause game rejection.
+
+**NSPhotoLibraryUsageDescription Description text:** "We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons."
+
+</Admonition>
+
+</TabItem>
+
+</Tabs>
+
+## Step 3 - Initialize Helpshift in your game {#initialize}
+
+1. First, create a game on the Helpshift Dashboard
+
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+
+2. Create a game with **Android** and **iOS** as a selected `Platform`
+   <Image
+     src="/static/books/helpshiftx/create_app_with_android_platform.png"
+     width="full"
+   />{" "}
+
+Helpshift uniquely identifies each registered game with a combination of 2 tokens:
+
+<div className="compact">
+
+|               |                                                                                |
+| ------------- | ------------------------------------------------------------------------------ |
+| `Platform ID` | Your Games's unique App Id (Games's `App Id` on dashboard is your platform Id) |
+| `Domain Name` | Your Helpshift domain. E.g. _happyapps.helpshift.com_                          |
+
+</div>
+
+To obtain these values:
+
+1. Go to your Helpshift dashboard
+2. Navigate to `Settings` > `SDKs (for Developers)`
+3. Select your Game and from the dropdowns
+4. Copy the two tokens present in the "Android" table
+
+<Image src="/static/books/helpshiftx/copy_install_keys.png" width="full" />
+
+<Tabs groupId="platform">
+
+<TabItem value="android" label="Android">
+
+Initialize Helpshift by importing `com.helpshift.HelpshiftCocosBridge` and
+calling the `HelpshiftCocosBridge.install` in the `onCreate` of your `Cocos2dxActivity`:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add install configs in the config map
+        Map<String, Object> config = new HashMap<>();
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="ios" label="iOS">
+
+Initialize Helpshift by including `HelpshiftCocos2dx.h` and
+calling `HelpshiftCocos2dx::install` in the `AppDelegate::applicationDidFinishLaunching()` function of your `AppDelegate.cpp`:
+
+```cpp
+#include "HelpshiftCocos2dx.h"
+...
+
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    cocos2d::ValueMap config;
+    // Add install configs in the config map
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
+    ...
+
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Initializing Helpshift in your game for China {#chinasupport}
+
+A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
+This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an game for China region. The value defaults to `false` if left unspecified.
+
+<Tabs groupId="platform">
+
+<TabItem value="android" label="Android">
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Map<String, Object> config = new HashMap<>();
+        config.put("isForChina", true);
+
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+<Admonition type="danger" title="Important">
+
+** Placing the install call **
+
+Use HelpshiftCocosBridge.install(...); with the required arguments immediately after the super.onCreate() of your Cocos2dx Activity. Placing it elsewhere might cause unexpected runtime problems.
+
+**HelpshiftInitializationException**
+
+Calling any API before the install call would throw an unchecked `HelpshiftInitializationException` in debug mode.
+
+**UnsupportedOSVersionException**
+
+Calling `install()` below Android SDK version 21 will throw this checked exception. All the APIs will be non operable.
+
+</Admonition>
+</TabItem>
+
+<TabItem value="ios" label="iOS">
+
+```cpp
+#include "HelpshiftCocos2dx.h"
+...
+
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    ValueMap config;
+    config["isForChina"] = Value("yes");
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
+    ...
+
+}
+```
+
+<Admonition type="danger" title="Important">
+
+** Placing the install call **
+
+You should not place the install call anywhere other than `AppDelegate::applicationDidFinishLaunching`
+Placing it elsewhere might cause unexpected runtime problems.
+Helpshift install call will throw `InstallException` in case the validation of the SDK keys fail.
+
+</Admonition>
+</TabItem>
+</Tabs>

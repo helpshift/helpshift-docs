@@ -1,0 +1,136 @@
+---
+sidebar_position: 120
+title: Deep Linking in FAQs
+description: "Using custom URL schemes to support deep linking in your app."
+---
+
+import {
+  Admonition,
+  TabItem,
+  Image,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Deep Linking in FAQs {#deep-links}
+
+<Intro>
+
+Using custom URL schemes to support deep linking in your app
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-cocos2dx/getting-started#initializing)
+
+</Admonition>
+
+Use custom URL schemes to direct users to particular link in your app
+from Helpshift FAQs. You can use these schemes to provide a more
+seamless experience for the user. For example, if your cocos app has a
+registration screen, clicking on a registration link in an FAQ can
+directly take the user to that screen.
+
+## Insert custom URL schemes in FAQs {#custom-url-in-faqs}
+
+When editing your FAQ, select the text and then click on create a link.
+
+<Image
+  src="/static/books/android/add-android-deep-link-1.png"
+  width="half"
+  alt="add-android-deep-link-1.png"
+/>{" "}
+
+In the dialog that pops up, enter your custom URL and save the FAQ.
+
+<Image
+  src="/static/books/android/add-android-deep-link-2.png"
+  width="half"
+  alt="add-android-deep-link-2.png"
+/>{" "}
+
+## Handle deep links in your Android App {#handle-deep-link}
+
+Deep linking is a custom linking URL that gives the developers the
+freedom to decide what the URL can do when the user clicks on a Custom
+URL.
+
+In deep linking, you are allowed to set Custom URL schemes like `myscheme://example.com`.
+For example, the URL `myscheme://example.com/?faqid=95` (where faqid is the
+publish ID of an FAQ), will open up the relevant FAQ and the URL
+`myscheme://example.com/?sectionid=8` (where sectionid is the publish id
+of any Section), will open up relevant section.
+
+In order for the developers to handle myscheme, they will have to call
+`showSingleFAQ` and `showFAQSection` api with the corresponding FAQ ID
+and SECTION ID respectively.
+You will then need to implement following things in your app to handle and take the required action.
+
+For Example:
+
+```xml
+//AndroidManifest.xml
+<activity android:name="<path-to-DeepLinkActivity>/DeepLinkActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="myscheme" android:host="example.com"/>
+     </intent-filter>
+</activity>
+```
+
+```java
+//DeepLinkActivity.java
+public class DeepLinkActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+
+        String scheme = data.getScheme();
+        String host = data.getHost();
+
+        HashMap<String, Object> configMap = new HashMap<>();
+
+        if (scheme != null && host != null) {
+            if (scheme.equals("myscheme") && host.equals("example.com")) {
+                if (data.getQueryParameter("faqid") != null) {
+                    HelpshiftCocosBridge.showSingleFAQ(data.getQueryParameter("faqid"), configMap);
+                } else if (data.getQueryParameter("sectionid") != null) {
+                    HelpshiftCocosBridge.showFAQSection(data.getQueryParameter("sectionid"), configMap);
+                } else {
+                    HelpshiftCocosBridge.showFAQs(configMap);
+                }
+                finish();
+            } else {
+                Toast.makeText(this, "Invalid link to handle", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+}
+```
+
+### Deep links in Cococs2dx iOS app {#handle-deep-link-ios}
+
+To handle the custom URLs in your iOS app, first, make sure that your app's `info.plist` supports the custom URL scheme that you've provided in the FAQs. [More information](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app)
+
+You will then need to implement,`application:(UIApplication *)app openURL:(NSURL *)url options:` in your `Appcontroller.mm`, to handle and take the required action. For example:
+
+```objc
+[Export("application:openURL:sourceApplication:annotation:")]
+public bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:false];
+    // URL is myscheme://example.com/?faqid=95
+   for (NSURLQueryItem *query in components.queryItems) {
+        if ([query.name isEqualToString:@"faqid"]) {
+            NSDictionary *config = @{ /* Helpshift config dictionary... */ };
+            [Helpshift showSingleFAQ:query.value withViewController:self.window.rootViewController withConfig:config];
+        }
+    }
+}
+```

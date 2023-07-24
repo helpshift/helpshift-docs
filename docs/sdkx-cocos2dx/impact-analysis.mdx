@@ -1,0 +1,70 @@
+---
+sidebar_position: 140
+title: Impact Analysis
+description: "For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application."
+---
+
+import { Admonition, Intro } from "@site/src/components/forDocs";
+
+# Impact Analysis {#performance}
+
+<Intro>{frontMatter.description}</Intro>
+
+<br/>
+<Admonition type="info" title="Note">
+
+App Launch Time
+
+Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
+
+</Admonition>
+
+# Version specific reports {#version-impact}
+
+You can find impact analysis reports for every version of the Helpshift SDK below.
+
+## 10.2.0 - iOS
+
+Performed on following versions -
+
+- macOS 13.2.1
+- Xcode 14.3.0
+- iOS 16.5.1 (iPhone 11)
+
+Memory Usage will increase with number of messages in a conversation.
+
+### Disk space
+
+When a Cocos2dx iOS game is integrated with Helpshift plugin, the increase in the size of IPA file is around 300 KB.
+
+### Memory usage
+
+|                                         |                                                                        |
+| --------------------------------------- | ---------------------------------------------------------------------- |
+| Chat screen (`showConversation()`)      | adds `5.9` MB (This depends on number of messages on the chat screen). |
+| FAQs screen (`showFAQs()`)              | adds `5.7` MB (This depends on number of FAQ sections on the screen).  |
+| FAQ section screen (`showFAQSection()`) | adds `5.7` MB (This depends on number of FAQS in the section).         |
+| Single FAQ screen (`showFAQ()`)         | adds `5.5` MB (This depends on content of the FAQ).                    |
+
+## 10.2.0 - Android
+
+**Android**
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Google Pixel 6a running Android 13.
+
+</Admonition>
+
+#### Disk space
+
+Helpshift Cocos2dx Android SDK adds around `154 KB` to your final application build file i.e apk file.
+
+### Memory usage {#memory-usage}
+
+| Helpshift API launch                    | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| --------------------------------------- | ------------------------------- | -------------------------------: |
+| FAQs screen (`showFAQs()`)              | `1.74`                          |                             `92` |
+| FAQ section screen (`showFAQSection()`) | `1.80`                          |                             `81` |
+| Single FAQ screen (`showFAQ()`)         | `1.57`                          |                             `84` |
+| Chat screen (`showConversation()`)      | `2.80`                          |                             `78` |

@@ -1,0 +1,277 @@
+---
+sidebar_position: 50
+title: Notifications Android
+description: "Learn more about configuring push and in-app notifications."
+---
+
+import {
+  Admonition,
+  Centered,
+  Image,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Notifications Android
+
+<Intro>
+
+Configure Push notifications
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftCocosBridge.install() API](/sdkx-cocos2dx/getting-started#initializing)
+
+</Admonition>
+
+## Push notifications via Helpshift {#push-via-helpshift}
+
+<Image
+  src="/static/books/sdkx_android/app_notification.png"
+  width="half"
+  alt="urbanAirshipNotif.png"
+/>{" "}
+
+Helpshift allows you to send Push notifications when an agent replies to a conversation.
+
+### Prerequisites {#gcm-prerequisites}
+
+Implement FCM push in your app.
+
+For FCM, refer to the
+[Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) documentation.
+
+### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
+
+To enable the Helpshift system to send push notifications to your users
+you will have to add an **Android** as a platform in your app _(if you have not added already)_.
+
+<Image
+  src="/static/books/helpshiftx/create_app_with_android_platform.png"
+  width="full"
+/>{" "}
+
+Click on configure button and then click on the _push notifications_ option.
+
+Enter your FCM key credentials per app, via the
+**Settings page > App listing in the left navigation > Scroll down to Push
+Notifications** settings section for the app.
+
+<Image src="/static/books/helpshiftx/add_fcm_token.png" width="full" />{" "}
+
+For FCM users, the API key can be found at your
+[Firebase API Console](https://console.firebase.google.com/)
+
+<Image src="/static/books/android/fcm_console.png" width="full" />{" "}
+
+<br />
+
+### Configure SDK {#configure-sdkx-android}
+
+1. Send the device registration id to Helpshift via the `HelpshiftCocosBridge.registerDeviceToken` API
+
+```java
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+  // ...
+  @Override
+  public void onNewToken(String newToken) {
+    // your logic to save the token here for the app
+    HelpshiftCocosBridge.registerPushToken(newToken);
+  }
+}
+```
+
+2. Using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `HelpshiftCocosBridge.handlePush` API which takes a Map argument.
+
+```java
+@Override
+public void onMessageReceived(RemoteMessage message) {
+  Map<String, String> data = message.getData();
+  String origin = data.get("origin");
+  if (origin != null && origin.equals("helpshift")) {
+      HelpshiftCocosBridge.handlePushNotification(getApplicationContext(), data);
+  }
+}
+```
+
+## In-app notifications {#in-app-notifications}
+
+In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
+
+These notifications are sent when an agent replies to a customer's issue. Your customers can go straight into the [conversation screen](/sdkx_android/support-tools#conversation-view) when they tap on the notification.
+
+<Centered >
+
+![](/static/books/sdkx_android/notification.png)
+
+</Centered>
+
+<Admonition type="info" title="Note">
+
+If the FCM device token is registered for push notifications, then in-app notifications will be disabled. In-app notifications are disabled to avoid duplicate notifications from both push notifications and in-app notifications.
+
+</Admonition>
+
+## Customizing notification icons {#notification-icon}
+
+By default the application icon is used as the notification icon. You can customize the notification icons using the config in the `install` call.
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add largeNotificationIcon config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationIcon", "resourceId of notification icon");
+        config.put("largeNotificationIcon", "resourceId of large notification icon");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+## Customizing notification sound {#notificationSound}
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
+
+For example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add notificationSound config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationSound", "resourceId of notification sound file");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+## Customizing notification channels {#notificationChannels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add notification Channel Id config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationChannelId", "your channel name here");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+## Configuring in-app notifications {#in-app}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
+
+- `Flag:` enableInAppNotification
+- `Values:` true/false
+- `Default:` true
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add enableInAppNotification config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("enableInAppNotification", false);
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+## Showing notification count when replies are sent to the user {#showing-notification-count}
+
+To fetch unread messages count from the server you can call `requestUnreadMessageCount(boolean shouldFetchFromServer)` API. This API will return unread messages count via Helpshift delegate.
+
+You need to register Helpshift delegate listener for this via `HelpshiftCocos2dx::setHelpshiftEventsListener()`. For more details refer [here](/sdkx-cocos2dx/delegates#delegates).
+
+Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.
+
+```cpp
+#include "HelpshiftEvent.h"
+
+void getUnreadMessageCount(Ref *pSender) {
+  bool shouldFetchFromServer = true;
+  HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer);
+}
+
+void updateBadgeCount(int count) {
+  // Your UI Logic here
+}
+
+// The implementation shown here is of delegate listener
+
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, RECEIVED_UNREAD_MESSAGE_COUNT) == 0) {
+        if (eventData.find(DATA_MESSAGE_COUNT) != eventData.end()) {
+          int count = eventData[DATA_MESSAGE_COUNT].asInt();
+          bool countFromCache = eventData[DATA_MESSAGE_COUNT_FROM_CACHE].asBool();
+          // Use the 'count' variable for further processing
+          updateBadgeCount(count);
+      }
+    }
+}
+
+void handleAuthFailureEvent(HSAuthenticationFailureReason reason) {
+  ...
+}
+
+// This should be done after HelpshiftCocosBridge.install() in your Cocos2dxActivity
+
+HelpshiftCocos2dx::setHelpshiftEventsListener(handleHelpshiftEvent, handleAuthFailureEvent);
+```
+
+- The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

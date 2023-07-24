@@ -1,0 +1,485 @@
+---
+sidebar_position: 30
+title: SDK Configuration
+description: Helpshift provides several configuration options that you can use to customize the behavior of the SDK.
+---
+
+import {
+  Admonition,
+  Tabs,
+  TabItem,
+  Image,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# SDK Configuration
+
+<Intro>
+
+Helpshift provides several config options which can be used to customize behaviour of the SDK. Use these options in conjunction with our [Helpshift APIs](/sdkx-cocos2dx/support-tools/).
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-cocos2dx/getting-started#initializing)
+
+</Admonition>
+
+## Common configurations {#common-config}
+
+Common configurations apply to both iOS and Android platforms.
+
+### Enable Logging {#enable-logging}
+
+Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Xcode/Android Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
+
+<div className="compact ">
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| Option:       | <code>enableLogging</code>             |
+| Values:       | <code>true</code> / <code>false</code> |
+| Default:      | <code>false</code>                     |
+| Min SDK       | v10.2.0                                |
+| Supported by: | <code>install</code>                   |
+
+</div>
+
+Example:
+
+<Tabs groupId="platform">
+
+<TabItem value="android" label="Android">
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add enableLogging config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("enableLogging", true);
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="ios" label="iOS">
+
+```cpp
+
+#include "HelpshiftCocos2dx.h"
+...
+
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    ValueMap config;
+    config["enableLogging"] = true
+
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
+    ...
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Enable Contact Us {#enable-contact-us}
+
+Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
+
+<div className="compact ">
+
+|               |                                                                                                                                  |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Option        | <code>enableContactUs</code>                                                                                                     |
+| Values        | <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code> |
+| Default       | <code>null</code>                                                                                                                |
+| Min SDK       | v10.2.0                                                                                                                          |
+| Supported by: | <code>showFAQs()</code>, <code>showFAQSection()</code>, <code>showSingleFAQ()</code>                                             |
+
+</div>
+
+Example:
+
+```cpp
+cocos2d::ValueMap faqConfig = getConfig();
+faqConfig["enableContactUs"] = "ALWAYS";
+// other configs...
+HelpshiftCocos2dx::showFAQs(faqConfig);
+```
+
+#### Best Practices
+
+- Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
+- Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
+
+### Full privacy {#enableFullPrivacy}
+
+Full privacy option helps ensure [COPPA](http://www.coppa.org/) compliance by:
+
+1. Disabling user-initiated screenshots (users will not be able to attach files, including images, using SDK).
+2. Making sure that Personally Identifiable Information (PII) such as name and email are not collected by SDK (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, and with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+3. Not collecting any of the following personal information:
+   - Mobile country code, mobile network code and carrier name.
+   - Custom meta-data that is labeled "private-data".
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+|              |                                                      |
+| ------------ | ---------------------------------------------------- |
+| Option       | <code>fullPrivacy</code>                             |
+| Values       | <code>true</code> / <code>false</code>               |
+| Default      | <code>false</code>                                   |
+| Min SDK      | v10.2.0                                              |
+| Supported by | <code>showConversation</code>, <code>showFAQs</code> |
+
+Example:
+
+```cpp
+cocos2d::ValueMap chatConfig = getConfig();
+chatConfig["fullPrivacy"] = true;
+HelpshiftCocos2dx::showConversation(chatConfig);
+```
+
+#### Best Practices
+
+In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to YES. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
+
+### Enable In-App Notifications {#enable-in-app-notifications}
+
+If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
+
+On setting this flag to `false`, the SDK will stop showing notifications in the notification tray of the device but it will fetch messages in background.
+
+The default value of this flag is `true` i.e., the in-app notifications will be enabled.
+
+<div className="compact ">
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| Option:       | <code>enableInAppNotification</code>   |
+| Values:       | <code>true</code> / <code>false</code> |
+| Default:      | <code>true</code>                      |
+| Min SDK       | v10.2.0                                |
+| Supported by: | <code>install</code>                   |
+
+</div>
+
+Example:
+
+<Tabs groupId="platform">
+
+<TabItem value="android" label="Android">
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add enableInAppNotification config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("enableInAppNotification", false);
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="ios" label="iOS">
+
+```cpp
+#include "HelpshiftCocos2dx.h"
+...
+
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    ValueMap config;
+    config["enableInAppNotification"] = false;
+
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
+    ...
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Initiate new conversation on chat screen load {#initiate-chat-on-load}
+
+In `config` map of `HelpshiftCocos2dx::showConversation(config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the **New Conversation** button or going through the post resolution flows like feedback bots of the previous issue.
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| Option:       | <code>initiateChatOnLoad</code>        |
+| Values:       | <code>true</code> / <code>false</code> |
+| Default:      | <code>false</code>                     |
+| Min SDK       | v10.2.0                                |
+| Supported by: | <code>showConversation</code>          |
+
+Example:
+
+```cpp
+cocos2d::ValueMap chatConfig;
+chatConfig["initiateChatOnLoad"] = true;
+HelpshiftCocos2dx::showConversation(chatConfig);
+```
+
+## Android specific configurations
+
+### Screen Orientation {#screen-orientation}
+
+The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
+For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
+
+<div className="compact ">
+
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Flag    | screenOrientation                                                                                                                      |
+| values  | integer values for orientation from [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class |
+| default | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                                            |
+
+</div>
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add screenOrientation config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+### Notification Icon {#notification-icon}
+
+By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `install` call.
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add notificationIcon config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationIcon", "resourceId of notification icon file");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+### Large Notification Icon {#large-notification-icon}
+
+By default the application icon is used as the notification icon.
+If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add largeNotificationIcon config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("largeNotificationIcon", "resourceId of large Notification icon file");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+
+```
+
+### Notification Sound {#notification-sound}
+
+By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add notificationSound config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationSound", "resourceId of notification sound file");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+### Notification channels {#notification-channels}
+
+Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
+
+Example:
+
+```java
+import com.helpshift.HelpshiftCocosBridge;
+
+public class MyActivity extends Cocos2dxActivity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Add notification Channel Id config in install config map
+        Map<String, Object> config = new HashMap<>();
+        config.put("notificationChannelId", "your channel name here");
+        //...
+        // Install call
+        HelpshiftCocosBridge.install(
+            this,
+            "<App Id from the Helpshift Dashboard>",
+            "<Domain name from the Helpshift Dashboard>",
+            config);
+    }
+}
+```
+
+## iOS Specific Configurations
+
+### In-App Notificaton Appearance {#in-app-notification-appearance}
+
+This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary.
+
+|               |                                                             |
+| ------------- | ----------------------------------------------------------- |
+| Option:       | <code>inAppNotificationAppearance</code>                    |
+| Sub-Options:  | <code>bannerBackgroundColor</code> / <code>textColor</code> |
+| Min SDK       | v10.2.0                                                     |
+| Supported by: | <code>install</code>                                        |
+
+Example:
+
+```cpp
+
+#include "HelpshiftCocos2dx.h"
+...
+
+bool AppDelegate::applicationDidFinishLaunching() {
+
+    cocos2d::ValueMap config;
+
+    cocos2d::ValueMap inAppNotificationAppearance;
+    inAppNotificationAppearance["bannerBackgroundColor"] = "000000";
+    inAppNotificationAppearance["textColor"] = "FFFFFF";
+
+    config["inAppNotificationAppearance"] = inAppNotificationAppearance;
+
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
+    ...
+}
+```
+
+### Full Screen on iPad {#present-full-screen-on-ipad}
+
+The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
+
+The default value is false, which presents support views in `UIModalPresentationFormSheet`. When the value is set to `true`, support views are presented in `UIModalPresentationFullScreen`. Use this setting to show Helpshift in full-screen mode.
+
+|              |                                                      |
+| ------------ | ---------------------------------------------------- |
+| Option       | <code>presentFullScreenOniPad</code>                 |
+| Values       | <code>true</code> / <code>false</code>               |
+| Default      | <code>false</code>                                   |
+| Min SDK      | v10.2.0                                              |
+| Supported by | <code>showConversation</code>, <code>showFAQs</code> |
+
+Example:
+
+```cpp
+ValueMap config;
+config["presentFullScreenOniPad"] = true;
+HelpshiftCocos2dx::showConversation(config);
+```
+
+## Theming the SDK {#theming}
+
+Please check the [design](/sdkx-cocos2dx/design/) page to apply your styles and theming to SDK.
+
+## Tracking {#tracking}
+
+<!---
+Change tracking link to sdkx-cocos
+-->
+
+This config represents tracking the user actions. For more information check [tracking](/sdkx-cocos2dx/tracking).
