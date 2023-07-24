@@ -32,7 +32,7 @@ Common configurations apply to both iOS and Android platforms.
 
 ### Enable Logging {#enable-logging}
 
-Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Visual Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
+Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Xcode/Android Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
 
 <div className="compact ">
 
@@ -111,7 +111,7 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 | Values        | <code>"ALWAYS"</code> / <code>"AFTER_VIEWING_FAQS"</code> / <code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code> / <code>"NEVER"</code> |
 | Default       | <code>null</code>                                                                                                                |
 | Min SDK       | v10.2.0                                                                                                                          |
-| Supported by: | <code>ShowFAQs()</code>, <code>ShowFAQSection()</code>, <code>ShowSingleFAQ()</code>                                             |
+| Supported by: | <code>showFAQs()</code>, <code>showFAQSection()</code>, <code>showSingleFAQ()</code>                                             |
 
 </div>
 
@@ -147,7 +147,7 @@ Moreover, in scenarios where the user attaches objectionable content, it becomes
 | Values       | <code>true</code> / <code>false</code>               |
 | Default      | <code>false</code>                                   |
 | Min SDK      | v10.2.0                                              |
-| Supported by | <code>ShowConversation</code>, <code>ShowFAQs</code> |
+| Supported by | <code>showConversation</code>, <code>showFAQs</code> |
 
 Example:
 
@@ -435,17 +435,17 @@ Example:
 
 bool AppDelegate::applicationDidFinishLaunching() {
 
-cocos2d::ValueMap config;
+    cocos2d::ValueMap config;
 
-cocos2d::ValueMap inAppNotificationAppearance;
-inAppNotificationAppearance["bannerBackgroundColor"] = "000000";
-inAppNotificationAppearance["textColor"] = "FFFFFF";
+    cocos2d::ValueMap inAppNotificationAppearance;
+    inAppNotificationAppearance["bannerBackgroundColor"] = "000000";
+    inAppNotificationAppearance["textColor"] = "FFFFFF";
 
-config["inAppNotificationAppearance"] = inAppNotificationAppearance;
+    config["inAppNotificationAppearance"] = inAppNotificationAppearance;
 
-HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
-                            "<Domain name from the Helpshift Dashboard>",
-                            config);
+    HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
+                                "<Domain name from the Helpshift Dashboard>",
+                                config);
     ...
 }
 ```
@@ -469,7 +469,6 @@ Example:
 ```cpp
 ValueMap config;
 config["presentFullScreenOniPad"] = true;
-// other configs...
 HelpshiftCocos2dx::showConversation(config);
 ```
 

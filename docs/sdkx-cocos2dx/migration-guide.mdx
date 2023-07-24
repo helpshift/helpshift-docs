@@ -80,20 +80,38 @@ We don’t support the migration from `SDK Cocos2dx plugin version < 4.x`. If yo
 - Remove the existing Helpshift `helpshift-plugin-cocos2dx` content from your project.
 - Make sure the following files/directories are removed from your project before you integrate the SDK X Cocos2dx plugin -
 
-  - `proj.android/app/src/com/helpshift/` or `proj.android-studio/app/src/com/helpshift/`
-  - `proj.android/app/libs/Helpshift.aar` or `proj.android-studio/app/libs/Helpshift.aar`
-  - `Classes/HelpshiftCocos2dx.cpp`
-  - `Classes/HelpshiftUtil.cpp`
-  - `Classes/HelpshiftCocos2dxUser.cpp`
-  - `Classes/HelpshiftCocos2dx.h`
-  - `Classes/HelpshiftUtil.h`
-  - `Classes/HelpshiftCocos2dxUser.h`
+<Tabs groupId="platform">
+<TabItem value="android" label="Android">
 
+- `proj.android/app/src/com/helpshift/` or `proj.android-studio/app/src/com/helpshift/`
+- `proj.android/app/libs/Helpshift.aar` or `proj.android-studio/app/libs/Helpshift.aar`
+- `Classes/HelpshiftCocos2dx.cpp`
+- `Classes/HelpshiftUtil.cpp`
+- `Classes/HelpshiftCocos2dxUser.cpp`
+- `Classes/HelpshiftCocos2dx.h`
+- `Classes/HelpshiftUtil.h`
+- `Classes/HelpshiftCocos2dxUser.h`
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+- `Helpshift.xcframework`
+- `Classes/HelpshiftCocos2dx.mm`
+- `Classes/HelpshiftUtil.mm`
+- `Classes/HelpshiftCocos2dxUser.mm`
+- `Classes/HelpshiftCocos2dx.h`
+- `Classes/HelpshiftUtil.h`
+- `Classes/HelpshiftCocos2dxUser.h`
+- `Classes/HelpshiftCocos2dxDelegate.h`
+- `Classes/HelpshiftCocos2dxDelegate.mm`
+
+</TabItem>
+</Tabs>
 - Follow the instructions [here](/sdkx-cocos2dx/getting-started/#adding-to-project) to add Helpshift SDK X to your project.
 
 ## Code Changes {#code-changes}
 
-If you try to build an Android project from Cocos2dx after updating the Helpshift dependency, you will get compilation errors. This is because some API method names and signatures have changed between legacy SDK and SDK X.
+If you try to build your Cocos2dx project after updating the Helpshift dependency, you will get compilation errors. This is because some API method names and signatures have changed between legacy SDK and SDK X.
 
 ### Helpshift `install` call
 
@@ -135,6 +153,9 @@ calling `HelpshiftCocos2dx::install` in the `AppDelegate::applicationDidFinishLa
 ...
 
 bool AppDelegate::applicationDidFinishLaunching() {
+
+    cocos2d::ValueMap config;
+    // Add config value.
 
     HelpshiftCocos2dx::install( "<App Id from the Helpshift Dashboard>",
                                 "<Domain name from the Helpshift Dashboard>",
@@ -206,9 +227,9 @@ with SDK X login code -
 
 ```cpp
 cocos2d::ValueMap user;
-user["userName"] = "Captain Planet";
-user["userEmail"] = "captain@example.com";
-user["userId"] = "12234454";
+user["userName"] = "John Doe";
+user["userEmail"] = "john.doe@app.co";
+user["userId"] = "unique-user-id-746501";
 HelpshiftCocos2dx::login(user);
 ```
 
@@ -333,12 +354,12 @@ public void onMessageReceived(RemoteMessage message) {
 
 The API signatures have changed. Update existing API calls with new ones as mentioned -
 
-| Action                       | Legacy SDK Cocos2dx plugin API                                                                | SDK X Cocos2dx plugin API                                             |
-| ---------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Register device token        | `[HelpshiftCore registerDeviceToken:deviceToken];`                                            | `[Helpshift registerDeviceToken:deviceToken];`                        |
-| Request unread message count | `HelpshiftCocos2dx::getNotificationCount(true/false, didReceiveNotificationCountListenerArg)` | `HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer)` |
+| Action                       | Legacy SDK Cocos2dx plugin API                                                                           | SDK X Cocos2dx plugin API                                             |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Register device token        | `[HelpshiftCore registerDeviceToken:deviceToken];`                                                       | `[Helpshift registerDeviceToken:deviceToken];`                        |
+| Request unread message count | `HelpshiftCocos2dx::getNotificationCount(shouldFetchFromServer, didReceiveNotificationCountListenerArg)` | `HelpshiftCocos2dx::requestUnreadMessageCount(shouldFetchFromServer)` |
 
-The delegate method that receives the unread message count has also changed, Legacy SDK Code -
+The delegate method that receives the unread message count has also changed. Replace legacy SDK code
 
 ```cpp
 void didReceiveNotificationCountListenerArg(int count) {
@@ -375,6 +396,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
+Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates/#unread-message-count).
+
 #### Handle notification
 
 To handle notification clicks, replace legacy SDK code -
@@ -394,16 +417,19 @@ To handle notification clicks, replace legacy SDK code -
 SDK X code -
 
 ```objc
-- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [HelpshiftCore handleRemoteNotification:userInfo
-                                isAppLaunch:false
-                              withController:self.window.rootViewController];
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler {
+    if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
+                                                isAppLaunch:YES
+                                             withController:self.window.rootViewController];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in background or killed
     }
+    completionHandler();
 }
 ```
-
-Read more about unread message count delegate [here](/sdkx-cocos2dx/delegates/#unread-message-count).
 
 <Admonition type="info" title="Note">
 
@@ -559,15 +585,9 @@ void HelloWorld::showConversation(Ref *pSender) {
 }
 ```
 
-<Admonition type="info" title="Note">
-  We would like to inform you that the usage of the <b>"customIssueFields"</b>{" "}
-  key will be deprecated. We strongly recommend transitioning to using the{" "}
-  <b>"cifs"</b> key as the preferred method for passing custom issue fields.
-</Admonition>
-
 #### Breadcrumbs
 
-The APIs for breadcrumbs not changed -
+The APIs for breadcrumbs have not changed -
 
 | Action            | Legacy SDK Cocos2dx plugin API                   | SDK X Cocos2dx plugin API                        |
 | ----------------- | ------------------------------------------------ | ------------------------------------------------ |
@@ -576,7 +596,7 @@ The APIs for breadcrumbs not changed -
 
 #### Debug Logs
 
-We have the class named as `HelpshiftLog` in SDK X Cocos2dx plugin for adding logs. You can use its methods for adding logs.
+The API signature for adding debug logs hasn’t changed. We have the same class named as `HelpshiftLog` in SDK X Cocos2dx plugin for adding logs. You can use its methods for adding logs.
 You can find more details in the [Tracking](/sdkx-cocos2dx/tracking/#debug-logs) guide.
 
 ### Helpshift Delegates
