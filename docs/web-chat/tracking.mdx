@@ -128,3 +128,40 @@ Helpshift("replaceCustomIssueFields", {
 This API can be used when you want to navigate from one page to another and set different Custom Issue Fields for each page.
 
 </Admonition>
+
+## Track In-App Events
+
+<Admonition type="success" title="New api">
+
+Introducing our new tracking API!
+
+</Admonition>
+
+You can track in-game events with this API. These events are aggregated across anonymised pipelines, allowing you to gain LTV insights and see comparisons to other games and apps across the industry. 
+
+```javascript
+Helpshift("track", 
+  // Type of event
+  {"type":"level_up",
+  // Player identifier
+ "player_id":"player123",
+  // Event specific fields
+ "new_level":"54",
+ "old_level":"53",
+  // Event timestamp
+ "ts":8973261267}
+);
+```
+The following in-game event types are supported.
+
+- login
+- logout
+- app_open
+- app_close
+- purchase
+- feedback
+- social_action
+- level_up
+- game_won
+- game_lost
+- purchase
