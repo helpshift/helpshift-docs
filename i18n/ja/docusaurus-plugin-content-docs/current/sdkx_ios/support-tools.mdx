@@ -1,0 +1,214 @@
+---
+sidebar_position: 20
+title: Helpshift API
+description: Helpshiftでは、お客様の要件に応じてSDKの各機能を個別に使用する方法を提供しています。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift API {#support-tools}
+
+<Intro>
+
+Helpshiftでは、お客様の要件に応じてSDKの各機能を個別に使用する方法を提供しています。
+アプリで公開する機能に基づいて、
+SDKから特定の画面のみを呼び出すことができます。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## お問い合わせとアプリ内メッセージの統合 {#conversation-view}
+
+API呼び出し`showConversationWith:config:`を使用することで、ユーザーが最初にFAQを閲覧することなく直接フィードバックを送信したり、新しい会話を開始したりすることができるようになります。ユーザーが新しい会話を開始すると、このAPI呼び出しは会話画面を表示します。会話は、エージェントによって解決されるか、または拒否されるまで継続されます。
+
+<Centered width="major">
+
+![](/static/books/sdkx_ios/Show-Conversation.png)
+
+</Centered>
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-Cの例">
+
+|              |                                                                                                                                                                                                                                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 定義   | <code>showConversationWith:config:</code>                                                                                                                                                                                                                                                                  |
+| サンプルコード | <code> [Helpshift showConversationWith:self config:configDictionary]; </code> // <code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>は会話に設定する必要のある構成を表す<code>NSDictionary</code>です。 |
+| 使用方法     | 「お問い合わせ」または「フィードバックを送信」ボタン                                                                                                                                                                                                                                                                     |
+
+</TabItem>
+<TabItem value="Swift Example" label="Swiftの例">
+
+|              |                                                                                                                                                                                                                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 定義   | <code>showConverstion(with:config:)</code>                                                                                                                                                                                                                                                              |
+| サンプルコード | <code> Helpshift.showConversation(with:self config:configDictionary) </code> // <code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>は会話に設定する必要のある構成を表す<code>Dictionary</code>です。 |
+| 使用方法     | 「お問い合わせ」または「フィードバックを送信」ボタン                                                                                                                                                                                                                                                                  |
+
+</TabItem>
+
+</Tabs>
+
+これらの[APIオプション](/sdkx_ios/sdk-configuration/)をサポートしています。
+
+## FAQの統合 {#faqs-view}
+
+API呼び出し`showFAQsWith:config:`を使用することで、ユーザーがアプリ内に設けられたヘルプ/サポートセクションを呼び出すことができるようになります。シンプルで直感的なインターフェースにHelpshift SDKのすべての機能がバンドルされているため、これがアプリでヘルプを有効にする場合の最も簡単なアプローチとなります。このAPI呼び出しは、アプリの**ヘルプ**または**サポート**アクションに結び付けることができます。
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />{" "}
+
+</Centered>
+
+このビューコントローラーは、FAQ機能、検索機能、お問い合わせ機能を1つのインターフェースに統合したものです。このビューでは、ユーザーはFAQで特定の質問を検索し、見つからなかった場合には問題を報告することができます。Helpshiftエージェントダッシュボードから相手の質問に返信すると、その返信はお問い合わせの横にカウント数として表示され、クリックすると会話が開始されます。
+
+<Tabs>
+
+<TabItem value="Objective-c Example" label="Objective-Cの例">
+
+|              |                                                                                                                                                                                                                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 定義   | <code>showFAQsWith:config:</code>                                                                                                                                                                                                                                                                |
+| サンプルコード | <code> [Helpshift showFAQsWith:self config:configDictionary]; </code> // <code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>はFAQ画面に設定する必要のある構成を表す<code>NSDictionary</code>です。 |
+| 使用方法     | 「ヘルプ」または「サポート」ボタン                                                                                                                                                                                                                                                                       |
+
+</TabItem>
+<TabItem value="Swift Example" label="Swiftの例">
+
+|              |                                                                                                                                                                                                                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 定義   | <code>showFAQs(with:config:)</code>                                                                                                                                                                                                                                                              |
+| サンプルコード | <code> Helpshift.showFAQs(with: self, config: configDictionary) </code> // <code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>はFAQ画面に設定する必要のある構成を表す<code>Dictionary</code>です。 |
+| 使用方法     | 「ヘルプ」または「サポート」ボタン                                                                                                                                                                                                                                                                    |
+
+</TabItem>
+
+</Tabs>
+
+これらの[APIオプション](/sdkx_ios/sdk-configuration/)をサポートしています。
+
+## 特定のFAQセクションの表示 {#faq-section-view}
+
+API呼び出し`showFAQSection:with:config:`を使用することで、特定のFAQセクションのFAQを表示できるようになります。
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_section.png" width="full" />{" "}
+
+</Centered>
+
+**このAPIを使用するには、以下のようにFAQセクションの`publish-id`が必要となります。**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+
+この機能は、アプリ内で特定のFAQセクションを文脈依存ヘルプとして表示させるパーマリンクのようなものとして機能します。たとえば、ユーザーがメールアドレスやFacebook、Twitterを使用してあなたのアプリにログインしなければならない場合、ログイン画面にヘルプアクションを紐づけて、ログイン方法に関する質問が複数記載されている「ログインのヘルプ」という名前のHelpshiftのFAQセクションにリンクさせることができます。
+
+<Tabs>
+
+<TabItem value="Objective-c Example" label="Objective-Cの例">
+
+|              |                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 定義   | <code>showFAQSection:with:config:</code>                                                                                                                                                                                                                                                                                                                                       |
+| サンプルコード | <code> [Helpshift showFAQSection:sectionId with:self config:configDictionary]; </code> // <code>sectionId</code>はセクションの<code>publishId</code>で、<code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>はFAQ画面に設定する必要のある構成を表す<code>NSDictionary</code>です。 |
+
+</TabItem>
+<TabItem value="Swift Example" label="Swiftの例">
+
+|              |                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 定義   | <code>showFAQSection(with:config:)</code>                                                                                                                                                                                                                                                                                                                                        |
+| サンプルコード | <code> Helpshift.showFAQSection(sectionId, with: self, config: configDictionary) </code> // <code>sectionId</code>はセクションの<code>publishId</code>で、<code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>はFAQ画面に設定する必要のある構成を表す<code>NSDictionary</code>です。 |
+
+</TabItem>
+
+</Tabs>
+
+これらの[APIオプション](/sdkx_ios/sdk-configuration/)をサポートしています。
+
+## 特定のFAQの表示 {#faq-view}
+
+API`showSingleFAQ:with:config:`を使用することで、個別のFAQを表示できるようになります。
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_single_faq.png" width="full" />{" "}
+
+</Centered>
+
+**このAPIを使用するには、以下のようにFAQの`publish-id`が必要となります。**
+
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-Cの例">
+
+|              |                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 定義   | <code>showSingleFAQ:with:config:</code>                                                                                                                                                                                                                                                                                                                                              |
+| サンプルコード | <code> [Helpshift showSingleFAQ:faqId with:self config:configDictionary]; </code> // <code>faqId</code>は特定のFAQの<code>publishId</code>で、<code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>はFAQ画面に設定する必要のある構成を表す<code>NSDictionary</code>です。 |
+
+</TabItem>
+<TabItem value="Swift Example" label="Swiftの例">
+
+|              |                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 定義   | <code>showSingleFAQ(with:config:)</code>                                                                                                                                                                                                                                                                                                                                             |
+| サンプルコード | <code> Helpshift.showSingleFAQ(faqId, with: self, config: configDictionary) </code> // <code>faqId</code>は特定のFAQの<code>publishId</code>で、<code>self</code>はHelpshiftを呼び出しているビューコントローラーであり、<code>configDictionary</code>はFAQ画面に設定する必要のある構成を表す<code>Dictionary</code>です。 |
+
+</TabItem>
+
+</Tabs>
+
+これらの[APIオプション](/sdkx_ios/sdk-configuration/)をサポートしています。
+
+## SDKの言語を設定する {#set-language}
+
+SDKの言語は、`setLanguage:`メソッドを使用して設定します。デフォルトでは、SDKはデバイスの優先言語を使用します。以下のような場合には、呼び出しは失敗します。
+
+- Helpshiftのセッションが呼び出し時にすでにアクティブになっている場合
+- 言語コードが正しくない場合
+
+言語の詳細については、[こちら](/sdkx_ios/internationalization/)をご参照ください。
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-Cの例">
+
+|              |                                                                                                                                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 定義   | <code>setLanguage:</code>                                                                                                                                                                                  |
+| サンプルコード | <code> [Helpshift setLanguage:"fr"]; </code> // <code>@"fr"</code>は言語コードです。次のような形式で言語コードや国コードを渡すこともできます。<code> [Helpshift setLanguage:@"zh-SG"]; </code> |
+
+</TabItem>
+<TabItem value="Swift Example" label="Swiftの例">
+
+|              |                                                                                                                                                                                                       |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 定義   | <code>setLanguage()</code>                                                                                                                                                                            |
+| サンプルコード | <code> Helpshift.setLanguage("fr") </code> // <code>"fr"</code>は言語コードです。次のような形式で言語コードや国コードを渡すこともできます。<code> Helpshift.setLanguage("zh-SG"); </code> |
+
+</TabItem>
+
+</Tabs>

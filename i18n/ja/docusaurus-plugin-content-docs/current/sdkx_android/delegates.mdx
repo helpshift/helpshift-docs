@@ -1,0 +1,352 @@
+---
+sidebar_position: 90
+title: Helpshiftのデリゲート
+description: "Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshiftのデリゲート {#delegates}
+
+<Intro>
+
+Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## Helpshiftイベントリスナー/デリゲートの実装 {#helpshift-delegates-implementation}
+
+`Helpshift.setHelpshiftEventsListener()`メソッドを呼び出すことで、`HelpshiftEventsListener`を設定することができます。
+
+たとえば、以下のようになります。
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+ @Override
+ public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+   switch(eventName){
+     case HelpshiftEvent.CONVERSATION_START:
+       //your code here
+     break;
+     // and so on...
+     //the list of events is given below
+   }
+ }
+
+ @Override
+ public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
+   // your code here
+ }
+);
+```
+
+クラスの実装: 
+`HelpshiftEventsListener`を実装するクラスを定義し、
+`Helpshift.setHelpshiftEventsListener()`メソッドを使用してこのイベントリスナーのインスタンスを設定する必要があります。
+
+```java
+class MyEventListener implements HelpshiftEventsListener{
+
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.CONVERSATION_START:
+        //your code here
+      break;
+      // and so on...
+      //the list of events is given below
+    }
+
+  @Override
+  public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
+    // your code here
+  }
+}
+
+MyEventListener listener = new MyEventListener();
+Helpshift.setHelpshiftEventsListener(listener);
+```
+
+## Helpshiftのイベント {#helpshift-events}
+
+### 会話の状態イベント {#conversation-status}
+
+このイベントには、現在進行中の会話に関する情報が含まれています。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_STATUS`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_LATEST_ISSUE_ID`
+  - `HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID`
+  - `HelpshiftEvent.DATA_IS_ISSUE_OPEN`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.CONVERSATION_STATUS:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID));
+    }
+  }
+```
+
+### ウィジェットトグルイベント {#widget-toggle-event}
+
+このイベントは、ユーザーがチャット画面を開いたり閉じたりしたときにトリガーされます。このイベントは、`"visible"`キーのブール値を用いてトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.WIDGET_TOGGLE`
+- イベントのデータ: `HelpshiftEvent.DATA_SDK_VISIBLE`
+
+```java
+    // ...
+    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+      @Override
+      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+        switch(eventName){
+          case HelpshiftEvent.WIDGET_TOGGLE:
+            Log.d(TAG, data.get(HelpshiftEvent.DATA_SDK_VISIBLE));
+        }
+      }
+      // ...
+```
+
+### 会話の開始イベント {#conversation-start-event}
+
+このイベントは、ユーザーが会話の中で最初のメッセージを送信したときにトリガーされます。イベントのデータオブジェクトには`message`キーが含まれており、これにはエンドユーザーが会話を始めるために送信したメッセージの文字列が含まれています。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_START`
+- イベントのデータ: `HelpshiftEvent.DATA_MESSAGE`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.CONVERSATION_START:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE));
+    }
+  }
+```
+
+### メッセージの追加イベント {#message-add-event}
+
+このイベントは、ユーザーが会話内でメッセージを追加したときにトリガーされます。追加されるメッセージには、テキストメッセージ、ボットの入力を介した応答、添付ファイルなどが想定されています。イベントのデータオブジェクトには`type`キーと`body`キーが含まれており、これらはユーザーが追加したメッセージの種類と本文を示しています。
+
+- イベントの名前: `HelpshiftEvent.MESSAGE_ADD`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE`
+  - `HelpshiftEvent.DATA_MESSAGE_BODY`
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT`
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.MESSAGE_ADD:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE_BODY));
+        if(data.get(HelpshiftEvent.DATA_MESSAGE_TYPE).equals(HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT)){
+          Log.d(TAG, "user sent an attachment");
+        }
+    }
+  }
+```
+
+### CSATの送信イベント {#csat-submit-event}
+
+このイベントは、会話の終了後にユーザーがCSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーがCSATフォームを介して提供した（星による）評価と追加のコメントを示しています。
+
+- イベントの名前: `HelpshiftEvent.CSAT_SUBMIT`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_CSAT_RATING`
+  - `HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CSAT_SUBMIT":
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_CSAT_RATING));
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK));
+    }
+  }
+```
+
+### 会話の終了イベント {#conversation-end-event}
+
+このイベントは会話が終了（解決または拒否）し、再開できない場合にトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_END`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_END":
+        //data will be empty
+    }
+  }
+```
+
+### 会話の拒否イベント {#conversation-rejected-event}
+
+このイベントは、エージェントが会話を拒否したときにトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_REJECTED`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_REJECTED":
+        //data will be empty
+    }
+  }
+```
+
+### 会話の解決イベント {#conversation-resolved-event}
+
+このイベントは、エージェントが会話を解決したときにトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_RESOLVED`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_RESOLVED":
+        //data will be empty
+    }
+  }
+```
+
+### 会話の再開イベント {#conversation-reopened-event}
+
+解決に関する質問が有効化されている場合、ユーザーに対して解決の内容に満足しているかどうかが質問されます。ユーザーがそれを拒否し、新しいメッセージを送信すると会話が再開され、会話の再開イベントがトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_REOPENED`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case "HelpshiftEvent.CONVERSATION_REOPENED":
+        //data will be empty
+    }
+  }
+```
+
+### ユーザー認証の失敗イベント {#user-authentication-failed-event}
+
+ダッシュボードで`User Authentication`機能が有効化された状態で`Helpshift.login(userDataMap)`で無効なトークンを渡すと、理由に関する文字列とともにこのイベントを受け取ります。詳細については、[こちらを参照してください](/sdkx_android/users)。
+
+理由の種類:
+
+- `HelpshiftAuthenticationFailureReason.REASON_INVALID_AUTH_TOKEN`
+- `HelpshiftAuthenticationFailureReason.REASON_AUTH_TOKEN_NOT_PROVIDED`
+- `HelpshiftAuthenticationFailureReason.UNKNOWN`
+
+```java
+     // ...
+    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+       @Override
+      public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
+        Log.e(TAG, reason);
+      }
+    }
+    // ...
+```
+
+### Helpshiftセッションのデリゲート {#session-delegates}
+
+#### Helpshiftセッションの開始
+
+Helpshiftセッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが開始するたびに発動します。
+
+- イベントの名前: `HelpshiftEvent.SDK_SESSION_STARTED`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.SDK_SESSION_STARTED:
+        //sdk session started
+    }
+  }
+```
+
+#### Helpshiftセッションの終了
+
+Helpshiftセッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが終了するたびに発動します。
+
+- イベントの名前: `HelpshiftEvent.SDK_SESSION_ENDED`
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.SDK_SESSION_ENDED:
+        //sdk session ended
+    }
+  }
+```
+
+### 未読メッセージ数の計測 {#unread-message-count}
+
+既存の会話で受信した新規メッセージの数を計測する場合は、この`requestUnreadMessageCount(final boolean shouldFetchFromServer)`APIを呼び出します。
+
+未読メッセージの数は、このイベントを介してアプリに伝達されます。また、このイベントを使用してバッジの表示数を更新し続けることもできます。
+
+- イベントの名前: `HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT`
+- イベントのデータ: `HelpshiftEvent.DATA_MESSAGE_COUNT`
+  `HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE`
+
+```java
+// call requestUnreadMessageCount() api first
+Helpshift.requestUnreadMessageCount(true);
+
+// ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
+        int count = (int) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT);
+        boolean fromCache = (boolean) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE);
+        Log.d(TAG, "Message Count : " + count + ", From Cache: " + fromCache);
+    }
+  }
+```
+
+`Helpshift.requestUnreadMessageCount(true)`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたはHelpshiftサーバーのいずれかから取得されます。Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内にAPIが呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
+
+ローカルに保存されている現在の通知数を取得する場合、パラメータをfalseに設定した同じ`Helpshift.requestUnreadMessageCount(false)`メソッドを呼び出します。この場合、SDKはローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
+
+ローカルに保存されている未読メッセージの数は、追加のネットワーク呼び出しを節約するのに役立ちます。

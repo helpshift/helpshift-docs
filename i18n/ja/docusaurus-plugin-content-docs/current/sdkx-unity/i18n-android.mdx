@@ -1,0 +1,121 @@
+---
+sidebar_position: 210
+title: インターナショナリゼーションを行う
+description: インターナショナリゼーションについて詳しく説明します。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# インターナショナリゼーションを行う {#going-international}
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+Helpshift SDKは、現在47の言語に対応しています（デフォルトの言語は英語です）。
+
+## 対応している言語 {#supported-languages}
+
+| 言語                        | コード       |
+| ------------------------------- | ---------- |
+| 英語                         | en         |
+| ドイツ語                          | de         |
+| スペイン語                         | es         |
+| フランス語                          | fr         |
+| イタリア語                         | it         |
+| ロシア語                         | ru         |
+| 簡体字中国語              | zh-Hans    |
+| 繁体字中国語             | zh-Hant    |
+| 簡体字中国語（香港）               | zh-HK      |
+| 繁体字中国語（香港） | zh-Hant-HK |
+| 簡体字中国語（シンガポール）               | zh-SG      |
+| 繁体字中国語（シンガポール） | zh-Hant-SG |
+| ポルトガル語                      | pt         |
+| 韓国語                          | ko         |
+| 日本語                        | ja         |
+| トルコ語                         | tr         |
+| オランダ語                           | nl         |
+| チェコ語                           | cs         |
+| ハンガリー語                       | hu         |
+| インドネシア語                      | id         |
+| タイ語                            | th         |
+| スロベニア語                       | sl         |
+| ベトナム語                      | vi         |
+| アラビア語                          | ar         |
+| ポーランド語                          | pl         |
+| ノルウェー語                       | no         |
+| スウェーデン語                         | sv         |
+| フィンランド語                         | fi         |
+| ルーマニア語                        | ro         |
+| ギリシャ語                           | el         |
+| デンマーク語                          | da         |
+| マレー語                           | ms         |
+| ヘブライ語                          | iw         |
+| スロバキア語                          | sk         |
+| ウクライナ語                       | uk         |
+| カタルーニャ語                         | ca         |
+| クロアチア語                        | hr         |
+| ベンガル語                         | bn         |
+| ブルガリア語                       | bg         |
+| グジャラート語                        | gu         |
+| ヒンディー語                           | hi         |
+| カンナダ語                         | kn         |
+| ラトビア語                         | lv         |
+| マラヤーラム語                       | ml         |
+| マラーティー語                         | mr         |
+| パンジャーブ語                         | pa         |
+| ペルシア語                         | fa         |
+| タミル語                           | ta         |
+| テルグ語                          | te         |
+
+# SDKの言語を設定する {#language-change-programatically}
+
+`SetSDKLanguage("<language-code>")`メソッドを使用して、SDKの言語をロケールに合わせて設定することができます
+
+例:
+
+ロケールに合わせたSDKの言語の設定は、言語コードのみで行うことができます。
+
+```csharp
+using Helpshift
+
+void Awake(){
+	// Install call here
+}
+
+void setLanguage(){
+	HelpshiftSdk.GetInstance().SetSDKLanguage("fr");
+}
+
+```
+
+言語をフランス語に設定した後のSDKの画面のスクリーンショットです。
+
+![](/static/books/sdkx_android/i18n.png)
+
+ロケールに合わせたSDKの言語の設定は、言語コードと国コードの両方で行うことができます。
+
+```csharp
+HelpshiftSdk.GetInstance().SetSDKLanguage("zh-SG");
+```
+
+<Admonition type="info" title="注意">
+
+デフォルトの言語は英語（en）に設定されています。すなわち、`SetSDKLanguage` APIを使用して言語を設定していない場合には、SDKは言語に英語を使用します。
+
+</Admonition>

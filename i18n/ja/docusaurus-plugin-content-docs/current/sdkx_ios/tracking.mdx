@@ -1,0 +1,285 @@
+---
+sidebar_position: 80
+title: トラッキング
+description: "ユーザーが新しい会話を開始する際のイベントとユーザーアクションを追跡します。SDKを介して開始されたすべての会話に、カスタムメタデータを添付します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# トラッキング {#tracking}
+
+<Intro>
+
+ユーザーが新しい会話を開始する際のイベントとユーザーアクションを追跡します。
+SDKを介して開始されたすべての会話に、カスタムメタデータを添付します。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## 会話にタグを追加する {#conversationtags}
+
+`showConversation`を呼び出す際に`configMap`オブジェクトにタグを渡すことにより、問題を報告する際にタグを添付できるようになります。キー`"tags"`を持つ**文字列の配列**を渡すことができるようになり、問題の作成時にタグとして追加されます。
+
+`NSArray`のオブジェクトが`NSString`型でない場合は、オブジェクトはタグから削除され、新しい会話には追加されません。
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSArray *tags = @[@"Hello", @"iOS"];
+NSDictionary *config = @{@"tags":tags};
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let tags = ["Hello", "iOS"]
+let config = ["tags":tags]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="注意">
+
+**タグの名前と互換性について**
+
+- タグについては、Helpshiftダッシュボード（設定、タグの順に移動）で事前に作成しておく必要があります。作成していない場合には、これらは無視されます。
+- 添付されているタグは、ダッシュボードに表示されているタグと完全に一致している必要があります。
+
+</Admonition>
+
+## 会話にカスタムメタデータを添付する {#custom-meta-data}
+
+アプリのユーザーによって開始されたすべての新しい会話には、追加のメタデータを添付することができます。このメタデータには、ユーザー名、メールアドレス、ゲームのスコア、現在のゲームレベルなど、開始されたそれぞれの会話にコンテキストを提供するために必要となるデータを含めることができます。SDK XのAPI（`showConversation`、`showFAQs`、`showSingleFAQ`、`showFAQSection`）のいずれかを呼び出す際にこのデータを`config`辞書に渡すことで、カスタムメタデータを添付することができます。
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *customMetadata = @{ @"usertype": @"paid",
+                                  @"level": @"7",
+                                  @"score": @"12345"
+ };
+
+NSDictionary *config = @{ @"customMetadata" : customMetadata };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let customMetadata = [ "usertype": "paid",
+                       "level": "7",
+                       "score": "12345" ];
+let config = ["customMetadata":customMetadata]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="注意">
+
+- メタデータは、String型のキーと値のペアとしてのみ送信が可能となります。
+- 一度customMetadataが設定されてしまうと、それをリセットするにはSDK XのAPIを空の辞書を用いて呼び出さなければいけなくなります。
+
+```swift
+let customMetadata = [String: String]();
+let config = ["customMetadata":customMetadata]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</Admonition>
+
+## カスタム問題フィールドを会話に添付する {#custom-issue-fields}
+
+カスタム問題フィールドは、ユーザーが開始したすべての新しい会話に添付することができます。カスタム問題フィールドには、キー、データ型、値の設定が必要となります。Helpshift SDKでは、API構成辞書で`cifs`キーを使用することでカスタム問題フィールドを追加することができます。
+
+<Admonition type="info" title="注意">
+  "customIssueFields"キーの使用が非推奨になることをお知らせいたします。
+カスタム問題フィールドを渡す方法として、
+"cifs"キーの使用を強く推奨します。
+</Admonition>
+
+これらのカスタム問題フィールドは、エンドユーザーが新しい会話を開始したり、スマートFAQを介して問題を作成するたびに送信されます。
+
+エンドユーザーが会話画面を開くと、すぐに挨拶メッセージが表示され、会話がアクティブなものとしてみなされるようになります。変更されたすべてのカスタム問題フィールド（アクティブな会話の中で更新されたもの）は、エンドユーザーが次に開始する会話でのみ送信されます。
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *cifs = @{ @"joining_date": @{ @"type":@"date", @"value":@1505927361535 },
+                         @"stock_level": @{ @"type":@"number", @"value":@"1505" },
+                       @"employee_name": @{ @"type":@"singleline", @"value":@"ABC" },
+                    @"employee_address": @{ @"type":@"multiline", @"value":@"303,Joy plaza,Park street,Viman nagar.Pune-432123" },
+                     @"salary_currency": @{ @"type":@"dropdown", @"value":@"Dollars" } };
+
+NSDictionary *config = @{ @"cifs" : cifs };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+let cifs = [ "joining_date": ["type":"date", "value":1505927361535],
+             "stock_level": ["type":"number", "value":"1505"],
+             "employee_name": ["type":"singleline", "value":"ABC"],
+             "employee_address": ["type":"multiline", "value":"303,Joy plaza,Park street,Viman nagar.Pune-432123"],
+             "salary_currency": ["type":"dropdown", "value":"Dollars"]];
+let config = ["cifs":cifs]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="注意">
+  <b>"customIssueFields"</b>{" "}
+キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
+<b>"cifs"</b>キーの使用を強く推奨します。
+</Admonition>
+
+構成に渡すことができるデータ型は、以下の通りです。
+
+| データ型         | 値    | コメント                                                                                                                                                      |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "singleline" | string   | 文字数制限が255文字の単一行の文字列です                                                                                                                |
+| "multiline"  | string   | 文字数制限が100,000文字の複数行の文字列です                                                                                                             |
+| "number"     | string   | 数字を表す文字列です。例: "12345"                                                                                                              |
+| "dropdown"   | string   | ドロップダウンオプションは、ダッシュボードの特定のカスタム問題フィールドのために存在する必要があります。値は、そのドロップダウンのためにダッシュボードで指定された値のいずれかでなければいけません。 |
+| "date"       | NSNumber | ミリ秒単位のエポック時間です。例: `1505927361535`                                                                                                           |
+| "checkbox"   | string   | ブール値による文字列表現です。例: "true"または"false"。これは、ダッシュボードのチェックボックス型のカスタム問題フィールドに対応しています。                           |
+
+<Admonition type="info" title="注意">
+
+**カスタム問題フィールドのキーと互換性について**
+
+- カスタム問題フィールドは、Helpshiftダッシュボード（「設定」、「カスタム問題フィールド」の順に移動します）で作成する必要があります。そうでない場合には、これらは無視されます。詳細については、[こちら](https://support.helpshift.com/kb/article/custom-issue-fields/)をご参照ください。
+
+</Admonition>
+
+## Breadcrumbs
+
+Breadcrumbsは、イベントやエンドユーザーのアクションの追跡に使用されます。これは、お客様がHelpshiftのエージェントダッシュボードにあるすべての新しい会話と一緒に渡されるエンドユーザーのアクションに関するデバッグ情報を追加する際に役立ちます。 Breadcrumbsを残すには、`leaveBreadcrumb:` APIを使用します。
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+[Helpshift leaveBreadcrumb:@"any breadcrumb string"];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.leaveBreadcrumb("any breadcrumb string")
+```
+
+</TabItem>
+
+</Tabs>
+
+Breadcrumbsは、設定されているBreadcrumbsの制限内で収集されます。制限は、Helpshiftのエージェントダッシュボードにある「アプリの設定」の**SDKの構成**セクションで設定します。Breadcrumbsは、FIFOキューに集められます。Breadcrumbsを消去する場合には、`clearBreadcrumbs` APIを使用します。
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+[Helpshift clearBreadcrumbs];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.clearBreadcrumbs()
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="注意">
+
+- SDK X v10.1.0以上に対応しています
+- `leaveBreadcrumb` APIでは、フォーマットされた文字列の受け渡しはサポートされていません。データの受け渡しについては、シンプルなString型のみが推奨されています。例:
+  - `"{\"key\":\"value\"}"` - **JSON文字列、これはサポートされていません**
+  - `"key - value"` - **シンプルな文字列、これはサポートされています**
+
+</Admonition>
+
+## デバッグログ
+
+Helpshiftのエージェントダッシュボードにあるエンドユーザーによって提出された新しい会話ごとに、追加のデバッグログを渡したい場合があるかもしれません。これについては、`addLog:` APIを使用することで実現可能です。
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+[Helpshift addLog:@"any debug log string"];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.addLog("any debug log string")
+```
+
+</TabItem>
+
+</Tabs>
+
+デバッグログは、設定されているデバッグログの制限内で収集されます。制限は、Helpshiftのエージェントダッシュボードにある「アプリの設定」の**SDKの構成**セクションで設定します。デバッグログは、FIFOキューに集められます。
+
+<Admonition type="info" title="注意">
+
+- SDK X v10.1.0以上に対応しています
+- `addLog` APIでは、フォーマットされた文字列の受け渡しはサポートされていません。データの受け渡しについては、シンプルなString型のみが推奨されています。例:
+  - `"{\"key\":\"value\"}"` - **JSON文字列、これはサポートされていません**
+  - `"key - value"` - **シンプルな文字列、これはサポートされています**
+
+</Admonition>

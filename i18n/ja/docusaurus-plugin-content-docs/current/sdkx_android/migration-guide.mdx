@@ -1,0 +1,556 @@
+---
+sidebar_position: 140
+title: 移行ガイド
+description: "この移行ガイドでは、HelpshiftのレガシーSDKからSDK Xへの移行を行うために必要となる手順について説明します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# 移行ガイド
+
+<Intro>
+
+SDK XはハイブリッドSDKであり、ダウンタイムがなく、またアプリのアップデートを行うことなくアップデートの大半を無線を介してエンドユーザーへと送信することができるため、イノベーションを素早く展開することができます。
+
+この移行ガイドでは、HelpshiftのレガシーSDKからSDK Xへの移行を行うために必要となる手順について説明します。
+
+</Intro>
+
+## SDK Xへの移行を行うための手順 {#steps-to-migrate}
+
+<Steps title="レガシーSDKからSDK Xへの移行">
+  <Step
+    number="1"
+    title="移行のサポート状況を確認する"
+    subtitle="移行ガイドを一通り確認する"
+    link="/sdkx_android/migration-guide#unsupported-features"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="SDK Xにアップデートする"
+    subtitle="コードや機能を順を追って移行する"
+    link="/sdkx_android/migration-guide#update-gradle-import"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="移行のテストを行う"
+    subtitle="機能の検証を行う"
+  />
+</Steps>
+
+## サポートされていない機能 {#unsupported-features}
+
+現時点で以下のAPI/機能を使用している場合には、SDK Xへの移行の延期を推奨しています -
+
+- [ガイド付きの問題提出](/android/support-tools#dynamic-forms)。
+- [埋め込み可能なサポートフラグメント](/android/support-tools#embeddable-fragments)。
+- [タグによるFAQのフィルタリング](/android/support-tools#faq-filtering)。
+- [問題に関する記述の長さの最小値設定](/android/sdk-configuration#minimum-issue-desc-length)。
+- [SDKのUI文字列のカスタマイズ](/android/string-customization/)。
+- [レビューリクエストの自動化](/android/reviews-and-feedback/)。
+- [ライトテーマとダークテーマの切り替え](/android/design#skinning)。
+
+これらの機能はまだ開発中であり、2022年のロードマップに追加される可能性があります。上記のAPI/機能に関しては、support@helpshift.comまでお問い合わせください。
+
+## サポートされているSDKのバージョン {#support-sdk-versions}
+
+移行が成功すれば、SDKのあるバージョンから別のバージョンへと移行してもユーザーのデータとチャット履歴は保持されます。バージョン7以上のレガシーSDKからSDK X 10.1以上への移行がサポートされています。
+
+<Admonition type="info" title="注意">
+
+6.xより前のバージョンのSDKからの移行
+
+6より前のバージョンのSDKからの移行はサポートされていません。6より前のバージョンからSDK Xへと移行した場合、SDK Xは正常に機能しますが、ログイン済みユーザーの情報は失われ、新しいデフォルトのユーザーが作成されます。現在のユーザーをもう一度ログインさせることは可能ですが、そのユーザーに対応するデータは移行されません。Helpshiftのシステムでは、新規のユーザーとして扱われます。
+
+</Admonition>
+
+## SDKのGradleインポートをSDK Xライブラリへと移行する {#update-gradle-import}
+
+Helpshift SDKについてのGradleのimport文を、以下のように変更します。
+
+```groovy
+dependencies {
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.helpshift:helpshift-sdkx:10.1.0'
+}
+```
+
+もしもHelpshift SDKのためだけにDesign、RecyclerView、CardViewの依存関係を追加した場合、SDK Xではこれらのライブラリは使用されないため、削除することができます。
+
+<Admonition type="info" title="注意">
+
+レガシーSDKの依存関係はアプリから削除してください。両方の依存関係を保持することはできません。
+
+Gradle以外の統合ソースは、サポートされなくなりました。
+
+例:
+
+[IntelliJ/Eclipseベースのプロジェクト](/android/getting-started#intellij-eclipse)
+
+[Mavenベースのプロジェクト](/android/getting-started#maven-support)
+
+</Admonition>
+
+## "install"呼び出しをアップデートする {#update-install-call}
+
+`install`呼び出しを、以下のようにアップデートします。
+
+```java
+try {
+    Helpshift.install(this,
+                  "<App Id from the Helpshift Dashboard>",
+                  "<Domain name from the Helpshift Dashboard>",
+                  config);
+} catch (UnsupportedOSVersionException e) {
+    // Android OS versions prior to Lollipop (< SDK 21) are not supported.
+}
+```
+
+詳細については、「[SDK X・はじめに](/sdkx_android/getting-started#initializing)」ガイドをご参照ください。
+
+## "install"呼び出しの構成 {#install-config}
+
+SDK Xの`install`APIは初期化のための構成としてMapを取り込みます。`InstallConfig`クラスは削除され、`Map`によって置き換えられる必要があります。
+
+`InstallConfig`から`Map`のキーに対する以下のような関数のマッピングに基づき、`install`呼び出しで渡された構成を更新します。
+
+| レガシーSDKの`InstallConfig`                             | SDK X: `Map`のキー         | 値の例                            |
+| ------------------------------------------------------ | ---------------------------- | ---------------------------------------- |
+| InstallConfig.Builder.setNotificationIcon              | "notificationIcon"           | R.drawable.notification_icon             |
+| InstallConfig.Builder.setLargeNotificationIcon         | "notificationLargeIcon"      | R.drawable.notification_large_icon       |
+| InstallConfig.Builder.setEnableInAppNotifications      | "enableInAppNotification"    | true/false                               |
+| InstallConfig.Builder.setNotificationSound             | "notificationSoundId"        | R.raw.notification_sound                 |
+| InstallConfig.Builder.setSupportNotificationChannelId  | "notificationChannelId"      | "ABC App Channel"                        |
+| InstallConfig.Builder.setEnableDefaultFallbackLanguage | この構成は削除されました |                                          |
+| InstallConfig.Builder.setFont                          | この構成は削除されました |                                          |
+| InstallConfig.Builder.setScreenOrientation             | "screenOrientation"          | ActivityInfo.SCREEN_ORIENTATION_PORTRAIT |
+| InstallConfig.Builder.setEnableLogging                 | "enableLogging"              | true/false                               |
+| InstallConfig.Builder.disableErrorReporting            | この構成は削除されました |                                          |
+
+<Admonition type="info" title="注意">
+
+非推奨となった構成はすべて削除されており、もうサポートされていません。
+
+</Admonition>
+
+構成に関する詳細については、こちらのドキュメントをご参照ください — [SDKの構成 - Android向けのHelpshift SDK X](/sdkx_android/sdk-configuration/)
+
+## 会話とFAQのAPI {#sdk-apis}
+
+会話とFAQ向けのパブリックAPIを、以下のようにアップデートします。
+
+| レガシーSDK                                                                                                      | SDK X                                                    |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Support.showConversation(MyActivity.this); <br /> Support.showConversation(MyActivity.this, apiConfig);         | Helpshift.showConversation(MyActivity.this, config);     |
+| Support.showFAQs(MyActivity.this); <br /> Support.showFAQs(MyActivity.this, apiConfig);                         | Helpshift.showFAQs(MyActivity.this, config);             |
+| Support.showFAQSection(MyActivity.this, "11"); <br /> Support.showFAQSection(MyActivity.this, "11", apiConfig); | Helpshift.showFAQSection(MyActivity.this, "11", config); |
+| Support.showSingleFAQ(MyActivity.this, "51"); <br /> Support.showSingleFAQ(MyActivity.this, "51", apiConfig);   | Helpshift.showSingleFAQ(MyActivity.this, "51", config);  |
+| タグによるFAQのフィルタリング                                                                                           | 現在サポートされていません                                  |
+| ガイド付きの問題提出                                                                                             | 現在サポートされていません                                  |
+| 埋め込み可能なフラグメント                                                                                            | 現在サポートされていません                                  |
+
+SDK XのパブリックAPIに関する詳細については、こちらのドキュメントをご参照ください — [HelpshiftのAPI - Android向けのHelpshift SDK X](/sdkx_android/support-tools/)。
+
+## 会話とFAQのAPIの構成 {#sdk-api-config}
+
+会話およびFAQのAPIで渡される構成を、以下のようにアップデートします。
+
+| レガシーSDKのApiConfig                                    | SDK X: Mapのキー                                                                                                       |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| ApiConfig.Builder.setEnableFullPrivacy                  | "fullPrivacy"                                                                                                           |
+| ApiConfig.Builder.setCustomIssueFields                  | "cifs"                                                                                                                  |
+| ApiConfig.Builder.setShowConversationResolutionQuestion | Helpshiftの管理者ダッシュボードに移動します。 <br /> 「アプリの設定」、「解決の体験」、「解決に関する質問」トグルの順に移動します      |
+| ApiConfig.Builder.setEnableTypingIndicator              | Helpshiftの管理者ダッシュボードに移動します。 <br /> 「アプリの設定」、「サポートの体験」、「エージェントの入力インジケーターを表示する」トグルの順に移動します |
+| `ApiConfig`のその他の構成は削除されました        | 現在その他の構成はサポートされていません                                                                              |
+
+非推奨となった以下の構成は、SDKから削除されました。
+
+- [gotoConversationAfterContactUs](/android/sdk-configuration#gotoConversationAfterContactUs)
+- [requireEmail](/android/sdk-configuration#requireEmail)
+- [hideNameAndEmail](/android/sdk-configuration#hideNameAndEmail)
+- [enableTypingIndicator](/android/sdk-configuration#enableTypingIndicator)
+- [showConversationResolutionQuestion](/android/sdk-configuration#showConversationResolutionQuestion)
+
+## ユーザー管理 {#user-management}
+
+### ログイン {#login}
+
+レガシーSDKの`login`コードを以下のように置き換えます。
+
+```java
+HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.co")
+                                              .setName("John Doe")
+                                              .setAuthToken("generated-user-authentication-token")
+                                              .build();
+
+Core.login(user);
+
+```
+
+SDK X `login`:
+
+```java
+Map<String, Object> userData = new HashMap<>();
+userData.put("userId", "unique-user-id-746501");
+userData.put("userEmail", ""john.doe@app.co");
+userData.put("userName", "John Doe");
+userData.put("userAuthToken", "generated-user-authentication-token");
+
+Helpshift.login(userData);
+```
+
+### ログアウト {#logout}
+
+レガシーSDKの`logout`コードを以下のように置き換えます。
+
+```java
+Core.logout()
+```
+
+SDK X `logout`:
+
+```java
+Helpshift.logout()
+```
+
+### 匿名ユーザーの消去 {#clear-anon-user}
+
+レガシーSDKの`clearAnonymousUser`コードを以下のように置き換えます。
+
+```java
+Core.clearAnonymousUser();
+```
+
+SDK X API:
+
+```java
+Helpshift.clearAnonymousUserOnLogin();
+```
+
+### ユーザー認証失敗リスナー {#auth-fail-listener}
+
+SDK Xで認証失敗リスナーのデリゲートを`HelpshiftEventListener`に置き換えます。
+
+レガシーSDKのデリゲートを削除します。
+
+```java
+import com.helpshift.support.Support.Delegate
+...
+...
+
+class MyDelegate implements Delegate {
+    .
+    .
+    .
+    .
+
+    @Override
+    void authenticationFailed(HelpshiftUser user, AuthenticationFailureReason reason) {
+        // your code here
+    }
+}
+
+...
+...
+
+Support.setDelegate(new MyDelegate());
+```
+
+認証失敗のアップデートには、SDK Xの`HelpshiftEventListener`を使用します。
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+     // ....
+  }
+
+  @Override
+  public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
+    Log.e(TAG, reason);
+    // Your code here
+  }
+});
+```
+
+ユーザー管理に関する詳細については、こちらのドキュメントをご参照ください — [ユーザー - Android向けのHelpshift SDK X](/sdkx_android/users/)
+
+<Admonition type="info" title="注意">
+
+SDK Xへの移行を行う際は、不一致を回避するためにアクティブユーザーを再度ログインさせることをお勧めします。
+
+</Admonition>
+
+## デザインとカスタマイズのサポート {#design-customize-support}
+
+SDK Xのデザインとカスタマイズは、Helpshiftダッシュボードへと完全に移行されました。
+
+Helpshift SDKのデザイン、テーマ設定、カスタマイズに関連するコードは、すべて削除してください。これらの代わりに、Helpshiftダッシュボードで設定を行ってください。
+
+デザインとカスタマイズに関する詳細については、こちらのドキュメントをご参照ください — [デザイン - Android向けのHelpshift SDK X](/sdkx_android/design/)
+
+<Admonition type="info" title="注意">
+
+テーマ設定とカスタマイズは、SDK Xではまだサポートされておりません。2022年のロードマップに追加される予定です。
+
+</Admonition>
+
+## 文字列のカスタマイズ {#string-customize}
+
+文字列のカスタマイズは、まだサポートされておりません。Helpshiftダッシュボードに移行される予定です。
+
+SDK Xには反映されなくなるため、アプリで行ったHelpshift SDK関連の文字列カスタマイズはすべて削除してください。
+
+## 通知 {#notification}
+
+通知を処理するために、以下のAPIをレガシーSDKからSDK X APIへと置き換えてください。
+
+| レガシーSDK                                                                                                  | SDK X                                                      |
+| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Core.registerDeviceToken(context, pushToken);                                                               | Helpshift.registerPushToken(pushToken);                    |
+| Core.handlePush(context, intent);                                                                           | Helpshift.handlePush(data);                                |
+| 通知の数を同期的に取得します。 <br /> Support.getNotificationCount()                            | サポートされていません                                              |
+| 通知の数を非同期的に取得します。 <br /> Support.getNotificationCount(countHandler, failHandler); | Helpshift.requestUnreadMessageCount(shouldFetchFromServer) |
+
+非同期の`requestUnreadMessageCount`の結果は、`HelpshiftEventListener`のイベントとして提供されます。
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT:
+        int count = (int) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT);
+        boolean fromCache = (boolean) data.get(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE);
+        if (fromCache) {
+          Log.d("Notification Count", "local" + count);
+        } else {
+          Log.d("Notification Count", "server" + count);
+        }
+    }
+  }
+```
+
+<Admonition type="info" title="注意">
+
+プッシュ通知を使用している場合には、不一致の可能性を回避するためのアプリのアップグレードを終えた後にSDK Xでプッシュトークンの再登録を行うことをお勧めします。
+
+</Admonition>
+
+通知の処理に関する詳細については、こちらのドキュメントをご参照ください — [通知 - Android向けのHelpshift SDK X](/sdkx_android/notifications/)
+
+## SDKの言語
+
+| レガシーSDK                 | SDK X                         |
+| -------------------------- | ----------------------------- |
+| Core.setSDKLanguage("fr"); | Helpshift.setLanguage("fr");` |
+
+<Admonition type="info" title="注意">
+
+不一致の可能性を回避するために、SDK Xでアプリをアップグレードする際にSDKの言語をもう一度設定し直すことをお勧めします。
+
+</Admonition>
+
+インターナショナリゼーションに関する詳細については、こちらのドキュメントをご参照ください — [インターナショナリゼーションを行う - Android向けのHelpshift SDK X](/sdkx_android/i18n/)
+
+## トラッキング {#tracking}
+
+### BreadCrumb
+
+レガシーSDK API `Support.leaveBreadCrumb("Went to Preferences Screen");`をSDK X API `Helpshift.leaveBreadCrumb("Went to Preferences Screen")`に置き換えます
+
+レガシーSDK API `Support.clearBreadCrumbs();`をSDK X API `Helpshift.clearBreadCrumbs()`に置き換えます
+
+### デバッグログ
+
+[デバッグログ](/android/tracking#debug-logs)のレガシーSDKサポートは、SDK Xでは[こちら](/sdkx_android/tracking#debug-logs)に記載されているデバッグログに置き換えられました
+
+### アクティブな会話のチェック
+
+レガシーSDK API `Support.isConversationActive()`はSDK Xではサポートされていません
+
+### 会話へのメタデータの追加
+
+`MetaData`クラスは削除されました。
+
+メタデータの代わりに、[CIF](/sdkx_android/tracking#set-custom-issue-fields)を使用することをお勧めしています。詳細については、[こちら](https://support.helpshift.com/kb/article/custom-issue-fields/)の記事をご覧ください
+
+レガシーSDKはメタデータAPIを活用して会話にメタデータを付与します（[こちら](/android/tracking#metadata)をご参照ください）。メタデータを付与するためのレガシーSDKコードを、同等のSDK Xコードに置き換えます。
+
+```java
+HashMap<String, String> customMetadata = new HashMap<String, String();
+customMetadata.put("usertype","paid");
+customMetadata.put("level","7");
+customMetadata.put("score","12345");
+
+HashMap<String, Object> config = new HashMap<>();
+config.put("customMetadata", customMetadata);
+
+Helpshift.showConversation(MainActivity.this, config);
+```
+
+### 会話へのタグの追加
+
+`tags`を渡す場合、レガシーSDKコードでは以下のように記述します。
+
+```java
+String[] tags = new String[]{"foo", "bar"};
+
+HashMap<String, Object> userData = new HashMap<>();
+Metadata metadata = new Metadata(userData, tags);
+
+private void showHelp () {
+  ApiConfig apiConfig = new ApiConfig.Builder()
+                         .setCustomMetadata(metadata)
+                         .build();
+  Support.showFAQs(MainActivity.this, apiConfig);
+```
+
+以下のSDK X APIを使用します。
+
+```java
+Map<String, Object> config = new HashMap<>();
+    config.put("tags", new String[]{"foo", "bar"});
+
+    Helpshift.showConversation(MainActivity.this, config);
+```
+
+### CIFのサポート
+
+レガシーSDKで以下のようにCIFが設定されている場合には、
+
+```java
+Map<String, String[]> cifs = new HashMap<>();
+cifs.put("join_date", new String[]{"dt", "1505927361535"});
+cifs.put("level", new String[]{"n", "42"});
+cifs.put("name", new String[]{"sl", "John Doe"});
+cifs.put("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+cifs.put("is_pro", new String[]{"b", "true"});
+cifs.put("currency", new String[]{"dd", "Dollar"});
+
+...
+...
+
+private void showHelp() {
+         ApiConfig apiConfig = new ApiConfig.Builder()
+                                            .setCustomIssueFields(cifs)
+                                            .build();
+        Support.showFAQs(MainActivity.this, apiConfig);
+```
+
+以下のSDK X APIを使用して上記の例のようなCIFを設定します。
+
+```java
+Map<String, String> joiningDate = new HashMap<>();
+    joiningDate.put("type", "date");
+    joiningDate.put("value", "1505927361535");
+
+    Map<String, String> stockLevel = new HashMap<>();
+    stockLevel.put("type", "number");
+    stockLevel.put("value", "42");
+
+    Map<String, String> employeeName= new HashMap<>();
+    employeeName.put("type", "singleline");
+    employeeName.put("value", "John Doe");
+
+    Map<String, String> isPro = new HashMap<>();
+    isPro.put("type", "boolean");
+    isPro.put("value", "true");
+
+    Map<String, String> address = new HashMap<>();
+    address.put("type", "multiline");
+    address.put("value", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128");
+
+    Map<String, String> currency = new HashMap<>();
+    currency.put("type", "dropdown");
+    currency.put("value", "Dollar");
+
+    Map<String, Object> cifMap = new HashMap<>();
+    cifMap.put("join_date", joiningDate);
+    cifMap.put("level", stockLevel);
+    cifMap.put("name", employeeName);
+    cifMap.put("is_pro", isPro);
+    cifMap.put("address", address)
+    cifMap.put("currency", currency)
+
+
+    Map<String, Object> config = new HashMap<>();
+    // other configs...
+    //..
+    config.put("cifs", cifMap);
+
+    Helpshift.showFAQs(MainActivity.this, config);
+```
+
+<Admonition type="info" title="注意">
+  <b>"customIssueFields"</b>{" "}
+キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
+<b>"cifs"</b>キーの使用を強く推奨します。
+</Admonition>
+
+詳細については、こちらのドキュメントをご参照ください — [CIF - Android向けのHelpshift SDK X](/sdkx_android/tracking#set-custom-issue-fields)
+
+## Helpshiftのデリゲート {#delegates}
+
+レガシーSDKの`Delegate`クラスで報告されたイベントは、SDK Xの`HelpshiftEventListener`コールバックインターフェースで報告されるようになりました。
+すべてのイベントは、このリスナークラスの`onEventOccurred`メソッドで期待される値の定義された定数とともに報告されるようになりました。古い`Delegate`クラスのこれらのイベントに基づいてコードを更新する必要があります。
+
+サポートされているイベントの詳細については、こちらのドキュメントをご参照ください — [Helpshiftのデリゲート - Android向けのHelpshift SDK X](/sdkx_android/delegates/)
+
+レガシーSDKでは、以下のイベントはサポートされなくなりました。
+
+- `userClickOnAction`
+
+- `displayAttachmentFile`
+
+## レビューとフィードバック {#review-feedback}
+
+エージェントによるアプリのレビューは、SDK Xではサポートされています。この機能の詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)をご参照ください
+  
+以下の機能は、SDK Xで非推奨となりました。
+- [アプリのレビューリクエスト](/android/reviews-and-feedback/#review-and-feedback)
+- [手動のアプリ評価リクエスト](/android/reviews-and-feedback#app-rating-api)
+- [自動のレビューリクエスト](/android/reviews-and-feedback#configure-review-request)
+
+## ディープリンク {#deep-links}
+
+ディープリンクは、レガシーSDKと同様にSDK Xでもサポートされています — [ディープリンク - Android向けのHelpshift SDK X](/sdkx_android/deep-linking/)
+
+## トラブルシューティング {#troubleshooting-migration}
+
+### Helpshift SDKに起因するコンパイルエラー
+
+レガシーSDKに関連するすべてのコードが削除されていることをご確認ください。
+
+[こちら](/sdkx_android/migration-guide#update-gradle-import)に記載されているように、Gradle依存関係が正しく追加されていることをご確認ください。
+
+使用している新しい/置き換えられたAPIが正しいパラメーターを持っていることをご確認ください。
+
+### プッシュ通知が正しく機能しない
+
+SDK Xでプッシュトークンを登録するために使用する新しいAPIに移行していることをご確認ください。
+
+プッシュ通知を処理する新しいAPI（`Core.handlePush()`の代わりに導入された`Helpshift.handlePush()`）が使用されるように正しく移行が完了していることをご確認ください
+
+### SDKからイベントの更新を取得しない
+
+リスナー`Helpshift.setHelpshiftEventListener()`を正しく登録し、イベント処理コードを`Support.setDelegate()`から移行していることをご確認ください
+
+## お問い合わせ {#contact-us}
+
+レガシーSDKからSDK Xへの移行に関して問題が発生した場合には、support@helpshift.comまでお問い合わせください。

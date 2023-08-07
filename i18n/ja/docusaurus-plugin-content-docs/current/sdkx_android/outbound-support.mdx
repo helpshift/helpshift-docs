@@ -1,0 +1,192 @@
+---
+sidebar_position: 85
+title: アウトバウンドサポート
+description: "アウトバウンドサポートを使用すれば、アプリ内で発生した問題を消費者と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# アウトバウンドサポート {#outbound-support}
+
+<Intro>
+
+アウトバウンドサポートを使用すれば、アプリ内で発生した問題を消費者と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+この機能の使用手順は、以下の通りです。
+
+アウトバウンドサポート用のリンクを生成するには、Helpshiftのダッシュボードで、「**設定**」、「**ワークフロー**」、「**アウトバウンドのサポート**」の順に移動します。
+
+![](/static/books/helpshiftx/outbound-support.png)
+
+「**新しいリンク**」ボタンが表示されているはずです。「新しいリンク」ボタンをクリックし、**チャット、ヘルプセンター、シングルFAQ、FAQセクション**などのアクションと、Helpshift SDKにペイロードとして送信する**CIF、タグ、最初のユーザーメッセージ**などのデータを選択します。
+
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
+
+最後に、URLエンコードされたペイロードのリンクを取得します。既存のプッシュ通知システムを使用して、このリンクを通知ペイロードに埋め込まれたエンドユーザーへと送信します。
+
+YOUR_APP_IDENTIFIERには、アプリを識別する一意の文字列を指定できます。たとえば、myAppやmyAppSupportなど、アプリのディープリンクURLで使用するスキームのようなものを指定します。
+
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
+
+## プッシュ通知のデータをHelpshiftにデリゲートする {#delegate-notification-data}
+
+アウトバウンドサポートのデータをHelpshiftに渡すには、以下の手順に従ってください。
+
+1. アプリの既存のプッシュ通知システムを使用して、アウトバウンドサポートを実施するユーザーにプッシュ通知を送信します
+
+2. ユーザーが通知を介してアプリを開いたときに、通知データに含まれているアウトバウンドサポートのリンクを`Helpshift.handleProactiveLink(String link)`を呼び出すことによってHelpshift SDKに渡すようにアプリ内でこの通知を処理します。
+
+3. 提供されたリンクからデータを読み取り、アウトバウンドサポートダッシュボードから提供された構成を用いてHelpshiftのサポートを開きます。
+
+例: 以下のコードは、受信したプッシュ通知を処理し、それをデバイスの通知バーに表示する方法を示しています。
+
+```java
+@Override
+public void onMessageReceived(RemoteMessage remoteMessage) {
+  Map<String, String> data = remoteMessage.getData();
+    String origin = data.get("origin");
+
+    // This is a notification from Helpshift push notification system
+    if (origin != null && origin.equals("helpshift")) {
+      Helpshift.handlePush(data);
+    } else {
+    // This is not a notification from Helpshift system
+    // This is your existing push notification system
+
+    // Sample key in notification data where you will put the proactive support link generated from Helpshift dashboard
+    String proactiveUrl = data.get("proactive_link");
+
+    // Sample code to generate Push notification
+    Context context = getApplicationContext();
+    Intent intent = new Intent(context, HandleNotificationActivity.class); // Your notification handling class
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.putExtra("proactiveNotification", true);
+    intent.putExtra("proactiveLink", proactiveUrl);
+    int pendingIntentFlag = Build.VERSION.SDK_INT < 23 ? 0 : PendingIntent.FLAG_IMMUTABLE;
+    PendingIntent pendingIntent = PendingIntent.getActivity(
+            context, new Random().nextInt(), intent, pendingIntentFlag);
+
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+            .setContentTitle(data.get("title"))
+            .setContentText(data.get("message"))
+            .setSmallIcon(R.drawable.icon) // Set your icon for notification
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .setChannelId(CHANNEL_ID); // Set your app's channelId
+      if (builder != null) {
+        Notification notification = builder.build();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
+      }
+    }
+}
+```
+
+ユーザーが通知をクリックすると、（上記のコードサンプルで示されているように）`HandleNotificationActivity`アクティビティが開始されます。
+プッシュ通知のデータをHelpshift SDKにデリゲートするには、**HandleNotificationActivityのonCreate()**メソッドで`Helpshift.handleProactiveLink()`を呼び出します。
+
+例:
+
+_以下のコードでは、`Helpshift.handleProactiveLink()`を呼び出してプッシュ通知のデータをHelpshift SDKにデリゲートする方法を示しています。_
+
+```java
+public class HandleNotificationActivity extends Activity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.getBoolean("proactiveNotification")) {
+            String url = bundle.getString("proactiveLink");
+            Helpshift.handleProactiveLink(url);
+        }
+        finish();
+    }
+}
+```
+
+## 現在のユーザーに固有の構成を渡す {#user-specific-config}
+
+ユーザーが通知をクリックした際に、アプリ内の現在のユーザーに固有の構成を追加したい場合があるかもしれません。
+
+ローカルAPIの構成を設定することにより、Helpshift SDKは（先のステップで述べたように）アウトバウンドサポートのリンクに埋め込まれた構成と、実行時に提供されるローカル構成の両方から構成をマージすることができます。このローカルAPIの構成は、`showConversation()`や`showFAQs()`のようなその他のAPIに期待される構成と全く同じです。
+
+この構成は、現在の問題と、同じセッションで提出された次の問題に使用されます。
+
+<Admonition type="info" title="注意">
+
+このAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)よりも後、そしてHelpshift.handleProactiveLink()よりも前に呼び出す必要があります。
+
+</Admonition>
+
+パブリックインターフェース`com.helpshift.proactive.HelpshiftProactiveAPIConfigCollector`を実装し、`Helpshift.setHelpshiftProactiveConfigCollector("<instance of HelpshiftProactiveAPIConfigCollector>")`メソッドを呼び出して構成コレクターを初期化します。
+
+`showConversation()`や`showFAQs()`のようなその他のパブリックAPIで追加する場合と同じフォーマットで、ユーザー固有の構成を追加するための`getAPIConfig()`メソッドを実装する必要があります。
+
+この構成と、アウトバウンドサポートのリンクに埋め込まれている構成をマージします。**タグ、CIF**など、アウトバウンドサポートのリンクからの構成データをローカル構成に追加します。コンフリクトが発生した場合には、アウトバウンドサポートの構成が優先されます。
+
+例: 以下のコードは、`HelpshiftProactiveAPIConfigCollector`インターフェースを実装する方法と、`getAPIConfig()`メソッドを使用してユーザー固有の構成を追加する方法を示しています。
+
+```java
+public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector{
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    //...
+
+    // initialise proactiveConfig collector
+    Helpshift.setHelpshiftProactiveConfigCollector(this);
+
+    //...
+  }
+
+  //...
+
+  @Override
+  public Map<String, Object> getAPIConfig() {
+
+    // config map
+    Map<String, Object> localConfig = new HashMap<>();
+
+    // set tags for tracking
+    localConfig.put("tags", new String[]{"currentUserTag", "currentUserLevel"});
+
+    // set custom issue fields
+    Map<String, Object> cifMap = new HashMap<>();
+    Map<String, String> isPro = new HashMap<>();
+    isPro.put("type", "boolean");
+    isPro.put("value", "true");
+    cifMap.put("is_pro", isPro);
+
+    localConfig.put("cifs", cifMap);
+    ..etc
+    return localConfig;
+  }
+}
+```
+
+<Admonition type="info" title="注意">
+  <b>"customIssueFields"</b>{" "}
+キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
+<b>"cifs"</b>キーの使用を強く推奨します。
+</Admonition>

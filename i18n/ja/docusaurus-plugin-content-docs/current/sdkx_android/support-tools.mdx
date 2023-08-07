@@ -1,0 +1,158 @@
+---
+sidebar_position: 20
+title: Helpshift API
+description: Helpshiftでは、お客様の要件に応じてSDKの各機能を個別に使用する方法を提供しています。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift API {#support-tools}
+
+<Intro>
+
+Helpshiftでは、お客様の要件に応じてSDKの機能を使用する方法を提供しています。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## お問い合わせとアプリ内メッセージの統合 {#conversation-view}
+
+`Helpshift.showConversation(MyActivity.this, configurationMap)`を呼び出すことにより、ユーザーが最初にFAQを閲覧することなく直接フィードバックを送信したり、新しい会話を開始したりすることができるようになります。ユーザーが新しい会話を開始すると、このAPI呼び出しは会話画面を表示します。会話は、エージェントによって解決されるか、または拒否されるまで継続されます。
+
+<Centered width="major">
+
+![newConversation.png](/static/books/sdkx_android/show_conversation.png "newConversation.png")
+
+</Centered>
+
+例:
+
+```java
+	// config map
+	Map<String, Object> config = new HashMap<>();
+
+    // set tags for tracking
+    config.put("tags", new String[]{"foo", "bar"});
+
+    // set custom issue fields
+    Map<String, Object> cifMap = new HashMap<>();
+    Map<String, String> isPro = new HashMap<>();
+    isPro.put("type", "boolean");
+    isPro.put("value", "true");
+    cifMap.put("is_pro", isPro);
+
+    config.put("cifs", cifMap);
+
+    //..etc
+
+    // pass the config map in the api
+    Helpshift.showConversation(MainActivity.this, config);
+```
+
+<Admonition type="info" title="注意">
+  <b>"customIssueFields"</b>{" "}
+キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
+<b>"cifs"</b>キーの使用を強く推奨します。
+</Admonition>
+
+`Helpshift.showConversation(MyActivity.this, configMap);`の`MyActivity.this`はHelpshiftを呼び出すアクティビティであり、`configMap`はSDKを構成するために渡す構成マップです。
+
+これらの[APIオプション](/sdkx_android/sdk-configuration/)をサポートしています。
+
+## FAQの統合 {#faqs-view}
+
+API呼び出し`Helpshift.showFAQs(Activity a, Map <String, Object> configMap)`を使用することで、ユーザーがアプリ内に設けられたヘルプ/サポートセクションを呼び出すことができるようになります。シンプルで直感的なインターフェースにHelpshift SDKのすべての機能がバンドルされているため、これがアプリでヘルプを有効にする場合の最も簡単なアプローチとなります。このAPI呼び出しは、アプリの**ヘルプ**または**サポート**アクションに結び付けることができます。
+
+<Centered >
+
+![showFAQs.png](/static/books/sdkx_android/show_faqs.png "showFAQs.png")
+
+</Centered>
+
+このアクティビティは、FAQ機能、検索機能、お問い合わせ機能を1つのインターフェースに統合したものです。このビューでは、ユーザーはFAQで特定の質問を検索し、見つからなかった場合には問題を報告することができます。Helpshiftエージェントダッシュボードから相手の質問に返信すると、その返信はお問い合わせの横にカウント数として表示され、クリックすると会話が開始されます。
+
+例:
+`Helpshift.showFAQs(MyActivity.this, configMap);`の`MyActivity.this`はHelpshiftを呼び出すアクティビティであり、`configMap`はSDKを構成するために渡す構成マップです。
+
+これらの[APIオプション](/sdkx_android/sdk-configuration/)をサポートしています。
+
+## 特定のFAQセクションの表示 {#faq-section-view}
+
+API呼び出し
+`Helpshift.showFAQSection(Activity a, String sectionPublishId,  Map <String, Object> configMap)`を使用することで、特定のFAQセクションのFAQを表示できるようになります。
+
+<Centered >
+
+![showFAQSection.png](/static/books/sdkx_android/show_section.png "showFAQSection.png")
+
+</Centered>
+
+**このAPIを使用するには、以下のようにFAQセクションの`publish-id`が必要となります。**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+
+この機能は、アプリ内で特定のFAQセクションを文脈依存ヘルプとして表示させるパーマリンクのようなものとして機能します。たとえば、ユーザーがメールアドレスやFacebook、Twitterを使用してあなたのアプリにログインしなければならない場合、ログイン画面にヘルプアクションを紐づけて、ログイン方法に関する質問が複数記載されている「ログインのヘルプ」という名前のHelpshiftのFAQセクションにリンクさせることができます。
+
+例:
+`Helpshift.showFAQSection(MyActivity.this, "11", configMap);`の`MyActivity.this`はHelpshiftを呼び出すアクティビティであり、"11"はFAQセクションの`publish-id`です
+
+これらの[APIオプション](/sdkx_android/sdk-configuration/)をサポートしています。
+
+## 特定のFAQの表示 {#faq-question-view}
+
+API呼び出し`Helpshift.showSingleFAQ(Activity a, String questionPublishId,  Map <String, Object> configMap)`を使用することで、個別のFAQを表示できるようになります。
+
+<Centered >
+
+![showSingleFAQ.png](/static/books/sdkx_android/show_single_faq.png "showSingleFAQ.png")
+
+</Centered>
+
+**このAPIを使用するには、以下のようにFAQの`publish-id`が必要となります。**
+
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+
+例: `Helpshift.showSingleFAQ(MyActivity.this, "51", configMap);`の`MyActivity.this`はHelpshiftを呼び出すアクティビティであり、"51"はFAQのpublish-idです。
+
+これらの[APIオプション](/sdkx_android/sdk-configuration/)をサポートしています。
+
+## SDKの言語を設定する {#set-language-api}
+
+SDKの言語は、`setLanguage("<language-code>")` APIを使用して設定します。デフォルトでは、SDKはデバイスの優先言語を使用します。以下のような場合には、呼び出しは失敗します。
+
+- Helpshiftのセッションが呼び出し時にすでにアクティブになっている場合
+- 言語コードが正しくない場合
+
+言語の詳細については、[こちら](/sdkx_android/i18n/)をご参照ください。
+
+例: 
+
+特定のロケールのSDKの言語が、言語コードのみで指定されている場合。
+
+```.java
+Helpshift.setLanguage("fr");
+```
+
+ロケールに合わせたSDKの言語の設定は、言語コードと国コードの両方で行うことができます。
+
+```.java
+Helpshift.setLanguage("zh-SG");
+```

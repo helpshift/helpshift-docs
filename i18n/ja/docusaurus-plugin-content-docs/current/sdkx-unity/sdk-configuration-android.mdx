@@ -1,0 +1,320 @@
+---
+sidebar_position: 160
+title: SDKの構成
+description: "Helpshiftには、SDKの動作をカスタマイズするために使用可能ないくつかの構成オプションが用意されています。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationPrefillTextSdkxUnityCode from "@site/docs/_partials/_conversationPrefillTextSdkxUnityCode.mdx";
+
+# SDKの構成
+
+<Intro>
+
+Helpshiftには、SDKの動作をカスタマイズするために使用可能ないくつかの構成オプションが用意されています。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## インストール時間の構成
+
+## アプリ内通知を有効にする {#enable-in-app-notifications}
+
+Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、フラグを`false`に設定します。
+
+このフラグを`false`に設定するとSDKはデバイスの通知トレイに通知を表示しなくなりますが、バックグラウンドでメッセージを取得します。この動作は、iOSでは異なっています。詳細については、[こちら](/sdkx-unity/sdk-configuration-ios#enableInAppNotification)をご参照ください
+
+このフラグの規定値は`true`です。そのため、アプリ内通知は有効化されます。
+
+<div className="compact ">
+
+|         |                                        |
+| ------- | -------------------------------------- |
+| フラグ    | HelpshiftSdk.ENABLE_INAPP_NOTIFICATION |
+| 値  | true/false                             |
+| デフォルト | true                                   |
+
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.ENABLE_INAPP_NOTIFICATION, false);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+### 通知アイコン {#notificationIcon}
+
+デフォルトでは、アプリケーションアイコンが通知アイコンとして使用されます。通知アイコンは、`install`呼び出しの`config`を使用してカスタマイズすることができます。
+
+アイコン画像については、ファイル拡張子を指定する必要はありません。アイコン画像のファイル名が"icon.png"であれば、Helpshiftの構成に"icon"を渡し、`<project-dir>/Assets/Plugins/Android/res/drawable`に"icon.png"ファイルを追加するだけでOKです。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.NOTIFICATION_ICON, "<icon-image-file-name>");
+      help.Install(apId, domainName, configMap);
+    }
+}
+```
+
+### 大きな通知アイコン {#largeNotificationIcon}
+
+デフォルトでは、アプリケーションアイコンが通知アイコンとして使用されます。
+大きな通知アイコンが通知トレイにも表示されるように指定する場合には、`install`呼び出しの`config`を使用して指定することができます。
+
+アイコン画像については、ファイル拡張子を指定する必要はありません。アイコン画像のファイル名が"large_icon.png"であれば、Helpshiftの構成に"large_icon"を渡し、`<project-dir>/Assets/Plugins/Android/res/drawable`に"large_icon.png"ファイルを追加するだけでOKです。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.NOTIFICATION_LARGE_ICON, "<large-icon-image-file-name>");
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+### 通知音 {#notificationSound}
+
+<Admonition type="info" title="注意">
+
+- ここで提供される音声は、Android OS 8.0以上でSDKが独自に作成するデフォルトの通知チャネルにのみ設定されます。この音声は、デフォルトのチャネルに一度だけ設定することができ、別の音声リソースが渡された場合には変更されません。
+
+- 後でサウンドを変更する必要がある場合には、独自の通知チャネルの作成をお勧めします。[こちら](/sdkx-unity/sdk-configuration-android#notificationChannels)をご参照ください。
+
+</Admonition>
+
+デフォルトでは、デフォルトのデバイス通知音がHelpshiftの通知に使用されます。通知音は、インストール呼び出しの構成を使用してカスタマイズすることができます。
+
+音声ファイルについては、ファイル拡張子を指定する必要はありません。音声ファイルの名前が"notificaton_sound.mp3"であれば、Helpshiftの構成に"notification_sound"を渡し、`<project-dir>/Assets/Plugins/Android/res/raw`に"notificaton_sound.mp3"ファイルを追加するだけでOKです。
+
+例:
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+        this.help = HelpshiftSdk.GetInstance();
+        Dictionary<string, object> configMap = new Dictionary<string, object>();
+        configMap.Add(HelpshiftSdk.NOTIFICATION_SOUND_ID, <sound-file-name>);
+        help.Install(appId, domainName, configMap);
+    }
+}
+
+```
+
+### 通知チャネル {#notificationChannels}
+
+Android Oreo以降、Helpshiftの通知は`In-app Support`という名前のデフォルトのチャネルを作成します。デフォルトのチャネル名をカスタマイズする場合は、インストール呼び出しの構成を使用します。
+
+例:
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.NOTIFICATION_CHANNEL_ID, <your-channel-id>);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+## ロギングを有効にする {#enableLogging}
+
+enableLoggingを`true`に設定すると、Helpshift SDKのログがAndroidのLogcatに生成されます。ロギングの有効化は、開発者が統合に関する一般的な問題を解決する際に役立ちます。
+
+<div className="compact ">
+
+|         |                                          |
+| ------- | ---------------------------------------- |
+| フラグ    | HelpshiftSdk.ENABLE_LOGGING              |
+| 値  | <code>"true"</code>/<code>"false"</code> |
+| デフォルト | <code>"false"</code>                     |
+
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add(HelpshiftSdk.ENABLE_LOGGING, true);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+## 会話のプリフィルテキスト {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+<ConversationPrefillTextSdkxUnityCode />
+
+## 画面の向き {#screen-orientation}
+
+Helpshift SDKの画面の向きは、[ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html)クラスで利用可能な定数に`screenOrientation`を設定することで固定することができます。
+たとえば、画面の向きをモバイルのユーザーに対しては`ActivityInfo.SCREEN_ORIENTATION_PORTRAIT`に、タブレットのユーザーに対しては`ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE`に固定したい場合があるかもしれません。
+
+<div className="compact ">
+
+|         |                                                                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| フラグ    | HelpshiftSdk.SCREEN_ORIENTATION                                                                                                        |
+| 値  | [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html)クラスからの方向を示す整数値 |
+| デフォルト | 1 (ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIEDを意味する)                                                                               |
+
+</div>
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake(){
+      this.help = HelpshiftSdk.GetInstance();
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      // To make it landscape
+      configMap.Add(HelpshiftSdk.SCREEN_ORIENTATION, 0);
+      help.Install(appId, domainName, configMap);
+    }
+}
+```
+
+## お問い合わせを有効にする {#enableContactUs}
+
+ユーザーがFAQを表示しているときに、Helpshiftの「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
+
+設定可能な値には、`"ALWAYS"`/`"AFTER_VIEWING_FAQS"`/`"AFTER_MARKING_ANSWER_UNHELPFUL"`/`"NEVER"`があります。
+
+例
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("enableContactUs", "AFTER_VIEWING_FAQS");
+      help.ShowFAQs(configMap);
+    }
+}
+```
+
+#### ベストプラクティス
+
+- 有料ユーザーに対してはenableContactUsを`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
+- 自国内のユーザーに対してはenableContactUsを`ALWAYS`に設定し、海外のユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、国ベースのサポートを提供することができます。
+
+## フルプライバシー {#fullprivacy}
+
+このAPIの呼び出し時に`help.ShowConversation(config);` APIの`config`辞書の`fullPrivacy`オプションを`true`に設定しておくことにより、以下の方法を用いたCOPPAへの準拠が保証されます。
+
+1. ユーザーによるスクリーンショット撮影の無効化（SDKを使用した画像を含むファイルの添付ができなくなります）。
+2. SDKによる名前や電子メールなどを含む個人を特定できる情報（PII）の収集の停止（アイデンティティボットおよび/またはhelpshiftConfigオブジェクトを使用）。つまり、`userName`と`userEmail`を設定し、`fullPrivacy`を`true`に設定している場合、Helpshiftは`userName`と`userEmail`の値を使用しません。
+
+また、ユーザーが不快なコンテンツを添付するシナリオにおいては、これはCOPPAに準拠する上で大きな問題となります。このオプションは、この問題を解決しなければならない場合に役立ちます。
+
+例
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("fullPrivacy", "true");
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## UIの構成 {#uiConfig}
+
+この構成は、Helpshift SDKのテーマ設定を示しています。詳細については、[デザイン](/sdkx-unity/design-android/)をご参照ください。
+
+## トラッキング {#tracking}
+
+この構成は、ユーザーの操作のトラッキングを示しています。詳細については、[トラッキング](/sdkx-unity/tracking-android)をご参照ください。

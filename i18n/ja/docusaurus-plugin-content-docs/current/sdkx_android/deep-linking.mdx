@@ -1,0 +1,115 @@
+---
+sidebar_position: 100
+title: FAQにおけるディープリンク
+description: "カスタムURLスキームを使用して、アプリ内でのディープリンクをサポートします。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# FAQにおけるディープリンク {#android-deep-links}
+
+<Intro>
+
+カスタムURLスキームを使用して、アプリ内でのディープリンクをサポートします
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+カスタムURLスキームを使用して、HelpshiftのFAQからアプリ
+内の特定のリンクへとユーザーを誘導します。これらのスキームを使用することで、より
+シームレスな体験をユーザーに提供できるようになります。たとえば、あなたのAndroidアプリ内に
+会員登録用の画面がある場合、FAQにある「登録」リンクをクリックすることでユーザーを
+直接その画面へと誘導することができます。
+
+## FAQにカスタムURLスキームを挿入する {#custom-url-in-faqs}
+
+FAQを編集する際に、テキストを選択してから「リンクを作成する」をクリックします。
+
+<Image
+  src="/static/books/android/add-android-deep-link-1.png"
+  width="half"
+  alt="add-android-deep-link-1.png"
+/>{" "}
+
+ポップアップ表示されたダイアログにカスタムURLを入力し、FAQを保存します。
+
+<Image
+  src="/static/books/android/add-android-deep-link-2.png"
+  width="half"
+  alt="add-android-deep-link-2.png"
+/>{" "}
+
+## Androidアプリでディープリンクを扱う {#handle-deep-link}
+
+ディープリンクとは、ユーザーがカスタム
+URLをクリックした際にそのURLが何を行うかを開発者が
+自由に決定できるカスタムリンクURLのことを指します。
+
+ディープリンクでは、`myscheme://example.com`のようなカスタムURLスキームを設定することができます。
+たとえば、URL`myscheme://example.com/?faqid=95`（faqidはFAQの
+公開IDを指しています）では関連するFAQが開き、URL
+`myscheme://example.com/?sectionid=8`（sectionidは任意のセクションの公開ID
+を指しています）では関連するセクションが開きます。
+
+開発者がmyschemeを扱う場合には、対応するFAQ ID
+とSECTION IDをそれぞれ用いて
+`showSingleFAQ`APIと`showFAQSection`APIを呼び出す必要があります。
+その後、必要な処理を行うには、アプリに以下のものを実装する必要があります。
+
+たとえば、以下のようになります:
+
+```java
+//AndroidManifest.xml
+<activity android:name=".DeepLinkActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="myscheme" android:host="example.com"/>
+     </intent-filter>
+</activity>
+```
+
+```java
+//DeepLinkActivity.java
+public class DeepLinkActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.deep_link);
+
+    TextView deepLinkUrl = (TextView) findViewById(R.id.deep_link_url);
+
+    Intent intent = getIntent();
+    Uri data = intent.getData();
+
+    if (data.getQueryParameter("faqid") != null) {
+      Helpshift.showSingleFAQ(this, data.getQueryParameter("faqid"));
+      finish();
+    } else if (data.getQueryParameter("sectionid") != null) {
+      Helpshift.showFAQSection(this, data.getQueryParameter("sectionid"));
+      finish();
+    } else {
+      deepLinkUrl.setText("Deep link received - " + data);
+    }
+  }
+}
+```

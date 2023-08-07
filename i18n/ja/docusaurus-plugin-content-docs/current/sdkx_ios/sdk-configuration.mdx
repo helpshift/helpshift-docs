@@ -1,0 +1,403 @@
+---
+sidebar_position: 30
+title: SDKの構成
+description: Helpshiftには、SDKの動作をカスタマイズするための構成オプションがいくつか用意されています。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+
+# SDKの構成
+
+<Intro>
+
+Helpshiftには、SDKの動作をカスタマイズするための構成オプションがいくつか用意されています。これらのオプションは、[Helpshift API](/sdkx_ios/support-tools/)と組み合わせて使用します。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## ロギングを有効にする {#enableLogging}
+
+`enableLogging`を`YES`に設定すると、Helpshift SDKのログがXcodeのコンソールに生成されます。これらのログは、統合中にSDKをデバッグする場合に役立ちます。ロギングの有効化は、開発者が統合に関する一般的な問題を解決する際に役立ちます。
+
+<div className="compact ">
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| オプション:       | <code>enableLogging</code>                        |
+| 値:       | <code>YES</code>/<code>NO</code>                |
+| デフォルト:      | <code>NO</code>                                   |
+| 最低限必要なSDKバージョン       | v10.0.0                                           |
+| サポート: | <code>installWithPlatformId:domain:config:</code> |
+
+</div>
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"enableLogging":@YES };
+
+[Helpshift installWithPlatformId:@"<PLATFORM_ID>"
+                          domain:@"<DOMAIN>"
+                          config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["enableLogging": true]
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## お問い合わせを有効にする {#enableContactUs}
+
+ユーザーがFAQを表示しているときに、Helpshiftの「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
+
+<div className="compact ">
+
+|              |                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| オプション       | <code>enableContactUs</code>                                                                                                     |
+| 値       | <code>"ALWAYS"</code>/<code>"AFTER_VIEWING_FAQS"</code>/<code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code>/<code>"NEVER"</code> |
+| デフォルト      | <code>nil</code>                                                                                                                 |
+| 最低限必要なSDKバージョン      | v10.0.0                                                                                                                          |
+| サポート | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code>                                                   |
+
+</div>
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"enableContactUs": @"AFTER_VIEWING_FAQS" };
+[Helpshift showFAQs:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["enableContactUs": "AFTER_VIEWING_FAQS"]
+Helpshift.showFAQs(self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+#### ベストプラクティス
+
+- 有料ユーザーに対してはenableContactUsを`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
+- 自国内のユーザーに対してはenableContactUsを`ALWAYS`に設定し、海外のユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、国ベースのサポートを提供することができます。サンプルコード:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
+CTCarrier *carrier = [netinfo subscriberCellularProvider];
+NSString *enableContactUsValue = @"AFTER_VIEWING_FAQS";
+if([[carrier mobileCountryCode] isEqualToString:@"<LOCAL_COUNTRY_CODE>"]) {
+    enableContactUsValue = @"ALWAYS";
+}
+NSDictionary *config = @{ @"enableContactUs": enableContactUsValue };[Helpshift showFAQs:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let netinfo = CTTelephonyNetworkInfo()
+let carrier = netinfo.subscriberCellularProvider
+var enableContactUsValue = "AFTER_VIEWING_FAQS"
+if carrier.mobileCountryCode == "<LOCAL_COUNTRY_CODE>" {
+    enableContactUsValue = "ALWAYS"
+}
+let config = ["enableContactUs": enableContactUsValue]
+Helpshift.showFAQs(self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## フルプライバシー {#enableFullPrivacy}
+
+フルプライバシーオプションは、以下の方法によって[COPPA](http://www.coppa.org/)への準拠をサポートします。
+
+1. ユーザーによるスクリーンショット撮影の無効化（SDKを使用した画像を含むファイルの添付ができなくなります）。
+2. SDKによる名前や電子メールなどを含む個人を特定できる情報（PII）の収集の停止（アイデンティティボットおよび/またはhelpshiftConfigオブジェクトを使用）。つまり、`userName`と`userEmail`を設定し、`fullPrivacy`を`true`に設定している場合、Helpshiftは`userName`と`userEmail`の値を使用しません。
+3. 以下の個人情報の非収集。
+   - 携帯電話の国コード、携帯電話のネットワークコード、キャリア名。
+   - "private-data"としてラベル付けされているカスタムメタデータ。
+
+また、ユーザーが不快なコンテンツを添付するシナリオにおいては、これはCOPPAに準拠する上で大きな問題となります。このオプションは、この問題を解決しなければならない場合に役立ちます。
+
+|              |                                                      |
+| ------------ | ---------------------------------------------------- |
+| オプション       | <code>fullPrivacy</code>                             |
+| 値       | <code>YES</code>/<code>NO</code>                   |
+| デフォルト      | <code>NO</code>                                      |
+| 最低限必要なSDKバージョン      | v10.0.0                                              |
+| サポート | <code>showConversation</code>、<code>showFAQs</code> |
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"fullPrivacy": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["fullPrivacy": true]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+#### ベストプラクティス
+
+登録プロセスで、ユーザーに年齢を尋ねましょう。ユーザーの年齢が13歳以下の場合には、`fullPrivacy`をYESに設定します。こうすることで、13歳以下のユーザーについてはCOPPAに準拠しつつ、その他のユーザーに対しては貴重なユーザーデータやデバイスデータを収集できるようになります。
+
+## アプリ内通知を有効にする {#enableInAppNotification}
+
+Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、このフラグを`NO`に設定することができます。
+
+このフラグを`NO`に設定するとSDKはデバイスの通知トレイに通知を表示しなくなりますが、バックグラウンドでメッセージを取得します。
+
+このフラグの規定値は`YES`です。そのため、アプリ内通知は有効化されます。
+
+<div className="compact ">
+
+|               |                                                   |
+| ------------- | ------------------------------------------------- |
+| オプション:       | <code>enableInAppNotification</code>              |
+| 値:       | <code>YES</code>/<code>NO</code>                |
+| デフォルト:      | <code>YES</code>                                  |
+| 最低限必要なSDKバージョン       | v10.0.0                                           |
+| サポート: | <code>installWithPlatformId:domain:config:</code> |
+
+</div>
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"enableInAppNotification": @YES };
+
+[Helpshift installWithPlatformId:@"<PLATFORM_ID>"
+                          domain:@"<DOMAIN>"
+                          config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["enableInAppNotification": true]
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## アプリ内通知の外観 {#inAppNotificationAppearance}
+
+この構成は、SDKのアプリ内通知の外観を示しています。エージェント/ボットがメッセージを送信したときにユーザーがアプリを使用していた場合、アプリ内バナーが表示されます。そのバナーの外観は、この辞書を使用してカスタマイズできます
+
+|               |                                                             |
+| ------------- | ----------------------------------------------------------- |
+| オプション:       | <code>inAppNotificationAppearance</code>                    |
+| サブオプション:  | <code>bannerBackgroundColor</code>/<code>textColor</code> |
+| 最低限必要なSDKバージョン       | v10.0.0                                                     |
+| サポート: | <code>installWithPlatformId:domain:config:</code>           |
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"inAppNotificationAppearance": @{
+                            @"bannerBackgroundColor": @"000000",
+                            @"textColor": @"FFFFFF"
+                            }
+                        };
+
+[Helpshift installWithPlatformId:@"<PLATFORM_ID>"
+                          domain:@"<DOMAIN>"
+                          config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["inAppNotificationAppearance": ["bannerBackgroundColor":"000000", "textColor":"FFFFFF"]]
+Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## チャット画面の読み込み中に新しい会話を開始する {#initiateChatOnLoad}
+
+`showConversation:`の構成辞書で`initiateChatOnLoad`オプションを`YES`に設定すると、エンドユーザーが「新しい会話」ボタンをクリックしたり、前の問題のフィードバックボットのような解決後のフローを経由することなく、前の問題が解決した直後に新しい会話を開始できるようになります。
+
+|               |                                    |
+| ------------- | ---------------------------------- |
+| オプション:       | <code>initiateChatOnLoad</code>    |
+| 値:       | <code>YES</code>/<code>NO</code> |
+| デフォルト:      | <code>NO</code>                    |
+| 最低限必要なSDKバージョン       | v10.0.0                            |
+| サポート: | <code>showConversation</code>      |
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"initiateChatOnLoad": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initiateChatOnLoad": true]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## 会話のプリフィルテキスト {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+|               |                                      |
+| ------------- | ------------------------------------ |
+| オプション:       | <code>conversationPrefillText</code> |
+| 値:       | 任意の文字列値                     |
+| デフォルト:      | <code>""</code>                      |
+| 最低限必要なSDKバージョン       | v10.0.0                              |
+| サポート: | <code>showConversation</code>        |
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"conversationPrefillText": @"INSERT YOUR PREFILL TEXT" };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["conversationPrefillText": "INSERT YOUR PREFILL TEXT"]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## iPadでの全画面表示 {#presentFullScreenOniPad}
+
+`presentFullScreenOniPad`フラグは、iPadでサポートビューを`UIModalPresentationFullScreen`と`UIModalPresentationFormSheet`のどちらのモーダルプレゼンテーションスタイルで表示するかを決定します。この構成は、iPhoneには影響を与えません。
+
+デフォルトの値はNOで、`UIModalPresentationFormSheet`でサポートビューを表示します。値が`YES`に設定されている場合、サポートビューは`UIModalPresentationFullScreen`で表示されます。Helpshiftを全画面モードで表示するには、この設定を使用します。
+
+|              |                                                      |
+| ------------ | ---------------------------------------------------- |
+| オプション       | <code>presentFullScreenOniPad</code>                 |
+| 値       | <code>YES</code>/<code>NO</code>                   |
+| デフォルト      | <code>NO</code>                                      |
+| 最低限必要なSDKバージョン      | v10.0.0                                              |
+| サポート | <code>showConversation</code>、<code>showFAQs</code> |
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"presentFullScreenOniPad": @YES };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["presentFullScreenOniPad": true]
+Helpshift.showConversation(with: self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## SDKのテーマ設定 {#theming}
+
+SDKにスタイルやテーマを設定するには、[デザイン](/sdkx_ios/design)ページをご参照ください。
+
+## トラッキング {#tracking}
+
+この構成は、ユーザーの操作のトラッキングを示しています。詳細については、[トラッキング](/sdkx_ios/tracking)をご参照ください。

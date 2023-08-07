@@ -1,0 +1,415 @@
+---
+sidebar_position: 90
+title: Helpshiftのデリゲート
+description: "Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshiftのデリゲート {#delegates}
+
+<Intro>
+
+Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## Helpshiftイベントリスナー/デリゲートの実装 {#event-listener}
+
+`HelpshiftSdk.GetInstance().SetHelpshiftEventsListener()`メソッドを呼び出すことで、`IHelpshiftEventsListener`の実装を設定することができます。
+
+### ステップ1: IHelpshiftEventsListenerインターフェースを実装する
+
+```csharp
+public class HSEventsListener: IHelpshiftEventsListener
+  {
+      public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+      {
+          // all events
+      }
+
+      public void AuthenticationFailedForUser(HelpshiftAuthenticationFailureReason reason)
+      {
+          //auth failure event
+      }
+  }
+```
+
+### ステップ2: Helpshift APIを呼び出し、この実装クラスを設定する
+
+```csharp
+using Helpshift;
+//...
+//...
+private HelpshiftSdk help;
+//..
+
+void Awake(){
+    // install call here
+    help = HelpshiftSdk.GetInstance();
+}
+
+void Start(){
+    // set the listener
+    help.SetHelpshiftEventsListener(new HSEventsListener());
+}
+
+```
+
+## イベント {#helpshift-events}
+
+### Helpshiftセッションの開始イベント {#session-delegates}
+
+このイベントは、Helpshiftセッションが開始したときに発生します
+
+- イベントの名前: `HelpshiftEvent.SDK_SESSION_STARTED`
+- イベントのデータ: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.SDK_SESSION_STARTED))
+      {
+        Debug.Log("Helpshift session started.");
+      }
+    }
+    //...
+}
+```
+
+### Helpshiftセッションの終了イベント {#session-delegates}
+
+このイベントは、Helpshiftセッションが終了したときに発生します
+
+- イベントの名前: `HelpshiftEvent.SDK_SESSION_ENDED`
+- イベントのデータ: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.SDK_SESSION_ENDED))
+      {
+        Debug.Log("Helpshift session ended.");
+      }
+    }
+    //...
+}
+```
+
+### 未読メッセージ数の計測イベント {#unreadMessageCount}
+
+このイベントは、未読メッセージの数をリクエストするために`Helpshift.RequestUnreadMessageCount(shouldFetchFromServer)`APIを呼び出したときに発生します。
+
+- イベントの名前: `HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT`
+- イベントのデータ:
+  - イベントのデータ:
+  - `HelpshiftEvent.DATA_MESSAGE_COUNT`
+    - 型: `int`
+  - `HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE`
+    - 型: `boolean`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT)) {
+          Debug.Log("Unread count: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE)) {
+          Debug.Log("Is Unread count from cache: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]);
+        }
+      }
+    }
+    //...
+}
+```
+
+### 会話の状態イベント {#conversation-status}
+
+このイベントには、現在進行中の会話に関する情報が含まれています。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_STATUS`
+- イベントのデータ:
+  - イベントのデータ:
+  - `HelpshiftEvent.DATA_LATEST_ISSUE_ID`
+    - 型: `string`
+  - `HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID`
+    - 型: `string`
+  - `HelpshiftEvent.DATA_IS_ISSUE_OPEN`
+    - 型: `boolean`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.CONVERSATION_STATUS))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_LATEST_ISSUE_ID)) {
+          Debug.Log("Issue ID : " + eventData[HelpshiftEvent.DATA_LATEST_ISSUE_ID]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID)) {
+          Debug.Log("Publish ID : " + eventData[HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_IS_ISSUE_OPEN)) {
+          Debug.Log("Is issue open : " + eventData[HelpshiftEvent.DATA_IS_ISSUE_OPEN]);
+        }
+      }
+    }
+    //...
+}
+```
+
+### ウィジェットトグルイベント {#widget-toggle-event}
+
+このイベントは、ユーザーがチャット画面を開いたり閉じたりしたときにトリガーされます。このイベントは、`"visible"`キーのブール値を用いてトリガーされます。ご参考までに、以下の例をご確認ください:
+
+- イベントの名前: `HelpshiftEvent.WIDGET_TOGGLE`
+- イベントのデータ: 
+  - `HelpshiftEvent.DATA_SDK_VISIBLE`
+    - 型: `boolean`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+        if(eventName.Equals(HelpshiftEvent.WIDGET_TOGGLE))
+        {
+          if(eventData.ContainsKey(HelpshiftEvent.DATA_SDK_VISIBLE)) {
+            Debug.Log("Is SDK Visible " + eventData[HelpshiftEvent.DATA_SDK_VISIBLE]);
+          }
+        }
+    }
+    //...
+}
+```
+
+### 会話の開始イベント {#conversation-start-event}
+
+このイベントは、ユーザーが会話の中で最初のメッセージを送信したときにトリガーされます。イベントのデータオブジェクトには`message`キーが含まれており、これにはエンドユーザーが会話を始めるために送信したメッセージの文字列が含まれています。ご参考までに、以下の例をご確認ください。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_START`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_MESSAGE`
+    - 型: `string`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_START))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE)) {
+          Debug.Log("Conversation started with text: " + eventData[HelpshiftEvent.DATA_MESSAGE]);
+        }
+      }
+    }
+    //...
+}
+```
+
+### メッセージの追加イベント {#message-add-event}
+
+このイベントは、ユーザーが会話内でメッセージを追加したときにトリガーされます。追加されるメッセージには、テキストメッセージ、ボットの入力を介した応答、添付ファイルなどが想定されています。イベントのデータオブジェクトには`type`キーと`body`キーが含まれており、これらはユーザーが追加したメッセージの種類と本文を示しています。ご参考までに、以下の例をご確認ください。
+
+- イベントの名前: `HelpshiftEvent.MESSAGE_ADD`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_MESSAGE_TYPE`
+    - 値: `HelpshiftEvent.DATA_MESSAGE_TYPE_ATTACHMENT` , `HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT`
+  - `HelpshiftEvent.DATA_MESSAGE_BODY`
+    - 型: `string`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.MESSAGE_ADD))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_BODY)) {
+          Debug.Log("New message added with body: " + eventData[HelpshiftEvent.DATA_MESSAGE_BODY]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_TYPE)) {
+          Debug.Log("New message added with type: " + eventData[HelpshiftEvent.DATA_MESSAGE_TYPE]);
+        }
+      }
+    }
+    //...
+}
+```
+
+### CSATの送信イベント {#csat-submit-event}
+
+このイベントは、会話の終了後にユーザーがCSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーがCSATフォームを介して提供した（星による）評価と追加のコメントを示しています。ご参考までに、以下の例をご確認ください。
+
+- イベントの名前: `HelpshiftEvent.CSAT_SUBMIT`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_CSAT_RATING`
+    - 型: `int`
+  - `HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK`
+    - 型: `string`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CSAT_SUBMIT))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_CSAT_RATING)) {
+          Debug.Log("CSAT submitted with rating: " + eventData[HelpshiftEvent.DATA_CSAT_RATING]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK)) {
+          Debug.Log("CSAT feedback: " + eventData[HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK]);
+        }
+      }
+    }
+    //...
+}
+```
+
+### 会話の終了イベント {#conversation-end-event}
+
+このイベントは会話が終了（解決または拒否）し、再開できない場合にトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_END`
+- イベントのデータ: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_END))
+      {
+        Debug.Log("Conversation Ended");
+      }
+    }
+    //...
+}
+```
+
+### 会話の拒否イベント {#conversation-rejected-event}
+
+このイベントは、エージェントが会話を拒否したときにトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_REJECTED`
+- イベントのデータ: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_REJECTED))
+      {
+        Debug.Log("Conversation Rejected");
+      }
+    }
+    //...
+}
+```
+
+### 会話の解決イベント {#conversation-resolved-event}
+
+このイベントは、エージェントが会話を解決したときにトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.CONVERSATION_RESOLVED`
+- イベントのデータ: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_RESOLVED))
+      {
+        Debug.Log("Conversation Resolved");
+      }
+    }
+    //...
+}
+```
+
+### 会話の再開イベント {#conversation-reopened-event}
+
+解決に関する質問が有効化されている場合、ユーザーに対して解決の内容に満足しているかどうかが質問されます。ユーザーがそれを拒否し、新しいメッセージを送信すると会話が再開され、会話の再開イベントがトリガーされます。
+
+イベントの名前: `HelpshiftEvent.CONVERSATION_REOPENED`
+- イベントのデータ: `null`
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if (eventName.Equals(HelpshiftEvent.CONVERSATION_REOPENED))
+      {
+        Debug.Log("Conversation Reopened");
+      }
+    }
+    //...
+}
+```
+
+### ユーザー認証の失敗イベント {#user-authentication-failed-event}
+
+ダッシュボードで`user authentication feature`が有効化された状態で`HelpshiftSdk.GetInstance().Login(userDataMap)`で無効なトークンを渡すと、理由に関する文字列とともにこのイベントを受け取ります。詳細については、[こちらを参照してください。](/sdkx-unity/users-ios)
+
+理由の種類:
+
+- `HelpshiftAuthenticationFailureReason.INVALID_AUTH_TOKEN`
+- `HelpshiftAuthenticationFailureReason.AUTH_TOKEN_NOT_PROVIDED`
+- `HelpshiftAuthenticationFailureReason.UNKNOWN`
+
+```csharp
+public class HSEventsListener: IHelpshiftEventsListener
+  {
+      // HandleHelpshiftEvent
+
+      public void AuthenticationFailedForUser(HelpshiftAuthenticationFailureReason reason)
+      {
+          Debug.Log("Authentication Failed for reason " + reason.ToString());
+      }
+  }
+```

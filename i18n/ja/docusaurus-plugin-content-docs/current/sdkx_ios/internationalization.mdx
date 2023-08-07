@@ -1,0 +1,127 @@
+---
+sidebar_position: 70
+title: Internationalization
+description: Learn more about internationalization.
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import SetLanguageDescription from "@site/docs/_partials/_setLanguageAPIDescriptionAndroid.mdx";
+
+# Going International
+
+<Intro>
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
+
+</Admonition>
+
+Helpshift SDK currently supports 47 languages out-of-the-box (with English as the default).
+
+## Supported languages {#supported-languages}
+
+| Language                        | Code       |
+| ------------------------------- | ---------- |
+| English                         | en         |
+| German                          | de         |
+| Spanish                         | es         |
+| French                          | fr         |
+| Italian                         | it         |
+| Russian                         | ru         |
+| Simplified-Chinese              | zh-Hans    |
+| Traditional-Chinese             | zh-Hant    |
+| Hong Kong-Chinese               | zh-HK      |
+| Hong Kong-Chinese (Traditional) | zh-Hant-HK |
+| Singapore-Chinese               | zh-SG      |
+| Singapore-Chinese (Traditional) | zh-Hant-SG |
+| Portuguese                      | pt         |
+| Korean                          | ko         |
+| Japanese                        | ja         |
+| Turkish                         | tr         |
+| Dutch                           | nl         |
+| Czech                           | cs         |
+| Hungarian                       | hu         |
+| Indonesian                      | id         |
+| Thai                            | th         |
+| Slovenian                       | sl         |
+| Vietnamese                      | vi         |
+| Arabic                          | ar         |
+| Polish                          | pl         |
+| Norwegian                       | no         |
+| Swedish                         | sv         |
+| Finnish                         | fi         |
+| Romanian                        | ro         |
+| Greek                           | el         |
+| Danish                          | da         |
+| Malay                           | ms         |
+| Hebrew                          | iw         |
+| Slovak                          | sk         |
+| Ukrainian                       | uk         |
+| Catalan                         | ca         |
+| Croatian                        | hr         |
+| Bengali                         | bn         |
+| Bulgarian                       | bg         |
+| Gujarati                        | gu         |
+| Hindi                           | hi         |
+| Kannada                         | kn         |
+| Latvian                         | lv         |
+| Malayalam                       | ml         |
+| Marathi                         | mr         |
+| Punjabi                         | pa         |
+| Persian                         | fa         |
+| Tamil                           | ta         |
+| Telugu                          | te         |
+
+## Setting a Language {#setting-a-language}
+
+<SetLanguageDescription />
+
+For example :
+
+<Tabs>
+
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+|              |                                                                                                                                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Definition   | <code>setLanguage:</code>                                                                                                                                                                                  |
+| Example Code | <code> [Helpshift setLanguage:"fr"]; </code> // where <code>@"fr"</code> is the language code. You can also pass a language code and a country code like: <code> [Helpshift setLanguage:@"zh-SG"]; </code> |
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+|              |                                                                                                                                                                                                       |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Definition   | <code>setLanguage()</code>                                                                                                                                                                            |
+| Example Code | <code> Helpshift.setLanguage("fr") </code> // where <code>"fr"</code> is the language code. You can also pass a language code and a country code like: <code> Helpshift.setLanguage("zh-SG"); </code> |
+
+</TabItem>
+
+</Tabs>
+
+Here's a screenshot of how SDK will look after setting the language to French.
+
+![](/static/books/sdkx_ios/ios-Internationalization.png)
+
+<Admonition type="info" title="Note">
+
+The default language is set to English (`en`) i.e. if you don't set any language using the `setLanguage:` API, SDK will use English language.
+
+</Admonition>

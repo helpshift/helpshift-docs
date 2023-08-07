@@ -1,0 +1,262 @@
+---
+sidebar_position: 220
+title: トラッキング（Android）
+description: "ユーザーが新しい会話を開始する際のイベントとユーザーアクションを追跡します。SDKを介して開始されたすべての会話に、カスタムメタデータを添付します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# トラッキング（<small>Android</small>） {#tracking}
+
+<Intro>
+
+ユーザーが新しい会話を開始する際のイベントとユーザーアクションを追跡します。
+SDKを介して開始されたすべての会話に、カスタムメタデータを添付します。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## 会話にタグを追加する {#adding-tags}
+
+`ShowConversation`を呼び出す際に`configMap`オブジェクトにタグを渡すことにより、問題を報告する際にタグを添付できるようになります。キー`"tags"`を持つ**文字列の配列**を渡すことができるようになり、問題の作成時にタグとして追加されます。
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+// configuration map
+void openHelpshift(){
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    // other configurations
+    // ..
+    configMap.Add("tags", new String[] { "tag1", "tag2" })
+
+    // open the support chat screen
+    help.ShowConversation(configMap);
+}
+
+```
+
+<Admonition type="info" title="注意">
+
+**タグの名前と互換性について**
+
+- タグについては、Helpshiftダッシュボード（設定、タグの順に移動）で事前に作成しておく必要があります。作成していない場合には、これらは無視されます。
+- 添付されているタグは、ダッシュボードに表示されているタグと完全に一致している必要があります。
+
+</Admonition>
+
+## 会話にカスタムメタデータを追加する
+
+問題の作成時にカスタムメタデータを追加する場合には、以下の手順に従ってください。
+
+1. トップレベルのカスタムメタデータ`Dictionary`を初期化します
+2. カスタムメタデータ`Dictionary`を定義します
+3. カスタムメタデータ`Dictionary`にキーと値のペアを追加します
+4. カスタムメタデータマップをトップレベルマップに追加します
+5. キー`"customMetadata"`を持つ`configMap`へのマップを、SDK X APIのいずれか（`ShowConversation(configMap)`のように）に渡します。
+
+以下のコードを使用します。
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+void openHelpshift(){
+    Dictionary<string, string> customMetadataDictionary = new Dictionary<string, string>();
+    customMetadataDictionary.Add("Level", "9");
+    customMetadataDictionary.Add("Spend", "46.55 USD");
+    customMetadataDictionary.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    // other configs...
+    //..
+    config.Add("customMetadata", customMetadataDictionary);
+
+    help.ShowConversation(configMap);
+}
+```
+
+<Admonition type="info" title="注意">
+
+メタデータは、文字列型のキーと値のペアとしてのみ送信してください。
+
+</Admonition>
+
+## カスタム問題フィールドを設定する {#set-custom-issue-fields}
+
+問題の作成時にカスタム問題フィールドを設定する場合には、以下の手順に従ってください。
+
+1. トップレベルのカスタム問題フィールド`Dictionary`を初期化します
+2. カスタム問題フィールド`Dictionary`を定義します
+3. そのカスタム問題フィールドのために`"type"`と`"value"`を追加します
+4. カスタム問題フィールドマップをトップレベルのマップに追加します（keyに構成したキーを、valueにカスタム問題フィールドマップを設定します）
+5. マップを`ShowConversation(configMap)`のキー`"cifs"`とともに`configMap`に渡します
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+void openHelpshift(){
+
+    Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+    joiningDate.Add("type", "date");
+    joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+    Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+    stockLevel.Add("type", "number");
+    stockLevel.Add("value", "1505");
+
+    Dictionary<string, string> employeeName = new Dictionary<string, string>();
+    employeeName.Add("type", "singleline");
+    employeeName.Add("value", "Bugs helpshift");
+
+    Dictionary<string, string> isPro = new Dictionary<string, string>();
+    isPro.Add("type", "boolean");
+    isPro.Add("value", "true");
+
+    Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
+    cifDictionary.Add("joining_date", joiningDate);
+    cifDictionary.Add("stock_level", stockLevel);
+    cifDictionary.Add("employee_name", employeeName);
+    cifDictionary.Add("is_pro", isPro);
+
+
+    Dictionary<string, object> config = new Dictionary<string, object>();
+    // other configs...
+    //..
+    config.Add("cifs", cifDictionary);
+
+    help.ShowConversation(configMap);
+}
+```
+
+<Admonition type="info" title="注意">
+  <b>"customIssueFields"</b>{" "}
+キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
+<b>"cifs"</b>キーの使用を強く推奨します。
+</Admonition>
+
+カスタム問題フィールドの`type`キーの有効な値は、以下の通りです。
+
+- "singleline"
+- "multiline"
+- "number"
+- "checkbox"
+- "dropdown"
+- "date"
+
+データ型と値の互換性については、以下の票をご覧ください。
+
+| データ型       | 値   | コメント                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | 255文字の文字数制限があります                                          |
+| multiline  | string  | 100.000文字の文字数制限があります                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | ドロップダウンオプションは特定のカスタム問題フィールドのために存在する必要があります |
+| date       | number  | エポック時間です。例: **Date.now()**                        |
+| checkbox   | boolean |                                                                 |
+
+<Admonition type="info" title="注意">
+
+カスタム問題フィールドのキーと互換性について
+
+- カスタム問題フィールドは、Helpshiftダッシュボード（「設定」、「カスタム問題フィールド」の順に移動します）で作成する必要があります。そうでない場合には、これらは無視されます。詳細については、[こちら](https://support.helpshift.com/kb/article/custom-issue-fields/)をご参照ください
+
+</Admonition>
+
+<Admonition type="info" title="注意">
+
+**Breadcrumbs**および**デバッグログ**APIでは、フォーマットされた文字列の受け渡しはサポートされていません。データの受け渡しについては、シンプルなString型のみが推奨されています。
+
+<p className="m-0">例:</p>
+
+- "{\"key\":\"value\"}" - **JSON文字列、これはサポートされていません**
+- "キー - 値" - **シンプルな文字列、これはサポートされています**
+
+</Admonition>
+
+## Breadcrumbs {#breadcrumbs}
+
+<Admonition type="info" title="注意">
+
+**SDK X v10.1.0以上に対応しています**
+
+</Admonition>
+
+Breadcrumbsは、イベントやエンドユーザーのアクションの追跡に使用されます。これは、お客様がHelpshiftのエージェントダッシュボードにあるすべての新しい会話と一緒に渡されるエンドユーザーのアクションに関するデバッグ情報を追加する際に役立ちます。 Breadcrumbsを残すには、`LeaveBreadcrumb` APIを使用します—
+
+例:
+
+```java
+
+    help.LeaveBreadcrumb("<any-breadcrumb-string>");
+
+```
+
+Breadcrumbsは、設定されているBreadcrumbsの制限内で収集されます。制限は、Helpshiftのエージェントダッシュボードにある「アプリの設定」のSDKの構成セクションで設定します。Breadcrumbsは、FIFOキューに集められます。Breadcrumbsを消去する場合には、`ClearBreadcrumbs` APIを使用します—
+
+例:
+
+```java
+
+    help.ClearBreadcrumbs();
+
+```
+
+## デバッグログ {#debug-logs}
+
+<Admonition type="info" title="注意">
+
+**SDK X v10.1.0以上に対応しています**
+
+</Admonition>
+
+アプリケーション内の特定の場所にデバッグログを追加し、ユーザーによって提出された問題のデバッグに役立てたい場合には、さまざまなロギングを提供するHelpshiftLogクラスとそのメソッドをインスタンス化して使用することができます。たとえば、デバッグレベルのログを添付する場合には、以下のコードを追加してください
+
+例:
+
+```java
+
+    HelpshiftLog.d("<debug-tag>", "<debug-message>");
+
+```
+
+デバッグログは、設定されているデバッグログの制限内で収集されます。制限は、Helpshiftのエージェントダッシュボードにある「アプリの設定」のSDKの構成セクションで設定します。デバッグログは、FIFOキューに集められます。

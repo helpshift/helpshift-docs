@@ -1,0 +1,271 @@
+---
+sidebar_position: 10
+title: はじめに
+description: 以下の簡単な手順に従うことで、今すぐにHelpshiftのアプリ内サポートをiOSアプリに追加することができます。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# はじめに {#getting-started}
+
+<Intro>
+
+以下の簡単な手順に従うことで、今すぐにHelpshiftのアプリ内サポートを
+iOSアプリに追加することができます。
+
+</Intro>
+
+## 必要条件 {#version-requirements}
+
+- Xcode 12.0以上。
+- CocoaPods v1.10.0
+- サポートされているiOSバージョン:
+  - iOS 16、15、14、13、12、11、10
+
+## CocoaPodsを使用した自動統合 {#cocoapods}
+
+プロジェクトでSDK X `v[% sdkx_ios.sdk_version  %]`の使用を開始するには、次の行を`Podfile`に追加します。
+
+```ruby
+pod 'HelpshiftX', '[% sdkx_ios.sdk_version  %]'
+```
+
+そして、`pod install`または`pod update`を実行して[CocoaPods](https://cocoapods.org/)の依存関係を更新します。
+
+これで、「[アプリ内でHelpshiftを初期化する](#initializing)」に進むことができます。
+
+## Swift Package Managerを使用した自動統合 {#spm}
+
+SPMプロジェクトでHelpshift `v[% sdkx_ios.sdk_version  %]`を使用するには、プロジェクトの「パッケージの依存関係」セクションに以下のパッケージURLを追加します
+
+```text
+https://github.com/helpshift/HelpshiftX
+```
+
+バージョンのルールについては「Exact」または「Up to Next Minor」のいずれかを使用し、Helpshift SDK Xのメジャーバージョンがリリースされるタイミングでバージョン番号を手動で更新することをお勧めします。
+
+これで、「[アプリ内でHelpshiftを初期化する](#initializing)」に進むことができます。
+
+## 手動での統合 {#manual-integration}
+
+### 最新のSDKのzipファイルを入手する {#getting-sdk}
+
+最新のHelpshift iOS SDKをダウンロードします。
+
+<DownloadButton
+  text="Download SDK"
+  link="[% sdkx_ios.sdk_url %]"
+  classes="mb-4"
+/>
+
+このzipファイルには、以下のものが含まれています。
+
+<div className="text-sm compact ">
+
+|                        |                                             |
+| ---------------------- | ------------------------------------------- |
+| HelpshiftX.xcframework | HelpshiftXのフレームワークです                    |
+| NOTICE.txt             | サードパーティ製コードのライセンス情報です。 |
+
+</div>
+
+<Admonition type="info" title="注意">
+
+#### SDK Xのビットコード不使用ビルド
+
+Xcode 14からビットコードが非推奨となったため、SDK Xの最新バージョンに基づくビットコード不使用ビルドを作成しました。このビルドは、[こちら](https://d3e51fp79zp4el.cloudfront.net/sdkx/latest/ios/helpshiftx-sdk-ios-non-bitcode.zip)からダウンロードできます。
+
+</Admonition>
+
+### 最新の安定版SDKリリースをプロジェクトに追加する {#add-to-project}
+
+- SDKを解凍し、Xcodeプロジェクトに`HelpshiftX.xcframework`をドラッグ・アンド・ドロップします
+- アプリのターゲットの`General`セクションで、`HelpshiftX.xcframework`が`Framework, Libraries, and Embedded Content`セクション
+内に存在し、オプションの"Embed"ドロップダウンで`Embed and Sign`オプションが選択されていることを確認します。
+  &nbsp;&nbsp; <Image src="/static/books/sdkx_ios/embed_and_sign_framework.png"  width="full" />
+- 統合に成功すると、`Build Phases`は以下のようになります。
+  &nbsp;&nbsp; <Image src="/static/books/sdkx_ios/integration_screenshot.png"  width="full" />
+
+<Admonition type="info" title="注意">
+
+#### アプリケーションのInfo.plistファイルに`NSPhotoLibraryUsageDescription`キーを追加する
+
+もしもアプリがこのアクセス許可を使用しない場合には、このキーと説明を追加する必要があります。このキーと説明のペアを追加していない場合、アプリがリジェクトされてしまう可能性があります。
+
+**NSPhotoLibraryUsageDescriptionの説明テキストは、次の通りです。**「このアプリは、ヘルプやサポートを目的として、添付ファイルとして送信する画像をユーザーが手動で選択できるようにするために、写真ライブラリにアクセスする必要があります。」
+
+</Admonition>
+
+<Admonition type="info" title="注意">
+
+以下の説明は、**SDK X 10.2.0**以下のバージョンにのみ適用されます。
+
+#### （前述した）`NSPhotoLibraryUsageDescription`とともに、アプリケーションのInfo.plistファイルに`NSCameraUsageDescription`キーと`NSMicrophoneUsageDescription`キーも追加する
+
+もしもアプリがこのアクセス許可を使用しない場合には、これらのキーと説明を追加する必要があります。これらのキーと説明のペアを追加していない場合、アプリがリジェクトされてしまう可能性があります。
+
+**NSCameraUsageDescriptionの説明テキストは、次の通りです。**「このアプリは、ヘルプやサポートを目的として、添付ファイルとして送信される画像をユーザーがクリックできるようにするために、カメラにアクセスする必要があります。」
+
+**NSMicrophoneUsageDescriptionの説明テキストは、次の通りです。**「このアプリは、ヘルプやサポートを目的として、添付ファイルとして送信される動画をユーザーが撮影して送信できるようにするために、マイクにアクセスする必要があります。」
+
+これらはあくまでも説明の提案であることにご注意ください。同様のローカライズが必要な場合には、<a href="https://support.helpshift.com/kb/contact/" target="_blank">お問い合わせ</a>ください
+
+</Admonition>
+
+<Admonition type="caution" title="警告">
+
+iOS10.x以下のバージョンでは、アクセス許可に関連する問題により添付ファイルのアップロードはサポートされていません。
+
+</Admonition>
+
+## Helpshiftの使用を開始する {#start-using}
+
+これでHelpshiftがアプリに統合され、ユーザーに関する有意義なデータを収集する準備が整いました。
+
+### アプリでHelpshiftを初期化する {#initializing}
+
+1. 最初に、Helpshiftダッシュボードでアプリを作成します
+
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+
+2. 選択した`Platform`に**iOS**を指定してアプリを作成します
+   <Image src="/static/books/sdkx_ios/select_platform.png" width="full" />{" "}
+
+Helpshiftは、登録済みの各種アプリを以下の2つのトークンの組み合わせ
+を用いて一意に識別します。
+
+<div className=" compact">
+
+|               |                                                                                 |
+| ------------- | ------------------------------------------------------------------------------- |
+| `Platform ID` | アプリ固有のプラットフォームID（ダッシュボード上のアプリの`App Id`がプラットフォームIDです） |
+| `Domain Name` | これがあなたのHelpshiftドメイン名です。例: _happyapps.helpshift.com_               |
+
+</div>
+
+これらの値を取得するには、以下の手順に従ってください。
+
+1. 自身のHelpshiftダッシュボードにアクセスする
+2. `Settings`、`SDKs (for Developers)`の順に移動する
+3. ドロップダウンから目的のアプリを選択する
+4. 「iOS」テーブルに記載されている2つのトークンをコピーする
+
+<Image src="/static/books/sdkx_ios/copy_keys.png" width="full" />{" "}
+
+`installWithPlatformId:`メソッドを呼び出してSDKを初期化します。
+
+オプションで構成辞書を`installWithPlatformId:`APIに渡すことも可能です。サポートされている構成を確認するには、「[SDKの構成](/sdkx_ios/sdk-configuration.mdx)」ページをご確認ください。
+
+<Tabs>
+
+<TabItem value="Using Objective-C" label="Objective-Cの場合">
+
+```objc
+@import HelpshiftX;
+...
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    ...
+    NSDictionary *config = @{} // Your config
+    [Helpshift installWithPlatformId:@"YOUR_APP_ID"
+                              domain:@"YOUR_DOMAIN"
+                              config:config];
+    ...
+    return YES;
+}
+```
+
+</TabItem>
+<TabItem value="Using Swift" label="Swiftの場合">
+
+```swift
+import HelpshiftX
+...
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        ...
+        let config = [String:String]() // Your config
+        Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+        ...
+        return true
+    }
+...
+```
+
+</TabItem>
+
+</Tabs>
+
+
+#### 中国向けのアプリでHelpshiftを初期化する {#chinasupport}
+
+中国リージョン向けにHelphift SDKを統合するには、特別なインストール設定キーである`isForChina`を使用する必要があります。
+この設定キーはブール値を受け入れます。中国リージョン向けのアプリでSDKを統合する場合には、`true`を渡してください。指定がない場合のデフォルト値は、`false`です。
+
+AppDelegateクラスに、以下のコードを追加してください。
+
+<Tabs>
+
+<TabItem value="Using Objective-C" label="Objective-Cの場合">
+
+```objc
+@import HelpshiftX;
+...
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    ...
+    NSDictionary *config = @{
+        ...
+        @"isForChina" : @YES,
+        ...
+    };
+    [Helpshift installWithPlatformId:@"YOUR_PLATFORM_ID" domain:@"YOUR_DOMAIN" config:config];
+    ...
+    return YES;
+}
+```
+
+</TabItem>
+<TabItem value="Using Swift" label="Swiftの場合">
+
+```swift
+import HelpshiftX
+...
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        ...
+        let config = [
+            ...
+            "isForChina": true
+            ...
+        ]
+        Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", config: config)
+        ...
+        return true
+    }
+...
+```
+</TabItem>
+
+</Tabs>
+
+<Admonition type="danger" title="重要">
+
+**インストール呼び出しの配置**
+
+インストール呼び出しは、`application:didFinishLaunchingWithOptions:`以外の場所には配置しないでください
+これを他の場所に配置すると、実行時の予期せぬ問題が引き起こされてしまう可能性があります。
+SDKキーの検証に失敗した場合、Helpshiftのインストール呼び出しは`InstallException`をスローします。
+
+</Admonition>
