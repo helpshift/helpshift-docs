@@ -55,25 +55,53 @@ YOUR_APP_IDENTIFIER: Can be any unique string that identifies your app. For exam
 
 To pass the outbound support data to Helpshift, follow these steps -
 
-1. Send push notification to the users you want to give proactive support using your app's push notification system
+1. Send push notification to the users you want to give outbound support using your app's existing push notification system
 
-2. In your app, handle this notification such that when a user opens the app through notification, you pass the notification data to Helpshift SDK by calling `handleProactiveLink:(NSString *) proactiveLink` function in `application:didReceiveRemoteNotification:` OR `application:didReceiveRemoteNotification:fetchCompletionHandler:`
+2. In your app, handle this notification such that when a user opens the app through notification, you pass the outbound support link in your notification data to Helpshift SDK by calling `handleProactiveLink(link)`.
 
 3. We will read the data from the link you provided and open Helpshift support with the configurations you provided from outbound support dashboard.
+
+For example, following code shows how to handle incoming push notification and posting it on the notification bar of the device -
 
 <Tabs groupId="ios-languages">
 
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-[Helpshift handleProactiveLink:proactiveLink];
+#import <HelpshiftX/Helpshift.h>
+...
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+    willPresentNotification:(UNNotification *)notification
+    withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+
+      // This is a notification from Helpshift push notification system
+      [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo isAppLaunch:NO withController:self.window.rootViewController];
+
+      completionHandler(UNNotificationPresentationOptionNone);
+    } else {
+
+      // Present Notification Alert
+      completionHandler(UNNotificationPresentationOptionAlert);
+    }
+}
 ```
 
 </TabItem>
 <TabItem value="Swift" label="Swift">
 
 ```swift
-Helpshift.handleProactiveLink(proactiveLink)
+import HelpshiftX
+...
+func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    if notification.request.content.userInfo["origin"] as? String == "helpshift" {
+        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false, with: rootViewController)
+        completionHandler([])
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+        completionHandler( [.alert])
+    }
+}
 ```
 
 </TabItem>
@@ -88,33 +116,38 @@ Helpshift.handleProactiveLink(proactiveLink)
 
 </Admonition>
 
-For example, following code shows how to handle incoming push notification and post it on the notification bar of the device -
+When the user clicks on the notification, `didReceiveNotificationResponse` delegate is called.
+To delegate push notification data to Helpshift SDK, call `[Helpshift handleProactiveLink:proactiveLink]`.
 
 <Tabs groupId="ios-languages">
 
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
+#import <HelpshiftX/Helpshift.h>
+...
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
-    willPresentNotification:(UNNotification *)notification
-    withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-    if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        // This is a notification from Helpshift push notification system
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo isAppLaunch:NO withController:self.window.rootViewController];
-        completionHandler(UNNotificationPresentationOptionNone);
+    didReceiveNotificationResponse:(UNNotificationResponse *)response
+    withCompletionHandler:(void (^)(void))completionHandler {
+    if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
+        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
+                                                isAppLaunch:YES
+                                             withController:self.viewController];
     } else {
-        NSString* proactiveLink = [[notification.request.content.userInfo objectForKey:@"aps"] objectForKey:@"helpshift_proactive_link"];
+        NSString* proactiveLink = [response.notification.request.content.userInfo objectForKey:@"helpshift_proactive_link"];
         if (proactiveLink != nil) {
-            // This is notification for handling Helpshift proactive link
+
+            // This is your app's push notification system containing a Helpshift proactive link
             [Helpshift handleProactiveLink:proactiveLink];
-            completionHandler(UNNotificationPresentationOptionNone);
-        } else  {
-            // This is not a notification from Helpshift system
-            // This is your existing push notification system
-            // Manage other normal notification here
-            completionHandler(UNNotificationPresentationOptionAlert);
+
+        } else {
+            // This is your app's push notification system.
         }
     }
+    completionHandler();
 }
 ```
 
@@ -122,23 +155,26 @@ For example, following code shows how to handle incoming push notification and p
 <TabItem value="Swift" label="Swift">
 
 ```swift
+import HelpshiftX
+...
 func userNotificationCenter(_ center: UNUserNotificationCenter,
-    willPresent notification: UNNotification,
-    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    if notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        // This is a notification from Helpshift push notification system
-        Helpshift.handleNotification(withUserInfoDictionary: userInfo, isAppLaunch: false, with: rootViewController)
-        completionHandler([])
-    } else if let proactiveLink = notification.request.content.userInfo["aps"]["helpshift_proactive_link"] as? String {
-        // This is notification for handling Helpshift proactive link
-        Helpshift.handleProactiveLink(proactiveLink)
-        completionHandler([])
+                            didReceive response: UNNotificationResponse,
+                            withCompletionHandler completionHandler: @escaping () -> Void) {
+    if let origin = response.notification.request.content.userInfo["origin"] as? String, origin == "helpshift" {
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
+        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo,
+                                     isAppLaunch: true,
+                                     withController: self.viewController)
     } else {
-        // This is not a notification from Helpshift system
-        // This is your existing push notification system
-        // Manage other normal notification here
-        completionHandler(.alert)
+        if let proactiveLink = response.notification.request.content.userInfo["helpshift_proactive_link"] as? String {
+            // This is your app's push notification system containing a Helpshift proactive link
+            Helpshift.handleProactiveLink(proactiveLink)
+        } else {
+            // This is your app's push notification system.
+        }
     }
+    completionHandler()
 }
 ```
 
