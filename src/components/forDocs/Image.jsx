@@ -5,6 +5,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import htmlElementWidths from "../../constants/htmlElementWidths";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function Image({ width, src, centered, alt }) {
   const widthClassToApply =
@@ -12,9 +13,11 @@ export default function Image({ width, src, centered, alt }) {
       ? htmlElementWidths[width]
       : htmlElementWidths.full;
 
+  const imageUrl = useBaseUrl(src);
+
   return (
     <img
-      src={src}
+      src={imageUrl}
       className={`${widthClassToApply} ${centered ? "block mx-auto" : ""} `}
       alt={alt}
     />
