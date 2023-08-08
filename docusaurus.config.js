@@ -93,6 +93,7 @@ async function createConfig() {
           removeDefaultStopWordFilter: false,
           searchContextByPaths: getDocsDirectoriesForSearchPaths("./docs"),
           hideSearchBarWithNoSearchContext: true,
+          language: ["en", "ja"],
         },
       ],
     ],
