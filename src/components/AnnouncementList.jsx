@@ -4,6 +4,7 @@
 
 import React, { useState } from "react";
 import Announcement from "./Announcement";
+import Translate from "@docusaurus/Translate";
 
 const announcements = [
   {
@@ -48,7 +49,9 @@ export default function AnnouncementList() {
       }}
     >
       <div className="flex justify-between mt-4 mb-4 lg:mt-6 items-center">
-        <h2 className="text-lg md:text-2xl mb-0">Announcements</h2>
+        <h2 className="text-lg md:text-2xl mb-0">
+          <Translate>Announcements</Translate>
+        </h2>
         <button
           onClick={_handleExpandedClick}
           className="py-2 px-4 rounded-md text-xs bg-transparent text-gray-800 dark:text-gray-100 border border-solid border-gray-700 dark:border-gray-600 shadow cursor-pointer lg:hidden"

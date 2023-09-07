@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import homeSections from "../data/homeSections.json";
+import homeSections from "../data/homeSections";
 import BookGroup from "./BookGroup";
 
 export default function BookGroupsList() {
