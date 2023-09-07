@@ -4,27 +4,33 @@
 
 import React, { useState } from "react";
 import Announcement from "./Announcement";
-import Translate from "@docusaurus/Translate";
+import Translate, { translate } from "@docusaurus/Translate";
 
 const announcements = [
   {
-    date: "10 Nov 2022",
-    title: "New dev docs launched!",
-    info: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation.`,
+    date: translate({ message: "10 Nov 2022" }),
+    title: translate({ message: "New dev docs launched!" }),
+    info: translate({
+      message: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation.`,
+    }),
     link: "https://old-developers.helpshift.com",
-    linkTitle: "old-developers.helpshift.com",
+    linkTitle: translate({ message: "old-developers.helpshift.com" }),
   },
   {
-    date: "10 Oct 2022",
-    title: "SDK X 10.2.0 released",
-    info: `SDK X 10.2.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    date: translate({ message: "10 Oct 2022" }),
+    title: translate({ message: "SDK X 10.2.0 released" }),
+    info: translate({
+      message: `SDK X 10.2.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    }),
   },
   {
-    date: "1 June 2022",
-    title: "Feedback+ SDK released",
-    info: `Helpshift's first SDK with a free tier to help you get early feedback from your users`,
+    date: translate({ message: "1 June 2022" }),
+    title: translate({ message: "Feedback+ SDK released" }),
+    info: translate({
+      message: `Helpshift's first SDK with a free tier to help you get early feedback from your users`,
+    }),
     link: "/freesdk",
-    linkTitle: "Read the guide",
+    linkTitle: translate({ message: "Read the guide" }),
   },
 ];
 
