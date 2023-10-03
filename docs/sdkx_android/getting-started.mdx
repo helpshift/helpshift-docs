@@ -30,7 +30,11 @@ Android app right away.
 
 ## Requirements {#minimum-supported-android-version}
 
-If you are on SDK X, or migrating to SDK X, you need to ensure that you are supporting the installation of your app only on API Level 24 and above (Android OS 7 and above).
+If you are on SDK X or migrating to SDK X please note the following requirements:
+
+* SDK X is functional only above API Level 21 i.e Android OS 5 Lollipop and above. [Update (August 2023): SDK X 10.2.x is functional only above API Level 24 i.e Android OS 7 Nougat and above]
+* The `minSDKVersion` in code is kept as API Level 16 to allow importing the SDK and compiling in apps that allow installation till API Level 16 i.e Android 4.4 Jelly Bean.
+* If your app is installed on a device below API level 21 (i.e below Android OS 5 Lollipop) then you can choose to have a different medium for providing support. For example, Email, Web etc. We throw an `UnsupportedOSVersionException` if the SDK is initialized below API Level 21. Please catch and use this exception according to your needs. Refer: [Initializing the SDK](/sdkx_android/getting-started/#initializing).
 
 ### Gradle based projects {#gradle-support}
 
@@ -53,9 +57,9 @@ Helpshift is now ready to help you have conversations with your users!
 
 | Helpshift SDK Version | minSDKVersion | compileSDKVersion | buildToolsVersion |
 | --------------------- | ------------- | ----------------- | ----------------- |
-| >= 10.2.0             | 24            | 33                | 33                |
-| >= 10.0.2             | 24            | 31                | 31                |
-| >= 10.0.0             | 24            | 29                | 29                |
+| >= 10.2.0             | 16            | 33                | 33                |
+| >= 10.0.2             | 16            | 31                | 31                |
+| >= 10.0.0             | 16            | 29                | 29                |
 
 ### Initialize Helpshift in your App {#initializing}
 
