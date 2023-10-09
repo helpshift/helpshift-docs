@@ -431,9 +431,8 @@ This event is triggered whenever an agent message is _read_ by the end-user. Thi
 #### Adding the Agent Message Received event handler
 
 ```javascript
-var agentMessageReceivedEventHandler = function (data) {
-  console.log("Received message from event");
-  console.log(data);
+var agentMessageReceivedEventHandler = function (message) {
+  console.log(message);
 };
 
 Helpshift(
@@ -480,5 +479,44 @@ Helpshift(
   "removeEventListener",
   "agentMessageReceived",
   agentMessageReceivedEventHandler
+);
+```
+
+### User click on Action event {#user-click-on-action-event}
+
+This event is triggered whenever the end-user clicks on a link in an action card link.
+
+#### Adding the User Click on Action event handler
+
+```javascript
+var userClickOnActionEventHandler = function (data) {
+  console.log("User clicked on action");
+  console.log(data);
+};
+
+Helpshift(
+  "addEventListener",
+  "userClickOnAction",
+  userClickOnActionEventHandler
+);
+```
+
+The data you receive will be in the following format:
+
+```ts
+type ActionCardInfo = {
+  actionType: "link" | "call";
+  // This will be a URL or a phone number
+  actionData: string;
+};
+```
+
+#### Removing the User Click on Action event handler
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "userClickOnAction",
+  userClickOnActionEventHandler
 );
 ```
