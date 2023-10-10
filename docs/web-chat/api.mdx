@@ -423,3 +423,100 @@ Helpshift(
   conversationReopenedEventHandler
 );
 ```
+
+### Agent Message Received event {#agent-message-received-event}
+
+This event is triggered whenever an agent message is _read_ by the end-user. This event does not trigger for bot messages.
+
+#### Adding the Agent Message Received event handler
+
+```javascript
+var agentMessageReceivedEventHandler = function (message) {
+  console.log(message);
+};
+
+Helpshift(
+  "addEventListener",
+  "agentMessageReceived",
+  agentMessageReceivedEventHandler
+);
+```
+
+The data you receive will be in the following format:
+
+```ts
+type AgentMessage = {
+  // The actual message sent by the agent
+  body: string;
+  // Conversation ID of the ongoing issue
+  publishId: string;
+  // Unix epoch timestamp in ms
+  createdTs: number;
+  // Attachments, if they are present
+  attachments?: Array<{
+    url: string;
+    // Size of the attachment in bytes
+    size: number;
+    // The MIME type
+    contentType?: string;
+    fileName?: string;
+  }>;
+};
+```
+
+<Admonition type="info" title="Note">
+
+- The attachments key is only present if the agent has sent attachments.
+- Since attachments sent by agents may not have the necessary MIME type or name, it is possible
+  that these values are absent from the payload.
+
+</Admonition>
+
+#### Removing the Agent Message Received event handler
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "agentMessageReceived",
+  agentMessageReceivedEventHandler
+);
+```
+
+### User click on Action event {#user-click-on-action-event}
+
+This event is triggered whenever the end-user clicks on a link in an action card.
+
+#### Adding the User Click on Action event handler
+
+```javascript
+var userClickOnActionEventHandler = function (data) {
+  console.log("User clicked on action");
+  console.log(data);
+};
+
+Helpshift(
+  "addEventListener",
+  "userClickOnAction",
+  userClickOnActionEventHandler
+);
+```
+
+The data you receive will be in the following format:
+
+```ts
+type ActionCardInfo = {
+  actionType: "link" | "call";
+  // This will be a URL or a phone number
+  actionData: string;
+};
+```
+
+#### Removing the User Click on Action event handler
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "userClickOnAction",
+  userClickOnActionEventHandler
+);
+```
