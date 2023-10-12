@@ -263,6 +263,81 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
+### Agent Message Received Event
+
+This event is triggered when the user receives any message from an agent in a conversation. It might be a text message, bot message, or a message triggered via automation.
+
+- Event name: `HelpshiftEventNameAgentMessageReceived`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameAgentMessageReceived]) {
+        NSLog(@"New agent message received");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameAgentMessageReceived {
+        print("New agent message received")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### User Click on Action Event
+
+This event is triggered when the user clicks on the link or call action of an action card message.  The event data object has `actionType` and `actionData` keys, which indicates the type of action and data associated with the action.
+
+- Event name: `HelpshiftEventNameUserClickOnAction`
+- Event Data:
+  - `HelpshiftEventDataActionType`
+  - `HelpshiftEventDataActionTypeCall`
+  - `HelpshiftEventDataActionTypeLink`
+  - `HelpshiftEventDataActionData`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameUserClickOnAction]) {
+        NSLog(@"User click on action type: %@", data[HelpshiftEventDataActionType]);
+        NSLog(@"Data for clicked action: %@", data[HelpshiftEventDataActionData]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameUserClickOnAction {
+        print("User click on action type: \(data[HelpshiftEventDataActionType])")
+        print("Data for clicked action: \(data[HelpshiftEventDataActionData])")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### CSAT Submit Event {#csatSubmit}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
