@@ -1,0 +1,79 @@
+---
+sidebar_position: 280
+title: トラブルシューティング
+description: トラブルシューティングについて詳しく説明します
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# トラブルシューティング {#troubleshoot}
+
+## SDKの統合 {#integration-issues}
+
+### AndroidXサポートライブラリの使用 {#steps-to-build-with-android-x}
+
+Helpshift SDK Xでは、レガシー版のAndroidサポートライブラリを使用しています。
+アプリケーションでAndroidXライブラリを使用する場合には、以下の手順に従ってHelpshift SDKとAndroidXの互換性を確保してください。
+
+1. [こちら](https://developer.android.com/studio/command-line/jetifier)で言及されているスタンドアロンのJetifierツールの使用を推奨しています。
+2. Jetifierをインストールするには、[このzipファイルをダウンロード](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta07/jetifier-standalone.zip)し、解凍します。ご利用の開発環境に**Javaのバージョン1.8**がインストールされている必要があります。
+3. `standalone jetifier`ツールを使用して、Helpshiftライブラリファイルを手動で jetifyします。
+   `<project>/Assets/Plugins/Android/Helpshift.aar`
+4. 既存の`Helpshift.aar`ファイルを**スタンドアロンのJetifierツールで生成したファイル**で置き換えます。
+
+例:
+
+`./jetifier-standalone -i <input path>Helpshift.aar -o <output path>/Helpshift.aar`
+
+#### AndroidXライブラリの依存関係を解決する方法
+
+##### 外部の依存関係マネージャーを使用する
+
+サポートライブラリの要件を解決するために**`Unity Jar Resolver`**プラグインを使用している場合:
+
+- AndroidXライブラリのみを使用するように`<project>/Assets/Helpshift/Editor/HelpshiftDependencies.xml`を更新し、レガシーAndroidサポートライブラリを削除します。
+
+- あなたの`HelpshiftDependencies.xml`ファイルの外観は、次のようになります。 
+
+```xml
+<androidPackages>
+  <androidPackage spec="com.google.android.material:material:1.0.0"> </androidPackage>
+</androidPackages>
+```
+##### Gradleを使用する
+
+サポートライブラリの要件を解決するために**`Gradle`**を使用している場合:
+
+- `<project>/Assets/Plugins/Android/mainTemplate.gradle`または`build.gradle`ファイルの依存関係セクションを更新し、AndroidXマテリアルライブラリを以下のように使用します。
+
+```
+dependencies {
+  ...
+  implementation 'com.google.android.material:material:1.0.0'
+  ...
+}
+```
+
+これらの変更を行った後は、**プロジェクトにレガシーAndroidサポートライブラリが存在しないこと**を確認します。アプリをビルドし、すべてのUI画面が期待通りに動作するかどうかをご確認ください。
+
+## サンプルシーンの統合 {#sample-scene-integration-issues}
+
+`HelpshiftExampleScript.cs`スクリプトがまだ`HelpshiftExample.unity`シーンにアタッチされていない場合には、手動でアタッチを行う必要があります。
+
+- Unityで`Assets/Helpshift/Example/HelpshiftExample.unity`シーンを開きます。
+- シーンに`HelpshiftExampleScript.cs`スクリプトをアタッチします。
+- シーンを保存します。
+- デバイス上で起動して確認します。

@@ -1,0 +1,488 @@
+---
+sidebar_position: 270
+title: 移行ガイド
+description: "SDK X UnityプラグインはハイブリッドSDKであり、ダウンタイムがなく、またアプリのアップデートを行うことなくアップデートの大半を無線を介してエンドユーザーへと送信することができるため、イノベーションを素早く展開することができます。この移行ガイドでは、HelpshiftのレガシーSDK UnityプラグインからSDK X Unityプラグインへの移行を行うために必要となる手順について説明します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# 移行ガイド
+
+<Intro>
+
+SDK X UnityプラグインはハイブリッドSDKであり、ダウンタイムがなく、またアプリのアップデートを行うことなくアップデートの大半を無線を介してエンドユーザーへと送信することができるため、イノベーションを素早く展開することができます。この移行ガイドでは、HelpshiftのレガシーSDK UnityプラグインからSDK X Unityプラグインへの移行を行うために必要となる手順について説明します。
+
+</Intro>
+
+## SDK X Unityプラグインへの移行を行うための手順 {#steps-to-migrate}
+
+<Steps title="レガシーSDK UnityプラグインからSDK X Unityプラグインへの移行">
+  <Step
+    number="1"
+    title="移行のサポート状況を確認する"
+    subtitle="移行ガイドを一通り確認する"
+    link="/sdkx-unity/migration-guide-android/#unsupported-features"
+    newTab={true}
+  />
+  <Step
+    number="2"
+    title="SDK X Unityプラグインにアップデートする"
+    subtitle="コードや機能を順を追って移行する"
+    link="/sdkx-unity/migration-guide-android#update-helpshift-dependencies"
+    newTab={true}
+  />
+  <Step
+    number="3"
+    title="移行のテストを行う"
+    subtitle="機能の検証を行う"
+  />
+</Steps>
+
+## サポートされていない機能 {#unsupported-features}
+
+現時点で以下のAPI/機能を使用している場合には、SDK Xへの移行の延期を推奨しています -
+
+- [ガイド付きの問題提出](/unity/support-tools-android#dynamic-forms)
+- [タグによるFAQのフィルタリング](/unity/support-tools-android#faq-filtering)
+- [問題に関する記述の長さの最小値設定](/unity/sdk-configuration-android#issue-description-minimum-length)
+- [SDKのUI文字列のカスタマイズ](/unity/string-customization-android/)
+- [ライトテーマとダークテーマの切り替え](/unity/design-android#skinning)
+
+これらの機能はまだ開発中であり、2022年のロードマップに追加される可能性があります。上記のAPI/機能に関しては、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。
+
+## サポートされているSDKのバージョン {#supported-sdk-versions}
+
+移行が成功すれば、SDKのあるバージョンから別のバージョンへと移行してもユーザーのデータとチャット履歴は保持されます。バージョン4以上のSDK UnityプラグインからSDK X Unityプラグインへの移行がサポートされています。
+
+<Admonition type="info" title="注意">
+
+**3.xより前のバージョンのSDK Unityプラグインからの移行**
+
+3.xより前のバージョンのSDK Unityプラグインからの移行はサポートされていません。3.xより前のバージョンからSDK X Unityプラグインへと移行した場合、SDK Xは正常に機能しますが、ログイン済みユーザーの情報は失われ、新しいデフォルトのユーザーが作成されます。現在のユーザーをもう一度ログインさせることは可能ですが、そのユーザーに対応するデータは移行されません。Helpshiftのシステムでは、新規のユーザーとして扱われます。
+
+</Admonition>
+
+## Helpshiftの依存関係を更新する {#update-helpshift-dependencies}
+
+### 必要条件
+
+- Unity 5.5.6以上。
+- サポートされているAndroid OSのバージョン: 16以上
+
+### 統合
+
+- 既存の Helpshift `unitypackage`の内容をプロジェクトから削除してください。
+- Unity SDK Xサポートパッケージをインポートする前に、以下のディレクトリがプロジェクトから削除されていることをご確認ください。
+  - Assets/Helpshift/
+  - Assets/Plugins/Android/helpshift-plugin-resources.aar
+  - Assets/Plugins/Android/helpshift-plugin-wrapper
+  - Assets/Plugins/Android/Helpshift.aar
+- プロジェクトにHelpshift SDK Xを追加するには、[こちら](/sdkx-unity/getting-started-android#adding-to-project)の手順にしたがってください。
+
+## コードの変更 {#code-changes}
+
+Helpshiftの依存関係を更新した後にUnityからXcodeプロジェクトのビルドを試みると、コンパイルエラーが発生します。これは、レガシーSDKとSDK Xの間で一部のAPIのメソッド名とシグネチャが変更されていることが原因となっています。
+
+### Helpshiftの`install`呼び出し
+
+既存のHelpshiftインストール呼び出しを削除し、以下のように置き換えてください。
+
+```csharp
+using Helpshift;
+...
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk _support;
+    ...
+    void Awake() {
+        _support = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>();
+        _support.Install(platformId, domainName, configMap);
+    }
+    ...
+}
+```
+
+詳細については、SDK X Unityプラグインの[はじめに](/sdkx-unity/getting-started-android/)ガイドをご参照ください。
+
+### Helpshiftのインストール呼び出しの構成
+
+インストール構成辞書キーへのマッピングは、以下の通りです。
+
+| レガシーSDK Unityプラグインのインストール構成辞書キー | SDK X Unityプラグインのインストール構成辞書キー |
+| ----------------------------------------------------- | ------------------------------------------------ |
+| `HelpshiftSdk.ENABLE_LOGGING`                         | `HelpshiftSdk.ENABLE_LOGGING`                    |
+| `HelpshiftSdk.ENABLE_IN_APP_NOTIFICATION`             | `HelpshiftSdk.ENABLE_INAPP_NOTIFICATION`         |
+
+その他の非推奨となった構成はすべて削除されており、もうサポートされていません。インストール構成の詳細については、[構成](/sdkx-unity/sdk-configuration-android/)ガイドをご参照ください。
+
+### HelpshiftのConversation APIとFAQ API
+
+APIのシグネチャは変更されています。既存のAPI呼び出しを、以下の新しいものに更新してください。
+
+| レガシーSDK UnityプラグインのAPI                   | SDK X UnityプラグインのAPI                |
+| --------------------------------------------- | ------------------------------------- |
+| `showConversation(configMap)`                 | `ShowConversation(configMap)`         |
+| `showFAQs(configMap)`                         | `ShowFAQs(configMap)`                 |
+| `showFAQSection(sectionPublishId, configMap)` | `ShowFAQSection(sectionId,configMap)` |
+| `showSingleFAQ(questionPublishId, configMap)` | `ShowSingleFAQ(faqId,configMap)`      |
+| タグによるFAQのフィルタリング                         | 現在サポートされていません               |
+| ガイド付きの問題提出                           | 現在サポートされていません               |
+
+Conversation APIとFAQ APIの詳細については、[Helpshift API](/sdkx-unity/support-tools-android/)ガイドをご参照ください。
+
+### Conversation APIとFAQ APIの構成
+
+構成辞書キーへのマッピングは、以下の通りです。
+
+| レガシーSDK Unityプラグインの構成辞書キー | SDK X Unityプラグインの構成辞書キー | 注意                                                                                                 |
+| --------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `enableFullPrivacy`                           | `fullPrivacy`                            | -                                                                                                     |
+| `enableTypingIndicator`                       | -                                        | 「アプリの設定」、「サポートの体験」、「エージェントの入力インジケーターを表示する」トグルの順に移動し、管理者ダッシュボードへと移動します |
+| `showConversationResolutionQuestion`          | -                                        | 「アプリの設定」、「解決の体験」、「解決に関する質問」トグルの順に移動し、管理者ダッシュボードへと移動します      |
+
+その他の構成はすべて非推奨となっており、もうサポートされていません。API構成の詳細については、[構成](/sdkx-unity/sdk-configuration-android/)ガイドをご参照ください。
+
+### Helpshift User Management API
+
+ユーザーのログイン/ログアウトを管理するために、以下のAPIを置き換えます。
+
+#### ログイン
+
+レガシーSDKのログインコードを
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+HelpshiftUser user = new HelpshiftUser.Builder ("unique-user-id-746501", "john.doe@app.com")
+                                      .setName ("John Doe")
+                                      .build ();
+_support.login(user);
+```
+
+SDK Xのログインコードで置き換えます。
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.GetInstance();
+...
+Dictionary<string, string> userDetails = new Dictionary<string, string>
+                                          {
+                                              { "userId", "unique-user-id-746501" },
+                                              { "userEmail", "john.doe@app.com" },
+                                              { "userName", "John Doe" },
+                                              { "userAuthToken", "generated-user-authentication-token"}
+                                          };
+_support.Login(userDetails);
+
+```
+
+<Admonition type="info" title="注意">
+
+SDK X Unityプラグインへの移行を行う際は、不一致を回避するためにアクティブユーザーを再度ログインさせることをお勧めします。
+
+</Admonition>
+
+その他のユーザー管理APIも変更されています。
+
+| アクション               | レガシーSDK UnityプラグインのAPI | SDK X UnityプラグインのAPI |
+| -------------------- | --------------------------- | ---------------------- |
+| ログアウト               | `logout()`                  | `Logout()`             |
+| 匿名ユーザーの消去 | `clearAnonymousUser()`      | `ClearAnonymousUser()` |
+
+SDK X Unityプラグインのユーザー管理については、[ユーザー](/sdkx-unity/users-android/)ガイドをご参照ください。
+
+### デザインとテーマ設定
+
+SDKのデザインとテーマ設定は、SDK Xではすべて管理者ダッシュボードへと移動しています。テーマ設定APIのすべての呼び出しと、テーマ設定に関連するすべてのファイルをプロジェクトから削除してください。削除されたAPIは、以下の通りです。-
+
+- `setThemes(lightThemeFileName, darkThemeFileName)`
+
+- `setTheme(themeName)`
+
+テーマ設定は、管理者ダッシュボードから構成が可能です。詳細については、[SDK Xのテーマ設定](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/)ガイドをご参照ください。
+
+### 文字列のカスタマイズ
+
+文字列のカスタマイズは、まだサポートされておりません。Helpshiftダッシュボードに移行される予定です。SDK Xには反映されなくなるため、プロジェクトで行ったHelpshift SDK関連の文字列カスタマイズはすべて削除してください。
+
+### Notification API
+
+APIのシグネチャは変更されています。既存のAPI呼び出しを、以下に説明する新しいものに更新してください。
+
+| アクション                       | レガシーSDK UnityプラグインのAPI                                     | SDK X UnityプラグインのAPI                                        |
+| ---------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------- |
+| デバイストークンを登録する        | `HelpshiftSdk.GetInstance().registerDeviceToken ("fcm-token");` | `HelpshiftSdk.GetInstance().RegisterPushToken ("fcm-token");` |
+| 未読メッセージ数をリクエストする | `requestUnreadMessagesCount(isAsync)`                           | `RequestUnreadMessageCount(shouldFetchFromServer)`            |
+
+未読メッセージの数を受信するデリゲートメソッドも変更されました。レガシーSDKコード:
+
+```csharp
+using Helpshift;
+...
+private HelpshiftSdk _support;
+this._support = HelpshiftSdk.getInstance();
+_support.requestUnreadMessagesCount(true);
+
+// Delegate:
+public void didReceiveUnreadMessagesCount(string count) {
+    // your code here
+}
+```
+
+SDK Xコード:
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT))
+      {
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT)) {
+          Debug.Log("Unread count: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT]);
+        }
+        if(eventData.ContainsKey(HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE)) {
+          Debug.Log("Is Unread count from cache: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]);
+        }
+      }
+    }
+}
+```
+
+#### 通知を処理する
+
+通知のクリックを処理するには、レガシーSDKのコードを置き換えます。
+
+```csharp
+public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+        IDictionary<string, string> pushData = e.Message.Data;
+        if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
+                Dictionary<string, object> hsPushData = new Dictionary<string, object>();
+                foreach (string key in pushData.Keys) {
+                hsPushData.Add (key, pushData [key]);
+            }
+            HelpshiftSdk.getInstance().handlePushNotification (hsPushData);
+        }
+    }
+```
+
+SDK Xのコードで以下のように置き換えます。
+
+```csharp
+public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+    IDictionary<string, string> pushData = e.Message.Data;
+    if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
+            Dictionary<string, object> hsPushData = new Dictionary<string, object>();
+            foreach (string key in pushData.Keys) {
+            hsPushData.Add (key, pushData [key]);
+        }
+        HelpshiftSdk.GetInstance().HandlePushNotification (hsPushData);
+    }
+}
+```
+
+<Admonition type="info" title="注意">
+
+プッシュ通知を使用している場合には、不一致の可能性を回避するためのアプリのアップグレードを終えた後にSDK Xでプッシュトークンの再登録を行うことをお勧めします。
+
+</Admonition>
+
+SDK XのNotification APIの詳細については、[通知](/sdkx-unity/notifications-android/)ガイドをご参照ください。SDK Xのデリゲートの詳細については、[デリゲート](/sdkx-unity/delegates-android/)ガイドをご参照ください。
+
+### インターナショナリゼーション
+
+SDKの言語を設定するAPIは、以下のように変更されています。
+
+| レガシーSDK UnityプラグインのAPI | SDK X UnityプラグインのAPI   |
+| --------------------------- | ------------------------ |
+| `setSDKLanguage(locale)`    | `SetSDKLanguage(locale)` |
+
+<Admonition type="info" title="注意">
+
+不一致の可能性を回避するために、SDK Xでアプリをアップグレードする際にSDKの言語をもう一度設定し直すことをお勧めします。
+
+</Admonition>
+
+SDK Xのインターナショナリゼーションの詳細やサポートされている言語のリストについては、[インターナショナリゼーション](/sdkx-unity/i18n-android/)ガイドをご参照ください。
+
+### トラッキング
+
+以下のAPIをレガシーSDK Unityプラグインから置き換えてください。
+
+#### メタデータ
+
+レガシーSDKはメタデータAPIを活用して会話にメタデータを付与します（[こちら](/unity/tracking-android#metadata)をご参照ください）。メタデータを付与するためのレガシーSDKコードを、同等のSDK Xコードに置き換えます。
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, string> customMetadataDictionary = new Dictionary<string, string>();
+customMetadataDictionary.Add("Level", "9");
+customMetadataDictionary.Add("Spend", "46.55 USD");
+customMetadataDictionary.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+
+configMap.Add("customMetadata", customMetadataDictionary)
+_support.ShowFAQs(configMap);
+```
+
+#### タグ
+
+レガシーSDKはメタデータAPIを活用して会話にタグを付与します。SDK Xはメタデータをサポートしていませんが、タグの付与はサポートしています。タグを付与するために、レガシーSDKコードを置き換えます。
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> configD = new Dictionary<string, object>();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
+configD.Add(HelpshiftSdk.HSCUSTOMMETADATAKEY, configMap);
+_support.showFAQs(configD);
+```
+
+同等のSDK Xのコードで以下のように置き換えます。
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add("tags", new String[] {"Whale"})
+_support.ShowFAQs(configMap);
+```
+
+#### カスタム問題フィールド
+
+レガシーSDKのコードを以下のように置き換えます。
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> configD = new Dictionary<string, object>();
+Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]> ();
+
+customIssueFields.Add("join_date", new string[]{ "dt", "1505927361535" });
+customIssueFields.Add("level", new String[]{"n", "42"});
+customIssueFields.Add("name", new String[]{"sl", "John Doe"});
+customIssueFields.Add("address", new String[]{"ml", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128"});
+customIssueFields.Add("is_pro", new String[]{"b", "true"});
+customIssueFields.Add("currency", new String[]{"dd", "Dollar"});
+
+configD.Add (Helpshift.HSCUSTOMISSUEFIELDKEY, customIssueFields);
+_support.showFAQs(configD);
+```
+
+SDK Xのコードで以下のように置き換えます。
+
+```csharp
+private HelpshiftSdk _support = HelpshiftSdk.getInstance();
+...
+Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+joiningDate.Add("type", "date");
+joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+stockLevel.Add("type", "number");
+stockLevel.Add("value", "42");
+
+Dictionary<string, string> employeeName = new Dictionary<string, string>();
+employeeName.Add("type", "singleline");
+employeeName.Add("value", "John Doe");
+
+Dictionary<string, string> address = new Dictionary<string, string>();
+address.Add("type", "multiline");
+address.Add("value", "3346, Sunny Glen Lane, Warrensville Heights, Ohio - 44128");
+
+Dictionary<string, string> isPro = new Dictionary<string, string>();
+isPro.Add("type", "boolean");
+isPro.Add("value", "true");
+
+Dictionary<string, string> currency = new Dictionary<string, string>();
+isPro.Add("type", "dropdown");
+isPro.Add("value", "Dollar");
+
+Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
+cifDictionary.Add("join_date", joiningDate);
+cifDictionary.Add("level", stockLevel);
+cifDictionary.Add("name", employeeName);
+cifDictionary.Add("address", address);
+cifDictionary.Add("is_pro", isPro);
+cifDictionary.Add("currency", currency);
+
+Map<String, Object> config = new HashMap<>();
+config.put("cifs", cifMap);
+_support.ShowFAQs(MainActivity.this, config);
+```
+
+<Admonition type="info" title="注意">
+  <b>"customIssueFields"</b>{" "}
+キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
+<b>"cifs"</b>キーの使用を強く推奨します。
+</Admonition>
+
+#### Breadcrumbs
+
+BreadcrumbsのためのAPIは、以下のように変更されています。
+
+| アクション            | レガシーSDK UnityプラグインのAPI   | SDK X UnityプラグインのAPI        |
+| ----------------- | ----------------------------- | ----------------------------- |
+| Breadcrumbsを残す | `leaveBreadCrumb(breadCrumb)` | `LeaveBreadcrumb(breadcrumb)` |
+| Breadcrumbsを消去する | `clearBreadCrumbs()`          | `ClearBreadcrumbs()`          |
+
+#### デバッグログ
+
+デバッグログを追加するためのAPIのシグネチャは変更されていません。ログの追加には、SDK X Unityプラグインの`HelpshiftLog`と同じ名前のクラスを用意しています。ログの追加には、そのメソッドを利用することができます。
+詳細については、[トラッキング](/sdkx-unity/tracking-android/)ガイドをご参照ください。
+
+### Helpshiftのデリゲート
+
+Helpshiftのデリゲートを登録するためのAPIは、以下のように変更されています。
+
+| レガシーSDK UnityプラグインのAPI | SDK X UnityプラグインのAPI                       |
+| --------------------------- | -------------------------------------------- |
+| `registerDelegates()`       | `SetHelpshiftEventsListener(eventsListener)` |
+
+レガシーSDK Unityプラグインでは、SDKの各イベントは個別のメソッドを持っていました。SDK X Unityプラグインでは、すべてのイベントはデリゲートの`HandleHelpshiftEvent(eventName,eventData)`メソッドで受信されます。イベントの一覧については、[こちらのガイド](/sdkx-unity/delegates-android#helpshift-events)をご参照ください。
+
+SDK X UnityプラグインでサポートされていないレガシーSDK Unityプラグインのメソッドの中で、対応するイベントがないものは以下の通りです。
+
+- `userClickOnAction(serializedJSONUserActionData)`
+
+- `displayAttachmentFile(path)`
+
+- `didCheckIfConversationActive(isActive)`
+
+### レビューとフィードバック
+
+エージェントによるアプリのレビューは、SDK Xではサポートされています。この機能の詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)をご参照ください
+  
+以下の機能は、SDK Xで非推奨となりました。
+- [アプリのレビューリクエスト](/unity/reviews-and-feedback-android/#review-reminder-in-sdk)
+- [手動のアプリ評価リクエスト](/unity/reviews-and-feedback-android/#app-rating-api)
+- [自動のレビューリクエスト](/unity/reviews-and-feedback-android/#configuring-automatic-review-requests)
+
+## トラブルシューティング
+
+**SDK X Unityプラグインへのアップグレード後のコンパイルエラー**
+
+- サポートされているAPIおよび構成については、このガイドに記載されているように、すべてのレガシーSDK Unityプラグインのコードが対応するSDK X Unityプラグインのコードに置き換えられていることをご確認ください。
+
+- サポートされていないAPIおよび構成については、このガイドに記載されているように、すべてのレガシーSDK Unityプラグインのコードが削除されていることをご確認ください。
+
+## お問い合わせ
+
+レガシーSDK UnityプラグインからSDK X Unityプラグインへの移行に関して問題が発生した場合には、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。

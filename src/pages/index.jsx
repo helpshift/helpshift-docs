@@ -2,8 +2,13 @@ import React from "react";
 import Layout from "@theme/Layout";
 import AnnouncementList from "../components/AnnouncementList";
 import BookGroupsList from "../components/BookGroupsList";
+import Translate from "@docusaurus/Translate";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function Homepage() {
+  const lightImageUrl = useBaseUrl("/img/helpshift-logo-white.png");
+  const darkImageUrl = useBaseUrl("/img/helpshift-logo.svg");
+
   return (
     <Layout
       title="All Guides"
@@ -13,20 +18,22 @@ export default function Homepage() {
         <div className="py-16 pb-4 md:py-24 md:pb-12 max-w-full text-left dark:from-zinc-900 dark:to-zinc-900">
           <div className="mx-4 md:mx-8 xl:mx-20">
             <img
-              src="/img/helpshift-logo-white.png"
+              src={lightImageUrl}
               className="w-20 md:w-28 hidden dark:block ml-0.5"
               alt="Helpshift logo"
             />
             <img
-              src="/img/helpshift-logo.svg"
+              src={darkImageUrl}
               className="w-20 md:w-28 block dark:hidden ml-0.5"
               alt="Helpshift logo"
             />
             <h1 className="text-4xl md:text-5xl lg:text-6xl leading-none font-normal dark:text-white mb-2">
-              Developer Guide
+              <Translate>Developer Guide</Translate>
             </h1>
             <p className="text-base md:text-xl dark:text-gray-200">
-              Easily integrate the Helpshift SDK into your app or website
+              <Translate>
+                Easily integrate the Helpshift SDK into your app or website
+              </Translate>
             </p>
           </div>
         </div>

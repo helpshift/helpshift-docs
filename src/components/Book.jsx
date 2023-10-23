@@ -6,9 +6,13 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import { bookShape } from "../constants/propTypes";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function Book({ book }) {
   const { link, color, image, title, description, alt } = book;
+
+  const imageUrl = useBaseUrl(image);
+
   return (
     <li className="col-span-6">
       <Link
@@ -18,7 +22,7 @@ export default function Book({ book }) {
         <div className="basis-16 md:basis-20">
           <img
             className={`w-full h-full lg:p-4 p-3 rounded-l-lg bg-gradient-to-b ${color}`}
-            src={image}
+            src={imageUrl}
             alt={alt || `Logo for ${title}`}
           />
         </div>

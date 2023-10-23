@@ -1,0 +1,261 @@
+---
+sidebar_position: 150
+title: はじめに（Androidの場合）
+description: "Unityゲームに素晴らしいアプリ内サポートを追加するには、3つのステップが必要となります。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# はじめに<small>（Androidの場合）</small> {#getting-started}
+
+<Intro>
+
+Unityゲームに素晴らしいアプリ内サポートを追加するには、3つのステップが必要となります。
+
+</Intro>
+
+C#やJavascriptで記述されたゲームスクリプトから呼び出し可能なHelpshift SDK X用のUnityプラグインの統合方法について説明します。
+
+## 必要条件 {#version-requirements}
+
+- Unity 5.5.6以上。
+- サポートされているAndroid OSのバージョン: 21以上
+
+## Helpshift Unity SDKのダウンロード {#getting-sdk}
+
+#### 1. SDK X - アプリ内カスタマーサービス {#standard-sdk}
+
+<DownloadButton
+  text="Download SDK"
+  link="[% sdkx-unity.android.sdk_url %]"
+  classes="mb-4"
+/>
+
+Helpshift SDK _.zip_フォルダーには、以下のものが含まれています。
+
+<div className="text-sm compact ">
+
+|                                                                      |                                                              |
+| -------------------------------------------------------------------- | ------------------------------------------------------------ |
+| helpshiftX-plugin-unity-[% sdkxunity.package_version %].unitypackage | Helpshift SDKのUnityパッケージ                               |
+| unity-jar-resolver (v1.2.170.0)                                      | Android Helpshiftパッケージのサポートライブラリの依存関係を解決します。 |
+
+</div>
+
+## UnityプロジェクトにHelpshiftを追加する {#adding-to-project}
+
+- Helpshift Unity SDKパッケージを解凍します。
+- Helpshift Unity SDKは、Unityパッケージのインポート手順を介してインポート可能な標準の`.unitypackage`として表示されます。
+- `helpshiftx-plugin-unity-version.unitypackage`をUnityゲームにインポートする手順は、以下の通りです。
+  1. 「Unityプロジェクトを開く」でドロップダウンメニュー「**アセット**」に移動し、「**パッケージをインポート**」、「**カスタムパッケージ**」の順に選択する
+  2. 解凍したSDKから`helpshiftx-plugin-unity-version.unitypackage`ファイルを選択し、Helpshift SDKをインポートする。
+  3. 「Unityパッケージのインポート」ウィンドウで、「**インポート**」をクリックする
+  4. iOS用としても統合する場合には、unitypackageのインポート中に`iOS/Helpshift.framework`フォルダーを選択する。[こちら](/sdkx-unity/getting-started-ios#adding-to-project)をご参照ください。
+
+## Android AppCompatライブラリの要件を解決する {#resolve-android-appcompat-library-requirements}
+
+Helpshift SDKは、Android AppCompatライブラリに依存しています。これらのライブラリは、使用するビルド方法に応じて以下のいずれかの方法で入手できます。
+
+### Unity内部のビルドシステムまたはUnity内部のGradleビルドシステムを使用する際に依存関係を解決する {#resolve-dependency-via-jar-resolver}
+
+Androidライブラリの依存関係をダウンロードして統合するには、**Unity Jar Resolver**プラグインを使用します。
+
+<Admonition type="info" title="注意">
+
+すでにプロジェクトで_Unity Jar Resolver_を使用している場合には、_Unity Jar Resolver_のインポート手順を省略できます。
+
+_Unity Jar Resolver_については、必要に応じてすべてのバージョンをご利用いただけます。Helpshiftでは、開発者にとって使いやすいようにこれをパッケージ化しています。
+
+_Unity Jar Resolver_のリリースについては、こちらでご確認ください。https://github.com/googlesamples/Unity Jar Resolver/tags
+
+</Admonition>
+
+- **Unity Jar Resolver**プラグインをUnityプロジェクトにインポートする
+
+  1. 「Unityプロジェクトを開く」でドロップダウンメニュー「**アセット**」に移動し、「**パッケージをインポート**」、「**カスタムパッケージ**」の順に選択します
+  2. 解凍したHelpshift SDKから`unity-jar-resolver/external-dependency-manager-1.2.170.unitypackage`ファイルを選択してUnity Jar Resolverをインポートします。
+  3. 「Unityパッケージのインポート」ウィンドウで、「**インポート**」をクリックします
+
+- Unity Jar ResolverがAndroidの自動解決の有効化を要求している場合には、「有効にする」ボタンをクリックし、依存関係ファイルの変更時にすべての依存関係が自動的に解決されるようにします。この設定の有効/無効を切り替えるには、「アセット」、「PlayServicesResolver」、「Android Resolver」の順に移動し、「設定」を使用してください。
+- デフォルトでは、Unity Jar Resolverは必要な依存関係をすべて自動で解決します。依存関係を手動で解決する手順は、以下の通りです。
+  1. 「Unityプロジェクトを開く」でドロップダウンメニュー「**アセット**」に移動し、「**PlayServicesResolver**」、「**Android Resolve**」の順に選択します
+  2. 「**Resolve**」または「**Force Resolve**」を選択します
+- Unity Jar Resolverの詳細については、「[Unity Jar Resolver](https://github.com/googlesamples/unity-jar-resolver)」をご参照ください
+
+### カスタムGradleテンプレートまたはエクスポートプロジェクトを使用する際の依存関係を解決する {#resolve-dependency-via-gradle}
+
+*Unityの組み込みGradleビルドサポート* と*Android Studioへのエクスポート* はプラグイン単位のGradleスクリプトをサポートしていません。したがって、Helpshift SDKはデフォルトの状態ではそれ自体で依存関係を追加することができません。
+
+「プレイヤー」ウィンドウで**カスタムGradleテンプレート**プロパティを有効にすると、`mainTemplate.gradle`が生成されます。
+
+「プレイヤー」ウィンドウで**Export Project**プロパティを有効にした状態でプロジェクトをビルドすると、生成されたGradleプロジェクトに`build.gradle`が存在しています。
+
+`mainTemplate.gradle`または`build.gradle`ファイルの**依存関係**セクションを、以下のように更新します。
+
+```
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation(name: 'Helpshift', ext:'aar')
+        implementation 'com.android.support:appcompat-v7:28.0.0'
+        //...
+    }
+```
+
+UnityのGradleテンプレートについてのドキュメントは、「https://docs.unity3d.com/Manual/gradle-templates.html」を参照してください。
+
+## アプリでHelpshiftを初期化する {#initializing}
+
+HelpshiftのAPIを使用するには、以下のようにHelpshiftの名前空間をインポートしてください
+
+```csharp
+
+    using Helpshift;
+
+
+```
+
+1. 最初に、Helpshiftダッシュボードでアプリを作成します
+
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+
+2. 選択した`Platform`に**Android**を指定してアプリを作成します
+   <Image
+     src="/static/books/helpshiftx/create_app_with_android_platform.png"
+     width="full"
+   />{" "}
+
+Helpshiftは、登録済みの各種アプリを以下の2つのトークンの組み合わせによって一意に識別します。
+
+<div className=" compact">
+
+|                          |                                                       |
+| ------------------------ | ----------------------------------------------------- |
+| <code>Domain Name</code> | あなたのHelpshiftドメイン。例: _happyapps.helpshift.com_ |
+| <code>Platform ID</code> | あなたのアプリ固有のアプリID                              |
+
+</div>
+これらは、エージェントダッシュボードで`Settings`、`SDK (for Developers)`の順に移動して見つけることができます。
+ドロップダウンで対象のアプリと_check Android as a platform_を選択し、
+Helpshiftを初期化する際に渡される2つのトークンをコピーします。
+<Image src="/static/books/helpshiftx/copy_install_keys.png"  width="full" />
+
+メソッド_install(appId, domain)_APIを呼び出し、Helpshiftを初期化します
+
+```csharp
+
+    using Helpshift;
+    .
+    .
+    .
+    public class MyGameControl : MonoBehaviour
+    {
+        private HelpshiftSdk help;
+        ...
+
+        void Awake() {
+            help = HelpshiftSdk.GetInstance();
+            var configMap = new Dictionary<string, object>();
+            help.Install(appId, domainName, configMap);
+        }
+        ...
+    }
+
+```
+
+#### 中国向けのアプリでHelpshiftを初期化する {#chinasupport}
+
+中国リージョン向けにHelphift SDKを統合するには、特別なインストール設定キーである`isForChina`を使用する必要があります。
+この設定キーはブール値を受け入れます。中国リージョン向けのアプリでSDKを統合する場合には、`true`を渡してください。指定がない場合のデフォルト値は、`false`です。
+
+```csharp
+
+    using Helpshift;
+    .
+    .
+    .
+    public class MyGameControl : MonoBehaviour
+    {
+        private HelpshiftSdk help;
+        ...
+
+        void Awake() {
+            help = HelpshiftSdk.GetInstance();
+            var configMap = new Dictionary<string, object>();
+            //..
+            configMap.Add("isForChina", true);
+
+            help.Install(appId, domainName, configMap);
+        }
+        ...
+    }
+
+```
+
+
+<Admonition type="danger" title="重要">
+
+**インストール呼び出しの配置**
+
+インストール呼び出しは、必ず`Awake()`メソッド内配置してください。これを他の場所に配置すると、実行時の予期せぬ問題が引き起こされてしまう可能性があります。
+
+**HelpshiftInitializationException**
+
+インストール呼び出しよりも先にAPIを呼び出すと、デバッグモードで非チェックのHelpshiftInitializationExceptionがスローされる可能性があります。
+
+_Android OS version Support_
+
+バージョン21未満のAndroid SDKで`install()`を呼び出しても動作しません。すべてのAPIが操作不可能となります。
+
+</Admonition>
+
+## Helpshiftの使用を開始する {#start-using}
+
+これでHelpshiftがアプリに統合されました。今後はアプリ内で[会話画面](/sdkx-unity/support-tools-android#conversation-view)用のサポートAPIを使用する必要があります。
+
+アプリを実行し、_ShowConversation_API呼び出しを使用してテスト会話を開始してみてください。
+その後はHelpshiftエージェントダッシュボードへと移動し、返信を行ってアプリ内のメッセージングを体験してみてください。
+
+FAQと会話APIの使用例は、以下の通りです。
+
+```csharp
+
+    public class MyGameControl : MonoBehaviour
+    {
+        private HelpshiftSdk help;
+
+        void Awake(){
+            // install call here
+        }
+
+        void OnGUI () {
+            ...
+            var configMap = new Dictionary<string, object>();
+
+            // Starting a conversation with your customers
+            if (MenuButton (contactButton))
+            {
+                help.ShowConversation(configMap);
+            }
+        }
+    }
+
+```
+
+<Admonition type="info" title="注意">
+  Helpshiftプラグインはモバイルデバイスでの使用のみを想定しているため、Helpshiftの呼び出しはすべてチェックの中に入れ
+、デバイス上での動作時にのみ
+呼び出されるようにしてください。
+</Admonition>

@@ -1,0 +1,222 @@
+---
+sidebar_position: 200
+title: 通知（Android）
+description: "プッシュ通知を構成します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# 通知（<small>Android</small>） {#notifications}
+
+<Intro>
+
+プッシュ通知を構成します。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## Helpshiftを介したプッシュ通知を構成する {#push-via-helpshift}
+
+<Image
+  src="/static/books/sdkx_android/app_notification.png"
+  width="half"
+  alt="urbanAirshipNotif.png"
+/>{" "}
+
+Helpshiftでは、ユーザーに通知を送ることができます。これは、
+iOSやAndroidのように複数のプラットフォーム
+に複数のユーザーがいる場合に特に便利です。通知は、ユーザーが提出した問題に対して
+返信を行ったことをユーザーに伝える際に役立ちます。アプリがバックグラウンドになると、
+Helpshiftから送信された通知が通知として表示されます。
+
+FCMプッシュの詳細については、[Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)をご参照ください。
+
+### 前提条件 {#gcm-prerequisites}
+
+アプリにFCMプッシュ通知を実装します。
+
+FCMについては、
+[Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging)のドキュメントをご参照ください。
+
+### Helpshiftエージェントダッシュボードを構成する {#configure-helpshift-push-admin}
+
+Helpshiftのシステムがユーザー
+にプッシュ通知を送信できるようにするには、アプリにプラットフォームとして**Android**を追加する必要があります_（まだ追加していない場合）_。
+
+<Image
+  src="/static/books/helpshiftx/create_app_with_android_platform.png"
+  width="full"
+/>{" "}
+
+「構成」ボタンをクリックし、_プッシュ通知_オプションをクリックします。
+
+**「設定」ページ、左側のナビゲーションにある
+「アプリ一覧」の順に移動し、
+プッシュ通知の設定**セクションまで下にスクロールし、アプリごとにFCMキーの認証情報を入力します。
+
+<Image src="/static/books/helpshiftx/add_fcm_token.png" width="full" />{" "}
+
+FCMユーザーの場合、APIキーは
+[Firebase APIコンソール](https://console.firebase.google.com/)でご確認いただけます。
+
+<Image src="/static/books/android/fcm_console.png" width="full" />{" "}
+
+## Helpshift Unity SDKが通知を処理するように構成する {#configure-helpshift-unity-sdk}
+
+### プッシュ通知 {#push-notifications}
+
+#### FCMプッシュ通知プラグインの構成{#}
+
+**始める前に**
+
+1. FCM Unity Androidプラグインを[Firebase Cloud Messagingガイド](https://firebase.google.com/docs/cloud-messaging/unity/client)のドキュメントを参考にして統合します。
+
+すでにプッシュ通知を統合している場合には、**HelpshiftSdk.RegisterPushToken(string deviceToken)** APIを使用してHelpshift SDKにデバイストークンを登録します。これでHelpshiftがあなたのアプリにプッシュ通知を送信できるようになりました。
+
+これが完了すると、**HelpshiftSdk.HandlePushNotification(Dictionary<string, object\> pushNotificationData)** APIを使用して通知で受信したペイロードを送信できるようになります。
+
+この通知がHelpshiftのプッシュ通知サービスから送信されたものかどうかを確認するには、通知の`origin`フィールドをご確認ください。これが`"helpshift`の場合、その通知はHelpshiftからの通知です。
+
+```csharp
+public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token) {
+    HelpshiftSdk.GetInstance().RegisterPushToken (token.Token);
+}
+
+public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+    IDictionary<string, string> pushData = e.Message.Data;
+
+    if (pushData.ContainsKey ("origin") && pushData ["origin"].Equals ("helpshift")) {
+            Dictionary<string, object> hsPushData = new Dictionary<string, object>();
+
+        foreach (string key in pushData.Keys) {
+            hsPushData.Add (key, pushData [key]);
+        }
+        HelpshiftSdk.GetInstance().HandlePushNotification (hsPushData);
+    }
+}
+```
+
+アプリケーションが実行中ではないときにプッシュ通知を受信した場合には、（Javaに登録されたプッシュ通知レシーバーを呼び出すことによって）アプリケーションはバックグラウンドで起動します。この場合、UnityEngineが初期化されていない可能性があるため、C# API `HelpshiftSdk.HandlePushNotification`が役に立たない可能性があります。
+
+Javaの受信クラスからC# APIへとプッシュ通知のペイロードをデリゲートできない場合、こういったケースにおいてはHelpshiftからのプッシュ通知を処理するためにネイティブJava API `HelpshiftUnity.handlePush(Context context, Intent intent)`を使用することができます。
+
+プッシュ通知のためのレシーバーのJava実装では、このAPIを以下の例のように使用することができます。
+
+```java
+public class HelpshiftCustomFCMService extends ListenerService {
+    private static final String TAG = "Helpshift Native";
+
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+        String from = message.getFrom();
+        Map<String, String> data = message.getData();
+        Log.d(TAG, "onMessageReceived, from: " + from + ", data: " + data);
+        String origin = data.get("origin");
+        if (origin != null && origin.equals("helpshift")) {
+            Log.d(TAG, "Helpshift Notification received");
+            // Handle push with native Helpshift java apis directly.
+            HelpshiftUnity.handlePush(this, data);
+        } else {
+            Log.d(TAG, "Notification from non-helpshift service");
+            // Call super to forward the notification to the default FCM service.
+            super.onMessageReceived(message);
+        }
+    }
+}
+```
+
+Helpshift SDKと[FCM Unityプラグイン](https://firebase.google.com/docs/cloud-messaging/unity/client)の統合に関するサンプルプロジェクトについては、[こちら](https://github.com/helpshift/helpshift-unity-examples/tree/master/Helpshift-Unity-SDKX-Apps)をご参照ください。
+
+注意: 最新のUnity用FCMプラグインは、AndroidXライブラリを使用しています。Helpshift Unity SDK XのリファレンスをAndroidXライブラリへと更新するには、[こちら](/sdkx-unity/troubleshooting-android#steps-to-build-with-android-x)の手順に従ってください。
+
+#### その他のプッシュ通知プラグインを構成する {#other-plugins}
+
+プッシュ通知用のサードパーティ製プラグインを使用している場合には、**HelpshiftSdk.RegisterPushToken(string deviceToken)** APIを使用してデバイストークンを登録し、**HelpshiftSdk.HandlePushNotification(Dictionary<string, object\> pushNotificationData)** APIを使用して通知で受信したペイロードを送信することができます。
+
+デバイストークンの登録例は、以下の通りです。
+
+```csharp
+void registrationSucceededEvent( string registrationId )
+{
+    Debug.Log( "registrationSucceededEvent: " + registrationId );
+    HelpshiftSdk.GetInstance().RegisterPushToken(registrationId);
+}
+```
+
+これが完了すると、**HelpshiftSdk.GetInstance().HandlePushNotification(Dictionary<string, object\> pushNotificationData)** APIを使用してプラグインの**notificationReceivedEvent**コールバックで受け取ったペイロードを送信できるようになります。
+
+この通知がHelpshiftのプッシュ通知サービスから送信されたものかどうかを確認するには、通知の`origin`フィールドをご確認ください。これが`"helpshift"`の場合、その通知はHelpshiftからの通知です。
+
+## アプリ内通知 {#in-app-notifications}
+
+アプリ内通知は、[通知ドロワー](http://developer.android.com/guide/topics/ui/notifiers/notifications.html)内の通知に似ています。プッシュ通知とは異なり、アプリの実行中にのみ表示されます。
+
+これらの通知は、エージェントが顧客の問題に返信したタイミングで送信されます。顧客は、通知をタップすることで直接[会話画面](/sdkx_android/support-tools#conversation-view)に移動することができます。
+
+<Centered >
+
+![](/static/books/sdkx_android/notification.png)
+
+</Centered>
+
+<Admonition type="info" title="注意">
+
+FCMのデバイストークンがプッシュ通知に登録されている場合、アプリ内通知は無効化されます。アプリ内通知が無効化されるのは、プッシュ通知とアプリ内通知の重複を回避するためです。
+
+</Admonition>
+
+## ユーザーに返信が送信された際の通知数の表示 {#showing-notification-count}
+
+サーバーから未読メッセージの数を取得するには、`Helpshift.RequestUnreadMessageCount(shouldFetchFromServer)` APIを呼び出します。このAPIは、未読メッセージの数をデリゲート経由で返します。
+`shouldFetchFromServer`の値に基づき、`shouldFetchFromServer`が`false`の場合にはローカルに保存されている数が返され、`shouldFetchFromServer`が`true`の場合にはサーバーからリモートで取得します。このカウント機能の使用例には、未読メッセージを示すバッジの数の更新が挙げられます。このメソッドを呼び出す前に、`Helpshift.SetHelpshiftEventsListener(eventsListener)` APIを呼び出してHelpshiftイベントのリスナーを設定する必要があることにご注意ください。
+
+```csharp
+
+    // Requesting unread count
+    private void RequestUnreadCount()
+    {
+        Helpshift.RequestUnreadMessageCount(true);
+    }
+
+```
+
+このAPIを呼び出すと、`IHelpshiftEventsListener`を実装するイベントリスナーで未読の数を受け取ります。
+以下は実装例です
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT))
+      {
+        Debug.Log("Unread count: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT]);
+        Debug.Log("Is Unread count from cache: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]);
+
+        // Do something with the unread count here, for example, update the badge count.
+      }
+    }
+    //...
+}
+```
+
+- 通知の数は、SDKのキャッシュとHelpshiftのサーバーからこのAPIを介して取得されます（上記の例では`fromCache`の値で示されています）。しかしながら、Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
