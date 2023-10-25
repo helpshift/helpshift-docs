@@ -119,6 +119,12 @@ You need to be aware of some considerations when using the `Helpshift.login()` A
 - It is best to call login immediately when your app user logs in.
 - If you are setting `fullPrivacy` to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
 
+<Admonition type="info" title="Note">
+
+From 10.3.0, `Helpshift.login()` API will return a boolean indicating wheather login was successful or not.This change is in exisiting API to introduce mandatory validations for login parameters and hence this might affect code compilation.
+
+</Admonition>
+
 Example:
 
 ```java
@@ -126,7 +132,7 @@ Map<String, Object> userData = new HashMap<>();
 
 String userId = generateUserId();
 String userEmail = fetchUserEmail();
-String userName = fetchUserName();
+String userName = fetchUserName();  
 
 if (TextUtils.isEmpty(userId) && TextUtils.isEmpty(userEmail)) {
   throw new Exception("userId and userEmail both are empty. Invalid login! ");
@@ -144,7 +150,12 @@ if (!TextUtils.isEmpty(userName)) {
   userData.put("userName", userName);  
 }
 
+// Before 10.3.0
 Helpshift.login(userData);
+
+// From 10.3.0
+Boolean isLoginSuccess = Helpshift.login(userData);
+Log.d(TAG,"isLoginSuccess : "+isLoginSuccess);
 ```
 
 ### Logging out users {#logging-out-users}
