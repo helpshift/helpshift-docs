@@ -32,20 +32,43 @@ Android app right away.
 
 If you are on SDK X or migrating to SDK X please note the following requirements:
 
-* SDK X is functional only above API Level 21 i.e Android OS 5 Lollipop and above. [Update (August 2023): SDK X 10.2.x is functional only above API Level 24 i.e Android OS 7 Nougat and above]
+* SDK X is functional only above API Level 21 i.e Android OS 5 Lollipop and above.
 * The `minSDKVersion` in code is kept as API Level 16 to allow importing the SDK and compiling in apps that allow installation till API Level 16 i.e Android 4.4 Jelly Bean.
 * If your app is installed on a device below API level 21 (i.e below Android OS 5 Lollipop) then you can choose to have a different medium for providing support. For example, Email, Web etc. We throw an `UnsupportedOSVersionException` if the SDK is initialized below API Level 21. Please catch and use this exception according to your needs. Refer: [Initializing the SDK](/sdkx_android/getting-started/#initializing).
+
+<Admonition type="info" title="Note">
+
+  Update (August 2023): SDK X 10.2.x and above is functional only above API Level 24 i.e Android OS 7 Nougat and above
+
+</Admonition>
 
 ### Gradle based projects {#gradle-support}
 
 Add the following dependencies to your `build.gradle` file inside the dependencies section.
 
+<Tabs groupId="android-dependencies-example">
+
+<TabItem value=">= 10.3.0" label="10.3.X">
+
 ```groovy
     dependencies {
-        implementation 'com.android.support:appcompat-v7:28.0.0'
+        implementation 'androidx.appcompat:appcompat:1.0.0'
         implementation 'com.helpshift:helpshift-sdkx:[% sdkx_android.sdk_version  %]'
     }
 ```
+
+</TabItem>
+<TabItem value="<= 10.2.X>" label="10.2.X">
+
+```groovy
+    dependencies {
+        implementation 'com.android.support:appcompat-v7:28.0.0'
+        implementation 'com.helpshift:helpshift-sdkx:10.2.X'
+    }
+```
+
+</TabItem>
+</Tabs>
 
 Helpshift SDK comes with built-in support for 47 languages. An API to change SDK language is provided, you can check [here](/sdkx_android/i18n/).
 
@@ -57,6 +80,7 @@ Helpshift is now ready to help you have conversations with your users!
 
 | Helpshift SDK Version | minSDKVersion | compileSDKVersion | buildToolsVersion |
 | --------------------- | ------------- | ----------------- | ----------------- |
+| >= 10.3.0             | 16            | 34                | 34                |
 | >= 10.2.0             | 16            | 33                | 33                |
 | >= 10.0.2             | 16            | 31                | 31                |
 | >= 10.0.0             | 16            | 29                | 29                |
