@@ -37,7 +37,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
-You can use the API call `showConversationWith:config:` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
+You can use the API call `showConversationWithConfig:` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
 
 <Centered width="major">
 
@@ -51,8 +51,8 @@ You can use the API call `showConversationWith:config:` to allow a user to direc
 
 |              |                                                                                                                                                                                                                                                                                                            |
 | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Definition   | <code>showConversationWith:config:</code>                                                                                                                                                                                                                                                                  |
-| Example Code | <code> [Helpshift showConversationWith:self config:configDictionary]; </code> // where <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the conversation. |
+| Definition   | <code>showConversationWithConfig:</code>                                                                                                                                                                                                                                                                  |
+| Example Code | <code>[Helpshift showConversationWithConfig:configDictionary];</code> where <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the conversation. |
 | Use with     | "Contact Us" or "Send Feedback" button                                                                                                                                                                                                                                                                     |
 
 </TabItem>
@@ -60,8 +60,8 @@ You can use the API call `showConversationWith:config:` to allow a user to direc
 
 |              |                                                                                                                                                                                                                                                                                                         |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Definition   | <code>showConverstion(with:config:)</code>                                                                                                                                                                                                                                                              |
-| Example Code | <code> Helpshift.showConversation(with:self config:configDictionary) </code> // where <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>Dictionary</code> that represents the configuration that needs to be set to the conversation. |
+| Definition   | <code>showConverstion(withConfig:)</code>                                                                                                                                                                                                                                                              |
+| Example Code | <code>Helpshift.showConversation(withConfig:configDictionary)</code> where <code>configDictionary</code> is a <code>Dictionary</code> that represents the configuration that needs to be set to the conversation. |
 | Use with     | "Contact Us" or "Send Feedback" button                                                                                                                                                                                                                                                                  |
 
 </TabItem>
@@ -72,7 +72,7 @@ Supports these [API Options](/sdkx_ios/sdk-configuration/).
 
 ## Integrating FAQs {#faqs-view}
 
-You can use the API call `showFAQsWith:config:` to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
+You can use the API call `showFAQsWithConfig:` to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
 
 <Centered >
 
@@ -88,8 +88,8 @@ This View Controller combines the FAQ, Search and Contact Us functionality toget
 
 |              |                                                                                                                                                                                                                                                                                                  |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Definition   | <code>showFAQsWith:config:</code>                                                                                                                                                                                                                                                                |
-| Example Code | <code> [Helpshift showFAQsWith:self config:configDictionary]; </code> // where <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen. |
+| Definition   | <code>showFAQsWithConfig:</code>                                                                                                                                                                                                                                                                |
+| Example Code | <code>[Helpshift showFAQsWithConfig:configDictionary];</code> where <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen. |
 | Use with     | "Help" or "Support" button                                                                                                                                                                                                                                                                       |
 
 </TabItem>
@@ -97,8 +97,8 @@ This View Controller combines the FAQ, Search and Contact Us functionality toget
 
 |              |                                                                                                                                                                                                                                                                                                  |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Definition   | <code>showFAQs(with:config:)</code>                                                                                                                                                                                                                                                              |
-| Example Code | <code> Helpshift.showFAQs(with: self, config: configDictionary) </code> // where <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>Dictionary</code> that represents the configuration that needs to be set to the FAQ screen. |
+| Definition   | <code>showFAQs(withConfig:)</code>                                                                                                                                                                                                                                                              |
+| Example Code | <code>Helpshift.showFAQs(withConfig: configDictionary)</code> where <code>configDictionary</code> is a <code>Dictionary</code> that represents the configuration that needs to be set to the FAQ screen. |
 | Use with     | "Help Us" or "Support" button                                                                                                                                                                                                                                                                    |
 
 </TabItem>
@@ -109,7 +109,7 @@ Supports these [API Options](/sdkx_ios/sdk-configuration/).
 
 ## Showing a Particular FAQ Section {#faq-section-view}
 
-You can use the API call `showFAQSection:with:config:` to show FAQs from a particular FAQ section.
+You can use the API call `showFAQSection:withConfig:` to show FAQs from a particular FAQ section.
 
 <Centered >
 
@@ -129,16 +129,16 @@ This feature works like a permalink for displaying specific FAQ sections as cont
 
 |              |                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Definition   | <code>showFAQSection:with:config:</code>                                                                                                                                                                                                                                                                                                                                       |
-| Example Code | <code> [Helpshift showFAQSection:sectionId with:self config:configDictionary]; </code> // where <code>sectionId</code> is the section <code>publishId</code>, <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen |
+| Definition   | <code>showFAQSection:withConfig:</code>                                                                                                                                                                                                                                                                                                                                       |
+| Example Code | <code>[Helpshift showFAQSection:sectionId withConfig:configDictionary];</code> where <code>sectionId</code> is the section <code>publishId</code> and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen |
 
 </TabItem>
 <TabItem value="Swift Example" label="Swift Example">
 
 |              |                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Definition   | <code>showFAQSection(with:config:)</code>                                                                                                                                                                                                                                                                                                                                        |
-| Example Code | <code> Helpshift.showFAQSection(sectionId, with: self, config: configDictionary) </code> // where <code>sectionId</code> is the section <code>publishId</code>, <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen |
+| Definition   | <code>showFAQSection(_:withConfig:)</code>                                                                                                                                                                                                                                                                                                                                        |
+| Example Code | <code>Helpshift.showFAQSection(sectionId, withConfig: configDictionary)</code> where <code>sectionId</code> is the section <code>publishId</code> and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen |
 
 </TabItem>
 
@@ -148,7 +148,7 @@ Supports these [API Options](/sdkx_ios/sdk-configuration/).
 
 ## Showing a Particular FAQ {#faq-view}
 
-You can use the API `showSingleFAQ:with:config:` to show a single FAQ.
+You can use the API `showSingleFAQ:withConfig:` to show a single FAQ.
 
 <Centered >
 
@@ -166,22 +166,64 @@ You can use the API `showSingleFAQ:with:config:` to show a single FAQ.
 
 |              |                                                                                                                                                                                                                                                                                                                                                                                      |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Definition   | <code>showSingleFAQ:with:config:</code>                                                                                                                                                                                                                                                                                                                                              |
-| Example Code | <code> [Helpshift showSingleFAQ:faqId with:self config:configDictionary]; </code> // where <code>faqId</code> is the <code>publishId</code> of that particular FAQ, <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen |
+| Definition   | <code>showSingleFAQ:withConfig:</code>                                                                                                                                                                                                                                                                                                                                              |
+| Example Code | <code>[Helpshift showSingleFAQ:faqId with:self config:configDictionary];</code> where <code>faqId</code> is the <code>publishId</code> of that particular FAQ and <code>configDictionary</code> is a <code>NSDictionary</code> that represents the configuration that needs to be set to the FAQ screen |
 
 </TabItem>
 <TabItem value="Swift Example" label="Swift Example">
 
 |              |                                                                                                                                                                                                                                                                                                                                                                                      |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Definition   | <code>showSingleFAQ(with:config:)</code>                                                                                                                                                                                                                                                                                                                                             |
-| Example Code | <code> Helpshift.showSingleFAQ(faqId, with: self, config: configDictionary) </code> // where <code>faqId</code> is the <code>publishId</code> of that particular FAQ, <code>self</code> is the view controller you're calling Helpshift from and <code>configDictionary</code> is a <code>Dictionary</code> that represents the configuration that needs to be set to the FAQ screen |
+| Definition   | <code>showSingleFAQ(_:withConfig:)</code>                                                                                                                                                                                                                                                                                                                                             |
+| Example Code | <code>Helpshift.showSingleFAQ(faqId, withConfig: configDictionary)</code> where <code>faqId</code> is the <code>publishId</code> of that particular FAQ and <code>configDictionary</code> is a <code>Dictionary</code> that represents the configuration that needs to be set to the FAQ screen |
 
 </TabItem>
 
 </Tabs>
 
 Supports these [API Options](/sdkx_ios/sdk-configuration/).
+
+## Closing an open SDK session
+
+You can use the API `closeSession` to close an active SDK session. Calling this API will close any open SDK screens and invoke the corresponding [lifecycle delegate methods](/sdkx_ios/delegates/#session-delegates). If no SDK session is active, calling this API will have no effect.
+
+<Tabs>
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```objc
+[Helpshift closeSession];
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+Helpshift.closeSession()
+```
+
+</TabItem>
+</Tabs>
+
+## Getting the SDK version
+
+You can use the API `sdkVersion` to get the current version of Helpshift SDK.
+
+<Tabs>
+<TabItem value="Objective-C Example" label="Objective-C Example">
+
+```objc
+NSString *sdkVersion = [Helpshift sdkVersion];
+```
+
+</TabItem>
+<TabItem value="Swift Example" label="Swift Example">
+
+```swift
+let sdkVersion = Helpshift.sdkVersion()
+```
+
+</TabItem>
+</Tabs>
 
 ## Set SDK language {#set-language}
 

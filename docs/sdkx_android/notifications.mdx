@@ -29,7 +29,8 @@ Configure Push notifications
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using)
+- All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx_android/getting-started#start-using).
+- From Android 13, notification permission is supposed to be asked by client app.
 
 </Admonition>
 
@@ -232,7 +233,7 @@ Based on the value of `shouldFetchFromServer`, the locally stored count will be 
 
 ```java
     private void updateAppBadgeCount(){
-        Helpshift.requestUnreadMessageCount(true)
+        Helpshift.requestUnreadMessageCount(false);
     }
 
     // ...

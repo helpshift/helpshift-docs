@@ -263,6 +263,147 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
+### Agent Message Received Event
+
+This event is triggered when the user receives any message from an agent in a conversation. It might be a text message, an attachment, app review request or a screenshot request. This delegate is not triggered for bot messages or messages sent via automations.
+
+- Event name constant: `HelpshiftEventNameAgentMessageReceived`
+- Event name raw value: `agentMessageReceived`
+- Event data:
+
+| Key (Constant)                | Key (Raw)   | Type   |
+|-------------------------------|-------------|--------|
+| HelpshiftEventDataPublishID   | publishId   | String |
+| HelpshiftEventDataCreatedTime | createdTs   | Number |
+| HelpshiftEventDataMessageType | type        | String |
+| HelpshiftEventDataMessageBody | body        | String |
+| HelpshiftEventDataAttachments | attachments | Array  |
+
+The `attachments` array is an array of dictionaries, with one dictionary for each attachment. The data for attachment dictionary is -
+
+| Key (Constant)                | Key (Raw)   | Type   |
+|-------------------------------|-------------|--------|
+| HelpshiftEventDataURL         | url         | String |
+| HelpshiftEventDataContentType | contentType | String |
+| HelpshiftEventDataFileName    | fileName    | String |
+| HelpshiftEventDataSize        | size        | Number |
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    if([eventName isEqualToString:HelpshiftEventNameAgentMessageReceived]) {
+        NSLog(@"Conversation publish ID : %@", data[HelpshiftEventDataPublishID]);
+        NSLog(@"Message created timestamp: %@", data[HelpshiftEventDataCreatedTime]);
+        NSLog(@"Message type: %@", data[HelpshiftEventDataMessageType]);
+        NSLog(@"Message body: %@", data[HelpshiftEventDataMessageBody]);
+
+        NSArray<NSDictionary *> *attachments = data[HelpshiftEventDataAttachments];
+        if(attachments) {
+            NSLog(@"Message has %lu attachments", (unsigned long)attachments.count);
+            for(NSDictionary *attachment in attachments) {
+                NSLog(@"Attachment file name: %@", attachment[HelpshiftEventDataFileName]);
+                NSLog(@"Attachment size: %@", attachment[HelpshiftEventDataSize]);
+                NSLog(@"Attachment content type: %@", attachment[HelpshiftEventDataContentType]);
+                NSLog(@"Attachment URL: %@", attachment[HelpshiftEventDataURL]);
+            }
+        } else {
+            NSLog(@"Message has no attachments");
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameAgentMessageReceived {
+        print("Conversation publish ID : \(data![HelpshiftEventDataPublishID]!)")
+        print("Message created timestamp: \(data![HelpshiftEventDataCreatedTime]!)")
+        print("Message type: \(data![HelpshiftEventDataMessageType]!)")
+        print("Message body: \(data![HelpshiftEventDataMessageBody]!)")
+        if let attachments = data?[HelpshiftEventDataAttachments] as? [[AnyHashable: Any]] {
+            print("Message has \(attachments.count) attachments")
+            for attachment in attachments {
+                print("Attachment file name: \(attachment[HelpshiftEventDataFileName]!)")
+                print("Attachment size: \(attachment[HelpshiftEventDataSize]!)")
+                print("Attachment content type: \(attachment[HelpshiftEventDataContentType]!)")
+                print("Attachment URL: \(attachment[HelpshiftEventDataURL]!)")
+            }
+        } else {
+            print("Message has no attachments")
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### User Click on Action Event
+
+This event is triggered when the user clicks on the link or call action of an action card message. The event data object has `actionType` and `actionData` keys, which indicates the type of action and data associated with the action.
+
+- Event name constant: `HelpshiftEventNameUserClickOnAction`
+- Event name raw value: `userClickOnAction`
+- Event Data:
+
+| Key (Constant)                | Key (Raw)  | Type   |
+|-------------------------------|------------|--------|
+| HelpshiftEventDataActionType  | actionType | String |
+| HelpshiftEventDataActionData  | actionData | String |
+
+`HelpshiftEventDataActionType` can be one of -
+  - `HelpshiftEventDataActionTypeCall` or `call`
+  - `HelpshiftEventDataActionTypeLink` or `link`
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameUserClickOnAction]) {
+        NSLog(@"User click on action type: %@", data[HelpshiftEventDataActionType]);
+        NSLog(@"Data for clicked action: %@", data[HelpshiftEventDataActionData]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameUserClickOnAction {
+        print("User click on action type: \(data[HelpshiftEventDataActionType])")
+        print("Data for clicked action: \(data[HelpshiftEventDataActionData])")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
 ### CSAT Submit Event {#csatSubmit}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
