@@ -40,7 +40,7 @@ If you are on SDK X or migrating to SDK X please note the following requirements
 
   - Update (August 2023): SDK X 10.2.x is functional only above API Level 24 i.e Android OS 7 Nougat and above.
   - SDK 10.3.0 functions and is supported on Android 7 and above (API level 24 and above). You can still compile your app using a minimum API level of 16, but the support starts for API level 24 and above.
-    For details, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
+    For details regarding Helpshift SDK's Android OS support policy, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
 
 </Admonition>
 
@@ -54,6 +54,7 @@ Add the following dependencies to your `build.gradle` file inside the dependenci
 
 ```groovy
     dependencies {
+        // androidx support library dependency
         implementation 'androidx.appcompat:appcompat:1.0.0'
         implementation 'com.helpshift:helpshift-sdkx:[% sdkx_android.sdk_version  %]'
     }
@@ -64,6 +65,7 @@ Add the following dependencies to your `build.gradle` file inside the dependenci
 
 ```groovy
     dependencies {
+        // legacy android support library dependency
         implementation 'com.android.support:appcompat-v7:28.0.0'
         implementation 'com.helpshift:helpshift-sdkx:10.2.X'
     }
@@ -138,7 +140,8 @@ You can optionally pass the configuration map to `Helpshift.install()` API. To s
                       "<Domain name from the Helpshift Dashboard>",
                       config);
         } catch (UnsupportedOSVersionException e) {
-            // Android OS versions prior to Lollipop (< SDK 24) are not supported.
+            // Android OS versions prior to Android 7 Nougat (< API Level 24) are not supported.
+            // SDK will be non-operational so you can choose to provide support to your users via other mediums like Web, Email etc.
         }
       }
     }
@@ -165,7 +168,8 @@ This config key accepts a boolean value. Pass `true` if you are integrating the 
                       "<Domain name from the Helpshift Dashboard>",
                       config);
         } catch (UnsupportedOSVersionException e) {
-            // Android OS versions prior to Lollipop (< SDK 24) are not supported.
+            // Android OS versions prior to Android 7 Nougat (< API Level 24) are not supported.
+            // SDK will be non-operational so you can choose to provide support to your users via other mediums like Web, Email etc.
         }
       }
     }
@@ -175,7 +179,7 @@ This config key accepts a boolean value. Pass `true` if you are integrating the 
 
 ** Placing the install call **
 
-You should not place the install call anywhere other than `Application.onCreate`. Placing it elsewhere might cause unexpected runtime problems.
+You should not place the install call anywhere other than `Application.onCreate()`. Placing it elsewhere might cause unexpected runtime problems.
 
 **HelpshiftInitializationException**
 
@@ -183,6 +187,6 @@ Calling any API before the install call would throw an unchecked `HelpshiftIniti
 
 **UnsupportedOSVersionException**
 
-Calling `install()` below Android SDK version 21 will throw this checked exception. All the APIs will be non operable.
+Calling `install()` below Android SDK version 24 will throw this checked exception. All the APIs will be non operable.
 
 </Admonition>

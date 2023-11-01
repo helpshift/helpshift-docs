@@ -120,3 +120,12 @@ If your app has targeted Android 13 (API Level 33), then this might be a cause f
 If you want your app to be able to post notifications then you need to ask for the Notification permissions. Refer to the [Android documentation](https://developer.android.com/develop/ui/views/notifications/notification-permission) for further reference.
 
 Helpshift SDK will not be asking for notification permissions. It depends on the application for it.
+
+## Misc
+
+### Handling attachments not supported by browsers on device
+
+* When the user clicks on an attachment in a conversation, the SDK tries to open it in the browser by default since we try to open it directly from the CDN Url.
+* If the browser is not able to open the file, it downloads the files on the device.
+* You can add handling in your app to open or consume such files by providing the user an option to open the file in your app when the user tries to open the downloaded file.
+* Refer to intent filters [here](https://developer.android.com/guide/components/intents-filters) for more information on handling system wide open file actions by the user.
