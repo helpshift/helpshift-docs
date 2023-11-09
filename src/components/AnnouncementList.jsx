@@ -7,6 +7,11 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "31 Oct 2023",
+    title: "SDK X 10.3.0 released",
+    info: `SDK X 10.3.0 is now released for iOS and Android! Upgrade to get the latest features`,
+  },
+  {
     date: "10 Nov 2022",
     title: "New dev docs launched!",
     info: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation.`,
