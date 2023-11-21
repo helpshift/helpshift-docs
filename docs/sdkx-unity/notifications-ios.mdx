@@ -45,50 +45,19 @@ Notifications can be sent to your users when you reply to an issue submitted by 
 
 If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code to your AppDelegate's `application:didFinishLaunchingWithOptions:` method:
 
-<Tabs>
-
-<TabItem value="UNNotification framework" label="UNNotification framework">
-
 ```objc
-
-    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-      ...
-      UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-      center.delegate = self;
-      [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
-                                                                       completionHandler:^(BOOL granted, NSError *_Nullable error) {
-                              ...
-                          }];
-      [UIApplication sharedApplication registerForRemoteNotifications];
-      ...
-    }
-
-```
-
-</TabItem>
-<TabItem value="UI Notifications (Deprecated)" label="UI Notifications (Deprecated)">
-
-```objc
-
-    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-        UIUserNotificationType notificationType = UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-
-    } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    }
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge     UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
+                                                                     completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                            ...
+                        }];
+    [UIApplication sharedApplication registerForRemoteNotifications];
     ...
-```
-
 }
-
-</TabItem>
-
-</Tabs>
+```
 
 ### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
 
@@ -110,8 +79,7 @@ To enable the Helpshift system to send push notifications to your users you will
 <Image
   src="/static/books/sdkx_ios/Add-platform.png"
   width="full"
-  alt="Add-platform.png"
-/>{" "}
+  alt="Add-platform.png"/>{" "}
 
 After export, login and upload the .p12 file in your app in the Helpshift admin panel. Provide the same password you used while exporting to .p12 format.
 
@@ -120,8 +88,7 @@ Please note that you need to use the same bundle identifier in the app as the on
 <Image
   src="/static/books/sdkx_ios/Add-certificate.png"
   width="full"
-  alt="Add-certificate.png"
-/>{" "}
+  alt="Add-certificate.png"/>{" "}
 
 You can configure whether to send a badge or not, and sound alerts if you provided custom sounds bundled with your app to handle notifications. Save it and you're all set.
 
@@ -142,8 +109,7 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
 <Image
   src="/static/books/sdkx_ios/cert-expiry.png"
   width="full"
-  alt="cert-expiry.png"
-/>{" "}
+  alt="cert-expiry.png"/>{" "}
 
 ### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
 
@@ -160,24 +126,11 @@ you will need to invoke the `registerDeviceToken:` api call inside the applicati
 
 In your app delegate file it will look something like this:
 
-<Tabs>
-
-<TabItem value="Details" label="Details">
-
 ```objc
-
-    - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-        [Helpshift registerDeviceToken:deviceToken];
-    }
-
-
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [Helpshift registerDeviceToken:deviceToken];
+}
 ```
-
-</TabItem>
-
-</Tabs>
-
-#### If your app uses UNNotification framework {#unnotification-framework}
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
 
@@ -185,83 +138,47 @@ To respond to the delivery of notifications, you must implement a delegate for t
 1. The system does not call the `userNotificationCenter:willPresentNotification:withCompletionHandler:` method when your app is in the background or is not running. In those cases, the system alerts the user according to the information in the notification itself.
    When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method.
 
-In all of the above cases, you should check the "origin" field of the notification dictionary and call `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` API if the origin of the notification is "helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The isAppLaunch boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true.
+In all of the above cases, you should check the "origin" field of the notification dictionary and call `handleNotificationWithUserInfoDictionary:isAppLaunch:` API if the origin of the notification is "helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The isAppLaunch boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true.
 
 Example usage:
 
-For the userNotificationCenter:willPresentNotification:withCompletionHandler: delegate -
-
-<Tabs>
-
-<TabItem value="Details" label="Details">
+For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` delegate -
 
 ```objc
-
-    - (void) userNotificationCenter:(UNUserNotificationCenter *)center
-      willPresentNotification:(UNNotification *)notification
-      withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-      if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                    isAppLaunch:false
-                                                 withController:self.window.rootViewController];
-      }
-      completionHandler(...);
-    }
-
-```
-
-</TabItem>
-
-</Tabs>
-
-#### If your app uses UINotification framework (Deprecated) {#uinotification-framework}
-
-When a push notification is received, the application delegate didReceiveRemoteNotification: is called. Additionally:
-
-1. If the application was not in the foreground, and the user taps the push notification, this method is called again.
-2. In cases where the app might have been killed by the user, and then they tap on a push notification, the application's didFinishLaunchingWithOptions: delegate is called.
-
-In all of the above cases, developers should check the `origin` field of the notification dictionary and call `handleNotificationWithUserInfoDictionary:isAppLaunch` API if the origin of the notification is "Helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The isAppLaunch boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true.
-
-Example usage:
-
-When receiving remote notifications when the app starts for the first time, or after being killed by the user:
-
-```
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    ...
-    if(launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
-        NSDictionary *userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-        if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-            [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:YES
-                                             withController:self.window.rootViewController];
-        }
-    }
-    ...
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+  willPresentNotification:(UNNotification *)notification
+  withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+    [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
+                                                isAppLaunch:false];
+    completionHandler(UNNotificationPresentationOptionNone);
+  } else {
+    // Handle foreground notifications other than Helpshift ones.
+  }
 }
 ```
 
-For the didReceiveRemoteNotification delegate -
+For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` delegate -
 
-```
-- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:YES
-                                             withController:self.window.rootViewController];
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler {
+    if([response.notification.request.content.userInfo[@"origin"] isEqualToString:@"helpshift"]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
+                                                isAppLaunch:YES];
+    } else {
+        // Handle push notifications other than Helpshift ones.
     }
+    completionHandler();
 }
 ```
 
 ### Badge count {#badge-count}
 
-If you need to handle badge reset in the application icon, you can do
-something like below in the `applicationDidBecomeActive:` delegate
-method:
+If you need to handle badge reset in the application icon, you can do something like below in the `applicationDidBecomeActive:` delegate method:
 
-```
+```objc
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
@@ -270,9 +187,7 @@ method:
 
 <Admonition type="info" title="Note">
 
-- To test Push Notifications for an app that is already in production please refer to [this.](/ios/troubleshooting#test-push-production)
-- You should check the origin and call the `handleRemoteNotfication` as soon as you get the callback. SDK checks the state of the app (Active / Inactive) and based on it, decides to show chat screen or in-app notification. Delay in calling handleRemoteNotification could result in SDK to get inaccurate application state.
-- If you are using Xcode 11 for building and deploying your app, please refer to our [troubleshooting guide](/ios/troubleshooting#xcode11)
+To test Push Notifications for an app that is already in production please refer [this.](/ios/troubleshooting#test-push-production)
 
 </Admonition>
 
@@ -287,8 +202,7 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 <Image
   src="/static/books/sdkx_ios/In-app-notification.png"
   width="half"
-  alt="In-app-notification.png"
-/>{" "}
+  alt="In-app-notification.png"/>{" "}
 
 </SideBySide>
 
@@ -355,13 +269,11 @@ To fetch unread messages count from the server you can call `Helpshift.RequestUn
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messsages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the `Helpshift.SetHelpshiftEventsListener(eventsListener)` API.
 
 ```csharp
-
-    // Requesting unread count
-    private void RequestUnreadCount()
-    {
-        Helpshift.RequestUnreadMessageCount(true);
-    }
-
+// Requesting unread count
+private void RequestUnreadCount()
+{
+    Helpshift.RequestUnreadMessageCount(true);
+}
 ```
 
 When you call this API, you receive the unread count in your event listener which implements `IHelpshiftEventsListener`.
