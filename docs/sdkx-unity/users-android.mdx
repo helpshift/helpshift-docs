@@ -137,28 +137,29 @@ using Helpshift;
 
  void Login() {
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
-  _support.Login(userDetails);
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
  }
 ```
 
@@ -177,10 +178,7 @@ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```csharp
-
-    _support.Logout();
-
-
+_support.Logout();
 ```
 
 ### Anonymous users {#anonymous-users}
@@ -195,9 +193,9 @@ If your use case involves multiple logged-in/anonymous users using the same devi
 
 - If shouldClear is `false` – anonymous user data will be saved and if a logged-in user is logged out, you will see anonymous user’s conversation history.
 
-```java
-    help = HelpshiftSdk.GetInstance();
-    help.ClearAnonymousUserOnLogin(shouldClear);
+```csharp
+help = HelpshiftSdk.GetInstance();
+help.ClearAnonymousUserOnLogin(shouldClear);
 ```
 
 <Admonition type="info" title="Note">
@@ -230,34 +228,35 @@ using Helpshift;
 
  void Login(){
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
   string userAuthToken = generateUserAuthToken();
-  
+
   if (!strings.IsNullOrEmpty(userAuthToken)) {
     userDetails["userAuthToken"] = userAuthToken;
   }
-  
-  _support.Login(userDetails);
+
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
  }
 ```
 
@@ -364,5 +363,4 @@ using Helpshift;
 //..
 HelpshiftSdk _helpshiftX = HelpshiftSdk.GetInstance()
 _helpshiftX.SetHelpshiftEventsListener(new HSEventsListener());
-
 ```
