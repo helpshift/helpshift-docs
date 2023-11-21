@@ -142,7 +142,7 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     employeeName.Add("value", "Bugs helpshift");
 
     Dictionary<string, string> isPro = new Dictionary<string, string>();
-    isPro.Add("type", "boolean");
+    isPro.Add("type", "checkbox");
     isPro.Add("value", "true");
 
     Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
@@ -175,14 +175,14 @@ The following are the valid values for the `type` key of a Custom Issue Field.
 
 Compatibility table for type and values:
 
-| Type       | Value   | Comments                                                                                     |
-| ---------- | ------- | -------------------------------------------------------------------------------------------- |
-| singleline | string  | Character limit of 255                                                                       |
-| multiline  | string  | Character limit of 100,000                                                                   |
-| number     | string  |                                                                                              |
-| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field                              |
+| Type       | Value   | Comments                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | Character limit of 255                                          |
+| multiline  | string  | Character limit of 100,000                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
 | date       | number  | Epoch time in milliseconds. For example - **DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()** |
-| checkbox   | boolean |                                                                                              |
+| checkbox   | string  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
 
 <Admonition type="info" title="Note">
 
@@ -216,7 +216,6 @@ For example:
 
 ```csharp
 HelpshiftSdk _support = HelpshiftSdk.GetInstance();
-...
 _support.LeaveBreadcrumb("Add breadcrumb");
 ```
 
@@ -225,7 +224,6 @@ For example:
 
 ```csharp
 HelpshiftSdk _support = HelpshiftSdk.GetInstance();
-...
 _support.ClearBreadcrumbs();
 ```
 
@@ -242,7 +240,6 @@ For example:
 
 ```csharp
 using Helpshift;
-...
 HelpshiftLog.d("debug-tag", "debug-message");
 ```
 
