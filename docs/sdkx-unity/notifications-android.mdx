@@ -29,7 +29,9 @@ Configure Push notifications.
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
+- All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
+
+- From Android 13, notification permission is supposed to be asked by client app.
 
 </Admonition>
 
@@ -193,7 +195,7 @@ Based on the value of `shouldFetchFromServer`, the locally stored count will be 
     // Requesting unread count
     private void RequestUnreadCount()
     {
-        Helpshift.RequestUnreadMessageCount(true);
+        Helpshift.RequestUnreadMessageCount(false);
     }
 
 ```
