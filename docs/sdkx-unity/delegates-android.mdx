@@ -29,7 +29,9 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
+* All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.Install() API](/sdkx-unity/getting-started-android#initializing)
+
+* Events invoked before setting `Helpshift.SetHelpshiftEventsListener` cannot be received agian.
 
 </Admonition>
 
@@ -218,6 +220,57 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
+### User Click On Action Event {#user-click-on-action}
+
+This event is triggered when the user clicks on the link or call action of an action card message.
+
+- Event Name : `HelpshiftEvent.ACTION_CLICKED`
+- Event data: 
+  - `HelpshiftEvent.DATA_ACTION `
+  - `HelpshiftEvent.DATA_ACTION_TYPE `
+  - `HelpshiftEvent.DATA_ACTION_TYPE_CALL `
+  - `HelpshiftEvent.DATA_ACTION_TYPE_LINK `
+
+| Key (Constant)                        | Key (Raw)         | Type   |
+|---------------------------------------|-------------------|--------|
+| HelpshiftEvent.ACTION_CLICKED         | userClickOnAction | String |
+| HelpshiftEvent.DATA_ACTION            | actionType        | String |
+| HelpshiftEvent.DATA_ACTION_TYPE       | actionData        | String |
+| HelpshiftEvent.DATA_ACTION_TYPE_CALL  | call              | String |
+| HelpshiftEvent.DATA_ACTION_TYPE_LINK  | link              | String |
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+  public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    if (eventName.Equals(HelpshiftEvent.ACTION_CLICKED)) {
+          // With Key Constants
+          String actionType = (String) eventData[HelpshiftEvent.DATA_ACTION_TYPE];
+          String actionData = (String) eventData[HelpshiftEvent.DATA_ACTION];
+
+          -------------------- OR --------------------
+
+          // With Key Raw Values
+          String actionType = (String) eventData["actionType"];
+          String actionData = (String) eventData["actionData"];
+
+          // `Utils.isEmpty` is null and empty Check
+          if (Utils.isEmpty(actionType) || Utils.isEmpty(actionData)) {
+            Debug.Log("Event Received for " + eventName + " with actionType or action Data as empty");
+            return;
+          }
+
+          Debug.Log("Event Received for " + eventName + " action type " + actionType + " actionData " + actionData);
+    }
+}
+```
+
 ### Conversation Start Event {#conversation-start-event}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
@@ -272,6 +325,86 @@ public class HSEventsListener : IHelpshiftEventsListener
       }
     }
     //...
+}
+```
+
+### Agent Message Received Event {#agent-message-received}
+
+This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
+
+- Event name : `HelpshiftEvent.AGENT_MESSAGE_RECEIVED`
+- Event data:
+
+  | Key                 | Type   | Value |
+  |-------------------------------|--------|--------- |
+  | HelpshiftEvent.DATA_PUBLISH_ID | String | Conversation ID of the ongoing issue |
+  | HelpshiftEvent.DATA_MESSAGE_TYPE | String | Message Type of the message |
+  | HelpshiftEvent.DATA_MESSAGE_BODY | String | The actual message sent by the agent or empty |
+  | HelpshiftEvent.DATA_CREATED_TIME | Long | Unix epoch timestamp in ms |
+  | HelpshiftEvent.DATA_ATTACHMENTS | Dictionary<String, Object>> | Attachments, if they are present |
+  | HelpshiftEvent.DATA_URL | String | URL of the attachment |
+  | HelpshiftEvent.DATA_CONTENT_TYPE | String | MIME type of the attachment |
+  | HelpshiftEvent.DATA_FILE_NAME | String | File name of the attachment |
+  | HelpshiftEvent.DATA_SIZE | Integer | Size of the attachment in bytes |
+
+<Admonition type="info" title="Note">
+
+- This delegate is available from 10.3.0 and above versions
+- The attachments key is only present if the agent has sent attachments.
+- Since attachments sent by agents may not have the necessary MIME type or name, it is possible that `HelpshiftEvent.DATA_CONTENT_TYPE` is absent from the payload.
+  For such cases, file type can be inferred from extension from file name
+- HelpshiftEvent.DATA_MESSAGE_TYPE has following types : 
+  - HelpshiftEvent.DATA_MESSAGE_TYPE_APP_REVIEW_REQUEST
+  - HelpshiftEvent.DATA_MESSAGE_TYPE_SCREENSHOT_REQUEST
+  - HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT
+
+</Admonition>
+
+```java
+public class HSEventsListener : IHelpshiftEventsListener
+{
+  public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    if (eventName.Equals(HelpshiftEvent.AGENT_MESSAGE_RECEIVED)) {
+            String publishId = (String) eventData[HelpshiftEvent.DATA_PUBLISH_ID];
+            String type = (String) eventData[HelpshiftEvent.DATA_MESSAGE_TYPE];
+            String body = (String) eventData[HelpshiftEvent.DATA_MESSAGE_BODY];
+            Long createdTs = (Long) eventData[HelpshiftEvent.DATA_CREATED_TIME];
+
+            // Utils.isEmpty() is null and empty Check
+            if (Utils.isEmpty(publishId) && Utils.isEmpty(type) && Utils.isEmpty(body) && createdTs == null) {
+              Debug.Log(TAG, "Received no data");
+              return;
+            }
+
+            Debug.Log("publishId " + publishId + " type " + type + " body " + body + " createdTs " + createdTs);
+            List<Object> attachments = (List<Object>) eventData.get(HelpshiftEvent.DATA_ATTACHMENTS);
+
+            if (Utils.isEmpty(attachments)) {
+              Debug.Log("No attachments received in message");
+            } else {
+
+              for (int i = 0; i < attachments.size(); i++) {
+                Dictionary<String, Object> attachment = (Dictionary<String, Object>) attachments.get(i);
+
+                String url = (String) attachment[HelpshiftEvent.DATA_URL];
+                String contentType = (String) attachment[HelpshiftEvent.DATA_CONTENT_TYPE];
+                String fileName = (String) attachment[HelpshiftEvent.DATA_FILE_NAME];
+                Integer size = (Integer) attachment[HelpshiftEvent.DATA_SIZE];
+
+                if (Utils.isEmpty(url) && Utils.isEmpty(fileName) && size == null) {
+                  Debug.Log("Received no data for attachment " + (i + 1));
+                  continue;
+                }
+
+                if (Utils.isEmpty(url) || Utils.isEmpty(fileName) || size == null) {
+                  Debug.Log("Received incomplete data for attachment " + (i + 1));
+                  continue;
+                }
+
+                Debug.Log(TAG, "Attachment No. : " + (i + 1) + ", url: " + url + ", contentType: " + contentType + ", fileName: " + fileName + ", size: " + size);
+              }
+            }
+        }
 }
 ```
 
