@@ -368,30 +368,30 @@ public class HSEventsListener : IHelpshiftEventsListener
             String publishId = (String) eventData[HelpshiftEvent.DATA_PUBLISH_ID];
             String type = (String) eventData[HelpshiftEvent.DATA_MESSAGE_TYPE];
             String body = (String) eventData[HelpshiftEvent.DATA_MESSAGE_BODY];
-            Long createdTs = (Long) eventData[HelpshiftEvent.DATA_CREATED_TIME];
+            long createdTs = (long) eventData[HelpshiftEvent.DATA_CREATED_TIME];
 
             // Utils.isEmpty() is null and empty Check
-            if (Utils.isEmpty(publishId) && Utils.isEmpty(type) && Utils.isEmpty(body) && createdTs == null) {
+            if (Utils.isEmpty(publishId) && Utils.isEmpty(type) && Utils.isEmpty(body) && createdTs == 0) {
               Debug.Log(TAG, "Received no data");
               return;
             }
 
             Debug.Log("publishId " + publishId + " type " + type + " body " + body + " createdTs " + createdTs);
-            List<Object> attachments = (List<Object>) eventData.get(HelpshiftEvent.DATA_ATTACHMENTS);
+            List<object> attachments = (List<object>)eventData[HelpshiftEvent.DATA_ATTACHMENTS];
 
             if (Utils.isEmpty(attachments)) {
               Debug.Log("No attachments received in message");
             } else {
 
               for (int i = 0; i < attachments.size(); i++) {
-                Dictionary<String, Object> attachment = (Dictionary<String, Object>) attachments.get(i);
+                Dictionary<String, object> attachment = (Dictionary<String, object>) attachments.get(i);
 
                 String url = (String) attachment[HelpshiftEvent.DATA_URL];
                 String contentType = (String) attachment[HelpshiftEvent.DATA_CONTENT_TYPE];
                 String fileName = (String) attachment[HelpshiftEvent.DATA_FILE_NAME];
-                Integer size = (Integer) attachment[HelpshiftEvent.DATA_SIZE];
+                int size = (int) attachment[HelpshiftEvent.DATA_SIZE];
 
-                if (Utils.isEmpty(url) && Utils.isEmpty(fileName) && size == null) {
+                if (Utils.isEmpty(url) && Utils.isEmpty(fileName) && size == 0) {
                   Debug.Log("Received no data for attachment " + (i + 1));
                   continue;
                 }
@@ -401,7 +401,7 @@ public class HSEventsListener : IHelpshiftEventsListener
                   continue;
                 }
 
-                Debug.Log(TAG, "Attachment No. : " + (i + 1) + ", url: " + url + ", contentType: " + contentType + ", fileName: " + fileName + ", size: " + size);
+                Debug.Log("Attachment No. : " + (i + 1) + ", url: " + url + ", contentType: " + contentType + ", fileName: " + fileName + ", size: " + size);
               }
             }
         }
