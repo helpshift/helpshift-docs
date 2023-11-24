@@ -196,6 +196,12 @@ void ShowFAQs(string faqPublishId){
 
 You can use the API `CloseSession()` to close an active SDK session. Calling this API will close any open SDK screens and invoke the corresponding [lifecycle delegate methods](/sdkx-unity/delegates-android/#session-delegates). If no SDK session is active, calling this API will have no effect.
 
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version
+
+</Admonition>
+
 ```csharp
 HelpshiftSdk.GetInstance().CloseSession();
 ```
@@ -204,7 +210,14 @@ HelpshiftSdk.GetInstance().CloseSession();
 
 You can use the API `SdkVersion()` to get the current version of Helpshift SDK.
 
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version.
+
+</Admonition>
+
 ```csharp
+// Returns SDK version as a string eg. "10.3.0"
 string version = HelpshiftSdk.GetInstance().SdkVersion();
 Debug.Log("Helpshift - SDK Version is :" + version);
 ```
@@ -212,33 +225,3 @@ Debug.Log("Helpshift - SDK Version is :" + version);
 ## Set SDK language {#set-language-api}
 
 For more info about this API and languages you can refer [here](/sdkx-unity/i18n-android/)
-
-## Getting SDK Version {#get-sdk-version}
-
-You can use `SdkVersion` API to get the current version of Helpshift SDK X.
-
-<Admonition type="info" title="Note">
-
-This API is available from 10.3.0 version
-
-</Admonition>
-
-```java
-  // Returns SDK version as a string eg. "10.3.0"
-  HelpshiftSdk.SdkVersion();
-```
-
-## Clossing a Helpshift Session {#close-session}
-
-You can use `HelpshiftSdk.CloseSession` API to close an active SDK session. If no SDK session is active, calling this API will have no effect.
-
-<Admonition type="info" title="Note">
-
-This API is available from 10.3.0 version.
-
-</Admonition>
-
-```java
-  // closes Helpshift sdk session
-  HelpshiftSdk.CloseSession();
-```
