@@ -7,6 +7,13 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "27 Nov 2023",
+    title: "SDK X Unity 10.3.0 released",
+    info: `SDK X Unity 10.3.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-unity",
+    linkTitle: "SDK X Unity 10.3.0",
+  },
+  {
     date: "31 Oct 2023",
     title: "SDK X 10.3.0 released",
     info: `SDK X 10.3.0 is now released for iOS and Android! Upgrade to get the latest features`,
