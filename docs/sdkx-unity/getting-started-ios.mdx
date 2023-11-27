@@ -33,25 +33,23 @@ Guide to integrating the Unity plugin for the Helpshift SDK X which you can call
 
 - Unity 2018.1.0 and above.
 - Xcode 12.0 and above.
-- Supported iOS versions:
-  - iOS 16, 15, 14, 13, 12, 11, and 10
+- iOS 13 and above.
 
 ## Download HelpshiftX Unity SDK for iOS {#getting-sdk}
 
 <DownloadButton
   text="Download SDK"
   link="[% sdkx-unity.ios.sdk_url %]"
-  classes="mb-4"
-/>
+  classes="mb-4"/>
 
 HelpshiftX SDK _.zip_ folder includes:
 
 <div className="text-sm compact ">
 
-|                                                                      |                                                              |
-| -------------------------------------------------------------------- | ------------------------------------------------------------ |
-| helpshiftX-plugin-unity-[% sdkxunity.package_version %].unitypackage | Unity package of HelpshiftX SDK                              |
-| unity-jar-resolver (v1.2.170.0)                                      | Resolves Android Helpshift package support lib dependencies. |
+|                                               |             |
+| ----------------------------------------------|-------------|
+| helpshiftX-plugin-unity-v10.3.0.unitypackage | Unity package of Helpshift SDK X         |
+| unity-jar-resolver (v1.2.170.0)              | Resolves Android Helpshift package support lib dependencies. |
 
 </div>
 
@@ -66,11 +64,9 @@ HelpshiftX SDK _.zip_ folder includes:
 
 ### Info.plist changes - Addition of usage description strings {#plist-description-strings}
 
-When the “User Attachments” feature is enabled from the In-app SDK Configuration section, the SDK allows the user to upload the attachments. The attachments can be picked from the Photo Library or can be captured directly using the camera. The options for these sources look like:
+When the “User Attachments” feature is enabled from the In-app SDK Configuration section, the SDK allows the user to upload attachments. The attachments are picked either from the Photo Library of File picker.
 
-<Image src="/static/books/sdkx_ios/attachment_picker_ios.png" width="half" />{" "}
-
-To use the camera and photo library, Apple requires the app to have Usage Description strings in the Info.plist while. Failing to add these strings might result in app rejection. The following strings are needed for the attachment feature:
+For photo library, Apple requires the app to have Photo Library Usage Description string in the Info.plist while. Failing to add these strings might result in app rejection. The following string is needed for the attachment feature:
 
 <table>
   <tr>
@@ -85,10 +81,24 @@ To use the camera and photo library, Apple requires the app to have Usage Descri
       meant to be sent as an attachment for help and support reasons.”
     </td>
     <td>
-      This is not needed if your app is iOS 11 or above. Below iOS 11, this key
+      This is not needed if your app is iOS 14 or above. Below iOS 14, this key
       is compulsory else the app may crash when user tries to open the photo
       library for attaching photos.
     </td>
+  </tr>
+</table>
+
+<Admonition type="info" title="Note">
+
+The following instructions apply only to **versions below SDK X 10.2.0**.
+
+#### Along with `NSPhotoLibraryUsageDescription` (as mentioned above), also add `NSCameraUsageDescription` and `NSMicrophoneUsageDescription` key in your application's Info.plist file.
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Suggested string</th>
+    <th>Notes</th>
   </tr>
   <tr>
     <td>NSCameraUsageDescription</td>
@@ -112,14 +122,9 @@ To use the camera and photo library, Apple requires the app to have Usage Descri
   </tr>
 </table>
 
-Note that the above strings are just a suggested description. If you need localisations for the same, please Contact Us
-
-<Admonition type="info" title="Note">
-
-End-users can attach files such as pdf, video, etc in their issues. For iOS 10 and below, to access files in the “Files” app of iOS, developers will need to add iCloud capability with iCloud Documents services enabled. For more info please refer the [Prerequisites section here.](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)
-&nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" />
-
 </Admonition>
+
+Note that the above strings are just a suggested description. If you need localisations for the same, please <a href="https://support.helpshift.com/kb/contact/" target="_blank">Contact Us</a>.
 
 ## Initializing Helpshift in your app {#initializing}
 
@@ -128,10 +133,7 @@ End-users can attach files such as pdf, video, etc in their issues. For iOS 10 a
 To use Helpshift's APIs, please import the Helpshift's namespace like below
 
 ```csharp
-
-    using Helpshift;
-
-
+ using Helpshift;
 ```
 
 1. First, create an app on the Helpshift Dashboard
@@ -161,69 +163,47 @@ the 2 tokens to be passed when initializing Helpshift.
 Initialize Helpshift by calling the method _install(appId, domain)_ API
 
 ```csharp
+using Helpshift;
 
-    using Helpshift;
-    .
-    .
-    .
-    public class MyGameControl : MonoBehaviour
-    {
-        private HelpshiftSdk help;
-        ...
-
-        void Awake() {
-            help = HelpshiftSdk.GetInstance();
-            var configMap = new Dictionary<string, object>();
-            help.Install(appId, domainName, configMap);
-        }
-        ...
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    ...
+    void Awake() {
+        help = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>();
+        help.Install(appId, domainName, configMap);
     }
-
+    ...
+}
 ```
 
-#### Install Helpshift via ObjC {#objc-install}
-
-If you intend to initialize the SDK from Xcode using Objective C, You can specify Domain Name, Platform ID and other install configurations in the Objective-C code. To do this you need to override `application:didFinishLaunchingWithOptions` in `HsUnityAppcontroller` as shown below.
-
-```objc
-
-    #import <HelpshiftX/HelpshiftX.h>
-    #import "HelpshiftX-Unity.h"
-
-    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-        // Set install configurations
-        NSDictionary *installConfig = @{@"enableInAppNotification":@YES};
-
-        // Make install call
-        [Helpshift installWithPlatformId:@"<your_platform_id>" domain:@"<your_domain_name>" config:installConfig];
-        return [super application:application didFinishLaunchingWithOptions:launchOptions];
-    }
-
-```
 #### Initializing Helpshift in your app for China {#chinasupport}
 
 A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
 This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
 
-Add the following code in your AppDelegate class -
+Initialize Helpshift by passing this key with appropriate value -
 
-```objc
+```csharp
+using Helpshift;
 
-    #import <HelpshiftX/HelpshiftX.h>
-    #import "HelpshiftX-Unity.h"
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
     ...
-    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-        // Set install configurations
-        NSDictionary *installConfig = @{@"isForChina":@YES};
-
-        // Make install call
-        [Helpshift installWithPlatformId:@"<your_platform_id>" domain:@"<your_domain_name>" config:installConfig];
-        return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    void Awake() {
+        help = HelpshiftSdk.GetInstance();        
+        var configMap = new Dictionary<string, object>()
+            {
+                { "isForChina", true },
+            };
+        help.Install(appId, domainName, configMap);
     }
-
+    ...
+}
 ```
 
 ## Start using Helpshift {#start-using}
 
-Helpshift is now integrated in your app. You should now use the [support APIs](/sdkx-unity/support-tools-ios/) inside your app to experience
-the functionality provided by the Helpshift SDK
+Helpshift is now integrated in your app. You should now use the [support APIs](/sdkx-unity/support-tools-ios/) inside your app to experience the functionality provided by the Helpshift SDK.

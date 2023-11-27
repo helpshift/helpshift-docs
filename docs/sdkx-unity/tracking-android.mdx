@@ -151,7 +151,7 @@ void openHelpshift(){
     employeeName.Add("value", "Bugs helpshift");
 
     Dictionary<string, string> isPro = new Dictionary<string, string>();
-    isPro.Add("type", "boolean");
+    isPro.Add("type", "checkbox");
     isPro.Add("value", "true");
 
     Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
@@ -189,8 +189,8 @@ Compatibility table for type and values:
 | multiline  | string  | Character limit of 100,000                                      |
 | number     | string  |                                                                 |
 | dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
-| date       | number  | Epoch time. For example - **Date.now()**                        |
-| checkbox   | boolean |                                                                 |
+| date       | number  | Epoch time in milliseconds. For example - **DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()** |
+| checkbox   | string  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard. |
 
 <Admonition type="info" title="Note">
 
@@ -223,20 +223,16 @@ Breadcrumbs can be used to track events or end-user actions. It helps you to add
 
 For example:
 
-```java
-
-    help.LeaveBreadcrumb("<any-breadcrumb-string>");
-
+```csharp
+help.LeaveBreadcrumb("<any-breadcrumb-string>");
 ```
 
 Breadcrumbs are collected within the set breadcrumb limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs, use the `ClearBreadcrumbs` API —
 
 For example:
 
-```java
-
-    help.ClearBreadcrumbs();
-
+```csharp
+help.ClearBreadcrumbs();
 ```
 
 ## Debug Logs {#debug-logs}
@@ -251,10 +247,8 @@ If you want to add debug logs at specific places within your application which w
 
 For example:
 
-```java
-
-    HelpshiftLog.d("<debug-tag>", "<debug-message>");
-
+```csharp
+HelpshiftLog.d("<debug-tag>", "<debug-message>");
 ```
 
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.

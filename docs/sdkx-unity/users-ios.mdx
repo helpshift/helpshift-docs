@@ -136,31 +136,31 @@ using Helpshift;
  }
 
  void Login(){
-  void Login() {
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
-  _support.Login(userDetails);
- }
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
+}
 ```
 
 ### Logging out users {#logging-out-users}
@@ -178,10 +178,7 @@ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```csharp
-
-    _support.Logout();
-
-
+_support.Logout();
 ```
 
 ### Anonymous users {#anonymous-users}
@@ -229,36 +226,36 @@ using Helpshift;
  }
 
  void Login(){
-  void Login() {
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
   string userAuthToken = generateUserAuthToken();
-  
+
   if (!strings.IsNullOrEmpty(userAuthToken)) {
     userDetails["userAuthToken"] = userAuthToken;
   }
 
-  _support.Login(userDetails);
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
  }
 ```
 
@@ -365,5 +362,4 @@ using Helpshift;
 //..
 HelpshiftSdk _helpshiftX = HelpshiftSdk.GetInstance()
 _helpshiftX.SetHelpshiftEventsListener(new HSEventsListener());
-
 ```

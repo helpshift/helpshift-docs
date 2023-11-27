@@ -23,7 +23,7 @@ import {
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.install() API](/sdkx-unity/getting-started-android#initializing)
+All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.Install() API](/sdkx-unity/getting-started-android#initializing)
 
 </Admonition>
 
@@ -123,7 +123,19 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
   </tr>
 </table>
 
-In order to create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
+
+You need to be aware of some considerations when using the `HelpshiftSdk.Login()` API -
+- In order to create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
+- The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should **NOT** be duplicated for two or more different users.
+- If the login API is called with different user identifier, then it first logs out the currently logged-in user and then logs in with this user identifier.
+- It is best to call login immediately when your app user logs in.
+- If you are setting `fullPrivacy` to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+
+<Admonition type="info" title="Note">
+
+From 10.3.0, `HelpshiftSdk.Login()` API will return a boolean indicating whether login was successful or not. This change is in existing API to introduce mandatory validations for login parameters and hence this might affect code compilation.
+
+</Admonition>
 
 ```csharp
 using Helpshift;
@@ -137,28 +149,29 @@ using Helpshift;
 
  void Login() {
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
-  _support.Login(userDetails);
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
  }
 ```
 
@@ -177,10 +190,7 @@ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```csharp
-
-    _support.Logout();
-
-
+_support.Logout();
 ```
 
 ### Anonymous users {#anonymous-users}
@@ -195,9 +205,9 @@ If your use case involves multiple logged-in/anonymous users using the same devi
 
 - If shouldClear is `false` – anonymous user data will be saved and if a logged-in user is logged out, you will see anonymous user’s conversation history.
 
-```java
-    help = HelpshiftSdk.GetInstance();
-    help.ClearAnonymousUserOnLogin(shouldClear);
+```csharp
+help = HelpshiftSdk.GetInstance();
+help.ClearAnonymousUserOnLogin(shouldClear);
 ```
 
 <Admonition type="info" title="Note">
@@ -230,34 +240,35 @@ using Helpshift;
 
  void Login(){
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
   string userAuthToken = generateUserAuthToken();
-  
+
   if (!strings.IsNullOrEmpty(userAuthToken)) {
     userDetails["userAuthToken"] = userAuthToken;
   }
-  
-  _support.Login(userDetails);
+
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
  }
 ```
 
@@ -364,5 +375,4 @@ using Helpshift;
 //..
 HelpshiftSdk _helpshiftX = HelpshiftSdk.GetInstance()
 _helpshiftX.SetHelpshiftEventsListener(new HSEventsListener());
-
 ```

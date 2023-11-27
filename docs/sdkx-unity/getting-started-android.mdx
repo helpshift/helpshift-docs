@@ -31,8 +31,22 @@ Guide to integrating the Unity plugin for the Helpshift SDK X which you can call
 
 ## Requirements {#version-requirements}
 
-- Unity 5.5.6 and above.
-- Supported Android OS version: 21 and above
+* Unity 5.5.6 and above.
+
+* SDK X is functional only above API Level 24 i.e Android OS 7 Nougat and above.
+
+* The `minSDKVersion` in code is kept as API Level 16 to allow importing the SDK and compiling in apps that allow installation till API Level 16 i.e Android 4.4 Jelly Bean.
+
+* If your app is installed on a device below API level 24 (i.e below Android OS 7 Nougat) then you can choose to have a different medium for providing support. For example, Email, Web etc.
+
+<Admonition type="info" title="Note">
+
+- Update (August 2023): SDK X 10.2.x is functional only above API Level 24 i.e Android OS 7 Nougat and above.
+- SDK X 10.3.0 is supported on Android 7 and above (API level 24 and above). You can still compile your app using a minimum API level of 16, but the support starts for API level 24 and above.
+  For details, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
+- Helpshift SDK X supports Android 14, but Unity currently lacks official support for this version. Developers using Unity may face compatibility issues when integrating SDK X with Android 14.
+
+</Admonition>
 
 ## Download Helpshift Unity SDK {#getting-sdk}
 
@@ -41,17 +55,16 @@ Guide to integrating the Unity plugin for the Helpshift SDK X which you can call
 <DownloadButton
   text="Download SDK"
   link="[% sdkx-unity.android.sdk_url %]"
-  classes="mb-4"
-/>
+  classes="mb-4"/>
 
 Helpshift SDK _.zip_ folder includes:
 
 <div className="text-sm compact ">
 
-|                                                                      |                                                              |
-| -------------------------------------------------------------------- | ------------------------------------------------------------ |
-| helpshiftX-plugin-unity-[% sdkxunity.package_version %].unitypackage | Unity package of Helpshift SDK                               |
-| unity-jar-resolver (v1.2.170.0)                                      | Resolves Android Helpshift package support lib dependencies. |
+|                                               |             |
+| ----------------------------------------------|-------------|
+| helpshiftX-plugin-unity-v10.3.0.unitypackage | Unity package of Helpshift SDK X         |
+| unity-jar-resolver (v1.2.170.0)              | Resolves Android Helpshift package support lib dependencies. |
 
 </div>
 
@@ -105,14 +118,31 @@ The `build.gradle` exists in generated Gradle project when you enable the **Expo
 
 Update **dependencies** section of the `mainTemplate.gradle` or `build.gradle` file as:
 
+<Tabs groupId="android-dependencies-example">
+
+<TabItem value=">= 10.3.0" label="10.3.X">
+
+```groovy
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation(name: 'Helpshift', ext:'aar')
+        implementation 'androidx.appcompat:appcompat:1.0.0'
+    }
 ```
+
+</TabItem>
+<TabItem value="<= 10.2.X>" label="Below 10.2.3">
+
+```groovy
     dependencies {
         implementation fileTree(dir: 'libs', include: ['*.jar'])
         implementation(name: 'Helpshift', ext:'aar')
         implementation 'com.android.support:appcompat-v7:28.0.0'
-        //...
     }
 ```
+
+</TabItem>
+</Tabs>
 
 Please refer to Unity's Gradle template documentation here: https://docs.unity3d.com/Manual/gradle-templates.html
 
@@ -121,10 +151,7 @@ Please refer to Unity's Gradle template documentation here: https://docs.unity3d
 To use Helpshift's APIs, please import the Helpshift's namespace like below
 
 ```csharp
-
-    using Helpshift;
-
-
+using Helpshift;
 ```
 
 1. First, create an app on the Helpshift Dashboard
@@ -132,10 +159,8 @@ To use Helpshift's APIs, please import the Helpshift's namespace like below
    <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
 
 2. Create an app with **Android** as a selected `Platform`
-   <Image
-     src="/static/books/helpshiftx/create_app_with_android_platform.png"
-     width="full"
-   />{" "}
+
+   <Image src="/static/books/helpshiftx/create_app_with_android_platform.png" width="full"/>{" "}
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
 
@@ -155,24 +180,19 @@ the 2 tokens to be passed when initializing Helpshift.
 Initialize Helpshift by calling the method _install(appId, domain)_ API
 
 ```csharp
+using Helpshift;
 
-    using Helpshift;
-    .
-    .
-    .
-    public class MyGameControl : MonoBehaviour
-    {
-        private HelpshiftSdk help;
-        ...
-
-        void Awake() {
-            help = HelpshiftSdk.GetInstance();
-            var configMap = new Dictionary<string, object>();
-            help.Install(appId, domainName, configMap);
-        }
-        ...
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    ...
+    void Awake() {
+        help = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>();
+        help.Install(appId, domainName, configMap);
     }
-
+    ...
+}
 ```
 
 #### Initializing Helpshift in your app for China {#chinasupport}
@@ -181,27 +201,20 @@ A special install config key, `isForChina`, should be used for integrating Helph
 This config key accepts a boolean value. Pass `true` if you are integrating the SDK in an app for China region. The value defaults to `false` if left unspecified.
 
 ```csharp
+using Helpshift;
 
-    using Helpshift;
-    .
-    .
-    .
-    public class MyGameControl : MonoBehaviour
-    {
-        private HelpshiftSdk help;
-        ...
-
-        void Awake() {
-            help = HelpshiftSdk.GetInstance();
-            var configMap = new Dictionary<string, object>();
-            //..
-            configMap.Add("isForChina", true);
-
-            help.Install(appId, domainName, configMap);
-        }
-        ...
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    ...
+    void Awake() {
+        help = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>();
+        configMap.Add("isForChina", true);
+        help.Install(appId, domainName, configMap);
     }
-
+    ...
+}
 ```
 
 
@@ -217,7 +230,7 @@ Calling any API before the install call would throw an unchecked HelpshiftInitia
 
 _Android OS version Support_
 
-Calling `install()` below android SDK version 21 will not work. All the APIs will be non operable.
+Calling `install()` below android SDK version 24 will not work. All the APIs will be non operable.
 
 </Admonition>
 
@@ -231,27 +244,24 @@ Then goto your Helpshift agent dashboard and reply to experience the in-app mess
 Sample usage for FAQs and conversation APIs:
 
 ```csharp
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
 
-    public class MyGameControl : MonoBehaviour
-    {
-        private HelpshiftSdk help;
-
-        void Awake(){
-            // install call here
-        }
-
-        void OnGUI () {
-            ...
-            var configMap = new Dictionary<string, object>();
-
-            // Starting a conversation with your customers
-            if (MenuButton (contactButton))
-            {
-                help.ShowConversation(configMap);
-            }
-        }
+    void Awake(){
+        // install call here
     }
 
+    void OnGUI () {
+        ...
+        var configMap = new Dictionary<string, object>();
+        // Starting a conversation with your customers
+        if (MenuButton (contactButton))
+        {
+            help.ShowConversation(configMap);
+        }
+    }
+}
 ```
 
 <Admonition type="info" title="Note">

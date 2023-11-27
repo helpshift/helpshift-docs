@@ -23,11 +23,43 @@ import {
 
 <LatestSdkVersion>
 
+## v10.3.0
+
+Nov 27th, 2023_
+
+</LatestSdkVersion>
+
+** Release Notes: **
+
+**iOS**
+
+- Users can select and send more than one attachment in conversations.
+  - Support for multiple attachments in bot upload step will be added in Q1’24.
+- Added support for iOS 17 and iPadOS 17.
+- Added privacy manifest file to record data collection and required reasons API used by the SDK.
+- Added a new API for fetching SDK X version. For more details, refer [here](/sdkx-unity/support-tools-ios/#getting-the-sdk-version).
+- Added a new API for closing the currently active SDK session. For more details, refer [here](/sdkx-unity/support-tools-ios/#closing-an-open-sdk-session).
+- Login API now returns a boolean indicating whether login was successful or not. This change is in the existing API to introduce mandatory validations for login parameters and hence this might affect your code compilation. For more details, refer [Users](/sdkx-unity/users-ios/#logging-in-users).
+- Added support for attachments in Smart FAQs.
+- Fixed crash on selecting unsupported attachments using file picker.
+- Fixed a bug where `presentFullScreenOniPad` config was not being honored on opening SDK screen via notification click.
+- Removed bitcode support from SDK X framework. SDK X now ships in non-bitcode variant only.
+
+**Android**
+
+- Added support for Android 14.
+- SDK X now supports only Android 7, i.e API Level 24, and above. SDK will be non-operational when your app is installed on a device below Android 7 Nougat.
+- Moved to AndroidX support libraries. SDK X will not compile with legacy Android Support libraries anymore.
+- Added support for multiple attachments in conversations (Support for multiple attachment in bot upload step will be added in Q1`24).
+- Added a new API to fetch SDK X version. For more details, [refer here](/sdkx-unity/support-tools-android/#getting-the-sdk-version).
+- Added a new API to close active SDK session. For more details, [refer here](/sdkx-unity/support-tools-android/#closing-an-open-sdk-session).
+- Added a new delegate `agentMessageReceived` when agent sends a message. For more details, [refer here](/sdkx-unity/delegates-android/#agent-message-received).
+- `HelpshiftSdk.Login()` API now returns a boolean indicating whether login was successful or not. This change is in existing API to introduce mandatory validations for login parameters and hence this might affect existing code compilation. For more details, [refer here](/sdkx-unity/users-android/#logging-in-users).
+- Added support for attachments in Smart FAQs.
+
 ## v10.2.3
 
 _March 16th, 2023_
-
-</LatestSdkVersion>
 
 ** Release Notes: **
 
