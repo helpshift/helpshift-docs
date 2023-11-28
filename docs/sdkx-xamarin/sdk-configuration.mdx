@@ -18,6 +18,8 @@ import ConversationPrefillTextCode from "@site/docs/_partials/_convInitialUserMe
 import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
 import ConversationInitialUserMessageCode from "@site/docs/_partials/_convInitialUserMessageXamarinCode.mdx";
 
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -308,6 +310,23 @@ Helpshift.ShowConversation(this, config);
 <ConversationInitialUserMessage />
 
 <ConversationInitialUserMessageCode />
+
+### Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+Example:
+
+```csharp
+Dictionary<string, object> subsequentIssuesInSameSessionConfig = new Dictionary<string, object>();
+subsequentIssuesInSameSessionConfig.Add("initialUserMessage", "");
+
+Dictionary<string, object> config = new Dictionary<string, object>();
+config.Add("initialUserMessage", "YOUR INITIAL USER MESSAGE");
+config.Add("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig)
+
+Helpshift.ShowConversation(this, config);
+```
 
 ## iOS Specific Configurations
 
