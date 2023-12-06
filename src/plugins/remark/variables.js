@@ -37,7 +37,7 @@ const plugin = ({ data }) => {
 
           if (value) {
             // Replace the variable with the actual value
-            node.value = node.value.replace(match, value);
+            node.value = node.value.replaceAll(match, value);
           } else {
             // We don't want to crash here because it's possible that the value
             // is in a code block for demonstration purposes
