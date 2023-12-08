@@ -21,6 +21,7 @@ import {
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
 import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
 
 # SDK Configuration
 
@@ -290,6 +291,28 @@ Map<String, Object> config = new HashMap<>();
 config.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
 Helpshift.showConversation(MainActivity.this, config);
 ```
+
+## Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+Example:
+
+```java
+Map<String, Object> subsequentIssuesInSameSessionConfig = new HashMap<>();
+subsequentIssuesInSameSessionConfig.put("initialUserMessage", "");
+
+Map<String, Object> config = new HashMap<>();
+
+// This is used for the first issue in the session
+config.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+
+// This will be used for all subsequent issues in that session
+config.put("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig);
+
+Helpshift.showConversation(MainActivity.this, config);
+```
+
 
 ## Screen Orientation {#screen-orientation}
 
