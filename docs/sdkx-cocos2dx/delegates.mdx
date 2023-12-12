@@ -114,6 +114,49 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
+### User Click On Action Event {#user-click-on-action}
+
+This event is triggered when the user clicks on the link or call action of an action card message.
+
+- Event Name : `ACTION_CLICKED`
+- Event data: 
+  - `DATA_ACTION `
+  - `DATA_ACTION_TYPE `
+  - `DATA_ACTION_TYPE_CALL `
+  - `DATA_ACTION_TYPE_LINK `
+
+| Key (Constant)                | Key (Raw)  | Type   |
+|-------------------------------|------------|--------|
+| ACTION_CLICKED  | userClickOnAction | String |
+| DATA_ACTION  | actionType | String |
+| DATA_ACTION_TYPE  | actionData | String |
+| DATA_ACTION_TYPE_CALL  | call | String |
+| DATA_ACTION_TYPE_LINK  | link | String |
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, ACTION_CLICKED) == 0) {
+
+        // Using Constants
+        std::string dataAction = eventData[DATA_ACTION].asString();
+        std::string dataActionType = eventData[DATA_ACTION_TYPE].asString();
+
+        // Using Raw keys
+        std::string dataAction = eventData["actionData"].asString();
+        std::string dataActionType = eventData["actionType"].asString();
+        
+        // your code here
+        //...
+    }
+}
+```
+
 ### Conversation Start Event {#conversation-start-event}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
@@ -147,6 +190,59 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
     if (strcmp(eventName, MESSAGE_ADD) == 0) {
         std::string data = eventData[DATA_MESSAGE_TYPE_ATTACHMENT].asString();
         CCLOG("User sent an attachment");
+        // your code here
+        //...
+    }
+}
+```
+
+### Agent Message Received Event {#agent-message-received}
+
+This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
+
+- Event name : `AGENT_MESSAGE_RECEIVED`
+- Event data:
+
+  | Key                 | Type   | Value |
+  |-------------------------------|--------|--------- |
+  | DATA_PUBLISH_ID | String | Conversation ID of the ongoing issue |
+  | DATA_MESSAGE_TYPE | String | Message Type of the message |
+  | DATA_MESSAGE_BODY | String | The actual message sent by the agent or empty |
+  | DATA_CREATED_TIME | Long | Unix epoch timestamp in ms |
+  | DATA_ATTACHMENTS | Map<String, Object>> | Attachments, if they are present |
+  | DATA_URL | String | URL of the attachment |
+  | DATA_CONTENT_TYPE | String | MIME type of the attachment |
+  | DATA_FILE_NAME | String | File name of the attachment |
+  | DATA_SIZE | Integer | Size of the attachment in bytes |
+ 
+<Admonition type="info" title="Note">
+
+- This delegate is available from 10.3.0 and above versions
+- The attachments key is only present if the agent has sent attachments.
+- Since attachments sent by agents may not have the necessary MIME type or name, it is possible that `DATA_CONTENT_TYPE` is absent from the payload.
+  For such cases, file type can be inferred from extension from file name
+- DATA_MESSAGE_TYPE has following types : 
+  - DATA_MESSAGE_TYPE_APP_REVIEW_REQUEST
+  - DATA_MESSAGE_TYPE_SCREENSHOT_REQUEST
+  - DATA_MESSAGE_TYPE_TEXT
+
+</Admonition>
+
+```cpp
+void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
+    if (strcmp(eventName, AGENT_MESSAGE_RECEIVED) == 0) {
+        std::string publishId = eventData[DATA_PUBLISH_ID].asString();
+        std::string messageType = eventData[DATA_MESSAGE_TYPE].asString();
+        std::string messageBody = eventData[DATA_MESSAGE_BODY].asString();
+        std::string createdTs = eventData[DATA_CREATED_TIME].asString();
+
+
+        std::string attachments = eventData[DATA_ATTACHMENTS].asString();
+        std::string url = eventData[DATA_URL].asString();
+        std::string contentType = eventData[DATA_CONTENT_TYPE].asString();
+        std::string fileName = eventData[DATA_FILE_NAME].asString();
+        std::string size = eventData[DATA_SIZE].asString();    
+
         // your code here
         //...
     }
