@@ -45,6 +45,13 @@ You can listen to the events fired by Helpshift. All the events are defined in `
 
 </Centered>
 
+<Admonition type="info" title="Note">
+
+Events invoked before binding `BindEventDelegate` cannot be received agian.
+
+</Admonition>
+
+
 ## Events {#helpshift-events}
 
 ### Helpshift session started event {#session-delegates}
@@ -87,6 +94,31 @@ This event is triggered when the user opens or exits the chat screen. This event
 - Event name: `HelpshiftEventWidgetToggle`
 - Event data: `HelpshiftEventDataSDKVisible (bool)`
 
+### User Click On Action Event {#user-click-on-action}
+
+This event is triggered when the user clicks on the link or call action of an action card message.
+
+- Event Name : `HelpshiftEventUserClickOnAction`
+- Event data: 
+  - `HelpshiftEventDataActionData `
+  - `HelpshiftEventDataActionType `
+  - `HelpshiftEventDataActionTypeCall `
+  - `HelpshiftEventDataActionTypeLink `
+
+| Key (Constant)                | Key (Raw)  | Type   |
+|-------------------------------|------------|--------|
+| HelpshiftEventUserClickOnAction  | userClickOnAction | String |
+| HelpshiftEventDataActionType  | actionType | String |
+| HelpshiftEventDataActionData  | actionData | String |
+| HelpshiftEventDataActionTypeCall  | call | String |
+| HelpshiftEventDataActionTypeLink  | link | String |
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
 ### Conversation Start Event {#conversation-start-event}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
@@ -102,6 +134,42 @@ This event is triggered when the user adds a message in a conversation. It might
 - Event data keys:
   - `HelpshiftEventDataMessageType` - `HelpshiftEventDataMessageTypeAttachment` or `HelpshiftEventDataMessageTypeText`
   - `HelpshiftEventDataMessageBody (string)`
+
+### Agent Message Received Event {#agent-message-received}
+
+This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
+
+- Event name : `HelpshiftEventAgentMessageReceived`
+- Event data:
+
+  | Key                 | Key ( Raw ) | Type   | Value |
+  |-------------------------------|--------|--------|--------- |
+  | HelpshiftEventDataPublishID | publishId | String | Conversation ID of the ongoing issue |
+  | HelpshiftEventDataMessageType | type | String | Message Type of the message |
+  | HelpshiftEventDataMessageBody | body | String | The actual message sent by the agent or empty |
+  | HelpshiftEventDataCreatedTime | createdTs | Long | Unix epoch timestamp in ms |
+  | HelpshiftEventDataAttachments | attachments | Map<String, Object>> | Attachments, if they are present |
+  | HelpshiftEventDataURL | url | String | URL of the attachment |
+  | HelpshiftEventDataContentType | contentType | String | MIME type of the attachment |
+  | HelpshiftEventDataFileName | fileName | String | File name of the attachment |
+  | HelpshiftEventDataSize | size | Integer | Size of the attachment in bytes |
+  | HelpshiftEventDataMessageTypeAppReviewRequest | app_review_request | FString | Message type when agent request for App Review |
+  | HelpshiftEventDataMessageTypeScreenshotRequest | screenshot_request | FString | Message type when agent request screen shot |
+  | HelpshiftEventDataMessageTypeText | type | FString | Message type of text|
+ 
+<Admonition type="info" title="Note">
+
+- For Android , this delegate is available from 10.3.0 and above versions
+- The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+- The attachments key is only present if the agent has sent attachments.
+- Since attachments sent by agents may not have the necessary MIME type or name, it is possible that `HelpshiftEvent.DATA_CONTENT_TYPE` is absent from the payload.
+  For such cases, file type can be inferred from extension from file name
+- HelpshiftEventDataMessageType has following types : 
+  - HelpshiftEventDataMessageTypeAppReviewRequest
+  - HelpshiftEventDataMessageTypeScreenshotRequest
+  - HelpshiftEventDataMessageTypeText
+
+</Admonition>
 
 ### CSAT Submit Event {#csat-submit-event}
 
