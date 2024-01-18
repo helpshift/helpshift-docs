@@ -31,9 +31,13 @@ Guide to integrating the Unreal Engine plugin for the Helpshift SDK X.
 
 ## Requirements {#version-requirements}
 
-- Unreal 4.18 and above.
-- Supported Android OS versions: 16 and above
-- Supported iOS versions: iOS 15, 14, 13, 12 and 11
+- Unreal 4.26 and above.
+- Supported Android OS versions:
+  - SDK X is functional only above API Level 24 i.e Android OS 7 Nougat and above.
+  - The minSDKVersion in code is kept as API Level 16 to allow importing the SDK and compiling in apps that allow installation till API Level 16 i.e Android 4.4 Jelly Bean.
+  - If your app is installed on a device below API level 24 (i.e below Android OS 7 Nougat) then you can choose to have a different medium for providing support. For example, Email, Web etc. We log an UnsupportedOSVersionException if the SDK is initialized below API Level 24.
+- Supported iOS versions: iOS 13 and above
+- For details regarding Helpshift SDK's support policy, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
 
 ## Download Helpshift Unreal SDK {#getting-sdk}
 
@@ -105,7 +109,7 @@ The `Init` call takes a map of the additional parameters. All of the parameters 
 
 _Android OS version Support_
 
-Calling `Init` below android SDK version 21 will not work. All the APIs will be non operable.
+Calling `Init` below android SDK version 24 will not work. All the APIs will be non operable.
 
 </Admonition>
 
