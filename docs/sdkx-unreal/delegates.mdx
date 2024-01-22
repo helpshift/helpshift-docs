@@ -74,7 +74,7 @@ This event gets fired when you call `RequestUnreadMessageCount(FetchFromServer)`
 
 - Event name: `HelpshiftEventReceivedUnreadMessageCount`
 - Event data keys:
-  - `HelpshiftEventDataMessageCount (int)`
+  - `HelpshiftEventDataMessageCount (int32)`
   - `HelpshiftEventDataMessageCountFromCache`
 
 ### Conversation Status Event {#conversation-status}
@@ -83,8 +83,8 @@ This event contains information about the current ongoing conversation.
 
 - Event name: `HelpshiftEventConversationStatus`
 - Event data:
-  - `HelpshiftEventDataLatestIssueId (string)`
-  - `HelpshiftEventDataLatestIssuePublishId (string)`
+  - `HelpshiftEventDataLatestIssueId (FString)`
+  - `HelpshiftEventDataLatestIssuePublishId (FString)`
   - `HelpshiftEventDataIsIssueOpen (bool)`
 
 ### Widget Toggle Event {#widget-toggle-event}
@@ -107,11 +107,11 @@ This event is triggered when the user clicks on the link or call action of an ac
 
 | Key (Constant)                | Key (Raw)  | Type   |
 |-------------------------------|------------|--------|
-| HelpshiftEventUserClickOnAction  | userClickOnAction | String |
-| HelpshiftEventDataActionType  | actionType | String |
-| HelpshiftEventDataActionData  | actionData | String |
-| HelpshiftEventDataActionTypeCall  | call | String |
-| HelpshiftEventDataActionTypeLink  | link | String |
+| HelpshiftEventUserClickOnAction  | userClickOnAction | FString |
+| HelpshiftEventDataActionType  | actionType | FString |
+| HelpshiftEventDataActionData  | actionData | FString |
+| HelpshiftEventDataActionTypeCall  | call | FString |
+| HelpshiftEventDataActionTypeLink  | link | FString |
 
 <Admonition type="info" title="Note">
 
@@ -124,7 +124,7 @@ The key constants are available from SDK X 10.3.0 onwards. For older SDK X versi
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
 - Event name: `HelpshiftEventConversationStart`
-- Event data: `HelpshiftEventDataMessage (string)`
+- Event data: `HelpshiftEventDataMessage (FString)`
 
 ### Message Add Event {#message-add-event}
 
@@ -133,7 +133,7 @@ This event is triggered when the user adds a message in a conversation. It might
 - Event name: `HelpshiftEventMessageAdd`
 - Event data keys:
   - `HelpshiftEventDataMessageType` - `HelpshiftEventDataMessageTypeAttachment` or `HelpshiftEventDataMessageTypeText`
-  - `HelpshiftEventDataMessageBody (string)`
+  - `HelpshiftEventDataMessageBody (FString)`
 
 ### Agent Message Received Event {#agent-message-received}
 
@@ -145,19 +145,19 @@ This event is triggered when the user receives any message from an agent in a co
   | Key                 | Key ( Raw ) | Type   | Value |
   |-------------------------------|--------|--------|--------- |
   | HelpshiftEventDataPublishID | publishId | FString | Conversation ID of the ongoing issue |
-  | HelpshiftEventDataMessageType | type | String | Message Type of the message |
-  | HelpshiftEventDataMessageBody | body | String | The actual message sent by the agent or empty |
-  | HelpshiftEventDataCreatedTime | createdTs | Long | Unix epoch timestamp in ms |
-  | HelpshiftEventDataAttachments | attachments | Map<String, Object>> | Attachments, if they are present |
-  | HelpshiftEventDataURL | url | String | URL of the attachment |
-  | HelpshiftEventDataContentType | contentType | String | MIME type of the attachment |
-  | HelpshiftEventDataFileName | fileName | String | File name of the attachment |
-  | HelpshiftEventDataSize | size | Integer | Size of the attachment in bytes |
+  | HelpshiftEventDataMessageType | type | FString | Message Type of the message |
+  | HelpshiftEventDataMessageBody | body | FString | The actual message sent by the agent or empty |
+  | HelpshiftEventDataCreatedTime | createdTs | int32 | Unix epoch timestamp in ms |
+  | HelpshiftEventDataAttachments | attachments | Map<FString, Object>> | Attachments, if they are present |
+  | HelpshiftEventDataURL | url | FString | URL of the attachment |
+  | HelpshiftEventDataContentType | contentType | FString | MIME type of the attachment |
+  | HelpshiftEventDataFileName | fileName | FString | File name of the attachment |
+  | HelpshiftEventDataSize | size | int32 | Size of the attachment in bytes |
   | HelpshiftEventDataMessageTypeAppReviewRequest | app_review_request | FString | Message type when agent request for App Review |
   | HelpshiftEventDataMessageTypeScreenshotRequest | screenshot_request | FString | Message type when agent request screen shot |
   | HelpshiftEventDataMessageTypeText | type | FString | Message type of text|
  
-<Admonition type="info" title="Note">
+<Admonition type="info" title="Note"> 
 
 - For Android , this delegate is available from 10.3.0 and above versions
 - The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
