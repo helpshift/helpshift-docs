@@ -33,13 +33,28 @@ If you want to configure the notifications for Android - please refer [here](/sd
 
 </Admonition>
 
+<Admonition type="info" title="Note">
+    <p>We have changed the notification flow for iOS version 10.3.0. Please review the updated documentation below for details on the new notification process.</p>
+</Admonition>
+
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
-Helpshift enables you to send notifications to your users. This is
-particularly useful when you have multiple users on multiple platforms
-like iOS and Android. Notifications are useful to tell your users when
-you reply to an issue that they submitted. When the app is backgrounded,
-the notification that is sent from Helpshift appears as a notification.
+Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
+
+If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code on app launch.
+
+```objc
+#if PLATFORM_IOS
+UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
+                                                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
+        ...
+    }];
+    [UIApplication sharedApplication registerForRemoteNotifications];
+    ...
+#endif
+```
 
 ### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
 
@@ -106,7 +121,99 @@ After you have configured the push notifications in the Helpshift console, you w
 
 </Centered>
 
-On iOS, the push notifications are handled by the SDK itself, and no additional setup is required.
+<Admonition type="info" title="Note">
+
+When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
+You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+
+</Admonition>
+
+For Helpshift SDK to work with the Helpshift push notification service
+you will need to invoke the `registerDeviceToken:` api call inside the application delegate method
+`application:didRegisterForRemoteNotificationsWithDeviceToken:`
+
+```objc
+#if PLATFORM_IOS
+#import <HelpshiftX_Static/HelpshiftX.h>
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [Helpshift registerDeviceToken:deviceToken];
+}
+#endif
+```
+
+### Handling Push Notification {#handling-push-notification}
+
+Add the below notification listeners on app launch. Preferably after Helpshift [Init](/sdkx-unreal/getting-started/#initializing)
+
+```objc
+#include "HelpshiftSDK.h"
+
+#if PLATFORM_IOS
+#import <HelpshiftX_Static/HelpshiftX.h>
+#include "IOS/IOSAppDelegate.h"
+#include "Misc/CoreDelegates.h"
+#endif
+
+#if PLATFORM_IOS
+NSDictionary* ConvertFStringToNSDictionary(const FString& Json)
+{
+    // Convert FString to NSString
+    NSString* JsonString = [NSString stringWithUTF8String:TCHAR_TO_UTF8(*Json)];
+
+    // Convert NSString to NSData
+    NSData* jsonData = [JsonString dataUsingEncoding:NSUTF8StringEncoding];
+
+    // Deserialize NSData to NSDictionary
+    return [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+}
+
+
+void HandleNotification(NSDictionary *payload,bool isAppLaunch) {
+
+    // Check if the "origin" key exists in the dictionary
+    if ([payload objectForKey:@"origin"] != nil) {
+        NSString *originValue = [payload objectForKey:@"origin"];
+
+        // Now you can use the originValue as needed
+        if ([originValue isEqualToString:@"helpshift"]) {
+            // Handle the case when origin is "helpshift"
+            [Helpshift handleNotificationWithUserInfoDictionary:payload isAppLaunch:isAppLaunch];
+        } else {
+            // Handle other cases
+        }
+    } else {
+        // app notifications
+    }
+}
+
+UHelpshiftSettings* Settings = FHelpshiftSDKModule::Get().GetSettings();
+
+if (!Settings->UsePushNotifications) {
+    UE_LOG(LogTemp, Error, TEXT("Use Push Notifications is not enabled in the Project Settings. Will not register the token."));
+    return;
+}
+// Handle notification for foreground & background state
+FCoreDelegates::ApplicationReceivedRemoteNotificationDelegate.AddStatic([](FString Json, int State) {
+        
+    NSDictionary* JsonDict = ConvertFStringToNSDictionary(Json);
+
+    bool IsAppLaunch = (State == 3) ? false : true;
+
+    if (JsonDict) {
+        HandleNotification(JsonDict,IsAppLaunch);
+    }
+});
+
+// Handle notification for killed state
+NSDictionary *LocalLaunchOptions = [IOSAppDelegate GetDelegate].launchOptions;
+
+if (LocalLaunchOptions) {
+    NSDictionary *Payload = LocalLaunchOptions[@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+    HandleNotification(Payload,true);
+}
+
+#endif
+```
 
 ## In-app notifications {#in-app-notifications}
 
