@@ -231,6 +231,27 @@ public class MyGameControl : MonoBehaviour
 <ClearInitialUserMessageDescription />
 <ClearInitialUserMessageUnityCode />
 
+For outbound support scenarios make sure to add this config in the user specific config callback
+`getLocalAPIConfig` you get when you register `HelpshiftSdk.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())`.
+
+```csharp
+// initialise proactiveConfig collector
+
+   public class ProactiveConfigCollector : IHelpshiftProactiveAPIConfigCollector
+    {
+        public Dictionary<string, object> getLocalApiConfig()
+        {
+            Dictionary<string, object> proactiveConfig = new Dictionary<string, object>();
+            // user specific config
+            proactiveConfig.Add("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+            proactiveConfig.Add("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig)
+            ..
+            ..
+            return proactiveConfig;
+        }
+    }
+```
+
 
 ## Screen Orientation {#screen-orientation}
 

@@ -313,6 +313,44 @@ config.put("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionC
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
+For outbound support scenarios make sure to add this config in the user specific config callback
+`getAPIConfig` you get when you register `Helpshift.setHelpshiftProactiveConfigCollector()`.
+
+```java
+public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector{
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    //...
+
+    // initialise proactiveConfig collector
+    Helpshift.setHelpshiftProactiveConfigCollector(this);
+
+    //...
+  }
+
+  //...
+
+  @Override
+  public Map<String, Object> getAPIConfig() {
+
+    // config map
+    Map<String, Object> localConfig = new HashMap<>();
+
+    // ....
+    // user specific config
+    
+    // This is used for the first issue in the session
+    localConfig.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+    // This will be used for all subsequent issues in that session
+    localConfig.put("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig);
+    
+    return localConfig;
+  }
+}
+```
+
+
 
 ## Screen Orientation {#screen-orientation}
 

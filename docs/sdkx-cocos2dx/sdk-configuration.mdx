@@ -379,6 +379,39 @@ configMap["subsequentIssuesInSameSessionConfig"] = subsequentIssuesInSameSession
 HelpshiftCocos2dx::showConversation(configMap);
 ```
 
+For outbound support scenarios make sure to add this config in the user specific config callback
+`getAPIConfig` you get when you register `HelpshiftCocos2dx::setHelpshiftProactiveConfigCollector()`.
+
+```cpp
+cocos2d::ValueMap getAPIConfig() {
+    cocos2d::ValueMap configMap;
+
+    // user specific config
+
+    // This is used for the first issue in the session
+    configMap["initialUserMessage"] = Value("INSERT YOUR INITIAL USER MESSAGE");
+
+    // This will be used for all subsequent issues in that session
+    configMap["subsequentIssuesInSameSessionConfig"] = subsequentIssuesInSameSessionConfig;
+
+    return configMap;
+}
+
+// init method of your UI
+bool HelloWorld::init()
+{
+    //////////////////////////////
+    // 1. super init first
+    if ( !Scene::init() )
+    {
+        return false;
+    }
+    ...
+    ...
+    HelpshiftCocos2dx::setHelpshiftProactiveConfigCollector(getAPIConfig);
+}
+```
+
 ## Android specific configurations
 
 ### Screen Orientation {#screen-orientation}
