@@ -385,6 +385,7 @@ For outbound support scenarios make sure to add this config in the user specific
 ```cpp
 cocos2d::ValueMap getAPIConfig() {
     cocos2d::ValueMap configMap;
+    cocos2d::ValueMap subsequentIssuesInSameSessionConfig;
 
     // user specific config
 
@@ -392,6 +393,7 @@ cocos2d::ValueMap getAPIConfig() {
     configMap["initialUserMessage"] = Value("INSERT YOUR INITIAL USER MESSAGE");
 
     // This will be used for all subsequent issues in that session
+    subsequentIssuesInSameSessionConfig["initialUserMessage"] = Value("");
     configMap["subsequentIssuesInSameSessionConfig"] = subsequentIssuesInSameSessionConfig;
 
     return configMap;
