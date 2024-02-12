@@ -12,6 +12,10 @@ import {
   Intro,
 } from "@site/src/components/forDocs";
 
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -98,6 +102,76 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 </TabItem>
 </Tabs>
+
+## FAQ Filtering by tags {#faq-filtering}
+
+We have FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are:
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />{" "}
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+#### How to use FAQ filtering
+
+This will be a config option which will be supported by the `showFAQs` and `showFAQSection` APIs.
+
+The `filter` option will be a map containing 2 keys
+
+- operator : one of `AND`, `OR`, `NOT` which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query
+
+The `filter` option should be added as an object against key “filter” in the map `config` that is taken by showFAQs, showFAQSection and showSingleFAQ APIs.
+
+|              |                                                                                |
+| ------------ | ------------------------------------------------------------------------------ |
+| Option:      | <code>filter</code>                                                            |
+| Sub-Options: | <code>tags</code> / <code>operator</code>                                      |
+| Default      | <code>null</code>                                                              |
+| Min SDK      | v10.0.0                                                                        |
+| Supported by | <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code> |
+
+Example:
+
+```cpp
+ cocos2d::ValueMap config;
+
+ // .. other configs
+
+ cocos2d::ValueMap filter;
+ ValueVector tags;
+ tags.push_back(Value("tag1"));
+ tags.push_back(Value("tag2"));
+
+ filter["tags"] = tags;
+ filter["operator"] = Value("AND");
+
+ config["filter"] = filter;
+
+ HelpshiftCocos2dx::showFAQs(config);
+```
+
+<Admonition type="info" title="Note">
+
+You can have only one tag filter config which will be respected on showFAQs, showFAQSection and showSingleFAQ. Also the tag filtering respects only one operator.
+
+</Admonition>
 
 ### Enable Contact Us {#enable-contact-us}
 
@@ -251,6 +325,93 @@ Example:
 cocos2d::ValueMap chatConfig;
 chatConfig["initiateChatOnLoad"] = true;
 HelpshiftCocos2dx::showConversation(chatConfig);
+```
+
+### Conversation prefill text {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+Example:
+
+```cpp
+
+cocos2d::ValueMap configMap;
+// ..other configs
+
+configMap["conversationPrefillText"] = Value("INSERT YOUR PREFILL TEXT");
+HelpshiftCocos2dx::showConversation(configMap);
+```
+
+## Conversation Initial User Message {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+Example:
+
+```cpp
+cocos2d::ValueMap configMap;
+// ..other configs
+
+configMap["initialUserMessage"] = Value("INSERT YOUR INITIAL USER MESSAGE");
+HelpshiftCocos2dx::showConversation(configMap);
+```
+
+## Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+Example:
+
+```cpp
+
+cocos2d::ValueMap subsequentIssuesInSameSessionConfig;
+subsequentIssuesInSameSessionConfig["initialUserMessage"] = Value("");
+
+cocos2d::ValueMap configMap;
+// ..other configs
+
+// This is used for the first issue in the session
+configMap["initialUserMessage"] = Value("INSERT YOUR INITIAL USER MESSAGE");
+
+// This will be used for all subsequent issues in that session
+configMap["subsequentIssuesInSameSessionConfig"] = subsequentIssuesInSameSessionConfig;
+
+HelpshiftCocos2dx::showConversation(configMap);
+```
+
+For outbound support scenarios make sure to add this config in the user specific config callback
+`getAPIConfig` you get when you register `HelpshiftCocos2dx::setHelpshiftProactiveConfigCollector()`.
+
+```cpp
+cocos2d::ValueMap getAPIConfig() {
+    cocos2d::ValueMap configMap;
+    cocos2d::ValueMap subsequentIssuesInSameSessionConfig;
+
+    // user specific config
+
+    // This is used for the first issue in the session
+    configMap["initialUserMessage"] = Value("INSERT YOUR INITIAL USER MESSAGE");
+
+    // This will be used for all subsequent issues in that session
+    subsequentIssuesInSameSessionConfig["initialUserMessage"] = Value("");
+    configMap["subsequentIssuesInSameSessionConfig"] = subsequentIssuesInSameSessionConfig;
+
+    return configMap;
+}
+
+// init method of your UI
+bool HelloWorld::init()
+{
+    //////////////////////////////
+    // 1. super init first
+    if ( !Scene::init() )
+    {
+        return false;
+    }
+    ...
+    ...
+    HelpshiftCocos2dx::setHelpshiftProactiveConfigCollector(getAPIConfig);
+}
 ```
 
 ## Android specific configurations

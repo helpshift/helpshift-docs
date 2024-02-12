@@ -62,7 +62,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
  public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
    // your code here
  }
-);
+});
 ```
 
 Class Implementation:
@@ -70,17 +70,18 @@ You have to define a class which implements `HelpshiftEventsListener`
 and then set this event listener instance using `Helpshift.setHelpshiftEventsListener()` method.
 
 ```java
-class MyEventListener implements HelpshiftEventsListener{
+class MyEventListener implements HelpshiftEventsListener {
 
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-    switch(eventName){
+    switch(eventName) {
       case HelpshiftEvent.CONVERSATION_START:
         //your code here
       break;
       // and so on...
       //the list of events is given below
     }
+  }
 
   @Override
   public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
@@ -113,6 +114,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         Log.d(TAG, data.get(HelpshiftEvent.DATA_LATEST_ISSUE_PUBLISH_ID));
     }
   }
+});
 ```
 
 ### Widget Toggle Event {#widget-toggle-event}
@@ -131,6 +133,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         Log.d(TAG, data.get(HelpshiftEvent.DATA_SDK_VISIBLE));
     }
   }
+});
 ```
 
 ### User Click On Action Event {#user-click-on-action}
@@ -201,6 +204,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         Log.d(TAG, data.get(HelpshiftEvent.DATA_MESSAGE));
     }
   }
+});
 ```
 
 ### Message Add Event {#message-add-event}
@@ -226,6 +230,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         }
     }
   }
+});
 ```
 
 ### Agent Message Received Event {#agent-message-received}
@@ -330,6 +335,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         Log.d(TAG, data.get(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK));
     }
   }
+});
 ```
 
 ### Conversation End Event {#conversation-end-event}
@@ -347,6 +353,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         //data will be empty
     }
   }
+});
 ```
 
 ### Conversation Rejected Event {#conversation-rejected-event}
@@ -364,6 +371,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         //data will be empty
     }
   }
+});
 ```
 
 ### Conversation Resolved Event {#conversation-resolved-event}
@@ -381,6 +389,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         //data will be empty
     }
   }
+});
 ```
 
 ### Conversation Reopened Event {#conversation-reopened-event}
@@ -398,6 +407,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         //data will be empty
     }
   }
+});
 ```
 
 ### User Authentication Failed Event {#user-authentication-failed-event}
@@ -417,8 +427,8 @@ Reason type:
       public void onUserAuthenticationFailure(HelpshiftAuthenticationFailureReason reason) {
         Log.e(TAG, reason);
       }
-    }
-    // ...
+      // ...
+    });
 ```
 
 ### Helpshift session delegates {#session-delegates}
@@ -438,6 +448,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         //sdk session started
     }
   }
+});
 ```
 
 #### Helpshift Session Ended
@@ -455,6 +466,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         //sdk session ended
     }
   }
+});
 ```
 
 ### Unread Message Count {#unread-message-count}
@@ -482,6 +494,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
         Log.d(TAG, "Message Count : " + count + ", From Cache: " + fromCache);
     }
   }
+});
 ```
 
 If you call the method `Helpshift.requestUnreadMessageCount(true)` it will return a notification count from server in the above delegate method asynchronously. The notification count here can be fetched either from the cache or from the Helpshift servers. The count from Helpshift’s servers is rate limited and it returns the latest value only if a subsequent call is made to the API after the reset timeout or when the user just closes the chat screen (whichever is earlier). If the API is called within the rate limit period then it returns value from local cache. For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
