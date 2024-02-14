@@ -2,6 +2,14 @@ import { Image, Admonition } from "@site/src/components/forDocs";
 
 ### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
 
+To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added already). And then click on the push notifications option.
+
+<Image
+  src="/static/books/sdkx_ios/Add-platform.png"
+  width="full"
+  alt="Add-platform.png"
+/>
+
 In order to send push notifications to all iOS mobile apps and games, you need to establish an authenticated connection with the Apple Push Notification Servers (APNs). There are two methods you can use to authenticate:
 
 1. The newer token-based method (.p8)
@@ -50,14 +58,6 @@ You need to generate certificates for APNS on Apple's portal that you can later 
 - Apple Push Notification service SSL (Sandbox & Production)
 
 After creating your certificate, download it. Double click on it to import it to the Keychain Access application. In the Keychain Access application, right click on the certificate that was just added, and click export it in .p12 format. Please provide a password while exporting the certificate since we do not accept empty passwords. (Note that if your development private key is not present in Keychain Access, you will not be able to export it in .p12 format.)
-
-To enable the Helpshift system to send push notifications to your users you will have to add iOS as a platform in your app (if you have not added already). And then click on the push notifications option.
-
-<Image
-  src="/static/books/sdkx_ios/Add-platform.png"
-  width="full"
-  alt="Add-platform.png"
-/>
 
 After export, login and upload the .p12 file in your app in the Helpshift admin panel. Provide the same password you used while exporting to .p12 format.
 
