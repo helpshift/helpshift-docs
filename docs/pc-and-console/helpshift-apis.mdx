@@ -8,7 +8,7 @@ description: "Run Helpshift smoothly with PC and Console apps/games using Webvie
 
 - **/console/qrcode:** This is the main API that is used to generate the support link and the QR code. When the API is called, the response will be a shortlink URL that launches to web chat directly as well as a PNG or SVG that can be used for the QR code (more information in the API information below). It is used as follows by passing the necessary parameters.
 
-**GET /v1/<domain\>/console/qrcode**
+**POST /v1/<domain\>/console/qrcode**
 
 <Admonition type="info" title="Note">
 
@@ -209,6 +209,32 @@ Whether to start a new chat when the previous issue is resolved. Valid values -
 
 - true: A new chat will be started automatically when the previous issue is resolved and without needing any user action like clicking the `New Conversation` button or going through the post resolution flow like feedback bot for the previously resolved issue.
 - false: A new chat will not be automatically started.
+
+</td>
+</tr>
+<tr>
+<td>help_faq_filter</td>
+<td>No</td>
+<td>
+   Used to specify the functionality for segmenting FAQs based on tags,
+   ensuring the effective delivery of relevant information (FAQs) to end users.
+   A JSON object must contain two mandatory nested keys - `tags`  and `operator`. <br />
+   The `operator` value can be any of the following: `and`, `or`, `not`;
+   otherwise, the API will respond with an 400 error response. <br />
+   The tags key is a JSON array of strings, and at least one tag must be specified; otherwise, the API will
+   send an 400 error response. <br />
+   Example value for `help_faq_filter` -
+
+   ```json
+   {"tags": ["tag1", "tag2"], "operator": "and"}
+   ```
+   In this example, the API will send a 201 response containing a URL link.
+   The page linked to this URL will exclusively display FAQs associated with both `tag1` and `tag2`.
+   If no FAQs meet the specified criteria, none will be shown on the page. <br />
+
+   Note:
+   - The `help_faq_filter` can be provided with `help_section`, `help_faq`, `help_search_term`.
+    In this case, the respective page will open with FAQs matching the specified criteria of `help_faq_filter`.
 
 </td>
 </tr>
