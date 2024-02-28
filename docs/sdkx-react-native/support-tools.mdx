@@ -138,6 +138,40 @@ const config = {};
 showSingleFaqWithConfig(<QUESTION_PUBLISH_ID>, config)
 ```
 
-### Set SDK language {#set-language-api}
+## Set SDK language {#set-language-api}
 
 For more info about this API and languages you can refer [here](/sdkx-react-native/i18n/)
+
+## Getting SDK Version {#get-sdk-version}
+
+You can use `sdkVersion` API to get the current version of Helpshift SDK X.
+
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version
+
+</Admonition>
+
+```javascript
+  import { sdkVersion } from "helpshift-plugin-sdkx-react-native";
+
+  // Returns SDK version as a string eg. "10.3.0"
+  const helpshiftVersion = sdkVersion();
+```
+
+## Closing a Helpshift Session {#close-sdk-session}
+
+You can use `closeSDKSession` API to close an active SDK session. If no SDK session is active, calling this API will have no effect.
+
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version.
+
+</Admonition>
+
+```javascript
+  import { closeSDKSession } from "helpshift-plugin-sdkx-react-native";
+
+  // closes Helpshift sdk session
+  closeSDKSession();
+```
