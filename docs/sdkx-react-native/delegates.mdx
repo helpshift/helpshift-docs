@@ -30,11 +30,19 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 ## Helpshift Delegate implementation {#delegate-implementation}
 
 - To use Helpshift Delegate please import `helpshiftEmitter`
-  For example:
+- To use Helpshift Delegate constants please import `helpshiftConstants`
+
+For example:
 
 ```javascript
-import { helpshiftEmitter } from "helpshift-plugin-sdkx-react-native";
+import { helpshiftEmitter , helpshiftConstants } from "helpshift-plugin-sdkx-react-native";
 ```
+
+<Admonition type="info" title="Note">
+
+`helpshiftConstants` is available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
 
 To handle helpshift events, you can use following listener.
 
@@ -140,6 +148,52 @@ helpshiftEmitter.addListener("onEventOccurred", (data) => {
   }
 });
 ```
+  
+### User Click On Action Event {#user-click-on-action}
+
+This event is triggered when the user clicks on the link or call action of an action card message.
+
+- Event Name : `helpshiftConstants.HELPSHIFT_EVENT_NAME_USER_CLICK_ON_ACTION`
+- Event data: 
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_DATA `
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE `
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE_CALL `
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE_LINK `
+
+| Key (Constant)                | Key (Raw)  | Type   |
+|-------------------------------|------------|--------|
+| helpshiftConstants.HELPSHIFT_EVENT_NAME_USER_CLICK_ON_ACTION  | userClickOnAction | string |
+| helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE  | actionType | string |
+| helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_DATA  | actionData | string |
+| helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE_CALL  | call | string |
+| helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE_LINK  | link | string |
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
+```javascript
+helpshiftEmitter.addListener(
+    helpshiftConstants.HANDLE_HELPSHIFT_EVENT,
+    (data) => {
+      if (data.eventName == helpshiftConstants.HELPSHIFT_EVENT_NAME_USER_CLICK_ON_ACTION) {
+        try {
+          let eventActionType =
+            eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE];
+          let eventActionData =
+            eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_DATA];
+
+          console.log('Event Receivd for ' + data.eventName + ' action type : ' + eventActionType + ' action data ' + eventActionData );
+        } catch (err) {
+          console.error('Parsing Error', err);
+        }
+      }
+    }
+  );
+
+```
 
 ### Conversation Start Event {#conversation-start-event}
 
@@ -182,6 +236,87 @@ helpshiftEmitter.addListener("onEventOccurred", (data) => {
     }
   }
 });
+```
+
+### Agent Message Received Event {#agent-message-received}
+
+This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
+
+- Event name : `helpshiftConstants.HELPSHIFT_EVENT_NAME_AGENT_MESSAGE_RECEIVED`
+- Event data:
+
+  | Key                 | Type   | Value |
+  |-------------------------------|--------|--------- |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_PUBLISH_ID | string | Conversation ID of the ongoing issue |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE | string | Message Type of the message |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_BODY | string | The actual message sent by the agent or empty |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_CREATED_TIME | number | Unix epoch timestamp in ms |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_ATTACHMENTS | object | Attachments, if they are present |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_URL | string | URL of the attachment |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_CONTENT_TYPE | string | MIME type of the attachment |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_FILE_NAME | string | File name of the attachment |
+  | helpshiftConstants.HELPSHIFT_EVENT_DATA_SIZE | number | Size of the attachment in bytes |
+ 
+<Admonition type="info" title="Note">
+
+- This delegate is available from 10.3.0 and above versions
+- The attachments key is only present if the agent has sent attachments.
+- Since attachments sent by agents may not have the necessary MIME type or name, it is possible that `helpshiftConstants.HELPSHIFT_EVENT_DATA_CONTENT_TYPE` is absent from the payload.
+  For such cases, file type can be inferred from extension from file name
+- `helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE` has following types : 
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE_APP_REVIEW_REQUEST`
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE_SCREENSHOT_REQUEST`
+  - `helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE_TEXT`
+
+</Admonition>
+
+```javascript
+helpshiftEmitter.addListener(
+  helpshiftConstants.HANDLE_HELPSHIFT_EVENT,
+  (data) => {
+    if (data.eventName == helpshiftConstants.HELPSHIFT_EVENT_NAME_AGENT_MESSAGE_RECEIVED) {
+      try {
+        let publishId = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_PUBLISH_ID];
+        let type = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE];
+        let body = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_BODY];
+        let createdTs = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_CREATED_TIME];
+
+        // isEmpty is undefined and empty check
+        if (isEmpty(publishId) && isEmpty(type) && isEmpty(body) && createdTs == null) {
+          console.log('Received no data');
+          return;
+        }
+
+        console.log('publishId ' + publishId + ' type ' + type + ' body ' + body + ' createdTs ' + createdTs);
+        let attachments = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ATTACHMENTS];
+
+        if (attachments && attachments.length > 0) {
+          attachments.forEach((attachment, index) => {
+            let url = attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_URL];
+            let contentType = attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_CONTENT_TYPE];
+            let fileName = attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_FILE_NAME];
+            let size =attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_SIZE];
+
+            if (isEmpty(url) && isEmpty(fileName) && size == null) {
+              console.log('Received no data for attachment ' + (index + 1));
+            }
+
+            if (isEmpty(url) || isEmpty(fileName) || size == null) {
+              console.log('Received incomplete data for attachment ' + (index + 1));
+            }
+
+            console.log('Attachment No. : ' + (index + 1) + ', url: ' + url + ', contentType: ' + contentType + ', fileName: ' + fileName + ', size: ' + size );
+          });
+        } else {
+          console.log('No attachments received in message');
+        }
+      } catch (err) {
+        console.error('Parsing Error', err);
+      }
+    }
+  }
+);
+
 ```
 
 ### CSAT Submit Event {#csat-submit-event}
