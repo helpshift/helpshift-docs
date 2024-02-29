@@ -35,9 +35,56 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 </Admonition>
 
+## v10.3.0
+
+### iOS
+
+<Admonition type="info" title="Note">
+
+Tested with React Native 0.73.4, on macOS 13.2.1, with Xcode 14.2 built demo app on iOS 17.2 (iPhone 14). Memory Usage will increase with the number of messages in a conversation.
+
+</Admonition>
+
+#### Disk space
+
+When a React Native iOS app is integrated with `helpshift-plugin-sdkx-react-native`, the increase in the size of the IPA file is around `457` KB.
+
+#### Ram usage
+
+The following is the memory usage of Helpshift APIs in debug mode. (Values are approximate)
+
+|                                                                   |                                                                                       |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>5.3</code> MB (This depends on the number of messages on the chat screen). |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>3.8</code> MB.                                                             |
+| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>4</code> MB.                                                             |
+| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>3.7</code> MB.                                                            |
+
+### Android
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Google Pixel 6a running Android 14.
+
+</Admonition>
+
+#### Disk space
+
+When a React Native Android app is integrated with `helpshift-plugin-sdkx-react-native`, the increase in the size of the `APK` file is around `146.6` KB.
+
+#### Memory usage {#memory-usage}
+
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `0.4`                           |                             `37` |
+| showFAQSection                         | `0.3`                           |                             `36` |
+| showSingleFAQ                          | `0.2`                           |                             `40` |
+| showConversation (conversational mode) | `3`                             |                             `66` |
+
+
 ## v10.2.2
 
-**iOS**
+### iOS
 
 <Admonition type="info" title="Note">
 
@@ -60,7 +107,7 @@ The following is the memory usage of Helpshift APIs in debug mode. (Values are a
 | **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>2.2</code> MB.                                                             |
 | **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>12.1</code> MB.                                                            |
 
-**Android**
+### Android
 
 <Admonition type="info" title="Note">
 
@@ -72,7 +119,7 @@ Tested with a demo app on Google Pixel 6a running Android 13.
 
 When a React Native Android app is integrated with `helpshift-plugin-sdkx-react-native`, the increase in the size of the `APK` file is around `154.80` KB.
 
-### Memory usage {#memory-usage}
+#### Memory usage {#memory-usage}
 
 | Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
 | -------------------------------------- | ------------------------------- | -------------------------------: |
