@@ -115,6 +115,20 @@ You should call Helpshift SDK's `login` API whenever the user successfully logs 
 
 To create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
 
+You need to be aware of some considerations when using the `login()` API -
+
+- In order to create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
+- The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should **NOT** be duplicated for two or more different users.
+- If the login API is called with different user identifier, then it first logs out the currently logged-in user and then logs in with this user identifier.
+- It is best to call login immediately when your app user logs in.
+- If you are setting `fullPrivacy` to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+
+<Admonition type="info" title="Note">
+
+From 10.3.1, `login()` API will return a boolean indicating whether login was successful or not. This change is in existing API to introduce mandatory validations for login parameters and hence this might affect code compilation.
+
+</Admonition>
+
 Example :
 
 ```javascript
@@ -126,7 +140,9 @@ let config = {
   userId: "unique-user-id-746501",
 };
 
-login(config);
+login(config, (isLoginSuccessfull: boolean) => {
+  console.log("Is login successful " + isLoginSuccessfull)
+});
 ```
 
 ### Logging out users {#logging-out-users}
@@ -203,7 +219,9 @@ let config = {
   userAuthToken: "generated-user-authentication-token",
 };
 
-login(config);
+login(config, (isLoginSuccessfull: boolean) => {
+  console.log("Is login successful " + isLoginSuccessfull)
+});
 ```
 
 <Admonition type="info" title="Note">
