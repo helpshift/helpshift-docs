@@ -162,10 +162,40 @@ Optional FAQ publish ID to indicate if a help article should be displayed. If pr
 </td>
 </tr>
 <tr>
-<td>help_search</td>
+<td>help_search_term</td>
 <td>No</td>
 <td>
 Optional parameter to provide a search text when starting the help center. This will allow developers to pass in specific search keys (such as an error code) without knowing before-hand what specific help_article to display. When used the Help center will perform a search and show results from the search.
+</td>
+</tr>
+<tr>
+<td>help_faq_filter</td>
+<td>No</td>
+<td>
+A JSON Object having the following format -
+
+```json
+{"tags": ["tag1", "tag2"], "operator": "or"}
+```
+
+- tags - A JSON array of strings, and at least one tag must be specified.
+
+- operator - This value should be any of the following: and, or, not.
+
+This specifies the functionality for segmenting FAQs based on tags.
+<br />
+Example value for help_faq_filter:
+
+```json
+{"tags": ["tier1", "tier2"], "operator": "and"}
+```
+
+In this example, the page will only display FAQs associated with both tier1 and tier2.
+If no FAQs meet the specified criteria, none will be shown on the page.
+<br />
+The help_faq_filter can be provided with help_section, help_faq, help_search_term.
+In this case, the respective page will open with FAQs matching the specified criteria of help_faq_filter.
+
 </td>
 </tr>
 <tr>
@@ -212,36 +242,7 @@ Whether to start a new chat when the previous issue is resolved. Valid values -
 
 </td>
 </tr>
-<tr>
-<td>help_faq_filter</td>
-<td>No</td>
-<td>
-A JSON Object having the following format -
 
-```json
-{"tags": ["tag1", "tag2"], "operator": "or"}
-```
-
-tags - a JSON array of strings, and at least one tag must be specified.
-
-operator - This value should be any of the following: and, or, not.
-
-This specifies the functionality for segmenting FAQs based on tags.
-
-Example value for help_faq_filter:
-
-```json
-{"tags": ["tier1", "tier2"], "operator": "and"}
-```
-
-In this example, the page will only display FAQs associated with both tier1 and tier2.
-If no FAQs meet the specified criteria, none will be shown on the page.
-
-The help_faq_filter can be provided with help_section, help_faq, help_search_term.
-In this case, the respective page will open with FAQs matching the specified criteria of help_faq_filter.
-
-</td>
-</tr>
 </table>
 
 The API will return a status code of 201 for successful response, 400 for invalid requests. The response will have the following:
@@ -327,7 +328,7 @@ nil
 
 </td>
 <td>
-Only if requested by by specifying - <code>includes: ["unread_messages"]</code> in the request parameters.
+Only if requested by specifying - <code>includes: ["unread_messages"]</code> in the request parameters.
 </td>
 </tr>
 </table>
