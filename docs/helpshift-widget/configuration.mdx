@@ -1,0 +1,200 @@
+---
+sidebar_position: 30
+title: Configuration
+description: Learn more about Configuration
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import InitialUserMessageDescription from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx"
+
+# Configuration
+
+<Intro>
+
+</Intro>
+
+## Widget Type {#widget-type}
+
+The `widgetType` config value controls whether both Helpcenter and Web Chat or only Helpcenter or only Web Chat should be loaded in Helpshift widget.
+
+```javascript
+helpshiftWidgetConfig.widgetType = "helpcenter_and_webchat"; // or "helpcenter" or "webchat"
+```
+
+## Widget Configuration {#widget-config}
+
+Helpshift allows you to configure the widget by passing configuration options in the `helpshiftWidgetConfig` object.
+
+### Widget Options {#widget-options}
+
+To configure the widget's behavior, you'll need to add `widgetOptions` to the Embed Code. All of the widget specific options go here.
+
+```javascript
+(function () {
+  // The following part remains as it is in the Embed Code.
+  var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
+    DOMAIN = "<YOUR_DOMAIN>";
+
+  window.helpshiftWidgetConfig = {
+    platformId: PLATFORM_ID,
+    domain: DOMAIN,
+  };
+
+  /* Widget Options Start */
+  helpshiftWidgetConfig.widgetOptions = {
+    // All widget specific options go here.
+  };
+  /* Widget Options End */
+})();
+```
+
+#### Enable Fullscreen View for Pop-ups {#enable-full-screen}
+
+If you want to open the widget in full screen mode on a non-mobile device, you can pass through the `fullScreen` option in `widgetOptions`.
+
+```javascript
+helpshiftWidgetConfig.widgetOptions = {
+  // ...
+  fullScreen: true,
+};
+```
+
+<Admonition type="info" title="Note">
+
+On mobile devices and on low resolution tablets and desktops, the widget will open in full screen mode.
+
+</Admonition>
+
+#### Show/Hide Launcher {#show-launcher}
+
+You can hide the default widget launcher and use your own launcher. You can control opening and closing of the widget window using the `open` and `close` APIs. Add the following option in `widgetOptions` to hide the default widget launcher.
+
+```javascript
+helpshiftWidgetConfig.widgetOptions = {
+  // ...
+  showLauncher: false,
+};
+```
+
+#### Widget Position {#widget-position}
+
+To set the widget's position, provide the `position` option in `widgetOptions`. Values allowed for `position` are:
+
+- bottom-right
+- bottom-left
+- top-left
+- top-right
+
+The default value is `bottom-right`.
+
+```javascript
+helpshiftWidgetConfig.widgetOptions = {
+  // ...
+  position: "bottom-left",
+};
+```
+
+#### Widget z-index {#widget-z-index}
+
+By default, Helpshift Widget assigns a large `z-index` value to its widget (the widget launcher button and the widget window). If you want to use a custom value of `z-index` for helpshift widget, you can do so by setting the `zIndex` option in `widgetOptions`. You can only use a **number** with this option.
+
+```javascript
+helpshiftWidgetConfig.widgetOptions = {
+  // ...
+  zIndex: 50,
+};
+```
+
+## Theming {#theming}
+
+You can configure the Helpcenter and Web Chat's color scheme directly from the Helpshift Dashboard. For more details, refer to [For Support Admins: Configure the User Experience of Helpcenter](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1169-help-center-procedure-configure-look-and-feel-settings-for-sdk-x-help-center-2-0-web-support-portals-and-web-chat-v2/) and [For Support Admins: Configure the User Experience of Web Chat](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/900-web-chat-understand-the-appearance-of-web-chat-ui-elements-sdk-x/) and in our Knowledge Base.
+
+## Bots {#bots}
+
+Bots can be enabled in Web Chat to automatically provide help and gather information from users to help your Agents resolve Issues faster. Helpshift has 3 default Bots:
+
+- **QuickSearch Bot** - deflect common problems by automatically suggesting relevant FAQs to users
+- **Identity Bot** - prompt your users for their name and/or email before they create an issue
+- **CSAT Bot** - automatically ask for feedback after an Issue is resolved
+
+For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/kb/article/web-chat#section-four) in our Knowledge Base.
+
+## Full Privacy {#full-privacy}
+
+In the `helpshiftWidgetConfig` object at the time of initialization, setting the `fullPrivacy` option to `true` ensures [COPPA](http://www.coppa.org/) compliance by:
+
+- Disabling user-initiated screenshots (users will not be able to attach files, including images, using Web Chat).
+- Making sure that Personally Identifiable Information (PII) such as name and email are not collected by Web Chat (using Identity Bot and/or the helpshiftWidgetConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+
+##### Example Embed Code
+
+```javascript
+var PLATFORM_ID = "foo",
+  DOMAIN = "bar";
+
+window.helpshiftWidgetConfig = {
+  platformId: PLATFORM_ID,
+  domain: DOMAIN,
+  // other options, if applicable
+  fullPrivacy: true,
+};
+```
+
+## Initiating chat {#initiate-chat}
+
+Developers can start a new chat when the previous issue is resolved, without needing any user action like clicking the `New Conversation` button or going through the post resolution flow like feedback bot for the previously resolved issue.
+
+To do the above mentioned action, the developer will have to set `initiateChatOnLoad` config in `window.helpshiftWidgetConfig` and then use the [updateHelpshiftWidgetConfig](https://developers.helpshift.com/helpshift-widget/api/#update-helpshift-widget-config) API to start the new chat when the previous issue is resolved.
+
+##### Example Embed Code
+
+```javascript
+window.helpshiftWidgetConfig.initiateChatOnLoad = true;
+
+Helpshift("updateHelpshiftWidgetConfig");
+```
+
+To open the widget [open](https://developers.helpshift.com/web-chat/api/#open-widget) API can be used.
+
+## Initial user message {#initial-user-message}
+
+<InitialUserMessageDescription />
+
+##### Example Embed Code
+
+```javascript
+window.helpshiftWidgetConfig.initialUserMessage = "Some initial user message";
+
+Helpshift("updateHelpshiftWidgetConfig");
+```
+
+## Conversation prefill text {#conversation-prefill-text}
+
+<ConversationPrefillTextDescription />
+
+##### Example embed code:
+
+```javascript
+window.helpshiftWidgetConfig.conversationPrefillText = "INSERT YOUR PREFILL TEXT";
+Helpshift("updateHelpshiftWidgetConfig");
+```
+
+To open the widget [open](https://developers.helpshift.com/web-chat/api/#open-widget) API can be used.
