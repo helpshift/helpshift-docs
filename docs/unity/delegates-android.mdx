@@ -37,7 +37,6 @@ This method needs to be implemented in the script which is attached to the _unit
 Call the `HelpshiftSdk.registerDelegates` API to start listening to the Helpshift delegates.
 
 ```csharp
-
 helpshift.registerDelegates();
 
 ```
@@ -51,7 +50,6 @@ helpshift.registerDelegates();
 If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
 
 ```csharp
-
 public void helpshiftSessionBegan() {
 // your code here
 }
@@ -65,7 +63,6 @@ public void helpshiftSessionBegan() {
 If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
 ```csharp
-
 public void helpshiftSessionEnded() {
 // your code here
 }
@@ -89,7 +86,6 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 For example:
 
 ```csharp
-
     public void newConversationStarted (string newConversationMessage) {
       // your code here
     }
@@ -101,7 +97,6 @@ For example:
 This delegate receives a callback when an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved in the Dashboard, rejected, timed out or archived.
 
 ```csharp
-
 public void conversationEnded() {
 // your code here
 }
@@ -115,7 +110,6 @@ public void conversationEnded() {
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
 ```csharp
-
     public const String HSUserAcceptedTheSolution = "User accepted the solution";
     public const String HSUserRejectedTheSolution = "User rejected the solution";
     public const String HSUserSentScreenShot = "User sent a screenshot";
@@ -126,7 +120,6 @@ If you want to keep track of when your app users send new messages to an ongoing
 For example:
 
 ```csharp
-
     public void userRepliedToConversation (string newMessage) {
       if (newMessage.equals(HelpshiftSdk.HSUserAcceptedTheSolution)) {
         // your code here
@@ -150,7 +143,6 @@ If you want to keep track of when your app user completes the customer satisfact
 For example:
 
 ```csharp
-
     public void userCompletedCustomerSatisfactionSurvey (string json) {
       // deserialize the json to get dictionary with rating and feedback keys
     }
@@ -164,7 +156,6 @@ This delegate is the response to the `requestUnreadMessagesCount` method. It pro
 Example usage:
 
 ```csharp
-
     public void didReceiveUnreadMessagesCount(string count) {
         // your code here
     }
@@ -178,7 +169,6 @@ This delegate responds to the `checkIfConversationActive` to get a boolean value
 Example usage:
 
 ```csharp
-
 	public void didCheckIfConversationActive(string isActive) {
 		if (isActive.Equals("true")) {
 			//Active Conversation
@@ -209,9 +199,6 @@ To use this delegate you need to specify the file extensions which will be handl
 For example :
 
 ```csharp
-
-
-
     private HelpshiftSdk help;
 
     help = HelpshiftSdk.getInstance();
@@ -285,7 +272,6 @@ If identity verification fails, the SDK will invoke one of the following delegat
 </table>
 
 ```csharp
-
     public void authenticationFailed(string serializedJSONUserData) {
         HelpshiftUser user = HelpshiftJSONUtility.getHelpshiftUser (serializedJSONUserData);
         HelpshiftAuthFailureReason reason = HelpshiftJSONUtility.getAuthFailureReason (serializedJSONUserData);
@@ -315,7 +301,6 @@ This delegate method is called when user clicks on an action in Action Card bot.
 For example:
 
 ```csharp
-
     public void userClickOnAction(string serializedJSONUserActionData)
     {
         HelpshiftUserAction userAction = HelpshiftJSONUtility.getUserActionData(serializedJSONUserActionData);

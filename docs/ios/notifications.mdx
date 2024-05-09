@@ -43,7 +43,6 @@ If your app does not already use push, you will need to enable push for your app
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
       ...
       UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -62,7 +61,6 @@ If your app does not already use push, you will need to enable push for your app
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         ...
         let center = UNUserNotificationCenter.current()
@@ -141,7 +139,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
@@ -153,7 +150,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         HelpshiftCore.registerDeviceToken(deviceToken)
     }
@@ -181,7 +177,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (void) userNotificationCenter:(UNUserNotificationCenter *)center
       willPresentNotification:(UNNotification *)notification
       withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
@@ -199,7 +194,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if(notification.request.content.userInfo["origin"] as? String == "helpshift") {
             HelpshiftCore.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false, with: self.window?.rootViewController)
@@ -219,7 +213,6 @@ For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHand
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
       if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
           [HelpshiftCore handleNotificationResponseWithActionIdentifier:response.actionIdentifier
@@ -235,7 +228,6 @@ For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHand
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         if(response.notification.request.content.userInfo["origin"] as? String == "helpshift") {
             HelpshiftCore.handleNotificationResponse(withActionIdentifier: response.actionIdentifier, userInfo: response.notification.request.content.userInfo, completionHandler: completionHandler)

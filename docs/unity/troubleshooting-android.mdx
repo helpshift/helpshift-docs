@@ -137,7 +137,6 @@ Helpshift Unity plugin uses its own dex file to load its code. Beacuse of this t
 If you are using proguard in your build and also minimizing/obfuscating code then the following rules are needed by Helpshift plugin to work properly:
 
 ```java
-
     -keep class com.helpshift.** { *; }
     -dontwarn com.helpshift.**
     -keep class android.support.** { *; }
@@ -202,7 +201,6 @@ If you are targeting the app on Android API level 26 and above, then GCM will cr
 We recommend to move the manual FCM integration as described [here](/unity/notifications-android##fcm-push-support).
 
 ```java
-
     java.lang.RuntimeException: Unable to start receiver com.helpshift.supportCampaigns.gcm.HSGcmBroadcastReceiver:
     java.lang.IllegalStateException: Not allowed to start service Intent { act=com.google.android.c2dm.intent.RECEIVE flg=0x1000010 pkg=com.example.app cmp=com.example.app
     com.helpshift.supportCampaigns.gcm.HSGcmIntentService (has extras) }: app is in background uid UidRecord{74a5fc3 u0a136 RCVR idle change:idle|uncached procs:1 seq(0,0,0)}
@@ -279,7 +277,6 @@ If you are also integrating for iOS, deselect `iOS/Bitcode` folder while importi
 These UI issues are caused when hardware acceleration is turned off for Helpshift's activities. To ensure that hardware acceleration is turned on, add this to your AndroidManifest.xml file.
 
 ```xml
-
     <activity
         android:name="com.helpshift.support.activities.ParentActivity"
         android:hardwareAccelerated="true"
@@ -346,7 +343,6 @@ This issue happens when a referenced class from the "ExampleActivity" class has 
 For example :
 
 ```java
-
 package com.example;
 
 import android.support.v7.app;

@@ -41,7 +41,6 @@ If your app does not already use push, you will need to enable push for your app
 <TabItem value="Using UILocalNotification framework" label="Using UILocalNotification framework">
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
         ...
         UIUserNotificationType notificationType = UIUserNotificationTypeBadge |UIUserNotificationTypeAlert;
@@ -57,7 +56,6 @@ If your app does not already use push, you will need to enable push for your app
 <TabItem value="Using UNUserNotification framework" label="Using UNUserNotification framework">
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
         ...
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -141,7 +139,6 @@ to invoke the `registerDeviceToken:` API call inside the application delegate me
 `application:didRegisterForRemoteNotificationsWithDeviceToken:`
 
 ```objc
-
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
@@ -160,7 +157,6 @@ Example usage:
 When receiving remote notifications when the app starts for the first time, or after being killed by the user:
 
 ```objc
-
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
         app->run();
@@ -183,7 +179,6 @@ When receiving remote notifications when the app starts for the first time, or a
 For the didReceiveRemoteNotification delegate -
 
 ```objc
-
     - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
         if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
             [HelpshiftCore handleRemoteNotification:userInfo
@@ -221,7 +216,6 @@ to invoke the `registerDeviceToken:` API call inside the application delegate me
 `application:didRegisterForRemoteNotificationsWithDeviceToken:`I
 
 ```objc
-
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
@@ -241,7 +235,6 @@ Example usage:
 For the userNotificationCenter:willPresentNotification:withCompletionHandler: delegate -
 
 ```objc
-
     - (void) userNotificationCenter:(UNUserNotificationCenter *)center
       willPresentNotification:(UNNotification *)notification
       withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
@@ -258,7 +251,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
 For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler: delegate -
 
 ```objc
-
     - (void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
       if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
           [HelpshiftCore handleNotificationResponseWithActionIdentifier:response.actionIdentifier
@@ -344,7 +336,6 @@ Example:
 <TabItem value="Cocos2d-x 3.x" label="Cocos2d-x 3.x">
 
 ```cpp
-
     ValueMap config;
     config[HS_ENABLE_IN_APP_NOTIFICATION] = Value("yes");
 
@@ -359,7 +350,6 @@ Example:
 <TabItem value="Cocos2d-x 2.x" label="Cocos2d-x 2.x">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     config->setObject(new CCString("yes"), HS_ENABLE_IN_APP_NOTIFICATION);
     HelpshiftCocos2dx::install("apikey",
@@ -380,7 +370,6 @@ If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotifi
 Example:
 
 ```cpp
-
     HelpshiftCocos2dx::pauseDisplayOfInAppNotification(true);
 
 ```
@@ -390,7 +379,6 @@ Example:
 This API takes a function pointer as an argument and calls that function with the count of unread messages as its parameter. The first parameter (isRemote) passed to the API requestUnreadMessagesCount will decide if the count is to be fetched remotely.
 
 ```cpp
-
 	void didReceiveUnreadMessagesCount(int count) {
 		printf("Unread message count: %d\n", count);
 	}

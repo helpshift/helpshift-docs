@@ -74,7 +74,6 @@ You can remove these classes from the _Helpshift.jar_ in two possible ways :
 #### command line
 
 ```bash
-
     zip -d Helpshift.jar org/apache/commons/codec/language/**
 
 ```
@@ -102,7 +101,6 @@ Once done you can run a `clean & compile`. As these classes are already included
 If you get a dex merger error like below, enable the jumbo mode.
 
 ```java
-
     UNEXPECTED TOP-LEVEL EXCEPTION:
     com.android.dex.DexException: Cannot merge new index 68218 into a non-jumbo
     instruction!
@@ -113,7 +111,6 @@ If you get a dex merger error like below, enable the jumbo mode.
 To enable jumbo mode in Gradle add the following to your build.gradle -
 
 ```groovy
-
     android {
         dexOptions {
             jumboMode = true
@@ -125,7 +122,6 @@ To enable jumbo mode in Gradle add the following to your build.gradle -
 To enable jumbo mode in Ant add the following to your project.properties -
 
 ```xml
-
     dex.force.jumbo=true
 
 
@@ -136,7 +132,6 @@ To enable jumbo mode in Ant add the following to your project.properties -
 If you get a dex error like below,
 
 ```java
-
     UNEXPECTED TOP-LEVEL EXCEPTION:
     com.android.dex.DexException: Multiple dex files define
     Lcom/helpshift/BuildConfig;
@@ -149,7 +144,6 @@ App, once via the _Helpshift.jar_ file and then via the _helpshift-android-sdk_ 
 You can resolve this by deleting the **BuildConfig** file which comes with the Helpshift.jar by using the following command -
 
 ```bash
-
     zip -d Helpshift.jar com/helpshift/BuildConfig.class
 
 ```
@@ -159,7 +153,6 @@ You can resolve this by deleting the **BuildConfig** file which comes with the H
 If you get a crash with the following error, check the android support library version you use:
 
 ```java
-
     java.lang.RuntimeException: Unable to resume activity {com.sampleimpactanalysis/com.helpshift.support.activities.ParentActivity}: android.view.InflateException:
     Binary XML file line #7: Binary XML file line #35: Error inflating class com.helpshift.views.HSTextInputEditText
 
@@ -218,7 +211,6 @@ Application.onCreate() {
 ### Helpshift Logs with low priority DEBUG
 
 ```java
-
     02-19 20:35:49.853: D/HelpShiftDebug(7651): org.json.JSONException: No value for pr
     02-19 20:35:49.853: D/HelpShiftDebug(7651): at org.json.JSONObject.get(JSONObject.java:354)
     02-19 20:35:49.853: D/HelpShiftDebug(7651): at
@@ -230,7 +222,6 @@ You can safely ignore the Helpshift SDK debug logs (log priority "DEBUG" / "Log.
 ### Helpshift Warning with low priority
 
 ```java
-
     03-13 16:49:52.667 30615-1447/? W/MessageQueue : Handler (com.helpshift.HSApiData$4){427f1eb8} sending message to a Handler on a dead thread
 
 ```
@@ -244,7 +235,6 @@ This is just a warning, and this has been handled by the helpshift SDK. You can 
 These UI issues are caused when hardware acceleration is turned off for Helpshift's activities. To ensure that hardware acceleration is turned on, add this to your AndroidManifest.xml file.
 
 ```xml
-
     <activity
         android:name="com.helpshift.support.activities.ParentActivity"
         android:hardwareAccelerated="true"

@@ -104,7 +104,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
@@ -116,7 +115,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         HelpshiftCore.registerDeviceToken(deviceToken)
     }
@@ -143,7 +141,6 @@ When receiving remote notifications when the app starts for the first time, or a
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
         ...
@@ -166,7 +163,6 @@ When receiving remote notifications when the app starts for the first time, or a
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         ...
@@ -198,7 +194,6 @@ For the didReceiveRemoteNotification delegate -
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
         if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
             [HelpshiftCore handleRemoteNotification:userInfo
@@ -213,7 +208,6 @@ For the didReceiveRemoteNotification delegate -
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         if (userInfo["origin"] as! NSString).isEqual(to: "helpshift") {
             HelpshiftCore.handleRemoteNotification(userInfo, isAppLaunch: false, with: self.window?.rootViewController)
@@ -316,7 +310,6 @@ If the local notification is one added by the Helpshift SDK, the "origin" field 
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-
     - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
     {
         if ([[notification.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
@@ -331,7 +324,6 @@ If the local notification is one added by the Helpshift SDK, the "origin" field 
 <TabItem value="Swift" label="Swift">
 
 ```swift
-
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         if (notification.userInfo?["origin"] as! NSString).isEqual(to: "helpshift") {
             HelpshiftCore.handleLocalNotification(notification, with:self.window?.rootViewController)

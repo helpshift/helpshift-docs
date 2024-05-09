@@ -37,7 +37,6 @@ There are 4 different ways in which the Helpshift SDK can be presented in your a
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
 ```csharp
-
     HelpshiftSdk help = HelpshiftSdk.getInstance();
     Dictionary<string, object> configMap = new Dictionary<string, object>();
     help.showConversation(configMap);
@@ -62,7 +61,6 @@ resolution is accepted by the user) or rejected by the agent.
 ## Integrating FAQs {#faqs-view}
 
 ```csharp
-
     HelpshiftSdk help = HelpshiftSdk.getInstance();
     Dictionary<string, object> configMap = new Dictionary<string, object>();
     help.showFAQs(configMap);
@@ -163,7 +161,6 @@ As of v1.3.0 you can have only one tag filter config which will be respected on 
 </SideBySide>
 
 ```csharp
-
     HelpshiftSdk help = HelpshiftSdk.getInstance();
     Dictionary<string, object> configMap = new Dictionary<string, object>();
     help.showFAQSection("11", configMap);
@@ -190,7 +187,6 @@ Check out [API Options](#api-options) for more configuration.
 </SideBySide>
 
 ```csharp
-
     HelpshiftSdk help = HelpshiftSdk.getInstance();
     Dictionary<string, object> configMap = new Dictionary<string, object>();
     help.showSingleFAQ("51", configMap);
@@ -340,7 +336,6 @@ For the search entry to launch the appropriate FAQ screen, the application shoul
 Example :
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
         NSString *activityIdentifier = [userActivity.userInfo objectForKey:CSSearchableItemActivityIdentifier];
         if(activityIdentifier && [activityIdentifier hasPrefix:@"helpshift_faq_"]) {
@@ -371,7 +366,6 @@ The Helpshift SDK provides an API to allow developers set the testing mode for t
 Example :
 
 ```csharp
-
     #if defined(UNITY_IOS) && defined(DEBUG)
         HelpshiftSdk.enableTestingMode();
     #endif
@@ -399,7 +393,6 @@ This API has no affect on any open issue. Users will continue to see their messa
 Example Code
 
 ```csharp
-
     HelpshiftSdk.closeHelpshiftSupportSession();
 
     // completion delegate

@@ -157,7 +157,6 @@ The withTagsMatching option will be should be added as an object against key “
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
 ```objc
-
 	//If the developer wants to show all FAQs with tags iPad or iPhone
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
 	apiBuilder.withTagsMatching = [[HelpshiftFAQFilter alloc] initWithFilterOperator:HsOperatorOr / HsOperatorAnd / HsOperatorNot andTags:@[@"tag1",@"tag2",...]];
@@ -170,7 +169,6 @@ The withTagsMatching option will be should be added as an object against key “
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```objc
-
 	//If the developer wants to show all FAQs with tags iPad or iPhone
 	NSDictionary * optionsDictionary = @{ @"withTagsMatching" : @{ @"operator" : @"or",
                                                                    @"tags" : @[@"iPhone",@"iPad"]}};
@@ -394,7 +392,6 @@ The app can create any number of flows. These flows are then grouped into a dyna
    When using the `pushDynamicFormOnViewController:` API, if the view controller that is passed to this API is being presented modally, please make sure that the view controller is in full screen mode by using the following code:
 
 ```objc
-
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
 ```
@@ -484,7 +481,6 @@ For the search entry to launch the appropriate FAQ screen, the application shoul
 Example :
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
         NSString *activityIdentifier = [userActivity.userInfo objectForKey:CSSearchableItemActivityIdentifier];
         if(activityIdentifier && [activityIdentifier hasPrefix:@"helpshift_faq_"]) {
@@ -523,7 +519,6 @@ Example Code:
 Below is the sample code snippet for embedding conversation view controller into a master-detail UI setup (UISplitViewController)
 
 ```objc
-
     @interface MasterViewController()
     @property(nonatomic,strong) UIViewController* helpshiftConversationViewController;
     @end
@@ -575,7 +570,6 @@ You must disable automatic push handling in SDK via the disableAutomaticPushHand
 </Admonition>
 
 ```objc
-
     HelpshiftInstallConfigBuilder *builder = [HelpshiftInstallConfigBuilder new];
     builder.disableAutomaticPushHandling = YES;
 
@@ -635,7 +629,6 @@ The Helpshift SDK provides an API to allow developers set the testing mode for t
 Example :
 
 ```objc
-
     #ifdef DEBUG
         [HelpshiftCore enableTestingMode];
     #endif
@@ -665,7 +658,6 @@ This API can be useful in situations where the app wants to open its own UI scre
 Example Code
 
 ```objc
-
     [HelpshiftSupport closeHelpshiftSupportSessionWithCompletionHandler:^{
         NSLog(@"Helpshift session closed");
     }];
@@ -683,7 +675,6 @@ This section lists down the extra APIs which need to be implemented in order for
 The Helpshift SDK uses background session calls for sending app data to the server. In order for this to work correctly, the app developer needs to listen to the `application:handlleEventsForBackgroundURLSession:completionHandler:` and call the below Helpshift API
 
 ```objc
-
     [HelpshiftCore handleEventsForBackgroundURLSession:completionHandler:];
 
 ```
@@ -691,9 +682,6 @@ The Helpshift SDK uses background session calls for sending app data to the serv
 For example,
 
 ```objc
-
-
-
     - (void) application:(UIApplication *)application
     handleEventsForBackgroundURLSession:(NSString *)identifier
     completionHandler:(void (^)())completionHandler {

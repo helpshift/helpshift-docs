@@ -49,7 +49,6 @@ If you want to keep track of when helpshift session ends in your app, you can im
 **For example:**
 
 ```cpp
-
     void hsSessionBegun() {
       CCLOG("Helpshift Session began");
     }
@@ -82,7 +81,6 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
 ```cpp
-
     #define HS_USER_ACCEPTED_SOLUTION "User accepted the solution"
     #define HS_USER_REJECTED_SOLUTION "User rejected the solution"
     #define HS_USER_SENT_SCREENSHOT "User sent a screenshot"
@@ -109,7 +107,6 @@ If you want to keep track of when your app user completes the customer satisfact
 **For example:**
 
 ```cpp
-
     void newConversationHandler (const char *message) {
       CCLOG("New conversation started with message : %s", message);
     }
@@ -185,7 +182,6 @@ If your application wants to handle a certain file type in a custom way, the app
 The application also needs to register the function which will be called when the Helpshift SDK detects a file with the registered file extension.
 
 ```cpp
-
     static void registerDisplayAttachmentDelegate (void (*displayAttachmentListener)(const char *filePath));
 
 ```
@@ -206,7 +202,6 @@ This delegate method is called when user clicks on action card button. So, the a
 **For example:**
 
 ```cpp
-
     void userClickedOnActionCard(HSActionType helpshiftAction, const char *actionData) {
         // your code here    }
     .

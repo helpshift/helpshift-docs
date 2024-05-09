@@ -121,7 +121,6 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
 </table>
 
 ```csharp
-
     private HelpshiftSdk _support = HelpshiftSdk.getInstance();
     HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501",
                                                    "john.doe@app.com")
@@ -156,7 +155,6 @@ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```csharp
-
     _support.logout();
 
 ```
@@ -179,7 +177,6 @@ An anonymous user is someone who can access the app without a username and passw
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser` functionality. When this API is used, anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
 ```csharp
-
     _support.clearAnonymousUser();
 
 ```
@@ -204,7 +201,6 @@ User Identity Verification is a security measure that verifies that all requests
 You can send the 'user authentication token' with the login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
 ```csharp
-
     private HelpshiftSdk _support = HelpshiftSdk.getInstance();
     HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501",
                                                    "john.doe@app.com")
@@ -293,7 +289,6 @@ If identity verification fails, the SDK will invoke the `authenticationFailed` d
 </table>
 
 ```csharp
-
     public void authenticationFailed(string serializedJSONUserData) {
         HelpshiftUser user = HelpshiftJSONUtility.getHelpshiftUser (serializedJSONUserData);
         HelpshiftAuthFailureReason reason = HelpshiftJSONUtility.getAuthFailureReason (serializedJSONUserData);

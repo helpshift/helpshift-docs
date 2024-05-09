@@ -103,7 +103,6 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
 </table>
 
 ```java
-
     HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.co")
                                           .setName("John Doe")
                                           .build();
@@ -131,7 +130,6 @@ _Note:_ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```java
-
     Core.logout()
 
 ```
@@ -157,7 +155,6 @@ An anonymous user is someone who can access the app without a username and passw
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser` functionality. When this API is used, anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
 ```java
-
     Code.clearAnonymousUser();
 
 ```
@@ -183,7 +180,6 @@ In order to ensure your users are verified, you should provide a 'user authentic
 You can send the 'user authentication token' with the Login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
 ```java
-
     HelpshiftUser user = new HelpshiftUser.Builder("unique-user-id-746501", "john.doe@app.co")
                                           .setName("John Doe")
                                           .setAuthToken("generated-user-authentication-token")
@@ -259,7 +255,6 @@ The error strings can be customised in the SDK.
 Example:
 
 ```java
-
     import com.helpshift.support.Support.Delegate
     ...
     ...

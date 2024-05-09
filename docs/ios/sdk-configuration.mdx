@@ -49,7 +49,6 @@ Upon setting this option to YES, Helpshift SDK will switch between default light
 Example:
 
 ```objc
-
     HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
     installConfigBuilder.enableAutomaticThemeSwitching = YES;
 
@@ -73,7 +72,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY"
                          domainName:@"YOUR_DOMAIN_NAME"
                               appID:@"YOUR_APP_ID"
@@ -117,7 +115,6 @@ If the value of this option is set to `NO` then the FAQs for French translation 
 Example:
 
 ```objc
-
 	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
 	installConfigBuilder.enableDefaultFallbackLanguage = NO;
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
@@ -140,7 +137,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
                         withOptions:@{@"enableDefaultFallbackLanguage" : @"NO"}];
 
@@ -230,7 +226,6 @@ This option disables the iOS view transition animations when launching or closin
 Example:
 
 ```objc
-
     HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
     installConfigBuilder.disableEntryExitAnimations = YES;
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
@@ -253,7 +248,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
     withOptions:@{@"disableEntryExitAnimations" : @"YES"}];
 
@@ -291,7 +285,6 @@ If you are using a 3rd party push plugin OR if you have already wired up the req
 Example:
 
 ```objc
-
 	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
 	installConfigBuilder.disableAutomaticPushHandling = YES;
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
@@ -314,7 +307,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
                         withOptions:@{@"disableAutomaticPushHandling" : @"YES"}];
 
@@ -442,7 +434,6 @@ Example:
 - Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
 
 ```objc
-
         CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
         CTCarrier *carrier = [netinfo subscriberCellularProvider];
         HsEnableContactUs value = HsEnableContactUsAfterViewingFAQs;
@@ -478,7 +469,6 @@ The default value is NO, presents support views as UIModalPresentationFormSheet.
 Example:
 
 ```objc
-
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.presentFullScreenOniPad = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -500,7 +490,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showFAQs:self
                    withOptions:@{@"presentFullScreenOniPad":@"YES"}];
 
@@ -539,7 +528,6 @@ To send personally identifiable information through custom meta-data, the inform
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.enableFullPrivacy = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -561,7 +549,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showFAQs:self
                    withOptions:@{@"enableFullPrivacy":@"YES"}];
 
@@ -633,7 +620,6 @@ This option is set to YES by default, which means that the user will be presente
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.showConversationResolutionQuestion = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -654,7 +640,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"showConversationResolutionQuestion":@"NO"}];
 
@@ -688,7 +673,6 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
 ```objc
-
     - (IBAction) showHelp {
         id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfig:configObject];
         id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfig:configObject];
@@ -708,7 +692,6 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```objc
-
     - (IBAction) showHelp {
         id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfigOptions:yourConfigOptions];
         id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfigOptions:yourConfigOptions];
@@ -740,7 +723,6 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
 ```objc
-
     - (IBAction) showHelp {
         id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfig:configOptions];
         id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our in app purchases" andConfig:configObject];
@@ -764,7 +746,6 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```objc
-
     - (IBAction) showHelp {
         id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfigOptions:yourConfigOptions];
         id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our in app purchases" andConfigOptions:yourConfigOptions];
@@ -811,7 +792,6 @@ The showConversationInfoScreen flag will determine if the user can see the Conve
 Example:
 
 ```objc
-
 ```
 
 HelpshiftAPIConfigBuilder *apiConfigBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
@@ -833,7 +813,6 @@ HelpshiftAPIConfig *builder = [apiConfigBuilder build];
 Example:
 
 ```objc
-
     NSDictionary *config = @{@"showConversationInfoScreen":@"yes"};
     [HelpshiftSupport showFAQs:self withOptions:config];
 
@@ -890,7 +869,6 @@ For older SDK versions between v6.0.0 to v7.0, please read the following:
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiConfigBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiConfigBuilder.enableTypingIndicator = YES;
     HelpshiftAPIConfig *builder = [apiConfigBuilder build];
@@ -912,7 +890,6 @@ Example:
 Example:
 
 ```objc
-
     NSDictionary *config = @{@"enableTypingIndicator":@"yes"};
     [HelpshiftSupport showFAQs:self withOptions:config];
 
@@ -968,7 +945,6 @@ Set the value to YES to go directly to the Conversation view. Use this option wh
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
 	apiBuilder.gotoConversationAfterContactUs = YES;
 	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -990,7 +966,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"gotoConversationAfterContactUs":@"YES"}];
 
@@ -1033,7 +1008,6 @@ Set the value to YES to require the user to fill out a valid email address when 
 Example:
 
 ```objc
-
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.requireEmail = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -1055,7 +1029,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"requireEmail":@"YES"}];
 
@@ -1109,7 +1082,6 @@ Set this flag to NO to make Name and Email fields visible when a user files an i
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.hideNameAndEmail = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -1131,7 +1103,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"hideNameAndEmail":@"YES"}];
 
@@ -1191,7 +1162,6 @@ The conversationPrefillText API option prefills a new conversation with the supp
 Example:
 
 ```objc
-
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.conversationPrefillText = @"preFillString";
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -1213,7 +1183,6 @@ Example:
 Example:
 
 ```objc
-
     NSString *preFillString = [MyApp getExceptionData];
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"conversationPrefillText":preFillString}];
@@ -1267,7 +1236,6 @@ From v4.13.0 and above, the showSearchOnNewConversation flag is also effective i
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.showSearchOnNewConversation = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
@@ -1289,7 +1257,6 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                                  withOptions:@{@"showSearchOnNewConversation":@"YES"}];
 

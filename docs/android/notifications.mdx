@@ -104,7 +104,6 @@ And for FCM users, the API key can be found at your
 1. Send the device registration id to Helpshift via the `Core.registerDeviceToken` API
 
 ```java
-
         private void sendRegistrationIdToBackend() {
           // Send registrationId to Helpshift
           Core.registerDeviceToken(context, regid);
@@ -115,7 +114,6 @@ And for FCM users, the API key can be found at your
 1. Inside your "GcmBroadcastReceiver's `onReceive` method" check origin is "helpshift" and pass the intent to `Core.handlePush` API
 
 ```java
-
         @Override
         public void onReceive(Context context, Intent intent) {
           if(intent.getExtras().getString("origin").equals("helpshift")) {
@@ -134,7 +132,6 @@ And for FCM users, the API key can be found at your
 1. If you are using GCM service which provides "Bundle" argument instead of Intent, you should use `Core.handlePush` API which takes Bundle argument.
 
 ```java
-
         @Override
         public void onMessageReceived(String from, Bundle data) {
           String origin = data.getString("origin");
@@ -148,7 +145,6 @@ And for FCM users, the API key can be found at your
 1. If you are using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `Core.handlePush` API which takes a Map argument.
 
 ```java
-
         @Override
         public void onMessageReceived(RemoteMessage message) {
           Map<String, String> data = message.getData();
@@ -183,7 +179,6 @@ By default the application icon is used as the notification icon. You can custom
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
 
 ```java
-
     InstallConfig installConfig = new InstallConfig.Builder()
                                     .setNotificationIcon(R.drawable.notification_icon_small)
                                     .setLargeNotificationIcon(R.drawable.notification_icon_large)
@@ -201,7 +196,6 @@ By default the application icon is used as the notification icon. You can custom
 <TabItem value="Using Map" label="Using Map">
 
 ```java
-
     HashMap config = new HashMap();
     config.put("notificationIcon", R.drawable.notification_icon_small);
     config.put("largeNotificationIcon", R.drawable.notification_icon_large);
@@ -240,7 +234,6 @@ For example:
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
 
 ```java
-
     InstallConfig installConfig = new InstallConfig.Builder()
                                    .setNotificationSound(R.raw.notification_sound)
                                    .build();
@@ -256,7 +249,6 @@ For example:
 <TabItem value="Using Map" label="Using Map">
 
 ```java
-
     HashMap config = new HashMap();
     config.put("notificationSound", R.raw.notification_sound);
     Core.install(this, // "this" should be the application object
@@ -297,7 +289,6 @@ For example:
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
 
 ```java
-
     InstallConfig installConfig = new InstallConfig.Builder()
                                    .setSupportNotificationChannelId("SUPPORT_CHANNEL_ID")
                                    .build();
@@ -313,7 +304,6 @@ For example:
 <TabItem value="Using Map" label="Using Map">
 
 ```java
-
     HashMap config = new HashMap();
     config.put("supportNotificationChannelId", "SUPPORT_CHANNEL_ID");
     Core.init(Support.getInstance());
@@ -343,7 +333,6 @@ Example:
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
 
 ```java
-
     InstallConfig installConfig = new InstallConfig.Builder()
                                    .setEnableInAppNotification(true)
                                    .build();
@@ -359,7 +348,6 @@ Example:
 <TabItem value="Using Map" label="Using Map">
 
 ```java
-
     Hashmap config = new HashMap();
     config.put("enableInAppNotification", true);
     Core.install(this, // "this" should be the application object
@@ -384,7 +372,6 @@ Fetching notification count can be done in two ways.
   cache. Example:-
 
 ```java
-
         Integer notifCount = Support.getNotificationCount();
 
 
@@ -397,7 +384,6 @@ Fetching notification count can be done in two ways.
   implementing the `countHandler` and `failHandler`. Example:-
 
 ```java
-
         Support.getNotificationCount(countHandler, failHandler);
 
 
@@ -407,7 +393,6 @@ Fetching notification count can be done in two ways.
   the countHandler. Example:-
 
 ```java
-
         private Handler countHandler = new Handler() {
           public void handleMessage(Message msg) {
             super.handleMessage(msg);

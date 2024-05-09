@@ -112,7 +112,6 @@ Usage :
 <TabItem value="Using ApiConfig" label="Using ApiConfig">
 
 ```java
-
     String operator = FaqTagFilter.Operator.AND / FaqTagFilter.Operator.OR / FaqTagFilter.Operator.NOT;
     String[] filterTags = new String[]{"tag1", "tag2"};
     FaqTagFilter faqTagFilter = new FaqTagFilter(operator, filterTags);
@@ -130,7 +129,6 @@ The `withTagsMatching` option will take a FaqTagFilter object which takes two pa
 Example :
 
 ```java
-
     //If the developer wants to show all FAQs with tags “android-phone” or “android-tablet”
     String operator = FaqTagFilter.Operator.OR;
     String[] filterTags = new String[]{"android-phone", "android-tablet"};
@@ -146,7 +144,6 @@ Example :
 <TabItem value="Using Map" label="Using Map">
 
 ```java
-
     HashMap<String, Object> map = new HashMap<>();
     String operator = "and/or/not";
     String[] filterTags = new String[]{"tag1", "tag2"};
@@ -165,7 +162,6 @@ The `withTagsMatching` option will be a HashMap containing 2 keys
 Example :
 
 ```java
-
     //If the developer wants to show all FAQs with tags “android-phone” or “android-tablet”
     HashMap<String, Object> map = new HashMap<>();
     String operator = "or";
@@ -392,7 +388,6 @@ Following is the list of supported APIs :
 Example :
 
 ```java
-
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     fragmentTransaction.replace(R.id.fragment_container, Support.getFAQsFragment(this, config));
@@ -436,7 +431,6 @@ handling onBackPressed behaviour:
 For Example:
 
 ```java
-
     public void onBackPressed() {
       List<Fragment> fragments = getSupportFragmentManager().getFragments();
       if (fragments != null) {
@@ -471,7 +465,6 @@ If you are using Helpshift SDK's [setSDKLanguage](/android/i18n/#language-change
 Refer to the sample code provided:
 
 ```java
-
     @Override
     protected void attachBaseContext(Context context) {
       if (Build.VERSION.SDK_INT >= 17) {
@@ -496,7 +489,6 @@ This language handling is required because of the following changes in the Andro
 There are some known [issues](/android/troubleshooting#ui-issues) in rendering the FAQ fragment views if hardware acceleration is explicitly disabled for the application (the system enables it by default) due to known WebView issues on Android 5.1. Thus, Helpshift recommends you to enable hardware acceleration in your app. However, if you want to disable hardware acceleration in your app, you can enable it only for the activity in which you plan to attach the SDK's fragments. For example, in your AndroidManifest.xml:
 
 ```xml
-
     <!-- (optional) if you want to keep hardwareAcceleration as false for you app -->
     <application
         android:hardwareAccelerated="false">

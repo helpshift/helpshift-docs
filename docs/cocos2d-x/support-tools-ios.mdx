@@ -37,7 +37,6 @@ There are 4 different ways in which the Helpshift SDK can be presented in your a
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
 ```cpp
-
     HelpshiftCocos2dx::showConversation();
 
 ```
@@ -59,7 +58,6 @@ ensue until it is resolved (and the resolution is accepted by the user) or rejec
 ## Integrating FAQs {#faqs-view}
 
 ```cpp
-
     HelpshiftCocos2dx::showFAQs();
 
 ```
@@ -92,7 +90,6 @@ English translation will be used for non-localized FAQs. To use deep linking in 
 </Centered>
 
 ```cpp
-
     HelpshiftCocos2dx::showFAQSection("11");
 
 ```
@@ -116,7 +113,6 @@ Check out [API Options](/cocos2d-x/sdk-configuration-ios/) for more configuratio
 </Centered>
 
 ```cpp
-
     HelpshiftCocos2dx::showSingleFAQ("51");
 
 ```
@@ -161,7 +157,6 @@ This will be a config option which will be supported by the showFAQs and showFAQ
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueVector tags;
     tags.push_back(Value(""));
     tags.push_back(Value("Testing1"));
@@ -185,7 +180,6 @@ This will be a config option which will be supported by the showFAQs and showFAQ
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCArray *tags = new cocos2d::CCArray();
     tags->addObject(new CCString("Testing1"));
     tags->addObject(new CCString("Cocos2dx"));
@@ -258,7 +252,6 @@ To show the dynamic form, use the `HelpshiftCocos2dx::showDynamicForm` API
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueVector forms;
     ValueMap conversationMap;
     conversationMap[HS_FLOW_TYPE] = HS_CONVERSATION_FLOW;
@@ -300,7 +293,6 @@ To show the dynamic form, use the `HelpshiftCocos2dx::showDynamicForm` API
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCArray *forms = CCArray::create();
     cocos2d::CCDictionary *conversationForm = CCDictionary::create();
     conversationForm->setObject(new CCString(HS_CONVERSATION_FLOW), HS_FLOW_TYPE);
@@ -357,7 +349,6 @@ This API can be used to close an active Helpshift session and return to the app.
 Sample usage for close Helpshiftg Support session API:
 
 ```cpp
-
     void helpshiftSupportSessionCompletionHandler() {
         // your code here
     }
@@ -384,7 +375,6 @@ The Helpshift SDK provides an API to allow developers set the testing mode for t
 Example :
 
 ```cpp
-
     #ifdef DEBUG
         HelpshiftCocos2dx::enableTestingMode();
     #endif

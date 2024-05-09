@@ -82,9 +82,6 @@ And for FCM users, the API key can be found at your
 1. Send the device registration id to Helpshift via the `Core.registerDeviceToken` API
 
 ```java
-
-
-
         import com.helpshift.Core;
 
         private void sendRegistrationIdToBackend() {
@@ -97,7 +94,6 @@ And for FCM users, the API key can be found at your
 2. Use `Core.handlePush` API which takes a Map argument.
 
 ```java
-
         @Override
         public void onMessageReceived(RemoteMessage message) {
           Map<String, String> data = message.getData();
@@ -160,7 +156,6 @@ Example:
 / .code-header /
 
 ```cpp
-
     ValueMap config;
     config[HS_ENABLE_IN_APP_NOTIFICATION] = Value("yes");
     HelpshiftCocos2dx::install("<YOUR_API_KEY>",
@@ -174,7 +169,6 @@ Example:
 / .code-header /
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     config->setObject(new CCString("yes"), HS_ENABLE_IN_APP_NOTIFICATION);
 
@@ -192,7 +186,6 @@ By default the application icon is used as the notification icon. You can custom
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("notificationIcon", R.drawable.notification_icon_small);
     config.put("largeNotificationIcon", R.drawable.notification_icon_large);
@@ -211,7 +204,6 @@ By default the default device notification sound is used for helpshift notificat
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("notificationSound", R.raw.notification_sound);
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -233,7 +225,6 @@ Applicable to SDK v1.8.0 and above.
 Starting from Android Oreo, Helpshift notifications will have a default channel set as `In-app Support`. The name and description for this default channel can be changed by setting the following settings. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
 
 ```cpp
-
     <string name="hs__default_notification_channel_name">Example Support Name</string>
     <string name="hs__default_notification_channel_desc">Example Support Description</string>
 
@@ -244,7 +235,6 @@ If you want to customize the notification channels, you can create your own cust
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("supportNotificationChannelId", "SUPPORT_CHANNEL_ID");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -262,7 +252,6 @@ posted, you can get the notification count synchronously from
 cache or asynchronously from the server by setting the `isAsync` flag. Example:-
 
 ```cpp
-
     void didReceiveNotificationCountListenerArg(int count) {
         CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
     }

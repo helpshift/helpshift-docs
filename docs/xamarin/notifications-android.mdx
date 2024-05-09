@@ -86,7 +86,6 @@ Implement FCM push in your app. Refer to the
 1. Send the device registration id to Helpshift via the `HelpshiftApi.HelpshiftCore.RegisterDeviceToken` API
 
 ```csharp
-
         HelpshiftApi.HelpshiftCore.RegisterDeviceToken(token);
 
 ```
@@ -100,7 +99,6 @@ Applicable to version 3.0.0 and above.
 </Admonition>
 
 ```csharp
-
 		public override void OnMessageReceived(RemoteMessage message)
         {
             IDictionary<string, string> data = message.Data;
@@ -143,7 +141,6 @@ Example:
 <TabItem value="Using HelpshiftInstallConfig" label="Using HelpshiftInstallConfig">
 
 ```csharp
-
     HelpshiftInstallConfig config = new HelpshiftInstallConfig.Builder()
                                                               .SetEnableInAppNotifications(true)
                                                               .Build();
@@ -162,7 +159,6 @@ Applicable to version 3.0.0 and above.
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```csharp
-
     Dictionary<string,object> config = new Dictionary<string,object>();
     config.Add("enableInAppNotification", "yes");
     HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
@@ -186,7 +182,6 @@ If you want to show your user notifications for replies sent by an Agent to thei
 For example
 
 ```csharp
-
     HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(false);
 
 ```
@@ -196,7 +191,6 @@ If you want to fetch the notification count from the server, you can call the `R
 For example
 
 ```csharp
-
     HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(true);
 
 ```
