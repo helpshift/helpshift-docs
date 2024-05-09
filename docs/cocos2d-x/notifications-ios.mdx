@@ -49,7 +49,6 @@ If your app does not already use push, you will need to enable push for your app
         [[UIApplication sharedApplication] registerForRemoteNotifications];
         ...
     }
-
 ```
 
 </TabItem>
@@ -67,7 +66,6 @@ If your app does not already use push, you will need to enable push for your app
         [UIApplication sharedApplication registerForRemoteNotifications];
         ...
     }
-
 ```
 
 </TabItem>
@@ -142,7 +140,6 @@ to invoke the `registerDeviceToken:` API call inside the application delegate me
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
-
 ```
 
 When a push notification is received, the application delegate didReceiveRemoteNotification: is called. Additionally:
@@ -173,7 +170,6 @@ When receiving remote notifications when the app starts for the first time, or a
         }
         ...
     }
-
 ```
 
 For the didReceiveRemoteNotification delegate -
@@ -186,7 +182,6 @@ For the didReceiveRemoteNotification delegate -
                                  withController:self.window.rootViewController];
         }
     }
-
 ```
 
 If you need to handle badge reset in the application icon, you can do
@@ -219,7 +214,6 @@ to invoke the `registerDeviceToken:` API call inside the application delegate me
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
-
 ```
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
@@ -245,7 +239,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
       }
       completionHandler(...);
     }
-
 ```
 
 For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler: delegate -
@@ -259,7 +252,6 @@ For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHand
       }
       completionHandler();
     }
-
 ```
 
 If you need to handle badge reset in the application icon, you can do
@@ -343,7 +335,6 @@ Example:
                                "domain.helpshift.com",
                                "appId",
                                config);
-
 ```
 
 </TabItem>
@@ -356,7 +347,6 @@ Example:
                                "domain.helpshift.com",
                                "appId",
                                config);
-
 ```
 
 </TabItem>
@@ -371,7 +361,6 @@ Example:
 
 ```cpp
     HelpshiftCocos2dx::pauseDisplayOfInAppNotification(true);
-
 ```
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
@@ -383,8 +372,6 @@ This API takes a function pointer as an argument and calls that function with th
 		printf("Unread message count: %d\n", count);
 	}
 	HelpshiftCocos2dx::requestUnreadMessagesCount(true, didReceiveUnreadMessagesCount);
-
-
 ```
 
 <Admonition type="info" title="Note">

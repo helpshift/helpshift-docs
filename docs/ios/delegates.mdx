@@ -45,7 +45,6 @@ Class Definition:
 
     @interface MyDelegates : NSObject <HelpshiftSupportDelegate>
     @end
-
 ```
 
 Class Implementation
@@ -109,7 +108,6 @@ Class Implementation
     }
 
     @end
-
 ```
 
 Class Usage:
@@ -122,7 +120,6 @@ Class Usage:
 	.
     delegate = [[MyDelegates alloc] init];
     [[HelpshiftSupport sharedInstance] setDelegate:delegate];
-
 ```
 
 Please make sure you call `setDelegate` method before calling any Helpshift FAQ
@@ -159,8 +156,6 @@ For example:
     - (void) newConversationStartedWithMessage:(NSString *)newMessage {
         // your code for tracking new conversation
     }
-
-
 ```
 
 ### New message delegate {#delegate-user-replied-to-conversation}
@@ -181,7 +176,6 @@ All the replies from end users to Bot (QuickSearch Bot, Identity Bot) are also c
     static NSString *HelpshiftSupportUserRejectedTheSolution = @"User rejected the solution";
     static NSString *HelpshiftSupportUserSentScreenShot = @"User sent a screenshot";
     static NSString *HelpshiftSupportUserReviewedTheApp = @"User reviewed the app";
-
 ```
 
 Example usage:
@@ -192,7 +186,6 @@ Example usage:
         // your code here
       }
     }
-
 ```
 
 ### Conversation ended delegate {#delegate-conversation-ended}
@@ -203,7 +196,6 @@ This delegate is called whenever the ongoing Conversation is resolved, rejected 
     - (void) conversationEnded {
         // your code here
     }
-
 ```
 
 ### Customer satisfaction survey delegate {#csat-completed}
@@ -216,7 +208,6 @@ Example usage:
     - (void) userCompletedCustomerSatisfactionSurvey:(NSInteger)rating withFeedback:(NSString *)feedback {
         // your code here
     }
-
 ```
 
 ### New message received count delegate {#newmessage-recieved}
@@ -229,7 +220,6 @@ Example usage:
     - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
         // your code here
     }
-
 ```
 
 ### New in-app message received count delegate {#newmessageinapp-recieved}
@@ -243,7 +233,6 @@ Example usage:
     - (void) didReceiveInAppNotificationWithMessageCount:(NSInteger)count {
         // your code here
     }
-
 ```
 
 ### Display attachment delegate {#display-attachment}
@@ -257,8 +246,6 @@ Example usage:
     - (void) displayAttachmentFileAtLocation:(NSURL *)fileLocation onViewController:(UIViewController *)parentViewController {
         // your code here
     }
-
-
 ```
 
 ### Authentication failure delegate {#authetication-failure}

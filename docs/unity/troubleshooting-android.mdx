@@ -140,7 +140,6 @@ If you are using proguard in your build and also minimizing/obfuscating code the
     -keep class com.helpshift.** { *; }
     -dontwarn com.helpshift.**
     -keep class android.support.** { *; }
-
 ```
 
 ### Using AndroidX support libraries {#steps-to-build-with-android-x}
@@ -204,7 +203,6 @@ We recommend to move the manual FCM integration as described [here](/unity/notif
     java.lang.RuntimeException: Unable to start receiver com.helpshift.supportCampaigns.gcm.HSGcmBroadcastReceiver:
     java.lang.IllegalStateException: Not allowed to start service Intent { act=com.google.android.c2dm.intent.RECEIVE flg=0x1000010 pkg=com.example.app cmp=com.example.app
     com.helpshift.supportCampaigns.gcm.HSGcmIntentService (has extras) }: app is in background uid UidRecord{74a5fc3 u0a136 RCVR idle change:idle|uncached procs:1 seq(0,0,0)}
-
 ```
 
 ### Compilation errors with plugin versions starting 3.7.1 {#android-21-errors}
@@ -281,7 +279,6 @@ These UI issues are caused when hardware acceleration is turned off for Helpshif
         android:name="com.helpshift.support.activities.ParentActivity"
         android:hardwareAccelerated="true"
         android:theme="@style/Helpshift.Theme.Activity"/>
-
 ```
 
 ## Notification issues {#notification-issues}
@@ -351,7 +348,6 @@ import android.support.v7.app;
 public class ExampleActivity extends AppCompatActivity
 .
 .
-
 ```
 
 The ExampleActivity class needs the AppCompatActivity when loaded. If ExampleActivity loads before HelpshiftSdk.install() (which loads the secondary dex) call and AppCompatActivity was to be loaded from secondary dex then ExampleActivity would not be able to load and crash.

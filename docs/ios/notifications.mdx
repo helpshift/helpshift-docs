@@ -54,7 +54,6 @@ If your app does not already use push, you will need to enable push for your app
       [UIApplication sharedApplication registerForRemoteNotifications];
       ...
     }
-
 ```
 
 </TabItem>
@@ -70,7 +69,6 @@ If your app does not already use push, you will need to enable push for your app
         }
         ...
     }
-
 ```
 
 </TabItem>
@@ -142,8 +140,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
-
-
 ```
 
 </TabItem>
@@ -153,7 +149,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         HelpshiftCore.registerDeviceToken(deviceToken)
     }
-
 ```
 
 </TabItem>
@@ -187,7 +182,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
       }
       completionHandler(...);
     }
-
 ```
 
 </TabItem>
@@ -199,7 +193,6 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
             HelpshiftCore.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false, with: self.window?.rootViewController)
         }
     }
-
 ```
 
 </TabItem>
@@ -221,7 +214,6 @@ For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHand
       }
       completionHandler();
     }
-
 ```
 
 </TabItem>
@@ -359,7 +351,6 @@ to retrieve the unread messages count stored locally and display the unread coun
         [yourView setTextLabel:[NSString stringWithFormat:@"%d",count];
     });
 }
-
 ```
 
 or
@@ -370,7 +361,6 @@ or
         tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",count];
     });
 }
-
 ```
 
 <Admonition type="info" title="Note">

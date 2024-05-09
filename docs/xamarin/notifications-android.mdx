@@ -87,7 +87,6 @@ Implement FCM push in your app. Refer to the
 
 ```csharp
         HelpshiftApi.HelpshiftCore.RegisterDeviceToken(token);
-
 ```
 
 1. Inside your FirebaseMessagingService's `OnMessageReceived` method check "origin" is "helpshift" and pass the bundle data to `HelpshiftApi.HelpshiftCore.HandlePushNotification` API.
@@ -108,8 +107,6 @@ Applicable to version 3.0.0 and above.
                 HelpshiftApi.HelpshiftCore.HandlePushNotification(data);
             }
         }
-
-
 ```
 
 ## In-app notifications {#in-app-notifications}
@@ -146,7 +143,6 @@ Example:
                                                               .Build();
     HelpshiftCore.Initialize(HelpshiftApiProviderType.HelpshiftApiProviderTypeSupport);
     HelpshiftCore.Install ("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", config);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -166,7 +162,6 @@ Applicable to version 3.0.0 and above.
                       "<YOUR_COMPANY>.helpshift.com",
                       "<YOUR_APP_ID>",
                       config);
-
 ```
 
 </TabItem>
@@ -183,7 +178,6 @@ For example
 
 ```csharp
     HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(false);
-
 ```
 
 If you want to fetch the notification count from the server, you can call the `RequestUnreadMessagesCount` API with a `true` param value.
@@ -192,7 +186,6 @@ For example
 
 ```csharp
     HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(true);
-
 ```
 
 <Admonition type="info" title="Note">

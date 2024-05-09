@@ -59,7 +59,6 @@ For example:
     .
     .
     HelpshiftCocos2dx::registerSessionDelegates(hsSessionBegun, hsSessionEnded);
-
 ```
 
 ## Conversation delegates {#conversation-delegates}
@@ -87,7 +86,6 @@ If you want to keep track of when your app users send new messages to an ongoing
     #define HS_USER_REJECTED_SOLUTION "User rejected the solution"
     #define HS_USER_SENT_SCREENSHOT "User sent a screenshot"
     #define HS_USER_REVIEWED_APP "User reviewed the app"
-
 ```
 
 <Admonition type="info" title="Note">
@@ -145,7 +143,6 @@ For example:
                                                      csatHandler,
                                                      notificationHandler,
                                                      conversationEnded);
-
 ```
 
 ## Display attachment delegate {#display-attachment}
@@ -169,14 +166,12 @@ Example
                             "domain.helpshift.com",
                             "appId",
                             config);
-
 ```
 
 The application also needs to register the function which will be called when the Helpshift SDK detects a file with the registered file extension.
 
 ```cpp
     static void registerDisplayAttachmentDelegate (void (*displayAttachmentListener)(const char *filePath));
-
 ```
 
 After the attachment is downloaded, Helpshift checks for any app which can open it. If no such app is found, then we fall back to passing the file to the delegate handler in the app. There are two possible variants of the path parameter in HandleTapOnAttachmentFile(string path), one is FilePath and the other one is Uri.
@@ -258,7 +253,6 @@ If identity verification fails, the SDK will invoke one of the following delegat
         }
     }
     HelpshiftCocos2dx::registerAuthenticationFailureDelegate(authenticationFailure);
-
 ```
 
 ### User click on action delegate {#user-click-action}
@@ -285,5 +279,4 @@ For example:
         }
     }
     HelpshiftCocos2dx::registerActionCardDelegate(onActionCardClicked);
-
 ```

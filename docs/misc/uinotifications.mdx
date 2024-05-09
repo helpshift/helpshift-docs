@@ -32,7 +32,6 @@ Configure Push and In-app notifications if your app does not use UserNotificatio
 Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
 
 If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code to your AppDelegate's `application:didFinishLaunchingWithOptions:` method:
-
 ```
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 ...
@@ -107,8 +106,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
-
-
 ```
 
 </TabItem>
@@ -118,7 +115,6 @@ For Helpshift SDK to work with the Helpshift push notification service you will 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         HelpshiftCore.registerDeviceToken(deviceToken)
     }
-
 ```
 
 </TabItem>
@@ -156,7 +152,6 @@ When receiving remote notifications when the app starts for the first time, or a
         }
         ...
     }
-
 ```
 
 </TabItem>
@@ -180,7 +175,6 @@ When receiving remote notifications when the app starts for the first time, or a
             }
         ...
     }
-
 ```
 
 </TabItem>
@@ -201,7 +195,6 @@ For the didReceiveRemoteNotification delegate -
                                  withController:self.window.rootViewController];
         }
     }
-
 ```
 
 </TabItem>
@@ -213,7 +206,6 @@ For the didReceiveRemoteNotification delegate -
             HelpshiftCore.handleRemoteNotification(userInfo, isAppLaunch: false, with: self.window?.rootViewController)
         }
     }
-
 ```
 
 </TabItem>
@@ -223,7 +215,6 @@ For the didReceiveRemoteNotification delegate -
 If you need to handle badge reset in the application icon, you can do
 something like below in the `applicationDidBecomeActive:` delegate
 method:
-
 ```
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
@@ -316,8 +307,6 @@ If the local notification is one added by the Helpshift SDK, the "origin" field 
             [HelpshiftCore handleLocalNotification:notification withController:[[UIApplication sharedApplication] keyWindow].rootViewController];
         }
     }
-
-
 ```
 
 </TabItem>
@@ -329,7 +318,6 @@ If the local notification is one added by the Helpshift SDK, the "origin" field 
             HelpshiftCore.handleLocalNotification(notification, with:self.window?.rootViewController)
         }
     }
-
 ```
 
 </TabItem>
@@ -343,7 +331,6 @@ If you want to show your user notifications for replies you send to the issues t
 `[HelpshiftSupport requestUnreadMessagesCount:YES];`
 
 You can implement something like the following in the notification count delegate method:
-
 ```
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -354,7 +341,6 @@ You can implement something like the following in the notification count delegat
 
 Similarly for a `UITabBarItem` in the notification count delegate method
 you can implement something like:
-
 ```
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -364,31 +350,26 @@ you can implement something like:
 ```
 
 These will update your view or UITabBarItem whenever a new notification arrives in the delegate method. The situation can vary depending upon your app UI. **Showing notification counts at appropriate places would help you draw in your users so that you can engage them more in conversations and hence solve their problems better**. To display the notification count of unread messages stored locally to your users, you can call `requestUnreadMessagesCount`:
-
 ```
 [HelpshiftSupport requestUnreadMessagesCount:NO]
 ```
 
 to retrieve the unread messages count stored locally and display the unread count like:
-
 ```
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         [yourView setTextLabel:[NSString stringWithFormat:@"%d",count];
     });
 }
-
 ```
 
 or
-
 ```
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
     dispatch_async(dispatch_get_main_queue(), ^{
         tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",count];
     });
 }
-
 ```
 
 <Admonition type="info" title="Note">

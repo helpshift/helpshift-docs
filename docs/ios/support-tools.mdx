@@ -162,7 +162,6 @@ The withTagsMatching option will be should be added as an object against key “
 	apiBuilder.withTagsMatching = [[HelpshiftFAQFilter alloc] initWithFilterOperator:HsOperatorOr / HsOperatorAnd / HsOperatorNot andTags:@[@"tag1",@"tag2",...]];
 	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
 	[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -173,7 +172,6 @@ The withTagsMatching option will be should be added as an object against key “
 	NSDictionary * optionsDictionary = @{ @"withTagsMatching" : @{ @"operator" : @"or",
                                                                    @"tags" : @[@"iPhone",@"iPad"]}};
 	[HelpshiftSupport showFAQs:self withOptions:optionsDictionary];
-
 ```
 
 </TabItem>
@@ -393,7 +391,6 @@ The app can create any number of flows. These flows are then grouped into a dyna
 
 ```objc
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-
 ```
 
 3. Get an embeddable UINavigationController (for use in UITabBarController).
@@ -488,7 +485,6 @@ Example :
         }
         return NO;
     }
-
 ```
 
 ## Embeddable Messaging Experience {#embed-messaging}
@@ -550,7 +546,6 @@ Below is the sample code snippet for embedding conversation view controller into
       // [self performSegueWithIdentifier:@"primaryDetail" sender:self];
     }
     @end
-
 ```
 
 ### Handling User Login/Logout
@@ -577,7 +572,6 @@ You must disable automatic push handling in SDK via the disableAutomaticPushHand
                          domainName:@"<Domain Name>"
                               appID:@"<App ID>"
                          withConfig:[builder build]];
-
 ```
 
 ### In-App Notifications
@@ -632,7 +626,6 @@ Example :
     #ifdef DEBUG
         [HelpshiftCore enableTestingMode];
     #endif
-
 ```
 
 ## Close Helpshift Session {#closeHelpshiftSupportSession}
@@ -661,7 +654,6 @@ Example Code
     [HelpshiftSupport closeHelpshiftSupportSessionWithCompletionHandler:^{
         NSLog(@"Helpshift session closed");
     }];
-
 ```
 
 </div>
@@ -676,7 +668,6 @@ The Helpshift SDK uses background session calls for sending app data to the serv
 
 ```objc
     [HelpshiftCore handleEventsForBackgroundURLSession:completionHandler:];
-
 ```
 
 For example,
@@ -687,7 +678,6 @@ For example,
     completionHandler:(void (^)())completionHandler {
         [HelpshiftCore handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler];
     }
-
 ```
 
 This function will return a `BOOL` to indicate if the Helpshift SDK has handled the event.

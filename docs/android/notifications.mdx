@@ -108,7 +108,6 @@ And for FCM users, the API key can be found at your
           // Send registrationId to Helpshift
           Core.registerDeviceToken(context, regid);
         }
-
 ```
 
 1. Inside your "GcmBroadcastReceiver's `onReceive` method" check origin is "helpshift" and pass the intent to `Core.handlePush` API
@@ -126,7 +125,6 @@ And for FCM users, the API key can be found at your
           startWakefulService(context, (intent.setComponent(comp)));
           setResultCode(Activity.RESULT_OK);
         }
-
 ```
 
 1. If you are using GCM service which provides "Bundle" argument instead of Intent, you should use `Core.handlePush` API which takes Bundle argument.
@@ -139,7 +137,6 @@ And for FCM users, the API key can be found at your
             Core.handlePush(this, data);
           }
         }
-
 ```
 
 1. If you are using FCM's new `FirebaseMessagingService` which provides "RemoteMessage" argument, you should use `Core.handlePush` API which takes a Map argument.
@@ -153,7 +150,6 @@ And for FCM users, the API key can be found at your
             Core.handlePush(this, data);
           }
         }
-
 ```
 
 ## In-app notifications {#in-app-notifications}
@@ -189,7 +185,6 @@ By default the application icon is used as the notification icon. You can custom
                  "<YOUR_COMPANY>.helpshift.com",
                  "<YOUR_APP_ID>",
                  installConfig);
-
 ```
 
 </TabItem>
@@ -256,7 +251,6 @@ For example:
                  "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                  "YOUR_APP_ID",
                  config);
-
 ```
 
 </TabItem>
@@ -373,8 +367,6 @@ Fetching notification count can be done in two ways.
 
 ```java
         Integer notifCount = Support.getNotificationCount();
-
-
 ```
 
 ### Asynchronous fetch notification count {#asynchronous-fetch-count}
@@ -385,8 +377,6 @@ Fetching notification count can be done in two ways.
 
 ```java
         Support.getNotificationCount(countHandler, failHandler);
-
-
 ```
 
 - The notification count can be obtained from the message recived though
@@ -406,7 +396,6 @@ Fetching notification count can be done in two ways.
             }
           }
         };
-
 ```
 
 - The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `cache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
