@@ -1,0 +1,92 @@
+---
+sidebar_position: 10
+title: Getting Started
+description: "Adding Helpshift widget into your website is really easy. Follow this step-by-step guide to finish your setup within a minute."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Getting Started {#getting-started}
+
+<Intro>
+
+Adding Helpshift widget into your website is really easy. Follow this step-by-step guide to finish your setup within a minute.
+
+</Intro>
+
+## Introduction {#intro}
+
+<Image src="/static/books/web-chat/wc-embedded.png" width="major" centered />{" "}
+
+Helpshift’s widget allows you to provide a both helpcenter and chat experience on your website. It just takes one line of JavaScript to embed widget on your website.
+
+## **Step 1:** Adding the embed code {#adding-embed}
+
+Add this snippet just before the closing `</body>` tag of your page:
+
+```javascript
+<script>
+  (function () {
+    var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
+        DOMAIN = "<YOUR_DOMAIN>";
+        APP_ID = "<APP_ID>";
+        WIDGET_TYPE ="<WIDGET_TYPE>"
+
+    window.helpshiftConfig = {
+      platformId: PLATFORM_ID,
+      domain: DOMAIN,
+      appId: APP_ID,
+      widgetType: WIDGET_TYPE
+    };
+  }) ();
+
+  !function(t,e,n){if("function"!=typeof window.HelpshiftWidget){var i=function(){i.q.push(arguments)};i.q=[],window.HelpshiftWidget=i;var a,o=t.getElementsByTagName("script")[0];if(!t.getElementById(e)){(a=t.createElement("script")).async=!0,a.id=e,a.src="https://hs-widget.helpshift.com/init.js";var f=function(){window.HelpshiftWidget("init")};window.attachEvent?(a.attachEvent("onload",f),"function"==typeof n&&a.attachEvent("onerror",n)):(a.addEventListener("load",f,!1),"function"==typeof n&&a.addEventListener("error",n)),o.parentNode.insertBefore(a,o)}}else window.HelpshiftWidget("update")}(document,"hs-widget");
+</script>
+```
+
+1. Replace `YOUR_DOMAIN` with your Helpshift domain.
+   For example, _happyapps_ if your dashboard sits at _happyapps.helpshift.com_
+2. Replace `YOUR_PLATFORM_ID` with details found at `Settings` > `SDKs (for Developers)`
+   <Image src="/static/books/web-chat/wc-embed-sdk.png" width="full" />{" "}
+
+TODO-hs - We need an image to let customers know how they can get the App ID.
+
+## **Step 2:** Start using Helpshift widget {#start-using}
+
+Helpshift widget is now available on your website. Test it out by starting a helpcenter or chat.
+
+<Image src="/static/books/web-chat/wc-embed-success.png" width="full" />{" "}
+
+<Admonition type="info" title="Note">
+
+Make sure **Show widget Widget** is enabled under `Settings` > `App` > `widget`. <Image src="/static/books/web-chat/wc-enable-show.png"  width="full" />
+
+</Admonition>
+
+## Supported Browser Versions {#browser-support}
+
+The Helpshift widget currently supports the latest versions of following browsers:
+
+- Chrome
+- Firefox
+- Safari
+- Edge
+- Mobile Safari
+- Mobile Chrome
+
+## Troubleshooting {#troubleshoot}
+
+If you are having issues with your widget integration, head over to the [Troubleshooting](/web-chat/troubleshooting) section for further help.
