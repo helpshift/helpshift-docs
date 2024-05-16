@@ -34,13 +34,10 @@ Getting started with integrating Helpshift in your Android app.
 Add the following dependencies to your `build.gradle` file inside the dependencies section.
 
 ```groovy
-
     dependencies {
         implementation 'com.android.support:appcompat-v7:28.0.0'
         implementation 'com.helpshift:helpshift-sdkx:[% sdkx_android.sdk_version  %]'
     }
-
-
 ```
 
 Helpshift SDK comes with built-in support for 47 languages. An API to change SDK language is provided. More details [here](/sdkx_android/i18n/).
@@ -67,7 +64,6 @@ the 2 tokens to be passed when initializing Helpshift.
 Initialize SDK by calling `com.helpshift.Helpshift.install()` method.
 
 ```java
-
     public class MainApplication extends Application {
     @Override
       public void onCreate() {
@@ -86,8 +82,6 @@ Initialize SDK by calling `com.helpshift.Helpshift.install()` method.
         }
       }
     }
-
-
 ```
 
 <Admonition type="danger" title="Important">
@@ -145,7 +139,6 @@ Example:
 
     // pass the config map in the api
     Helpshift.showConversation(MainActivity.this, config);
-
 ```
 
 <CustomIssueFieldsKeyDeprecationNotice />
@@ -173,7 +166,6 @@ You can attach additional metadata to every new feedback started by the app user
 Use code:
 
 ```java
-
 HashMap<String, String> customMetadata = new HashMap<String, String();
 customMetadata.put("usertype","paid");
 customMetadata.put("level","7");
@@ -210,7 +202,6 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 5. Pass the map to `configMap` with key `"cifs"` of the `Helpshift.showConversation(this, configMap)`
 
 ```java
-
     Map<String, Object> joiningDate = new HashMap<>();
     joiningDate.put("type", "date");
     joiningDate.put("value", 1505927361535L);
@@ -240,8 +231,6 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     config.put("cifs", cifMap);
 
     Helpshift.showConversation(MainActivity.this, config);
-
-
 ```
 
 <CustomIssueFieldsKeyDeprecationNotice />

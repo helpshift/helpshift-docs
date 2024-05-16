@@ -70,7 +70,7 @@ HelpshiftX SDK _.zip_ folder includes:
 
 “User Attachments” feature is enabled for SDK which allows User to upload an attachment. The attachments can be picked from the Photo Library or can be captured directly using the camera. The options for these sources look like:
 
-<Image src="/static/books/sdkx_ios/attachment_picker_ios.png" width="half" />{" "}
+<Image src="/static/books/sdkx_ios/attachment_picker_ios.png" width="half" />
 
 To use the camera and photo library, Apple requires the app to have Usage Description strings in the Info.plist while. Failing to add these strings might result in app rejection. The following strings are needed for the attachment feature:
 
@@ -128,9 +128,7 @@ End-users can attach files such as pdf, video, etc in their issues. For iOS 10 a
 To use Helpshift's APIs, please import the Helpshift's namespace like below
 
 ```csharp
-
     using Helpshift;
-
 ```
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
@@ -151,7 +149,6 @@ the 2 tokens to be passed when initializing Helpshift.
 Initialize Helpshift by calling the method _install(platformId, domain)_ API
 
 ```csharp
-
     using Helpshift;
     .
     .
@@ -168,7 +165,6 @@ Initialize Helpshift by calling the method _install(platformId, domain)_ API
         }
         ...
     }
-
 ```
 
 #### Install Helpshift via ObjC {#objc-install}
@@ -176,7 +172,6 @@ Initialize Helpshift by calling the method _install(platformId, domain)_ API
 If you intend to initialize the SDK from Xcode using Objective C, You can specify Domain Name, Platform ID and other install configurations in the Objective-C code. To do this you need to override `application:didFinishLaunchingWithOptions` in `HsUnityAppcontroller` as shown below.
 
 ```objc
-
     #import <HelpshiftX/HelpshiftX.h>
     #import "HelpshiftX-Unity.h"
 
@@ -188,8 +183,6 @@ If you intend to initialize the SDK from Xcode using Objective C, You can specif
         [Helpshift installWithPlatformId:@"<your_platform_id>" domain:@"<your_domain_name>" config:installConfig];
         return [super application:application didFinishLaunchingWithOptions:launchOptions];
     }
-
-
 ```
 
 ## Integrating Feedback Section {#conversation-view}
@@ -231,7 +224,7 @@ help.ShowConversation(configMap);
 
 <Centered >
 
-<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />{" "}
+<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />
 
 </Centered>
 
@@ -325,7 +318,6 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
 5. Pass the map to `configMap` with key `"cifs"` of the `ShowConversation(configMap)`
 
 ```csharp
-
     Dictionary<string, object> joiningDate = new Dictionary<string, object>();
     joiningDate.Add("type", "date");
     joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
@@ -355,8 +347,6 @@ If you want to set Custom Issue Fields at the time of Issue creation, follow the
     config.put("cifs", cifMap);
 
     Helpshift.showConversation(MainActivity.this, config);
-
-
 ```
 
 <CustomIssueFieldsKeyDeprecationNotice />

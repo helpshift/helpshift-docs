@@ -117,7 +117,6 @@ HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
 builder.customMetaData = [[HelpshiftSupportMetaData alloc] initWithMetaData:@{@"usertype":@"paid", @"level":@"7", @"score":@"12345"}];
 HelpshiftAPIConfig *apiConfig = [builder build];
 [HelpshiftSupport showFAQs:self withConfig:apiConfig];
-
 ```
 
 </TabItem>
@@ -169,7 +168,6 @@ Developers can still use the `setMetadataBlock:` API to provide a block which re
                                                        gameObject.score, @"score",
                                                        nil];
 }];
-
 ```
 
 </TabItem>
@@ -194,7 +192,7 @@ Please make sure that the objects and keys are NSStrings only. `HelpshiftSupport
 
 </Admonition>
 
-<Image src="/static/books/ios/metadata-tags.png" width="half" />{" "}
+<Image src="/static/books/ios/metadata-tags.png" width="half" />
 
 You can attach tags with metadata to every new conversation via a reserved key constant `HelpshiftSupportTagsKey` to be used with `setMetadataBlock:` or to pass in `withOptions:` of support API's (supported from v4.2.0 and above) (of type `NSDictionary`) to pass `NSArray`(of only `NSStrings`) which get intepreted at server and added as Tags for the every new conversation.
 
@@ -408,7 +406,6 @@ You can implement something like the following in the didCheckIfConversationActi
         //No open Conversation
     }
 }
-
 ```
 
 ## Check if an active Conversation has ended {#check-if-conversation-ended}

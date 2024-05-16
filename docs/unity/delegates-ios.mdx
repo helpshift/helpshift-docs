@@ -59,11 +59,9 @@ If you want to keep track of when your app users start a new conversation throug
 For example:
 
 ```csharp
-
     public void newConversationStarted (string newConversationMessage) {
       // your code here
     }
-
 ```
 
 <Admonition type="info" title="Note">
@@ -77,11 +75,9 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 This delegate receives a callback when an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved in the Dashboard, rejected, timed out or archived.
 
 ```csharp
-
 public void conversationEnded() {
 // your code here
 }
-
 ```
 
 ## New message delegate {#delegate-user-replied-to-conversation}
@@ -91,24 +87,20 @@ public void conversationEnded() {
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
 ```csharp
-
     public const String HSUserAcceptedTheSolution = "User accepted the solution";
     public const String HSUserRejectedTheSolution = "User rejected the solution";
     public const String HSUserSentScreenShot = "User sent a screenshot";
     public const String HSUserReviewedTheApp = "User reviewed the app";
-
 ```
 
 For example:
 
 ```csharp
-
     public void userRepliedToConversation (string newMessage) {
       if (newMessage.equals(HelpshiftSdk.HSUserAcceptedTheSolution)) {
         // your code here
       }
     }
-
 ```
 
 <Admonition type="info" title="Note">
@@ -126,11 +118,9 @@ If you want to keep track of when your app user completes the customer satisfact
 For example:
 
 ```csharp
-
     public void userCompletedCustomerSatisfactionSurvey (string json) {
       // deserialize the json to get dictionary with rating and feedback keys
     }
-
 ```
 
 ## New message received count delegate {#newmessage-recieved}
@@ -140,11 +130,9 @@ This delegate is the response to the `requestUnreadMessagesCount` method. It pro
 Example usage:
 
 ```csharp
-
     public void didReceiveUnreadMessagesCount(string count) {
         // your code here
     }
-
 ```
 
 ## Conversation active delegate {#didCheckIfConversationActive}
@@ -154,7 +142,6 @@ This delegate responds to the `checkIfConversationActive` to get a boolean value
 Example usage:
 
 ```csharp
-
 	public void didCheckIfConversationActive(string isActive) {
 		if (isActive.Equals("true")) {
 			//Active Conversation
@@ -162,7 +149,6 @@ Example usage:
 			//No open Conversation
 		}
 	}
-
 ```
 
 ## Display attachment delegate {#display-attachment}
@@ -173,9 +159,6 @@ If the app does not wish to handle the attachment, and this delegate is not impl
 Example usage:
 
 ```csharp
-
-
-
     private HelpshiftSdk help;
 
     help = HelpshiftSdk.getInstance();
@@ -186,7 +169,6 @@ Example usage:
     public void displayAttachmentFile (string path) {
         // your code here
     }
-
 ```
 
 ## User click on Action delegate {#action-card}
@@ -204,7 +186,6 @@ HelpshiftUserAction holds the deserialzed data for the action type and data.
 Example usage:
 
 ```csharp
-
     public void userClickOnAction(string serializedJSONUserActionData)
     {
         HelpshiftUserAction userAction = HelpshiftJSONUtility.getUserActionData(serializedJSONUserActionData);

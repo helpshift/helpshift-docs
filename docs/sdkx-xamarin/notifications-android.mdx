@@ -39,7 +39,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
   src="/static/books/sdkx_android/app_notification.png"
   width="half"
   alt="urbanAirshipNotif.png"
-/>{" "}
+/>
 
 Helpshift enables you to send notifications to your users. This is
 particularly useful when you have multiple users on multiple platforms
@@ -64,7 +64,7 @@ you will have to add an **Android** as a platform in your app _(if you have not 
 <Image
   src="/static/books/helpshiftx/create_app_with_android_platform.png"
   width="full"
-/>{" "}
+/>
 
 Click on configure button and then click on the _push notifications_ option.
 
@@ -72,13 +72,13 @@ Enter your FCM key credentials per app, via the
 **Settings page > App listing in the left navigation > Scroll down to Push
 Notifications** settings section for the app.
 
-<Image src="/static/books/helpshiftx/add_fcm_http_v1.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/add_fcm_http_v1.png" width="full" />
 
 For FCM users, the Auth key file can be found at your
 [Firebase API Console.](https://console.firebase.google.com/) 
 For more information, [click here](https://firebase.google.com/docs/cloud-messaging/migrate-v1?hl=en&authuser=0#provide-credentials-manually).
 
-<Image src="/static/books/android/fcm_console.png" width="full" />{" "}
+<Image src="/static/books/android/fcm_console.png" width="full" />
 
 ## Configure the Helpshift Xamarin SDK to handle notifications {#configure-helpshift-xamarin-sdk}
 
@@ -99,7 +99,6 @@ Note that `pushNotificationData` needs to be of `IDictionary<string, string>` ty
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift`, the notification is a Helpshift notification.
 
 ```csharp
-
 // Registering push token with Helpshift SDK
 [Service(Exported = true)]
 [IntentFilter(new[] {"com.google.firebase.INSTANCE_ID_EVENT"})]
@@ -163,7 +162,6 @@ Based on the value of `shouldFetchFromServer`, the locally stored count will be 
 Please note that before calling this method, you need to set the listener for Helpshift events by calling the `Helpshift.SetHelpshiftEventsListener(eventsListener)` API.
 
 ```csharp
-
 namespace HelpshiftXamarinTestApp.Droid
 {
     [Application]
@@ -221,7 +219,6 @@ public class ExampleHelpshiftEventListener : IHelpshiftEventsListener
         Console.WriteLine("Helpshift User auth failed: " + authFailureReason);
     }
 }
-
 ```
 
 - The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). 

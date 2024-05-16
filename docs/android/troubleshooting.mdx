@@ -74,9 +74,7 @@ You can remove these classes from the _Helpshift.jar_ in two possible ways :
 #### command line
 
 ```bash
-
     zip -d Helpshift.jar org/apache/commons/codec/language/**
-
 ```
 
 #### custom ant task
@@ -101,46 +99,36 @@ Once done you can run a `clean & compile`. As these classes are already included
 
 If you get a dex merger error like below, enable the jumbo mode.
 
-```
-
+```text
     UNEXPECTED TOP-LEVEL EXCEPTION:
     com.android.dex.DexException: Cannot merge new index 68218 into a non-jumbo
     instruction!
-
-
 ```
 
 To enable jumbo mode in Gradle add the following to your build.gradle -
 
 ```groovy
-
     android {
         dexOptions {
             jumboMode = true
         }
     }
-
 ```
 
 To enable jumbo mode in Ant add the following to your project.properties -
 
 ```xml
-
     dex.force.jumbo=true
-
-
 ```
 
 ### Duplicate class error for `Lcom/helpshift/BuildConfig`
 
 If you get a dex error like below,
 
-```
-
+```text
     UNEXPECTED TOP-LEVEL EXCEPTION:
     com.android.dex.DexException: Multiple dex files define
     Lcom/helpshift/BuildConfig;
-
 ```
 
 This indicates that two **BuildConfig** files are getting added to the
@@ -149,24 +137,20 @@ App, once via the _Helpshift.jar_ file and then via the _helpshift-android-sdk_ 
 You can resolve this by deleting the **BuildConfig** file which comes with the Helpshift.jar by using the following command -
 
 ```bash
-
     zip -d Helpshift.jar com/helpshift/BuildConfig.class
-
 ```
 
 ### InflateException: Binary XML file: Error inflating class com.helpshift.views.HSTextInputEditText
 
 If you get a crash with the following error, check the android support library version you use:
 
-```
-
+```text
     java.lang.RuntimeException: Unable to resume activity {com.sampleimpactanalysis/com.helpshift.support.activities.ParentActivity}: android.view.InflateException:
     Binary XML file line #7: Binary XML file line #35: Error inflating class com.helpshift.views.HSTextInputEditText
 
     Suppressed: java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/design/widget/TextInputEditText;
 
     Caused by: java.lang.ClassNotFoundException: Didn't find class "android.support.design.widget.TextInputEditText"
-
 ```
 
 Helpshift SDK uses the "android.support.design.widget.TextInputEditText" class. Since this class was introduced in android support library v23.2.0, you would need to add dependencies for android support libraries equal to or higher than v23.2.0.
@@ -182,7 +166,7 @@ In order to receive push notifications from Helpshift, please note that that the
 - Click on the API key to be used with Helpshift on your Google console dashboard.
 - Set the Key restriction option to `None`
 
-<Image src="/static/books/android/ip-whitelisting.gif" width="full" />{" "}
+<Image src="/static/books/android/ip-whitelisting.gif" width="full" />
 
 ## Multi-process apps {#multi-process-apps}
 
@@ -210,29 +194,24 @@ Application.onCreate() {
         }
     }
 }
-
 ```
 
 ## Miscellaneous {#miscellaneous}
 
 ### Helpshift Logs with low priority DEBUG
 
-```
-
+```text
     02-19 20:35:49.853: D/HelpShiftDebug(7651): org.json.JSONException: No value for pr
     02-19 20:35:49.853: D/HelpShiftDebug(7651): at org.json.JSONObject.get(JSONObject.java:354)
     02-19 20:35:49.853: D/HelpShiftDebug(7651): at
-
 ```
 
 You can safely ignore the Helpshift SDK debug logs (log priority "DEBUG" / "Log.d") that are seen in DDMS / Android Monitor. These will not cause any issues with the proper functioning of the SDK.
 
 ### Helpshift Warning with low priority
 
-```
-
+```text
     03-13 16:49:52.667 30615-1447/? W/MessageQueue : Handler (com.helpshift.HSApiData$4){427f1eb8} sending message to a Handler on a dead thread
-
 ```
 
 This is just a warning, and this has been handled by the helpshift SDK. You can safely ignore it. These will not cause any issues with the proper functioning of the SDK.
@@ -244,12 +223,10 @@ This is just a warning, and this has been handled by the helpshift SDK. You can 
 These UI issues are caused when hardware acceleration is turned off for Helpshift's activities. To ensure that hardware acceleration is turned on, add this to your AndroidManifest.xml file.
 
 ```xml
-
     <activity
         android:name="com.helpshift.support.activities.ParentActivity"
         android:hardwareAccelerated="true"
         android:theme="@style/Helpshift.Theme.Activity"/>
-
 ```
 
 ## Known Issues {#known-issues}

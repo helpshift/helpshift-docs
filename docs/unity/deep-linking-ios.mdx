@@ -40,7 +40,7 @@ When editing your FAQ, select the text and then click on create a link.
   src="/static/books/misc/add-ios-deep-link-1.png"
   width="half"
   alt="add-ios-deep-link-1.png"
-/>{" "}
+/>
 
 In the dialog that pops up, enter your custom URL and save the FAQ.
 
@@ -48,16 +48,13 @@ In the dialog that pops up, enter your custom URL and save the FAQ.
   src="/static/books/misc/add-ios-deep-link-2.png"
   width="half"
   alt="add-ios-deep-link-2.png"
-/>{" "}
+/>
 
 If you want to use built-in support for deep links with FAQs, please use the following scheme for specifying the links
 
 ```xml
-
     <scheme>://helpshift/section/<publish-id>
     <scheme>://helpshift/faq/<publish-id>
-
-
 ```
 
 ## Handle deep links in your iOS App {#handle-deep-link}
@@ -73,7 +70,6 @@ Deep linking is handled out of the box for Helpshift related links.
 The required code resides in the `Helpshift/Plugins/iOS/HsUnityAppController.mm` which is a subclass of the UnityAppController class.
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     if([[url host] isEqualToString:@"helpshift"]) {
         NSArray *components = [[url path] componentsSeparatedByString:@"/"];
@@ -92,8 +88,6 @@ The required code resides in the `Helpshift/Plugins/iOS/HsUnityAppController.mm`
                    annotation:annotation];
 
     }
-
-
 ```
 
 ### Deep links with custom URL schemes {#custom-url-schemes}

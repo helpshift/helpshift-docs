@@ -129,7 +129,7 @@ Typical cases why you would want to use FAQ filtering are :
 FAQ filtering is a 2 step approach :
 
 1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
-   <Image src="/static/books/ios/faq-filtering.png" width="full" />{" "}
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />
 2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
 
 <Admonition type="info" title="Note">
@@ -157,25 +157,21 @@ The withTagsMatching option will be should be added as an object against key “
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
 ```objc
-
 	//If the developer wants to show all FAQs with tags iPad or iPhone
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
 	apiBuilder.withTagsMatching = [[HelpshiftFAQFilter alloc] initWithFilterOperator:HsOperatorOr / HsOperatorAnd / HsOperatorNot andTags:@[@"tag1",@"tag2",...]];
 	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
 	[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```objc
-
 	//If the developer wants to show all FAQs with tags iPad or iPhone
 	NSDictionary * optionsDictionary = @{ @"withTagsMatching" : @{ @"operator" : @"or",
                                                                    @"tags" : @[@"iPhone",@"iPad"]}};
 	[HelpshiftSupport showFAQs:self withOptions:optionsDictionary];
-
 ```
 
 </TabItem>
@@ -200,7 +196,7 @@ You can use the API call `showFAQSection:withController:withOptions:` to show fa
 
 You will need the Section Publish ID from the FAQ tab of Helpshift Dashboard:
 
-<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
 
 <Tabs>
 
@@ -245,7 +241,7 @@ You can use the API call `showSingleFAQ:withController:withOptions:` to show a s
 
 You will need the FAQ Publish ID from the FAQ tab of the Helpshift Dashboard:
 
-<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
 
 <Tabs>
 
@@ -394,9 +390,7 @@ The app can create any number of flows. These flows are then grouped into a dyna
    When using the `pushDynamicFormOnViewController:` API, if the view controller that is passed to this API is being presented modally, please make sure that the view controller is in full screen mode by using the following code:
 
 ```objc
-
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-
 ```
 
 3. Get an embeddable UINavigationController (for use in UITabBarController).
@@ -484,7 +478,6 @@ For the search entry to launch the appropriate FAQ screen, the application shoul
 Example :
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
         NSString *activityIdentifier = [userActivity.userInfo objectForKey:CSSearchableItemActivityIdentifier];
         if(activityIdentifier && [activityIdentifier hasPrefix:@"helpshift_faq_"]) {
@@ -492,7 +485,6 @@ Example :
         }
         return NO;
     }
-
 ```
 
 ## Embeddable Messaging Experience {#embed-messaging}
@@ -523,7 +515,6 @@ Example Code:
 Below is the sample code snippet for embedding conversation view controller into a master-detail UI setup (UISplitViewController)
 
 ```objc
-
     @interface MasterViewController()
     @property(nonatomic,strong) UIViewController* helpshiftConversationViewController;
     @end
@@ -555,7 +546,6 @@ Below is the sample code snippet for embedding conversation view controller into
       // [self performSegueWithIdentifier:@"primaryDetail" sender:self];
     }
     @end
-
 ```
 
 ### Handling User Login/Logout
@@ -575,7 +565,6 @@ You must disable automatic push handling in SDK via the disableAutomaticPushHand
 </Admonition>
 
 ```objc
-
     HelpshiftInstallConfigBuilder *builder = [HelpshiftInstallConfigBuilder new];
     builder.disableAutomaticPushHandling = YES;
 
@@ -583,7 +572,6 @@ You must disable automatic push handling in SDK via the disableAutomaticPushHand
                          domainName:@"<Domain Name>"
                               appID:@"<App ID>"
                          withConfig:[builder build]];
-
 ```
 
 ### In-App Notifications
@@ -635,11 +623,9 @@ The Helpshift SDK provides an API to allow developers set the testing mode for t
 Example :
 
 ```objc
-
     #ifdef DEBUG
         [HelpshiftCore enableTestingMode];
     #endif
-
 ```
 
 ## Close Helpshift Session {#closeHelpshiftSupportSession}
@@ -665,11 +651,9 @@ This API can be useful in situations where the app wants to open its own UI scre
 Example Code
 
 ```objc
-
     [HelpshiftSupport closeHelpshiftSupportSessionWithCompletionHandler:^{
         NSLog(@"Helpshift session closed");
     }];
-
 ```
 
 </div>
@@ -683,23 +667,17 @@ This section lists down the extra APIs which need to be implemented in order for
 The Helpshift SDK uses background session calls for sending app data to the server. In order for this to work correctly, the app developer needs to listen to the `application:handlleEventsForBackgroundURLSession:completionHandler:` and call the below Helpshift API
 
 ```objc
-
     [HelpshiftCore handleEventsForBackgroundURLSession:completionHandler:];
-
 ```
 
 For example,
 
 ```objc
-
-
-
     - (void) application:(UIApplication *)application
     handleEventsForBackgroundURLSession:(NSString *)identifier
     completionHandler:(void (^)())completionHandler {
         [HelpshiftCore handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler];
     }
-
 ```
 
 This function will return a `BOOL` to indicate if the Helpshift SDK has handled the event.

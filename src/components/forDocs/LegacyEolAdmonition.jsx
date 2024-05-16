@@ -64,7 +64,7 @@ export default function LegacyEolAdmonition() {
       on 31 Dec 2022, and end of support on 31 March 2023. Please upgrade to the{" "}
       <a href={newBookLink} target="_blank" rel="noreferrer">
         Latest SDK
-      </a>{" "}
+      </a>
       if you haven&apos;t already.
     </Admonition>
   );

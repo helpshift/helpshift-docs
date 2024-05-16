@@ -69,11 +69,8 @@ Android app right away -
 For example, update your `AndroidManifest.xml` as follows:
 
 ```xml
-
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="28"
               android:compileSDKVersion="28" android:buildToolsVersion="28" />
-
-
 ```
 
 <Admonition type="danger" title="Important">
@@ -91,14 +88,12 @@ For example, update your `AndroidManifest.xml` as follows:
 Add the following dependencies to your `build.gradle` file inside the depencencies section.
 
 ```groovy
-
     dependencies {
         implementation 'com.android.support:design:28.0.0'
         implementation 'com.android.support:recyclerview-v7:28.0.0'
         implementation 'com.android.support:cardview-v7:28.0.0'
         implementation 'com.helpshift:android-helpshift-aar:[% android.sdk_version  %]'
     }
-
 ```
 
 `design`, `cardview` and `recyclerview` library are required by the Helpshift SDK, make sure they've also been added.
@@ -162,7 +157,6 @@ Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by d
 <TabItem value="Using InstallConfig" label="Using InstallConfig">
 
 ```java
-
     import com.helpshift.Core;
     import com.helpshift.support.Support;
     import com.helpshift.InstallConfig;
@@ -188,7 +182,6 @@ Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by d
 <TabItem value="Using Map" label="Using Map">
 
 ```java
-
     import com.helpshift.Core;
     import com.helpshift.support.Support;
     ...
@@ -262,7 +255,6 @@ If you are having issues with Helpshift integration, head over to the [Troublesh
 - If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
 
 ```text
-
         # For Helpshift SDK <= 4.8.1
         -keepnames class * extends com.helpshift.support.fragments.MainFragment
 
@@ -312,7 +304,6 @@ If you are having issues with Helpshift integration, head over to the [Troublesh
     a smaller sized APK file that is more difficult to reverse
     engineer. For more information refer
     [Proguard Documentation](http://developer.android.com/tools/help/proguard.html)
-
 ```
 
 - In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
