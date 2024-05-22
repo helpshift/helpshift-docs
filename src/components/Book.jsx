@@ -6,9 +6,11 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import { bookShape } from "../constants/propTypes";
+import Label from "./Label";
 
 export default function Book({ book }) {
-  const { link, color, image, title, description, alt } = book;
+  const { link, color, image, title, description, alt, tag } = book;
+
   return (
     <li className="col-span-6">
       <Link
@@ -23,12 +25,15 @@ export default function Book({ book }) {
           />
         </div>
         <div className="mt-1 p-2 basis-full">
-          <p
-            to={link}
-            className="tracking-wide font-semibold text-base mb-0 text-gray-900 dark:text-gray-100"
-          >
-            {title}
-          </p>
+          <div className="flex">
+            <p
+              to={link}
+              className="tracking-wide font-semibold text-base mb-0 text-gray-900 dark:text-gray-100"
+            >
+              {title}
+            </p>
+            <Label tag={tag} />
+          </div>
           <p
             className="mb-0 text-zinc-900 dark:text-gray-300 text-sm"
             dangerouslySetInnerHTML={{
