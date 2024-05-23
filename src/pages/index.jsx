@@ -13,13 +13,13 @@ export default function Homepage() {
         <div className="py-16 pb-4 md:py-24 md:pb-12 max-w-full text-left dark:from-zinc-900 dark:to-zinc-900">
           <div className="mx-4 md:mx-8 xl:mx-20">
             <img
-              src="/img/helpshift-kws-logo.png"
-              className="w-30 md:w-40 hidden dark:block ml-0.5"
+              src="/img/helpshift-kws-logo-white.png"
+              className="w-20 md:w-28 hidden dark:block ml-0.5"
               alt="Helpshift logo"
             />
             <img
               src="/img/helpshift-kws-logo.svg"
-              className="w-30 md:w-40 block dark:hidden ml-0.5"
+              className="w-20 md:w-28 block dark:hidden ml-0.5"
               alt="Helpshift logo"
             />
             <h1 className="text-4xl md:text-5xl lg:text-6xl leading-none font-normal dark:text-white mb-2">
