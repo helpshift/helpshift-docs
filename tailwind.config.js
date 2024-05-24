@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: () => ({
-        "logo-white": "url('/img/helpshift-logo.png')",
-        "logo-dark": "url('/img/helpshift-logo-dark.png')",
+        "logo-white": "url('/img/helpshift-kws-logo-white.png')",
+        "logo-dark": "url('/img/helpshift-kws-logo.png')",
       }),
     },
   },
