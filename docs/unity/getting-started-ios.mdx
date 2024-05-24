@@ -110,9 +110,7 @@ If you are using Xcode 12.3 or above to build your project, please make sure you
 To use Helpshift's APIs, please import the Helpshift's namespace for iOS like below
 
 ```csharp
-
     using Helpshift;
-
 ```
 
 Helpshift can be used to support all the apps you publish. We uniquely identify each app that is registered with Helpshift using the combination of:
@@ -136,7 +134,6 @@ Select your App from the dropdown and copy the three tokens to be passed when in
 You can use the CSharp API for installing the Helpshift SDK.
 
 ```csharp
-
     using Helpshift;
     .
     .
@@ -154,7 +151,6 @@ You can use the CSharp API for installing the Helpshift SDK.
         }
         ...
     }
-
 ```
 
 #### Install Helpshift via ObjC {#objc-install}
@@ -162,7 +158,6 @@ You can use the CSharp API for installing the Helpshift SDK.
 If you intend to initialize the SDK from Xcode using Objective C, You can specify Api Key, Domain Name, App ID and other install configurations in the Objective-C code. To do this you need to override `application:didFinishLaunchingWithOptions` in `HsUnityAppcontroller` as shown below.
 
 ```objc
-
     #import <Helpshift/HelpshiftCore.h>
     #import <Helpshift/HelpshiftSupport.h>
     #import "Helpshift-Unity.h"
@@ -191,9 +186,6 @@ In order to receive callbacks from Helpshift, you must pass a valid game object 
 For its internal functioning, Helpshift needs to override below mentioned functions of `UIApplicationDelegate` protocol. The class `HsUnityAppController` overrides these functions as required. These methods are called by external iOS services and expect the application to call **completionHandler()**. By default, **UnityAppController** class does not implement these functions. If you require any of these functions or other features of your app, you must override these functions, comment out or remove default **completionHandler()** call and provide your own implementation as per your requirements.
 
 ```objc
-
-
-
     - (void) application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler {
         if (![HelpshiftCore handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler]) {
             // Handle events for background url session. Once you have implemented this function in UnityAppController, uncomment
@@ -225,7 +217,6 @@ For its internal functioning, Helpshift needs to override below mentioned functi
             completionHandler();
         }
     }
-
 ```
 
 ## Start using Helpshift {#start-using}
@@ -238,7 +229,6 @@ Then goto your Helpshift agent dashboard and reply to experience the in-app mess
 Sample usage for FAQs and conversation APIs:
 
 ```csharp
-
     public class MyGameControl : MonoBehaviour
     {
         private HelpshiftSdk help;
@@ -260,7 +250,6 @@ Sample usage for FAQs and conversation APIs:
             }
         }
     }
-
 ```
 
 <Admonition type="info" title="Note">

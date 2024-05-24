@@ -127,7 +127,7 @@ There are 2 ways in which this metadata can be attached to reported issues.
 
 </Admonition>
 
-<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
+<Image src="/static/books/android/metadata-tags.png" width="half" />
 
 Examples :
 
@@ -135,7 +135,6 @@ Examples :
    `HelpshiftSdk.HSTAGSKEY`. This is used with `updateMetaData` as follows:
 
 ```csharp
-
         HelpshiftSdk help = HelpshiftSdk.getInstance();
         Dictionary<string, object> configMap = new Dictionary<string, object>();
         configMap.Add("Level", "9");
@@ -143,14 +142,12 @@ Examples :
         configMap.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
         configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
         help.updateMetaData(configMap);
-
 ```
 
 2. You can attach tags with metadata to every reported issue via a reserved constant key
    `HSTAGSKEY`. This is used with the config dictionary as follows:
 
 ```csharp
-
         HelpshiftSdk help = HelpshiftSdk.getInstance();
         Dictionary<string, object> configD = new Dictionary<string, object>();
         configD.Add("gotoConversationAfterContactUs", "yes");
@@ -162,14 +159,12 @@ Examples :
         configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
         configD.Add(HelpshiftSdk.HSCUSTOMMETADATAKEY, configMap);
         help.showFAQs(configD);
-
 ```
 
 3. You can attach tags with metadata to every reported issue via a reserved constant key
    `HSTAGSKEY`. This is used with `customContactUsFlows` as follows:
 
 ```csharp
-
         HelpshiftSdk help = HelpshiftSdk.getInstance();
         Dictionary<string, object> customMeta = new Dictionary<string, object>();
         customMeta.Add ("level", "A");
@@ -184,8 +179,6 @@ Examples :
         faqSection.Add(HelpshiftSdk.HSFlowConfig, configMap);
 
         help.showDynamicForm("This is a dynamic form", new Dictionary<string, object>[] {faqSection});
-
-
 ```
 
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
@@ -219,7 +212,6 @@ Possible datatypes to be passed into the config are:
 | "b"  | String representation of boolean. For eg. "true" or "false". This corresponds to the checkbox type custom issue field on dashboard.                           |
 
 ```csharp
-
     HelpshiftSdk help = HelpshiftSdk.getInstance();
     Dictionary<string, object> configD = new Dictionary<string, object>();
 
@@ -232,7 +224,6 @@ Possible datatypes to be passed into the config are:
     customIssueFields.Add ("currency", new String[]{"dd", "Dollar"});
     configD.Add (HelpshiftSdk.HSCUSTOMISSUEFIELDKEY, customIssueFields);
     help.showFAQs(configD);
-
 ```
 
 ## Debug logs {#debug-logs}

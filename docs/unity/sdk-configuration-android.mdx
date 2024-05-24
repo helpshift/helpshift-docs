@@ -150,10 +150,8 @@ Available from SDK version 2.9.0 and above
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
 
 ```xml
-
     <string name="hs__default_notification_channel_name">Example Support Name</string>
     <string name="hs__default_notification_channel_desc">Example Support Description</string>
-
 ```
 
 If you want to customize the notification channels, you can create your own custom channels and provide their channel IDs using the following config key:
@@ -163,7 +161,6 @@ If you want to customize the notification channels, you can create your own cust
 For Example-
 
 ```csharp
-
     using Helpshift;
     .
     .
@@ -173,7 +170,6 @@ For Example-
     var configMap = new Dictionary<string, string>();
     configMap.Add("supportNotificationChannelId", "<support-channel-id>");
     help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
-
 ```
 
 ### enableDialogUIForTablets {#enableDialogUIForTablets}
@@ -305,7 +301,6 @@ this.help = HelpshiftSdk.getInstance();
 Dictionary<string, object> configMap = new Dictionary<string, object>();
 configMap.Add("font", "fonts/DancingScript-Regular.ttf");
 help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
-
 ```
 
 Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
@@ -314,7 +309,7 @@ Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
   src="/static/books/android/font-in-use.png"
   width="quarter"
   centered
-/>{" "}
+/>
 
 ### screenOrientation {#screenOrientation}
 
@@ -347,7 +342,6 @@ this.help = HelpshiftSdk.getInstance();
 Dictionary<string, object> configMap = new Dictionary<string, object>();
 configMap.Add("screenOrientation", 1);
 help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -380,7 +374,6 @@ this.help = HelpshiftSdk.getInstance();
 Dictionary<string, object> configMap = new Dictionary<string, object>();
 configMap.Add("enableLogging", "yes");
 help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
-
 ```
 
 ### disableErrorReporting {#disableErrorReporting}
@@ -407,7 +400,6 @@ this.help = HelpshiftSdk.getInstance();
 Dictionary<string, object> configMap = new Dictionary<string, object>();
 configMap.Add(HelpshiftSdk.DISABLE_ERROR_REPORTING, "yes");
 help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
-
 ```
 
 ## API Options {#api-options}
@@ -747,7 +739,7 @@ If you want to use this feature, you can turn the feature on and off ("Resolutio
 <Image
   src="/static/books/android/conversation-resolution-flag.png"
   width="full"
-/>{" "}
+/>
 
 #### For Older SDK versions 3.0 and below, please read the following:
 
@@ -925,13 +917,11 @@ The `showConversationInfoScreen` flag will determine if users can see the Conver
 Example :
 
 ```csharp
-
 private HelpshiftSdk help;
 this.help = HelpshiftSdk.getInstance();
 Dictionary<string, object> configMap = new Dictionary<string, object>();
 configMap.Add("showConversationInfoScreen", "yes");
 help.showConversation(configMap);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -961,7 +951,7 @@ A graphical typing indicator is shown to the end user if an Agent is currently r
 <Image
   src="/static/books/misc/enable-typing-indicator-app-setting.png"
   width="full"
-/>{" "}
+/>
 
 <div className="compact ">
 
@@ -1063,9 +1053,7 @@ After you complete the resource customization, follow the Resource Customization
 Starting from Android 6.0 (API level 23), users grant permissions to apps while the app is running, not when they install the app. The storage permissions can be removed from AndroidManifest.xml in case you do not want to use them. You can remove the `WRITE_EXTERNAL_STORAGE` permission with the following line in your final AndroidManifest.xml file:
 
 ```xml
-
         <uses-permission android:name=“android.permission.WRITE_EXTERNAL_STORAGE” tools:node=“remove”/>
-
 ```
 
 Instructions on how to override the AndroidManifest.xml file for Unity project is documented [here](https://docs.unity3d.com/Manual/android-manifest.html).

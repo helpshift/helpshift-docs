@@ -40,7 +40,7 @@ You can set the name and email for the user, using
 helpshift.setNameAndEmail("John Doe", "john.doe@johndoe.com");
 ```
 
-<Image src="/static/books/ios/username-email-sdk.png" width="half" />{" "}
+<Image src="/static/books/ios/username-email-sdk.png" width="half" />
 
 The SDK prefills the previously used name and email in the new conversation screen. If you want to clear these fields, please use the `setNameAndEmail` API with both params set to null. For example:
 
@@ -50,7 +50,7 @@ helpshift.setNameAndEmail(null, null);
 
 The name and email shows up in the issue's sidebar in the agent dashboard -
 
-<Image src="/static/books/common/username-email-admin.png" width="half" />{" "}
+<Image src="/static/books/common/username-email-admin.png" width="half" />
 
 <Admonition type="info" title="Note">
 
@@ -73,7 +73,7 @@ helpshift.login("unique-user-id-746501", "John Doe", "john.doe@app.co");
 
 This shows up in the issue's sidebar in the agent dashboard -
 
-<Image src="/static/books/common/user-id-admin.png" width="half" />{" "}
+<Image src="/static/books/common/user-id-admin.png" width="half" />
 
 <Admonition type="danger" title="Important">
 
@@ -81,7 +81,7 @@ This shows up in the issue's sidebar in the agent dashboard -
 
 In issue sidebar in the agent dashboard, other issues by the same user are also matched using user identifier. So make sure it is unique for each user.
 
-<Image src="/static/books/common/other-issues-by.png" width="half" />{" "}
+<Image src="/static/books/common/other-issues-by.png" width="half" />
 
 </Admonition>
 
@@ -152,7 +152,6 @@ Examples :
 
 
 ```csharp
-
         Helpshift help = new Helpshift();
         Dictionary<string, object> configMap = new Dictionary<string, object>();
         configMap.Add("Level", "9");
@@ -160,7 +159,6 @@ Examples :
         configMap.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
         configMap.Add(Helpshift.HSTAGSKEY, new string[] {"Whale"});
         help.updateMetaData(configMap);
-
 ```
 
 2. You can attach tags with metadata to every reported issue via a reserved constant key
@@ -168,7 +166,6 @@ Examples :
 
 
 ```csharp
-
         Helpshift help = new Helpshift();
         Dictionary<string, object> configD = new Dictionary<string, object>();
         configD.Add("gotoConversationAfterContactUs", "yes");
@@ -180,7 +177,6 @@ Examples :
         configMap.Add(Helpshift.HSTAGSKEY, new string[] {"Whale"});
         configD.Add(Helpshift.HSCUSTOMMETADATAKEY, configMap);
         help.showFAQs(configD);
-
 ```
 
 
@@ -213,7 +209,7 @@ In all the API calls that accept a config dictionary, you can add a metadata dic
 
 </Admonition>
 
-<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
+<Image src="/static/books/android/metadata-tags.png" width="half" />
 
 Example :
 
@@ -221,7 +217,6 @@ You can attach tags with metadata to every reported issue via a reserved constan
 `HSTAGSKEY`. This is used with the config dictionary as follows:
 
 ```csharp
-
         Helpshift help = new Helpshift();
         Dictionary<string, object> configD = new Dictionary<string, object>();
         configD.Add("gotoConversationAfterContactUs", "yes");
@@ -233,7 +228,6 @@ You can attach tags with metadata to every reported issue via a reserved constan
         configMap.Add(HelpshiftSdk.HSTAGSKEY, new string[] {"Whale"});
         configD.Add(HelpshiftSdk.HSCUSTOMMETADATAKEY, configMap);
         help.showFAQs(configD);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -257,7 +251,6 @@ Applicable to Helpshift Unity plugin v2.8.0 & above.
 This API determines if there is currently an ongoing Conversation in the SDK. You can use "CheckIfConversationActive()" and implement the Helpshift delegate method [didCheckIfConversationActive:(string isActive)](https://developers.helpshift.com/unity/delegates-ios#delegates) as shown below to get a string with value either `true` or `false`. This string value indicates whether there is an active Conversation open for the user. As soon as an end user opens the conversation screen, they will see a greeting message, and the conversation is considered active.
 
 ```csharp
-
 API:
 using Helpshift;
 .
@@ -275,7 +268,6 @@ public void didCheckIfConversationActive(string isActive) {
         //No open Conversation
     }
 }
-
 ```
 
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
@@ -310,7 +302,6 @@ Possible datatypes to be passed into the config are:
 Example:-
 
 ```csharp
-
 Helpshift help = new Helpshift();
 Dictionary<string, object> configD = new Dictionary<string, object>();
 
@@ -324,7 +315,6 @@ customIssueFields.Add ("currency", new String[]{"dd", "Dollar"});
 
 configD.Add (Helpshift.HSCUSTOMISSUEFIELDKEY, customIssueFields);
 help.showFAQs(configD);
-
 ```
 
 ## Debug logs {#debug-logs}
