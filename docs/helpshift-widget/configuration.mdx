@@ -58,8 +58,8 @@ To configure the widget's behavior, you'll need to add `widgetOptions` to the Em
 (function () {
   // The following part remains as it is in the Embed Code.
   var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
-    DOMAIN = "<YOUR_DOMAIN>";
-    APP_ID = "<YOUR_APP_ID>";
+    DOMAIN = "<YOUR_DOMAIN>",
+    APP_ID = "<YOUR_APP_ID>",
     WIDGET_TYPE = "<WIDGET_TYPE>";
 
   window.helpshiftWidgetConfig = {
@@ -162,15 +162,15 @@ Moreover, in scenarios where the user attaches objectionable content, it becomes
 ```javascript
 // The following part remains as it is in the Embed Code.
 var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
-  DOMAIN = "<YOUR_DOMAIN>";
-  APP_ID = "<YOUR_APP_ID>";
+  DOMAIN = "<YOUR_DOMAIN>",
+  APP_ID = "<YOUR_APP_ID>",
   WIDGET_TYPE = "<WIDGET_TYPE>";
 
 window.helpshiftWidgetConfig = {
   platformId: PLATFORM_ID,
   domain: DOMAIN,
   appId: APP_ID,
-  widgetType: WIDGET_TYPE
+  widgetType: WIDGET_TYPE,
   // other options, if applicable
   fullPrivacy: true
 };
@@ -238,6 +238,12 @@ You can use this configuration to show a single FAQ.
 **You'll need the `publish-id` of the FAQ to use this API:**
 
 <Image src="/static/books/misc/faq-publish-id.png" width="full" />
+
+<Admonition type="info" title="Note">
+
+FAQ ID takes precedence over Section ID. So if both are given, FAQ will be shown.
+
+</Admonition>
 
 ##### Example embed code:
 
