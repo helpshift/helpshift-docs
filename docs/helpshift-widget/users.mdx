@@ -1,7 +1,7 @@
 ---
 sidebar_position: 40
 title: Users
-description: "Track and manage users on Web Chat."
+description: "Track and manage users on Helpshift Widget."
 ---
 
 import {
@@ -23,7 +23,7 @@ import {
 
 <Intro>
 
-Track and manage users on Web Chat.
+Track and manage users on Helpshift Widget.
 
 </Intro>
 
@@ -33,11 +33,11 @@ Track and manage users on Web Chat.
 
 #### Overview
 
-A logged-in user uses Web Chat after providing your website with a username and password. If your website has logged-in users, we **highly recommend passing user identifiers (`userId` and/or `userEmail`)** with the `helpshiftConfig` object at the time of initialization. This helps your Agents provide a personalized support experience to your users, no matter which device or browser your end users are using. Passing the user identifiers to Web Chat also ensures ensures that a user's conversations are available only to them when they log in.
+A logged-in user uses Helpshift Widget after providing your website with a username and password. If your website has logged-in users, we **highly recommend passing user identifiers (`userId` and/or `userEmail`)** with the `helpshiftWidgetConfig` object at the time of initialization. This helps your Agents provide a personalized support experience to your users, no matter which device or browser your end users are using. Passing the user identifiers to Helpshift Widget also ensures that a user's conversations are available only to them when they log in.
 
 #### What to provide as user identifiers
 
-You can set the `userId` and/or `userEmail` to identify your users. We highly recommend using a `userId` to identify your users. **If you use emails to identify your users, you must pass them with the `userEmail` field with the `helpshiftConfig` object**.
+You can set the `userId` and/or `userEmail` to identify your users. We highly recommend using a `userId` to identify your users. **If you use emails to identify your users, you must pass them with the `userEmail` field with the `helpshiftWidgetConfig` object**.
 
 The following rules apply when you use both, userId and userEmail.
 
@@ -49,7 +49,7 @@ The following rules apply when you use both, userId and userEmail.
 
 #### How to provide user's information
 
-The helpshiftConfig object accepts the following parameters:
+The helpshiftWidgetConfig object accepts the following parameters:
 
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                  | Important considerations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -68,14 +68,16 @@ The helpshiftConfig object accepts the following parameters:
 ##### Example Embed Code
 
 ```javascript
-var PLATFORM_ID = "foo",
-  DOMAIN = "bar";
+var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
+  DOMAIN = "<YOUR_DOMAIN>";
+  APP_ID = "<YOUR_APP_ID>";
+  WIDGET_TYPE = "<WIDGET_TYPE>";
 
-window.helpshiftConfig = {
+window.helpshiftWidgetConfig = {
   platformId: PLATFORM_ID,
   domain: DOMAIN,
-  platformId: PLATFORM_ID,
-  domain: DOMAIN,
+  appId: APP_ID,
+  widgetType: WIDGET_TYPE,
   userId: "captain_planet",
   userEmail: "captain@example.com",
   userName: "Captain Planet",
@@ -85,39 +87,17 @@ window.helpshiftConfig = {
 
 ### Logging the users out {#logging-the-users-out}
 
-Once a user logs out from your website, you should stop sending the user identifiers with the `helpshiftConfig` object to ensure that other users can't view this user's conversations. After you log a user out, only the conversations started by anonymous users using that specific browser will be visible.
+Once a user logs out from your website, you should stop sending the user identifiers with the `helpshiftWidgetConfig` object to ensure that other users can't view this user's conversations. After you log a user out, only the conversations started by anonymous users using that specific browser will be visible.
 
 ### Anonymous Users {#anonymous-users}
 
 #### Overview
 
-An anonymous user is one who accesses Web Chat without providing your website with a username and password. If a user identifier is not passed with the `helpshiftConfig` object at the time on initialization, Helpshift assumes that the end user is an anonymous user, i.e. is not currently logged in. Similarly, if a user identifier is passed with the `helpshiftConfig` object, then the end user is assumed to be a logged-in user.
-
-If your use-case involves multiple logged-in or anonymous users using the same device, ideally you wouldn't want the conversations to be shared across logins. In this case, you should use the `clearAnonymousUserOnLogin` option with the `helpshiftConfig` object at the time of initialization. If you set `clearAnonymousUserOnLogin` to `true`, then anonymous users will be cleared from Web Chat whenever a new user logs in. Once cleared, such users, and their conversations, are not fetched again.
+An anonymous user is one who accesses Helpshift Widget without providing your website with a username and password. If a user identifier is not passed with the `helpshiftWidgetConfig` object at the time on initialization, Helpshift assumes that the end user is an anonymous user, i.e. is not currently logged in. Similarly, if a user identifier is passed with the `helpshiftWidgetConfig` object, then the end user is assumed to be a logged-in user.
 
 <Admonition type="info" title="Note">
 
-The anonymous user will be cleared from Web Chat after 7 days to make sure that the conversations by anonymous users do not persist on the browsers forever.
-
-</Admonition>
-
-##### Example Embed Code
-
-```javascript
-var PLATFORM_ID = "foo",
-  DOMAIN = "bar";
-
-window.helpshiftConfig = {
-  platformId: PLATFORM_ID,
-  domain: DOMAIN,
-  userId: "piano_man",
-  clearAnonymousUserOnLogin: true,
-};
-```
-
-<Admonition type="info" title="Note">
-
-The `clearAnonymousUserOnLogin` functionality does not impact the logged-in user's experience at all.
+The anonymous user will be cleared from Helpshift Widget after 7 days to make sure that the conversations by anonymous users do not persist on the browsers forever.
 
 </Admonition>
 
@@ -127,13 +107,13 @@ The `clearAnonymousUserOnLogin` functionality does not impact the logged-in user
 
 #### Overview
 
-User Identity Verification is a security measure that verifies that all requests made from your Web Chat widget to Helpshift are coming from authentic end users. This prevents 3rd parties or hackers from impersonating your users. You can learn more about User Identity Verification and the steps to configure it [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/878-user-identity-verification-what-is-user-identity-verification-and-how-do-i-set-it-up/).
+User Identity Verification is a security measure that verifies that all requests made from your Helpshift Widget to Helpshift are coming from authentic end users. This prevents 3rd parties or hackers from impersonating your users. You can learn more about User Identity Verification and the steps to configure it [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/878-user-identity-verification-what-is-user-identity-verification-and-how-do-i-set-it-up/).
 
-In order to ensure your users are verified, you should provide a "user authentication token" with the `helpshiftConfig` object at the time of initialization. You can find the steps to generate a "user authentication token" [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/880-user-identity-verification-how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The "user authentication token" is an HMAC Digest, which is generated via HMAC using SHA256.
+In order to ensure your users are verified, you should provide a "user authentication token" with the `helpshiftWidgetConfig` object at the time of initialization. You can find the steps to generate a "user authentication token" [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/880-user-identity-verification-how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The "user authentication token" is an HMAC Digest, which is generated via HMAC using SHA256.
 
 #### Sending the user authentication token to verify users' identity
 
-You can send the "user authentication token" along with the `userAuthToken` key of the `helpshiftConfig` object. If [Identity Verification is enabled on the Helpshift Dashboard](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/878-user-identity-verification-what-is-user-identity-verification-and-how-do-i-set-it-up/), Helpshift recalculates the unique user authentication token using the shared secret key, and compares the user authentication token sent by you to the recalculated value. If they're equal, the user's identity is verified, and the user is able to file Issues.
+You can send the "user authentication token" along with the `userAuthToken` key of the `helpshiftWidgetConfig` object. If [Identity Verification is enabled on the Helpshift Dashboard](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/878-user-identity-verification-what-is-user-identity-verification-and-how-do-i-set-it-up/), Helpshift recalculates the unique user authentication token using the shared secret key, and compares the user authentication token sent by you to the recalculated value. If they're equal, the user's identity is verified, and the user is able to file Issues.
 
 <Admonition type="info" title="Note">
 
@@ -145,12 +125,16 @@ You can send the "user authentication token" along with the `userAuthToken` key 
 ##### Example Embed Code
 
 ```javascript
-var PLATFORM_ID = "foo",
-  DOMAIN = "bar";
+var PLATFORM_ID = "<YOUR_PLATFORM_ID>",
+  DOMAIN = "<YOUR_DOMAIN>";
+  APP_ID = "<YOUR_APP_ID>";
+  WIDGET_TYPE = "<WIDGET_TYPE>";
 
-window.helpshiftConfig = {
+window.helpshiftWidgetConfig = {
   platformId: PLATFORM_ID,
   domain: DOMAIN,
+  appId: APP_ID,
+  widgetType: WIDGET_TYPE,
   userId: "captain_planet",
   userEmail: "captain@example.com",
   userName: "Captain Planet",
@@ -166,8 +150,8 @@ When making a request to Helpshift with no `userAuthToken` or an invalid `userAu
 
 - Anonymous users (users for whom you do not provide any identifiers) are always able to file issues.
 - Logged-in users (users for whom you provide an identifier such as `userId` or `userEmail`) are not able to file issues or see conversations if they are unverified. Unverified logged-in users will have the following experience:
-  - The Web Chat launcher icon will not be shown when the web page is loaded.
-  - The Web Chat widget will show an error (if it's opened by means of the `open` API).
+  - The Web Chat launcher icon will not be shown when the Web Chat is open in Helpshift Widget.
+  - Smart form submissions will fail in Helpcenter inside Helpshift Widget.
 - If the logged-in users are verified (i.e. a valid `userAuthToken` is provided), they are able to see their previous conversations and create new Issues. The UI for verified logged-in users looks and works exactly the same as it would if Identity Verification were turned off. Only unverified users are impacted as described above.
 
 ### Testing & Troubleshooting {#testing-and-troubleshooting}
