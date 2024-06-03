@@ -95,9 +95,31 @@ Once a user logs out from your website, you should stop sending the user identif
 
 An anonymous user is one who accesses Helpshift Widget without providing your website with a username and password. If a user identifier is not passed with the `helpshiftWidgetConfig` object at the time on initialization, Helpshift assumes that the end user is an anonymous user, i.e. is not currently logged in. Similarly, if a user identifier is passed with the `helpshiftWidgetConfig` object, then the end user is assumed to be a logged-in user.
 
+If your use-case involves multiple logged-in or anonymous users using the same device, ideally you wouldn't want the conversations to be shared across logins. In this case, you should use the `clearAnonymousUserOnLogin` option with the `helpshiftWidgetConfig` object at the time of initialization. If you set `clearAnonymousUserOnLogin` to `true`, then anonymous users will be cleared from Web Chat whenever a new user logs in. Once cleared, such users, and their conversations, are not fetched again.
+
 <Admonition type="info" title="Note">
 
-The anonymous user will be cleared from Helpshift Widget after 7 days to make sure that the conversations by anonymous users do not persist on the browsers forever.
+The anonymous user will be cleared from Web Chat after 7 days to make sure that the conversations by anonymous users do not persist on the browsers forever.
+
+</Admonition>
+
+##### Example Embed Code
+
+```javascript
+var PLATFORM_ID = "foo",
+  DOMAIN = "bar";
+
+window.helpshiftWidgetConfig = {
+  platformId: PLATFORM_ID,
+  domain: DOMAIN,
+  userId: "piano_man",
+  clearAnonymousUserOnLogin: true,
+};
+```
+
+<Admonition type="info" title="Note">
+
+The `clearAnonymousUserOnLogin` functionality does not impact the logged-in user's experience at all.
 
 </Admonition>
 
