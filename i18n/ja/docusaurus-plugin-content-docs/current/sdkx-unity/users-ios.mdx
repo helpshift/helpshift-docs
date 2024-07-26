@@ -23,7 +23,7 @@ import {
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介して SDK を初期化した後に呼び出す必要があります
 
 </Admonition>
 
@@ -33,31 +33,30 @@ SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.instal
 
 #### 概要
 
-ログインユーザーとは、ユーザー名とパスワードを入力した後にのみサポートチームと連絡を取ることができるユーザーのことを指しています。ログインユーザーがいる場合には、エージェントがエンドユーザーの使用デバイスにかかわらずユーザーにパーソナライズされたサポート体験を提供できるように、Login APIを使用してユーザーの識別子（ユーザーIDおよび/またはメールアドレス）を渡すことを強くお勧めしています。また、Login APIを使用することでユーザーの会話はログイン時にのみ利用可能となります。
+ログインユーザーとは、ユーザー名とパスワードを入力した後にのみサポートチームと連絡を取ることができるユーザーのことを指しています。ログインユーザーがいる場合には、エージェントがエンドユーザーの使用デバイスにかかわらずユーザーにパーソナライズされたサポート体験を提供できるように、Login API を使用してユーザーの識別子（ユーザー ID および/またはメールアドレス）を渡すことを強くお勧めしています。また、Login API を使用することでユーザーの会話はログイン時にのみ利用可能となります。
 
 #### 識別子として提供されるもの
 
-ユーザーの識別には、`userID`および/または`userEmail`を提供することが可能です。弊社ではユーザーIDの使用を強く推奨しております。しかしながら、ユーザーを識別するためにメールアドレスを使用する場合には、`HelpshiftSdk.GetInstance().Login(Dictionary<string, string> data)` API内のマップとしてそれを`userEmail`フィールドで渡す必要があります。`userID`と`userEmail`の両方を使用する場合、以下のロジックが適用されます。
+ユーザーの識別には、`userID`および/または`userEmail`を提供することが可能です。弊社ではユーザー ID の使用を強く推奨しております。しかしながら、ユーザーを識別するためにメールアドレスを使用する場合には、`HelpshiftSdk.GetInstance().Login(Dictionary<string, string> data)` API 内のマップとしてそれを`userEmail`フィールドで渡す必要があります。`userID`と`userEmail`の両方を使用する場合、以下のロジックが適用されます。
 
 <ul>
   <li>
-    ユーザーを検索する際、`userId`は
-`userEmail`よりも優先度が高くなっています
+    ユーザーを検索する際、`userId`は `userEmail`よりも優先度が高くなっています
   </li>
   <li>
     ユーザーIDが既存のユーザーに一致した場合、そのユーザーのメールアドレスは
-更新されます（メールアドレスが提供されている場合）
+    更新されます（メールアドレスが提供されている場合）
   </li>
   <li>
     メールアドレスが既存のユーザーに一致した場合、以下のロジックが適用されます。
     <ul>
       <li>
         メールアドレスが一致したユーザーにユーザーIDが存在しない場合、そのユーザー
-IDがそのユーザーに追加されます（ユーザーIDが提供されている場合）
+        IDがそのユーザーに追加されます（ユーザーIDが提供されている場合）
       </li>
       <li>
         もしもそのユーザーIDがメールアドレスが一致しているユーザーに対して既に存在する場合、新しい
-ユーザーが作成されます（異なるユーザーIDが提供されている場合）
+        ユーザーが作成されます（異なるユーザーIDが提供されている場合）
       </li>
     </ul>
   </li>
@@ -65,7 +64,7 @@ IDがそのユーザーに追加されます（ユーザーIDが提供されて�
 
 #### 使用方法
 
-ユーザーがアプリへのログインに成功するたびに、Helpshift SDKのLogin APIを呼び出す必要があります。Login APIは、以下のパラメーターを持っています。
+ユーザーがアプリへのログインに成功するたびに、Helpshift SDK の Login API を呼び出す必要があります。Login API は、以下のパラメーターを持っています。
 
 <table>
   <tr>
@@ -123,7 +122,7 @@ IDがそのユーザーに追加されます（ユーザーIDが提供されて�
   </tr>
 </table>
 
-Helpshiftでログインユーザーを作成するには、`userId`または`userEmail`のいずれかを使用する必要があります。
+Helpshift でログインユーザーを作成するには、`userId`または`userEmail`のいずれかを使用する必要があります。
 
 ```csharp
 using Helpshift;
@@ -136,61 +135,58 @@ using Helpshift;
  }
 
  void Login(){
-  void Login() {
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
-  _support.Login(userDetails);
- }
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
+}
 ```
 
 ### ユーザーのログアウト {#logging-out-users}
 
 #### 概要
 
-ユーザーがアプリからログアウトしたら、Helpshift SDKのLogout APIを呼び出し、他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
+ユーザーがアプリからログアウトしたら、Helpshift SDK の Logout API を呼び出し、他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
 
 <Admonition type="info" title="注意">
 
-Logout APIは、Login APIと組み合わせて使用することが期待されています。
+Logout API は、Login API と組み合わせて使用することが期待されています。
 
 </Admonition>
 
 #### 使用方法
 
 ```csharp
-
-    _support.Logout();
-
-
+_support.Logout();
 ```
 
 ### 匿名ユーザー {#anonymous-users}
 
 #### 概要
 
-匿名ユーザーとは、ユーザー名とパスワードなしでアプリにアクセスできるユーザーのことを指します。Login API経由でユーザー識別子（ユーザーIDおよび/またはメールアドレス）が渡されていない場合、Helpshiftはそのユーザーが匿名ユーザーであり、現在ログインしていないものとみなします。
+匿名ユーザーとは、ユーザー名とパスワードなしでアプリにアクセスできるユーザーのことを指します。Login API 経由でユーザー識別子（ユーザー ID および/またはメールアドレス）が渡されていない場合、Helpshift はそのユーザーが匿名ユーザーであり、現在ログインしていないものとみなします。
 
-複数のログインユーザー/匿名ユーザーが同じデバイスを使用してサポート会話中に情報のやり取りを行う（理想としてはログインをまたいだ共有を許可したくないない）ユースケースの場合には、`ClearAnonymousUserOnLogin(shouldClear)` APIを使用する必要があります。
+複数のログインユーザー/匿名ユーザーが同じデバイスを使用してサポート会話中に情報のやり取りを行う（理想としてはログインをまたいだ共有を許可したくないない）ユースケースの場合には、`ClearAnonymousUserOnLogin(shouldClear)` API を使用する必要があります。
 
 - `shouldClear`が**true**の場合 – 匿名ユーザーは、どのユーザーがログインしても消去されます。一度消去されると、そういったユーザー（およびその会話）は二度と取得できなくなります。
 - `shouldClear`が**false**の場合 – 匿名ユーザーのデータは保存され、ログインユーザーがログアウトすると、匿名ユーザーの会話履歴が表示されます。
@@ -212,11 +208,11 @@ help.ClearAnonymousUserOnLogin(shouldClear);
 
 #### 概要
 
-ユーザーの同一性の確認は、お客様のアプリからHelpshiftへのすべてのリクエストが正当なエンドユーザーからのものであることを確認するためのセキュリティ施策です。これにより、第三者やハッカーによるユーザーのなりすましを防止することができます。ユーザーの同一性の確認に関する詳細情報と設定の手順については、[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)をご参照ください。ユーザーを確実に認証するためには、初期化の際に`_support.Login(Dictionary<string, string> userData)`とともにユーザー認証トークンを提供する必要があります。ユーザー認証トークンの生成手順については、[こちら](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/)をご参照ください。ユーザー認証トークンはHMACダイジェストであり、SHA256を使用したHMACを介して生成されます。
+ユーザーの同一性の確認は、お客様のアプリから Helpshift へのすべてのリクエストが正当なエンドユーザーからのものであることを確認するためのセキュリティ施策です。これにより、第三者やハッカーによるユーザーのなりすましを防止することができます。ユーザーの同一性の確認に関する詳細情報と設定の手順については、[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)をご参照ください。ユーザーを確実に認証するためには、初期化の際に`_support.Login(Dictionary<string, string> userData)`とともにユーザー認証トークンを提供する必要があります。ユーザー認証トークンの生成手順については、[こちら](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/)をご参照ください。ユーザー認証トークンは HMAC ダイジェストであり、SHA256 を使用した HMAC を介して生成されます。
 
-#### HMACダイジェストを送信してユーザーの同一性を確認する
+#### HMAC ダイジェストを送信してユーザーの同一性を確認する
 
-Login API呼び出しでユーザー認証トークンを送信することができます。 Helpshiftダッシュボード（ドキュメントは[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)）で本人確認が有効になっている場合、Helpshiftは共有秘密鍵を使用して固有のユーザー認証トークンを再計算し、お客様から送信されたユーザー認証トークンと再計算された値を比較します。それらが一致していればユーザーの同一性が確認されたことになり、ユーザーは問題を提出することができます。
+Login API 呼び出しでユーザー認証トークンを送信することができます。 Helpshift ダッシュボード（ドキュメントは[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)）で本人確認が有効になっている場合、Helpshift は共有秘密鍵を使用して固有のユーザー認証トークンを再計算し、お客様から送信されたユーザー認証トークンと再計算された値を比較します。それらが一致していればユーザーの同一性が確認されたことになり、ユーザーは問題を提出することができます。
 
 ```csharp
 using Helpshift;
@@ -229,36 +225,36 @@ using Helpshift;
  }
 
  void Login(){
-  void Login() {
   Dictionary<string, string> userDetails = new Dictionary<string, string>();
-  
+
   string userId = generateUserId();
   string userEmail = fetchUserEmail();
   string userName = fetchUserName();
-  
+
   if (strings.IsNullOrEmpty(userId) && strings.IsNullOrEmpty(userEmail)) {
     throw new Exception("userId and userEmail both are empty. Invalid login! ");
   }
-  
+
   if (!strings.IsNullOrEmpty(userId)) {
     userDetails["userId"] = userId;
   }
-  
+
   if (!strings.IsNullOrEmpty(userEmail)) {
     userDetails["userEmail"] = userEmail;
   }
-  
+
   if (!strings.IsNullOrEmpty(userName)) {
     userDetails["userName"] = userName;
   }
 
   string userAuthToken = generateUserAuthToken();
-  
+
   if (!strings.IsNullOrEmpty(userAuthToken)) {
     userDetails["userAuthToken"] = userAuthToken;
   }
 
-  _support.Login(userDetails);
+  bool loginSuccess = _support.Login(userDetails);
+  Debug.Log("Helpshift - loginSucccess : " + loginSuccess);
  }
 ```
 
@@ -266,7 +262,7 @@ using Helpshift;
 
 - ダッシュボードでアプリの秘密鍵が再生成された場合、有効なユーザー認証トークンを生成するために、エンドポイントのコードも確実に更新する必要があります。続いて、古い秘密鍵を使用して生成されたユーザー認証トークンを使用したリクエストが無効になるように、管理者はダッシュボードから古い秘密鍵を削除する必要があります。
 
-- EnableFullPrivacyがオンになっている場合には、ユーザ認証トークンはユーザーIDに対してのみ生成されます。
+- EnableFullPrivacy がオンになっている場合には、ユーザー認証トークンはユーザー ID に対してのみ生成されます。
 
 </Admonition>
 
@@ -277,13 +273,13 @@ using Helpshift;
 本人確認がオンになっている場合、ユーザー認証トークンがない、もしくは無効なユーザー認証トークンを用いた状態でログインリクエストが行われると、本人確認が失敗となります。本人確認に失敗すると、以下のようになります。
 
 - 匿名ユーザー（開発者が識別子を提供していないユーザー）は、常に問題を提出することができます。
-- ログインユーザー（開発者がユーザーIDやメールアドレスなどの識別子を提供しているユーザー）は、認証されていない場合には問題を提出したり会話を確認したりすることができません。未認証のログインユーザーに対しては、フォームまたは対話型UIでエラーが表示されます。
+- ログインユーザー（開発者がユーザー ID やメールアドレスなどの識別子を提供しているユーザー）は、認証されていない場合には問題を提出したり会話を確認したりすることができません。未認証のログインユーザーに対しては、フォームまたは対話型 UI でエラーが表示されます。
 
-ログインユーザーが認証されると（つまり、有効なユーザー認証トークンが提供されると）、前回の問題を確認したり、新しい課題を作成したりすることができるようになります。認証が完了したログインユーザーのUIは本人確認がオフになっている場合とまったく同じように表示され、動作します。上記のような影響を受けるのは、認証が完了していないユーザーのみです。
+ログインユーザーが認証されると（つまり、有効なユーザー認証トークンが提供されると）、前回の問題を確認したり、新しい課題を作成したりすることができるようになります。認証が完了したログインユーザーの UI は本人確認がオフになっている場合とまったく同じように表示され、動作します。上記のような影響を受けるのは、認証が完了していないユーザーのみです。
 
 #### 失敗デリゲートの使用方法
 
-本人確認に失敗した場合、SDKは`AuthenticationFailedForUser(...)`デリゲートを呼び出し、アプリケーションに失敗を通知します。
+本人確認に失敗した場合、SDK は`AuthenticationFailedForUser(...)`デリゲートを呼び出し、アプリケーションに失敗を通知します。
 
 <table>
   <tr>
@@ -299,13 +295,13 @@ using Helpshift;
     <td>ユーザー認証トークンが提供されなかったとき</td>
     <td>
       ユーザー認証トークンを送信する予定はないものの将来的に実装する予定がある
-場合には、この失敗デリゲートを使用してアプリのアップデートを促すような独自のアラートを
-ユーザーに対して表示することができます。ユーザー認証トークンを使用せずに
-Login APIを使用している場合には、ダッシュボードで本人確認を有効にするとこれらの
-ユーザーは未認証であるとみなされてしまうため、これを使用すると良いかもしれません。
-このデリゲートの使用については、完全に任意となっております。前述の通り、
-Helpshiftでは未認証のユーザー
-が問題を提出することはできません。
+      場合には、この失敗デリゲートを使用してアプリのアップデートを促すような独自のアラートを
+      ユーザーに対して表示することができます。ユーザー認証トークンを使用せずに
+      Login
+      APIを使用している場合には、ダッシュボードで本人確認を有効にするとこれらの
+      ユーザーは未認証であるとみなされてしまうため、これを使用すると良いかもしれません。
+      このデリゲートの使用については、完全に任意となっております。前述の通り、
+      Helpshiftでは未認証のユーザー が問題を提出することはできません。
     </td>
   </tr>
   <tr>
@@ -316,25 +312,25 @@ Helpshiftでは未認証のユーザー
     <td>ユーザー認証トークンが無効だったとき</td>
     <td>
       Login APIを介して提供されるHMACダイジェストが無効な場合、Helpshift
-はユーザーによる問題の提出を阻止します。以下の場合、ユーザー認証トークン
-が無効である可能性があります。
+      はユーザーによる問題の提出を阻止します。以下の場合、ユーザー認証トークン
+      が無効である可能性があります。
       <ul>
         <li>
           プログラミングにミスがある場合。HMACダイジェストの生成方法については、{" "}
-<a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
-こちら
-</a>をご参照ください。
+          <a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
+            こちら
+          </a>
+          をご参照ください。
         </li>
         <li>
           ダッシュボードで秘密鍵を再生成したものの、
-ユーザー認証トークンを更新していなかった場合。
+          ユーザー認証トークンを更新していなかった場合。
         </li>
         <li>第三者がリクエストを試みている場合。</li>
       </ul>
       ユーザー認証トークンが無効な場合、前述の通りエンドユーザーは問題を提出できず、
-エラーが表示されます。独自のアラートを表示したり、サーバーから正しい認証トークンを
-再取得したい場合には、
-このデリゲートを使用します。
+      エラーが表示されます。独自のアラートを表示したり、サーバーから正しい認証トークンを
+      再取得したい場合には、 このデリゲートを使用します。
     </td>
   </tr>
   <tr>
@@ -365,5 +361,4 @@ using Helpshift;
 //..
 HelpshiftSdk _helpshiftX = HelpshiftSdk.GetInstance()
 _helpshiftX.SetHelpshiftEventsListener(new HSEventsListener());
-
 ```

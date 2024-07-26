@@ -29,11 +29,13 @@ import {
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります。
+
+- Android 13 以降では、通知のアクセス許可はクライアントアプリによって要求されるはずです。
 
 </Admonition>
 
-## Helpshiftを介したプッシュ通知 {#push-via-helpshift}
+## Helpshift を介したプッシュ通知 {#push-via-helpshift}
 
 <Image
   src="/static/books/sdkx_android/app_notification.png"
@@ -41,43 +43,43 @@ SDKに含まれているすべてのパブリックAPIは、[Helpshift.install()
   alt="urbanAirshipNotif.png"
 />{" "}
 
-Helpshiftでは、エージェントが会話に返信したタイミングでプッシュ通知を送信することができます。
+Helpshift では、エージェントが会話に返信したタイミングでプッシュ通知を送信することができます。
 
 ### 前提条件 {#gcm-prerequisites}
 
-アプリにFCMプッシュ通知を実装します。
+アプリに FCM プッシュ通知を実装します。
 
-FCMについては、
+FCM については、
 [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging)のドキュメントをご参照ください。
 
-### Helpshiftエージェントダッシュボードを構成する {#configure-helpshift-push-admin}
+### Helpshift エージェントダッシュボードを構成する {#configure-helpshift-push-admin}
 
-Helpshiftのシステムがユーザー
-にプッシュ通知を送信できるようにするには、アプリにプラットフォームとして**Android**を追加する必要があります_（まだ追加していない場合）_。
+Helpshift のシステムがユーザー
+にプッシュ通知を送信できるようにするには、アプリにプラットフォームとして**Android**を追加する必要があります*（まだ追加していない場合）*。
 
 <Image
   src="/static/books/helpshiftx/create_app_with_android_platform.png"
   width="full"
 />{" "}
 
-「構成」ボタンをクリックし、_プッシュ通知_オプションをクリックします。
+「構成」ボタンをクリックし、*プッシュ通知*オプションをクリックします。
 
 **「設定」ページ、左側のナビゲーションにある「アプリ一覧」の順に移動し、
 プッシュ
-通知の設定**セクションまで下にスクロールし、アプリごとにFCMキーの認証情報を入力します。
+通知の設定**セクションまで下にスクロールし、アプリごとに FCM キーの認証情報を入力します。
 
 <Image src="/static/books/helpshiftx/add_fcm_token.png" width="full" />{" "}
 
-FCMユーザーの場合、APIキーは
-[Firebase APIコンソール](https://console.firebase.google.com/)でご確認いただけます。
+FCM ユーザーの場合、API キーは
+[Firebase API コンソール](https://console.firebase.google.com/)でご確認いただけます。
 
 <Image src="/static/books/android/fcm_console.png" width="full" />{" "}
 
 <br />
 
-### SDKを構成する {#configure-sdkx-android}
+### SDK を構成する {#configure-sdkx-android}
 
-1. `Helpshift.registerDeviceToken` API経由でHelpshiftにデバイス登録IDを送信します。
+1. `Helpshift.registerDeviceToken` API 経由で Helpshift にデバイス登録 ID を送信します。
 
 ```java
         public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -91,7 +93,7 @@ FCMユーザーの場合、APIキーは
       }
 ```
 
-2. 引数"RemoteMessage"を提供するFCMの新しい`FirebaseMessagingService`を使用するには、引数Mapを取る`Helpshift.handlePush` APIを使用する必要があります。
+2. 引数"RemoteMessage"を提供する FCM の新しい`FirebaseMessagingService`を使用するには、引数 Map を取る`Helpshift.handlePush` API を使用する必要があります。
 
 ```java
         @Override
@@ -118,7 +120,7 @@ FCMユーザーの場合、APIキーは
 
 <Admonition type="info" title="注意">
 
-FCMのデバイストークンがプッシュ通知に登録されている場合、アプリ内通知は無効化されます。アプリ内通知が無効化されるのは、プッシュ通知とアプリ内通知の重複を回避するためです。
+FCM のデバイストークンがプッシュ通知に登録されている場合、アプリ内通知は無効化されます。アプリ内通知が無効化されるのは、プッシュ通知とアプリ内通知の重複を回避するためです。
 
 </Admonition>
 
@@ -148,7 +150,7 @@ FCMのデバイストークンがプッシュ通知に登録されている場�
 
 ## 通知音のカスタマイズ {#notificationSound}
 
-デフォルトでは、デフォルトのデバイス通知音がHelpshiftの通知に使用されます。通知音は、インストール呼び出しの構成を使用してカスタマイズすることができます。
+デフォルトでは、デフォルトのデバイス通知音が Helpshift の通知に使用されます。通知音は、インストール呼び出しの構成を使用してカスタマイズすることができます。
 
 例:
 
@@ -173,7 +175,7 @@ FCMのデバイストークンがプッシュ通知に登録されている場�
 
 ## 通知チャネルのカスタマイズ {#notificationChannels}
 
-Android Oreo以降、Helpshiftの通知は`In-app Support`という名前のデフォルトのチャネルを作成します。デフォルトのチャネル名と説明をカスタマイズする場合は、`install`呼び出しの`config`を使用します。
+Android Oreo 以降、Helpshift の通知は`In-app Support`という名前のデフォルトのチャネルを作成します。デフォルトのチャネル名と説明をカスタマイズする場合は、`install`呼び出しの`config`を使用します。
 
 例:
 
@@ -198,7 +200,7 @@ Android Oreo以降、Helpshiftの通知は`In-app Support`という名前のデ�
 
 ## アプリ内通知を構成する {#in-app}
 
-Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、フラグを`false`に設定します。このフラグの規定値は`true`であり、この場合アプリ内通知が有効化されます。
+Helpshift SDK が提供するアプリ内通知サポートが不要な場合には、フラグを`false`に設定します。このフラグの規定値は`true`であり、この場合アプリ内通知が有効化されます。
 
 - `Flag:` enableInAppNotification
 - `Values:` true/false
@@ -227,12 +229,12 @@ Helpshift SDKが提供するアプリ内通知サポートが不要な場合に�
 
 ## ユーザーに返信が送信された際の通知数の表示 {#showing-notification-count}
 
-サーバーから未読メッセージの数を取得するには、`requestUnreadMessageCount(boolean shouldFetchFromServer)` APIを呼び出します。このAPIは、未読メッセージの数をデリゲート経由で返します。
+サーバーから未読メッセージの数を取得するには、`requestUnreadMessageCount(boolean shouldFetchFromServer)` API を呼び出します。この API は、未読メッセージの数をデリゲート経由で返します。
 `shouldFetchFromServer`の値に基づき、`shouldFetchFromServer`が`false`の場合にはローカルに保存されている数が返され、`shouldFetchFromServer`が`true`の場合にはサーバーからリモートで取得します。
 
 ```java
     private void updateAppBadgeCount(){
-        Helpshift.requestUnreadMessageCount(true)
+        Helpshift.requestUnreadMessageCount(false);
     }
 
     // ...
@@ -253,4 +255,4 @@ Helpshift SDKが提供するアプリ内通知サポートが不要な場合に�
     // ...
 ```
 
-- 通知の数は、SDKのキャッシュとHelpshiftのサーバーからこのAPIを介して取得されます（上記の例では`fromCache`の値で示されています）。しかしながら、Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
+- 通知の数は、SDK のキャッシュと Helpshift のサーバーからこの API を介して取得されます（上記の例では`fromCache`の値で示されています）。しかしながら、Helpshift サーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）に API に対する次の呼び出しが行われた場合にのみ値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は 1 分、そして非アクティブな問題の場合には 5 分に設定されています。

@@ -19,23 +19,23 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Helpshiftのデリゲート {#delegates}
+# Helpshift のデリゲート {#delegates}
 
 <Intro>
 
-Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
+Helpshift SDK では、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
 
 </Intro>
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります
 
 </Admonition>
 
-## Helpshiftのデリゲート実装 {#helpshift-delegates-implementation}
+## Helpshift のデリゲート実装 {#helpshift-delegates-implementation}
 
-Helpshiftサポートデリゲートを実装したクラスを定義し、`sharedInstance`の`delegate`プロパティを設定してそれをHelpshiftに渡す必要があります。
+Helpshift サポートデリゲートを実装したクラスを定義し、`sharedInstance`の`delegate`プロパティを設定してそれを Helpshift に渡す必要があります。
 
 ### 例 {#helpshift-delegate-example}
 
@@ -97,9 +97,9 @@ Helpshift.sharedInstance().delegate = delegateHandler
 
 </Tabs>
 
-APIがデリゲートメソッドをコールバックできるように、デリゲートは必ずConversation APIを呼び出す前に設定してください。
+API がデリゲートメソッドをコールバックできるように、デリゲートは必ず Conversation API を呼び出す前に設定してください。
 
-## Helpshiftのイベント {#helpshift-delegate-events}
+## Helpshift のイベント {#helpshift-delegate-events}
 
 ### 会話の状態イベント {#conversationStatus}
 
@@ -146,7 +146,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-### ウィジェットトグルイベント {#widgetToggle}
+### ウィジェットの切り替えイベント {#widgetToggle}
 
 このイベントは、ユーザーがチャット画面を開いたり閉じたりしたときにトリガーされます。このイベントは、`"visible"`キーのブール値を用いてトリガーされます。ご参考までに、以下の例をご確認ください:
 
@@ -263,9 +263,151 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-### CSATの送信イベント {#csatSubmit}
+### エージェントメッセージの受信イベント
 
-このイベントは、会話の終了後にユーザーがCSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーがCSATフォームを介して提供した（星による）評価と追加のコメントを示しています。
+このイベントは、ユーザーが会話中にエージェントから何らかのメッセージを受信したときにトリガーされます。このメッセージには、テキストメッセージ、添付ファイル、アプリのレビューのリクエスト、またはスクリーンショットのリクエストなどが含まれます。このデリゲートは、ボットによるメッセージや自動送信メッセージに対してはトリガーされません。
+
+- イベントの名前の定数: `HelpshiftEventNameAgentMessageReceived`
+- イベントの名前の生の値: `agentMessageReceived`
+- イベントのデータ:
+
+| キー（定数）                  | キー（生）  | データ型 |
+| ----------------------------- | ----------- | -------- |
+| HelpshiftEventDataPublishID   | publishId   | 文字列   |
+| HelpshiftEventDataCreatedTime | createdTs   | 数値     |
+| HelpshiftEventDataMessageType | type        | 文字列   |
+| HelpshiftEventDataMessageBody | body        | 文字列   |
+| HelpshiftEventDataAttachments | attachments | 配列     |
+
+`attachments`配列は辞書配列であり、各添付ファイルに対して 1 件の辞書を保持しています。添付ファイルの辞書のデータは、以下の通りです。
+
+| キー（定数）                  | キー（生）  | データ型 |
+| ----------------------------- | ----------- | -------- |
+| HelpshiftEventDataURL         | url         | 文字列   |
+| HelpshiftEventDataContentType | contentType | 文字列   |
+| HelpshiftEventDataFileName    | fileName    | 文字列   |
+| HelpshiftEventDataSize        | size        | 数値     |
+
+<Admonition type="info" title="注意">
+
+キーの定数は、SDK X 10.3.0 以降で利用可能です。古いバージョンの SDK X では、生のキーを代わりに使用してください。
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    if([eventName isEqualToString:HelpshiftEventNameAgentMessageReceived]) {
+        NSLog(@"Conversation publish ID : %@", data[HelpshiftEventDataPublishID]);
+        NSLog(@"Message created timestamp: %@", data[HelpshiftEventDataCreatedTime]);
+        NSLog(@"Message type: %@", data[HelpshiftEventDataMessageType]);
+        NSLog(@"Message body: %@", data[HelpshiftEventDataMessageBody]);
+
+        NSArray<NSDictionary *> *attachments = data[HelpshiftEventDataAttachments];
+        if(attachments) {
+            NSLog(@"Message has %lu attachments", (unsigned long)attachments.count);
+            for(NSDictionary *attachment in attachments) {
+                NSLog(@"Attachment file name: %@", attachment[HelpshiftEventDataFileName]);
+                NSLog(@"Attachment size: %@", attachment[HelpshiftEventDataSize]);
+                NSLog(@"Attachment content type: %@", attachment[HelpshiftEventDataContentType]);
+                NSLog(@"Attachment URL: %@", attachment[HelpshiftEventDataURL]);
+            }
+        } else {
+            NSLog(@"Message has no attachments");
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameAgentMessageReceived {
+        print("Conversation publish ID : \(data![HelpshiftEventDataPublishID]!)")
+        print("Message created timestamp: \(data![HelpshiftEventDataCreatedTime]!)")
+        print("Message type: \(data![HelpshiftEventDataMessageType]!)")
+        print("Message body: \(data![HelpshiftEventDataMessageBody]!)")
+        if let attachments = data?[HelpshiftEventDataAttachments] as? [[AnyHashable: Any]] {
+            print("Message has \(attachments.count) attachments")
+            for attachment in attachments {
+                print("Attachment file name: \(attachment[HelpshiftEventDataFileName]!)")
+                print("Attachment size: \(attachment[HelpshiftEventDataSize]!)")
+                print("Attachment content type: \(attachment[HelpshiftEventDataContentType]!)")
+                print("Attachment URL: \(attachment[HelpshiftEventDataURL]!)")
+            }
+        } else {
+            print("Message has no attachments")
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### アクション時のユーザークリックイベント
+
+このイベントは、ユーザーがアクションカードメッセージのリンクやアクションの呼び出しをクリックした時にトリガーされます。イベントのデータオブジェクトには`actionType`キーと`actionData`キーがあり、アクションの種類とアクションに関連付けられているデータを示しています。
+
+- イベントの名前の定数: `HelpshiftEventNameUserClickOnAction`
+- イベントの名前の生の値:`userClickOnAction`
+- イベントのデータ:
+
+| キー（定数）                 | キー（生） | データ型 |
+| ---------------------------- | ---------- | -------- |
+| HelpshiftEventDataActionType | actionType | 文字列   |
+| HelpshiftEventDataActionData | actionData | 文字列   |
+
+`HelpshiftEventDataActionType`は、次のいずれかです: -
+
+- `HelpshiftEventDataActionTypeCall`または`call`
+- `HelpshiftEventDataActionTypeLink`または`link`
+
+<Admonition type="info" title="注意">
+
+キーの定数は、SDK X 10.3.0 以降で利用可能です。古いバージョンの SDK X では、生のキーを代わりに使用してください。
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameUserClickOnAction]) {
+        NSLog(@"User click on action type: %@", data[HelpshiftEventDataActionType]);
+        NSLog(@"Data for clicked action: %@", data[HelpshiftEventDataActionData]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameUserClickOnAction {
+        print("User click on action type: \(data[HelpshiftEventDataActionType])")
+        print("Data for clicked action: \(data[HelpshiftEventDataActionData])")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### CSAT の送信イベント {#csatSubmit}
+
+このイベントは、会話の終了後にユーザーが CSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーが CSAT フォームを介して提供した（星による）評価と追加のコメントを示しています。
 
 - イベントの名前: `HelpshiftEventNameCSATSubmit`
 - イベントのデータ:
@@ -472,11 +614,11 @@ func authenticationFailedForUser(withReason reason: HelpshiftAuthenticationFailu
 
 </Tabs>
 
-### Helpshiftセッションのデリゲート {#session-delegates}
+### Helpshift セッションのデリゲート {#session-delegates}
 
-#### Helpshiftセッションの開始
+#### Helpshift セッションの開始
 
-Helpshiftセッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが開始するたびに発動します。
+Helpshift セッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshift セッションが開始するたびに発動します。
 
 - イベントの名前: `HelpshiftEventNameSessionStarted`
 
@@ -508,9 +650,9 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-#### Helpshiftセッションの終了
+#### Helpshift セッションの終了
 
-Helpshiftセッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが終了するたびに発動します。
+Helpshift セッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshift セッションが終了するたびに発動します。
 
 - イベントの名前: `HelpshiftEventNameSessionEnded`
 
@@ -544,7 +686,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 ### 未読メッセージ数の計測イベント {#unreadMessageCount}
 
-既存の会話で受信した新規メッセージの数を計測する場合は、この`[Helpshift requestUnreadMessageCount:];`APIを呼び出します。
+既存の会話で受信した新規メッセージの数を計測する場合は、この`[Helpshift requestUnreadMessageCount:];` API を呼び出します。
 
 未読メッセージの数は、このイベントを介してアプリに伝達されます。また、このイベントを使用してバッジの表示数を更新し続けることもできます。
 
@@ -588,8 +730,8 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-`[Helpshift requestUnreadMessageCount:YES];`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたはHelpshiftサーバーのいずれかから取得されます。Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内にAPIが呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
+`[Helpshift requestUnreadMessageCount:YES];`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたは Helpshift サーバーのいずれかから取得されます。Helpshift サーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）に API に対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内に API が呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は 1 分、そして非アクティブな問題の場合には 5 分に設定されています。
 
-ローカルに保存されている現在の通知数を取得する場合、パラメータをfalseに設定した同じ`[Helpshift requestUnreadMessageCount:NO];`メソッドを呼び出します。この場合、SDKはローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
+ローカルに保存されている現在の通知数を取得する場合、パラメータを false に設定した同じ`[Helpshift requestUnreadMessageCount:NO];`メソッドを呼び出します。この場合、SDK はローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
 
 ローカルに保存されている未読メッセージの数は、追加のネットワーク呼び出しを節約するのに役立ちます。

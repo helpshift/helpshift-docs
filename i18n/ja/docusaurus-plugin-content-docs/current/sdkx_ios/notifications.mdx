@@ -29,19 +29,18 @@ import {
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります
 
 </Admonition>
 
-## Helpshiftを介したプッシュ通知を構成する {#push-via-helpshift}
+## Helpshift を介したプッシュ通知を構成する {#push-via-helpshift}
 
-ユーザーから提出された問題に返信したタイミングで、ユーザーに通知を送信することができます。iOSで期待されるプッシュ通知の動作に加えて、通知をカスタマイズし、通知の受信時にアプリアイコンに数字が記載されたバッジを表示したり、音声アラートを再生したりすることができます。
+ユーザーから提出された問題に返信したタイミングで、ユーザーに通知を送信することができます。iOS で期待されるプッシュ通知の動作に加えて、通知をカスタマイズし、通知の受信時にアプリアイコンに数字が記載されたバッジを表示したり、音声アラートを再生したりすることができます。
 
-アプリでまだプッシュ機能を使用していない場合には、アプリのプッシュ機能を有効にする必要があります。アプリケーションでプッシュ通知を有効にするには、AppDelegateの`application:didFinishLaunchingWithOptions:`メソッドにAPNs登録コードを追加する必要があります。
+アプリでまだプッシュ機能を使用していない場合には、アプリのプッシュ機能を有効にする必要があります。アプリケーションでプッシュ通知を有効にするには、AppDelegate の`application:didFinishLaunchingWithOptions:`メソッドに APNs 登録コードを追加する必要があります。
 
-<Tabs>
-
-<TabItem value="UNNotification framework" label="UNNotificationフレームワーク">
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -58,44 +57,40 @@ SDKに含まれているすべてのパブリックAPIは、[Helpshift installWi
 ```
 
 </TabItem>
-<TabItem value="UI Notifications (Deprecated)" label="UI通知（非推奨）">
+<TabItem value="Swift" label="Swift">
 
-```objc
-- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    ...
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-        UIUserNotificationType notificationType = UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-
-    } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+```swift
+func application(_ application: UIApplication,
+                didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    let center = UNUserNotificationCenter.current()
+    center.delegate = self
+    center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
+        if let error = error {
+            NSLog("Error while requesting notification permissions: \(error.localizedDescription)")
+        }
     }
-    ...
 }
 ```
 
 </TabItem>
-
 </Tabs>
 
-### Helpshiftの管理者インターフェースでHelpshiftのプッシュ通知サービスを構成する {#configure-helpshift-push-admin}
+### Helpshift の管理者インターフェースで Helpshift のプッシュ通知サービスを構成する {#configure-helpshift-push-admin}
 
-この機能は、以下の4つのステップで簡単に構成することができます。
+この機能は、以下の 4 つのステップで簡単に構成することができます。
 
-アプリケーションをAppleでセットアップし、プッシュ通知を有効にします。
+アプリケーションを Apple でセットアップし、プッシュ通知を有効にします。
 
-Appleのポータルサイトで、後でHelpshiftに提供するAPNs用の証明書を生成する必要があります。これによりHelpshiftはユーザーにプッシュ通知を送信できるようになります。Appleは、古いタイプの証明書からApple Push Notification service SSLへの移行を実施しました。Apple Push Notification認証キーを作成する方法もありますが、Helpshiftではまだサポートされていません。また、まだ有効期限が切れていない古いタイプの証明書を持っている可能性もあるかと思われますが、これもHelpshiftでサポートされています。
+Apple のポータルサイトで、後で Helpshift に提供する APNs 用の証明書を生成する必要があります。これにより Helpshift はユーザーにプッシュ通知を送信できるようになります。Apple は、古いタイプの証明書から Apple Push Notification service SSL への移行を実施しました。Apple Push Notification 認証キーを作成する方法もありますが、Helpshift ではまだサポートされていません。また、まだ有効期限が切れていない古いタイプの証明書を持っている可能性もあるかと思われますが、これも Helpshift でサポートされています。
 
-Appleは、Apple Push Notification service SSLに2つのバリエーションを用意しています。
+Apple は、Apple Push Notification service SSL に 2 つのバリエーションを用意しています。
 
 - Apple Push Notification service SSL（Sandbox）
 - Apple Push Notification service SSL（Sandbox & Production）
 
-証明書を作成したら、ダウンロードします。それをダブルクリックして、キーチェーンアクセスアプリケーションにインポートします。キーチェーンアクセスアプリケーションで先ほど追加した証明書を右クリックし、「.p12形式でエクスポート」をクリックします。Helpshiftでは空のパスワードは受け付けておりませんので、証明書をエクスポートする際にパスワードを入力してください。（開発用の秘密鍵がキーチェーンアクセスに存在しない場合、.p12形式でエクスポートできないことにご注意ください。）
+証明書を作成したら、ダウンロードします。それをダブルクリックして、キーチェーンアクセスアプリケーションにインポートします。キーチェーンアクセスアプリケーションで先ほど追加した証明書を右クリックし、「.p12 形式でエクスポート」をクリックします。Helpshift では空のパスワードは受け付けておりませんので、証明書をエクスポートする際にパスワードを入力してください。（開発用の秘密鍵がキーチェーンアクセスに存在しない場合、.p12 形式でエクスポートできないことにご注意ください。）
 
-Helpshiftシステムからユーザーへのプッシュ通知を有効にするには、アプリのプラットフォームとしてiOSを追加する必要があります（まだ追加していない場合）。そして、プッシュ通知オプションをクリックします。
+Helpshift システムからユーザーへのプッシュ通知を有効にするには、アプリのプラットフォームとして iOS を追加する必要があります（まだ追加していない場合）。そして、プッシュ通知オプションをクリックします。
 
 <Image
   src="/static/books/sdkx_ios/Add-platform.png"
@@ -103,9 +98,9 @@ Helpshiftシステムからユーザーへのプッシュ通知を有効にす�
   alt="Add-platform.png"
 />{" "}
 
-エクスポートの後は、ログインしてHelpshift管理者パネルでアプリ内の.p12ファイルをアップロードします。.p12形式へのエクスポートを行った際に使用したものと同じパスワードを入力してください。
+エクスポートの後は、ログインして Helpshift 管理者パネルでアプリ内の.p12 ファイルをアップロードします。.p12 形式へのエクスポートを行った際に使用したものと同じパスワードを入力してください。
 
-APNs証明書を作成する際に使用したものと同じバンドル識別子をアプリで使用する必要があることにご注意ください。
+APNs 証明書を作成する際に使用したものと同じバンドル識別子をアプリで使用する必要があることにご注意ください。
 
 <Image
   src="/static/books/sdkx_ios/Add-certificate.png"
@@ -117,15 +112,15 @@ APNs証明書を作成する際に使用したものと同じバンドル識別�
 
 #### 開発（サンドボックス）モードと本番モードの比較
 
-Xcodeからアプリをビルドして実行すると、アプリは開発（サンドボックス）モードに設定されます。このモードでHelpshiftからのプッシュ通知をテストする場合、上記2つの証明書タイプのいずれかをアップロードする際に、「開発モード」を選択していることをご確認ください。
+Xcode からアプリをビルドして実行すると、アプリは開発（サンドボックス）モードに設定されます。このモードで Helpshift からのプッシュ通知をテストする場合、上記 2 つの証明書タイプのいずれかをアップロードする際に、「開発モード」を選択していることをご確認ください。
 
-アプリを公開してApp Storeからダウンロードすると、アプリは本番モードになります。本番モードでHelpshiftからのプッシュ通知をテストするには、「Apple Push Notification service SSL（Sandbox & Production）」タイプの証明書をアップロードする際に「本番モード」を選択していることをご確認ください。サンドボックスモードの証明書は、本番環境では動作しません。
+アプリを公開して App Store からダウンロードすると、アプリは本番モードになります。本番モードで Helpshift からのプッシュ通知をテストするには、「Apple Push Notification service SSL（Sandbox & Production）」タイプの証明書をアップロードする際に「本番モード」を選択していることをご確認ください。サンドボックスモードの証明書は、本番環境では動作しません。
 
-サンドボックスと本番アプリの両方に同じ証明書を使用することは、サポートされておりません。このような場合には、ダッシュボード上に2つのアプリを作成し、1つを「本番モード」に、そしてもう1つを「開発モード」に設定することをお勧めします。テスト中は、開発モードのアプリの認証情報を使用してください。公開の準備ができたら、認証情報を本番レベルのアプリのもので置き換えてください。
+サンドボックスと本番アプリの両方に同じ証明書を使用することは、サポートされておりません。このような場合には、ダッシュボード上に 2 つのアプリを作成し、1 つを「本番モード」に、そしてもう 1 つを「開発モード」に設定することをお勧めします。テスト中は、開発モードのアプリの認証情報を使用してください。公開の準備ができたら、認証情報を本番レベルのアプリのもので置き換えてください。
 
 <Admonition type="info" title="注意">
 
-プッシュ証明書には、有効期限があります。Helpshiftはプッシュ証明書の有効期限が切れたとしてもリマインダーなどは送信しませんので、開発者自身で有効期限を定期的に確認し、プッシュ証明書を再アップロードするようにしてください。
+プッシュ証明書には、有効期限があります。Helpshift はプッシュ証明書の有効期限が切れたとしてもリマインダーなどは送信しませんので、開発者自身で有効期限を定期的に確認し、プッシュ証明書を再アップロードするようにしてください。
 
 </Admonition>
 
@@ -135,17 +130,17 @@ Xcodeからアプリをビルドして実行すると、アプリは開発（サ
   alt="cert-expiry.png"
 />{" "}
 
-### Helpshift iOS SDKが通知を処理するように構成する {#configure-helpshift-sdk}
+### Helpshift iOS SDK が通知を処理するように構成する {#configure-helpshift-sdk}
 
 <Admonition type="info" title="注意">
 
-プッシュ機能が構成されていない場合、Helpshift SDKはエージェント/ボットにより送信されたすべてのメッセージに対してすぐに使用可能なアプリ内通知を表示します。
-`registerDeviceToken` APIを呼び出すのは、必ず[Helpshiftダッシュボードをプッシュ通知用に構成した後](#configure-helpshift-push-admin)にしてください。Helpshiftダッシュボードを構成せずに`registerDeviceToken` APIを呼び出すと、エンドユーザーに対してアプリ内通知が表示されなくなります。
+プッシュ機能が構成されていない場合、Helpshift SDK はエージェント/ボットにより送信されたすべてのメッセージに対してすぐに使用可能なアプリ内通知を表示します。
+`registerDeviceToken` API を呼び出すのは、必ず[Helpshift ダッシュボードをプッシュ通知用に構成した後](#configure-helpshift-push-admin)にしてください。Helpshift ダッシュボードを構成せずに`registerDeviceToken` API を呼び出すと、エンドユーザーに対してアプリ内通知が表示されなくなります。
 
 </Admonition>
 
-Helpshift SDKをHelpshiftのプッシュ通知サービスと連携させるには、
-`registerDeviceToken:` API呼び出しをアプリケーションのデリゲートメソッド
+Helpshift SDK を Helpshift のプッシュ通知サービスと連携させるには、
+`registerDeviceToken:` API 呼び出しをアプリケーションのデリゲートメソッド
 `application:didRegisterForRemoteNotificationsWithDeviceToken:`の内部で呼び出す必要があります。
 
 アプリのデリゲートファイルでは、以下のようになります。
@@ -173,15 +168,15 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 
 </Tabs>
 
-#### アプリがUNNotificationフレームワークを使用している場合 {#unnotification-framework}
+#### アプリが UNNotification フレームワークを使用している場合 {#unnotification-framework}
 
-配信された通知に応答するには、共有されているUNUserNotificationCenterオブジェクトのためのデリゲートを実装する必要があります。デリゲートオブジェクトは、通知センターがアプリに通知情報を配信するために使用するUNUserNotificationCenterDelegateプロトコルに準拠する必要があります。
+配信された通知に応答するには、共有されている UNUserNotificationCenter オブジェクトのためのデリゲートを実装する必要があります。デリゲートオブジェクトは、通知センターがアプリに通知情報を配信するために使用する UNUserNotificationCenterDelegate プロトコルに準拠する必要があります。
 
-1. アプリがフォアグラウンドにあるときに通知が届くと、UNUserNotificationCenterDelegateの`userNotificationCenter:willPresentNotification:withCompletionHandler:`が呼び出されます。
+1. アプリがフォアグラウンドにあるときに通知が届くと、UNUserNotificationCenterDelegate の`userNotificationCenter:willPresentNotification:withCompletionHandler:`が呼び出されます。
 1. アプリがバックグラウンドにあるか、または実行されていない場合には、システムは`userNotificationCenter:willPresentNotification:withCompletionHandler:`メソッドを呼び出しません。そのような場合には、システムは通知そのものに含まれている情報に従ってユーザーにアラートを発します。
    ユーザーが通知インターフェースからアクションを選択すると、システムはユーザーの選択をアプリに通知します。レスポンスを受け取るためには、デリゲートオブジェクトは`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:`メソッドを実装する必要があります。
 
-上記のすべての場合において、通知のオリジンが「Helpshift」であれば通知辞書の「origin」フィールドをチェックし、`handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` APIを呼び出す必要があります。Helpshift SDKは通知を受信した問題を確認し、それらの問題の会話画面を自動的に起動します。isAppLaunchブール型フラグは、ここではアクティブまたはバックグラウンドにあるアプリと、ユーザにより強制終了されたアプリを区別するために使用されます。後者の場合、このフラグはtrueに設定されているはずです。
+上記のすべての場合において、通知のオリジンが「Helpshift」であれば通知辞書の「origin」フィールドをチェックし、`handleNotificationWithUserInfoDictionary:isAppLaunch:` API を呼び出す必要があります。Helpshift SDK は通知を受信した問題を確認し、それらの問題の会話画面を自動的に起動します。isAppLaunch ブール型フラグは、ここではアクティブまたはバックグラウンドにあるアプリと、ユーザにより強制終了されたアプリを区別するために使用されます。後者の場合、このフラグは true に設定されているはずです。
 
 使用方法のサンプル
 
@@ -197,8 +192,7 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
     withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
     if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
         [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:false
-                                             withController:self.window.rootViewController];
+                                                isAppLaunch:false];
         completionHandler(UNNotificationPresentationOptionNone);
     } else {
         // Handling for non-helpshift push notifications received when app is in foreground
@@ -212,7 +206,7 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 ```swift
 func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     if notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false, with: rootViewController)
+        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false)
         completionHandler([])
     } else {
         // Handling for non-helpshift push notifications received when app is in foreground
@@ -236,8 +230,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void (^)(void))completionHandler {
     if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
         [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
-                                                isAppLaunch:YES
-                                             withController:self.window.rootViewController];
+                                                isAppLaunch:YES];
     } else {
         // Handling for non-helpshift push notifications received when app is in background or killed
     }
@@ -251,94 +244,11 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 ```swift
 func userNotificationCenter(_ center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
     if response.notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo, isAppLaunch: true, with: rootViewController)
+        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo, isAppLaunch: true)
     } else {
         // Handling for non-helpshift push notifications received when app is in background or killed
     }
     completionHandler()
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-#### アプリがUINotificationフレームワークを使用している場合（非推奨） {#uinotification-framework}
-
-プッシュ通知を受信すると、アプリケーションのデリゲート`didReceiveRemoteNotification:`が呼び出されます。さらに、
-
-1. アプリケーションがフォアグラウンドになく、ユーザーがプッシュ通知をタップした場合、このメソッドが再度呼び出されます。
-2. ユーザーによりアプリが強制終了させられた後にプッシュ通知がタップされた場合、アプリケーションの`didFinishLaunchingWithOptions:`デリゲートが呼び出されます。
-
-上記のすべての場合において、開発者は通知のオリジンが「Helpshift」であれば通知辞書の`origin`フィールドをチェックし、`handleNotificationWithUserInfoDictionary:isAppLaunch` APIを呼び出す必要があります。Helpshift SDKは通知を受信した問題を確認し、それらの問題の会話画面を自動的に起動します。isAppLaunchブール型フラグは、ここではアクティブまたはバックグラウンドにあるアプリと、ユーザにより強制終了されたアプリを区別するために使用されます。後者の場合、このフラグはtrueに設定されているはずです。
-
-使用方法のサンプル
-
-アプリの初回起動時や、ユーザーによる強制終了の後にリモート通知を受信した場合:
-
-<Tabs groupId="ios-languages">
-
-<TabItem value="Objective-C" label="Objective-C">
-
-```objc
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    ...
-    if(launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
-        NSDictionary *userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-        if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-            [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                    isAppLaunch:YES
-                                                 withController:self.window.rootViewController];
-        }
-    }
-    ...
-}
-```
-
-</TabItem>
-<TabItem value="Swift" label="Swift">
-
-```swift
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    if let launchOptions = launchOptions, let userInfo = launchOptions[UIApplication.LaunchOptionsKey.remoteNotification] as? NSDictionary  {
-            let origin = userInfo["origin"] as? String
-            if origin == "helpshift" {
-                Helpshift.handleNotification(withUserInfoDictionary: userInfo, isAppLaunch: true, with: rootViewController)
-            }
-    }
-    return true
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-`didReceiveRemoteNotification:`デリゲートの場合:
-
-<Tabs groupId="ios-languages">
-
-<TabItem value="Objective-C" label="Objective-C">
-
-```objc
-- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:NO
-                                             withController:self.window.rootViewController];
-    }
-}
-```
-
-</TabItem>
-<TabItem value="Swift" label="Swift">
-
-```swift
-func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    if userInfo["origin"] as? String ==  "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: userInfo, isAppLaunch: false, with: rootViewController)
-    }
 }
 ```
 
@@ -362,14 +272,14 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
 <Admonition type="info" title="注意">
 
 - すでに本番稼動中のアプリのプッシュ通知をテストする場合は、[こちら](/ios/troubleshooting#test-push-production)をご参照ください。
-- オリジンを確認し、コールバックを受け取ったらすぐに`handleRemoteNotfication`を呼び出す必要があります。SDKはアプリの状態（アクティブ/非アクティブ）を確認し、それに基づいてチャット画面を表示するか、またはアプリ内通知を表示するかを決定します。handleRemoteNotificationの呼び出しが遅れると、SDKが不正確なアプリケーションの状態を取得してしまう可能性があります。
-- アプリのビルドとデプロイにXcode 11を利用している場合には、弊社の[トラブルシューティングガイド](/ios/troubleshooting#xcode11)をご参照ください。
+- オリジンを確認し、コールバックを受け取ったらすぐに`handleRemoteNotfication`を呼び出す必要があります。SDK はアプリの状態（アクティブ/非アクティブ）を確認し、それに基づいてチャット画面を表示するか、またはアプリ内通知を表示するかを決定します。handleRemoteNotification の呼び出しが遅れると、SDK が不正確なアプリケーションの状態を取得してしまう可能性があります。
+- アプリのビルドとデプロイに Xcode 11 を利用している場合には、弊社の[トラブルシューティングガイド](/ios/troubleshooting#xcode11)をご参照ください。
 
 </Admonition>
 
 ## アプリ内通知 {#in-app-notifications}
 
-アプリ内通知は、Appleのプッシュ通知バナーに似ています。プッシュ通知とは異なり、ユーザーの使用中にアプリ内に表示されます。
+アプリ内通知は、Apple のプッシュ通知バナーに似ています。プッシュ通知とは異なり、ユーザーの使用中にアプリ内に表示されます。
 
 これらの通知は、エージェントが顧客の問題に返信したタイミングで送信されます。顧客は、それらのバナーをクリックすることで直接会話画面に移動することができます。
 
@@ -385,22 +295,22 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
 
 ## アプリ内通知を構成する {#optional-flags}
 
-Helpshiftの[インストール呼び出し](/sdkx_ios/getting-started#initializing)は、SDKの動作を構成するためのフラグをサポートしています。
-現時点では、`enableInAppNotification`という1つのフラグをサポートしています。
+Helpshift の[インストール呼び出し](/sdkx_ios/getting-started#initializing)は、SDK の動作を構成するためのフラグをサポートしています。
+現時点では、`enableInAppNotification`という 1 つのフラグをサポートしています。
 
 ### アプリ内通知の有効化/無効化 {#enable-disable-in-app}
 
 <div className="compact ">
 
-|         |                         |
-| ------- | ----------------------- |
-| フラグ    | enableInAppNotification |
-| 値  | YES/NO                  |
+|            |                         |
+| ---------- | ----------------------- |
+| フラグ     | enableInAppNotification |
+| 値         | YES/NO                  |
 | デフォルト | YES                     |
 
 </div>
 
-Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、
+Helpshift SDK が提供するアプリ内通知サポートが不要な場合には、
 このフラグを`NO`に設定してください。この
 フラグの規定値は`YES`であり、この場合にはアプリ内通知が有効化されます。<br />
 アプリ内通知の詳細については、[通知セクション](/sdkx_ios/notifications#in-app-notifications)をご参照ください。
@@ -432,7 +342,7 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 
 ### アプリ内通知の一時停止 {#pause-in-app}
 
-アプリ内通知を有効にしている場合には、`pauseDisplayOfInAppNotification` APIを使用して通知の一時停止や再開を行います。このメソッドに`YES`が渡されると、アプリ内通知が発生しても表示は一時停止されます。`NO`を渡すと、アプリ内通知が表示されるようになります。
+アプリ内通知を有効にしている場合には、`pauseDisplayOfInAppNotification` API を使用して通知の一時停止や再開を行います。このメソッドに`YES`が渡されると、アプリ内通知が発生しても表示は一時停止されます。`NO`を渡すと、アプリ内通知が表示されるようになります。
 
 例:
 
@@ -461,7 +371,7 @@ Helpshift.pauseDisplayOf(inAppNotification: false) // To resume showing the in-a
 
 ユーザーが投稿した
 問題に対する返信に関する通知を表示する場合、
-Helpshift SDKが提供する通知カウント機能を使用することで未読メッセージの総数を取得し、バッジとして
+Helpshift SDK が提供する通知カウント機能を使用することで未読メッセージの総数を取得し、バッジとして
 表示することができます。`.h`ファイルと`.m`
 ファイルのそれぞれに`HelpshiftDelegate`を
 実装することにより、通知数を非同期で取得することができます。通知は通常、ユーザーがヘルプセクションを呼び出した
@@ -469,7 +379,7 @@ Helpshift SDKが提供する通知カウント機能を使用することで未�
 表示されます。これらのバッジはアプリのインターフェースのあらゆる場所に表示することが可能であり、あなたからの
 未読の返信やメッセージがあることをユーザーに伝えることができます。たとえば、
 以下を使用して通知のポーリングを行っている間に、
-ビュー（textLabelを設定できるyourViewとします）にバッジを表示します。
+ビュー（textLabel を設定できる yourView とします）にバッジを表示します。
 
 `[Helpshift requestUnreadMessageCount:YES];`
 
@@ -564,7 +474,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 これらは、デリゲートメソッドに新しい通知
 が届くたびにビューまたは`UITabBarItem`を更新します。状況は、
-アプリのUIにより異なります。**適切な場所に通知の数を表示することにより、ユーザーの注意を
+アプリの UI により異なります。**適切な場所に通知の数を表示することにより、ユーザーの注意を
 引き付けてより積極的に会話
 に参加してもらえるようになる可能性があります**。ローカルに保存されている未読メッセージの通知
 数をユーザーに対して表示するには、`requestUnreadMessageCount`を呼び出します。
@@ -592,6 +502,6 @@ Helpshift.requestUnreadMessageCount(false)
 
 <Admonition type="info" title="注意">
 
-SDKがアプリに未読の数を通知する仕組みの詳細については、[未読メッセージ数イベント](/sdkx_ios/delegates#unreadMessageCount)をご参照ください。
+SDK がアプリに未読の数を通知する仕組みの詳細については、[未読メッセージ数イベント](/sdkx_ios/delegates#unreadMessageCount)をご参照ください。
 
 </Admonition>

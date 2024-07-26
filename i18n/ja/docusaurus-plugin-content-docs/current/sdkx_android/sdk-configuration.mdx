@@ -20,34 +20,35 @@ import {
 } from "@site/src/components/forDocs";
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
 
-# SDKの構成
+# SDK の構成
 
 <Intro>
 
-Helpshiftには、SDKの動作をカスタマイズするために使用可能ないくつかの構成オプションが用意されています。これらのオプションは、[Helpshift API](/sdkx_android/support-tools/)と組み合わせて使用します。
+Helpshift には、SDK の動作をカスタマイズするために使用可能ないくつかの構成オプションが用意されています。これらのオプションは、[Helpshift API](/sdkx_android/support-tools/)と組み合わせて使用します。
 
 </Intro>
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります
 
 </Admonition>
 
 ## ロギングを有効にする {#enable-logging}
 
-`enableLogging`を`true`に設定すると、Helpshift SDKのログがAndroidのLogcatに生成されます。これらのログは、統合中にSDKをデバッグする場合に役立ちます。ロギングの有効化は、開発者が統合に関する一般的な問題を解決する際に役立ちます。
+`enableLogging`を`true`に設定すると、Helpshift SDK のログが Android の Logcat に生成されます。これらのログは、統合中に SDK をデバッグする場合に役立ちます。ロギングの有効化は、開発者が統合に関する一般的な問題を解決する際に役立ちます。
 
 <div className="compact ">
 
-|               |                                        |
-| ------------- | -------------------------------------- |
-| オプション:       | <code>enableLogging</code>             |
-| 値:       | <code>true</code>/<code>false</code> |
-| デフォルト:      | <code>false</code>                     |
-| 最低限必要なSDKバージョン       | v10.0.0                                |
-| サポート: | <code>install()</code>                 |
+|                             |                                      |
+| --------------------------- | ------------------------------------ |
+| オプション:                 | <code>enableLogging</code>           |
+| 値:                         | <code>true</code>/<code>false</code> |
+| デフォルト:                 | <code>false</code>                   |
+| 最低限必要な SDK バージョン | v10.0.0                              |
+| サポート:                   | <code>install()</code>               |
 
 </div>
 
@@ -72,19 +73,85 @@ SDKに含まれているすべてのパブリックAPIは、[Helpshift.install()
     }
 ```
 
+## タグによる FAQ のフィルタリング {#faq-filtering}
+
+タグによる FAQ のフィルタリングが可能です。
+エンドユーザーが、たとえばユーザー属性やデバイスプロファイルに基づいて絞り込みをするなど、関連コンテンツを表示できるようにすることを目的として、開発者がこの FAQ のフィルタリング機能を選択して適切な利用者に対して絞り込みが行われた FAQ のリストを表示できるようになりました。
+
+FAQ のフィルタリングを使用する典型的なケースについては、以下の通りです。
+
+- 特定の対象に向けて特定の FAQ を表示する場合。例: ビジネスロジックに基づいてユーザーを「初心者」、「中級者」、「上級者」に分類する。
+- デバイスの種類に基づいて特定の FAQ を表示する場合。例: iPad 向けと iPhone 向けに FAQ のセットを切り替える。
+
+FAQ のフィルタリングの手順には、2 段階のアプローチが用意されています。
+
+1. FAQ は、ダッシュボードの`<issue tags>`フィールド（例: タグ`iphone`やタグ`ipad`など）を使用して分類する必要があります。
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />{" "}
+2. FAQ へのタグ付けが完了すると、本項で説明されているフィルタリングオプションを使用して、SDK でフィルタリングができるようになります。
+
+<Admonition type="info" title="注意">
+
+Helpshift では、主に「問題タグ」と「検索タグ」の 2 種類のタグが用意されています。
+
+- 問題タグは、SDK の FAQ のリストをフィルタリングルールでフィルタリングするために使用されます。
+- 検索タグ（検索キーワードとも呼ばれています） アプリ内検索を実行する場合、Helpshift SDK はこれらのキーワードを優先します。また、FAQ のタイトルや内容には含まれていないものの、ユーザーが検索する可能性のある代替のキーワードを追加するためにこれを使用することもできます。
+
+</Admonition>
+
+#### FAQ のフィルタリングの使用方法
+
+このオプションは`showFAQs` API および`showFAQSection` API でサポートされている設定オプションです。
+
+`filter`オプションは、以下の 2 つのキーを含むマップです。
+
+- 演算子: `AND`、`OR`、`NOT`のいずれか 1 つであり、設定されているタグの条件演算子として機能します。
+- タグ: クエリ内の実際のタグです。
+
+`filter`オプションは、showFAQs API、showFAQSection API、showSingleFAQ API で使用される`config`マップの"filter"キーに対するオブジェクトとして追加されます。
+
+|                             |                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------ |
+| オプション:                 | <code>filter</code>                                                            |
+| サブオプション:             | <code>tags</code>/<code>operator</code>                                        |
+| デフォルト                  | <code>null</code>                                                              |
+| 最低限必要な SDK バージョン | v10.0.0                                                                        |
+| サポート                    | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code> |
+
+例:
+
+```java
+ Map<String, Object> config = new HashMap<>();
+
+ // .. other configs
+
+ Map<String, Object> filter = new HashMap<>();
+ filter.put("tags", new String[]{"tag1", "tag2"});
+ filter.put("operator", "AND");
+
+ config.put("filter", filter);
+
+ Helpshift.showFAQs(MainActivity.this, config);
+```
+
+<Admonition type="info" title="注意">
+
+showFAQs、showFAQSection、showSingleFAQ で使用されるタグのフィルタリング設定は 1 つのみです。また、タグのフィルタリングでは 1 つの演算子のみが遵守されます。
+
+</Admonition>
+
 ## お問い合わせを有効にする {#enableContactUs}
 
-ユーザーがFAQを表示しているときに、Helpshiftの「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
+ユーザーが FAQ を表示しているときに、Helpshift の「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
 
 <div className="compact ">
 
-|              |                                                                                                                                  |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| オプション       | <code>enableContactUs</code>                                                                                                     |
-| 値       | <code>"ALWAYS"</code>/<code>"AFTER_VIEWING_FAQS"</code>/<code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code>/<code>"NEVER"</code> |
-| デフォルト      | <code>null</code>                                                                                                                |
-| 最低限必要なSDKバージョン      | v10.0.0                                                                                                                          |
-| サポート | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code>                                                   |
+|                             |                                                                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| オプション                  | <code>enableContactUs</code>                                                                                               |
+| 値                          | <code>"ALWAYS"</code>/<code>"AFTER_VIEWING_FAQS"</code>/<code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code>/<code>"NEVER"</code> |
+| デフォルト                  | <code>null</code>                                                                                                          |
+| 最低限必要な SDK バージョン | v10.0.0                                                                                                                    |
+| サポート                    | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code>                                             |
 
 </div>
 
@@ -99,8 +166,8 @@ SDKに含まれているすべてのパブリックAPIは、[Helpshift.install()
 
 #### ベストプラクティス
 
-- 有料ユーザーに対してはenableContactUsを`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
-- 自国内のユーザーに対してはenableContactUsを`ALWAYS`に設定し、海外のユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、国ベースのサポートを提供することができます。サンプルコード:
+- 有料ユーザーに対しては enableContactUs を`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
+- 自国内のユーザーに対しては enableContactUs を`ALWAYS`に設定し、海外のユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、国ベースのサポートを提供することができます。サンプルコード:
 
 ```java
 TelephonyManager tm = (TelephonyManager) context.getSystemServic(Context.TELEPHONY_SERVICE);
@@ -118,21 +185,21 @@ Helpshift.showFAQs(MyActivity.this, config);
 
 フルプライバシーオプションは、以下の方法によって[COPPA](http://www.coppa.org/)への準拠をサポートします。
 
-1. ユーザーによるスクリーンショット撮影の無効化（SDKを使用した画像を含むファイルの添付ができなくなります）。
-2. SDKによる名前や電子メールなどを含む個人を特定できる情報（PII）の収集の停止（アイデンティティボットおよび/またはhelpshiftConfigオブジェクトを使用）。つまり、`userName`と`userEmail`を設定し、`fullPrivacy`を`true`に設定している場合、Helpshiftは`userName`と`userEmail`の値を使用しません。
+1. ユーザーによるスクリーンショット撮影の無効化（SDK を使用した画像を含むファイルの添付ができなくなります）。
+2. SDK による名前や電子メールなどを含む個人を特定できる情報（PII）の収集の停止（アイデンティティボットおよび/または helpshiftConfig オブジェクトを使用）。つまり、`userName`と`userEmail`を設定し、`fullPrivacy`を`true`に設定している場合、Helpshift は`userName`と`userEmail`の値を使用しません。
 3. 以下の個人情報の非収集。
    - 携帯電話の国コード、携帯電話のネットワークコード、キャリア名。
    - "private-data"としてラベル付けされているカスタムメタデータ。
 
-また、ユーザーが不快なコンテンツを添付するシナリオにおいては、これはCOPPAに準拠する上で大きな問題となります。このオプションは、この問題を解決しなければならない場合に役立ちます。
+また、ユーザーが不快なコンテンツを添付するシナリオにおいては、これは COPPA に準拠する上で大きな問題となります。このオプションは、この問題を解決しなければならない場合に役立ちます。
 
-|              |                                                      |
-| ------------ | ---------------------------------------------------- |
-| オプション       | <code>fullPrivacy</code>                             |
-| 値       | <code>true</code>/<code>false</code>               |
-| デフォルト      | <code>false</code>                                   |
-| 最低限必要なSDKバージョン      | v10.0.0                                              |
-| サポート | <code>showConversation</code>、<code>showFAQs</code> |
+|                             |                                                      |
+| --------------------------- | ---------------------------------------------------- |
+| オプション                  | <code>fullPrivacy</code>                             |
+| 値                          | <code>true</code>/<code>false</code>                 |
+| デフォルト                  | <code>false</code>                                   |
+| 最低限必要な SDK バージョン | v10.0.0                                              |
+| サポート                    | <code>showConversation</code>、<code>showFAQs</code> |
 
 例:
 
@@ -145,25 +212,25 @@ Helpshift.showConversation(MainActivity.this, config);
 
 #### ベストプラクティス
 
-登録プロセスで、ユーザーに年齢を尋ねましょう。ユーザーの年齢が13歳以下の場合には、`fullPrivacy`をYESに設定します。こうすることで、13歳以下のユーザーについてはCOPPAに準拠しつつ、その他のユーザーに対しては貴重なユーザーデータやデバイスデータを収集できるようになります。
+登録プロセスで、ユーザーに年齢を尋ねましょう。ユーザーの年齢が 13 歳以下の場合には、`fullPrivacy`を YES に設定します。こうすることで、13 歳以下のユーザーについては COPPA に準拠しつつ、その他のユーザーに対しては貴重なユーザーデータやデバイスデータを収集できるようになります。
 
 ## アプリ内通知を有効にする {#enable-in-app-notifications}
 
-Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、フラグを`false`に設定します。
+Helpshift SDK が提供するアプリ内通知サポートが不要な場合には、フラグを`false`に設定します。
 
-このフラグを`false`に設定するとSDKはデバイスの通知トレイに通知を表示しなくなりますが、バックグラウンドでメッセージを取得します。
+このフラグを`false`に設定すると SDK はデバイスの通知トレイに通知を表示しなくなりますが、バックグラウンドでメッセージを取得します。
 
 このフラグの規定値は`true`です。そのため、アプリ内通知は有効化されます。
 
 <div className="compact ">
 
-|               |                                        |
-| ------------- | -------------------------------------- |
-| オプション:       | <code>enableInAppNotification</code>   |
-| 値:       | <code>true</code>/<code>false</code> |
-| デフォルト:      | <code>true</code>                      |
-| 最低限必要なSDKバージョン       | v10.0.0                                |
-| サポート: | <code>install()</code>                 |
+|                             |                                      |
+| --------------------------- | ------------------------------------ |
+| オプション:                 | <code>enableInAppNotification</code> |
+| 値:                         | <code>true</code>/<code>false</code> |
+| デフォルト:                 | <code>true</code>                    |
+| 最低限必要な SDK バージョン | v10.0.0                              |
+| サポート:                   | <code>install()</code>               |
 
 </div>
 
@@ -187,7 +254,7 @@ public class MainApplication extends Application {
 
 ## チャット画面の読み込み中に新しい会話を開始する {#initiate-chat}
 
-`Helpshift.showConversation(this, config);` APIの`config`マップで`initiateChatOnLoad`オプションを`true`に設定すると、エンドユーザーが「新しい会話」ボタンをクリックしたり、前の問題のフィードバックボットのような解決後のフローを経由することなく、前の問題が解決した直後に新しい会話を開始できるようになります。
+`Helpshift.showConversation(this, config);` API の`config`マップで`initiateChatOnLoad`オプションを`true`に設定すると、エンドユーザーが「新しい会話」ボタンをクリックしたり、前の問題のフィードバックボットのような解決後のフローを経由することなく、前の問題が解決した直後に新しい会話を開始できるようになります。
 
 例:
 
@@ -211,18 +278,31 @@ config.put("conversationPrefillText", "INSERT YOUR PREFILL TEXT");
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
+## 会話の最初のユーザーメッセージ {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+例:
+
+```java
+Map<String, Object> config = new HashMap<>();
+// .. other configs
+config.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+Helpshift.showConversation(MainActivity.this, config);
+```
+
 ## 画面の向き {#screen-orientation}
 
-Helpshift SDKの画面の向きは、[ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html)クラスで利用可能な定数に`screenOrientation`を設定することで固定することができます。
+Helpshift SDK の画面の向きは、[ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html)クラスで利用可能な定数に`screenOrientation`を設定することで固定することができます。
 たとえば、画面の向きをモバイルのユーザーに対しては`ActivityInfo.SCREEN_ORIENTATION_PORTRAIT`に、タブレットのユーザーに対しては`ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE`に固定したい場合があるかもしれません。
 
 <div className="compact ">
 
-|         |                                                                                                                                        |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| フラグ    | screenOrientation                                                                                                                      |
-| 値  | [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html)クラスからの方向を示す整数値 |
-| デフォルト | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                                            |
+|            |                                                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| フラグ     | screenOrientation                                                                                                        |
+| 値         | [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html)クラスからの方向を示す整数値 |
+| デフォルト | ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED                                                                              |
 
 </div>
 
@@ -290,7 +370,7 @@ public class MainApplication extends Application {  @Override
 
 ## 通知音 {#notificationSound}
 
-デフォルトでは、デフォルトのデバイス通知音がHelpshiftの通知に使用されます。通知音は、インストール呼び出しの構成を使用してカスタマイズすることができます。
+デフォルトでは、デフォルトのデバイス通知音が Helpshift の通知に使用されます。通知音は、インストール呼び出しの構成を使用してカスタマイズすることができます。
 
 例:
 
@@ -312,7 +392,7 @@ public class MainApplication extends Application {
 
 ## 通知チャネル {#notificationChannels}
 
-Android Oreo以降、Helpshiftの通知は`In-app Support`という名前のデフォルトのチャネルを作成します。デフォルトのチャネル名と説明をカスタマイズする場合は、`install`呼び出しの`config`を使用します。
+Android Oreo 以降、Helpshift の通知は`In-app Support`という名前のデフォルトのチャネルを作成します。デフォルトのチャネル名と説明をカスタマイズする場合は、`install`呼び出しの`config`を使用します。
 
 例:
 
@@ -332,9 +412,9 @@ public class MainApplication extends Application {
 }
 ```
 
-## SDKのテーマ設定 {#theming}
+## SDK のテーマ設定 {#theming}
 
-SDKにスタイルやテーマを設定するには、[デザイン](/sdkx_android/design/)ページをご参照ください。
+SDK にスタイルやテーマを設定するには、[デザイン](/sdkx_android/design/)ページをご参照ください。
 
 ## トラッキング {#tracking}
 

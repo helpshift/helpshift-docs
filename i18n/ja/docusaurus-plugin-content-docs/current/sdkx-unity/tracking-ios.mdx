@@ -19,7 +19,9 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# トラッキング（<small>iOS</small>） {#tracking}
+import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
+# トラッキング（</small>iOS<small>） {#tracking}
 
 <Intro>
 
@@ -123,7 +125,7 @@ Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
 2. カスタム問題フィールド`Dictionary`を定義します
 3. そのカスタム問題フィールドのために`"type"`と`"value"`を追加します
 4. カスタム問題フィールドマップをトップレベルのマップに追加します（key に構成したキーを、value にカスタム問題フィールドマップを設定します）
-5. マップを`ShowConversation(configMap)`のキー`"cifs"`とともに`configMap`に渡します
+5. マップを`ShowConversation(configMap)`のキー`"cifs"`とともに`configMap`に渡します。
 
 ```csharp
 
@@ -140,7 +142,7 @@ Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
     employeeName.Add("value", "Bugs helpshift");
 
     Dictionary<string, string> isPro = new Dictionary<string, string>();
-    isPro.Add("type", "boolean");
+    isPro.Add("type", "checkbox");
     isPro.Add("value", "true");
 
     Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
@@ -160,11 +162,7 @@ Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
 
 ```
 
-<Admonition type="info" title="注意">
-  <b>"customIssueFields"</b>{" "}
-  キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
-  <b>"cifs"</b>キーの使用を強く推奨します。
-</Admonition>
+<CustomIssueFieldsKeyDeprecationNotice />
 
 カスタム問題フィールドの`type`キーの有効な値は、以下の通りです。
 
@@ -175,16 +173,16 @@ Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
 - "dropdown"
 - "date"
 
-データ型と値の互換性については、以下の票をご覧ください。
+データ型と値の互換性については、以下の表をご覧ください。
 
-| データ型   | 値      | コメント                                                                             |
-| ---------- | ------- | ------------------------------------------------------------------------------------ |
-| singleline | string  | 255 文字の文字数制限があります                                                       |
-| multiline  | string  | 100.000 文字の文字数制限があります                                                   |
-| number     | string  |                                                                                      |
-| dropdown   | string  | ドロップダウンオプションは特定のカスタム問題フィールドのために存在する必要があります |
-| date       | number  | ミリ秒単位のエポック時間です。例: **DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()** |
-| checkbox   | boolean |                                                                                      |
+| データ型   | 値     | コメント                                                                                                                                    |
+| ---------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| singleline | string | 255 文字の文字数制限があります                                                                                                              |
+| multiline  | string | 100.000 文字の文字数制限があります                                                                                                          |
+| number     | string |                                                                                                                                             |
+| dropdown   | string | ドロップダウンオプションは特定のカスタム問題フィールドのために存在する必要があります                                                        |
+| date       | number | ミリ秒単位のエポック時間です。例: **DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()**                                                        |
+| checkbox   | string | ブール値による文字列表現です。例: "true"または"false"。これは、ダッシュボードのチェックボックス型のカスタム問題フィールドに対応しています。 |
 
 <Admonition type="info" title="注意">
 
@@ -196,7 +194,7 @@ Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
 
 <Admonition type="info" title="注意">
 
-**Breadcrumbs**および**デバッグログ**API では、フォーマットされた文字列の受け渡しはサポートされていません。データの受け渡しについては、シンプルな String 型のみが推奨されています。
+**Breadcrumbs**および**デバッグログ** API では、フォーマットされた文字列の受け渡しはサポートされていません。データの受け渡しについては、シンプルな String 型のみが推奨されています。
 
 <p className="m-0">例:</p>
 
@@ -218,7 +216,6 @@ Breadcrumbs は、イベントやエンドユーザーのアクションの追�
 
 ```csharp
 HelpshiftSdk _support = HelpshiftSdk.GetInstance();
-...
 _support.LeaveBreadcrumb("Add breadcrumb");
 ```
 
@@ -227,7 +224,6 @@ Breadcrumbs は、設定されている Breadcrumbs の制限内で収集され�
 
 ```csharp
 HelpshiftSdk _support = HelpshiftSdk.GetInstance();
-...
 _support.ClearBreadcrumbs();
 ```
 
@@ -244,7 +240,6 @@ Helpshift のエージェントダッシュボードにあるエンドユーザ�
 
 ```csharp
 using Helpshift;
-...
 HelpshiftLog.d("debug-tag", "debug-message");
 ```
 

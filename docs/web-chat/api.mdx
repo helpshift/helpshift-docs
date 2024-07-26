@@ -1,7 +1,7 @@
 ---
 sidebar_position: 20
-title: Helpshift APIs
-description: Learn more about Helpshift APIs
+title: Helpshift API
+description: Helpshift APIについて詳しく説明します。
 ---
 
 import {
@@ -19,78 +19,78 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Helpshift APIs
+# Helpshift API
 
 <Intro>
 
 </Intro>
 
-## Open Widget {#open-widget}
+## ウィジェットを開く {#open-widget}
 
-If you want to open the conversation window at any time (apart from an explicit user click on launcher button), you can do it by calling the following API. This could be useful for triggering proactive help.
+会話ウィンドウを任意のタイミングで開く場合（ユーザーによるランチャーボタンの明示的なクリックを除く）、以下の API を呼び出すことで実現可能です。これは、先回りしたヘルプをトリガーする場合に便利です。
 
 ```javascript
 Helpshift("open");
 ```
 
-## Close Widget {#close-widget}
+## ウィジェットを閉じる {#close-widget}
 
-Similarly, for closing the conversation window at any time, you can call the following API.
+同様に、会話ウィンドウを任意のタイミングで閉じるには、以下の API を呼び出すことで実現可能です。
 
 ```javascript
 Helpshift("close");
 ```
 
-## Hide Widget {#hide-widget}
+## ウィジェットを非表示にする {#hide-widget}
 
-You can hide Web Chat completely (both the launcher and the widget) by calling the following API.
+以下の API を呼び出すことで、Web チャット（ランチャーとウィジェットの両方）を完全に非表示にすることができます。
 
 ```javascript
 Helpshift("hide");
 ```
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-You may want to use this API when you do not want to show the widget on specific pages or to specific users.
+特定のページで、または特定のユーザーに対してウィジェットを非表示にする場合には、この API を使用すると良いかもしれません。
 
 </Admonition>
 
-## Show Widget {#show-widget}
+## ウィジェットを表示する {#show-widget}
 
-You can have Web Chat (both the launcher and the widget) re-appear after it was previously hidden (via the hide API) by calling the following API.
+以下の API を呼び出すことで、Web チャット（ランチャーとウィジェットの両方）を（hide API 経由で）非表示にした後でもう一度表示することができます。
 
 ```javascript
 Helpshift("show");
 ```
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-This API will restore the visibility of Web Chat after it was previously hidden. For example, if the widget was open before hideAPI was called, then show API will display the widget in the open state. This API retains the visibility behavior.
+この API は、以前非表示にした Web チャットの可視性を復元します。たとえば、hide API を呼び出す前にウィジェットが開いていた場合、show API はウィジェットを開いた状態で表示します。この API は、可視性に関連する動作を保持します。
 
 </Admonition>
 
-## Visibility States
+## 可視性の状態
 
 <Image
   src="/static/books/web-chat/wc-chat-widget-hide-show-api.png"
   width="full"
 />{" "}
 
-## Update Helpshift Config {#update-helpshift-config}
+## Helpshift の設定を更新する {#update-helpshift-config}
 
-If you want to update the `helpshiftConfig` object after your web page has loaded, you can do it by calling the following API
+Web ページの読み込みが完了した後に`helpshiftConfig`オブジェクトを更新する場合、以下の API を呼び出すことで実現可能です。
 
 ```javascript
 Helpshift("updateHelpshiftConfig");
 ```
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-This API is best for use with single page web applications.
+この API は、シングルページの Web アプリケーションに最適です。
 
 </Admonition>
 
-Example: In a single page application, if you are retrieving user related data after login, to pass that updated user data to Web Chat, you should update the global helpshiftConfig object with the user data and call the above API.
+例: シングルページのアプリケーションでログイン後にユーザー関連データを取得する場合、更新されたユーザーデータを Web チャットに渡すには、ユーザーデータを使用してグローバルな helpshiftConfig オブジェクトを更新し、上記の API を呼び出します。
 
 ```javascript
 // Initial helpshift config object during page load
@@ -108,52 +108,52 @@ helpshiftConfig.userId = "<LOGGED_IN_USER_ID>";
 Helpshift("updateHelpshiftConfig");
 ```
 
-<Admonition type="danger" title="Important">
+<Admonition type="danger" title="重要">
 
-Make sure you do not overwrite the `helpshiftConfig` object when trying to update it.
-
-</Admonition>
-
-<Admonition type="info" title="Note">
-
-1. This API is applicable to all the `helpshiftConfig` object options, such as user related data, language, full privacy, widgetOptions, etc.
-2. Once the conversation has started, calling this API will not update the user identity or update Custom Issue Fields for an ongoing conversation.
-3. This API will cause the widget to reload. If the user has opened the widget and this API is called, then the user will see the loading indicator, and the conversation of the updated user will be displayed.
+更新を試みる場合には、`helpshiftConfig`オブジェクトを上書きしないようにご注意ください。
 
 </Admonition>
 
-## Set Initial User Message {#set-initial-user-message}
+<Admonition type="info" title="注意">
 
-If you want to set the initial user message through an API rather than making the end user type it, you can use the following API.
+1. この API は、ユーザー関連データ、言語、フルプライバシー、widgetOptions など、すべての`helpshiftConfig`オブジェクトオプションに適用されます。
+2. 会話が開始されると、この API を呼び出してもユーザー ID が更新されたり進行中の会話のカスタム問題フィールドが更新されたりすることはありません。
+3. この API を呼び出すと、ウィジェットが再読み込みされます。ユーザーがウィジェットを開いている状態でこの API が呼び出された場合、ユーザーに対して読み込み中インジケーターが表示され、更新されたユーザーの会話が表示されます。
+
+</Admonition>
+
+## 最初のユーザーメッセージを設定する {#set-initial-user-message}
+
+初期ユーザーメッセージをエンドユーザーに入力させるのではなく API を介して設定する場合、以下の API を使用することで実現可能です。
 
 ```javascript
 var userMessage = "Hello, how can I track my order?";
 Helpshift("setInitialUserMessage", userMessage);
 ```
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-You should call this API before a conversation starts. In other words, it works only when the conversation is not open i.e. when a new user opens the widget or existing user has closed a conversation. If you call this API in the middle of an existing conversation it will not have any effect.
-
-</Admonition>
-
-## Events {#events}
-
-The Helpshift widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
-
-### New Unread Messages Event {#new-unread-messages-event}
-
-This event gets fired when there are new unread message for the user. To listen to this event, add the following code after the embed code.
-
-<Admonition type="info" title="Note">
-
-This event can also be used to show a browser notification when the unread messages count changes.
-
-More info on [Browser notifications](https://developer.mozilla.org/en-US/docs/Web/API/notification)
+会話が開始される前にこの API を呼び出す必要があります。つまり、会話が開かれていないとき、つまり新規のユーザーがウィジェットを開いたとき、または既存のユーザーが会話を閉じたときにのみ動作します。既存の会話の最中にこの API を呼び出しても、効果はありません。
 
 </Admonition>
 
-#### Adding the New Unread Messages event handler
+## イベント {#events}
+
+Helpshift ウィジェットは、さまざまなシナリオにおいて以下のようなイベントを発生させます。イベントを管理するには、`addEventListener` API および`removeEventListener` API を使用します。
+
+### 新しい未読メッセージイベント {#new-unread-messages-event}
+
+このイベントは、ユーザーに新しい未読メッセージがあるときに発生します。このイベントをリッスンするには、埋め込みコードの後に以下のコードを追加します。
+
+<Admonition type="info" title="注意">
+
+このイベントは、未読メッセージの数が変更されたときにブラウザー通知を表示するために使用することもできます。
+
+詳細については、「[ブラウザー通知](https://developer.mozilla.org/en-US/docs/Web/API/notification)」を参照してください。
+
+</Admonition>
+
+#### 新しい未読メッセージイベントハンドラーの追加
 
 ```javascript
 var newUnreadMessagesEventHandler = function (data) {
@@ -166,7 +166,7 @@ Helpshift(
 );
 ```
 
-#### Removing the New Unread Messages event handler
+#### 新しい未読メッセージイベントハンドラーの削除
 
 ```javascript
 Helpshift(
@@ -176,24 +176,24 @@ Helpshift(
 );
 ```
 
-### User Changed Event {#user-changed-event}
+### ユーザーの変更イベント {#user-changed-event}
 
-This event gets fired when the user reopens Web Chat by clicking on the email link, if we detect that the user's identifier
-has changed from when the original user started the conversation to when this user clicked the email link.
+このイベントは、ユーザが電子メールリンクをクリックして Web チャットをもう一度開いたときに、ユーザーの識別子が元のユーザーが会話を開始したときからこのユーザーが電子メールのリンクをクリックした時へと
+変更されたことを検出した場合に発生します。
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-The ‘Follow up via email’ toggle for Web Chat needs to be enabled for you to use this event. The User Changed event can
-be used to build an optimal user experience for cases where the user’s identifier has changed after clicking the link,
-such as in the following scenarios:
+このイベントを使用するには、Web チャットの「メールでフォローアップ」トグルを有効にする必要があります。ユーザーの変更イベントは、
+以下のようなシナリオにおいて、リンクのクリック後にユーザーの識別子が変更された場合に最適なユーザーエクスペリエンスを構築するために
+使用することができます。
 
-1. The user started chat anonymously (didn’t login when they were chatting), but logged in before clicking on the link.
-2. The user started chat as a logged-in user but logged out before clicking the link.
-3. The user started chat as a logged-in user but logged in as a different user before clicking the link.
+1. ユーザーが匿名でチャットを開始し（チャットの最中はログインしていない）、リンクをクリックする前にログインした場合。
+2. ユーザーがログインユーザーとしてチャットを開始したが、リンクをクリックする前にログアウトした場合。
+3. ユーザーがログインユーザーとしてチャットを開始したが、リンクをクリックする前に別のユーザーとしてログインした場合。
 
 </Admonition>
 
-#### Adding the User Changed event handler
+#### ユーザーの変更イベントハンドラーの追加
 
 ```javascript
 var userChangedHandler = function (data) {
@@ -203,32 +203,32 @@ var userChangedHandler = function (data) {
 Helpshift("addEventListener", "userChanged", userChangedHandler);
 ```
 
-#### Removing the User Changed event handler
+#### ユーザーの変更イベントハンドラーの削除
 
 ```javascript
 Helpshift("removeEventListener", "userChanged", userChangedHandler);
 ```
 
-#### Using the values returned by the event
+#### イベントによって返された値の使用
 
-| Name                                                              | Values                                       | How to use                                                                                                                                                                                                                       |
-| ----------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `originalState` (this is the user’s state when they started chat) | `logged-in`                                  | If the user was originally logged-in, you should prompt the user to login again. As long as the user’s login credentials are same as their credentials when they started the chat, they’ll be able to resume their conversation. |
-|                                                                   | `anonymous`                                  | If the user was originally anonymous (aka not logged-in), you should prompt the user to logout or automatically log them out so that they are able to resume their conversation.                                                 |
-| `pageUrl`                                                         | The page where the user had started the chat | We highly recommend taking the user to the page where they started the chat after they successfully logout or login (based on what their original state was), so that they are taken back to the page with the right context.    |
+| 名前                                                                          | 値                                 | 使用方法                                                                                                                                                                                                                         |
+| ----------------------------------------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `originalState`（これはチャットを開始したときのユーザーの状態を示しています） | `logged-in`                        | ユーザーが元々ログインしていた場合、もう一度ログインするように促す必要があります。ユーザーのログイン認証情報がチャットを開始したときの認証情報と同一である限り、ユーザーは会話を再開することができます。                         |
+|                                                                               | `anonymous`                        | ユーザーが元々匿名（ログインしていない状態）だった場合には、プロンプト表示によってログアウトを促すか、自動的にログアウトさせることによって会話を再開できるようにする必要があります。                                             |
+| `pageUrl`                                                                     | ユーザーがチャットを開始したページ | 弊社では、（元々の状態に基づいて）ログアウトまたはログインに成功した後にユーザーをチャットを開始したページへと移動することを強く推奨しています。そうすることにより、ユーザーが正しい文脈が維持されたページに戻ることができます。 |
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-We also recommend using the [Open Widget API](https://developers.helpshift.com/web-chat/api#open-widget) to automatically open the widget for users after a successful
-login/logout (depending on what their original state was.)
+また、[Open Widget API](https://developers.helpshift.com/web-chat/api#open-widget)を使用し、
+ログインまたはログアウト（元の状態によって異なります）が成功した後にユーザーのために自動でウィジェットを開くことをお勧めしています。
 
 </Admonition>
 
-### Widget Toggle Event {#widget-toggle-event}
+### ウィジェットの切り替えイベント {#widget-toggle-event}
 
-This event is triggered when the user minimizes or maximizes the Web Chat main window. The event data object has a boolean property ‘visible’ which indicates the visibility of the main chat window. For your reference, see the below example:
+このイベントは、ユーザーが Web チャットのメインウィンドウを最小化または最大化したときにトリガーされます。イベントデータオブジェクトは、メインのチャットウィンドウの可視性を示すブーリアン値のプロパティ"visible"を保持しています。参考までに、以下の例をご覧ください。
 
-#### Adding the Widget Toggle Event Handler
+#### ウィジェットの切り替えイベントハンドラーの追加
 
 ```javascript
 var widgetToggleEventHandler = function (data) {
@@ -237,17 +237,17 @@ var widgetToggleEventHandler = function (data) {
 Helpshift("addEventListener", "widgetToggle", widgetToggleEventHandler);
 ```
 
-#### Removing the Widget Toggle Event Handler
+#### ウィジェットの切り替えイベントハンドラーの削除
 
 ```javascript
 Helpshift("removeEventListener", "widgetToggle", widgetToggleEventHandler);
 ```
 
-### Conversation Start Event {#conversation-start-event}
+### 会話の開始イベント {#conversation-start-event}
 
-This event triggers when the user sends the first message in a conversation. The event data object has a property, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
+このイベントは、ユーザーが会話の中で最初のメッセージを送信したときにトリガーされます。イベントのデータオブジェクトには`message`プロパティが含まれており、これにはエンドユーザーが会話を始めるために送信したメッセージの文字列が含まれています。ご参考までに、以下の例をご確認ください。
 
-#### Adding the Conversation Start Event Handler
+#### 会話の開始イベントハンドラーの追加
 
 ```javascript
 var conversationStartEventHandler = function (data) {
@@ -260,7 +260,7 @@ Helpshift(
 );
 ```
 
-#### Removing the Conversation Start Event Handler
+#### 会話の開始イベントハンドラーの削除
 
 ```javascript
 Helpshift(
@@ -270,11 +270,11 @@ Helpshift(
 );
 ```
 
-### Message Add Event {#message-add-event}
+### メッセージの追加イベント {#message-add-event}
 
-This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` properties, which indicates the type and body of the message added by the user. For your reference, see the below example.
+このイベントは、ユーザーが会話内でメッセージを追加したときにトリガーされます。追加されるメッセージには、テキストメッセージ、ボットの入力を介した応答、添付ファイルなどが想定されています。イベントのデータオブジェクトには`type`プロパティと`body`プロパティが含まれており、これらはユーザーが追加したメッセージの種類と本文を示しています。ご参考までに、以下の例をご確認ください。
 
-#### Adding the Message Add event handler
+#### メッセージの追加イベントハンドラーの追加
 
 ```javascript
 var messageAddEventHandler = function (data) {
@@ -286,17 +286,17 @@ var messageAddEventHandler = function (data) {
 Helpshift("addEventListener", "messageAdd", messageAddEventHandler);
 ```
 
-#### Removing the Message Add event handler
+#### メッセージの追加イベントハンドラーの削除
 
 ```javascript
 Helpshift("removeEventListener", "messageAdd", messageAddEventHandler);
 ```
 
-### CSAT Submit Event {#csat-submit-event}
+### CSAT の送信イベント {#csat-submit-event}
 
-This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` properties, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
+このイベントは、会話の終了後にユーザーが CSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`プロパティと`additionalFeedback`プロパティが含まれており、これらはユーザーが CSAT フォームを介して提供した（星による）評価と追加のコメントを示しています。ご参考までに、以下の例をご確認ください。
 
-#### Adding the CSAT Submit event handler
+#### CSAT の送信イベントハンドラーの追加
 
 ```javascript
 var csatSubmitEventHandler = function (data) {
@@ -306,17 +306,17 @@ var csatSubmitEventHandler = function (data) {
 Helpshift("addEventListener", "csatSubmit", csatSubmitEventHandler);
 ```
 
-#### Removing the CSAT Submit event handler
+#### CSAT の送信イベントハンドラーの削除
 
 ```javascript
 Helpshift("removeEventListener", "csatSubmit", csatSubmitEventHandler);
 ```
 
-### Conversation End Event {#conversation-end-event}
+### 会話の終了イベント {#conversation-end-event}
 
-This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
+このイベントは会話が終了（解決または拒否）し、再開できない場合にトリガーされます。
 
-#### Adding the Conversation End event handler
+#### 会話の終了イベントハンドラーの追加
 
 ```javascript
 var conversationEndEventHandler = function () {
@@ -325,7 +325,7 @@ var conversationEndEventHandler = function () {
 Helpshift("addEventListener", "conversationEnd", conversationEndEventHandler);
 ```
 
-#### Removing the Conversation End event handler
+#### 会話の終了イベントハンドラーの削除
 
 ```javascript
 Helpshift(
@@ -335,19 +335,19 @@ Helpshift(
 );
 ```
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-This is different from `chatEnd` event which is only triggered when the "Close" button is clicked and is used in conjunction with `setEndUserFirstMessage` API.
+これは、「閉じる」ボタンがクリックされたときにのみトリガーされる`chatEnd`イベントとは異なり、`setEndUserFirstMessage` API と共に使用されます。
 
-The `conversationEnd` event is triggered along with the `conversationResolved` and `conversationRejected` events (documented below). This event indicates that a conversation has either been resolved or rejected and the post resolution workflow (e.g. Resolution Question) has finished. For example, if you have turned the "Resolution Question" feature on, a typical flow of events would be - `conversationResolved` → User answers the Resolution Question → `conversationEnd`.
+`conversationEnd`イベントは、`conversationResolved`イベントおよび`conversationRejected`イベント（以下で説明）と共にトリガーされます。このイベントは、会話が解決または拒否され、解決後のワークフロー（例: 解決に関する質問）が終了したことを示しています。たとえば、"解決に関する質問"機能をオンにしている場合、典型的なイベントの流れは、「`conversationResolved`→ ユーザーが解決に関する質問に回答する →`conversationEnd`」のようになります。
 
 </Admonition>
 
-### Conversation Rejected Event {#conversation-rejected-event}
+### 会話の拒否イベント {#conversation-rejected-event}
 
-This event is triggered when an agent rejects the conversation.
+このイベントは、エージェントが会話を拒否したときにトリガーされます。
 
-#### Adding the Conversation Rejected event handler
+#### 会話の拒否イベントハンドラーの追加
 
 ```javascript
 var conversationRejectedEventHandler = function () {
@@ -360,7 +360,7 @@ Helpshift(
 );
 ```
 
-#### Removing the Conversation Rejected event handler
+#### 会話の拒否イベントハンドラーの削除
 
 ```javascript
 Helpshift(
@@ -370,11 +370,11 @@ Helpshift(
 );
 ```
 
-### Conversation Resolved Event {#conversation-resolved-event}
+### 会話の解決イベント {#conversation-resolved-event}
 
-This event is triggered when an agent resolves the conversation.
+このイベントは、エージェントが会話を解決したときにトリガーされます。
 
-#### Adding the Conversation Resolved event handler
+#### 会話の解決イベントハンドラーの追加
 
 ```javascript
 var conversationResolvedEventHandler = function () {
@@ -387,7 +387,7 @@ Helpshift(
 );
 ```
 
-#### Removing the Conversation Resolved event handler
+#### 会話の解決イベントハンドラーの削除
 
 ```javascript
 Helpshift(
@@ -397,11 +397,11 @@ Helpshift(
 );
 ```
 
-### Conversation Reopened Event {#conversation-reopened-event}
+### 会話の再開イベント {#conversation-reopened-event}
 
-When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
+解決に関する質問が有効化されている場合、ユーザーに対して解決の内容に満足しているかどうかが質問されます。ユーザーがそれを拒否し、新しいメッセージを送信すると会話が再開され、会話の再開イベントがトリガーされます。
 
-#### Adding the Conversation Reopened event handler
+#### 会話の再開イベントハンドラーの追加
 
 ```javascript
 var conversationReopenedEventHandler = function () {
@@ -414,12 +414,109 @@ Helpshift(
 );
 ```
 
-#### Removing the Conversation Reopened event handler
+#### 会話の再開イベントハンドラーの削除
 
 ```javascript
 Helpshift(
   "removeEventListener",
   "conversationReopened",
   conversationReopenedEventHandler
+);
+```
+
+### エージェントメッセージの受信イベント {#agent-message-received-event}
+
+このイベントは、エージェントのメッセージがエンドユーザーに「読まれる」たびにトリガーされます。このイベントはボットのメッセージに対してはトリガーされません。
+
+#### エージェントメッセージの受信イベントハンドラーの追加
+
+```javascript
+var agentMessageReceivedEventHandler = function (message) {
+  console.log(message);
+};
+
+Helpshift(
+  "addEventListener",
+  "agentMessageReceived",
+  agentMessageReceivedEventHandler
+);
+```
+
+受信するデータは、以下の形式になります。
+
+```ts
+type AgentMessage = {
+  // The actual message sent by the agent
+  body: string;
+  // Conversation ID of the ongoing issue
+  publishId: string;
+  // Unix epoch timestamp in ms
+  createdTs: number;
+  // Attachments, if they are present
+  attachments?: Array<{
+    url: string;
+    // Size of the attachment in bytes
+    size: number;
+    // The MIME type
+    contentType?: string;
+    fileName?: string;
+  }>;
+};
+```
+
+<Admonition type="info" title="注意">
+
+- 添付ファイルのキーは、エージェントが添付ファイルを送信した場合にのみ存在します。
+- エージェントが送信した添付ファイルには必要な MIME タイプや名前がない可能性があるため、
+  それらの値がペイロードから欠落する可能性があります。
+
+</Admonition>
+
+#### エージェントメッセージの受信イベントハンドラーの削除
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "agentMessageReceived",
+  agentMessageReceivedEventHandler
+);
+```
+
+### ユーザーによるアクションをクリック時のイベント {#user-click-on-action-event}
+
+エンドユーザーがアクションカードのリンクをクリックすると、このイベントがトリガーされます。
+
+#### ユーザーによるアクションのクリックイベントハンドラーの追加
+
+```javascript
+var userClickOnActionEventHandler = function (data) {
+  console.log("User clicked on action");
+  console.log(data);
+};
+
+Helpshift(
+  "addEventListener",
+  "userClickOnAction",
+  userClickOnActionEventHandler
+);
+```
+
+受信するデータは、以下の形式になります。
+
+```ts
+type ActionCardInfo = {
+  actionType: "link" | "call";
+  // This will be a URL or a phone number
+  actionData: string;
+};
+```
+
+#### ユーザーによるアクションのクリックイベントハンドラーの削除
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "userClickOnAction",
+  userClickOnActionEventHandler
 );
 ```

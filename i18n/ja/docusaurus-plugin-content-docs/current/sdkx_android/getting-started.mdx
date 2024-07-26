@@ -23,43 +23,75 @@ import {
 
 <Intro>
 
-以下の簡単な手順に従うことで、今すぐにHelpshiftのアプリ内サポートを
-Androidアプリに追加することができます。
+以下の簡単な手順に従うことで、今すぐに Helpshift のアプリ内サポートを
+Android アプリに追加することができます。
 
 </Intro>
 
-## 必要条件 {#minimum-supported-android-version}
+## 要件 {#minimum-supported-android-version}
 
-SDK Xを使用している場合、またはSDK Xへの移行を進めている場合には、アプリのインストールがAPIレベル24以上（Android OS 7以上）の場合にのみサポートされていることをあらかじめ確認しておく必要があります。
+SDK X をご利用の場合、または SDK X に移行中の場合には、以下の要件にご注意ください。
 
-### Gradleベースのプロジェクト {#gradle-support}
+- SDK X は、API レベル 24 以上（Android OS 7 Nougat 以上）でのみ動作します。
+- コード内の`minSDKVersion`は、API レベル 16（Android 4.4 Jelly Bean）までをインストール可能なアプリで SDK をインポートしてコンパイルできるようにするために、API レベル 16 として保持されています。
+- あなたのアプリが API レベル 24 以下（Android OS 7 Nougat 以下）のデバイスにインストールされている場合、サポートの提供に別のメディアを選択することができます。たとえば、電子メールやウェブサイトなどです。SDK が API レベル 24 未満で初期化された場合、`UnsupportedOSVersionException`をスローします。必要に応じてこの例外をキャッチして使用してください。詳細については、「[SDK の初期化](/sdkx_android/getting-started/#initializing)」を参照してください。
+
+<Admonition type="info" title="注意">
+
+- アップデート（2023 年 8 月）: SDK X 10.2.X は、API レベル 24 以上（Android OS 7 Nougat 以上）でのみ動作します。
+- SDK 10.3.0 は Android 7 以上（API レベル 24 以上）でサポートされており、このバージョン以上で機能します。最低限の API レベルであるレベル 16 でコンパイルすることは可能ですが、サポート対象は API レベル 24 以上です。
+  Helpshift SDK の Android OS サポートポリシーの詳細については、[こちらの記事](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/)を参照してください。
+
+</Admonition>
+
+### Gradle ベースのプロジェクト {#gradle-support}
 
 以下の依存関係を`build.gradle`ファイル内の依存関係セクションに追加します。
 
+<Tabs groupId="android-dependencies-example">
+
+<TabItem value=">= 10.3.0" label="10.3.X">
+
 ```groovy
     dependencies {
-        implementation 'com.android.support:appcompat-v7:28.0.0'
+        // androidx support library dependency
+        implementation 'androidx.appcompat:appcompat:1.0.0'
         implementation 'com.helpshift:helpshift-sdkx:[% sdkx_android.sdk_version  %]'
     }
 ```
 
-Helpshift SDKは47の言語に組み込みで対応しています。SDKの言語を変更するためのAPIも提供されており、[こちら](/sdkx_android/i18n/)からご確認いただけます。
+</TabItem>
+<TabItem value="<= 10.2.X>" label="Below 10.2.2">
 
-これでHelpshiftがあなたとユーザーとの間の会話をサポートする準備が整いました！
+```groovy
+    dependencies {
+        // legacy android support library dependency
+        implementation 'com.android.support:appcompat-v7:28.0.0'
+        implementation 'com.helpshift:helpshift-sdkx:10.2.X'
+    }
+```
 
-## Helpshiftの使用を開始する {#start-using}
+</TabItem>
+</Tabs>
+
+Helpshift SDK は 47 の言語に組み込みで対応しています。SDK の言語を変更するための API も提供されており、[こちら](/sdkx_android/i18n/)からご確認いただけます。
+
+これで Helpshift があなたとユーザーとの間の会話をサポートする準備が整いました！
+
+## Helpshift の使用を開始する {#start-using}
 
 ### バージョンの必要条件 {#version-requirements}
 
-| Helpshift SDKのバージョン | minSDKVersion | compileSDKVersion | buildToolsVersion |
-| --------------------- | ------------- | ----------------- | ----------------- |
-| 10.2.0以上             | 24            | 33                | 33                |
-| 10.0.2以上             | 24            | 31                | 31                |
-| 10.0.0以上             | 24            | 29                | 29                |
+| Helpshift SDK のバージョン | minSDKVersion | compileSDKVersion | buildToolsVersion |
+| -------------------------- | ------------- | ----------------- | ----------------- |
+| 10.3.0 以上                | 16            | 34                | 34                |
+| 10.2.0 以上                | 16            | 33                | 33                |
+| 10.0.2 以上                | 16            | 31                | 31                |
+| 10.0.0 以上                | 16            | 29                | 29                |
 
-### アプリでHelpshiftを初期化する {#initializing}
+### アプリで Helpshift を初期化する {#initializing}
 
-1. 最初に、Helpshiftダッシュボードでアプリを作成します
+1. 最初に、Helpshift ダッシュボードでアプリを作成します
 
    <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
 
@@ -69,29 +101,29 @@ Helpshift SDKは47の言語に組み込みで対応しています。SDKの言�
      width="full"
    />{" "}
 
-Helpshiftは、登録済みの各種アプリを以下の2つのトークンの組み合わせによって一意に識別します。
+Helpshift は、登録済みの各種アプリを以下の 2 つのトークンの組み合わせによって一意に識別します。
 
 <div className="compact">
 
-|               |                                                                                 |
-| ------------- | ------------------------------------------------------------------------------- |
-| `Platform ID` | アプリ固有のプラットフォームID（ダッシュボード上のアプリの`App Id`がプラットフォームIDです） |
-| `Domain Name` | あなたのHelpshiftドメイン。例: _happyapps.helpshift.com_                           |
+|               |                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| `Platform ID` | アプリ固有のプラットフォーム ID（ダッシュボード上のアプリの`App Id`がプラットフォーム ID です） |
+| `Domain Name` | あなたの Helpshift ドメイン。例: _happyapps.helpshift.com_                                      |
 
 </div>
 
 これらの値を取得するには、以下の手順に従ってください。
 
-1. 自身のHelpshiftダッシュボードにアクセスする
+1. 自身の Helpshift ダッシュボードにアクセスする
 2. `Settings`、`SDKs (for Developers)`の順に移動する
 3. ドロップダウンから目的のアプリを選択する
-4. 「Android」テーブルに記載されている2つのトークンをコピーする
+4. 「Android」テーブルに記載されている 2 つのトークンをコピーする
 
 <Image src="/static/books/helpshiftx/copy_install_keys.png" width="full" />
 
-`com.helpshift.Helpshift.install()`メソッドを呼び出してSDKを初期化します。
+`com.helpshift.Helpshift.install()`メソッドを呼び出して SDK を初期化します。
 
-オプションで構成マップを`Helpshift.install()`APIに渡すことも可能です。サポートされている構成を確認するには、「[SDKの構成](/sdkx_android/sdk-configuration.mdx)」ページをご確認ください。
+オプションで構成マップを`Helpshift.install()` API に渡すことも可能です。サポートされている構成を確認するには、「[SDK の構成](/sdkx_android/sdk-configuration.mdx)」ページをご確認ください。
 
 ```java
     public class MainApplication extends Application {
@@ -108,16 +140,17 @@ Helpshiftは、登録済みの各種アプリを以下の2つのトークンの�
                       "<Domain name from the Helpshift Dashboard>",
                       config);
         } catch (UnsupportedOSVersionException e) {
-            // Android OS versions prior to Lollipop (< SDK 21) are not supported.
+            // Android OS versions prior to Android 7 Nougat (< API Level 24) are not supported.
+            // SDK will be non-operational so you can choose to provide support to your users via other mediums like Web, Email etc.
         }
       }
     }
 ```
 
-#### 中国向けのアプリでHelpshiftを初期化する {#chinasupport}
+#### 中国向けのアプリで Helpshift を初期化する {#chinasupport}
 
-中国リージョン向けにHelphift SDKを統合するには、特別なインストール設定キーである`isForChina`を使用する必要があります。
-この設定キーはブール値を受け入れます。中国リージョン向けのアプリでSDKを統合する場合には、`true`を渡してください。指定がない場合のデフォルト値は、`false`です。
+中国リージョン向けに Helphift SDK を統合するには、特別なインストール設定キーである`isForChina`を使用する必要があります。
+この設定キーはブール値を受け入れます。中国リージョン向けのアプリで SDK を統合する場合には、`true`を渡してください。指定がない場合のデフォルト値は、`false`です。
 
 ```java
     public class MainApplication extends Application {
@@ -135,7 +168,8 @@ Helpshiftは、登録済みの各種アプリを以下の2つのトークンの�
                       "<Domain name from the Helpshift Dashboard>",
                       config);
         } catch (UnsupportedOSVersionException e) {
-            // Android OS versions prior to Lollipop (< SDK 21) are not supported.
+            // Android OS versions prior to Android 7 Nougat (< API Level 24) are not supported.
+            // SDK will be non-operational so you can choose to provide support to your users via other mediums like Web, Email etc.
         }
       }
     }
@@ -145,14 +179,14 @@ Helpshiftは、登録済みの各種アプリを以下の2つのトークンの�
 
 **インストール呼び出しの配置**
 
-インストール呼び出しは、`Application.onCreate`以外の場所には配置しないでください。これを他の場所に配置すると、実行時の予期せぬ問題が引き起こされてしまう可能性があります。
+インストール呼び出しは、`Application.onCreate()`以外の場所には配置しないでください。これを他の場所に配置すると、実行時の予期せぬ問題が引き起こされてしまう可能性があります。
 
 **HelpshiftInitializationException**
 
-インストール呼び出しよりも先にAPIを呼び出すと、デバッグモードで非チェックの`HelpshiftInitializationException`がスローされる可能性があります。
+インストール呼び出しよりも先に API を呼び出すと、デバッグモードで非チェックの`HelpshiftInitializationException`がスローされる可能性があります。
 
 **UnsupportedOSVersionException**
 
-バージョン21未満のAndroid SDKで`install()`を呼び出すと、このチェック例外がスローされます。すべてのAPIが操作不可能となります。
+バージョン 24 未満の Android SDK で`install()`を呼び出すと、このチェック例外がスローされます。すべての API が操作不可能となります。
 
 </Admonition>

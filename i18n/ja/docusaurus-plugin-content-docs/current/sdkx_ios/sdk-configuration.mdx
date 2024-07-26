@@ -20,34 +20,35 @@ import {
 } from "@site/src/components/forDocs";
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
 
-# SDKの構成
+# SDK の構成
 
 <Intro>
 
-Helpshiftには、SDKの動作をカスタマイズするための構成オプションがいくつか用意されています。これらのオプションは、[Helpshift API](/sdkx_ios/support-tools/)と組み合わせて使用します。
+Helpshift には、SDK の動作をカスタマイズするための構成オプションがいくつか用意されています。これらのオプションは、[Helpshift API](/sdkx_ios/support-tools/)と組み合わせて使用します。
 
 </Intro>
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります
 
 </Admonition>
 
 ## ロギングを有効にする {#enableLogging}
 
-`enableLogging`を`YES`に設定すると、Helpshift SDKのログがXcodeのコンソールに生成されます。これらのログは、統合中にSDKをデバッグする場合に役立ちます。ロギングの有効化は、開発者が統合に関する一般的な問題を解決する際に役立ちます。
+`enableLogging`を`YES`に設定すると、Helpshift SDK のログが Xcode のコンソールに生成されます。これらのログは、統合中に SDK をデバッグする場合に役立ちます。ロギングの有効化は、開発者が統合に関する一般的な問題を解決する際に役立ちます。
 
 <div className="compact ">
 
-|               |                                                   |
-| ------------- | ------------------------------------------------- |
-| オプション:       | <code>enableLogging</code>                        |
-| 値:       | <code>YES</code>/<code>NO</code>                |
-| デフォルト:      | <code>NO</code>                                   |
-| 最低限必要なSDKバージョン       | v10.0.0                                           |
-| サポート: | <code>installWithPlatformId:domain:config:</code> |
+|                             |                                                   |
+| --------------------------- | ------------------------------------------------- |
+| オプション:                 | <code>enableLogging</code>                        |
+| 値:                         | <code>YES</code>/<code>NO</code>                  |
+| デフォルト:                 | <code>NO</code>                                   |
+| 最低限必要な SDK バージョン | v10.0.0                                           |
+| サポート:                   | <code>installWithPlatformId:domain:config:</code> |
 
 </div>
 
@@ -77,19 +78,92 @@ Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: c
 
 </Tabs>
 
+## タグによる FAQ のフィルタリング {#faq-filtering}
+
+タグによる FAQ のフィルタリングが可能です。
+エンドユーザーが、たとえばユーザー属性やデバイスプロファイルに基づいて絞り込みをするなど、関連コンテンツを表示できるようにすることを目的として、開発者がこの FAQ のフィルタリング機能を選択して適切な利用者に対して絞り込みが行われた FAQ のリストを表示できるようになりました。
+
+FAQ のフィルタリングを使用する典型的なケースについては、以下の通りです。
+
+- 特定の対象に向けて特定の FAQ を表示する場合。例: ビジネスロジックに基づいてユーザーを「初心者」、「中級者」、「上級者」に分類する。
+- デバイスの種類に基づいて特定の FAQ を表示する場合。例: iPad 向けと iPhone 向けに FAQ のセットを切り替える。
+
+FAQ のフィルタリングの手順には、2 段階のアプローチが用意されています。
+
+1. FAQ は、ダッシュボードの`<issue tags>`フィールド（例: タグ`iphone`やタグ`ipad`など）を使用して分類する必要があります。
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />{" "}
+2. FAQ へのタグ付けが完了すると、本項で説明されているフィルタリングオプションを使用して、SDK でフィルタリングができるようになります。
+
+<Admonition type="info" title="注意">
+
+Helpshift では、主に「問題タグ」と「検索タグ」の 2 種類のタグが用意されています。
+
+- 問題タグは、SDK の FAQ のリストをフィルタリングルールでフィルタリングするために使用されます。
+- 検索タグ（検索キーワードとも呼ばれています） アプリ内検索を実行する場合、Helpshift SDK はこれらのキーワードを優先します。また、FAQ のタイトルや内容には含まれていないものの、ユーザーが検索する可能性のある代替のキーワードを追加するためにこれを使用することもできます。
+
+</Admonition>
+
+#### FAQ のフィルタリングの使用方法
+
+このオプションは`showFAQs` API および`showFAQSection` API でサポートされている設定オプションです。
+
+`filter`オプションは、以下の 2 つのキーを含む辞書です。
+
+- 演算子: `AND`、`OR`、`NOT`のいずれか 1 つであり、設定されているタグの条件演算子として機能します。
+- タグ: クエリ内の実際のタグです。
+
+`filter`オプションは、showFAQs API、showFAQSection API、showSingleFAQ API で使用される辞書`config`の"filter"キーに対するオブジェクトとして追加されます。
+
+|                             |                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------ |
+| オプション:                 | <code>filter</code>                                                            |
+| サブオプション:             | <code>tags</code>/<code>operator</code>                                        |
+| デフォルト                  | <code>nil</code>                                                               |
+| 最低限必要な SDK バージョン | v10.0.0                                                                        |
+| サポート                    | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code> |
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"filter": @{ @"tags": @[@"game", @"paid"], @"operator": @"AND"} };
+[Helpshift showFAQs:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["filter": ["tags": ["game", "paid"], "operator": "AND"]]
+Helpshift.showFAQs(self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="注意">
+
+showFAQs、showFAQSection、showSingleFAQ で使用されるタグのフィルタリング設定は 1 つのみです。また、タグのフィルタリングでは 1 つの演算子のみが遵守されます。
+
+</Admonition>
+
 ## お問い合わせを有効にする {#enableContactUs}
 
-ユーザーがFAQを表示しているときに、Helpshiftの「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
+ユーザーが FAQ を表示しているときに、Helpshift の「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
 
 <div className="compact ">
 
-|              |                                                                                                                                  |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| オプション       | <code>enableContactUs</code>                                                                                                     |
-| 値       | <code>"ALWAYS"</code>/<code>"AFTER_VIEWING_FAQS"</code>/<code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code>/<code>"NEVER"</code> |
-| デフォルト      | <code>nil</code>                                                                                                                 |
-| 最低限必要なSDKバージョン      | v10.0.0                                                                                                                          |
-| サポート | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code>                                                   |
+|                             |                                                                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| オプション                  | <code>enableContactUs</code>                                                                                               |
+| 値                          | <code>"ALWAYS"</code>/<code>"AFTER_VIEWING_FAQS"</code>/<code>"AFTER_MARKING_ANSWER_UNHELPFUL"</code>/<code>"NEVER"</code> |
+| デフォルト                  | <code>nil</code>                                                                                                           |
+| 最低限必要な SDK バージョン | v10.0.0                                                                                                                    |
+| サポート                    | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code>                                             |
 
 </div>
 
@@ -118,8 +192,8 @@ Helpshift.showFAQs(self, config: config)
 
 #### ベストプラクティス
 
-- 有料ユーザーに対してはenableContactUsを`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
-- 自国内のユーザーに対してはenableContactUsを`ALWAYS`に設定し、海外のユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、国ベースのサポートを提供することができます。サンプルコード:
+- 有料ユーザーに対しては enableContactUs を`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
+- 自国内のユーザーに対しては enableContactUs を`ALWAYS`に設定し、海外のユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、国ベースのサポートを提供することができます。サンプルコード:
 
 <Tabs groupId="ios-languages">
 
@@ -157,21 +231,21 @@ Helpshift.showFAQs(self, config: config)
 
 フルプライバシーオプションは、以下の方法によって[COPPA](http://www.coppa.org/)への準拠をサポートします。
 
-1. ユーザーによるスクリーンショット撮影の無効化（SDKを使用した画像を含むファイルの添付ができなくなります）。
-2. SDKによる名前や電子メールなどを含む個人を特定できる情報（PII）の収集の停止（アイデンティティボットおよび/またはhelpshiftConfigオブジェクトを使用）。つまり、`userName`と`userEmail`を設定し、`fullPrivacy`を`true`に設定している場合、Helpshiftは`userName`と`userEmail`の値を使用しません。
+1. ユーザーによるスクリーンショット撮影の無効化（SDK を使用した画像を含むファイルの添付ができなくなります）。
+2. SDK による名前や電子メールなどを含む個人を特定できる情報（PII）の収集の停止（アイデンティティボットおよび/または helpshiftConfig オブジェクトを使用）。つまり、`userName`と`userEmail`を設定し、`fullPrivacy`を`true`に設定している場合、Helpshift は`userName`と`userEmail`の値を使用しません。
 3. 以下の個人情報の非収集。
    - 携帯電話の国コード、携帯電話のネットワークコード、キャリア名。
    - "private-data"としてラベル付けされているカスタムメタデータ。
 
-また、ユーザーが不快なコンテンツを添付するシナリオにおいては、これはCOPPAに準拠する上で大きな問題となります。このオプションは、この問題を解決しなければならない場合に役立ちます。
+また、ユーザーが不快なコンテンツを添付するシナリオにおいては、これは COPPA に準拠する上で大きな問題となります。このオプションは、この問題を解決しなければならない場合に役立ちます。
 
-|              |                                                      |
-| ------------ | ---------------------------------------------------- |
-| オプション       | <code>fullPrivacy</code>                             |
-| 値       | <code>YES</code>/<code>NO</code>                   |
-| デフォルト      | <code>NO</code>                                      |
-| 最低限必要なSDKバージョン      | v10.0.0                                              |
-| サポート | <code>showConversation</code>、<code>showFAQs</code> |
+|                             |                                                      |
+| --------------------------- | ---------------------------------------------------- |
+| オプション                  | <code>fullPrivacy</code>                             |
+| 値                          | <code>YES</code>/<code>NO</code>                     |
+| デフォルト                  | <code>NO</code>                                      |
+| 最低限必要な SDK バージョン | v10.0.0                                              |
+| サポート                    | <code>showConversation</code>、<code>showFAQs</code> |
 
 例:
 
@@ -198,25 +272,25 @@ Helpshift.showConversation(with:self, config:config)
 
 #### ベストプラクティス
 
-登録プロセスで、ユーザーに年齢を尋ねましょう。ユーザーの年齢が13歳以下の場合には、`fullPrivacy`をYESに設定します。こうすることで、13歳以下のユーザーについてはCOPPAに準拠しつつ、その他のユーザーに対しては貴重なユーザーデータやデバイスデータを収集できるようになります。
+登録プロセスで、ユーザーに年齢を尋ねましょう。ユーザーの年齢が 13 歳以下の場合には、`fullPrivacy`を YES に設定します。こうすることで、13 歳以下のユーザーについては COPPA に準拠しつつ、その他のユーザーに対しては貴重なユーザーデータやデバイスデータを収集できるようになります。
 
 ## アプリ内通知を有効にする {#enableInAppNotification}
 
-Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、このフラグを`NO`に設定することができます。
+Helpshift SDK が提供するアプリ内通知サポートが不要な場合には、このフラグを`NO`に設定することができます。
 
-このフラグを`NO`に設定するとSDKはデバイスの通知トレイに通知を表示しなくなりますが、バックグラウンドでメッセージを取得します。
+このフラグを`NO`に設定すると SDK はデバイスの通知トレイに通知を表示しなくなりますが、バックグラウンドでメッセージを取得します。
 
 このフラグの規定値は`YES`です。そのため、アプリ内通知は有効化されます。
 
 <div className="compact ">
 
-|               |                                                   |
-| ------------- | ------------------------------------------------- |
-| オプション:       | <code>enableInAppNotification</code>              |
-| 値:       | <code>YES</code>/<code>NO</code>                |
-| デフォルト:      | <code>YES</code>                                  |
-| 最低限必要なSDKバージョン       | v10.0.0                                           |
-| サポート: | <code>installWithPlatformId:domain:config:</code> |
+|                             |                                                   |
+| --------------------------- | ------------------------------------------------- |
+| オプション:                 | <code>enableInAppNotification</code>              |
+| 値:                         | <code>YES</code>/<code>NO</code>                  |
+| デフォルト:                 | <code>YES</code>                                  |
+| 最低限必要な SDK バージョン | v10.0.0                                           |
+| サポート:                   | <code>installWithPlatformId:domain:config:</code> |
 
 </div>
 
@@ -248,14 +322,14 @@ Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: c
 
 ## アプリ内通知の外観 {#inAppNotificationAppearance}
 
-この構成は、SDKのアプリ内通知の外観を示しています。エージェント/ボットがメッセージを送信したときにユーザーがアプリを使用していた場合、アプリ内バナーが表示されます。そのバナーの外観は、この辞書を使用してカスタマイズできます
+この構成は、SDK のアプリ内通知の外観を示しています。エージェント/ボットがメッセージを送信したときにユーザーがアプリを使用していた場合、アプリ内バナーが表示されます。そのバナーの外観は、この辞書を使用してカスタマイズできます
 
-|               |                                                             |
-| ------------- | ----------------------------------------------------------- |
-| オプション:       | <code>inAppNotificationAppearance</code>                    |
-| サブオプション:  | <code>bannerBackgroundColor</code>/<code>textColor</code> |
-| 最低限必要なSDKバージョン       | v10.0.0                                                     |
-| サポート: | <code>installWithPlatformId:domain:config:</code>           |
+|                             |                                                           |
+| --------------------------- | --------------------------------------------------------- |
+| オプション:                 | <code>inAppNotificationAppearance</code>                  |
+| サブオプション:             | <code>bannerBackgroundColor</code>/<code>textColor</code> |
+| 最低限必要な SDK バージョン | v10.0.0                                                   |
+| サポート:                   | <code>installWithPlatformId:domain:config:</code>         |
 
 例:
 
@@ -291,13 +365,13 @@ Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: c
 
 `showConversation:`の構成辞書で`initiateChatOnLoad`オプションを`YES`に設定すると、エンドユーザーが「新しい会話」ボタンをクリックしたり、前の問題のフィードバックボットのような解決後のフローを経由することなく、前の問題が解決した直後に新しい会話を開始できるようになります。
 
-|               |                                    |
-| ------------- | ---------------------------------- |
-| オプション:       | <code>initiateChatOnLoad</code>    |
-| 値:       | <code>YES</code>/<code>NO</code> |
-| デフォルト:      | <code>NO</code>                    |
-| 最低限必要なSDKバージョン       | v10.0.0                            |
-| サポート: | <code>showConversation</code>      |
+|                             |                                  |
+| --------------------------- | -------------------------------- |
+| オプション:                 | <code>initiateChatOnLoad</code>  |
+| 値:                         | <code>YES</code>/<code>NO</code> |
+| デフォルト:                 | <code>NO</code>                  |
+| 最低限必要な SDK バージョン | v10.0.0                          |
+| サポート:                   | <code>showConversation</code>    |
 
 例:
 
@@ -326,13 +400,13 @@ Helpshift.showConversation(with:self, config:config)
 
 <ConversationPrefillTextDescription />
 
-|               |                                      |
-| ------------- | ------------------------------------ |
-| オプション:       | <code>conversationPrefillText</code> |
-| 値:       | 任意の文字列値                     |
-| デフォルト:      | <code>""</code>                      |
-| 最低限必要なSDKバージョン       | v10.0.0                              |
-| サポート: | <code>showConversation</code>        |
+|                             |                                      |
+| --------------------------- | ------------------------------------ |
+| オプション:                 | <code>conversationPrefillText</code> |
+| 値:                         | 任意の文字列値                       |
+| デフォルト:                 | <code>""</code>                      |
+| 最低限必要な SDK バージョン | v10.0.0                              |
+| サポート:                   | <code>showConversation</code>        |
 
 例:
 
@@ -357,19 +431,54 @@ Helpshift.showConversation(with:self, config:config)
 
 </Tabs>
 
-## iPadでの全画面表示 {#presentFullScreenOniPad}
+## 会話の最初のユーザーメッセージ {#conversation-initial-user-message}
 
-`presentFullScreenOniPad`フラグは、iPadでサポートビューを`UIModalPresentationFullScreen`と`UIModalPresentationFormSheet`のどちらのモーダルプレゼンテーションスタイルで表示するかを決定します。この構成は、iPhoneには影響を与えません。
+<ConversationInitialUserMessage />
 
-デフォルトの値はNOで、`UIModalPresentationFormSheet`でサポートビューを表示します。値が`YES`に設定されている場合、サポートビューは`UIModalPresentationFullScreen`で表示されます。Helpshiftを全画面モードで表示するには、この設定を使用します。
+|                             |                                                    |
+| --------------------------- | -------------------------------------------------- |
+| オプション:                 | <code>initialUserMessage</code>                    |
+| 値:                         | 任意の文字列値                                     |
+| デフォルト:                 | <code>""</code>                                    |
+| 最低限必要な SDK バージョン | v10.0.0                                            |
+| サポート:                   | <code>showConversation</code><code>showFAQs</code> |
 
-|              |                                                      |
-| ------------ | ---------------------------------------------------- |
-| オプション       | <code>presentFullScreenOniPad</code>                 |
-| 値       | <code>YES</code>/<code>NO</code>                   |
-| デフォルト      | <code>NO</code>                                      |
-| 最低限必要なSDKバージョン      | v10.0.0                                              |
-| サポート | <code>showConversation</code>、<code>showFAQs</code> |
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"initialUserMessage": @"INSERT YOUR INITIAL USER MESSAGE" };
+[Helpshift showConversationWith:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initialUserMessage": "INSERT YOUR INITIAL USER MESSAGE"]
+Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## iPad での全画面表示 {#presentFullScreenOniPad}
+
+`presentFullScreenOniPad`フラグは、iPad でサポートビューを`UIModalPresentationFullScreen`と`UIModalPresentationFormSheet`のどちらのモーダルプレゼンテーションスタイルで表示するかを決定します。この構成は、iPhone には影響を与えません。
+
+デフォルトの値は NO で、`UIModalPresentationFormSheet`でサポートビューを表示します。値が`YES`に設定されている場合、サポートビューは`UIModalPresentationFullScreen`で表示されます。Helpshift を全画面モードで表示するには、この設定を使用します。
+
+|                             |                                                      |
+| --------------------------- | ---------------------------------------------------- |
+| オプション                  | <code>presentFullScreenOniPad</code>                 |
+| 値                          | <code>YES</code>/<code>NO</code>                     |
+| デフォルト                  | <code>NO</code>                                      |
+| 最低限必要な SDK バージョン | v10.0.0                                              |
+| サポート                    | <code>showConversation</code>、<code>showFAQs</code> |
 
 例:
 
@@ -394,9 +503,9 @@ Helpshift.showConversation(with: self, config: config)
 
 </Tabs>
 
-## SDKのテーマ設定 {#theming}
+## SDK のテーマ設定 {#theming}
 
-SDKにスタイルやテーマを設定するには、[デザイン](/sdkx_ios/design)ページをご参照ください。
+SDK にスタイルやテーマを設定するには、[デザイン](/sdkx_ios/design)ページをご参照ください。
 
 ## トラッキング {#tracking}
 

@@ -19,25 +19,31 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Helpshiftのデリゲート {#delegates}
+# Helpshift のデリゲート {#delegates}
 
 <Intro>
 
-Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
+Helpshift SDK では、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
 
 </Intro>
 
 <Admonition type="info" title="注意">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+SDK に含まれているすべてのパブリック API は、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります
 
 </Admonition>
 
-## Helpshiftイベントリスナー/デリゲートの実装 {#helpshift-delegates-implementation}
+## Helpshift イベントリスナー/デリゲートの実装 {#helpshift-delegates-implementation}
 
 `Helpshift.setHelpshiftEventsListener()`メソッドを呼び出すことで、`HelpshiftEventsListener`を設定することができます。
 
-たとえば、以下のようになります。
+<Admonition type="info" title="注意">
+
+`Helpshift.setHelpshiftEventsListener`を設定する前に呼び出されたイベントをもう一度受信することはできません。
+
+</Admonition>
+
+例:
 
 ```java
 Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
@@ -59,7 +65,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 );
 ```
 
-クラスの実装: 
+クラスの実装:
 `HelpshiftEventsListener`を実装するクラスを定義し、
 `Helpshift.setHelpshiftEventsListener()`メソッドを使用してこのイベントリスナーのインスタンスを設定する必要があります。
 
@@ -86,7 +92,7 @@ MyEventListener listener = new MyEventListener();
 Helpshift.setHelpshiftEventsListener(listener);
 ```
 
-## Helpshiftのイベント {#helpshift-events}
+## Helpshift のイベント {#helpshift-events}
 
 ### 会話の状態イベント {#conversation-status}
 
@@ -109,24 +115,74 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }
 ```
 
-### ウィジェットトグルイベント {#widget-toggle-event}
+### ウィジェットの切り替えイベント {#widget-toggle-event}
 
-このイベントは、ユーザーがチャット画面を開いたり閉じたりしたときにトリガーされます。このイベントは、`"visible"`キーのブール値を用いてトリガーされます。
+このイベントは、ユーザーがチャット画面を開いたり閉じたりしたときにトリガーされます。このイベントは、`"visible"`キーのブーリアン値を用いてトリガーされます。
 
 - イベントの名前: `HelpshiftEvent.WIDGET_TOGGLE`
 - イベントのデータ: `HelpshiftEvent.DATA_SDK_VISIBLE`
 
 ```java
-    // ...
-    Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
-      @Override
-      public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
-        switch(eventName){
-          case HelpshiftEvent.WIDGET_TOGGLE:
-            Log.d(TAG, data.get(HelpshiftEvent.DATA_SDK_VISIBLE));
-        }
-      }
-      // ...
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.WIDGET_TOGGLE:
+        Log.d(TAG, data.get(HelpshiftEvent.DATA_SDK_VISIBLE));
+    }
+  }
+```
+
+### ユーザーによるアクションをクリック時のイベント {#user-click-on-action}
+
+このイベントは、ユーザーがアクションカードメッセージのリンクやアクションの呼び出しをクリックした時にトリガーされます。
+
+- イベントの名前: `HelpshiftEvent.ACTION_CLICKED`
+- イベントのデータ:
+  - `HelpshiftEvent.DATA_ACTION `
+  - `HelpshiftEvent.DATA_ACTION_TYPE `
+  - `HelpshiftEvent.DATA_ACTION_TYPE_CALL `
+  - `HelpshiftEvent.DATA_ACTION_TYPE_LINK `
+
+| キー（定数）                         | キー（生）        | データ型 |
+| ------------------------------------ | ----------------- | -------- |
+| HelpshiftEvent.ACTION_CLICKED        | userClickOnAction | 文字列   |
+| HelpshiftEvent.DATA_ACTION           | actionType        | 文字列   |
+| HelpshiftEvent.DATA_ACTION_TYPE      | actionData        | 文字列   |
+| HelpshiftEvent.DATA_ACTION_TYPE_CALL | call              | 文字列   |
+| HelpshiftEvent.DATA_ACTION_TYPE_LINK | link              | 文字列   |
+
+<Admonition type="info" title="注意">
+
+キーの定数は、SDK X 10.3.0 以降で利用可能です。古いバージョンの SDK X では、生のキーを代わりに使用してください。
+
+</Admonition>
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
+    switch(eventName){
+      case HelpshiftEvent.ACTION_CLICKED:
+          // With Key Constants
+          String actionType = (String) data.get(HelpshiftEvent.DATA_ACTION_TYPE);
+          String actionData = (String) data.get(HelpshiftEvent.DATA_ACTION);
+
+          -------------------- OR --------------------
+
+          // With Key Raw Values
+          String actionType = (String) data.get("actionType");
+          String actionData = (String) data.get("actionData");
+
+          // `Utils.isEmpty` is null and empty Check
+          if (Utils.isEmpty(actionType) || Utils.isEmpty(actionData)) {
+            Log.d(TAG, "Event Received for " + eventName + " with actionType or action Data as empty");
+            return;
+          }
+
+          Log.d(TAG, "Event Received for " + eventName + " action type " + actionType + " actionData " + actionData);
+    }
+  }});
 ```
 
 ### 会話の開始イベント {#conversation-start-event}
@@ -172,9 +228,92 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }
 ```
 
-### CSATの送信イベント {#csat-submit-event}
+### エージェントメッセージの受信イベント {#agent-message-received}
 
-このイベントは、会話の終了後にユーザーがCSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーがCSATフォームを介して提供した（星による）評価と追加のコメントを示しています。
+このイベントは、ユーザーが会話中にエージェントから何らかのメッセージを受信したときにトリガーされます。このデリゲートは、ボットによるメッセージや自動送信メッセージに対してはトリガーされません。
+
+- イベントの名前: `HelpshiftEvent.AGENT_MESSAGE_RECEIVED`
+- イベントのデータ:
+
+  | キー                             | データ型                | 値                                               |
+  | -------------------------------- | ----------------------- | ------------------------------------------------ |
+  | HelpshiftEvent.DATA_PUBLISH_ID   | 文字列                  | 現在進行中の問題の会話 ID                        |
+  | HelpshiftEvent.DATA_MESSAGE_TYPE | 文字列                  | メッセージのメッセージ型                         |
+  | HelpshiftEvent.DATA_MESSAGE_BODY | 文字列                  | エージェントが送信した実際のメッセージまたは空白 |
+  | HelpshiftEvent.DATA_CREATED_TIME | Long                    | ミリ秒単位の Unix エポックのタイムスタンプ       |
+  | HelpshiftEvent.DATA_ATTACHMENTS  | マップ<String, Object>> | 添付ファイル（存在する場合）                     |
+  | HelpshiftEvent.DATA_URL          | 文字列                  | 添付ファイルの URL                               |
+  | HelpshiftEvent.DATA_CONTENT_TYPE | 文字列                  | 添付ファイルの MIME タイプ                       |
+  | HelpshiftEvent.DATA_FILE_NAME    | 文字列                  | 添付ファイルのファイル名                         |
+  | HelpshiftEvent.DATA_SIZE         | Integer                 | 添付ファイルのサイズ（バイト単位）               |
+
+<Admonition type="info" title="注意">
+
+- このデリゲートは、10.3.0 以降のバージョンで利用可能です
+- 添付ファイルのキーは、エージェントが添付ファイルを送信した場合にのみ存在します。
+- エージェントが送信した添付ファイルには必要な MIME タイプや名前がない可能性があるため、ペイロードから`HelpshiftEvent.DATA_CONTENT_TYPE`が欠落する可能性があります。
+  そういった場合には、ファイル名の拡張子からファイルの種類を推測することができます。
+- HelpshiftEvent.DATA_MESSAGE_TYPE には、以下の種類があります。
+  - HelpshiftEvent.DATA_MESSAGE_TYPE_APP_REVIEW_REQUEST
+  - HelpshiftEvent.DATA_MESSAGE_TYPE_SCREENSHOT_REQUEST
+  - HelpshiftEvent.DATA_MESSAGE_TYPE_TEXT
+
+</Admonition>
+
+```java
+Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
+  @Override
+  public void onEventOccurred(@NonNull String eventName, Map<String, Object> eventData) {
+        switch (eventName) {
+          case HelpshiftEvent.AGENT_MESSAGE_RECEIVED:
+            Log.d(TAG,"Received Event for " + eventName);
+            String publishId = (String) eventData.get(HelpshiftEvent.DATA_PUBLISH_ID);
+            String type = (String) eventData.get(HelpshiftEvent.DATA_MESSAGE_TYPE);
+            String body = (String) eventData.get(HelpshiftEvent.DATA_MESSAGE_BODY);
+            Long createdTs = (Long) eventData.get(HelpshiftEvent.DATA_CREATED_TIME);
+
+            // Utils.isEmpty() is null and empty Check
+
+            if (Utils.isEmpty(publishId) && Utils.isEmpty(type) && Utils.isEmpty(body) && createdTs == null) {
+              Log.d(TAG, "Received no data");
+              return;
+            }
+
+            Log.d(TAG, "publishId " + publishId + " type " + type + " body " + body + " createdTs " + createdTs);
+            List<Object> attachments = (List<Object>) eventData.get(HelpshiftEvent.DATA_ATTACHMENTS);
+
+            if (Utils.isEmpty(attachments)) {
+              Log.d(TAG, "No attachments received in message");
+            } else {
+
+              for (int i = 0; i < attachments.size(); i++) {
+                Map<String, Object> attachment = (Map<String, Object>) attachments.get(i);
+
+                String url = (String) attachment.get(HelpshiftEvent.DATA_URL);
+                String contentType = (String) attachment.get(HelpshiftEvent.DATA_CONTENT_TYPE);
+                String fileName = (String) attachment.get(HelpshiftEvent.DATA_FILE_NAME);
+                Integer size = (Integer) attachment.get(HelpshiftEvent.DATA_SIZE);
+
+                if (Utils.isEmpty(url) && Utils.isEmpty(fileName) && size == null) {
+                  Log.d(TAG,"Received no data for attachment " + (i + 1));
+                  continue;
+                }
+
+                if (Utils.isEmpty(url) || Utils.isEmpty(fileName) || size == null) {
+                  Log.d(TAG,"Received incomplete data for attachment " + (i + 1));
+                  continue;
+                }
+
+                Log.d(TAG, "Attachment No. : " + (i + 1) + ", url: " + url + ", contentType: " + contentType + ", fileName: " + fileName + ", size: " + size);
+              }
+            }
+        }
+  }});
+```
+
+### CSAT の送信イベント {#csat-submit-event}
+
+このイベントは、会話の終了後にユーザーが CSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーが CSAT フォームを介して提供した（星による）評価と追加のコメントを示しています。
 
 - イベントの名前: `HelpshiftEvent.CSAT_SUBMIT`
 - イベントのデータ:
@@ -186,7 +325,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CSAT_SUBMIT":
+      case HelpshiftEvent.CSAT_SUBMIT:
         Log.d(TAG, data.get(HelpshiftEvent.DATA_CSAT_RATING));
         Log.d(TAG, data.get(HelpshiftEvent.DATA_ADDITIONAL_FEEDBACK));
     }
@@ -204,7 +343,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_END":
+      case HelpshiftEvent.CONVERSATION_END:
         //data will be empty
     }
   }
@@ -221,7 +360,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_REJECTED":
+      case HelpshiftEvent.CONVERSATION_REJECTED:
         //data will be empty
     }
   }
@@ -238,7 +377,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_RESOLVED":
+      case HelpshiftEvent.CONVERSATION_RESOLVED:
         //data will be empty
     }
   }
@@ -255,7 +394,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   @Override
   public void onEventOccurred(@NonNull String eventName, Map<String, Object> data) {
     switch(eventName){
-      case "HelpshiftEvent.CONVERSATION_REOPENED":
+      case HelpshiftEvent.CONVERSATION_REOPENED:
         //data will be empty
     }
   }
@@ -282,11 +421,11 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
     // ...
 ```
 
-### Helpshiftセッションのデリゲート {#session-delegates}
+### Helpshift セッションのデリゲート {#session-delegates}
 
-#### Helpshiftセッションの開始
+#### Helpshift セッションの開始
 
-Helpshiftセッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが開始するたびに発動します。
+Helpshift セッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshift セッションが開始するたびに発動します。
 
 - イベントの名前: `HelpshiftEvent.SDK_SESSION_STARTED`
 
@@ -301,9 +440,9 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }
 ```
 
-#### Helpshiftセッションの終了
+#### Helpshift セッションの終了
 
-Helpshiftセッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが終了するたびに発動します。
+Helpshift セッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshift セッションが終了するたびに発動します。
 
 - イベントの名前: `HelpshiftEvent.SDK_SESSION_ENDED`
 
@@ -320,7 +459,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 
 ### 未読メッセージ数の計測 {#unread-message-count}
 
-既存の会話で受信した新規メッセージの数を計測する場合は、この`requestUnreadMessageCount(final boolean shouldFetchFromServer)`APIを呼び出します。
+既存の会話で受信した新規メッセージの数を計測する場合は、この`requestUnreadMessageCount(final boolean shouldFetchFromServer)` API を呼び出します。
 
 未読メッセージの数は、このイベントを介してアプリに伝達されます。また、このイベントを使用してバッジの表示数を更新し続けることもできます。
 
@@ -345,8 +484,8 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }
 ```
 
-`Helpshift.requestUnreadMessageCount(true)`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたはHelpshiftサーバーのいずれかから取得されます。Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内にAPIが呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
+`Helpshift.requestUnreadMessageCount(true)`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたは Helpshift サーバーのいずれかから取得されます。Helpshift サーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）に API に対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内に API が呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は 1 分、そして非アクティブな問題の場合には 5 分に設定されています。
 
-ローカルに保存されている現在の通知数を取得する場合、パラメータをfalseに設定した同じ`Helpshift.requestUnreadMessageCount(false)`メソッドを呼び出します。この場合、SDKはローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
+ローカルに保存されている現在の通知数を取得する場合、パラメータを false に設定した同じ`Helpshift.requestUnreadMessageCount(false)`メソッドを呼び出します。この場合、SDK はローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
 
 ローカルに保存されている未読メッセージの数は、追加のネットワーク呼び出しを節約するのに役立ちます。

@@ -23,20 +23,19 @@ import {
 
 <Intro>
 
-Unityゲームに素晴らしいアプリ内サポートを追加するには、3つのステップが必要となります。
+Unity ゲームに素晴らしいアプリ内サポートを追加するには、3 つのステップが必要となります。
 
 </Intro>
 
-C#やJavaScriptで記述されたゲームスクリプトから呼び出し可能なHelpshift SDK X用のUnityプラグインの統合方法について説明します。
+C#や JavaScript で記述されたゲームスクリプトから呼び出し可能な Helpshift SDK X 用の Unity プラグインの統合方法について説明します。
 
-## 必要条件 {#version-requirements}
+## 要件 {#version-requirements}
 
-- Unity 2018.1.0以上。
+- Unity 2018.1.0 以上。
 - Xcode 12.0 以上。
-- サポートされているiOSバージョン:
-  - iOS 16、15、14、13、12、11、10
+- iOS 13 以上。
 
-## iOS向けのHelpshiftX Unity SDKのダウンロード {#getting-sdk}
+## iOS 向けの HelpshiftX Unity SDK のダウンロード {#getting-sdk}
 
 <DownloadButton
   text="Download SDK"
@@ -44,33 +43,31 @@ C#やJavaScriptで記述されたゲームスクリプトから呼び出し可�
   classes="mb-4"
 />
 
-HelpshiftX SDK _.zip_フォルダーには、以下のものが含まれています。
+HelpshiftX SDK *.zip*フォルダーには、以下のものが含まれています。
 
 <div className="text-sm compact ">
 
-|                                                                      |                                                              |
-| -------------------------------------------------------------------- | ------------------------------------------------------------ |
-| helpshiftX-plugin-unity-[% sdkxunity.package_version %].unitypackage | HelpshiftX SDKのUnityパッケージ                              |
-| unity-jar-resolver (v1.2.170.0)                                      | Android Helpshiftパッケージのサポートライブラリの依存関係を解決します。 |
+|                                              |                                                                          |
+| -------------------------------------------- | ------------------------------------------------------------------------ |
+| helpshiftX-plugin-unity-v10.3.0.unitypackage | Helpshift SDK X の Unity パッケージ                                      |
+| unity-jar-resolver (v1.2.170.0)              | Android Helpshift パッケージのサポートライブラリの依存関係を解決します。 |
 
 </div>
 
-## UnityプロジェクトにHelpshiftを追加する {#adding-to-project}
+## Unity プロジェクトに Helpshift を追加する {#adding-to-project}
 
-- HelpshiftX Unity SDKパッケージを解凍します。
-- HelpshiftX Unity SDKは、Unityパッケージのインポート手順を介してインポート可能な標準の`.unitypackage`として表示されます。
-- `helpshiftX-plugin-unity-version.unitypackage`をUnityゲームにインポートする手順は、以下の通りです。
-  1. 「Unityプロジェクトを開く」でドロップダウンメニュー「**アセット**」に移動し、「**パッケージをインポート**」、「**カスタムパッケージ**」の順に選択します
-  2. 解凍したSDKから`helpshiftX-plugin-unity-version.unitypackage`ファイルを選択し、Helpshift SDKをインポートします。
+- HelpshiftX Unity SDK パッケージを解凍します。
+- HelpshiftX Unity SDK は、Unity パッケージのインポート手順を介してインポート可能な標準の`.unitypackage`として表示されます。
+- `helpshiftX-plugin-unity-version.unitypackage`を Unity ゲームにインポートする手順は、以下の通りです。
+  1. 「Unity プロジェクトを開く」でドロップダウンメニュー「**アセット**」に移動し、「**パッケージをインポート**」、「**カスタムパッケージ**」の順に選択します
+  2. 解凍した SDK から`helpshiftX-plugin-unity-version.unitypackage`ファイルを選択し、Helpshift SDK をインポートします。
   3. 「インポート」をクリックします。
 
-### Info.plistの変更 - 使用目的に関する文字列の追加 {#plist-description-strings}
+### Info.plist の変更 - 使用目的に関する文字列の追加 {#plist-description-strings}
 
-アプリ内SDKの構成セクションから"ユーザーの添付ファイル"機能を有効にすると、ユーザーがSDKを介して添付ファイルをアップロードできるようになります。添付ファイルは写真ライブラリから選択することも、カメラを使用して直接撮影することもできます。これらのオプションの選択画面は、次のようになります。
+アプリ内の SDK の構成セクションから"ユーザーの添付ファイル"機能を有効にすると、SDK はユーザーによる添付ファイルのアップロードを許可するようになります。添付ファイルは、ファイルピッカーか写真ライブラリのいずれかから選択します。
 
-<Image src="/static/books/sdkx_ios/attachment_picker_ios.png" width="half" />{" "}
-
-カメラと写真ライブラリを使用する場合、AppleはアプリのInfo.plistに使用目的に関する文字列を入力することを求めています。これらの文字列を追加していない場合、アプリがリジェクトされてしまう可能性があります。添付ファイル機能を使用するには、以下の文字列が必要となります。
+カメラと写真ライブラリを使用する場合、Apple はアプリの Info.plist に写真ライブラリの使用目的に関する文字列を入力することを求めています。これらの文字列を追加していない場合、アプリがリジェクトされてしまう可能性があります。添付ファイル機能を使用するには、以下の文字列が必要となります。
 
 <table>
   <tr>
@@ -82,19 +79,34 @@ HelpshiftX SDK _.zip_フォルダーには、以下のものが含まれてい�
     <td>NSPhotoLibraryUsageDescription</td>
     <td>
       「このアプリは、ヘルプやサポートを目的として、
-添付ファイルとして送信する画像をユーザーが手動で選択できるようにするために、写真ライブラリにアクセスする必要があります。」
+      添付ファイルとして送信する画像をユーザーが手動で選択できるようにするために、写真ライブラリにアクセスする必要があります。」
     </td>
     <td>
-      iOS 11以上でアプリを使用する場合には、これは必要ありません。iOS 11以下では、
-このキーは必須となります。入力していない場合、ユーザーが写真を添付するために写真ライブラリを開こうとする際に
-アプリがクラッシュしてしまう可能性があります。
+      iOS 14以上でアプリを使用する場合には、これは必要ありません。iOS
+      14以下では、
+      このキーは必須となります。入力していない場合、ユーザーが写真を添付するために写真ライブラリを開こうとする際に
+      アプリがクラッシュしてしまう可能性があります。
     </td>
+  </tr>
+</table>
+
+<Admonition type="info" title="注意">
+
+以下の説明は、**SDK X 10.2.0 以下のバージョン**にのみ適用されます。
+
+#### 上記の`NSPhotoLibraryUsageDescription`と一緒に、アプリケーションの Info.plist ファイルに`NSCameraUsageDescription`キーと`NSMicrophoneUsageDescription`キーも追加してください。
+
+<table>
+  <tr>
+    <th>キー</th>
+    <th>推奨される文章</th>
+    <th>注意</th>
   </tr>
   <tr>
     <td>NSCameraUsageDescription</td>
     <td>
       「このアプリは、ヘルプやサポートを目的として、
-添付ファイルとして送信する画像をユーザーがクリックできるようにするために、カメラにアクセスする必要があります。」
+      添付ファイルとして送信する画像をユーザーがクリックできるようにするために、カメラにアクセスする必要があります。」
     </td>
     <td>
       このキーは、カメラで写真を撮影し、それを添付するために必要となります。
@@ -104,7 +116,7 @@ HelpshiftX SDK _.zip_フォルダーには、以下のものが含まれてい�
     <td>NSMicrophoneUsageDescription</td>
     <td>
       「このアプリは、ヘルプやサポートを目的として、
-添付ファイルとして送信する動画をカメラを使用して記録できるようにするために、マイクにアクセスする必要があります。」
+      添付ファイルとして送信する動画をカメラを使用して記録できるようにするために、マイクにアクセスする必要があります。」
     </td>
     <td>
       このキーは、カメラで動画を撮影し、それを添付するために必要となります。
@@ -112,118 +124,88 @@ HelpshiftX SDK _.zip_フォルダーには、以下のものが含まれてい�
   </tr>
 </table>
 
-上記の文字列は、あくまでも推奨されている説明文です。同様のローカライズが必要な場合には、お問い合わせください。
-
-<Admonition type="info" title="注意">
-
-エンドユーザーは、自身の問題にPDFや動画などのファイルを添付することができます。iOS 10以下では、iOSの「ファイル」アプリ内のファイルにアクセスするために開発者はiCloud Documentsサービスを有効にしてiCloud機能を追加する必要があります。詳細については、[こちらの「前提条件」セクション](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/DocumentPickerProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40014451)をご参照ください。
-&nbsp;&nbsp; <Image src="/static/books/ios/icloud-entitlement.png"  width="full" />
-
 </Admonition>
 
-## アプリでHelpshiftを初期化する {#initializing}
+上記の文字列は、あくまでも推奨されている説明文です。同様のローカライズが必要な場合には、<a href="https://support.helpshift.com/kb/contact/" target="_blank">お問い合わせ</a>ください。
 
-### Helpshiftの名前空間 {#namespace}
+## アプリで Helpshift を初期化する {#initializing}
 
-HelpshiftのAPIを使用するには、以下のようにHelpshiftの名前空間をインポートしてください
+### Helpshift の名前空間 {#namespace}
+
+Helpshift の API を使用するには、以下のように Helpshift の名前空間をインポートしてください
 
 ```csharp
-
-    using Helpshift;
-
-
+ using Helpshift;
 ```
 
-1. 最初に、Helpshiftダッシュボードでアプリを作成します
+1. 最初に、Helpshift ダッシュボードでアプリを作成します
 
    <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
 
 2. 選択した`Platform`に**iOS**を指定してアプリを作成します
    <Image src="/static/books/sdkx_ios/select_platform.png" width="full" />{" "}
 
-Helpshiftは、登録済みの各種アプリを以下の2つのトークンの組み合わせによって一意に識別します。
+Helpshift は、登録済みの各種アプリを以下の 2 つのトークンの組み合わせによって一意に識別します。
 
 <div className=" compact">
 
-|                          |                                                                   |
-| ------------------------ | ----------------------------------------------------------------- |
-| <code>Domain Name</code> | これがあなたのHelpshiftドメイン名です。例: _happyapps.helpshift.com_ |
-| <code>Platform ID</code> | あなたのアプリ固有のアプリID                                          |
+|                          |                                                                        |
+| ------------------------ | ---------------------------------------------------------------------- |
+| <code>Domain Name</code> | これがあなたの Helpshift ドメイン名です。例: _happyapps.helpshift.com_ |
+| <code>Platform ID</code> | あなたのアプリ固有のアプリ ID                                          |
 
 </div>
 
 これらは、エージェントダッシュボードで`Settings > SDK (for Developers)`の順に移動して見つけることができます。
-ドロップダウンで対象のアプリと_check IOS as a platform_を選択し、
-Helpshiftを初期化する際に渡される2つのトークンをコピーします。
+ドロップダウンで対象のアプリと*check IOS as a platform*を選択し、
+Helpshift を初期化する際に渡される 2 つのトークンをコピーします。
 
 <Image src="/static/books/sdkx_ios/copy_keys.png" width="full" />
 
-メソッド_install(appId, domain)_APIを呼び出し、Helpshiftを初期化します
+メソッド\_install(appId, domain)\_API を呼び出し、Helpshift を初期化します
 
 ```csharp
+using Helpshift;
 
-    using Helpshift;
-    .
-    .
-    .
-    public class MyGameControl : MonoBehaviour
-    {
-        private HelpshiftSdk help;
-        ...
-
-        void Awake() {
-            help = HelpshiftSdk.GetInstance();
-            var configMap = new Dictionary<string, object>();
-            help.Install(appId, domainName, configMap);
-        }
-        ...
-    }
-
-```
-
-#### Objective-Cを介してHelpshiftをインストールする {#objc-install}
-
-Objective-Cを使用してXcodeからSDKを初期化する場合は、Objective-Cのコード上でドメイン名、プラットフォームID、およびその他のインストール構成を指定することができます。これを行うには、以下のように`HsUnityAppcontroller`内の`application:didFinishLaunchingWithOptions`をオーバーライドする必要があります。
-
-```objc
-
-    #import <HelpshiftX/HelpshiftX.h>
-    #import "HelpshiftX-Unity.h"
-
-    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-        // Set install configurations
-        NSDictionary *installConfig = @{@"enableInAppNotification":@YES};
-
-        // Make install call
-        [Helpshift installWithPlatformId:@"<your_platform_id>" domain:@"<your_domain_name>" config:installConfig];
-        return [super application:application didFinishLaunchingWithOptions:launchOptions];
-    }
-
-```
-#### 中国向けのアプリでHelpshiftを初期化する {#chinasupport}
-
-中国リージョン向けにHelphift SDKを統合するには、特別なインストール設定キーである`isForChina`を使用する必要があります。
-この設定キーはブール値を受け入れます。中国リージョン向けのアプリでSDKを統合する場合には、`true`を渡してください。指定がない場合のデフォルト値は、`false`です。
-
-AppDelegateクラスに、以下のコードを追加してください。
-
-```objc
-
-    #import <HelpshiftX/HelpshiftX.h>
-    #import "HelpshiftX-Unity.h"
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
     ...
-    - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-        // Set install configurations
-        NSDictionary *installConfig = @{@"isForChina":@YES};
-
-        // Make install call
-        [Helpshift installWithPlatformId:@"<your_platform_id>" domain:@"<your_domain_name>" config:installConfig];
-        return [super application:application didFinishLaunchingWithOptions:launchOptions];
+    void Awake() {
+        help = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>();
+        help.Install(appId, domainName, configMap);
     }
-
+    ...
+}
 ```
 
-## Helpshiftの使用を開始する {#start-using}
+#### 中国向けのアプリで Helpshift を初期化する {#chinasupport}
 
-これでHelpshiftがアプリに統合されました。今後はアプリ内で[サポートAPI](/sdkx-unity/support-tools-ios/)を使用してHelpshift SDKで提供されている機能を体験
-してみてください
+中国リージョン向けに Helphift SDK を統合するには、特別なインストール設定キーである`isForChina`を使用する必要があります。
+この設定キーはブーリアン値を受け入れます。中国リージョン向けのアプリで SDK を統合する場合には、`true`を渡してください。指定がない場合のデフォルト値は、`false`です。
+
+このキーを使用して適切な値を渡し、Helpshift を初期化します。
+
+```csharp
+using Helpshift;
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    ...
+    void Awake() {
+        help = HelpshiftSdk.GetInstance();
+        var configMap = new Dictionary<string, object>()
+            {
+                { "isForChina", true },
+            };
+        help.Install(appId, domainName, configMap);
+    }
+    ...
+}
+```
+
+## Helpshift の使用を開始する {#start-using}
+
+これで Helpshift がアプリに統合されました。今後はアプリ内で[サポート API](/sdkx-unity/support-tools-ios/)を使用して Helpshift SDK で提供されている機能を体験してみてください。

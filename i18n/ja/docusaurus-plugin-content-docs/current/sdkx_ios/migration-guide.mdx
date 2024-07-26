@@ -19,17 +19,19 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
 # 移行ガイド
 
 <Intro>
 
-SDK XはハイブリッドSDKであり、ダウンタイムがなく、またアプリのアップデートを行うことなくアップデートの大半を無線を介してエンドユーザーへと送信することができるため、イノベーションを素早く展開することができます。
+SDK X はハイブリッド SDK であり、ダウンタイムがなく、またアプリのアップデートを行うことなくアップデートの大半を無線を介してエンドユーザーへと送信することができるため、イノベーションを素早く展開することができます。
 
-この移行ガイドでは、HelpshiftのレガシーSDKからSDK Xへの移行を行うために必要となる手順について説明します。
+この移行ガイドでは、Helpshift のレガシー SDK から SDK X への移行を行うために必要となる手順について説明します。
 
 </Intro>
 
-## SDK Xへの移行を行うための手順 {#steps-to-migrate}
+## SDK X への移行を行うための手順 {#steps-to-migrate}
 
 <Steps title="レガシーSDKからSDK Xへの移行">
   <Step
@@ -46,67 +48,62 @@ SDK XはハイブリッドSDKであり、ダウンタイムがなく、またア
     link="/sdkx_ios/migration-guide#update-helpshift-dependencies"
     newTab={true}
   />
-  <Step
-    number="3"
-    title="移行のテストを行う"
-    subtitle="機能の検証を行う"
-  />
+  <Step number="3" title="移行のテストを行う" subtitle="機能の検証を行う" />
 </Steps>
 
 ## サポートされていない機能 {#unsupported-features}
 
-現時点で以下のAPI/機能を使用している場合には、SDK Xへの移行の延期を推奨しています -
+現時点で以下の API/機能を使用している場合には、SDK X への移行の延期を推奨しています -
 
 - [ガイド付きの問題提出](/ios/support-tools#dynamic-forms)
 - [埋め込みのメッセージングエクスペリエンス](/ios/support-tools#embed-messaging)
-- [タグによるFAQのフィルタリング](/ios/support-tools#faq-filtering)
 - [問題に関する記述の長さの最小値設定](/ios/sdk-configuration#issue-description-minimum-length)
-- [SDKのUI文字列のカスタマイズ](/ios/string-customization/)
+- [SDK の UI 文字列のカスタマイズ](/ios/string-customization/)
 - [ライトテーマとダークテーマの切り替え](/ios/design#skinning)
 
-これらの機能はまだ開発中であり、2022年のロードマップに追加される可能性があります。上記のAPI/機能に関しては、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。
+これらの機能はまだ開発中であり、2022 年のロードマップに追加される可能性があります。上記の API/機能に関しては、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。
 
-## サポートされているSDKのバージョン {#supported-sdk-versions}
+## サポートされている SDK のバージョン {#supported-sdk-versions}
 
-移行が成功すれば、SDKのあるバージョンから別のバージョンへと移行してもユーザーのデータとチャット履歴は保持されます。バージョン7.x以上のレガシーSDKからSDK Xへの移行がサポートされています。
+移行が成功すれば、SDK のあるバージョンから別のバージョンへと移行してもユーザーのデータとチャット履歴は保持されます。バージョン 7.x 以上のレガシー SDK から SDK X への移行がサポートされています。
 
 <Admonition type="info" title="注意">
 
-**6.xより前のバージョンのSDKからの移行**
+**6.x より前のバージョンの SDK からの移行**
 
-6より前のバージョンのSDKからの移行はサポートされていません。6より前のバージョンからSDK Xへと移行した場合、SDK Xは正常に機能しますが、ログイン済みユーザーの情報は失われ、新しいデフォルトのユーザーが作成されます。現在のユーザーをもう一度ログインさせることは可能ですが、そのユーザーに対応するデータは移行されません。Helpshiftのシステムでは、新規のユーザーとして扱われます。
+6 より前のバージョンの SDK からの移行はサポートされていません。6 より前のバージョンから SDK X へと移行した場合、SDK X は正常に機能しますが、ログイン済みユーザーの情報は失われ、新しいデフォルトのユーザーが作成されます。現在のユーザーをもう一度ログインさせることは可能ですが、そのユーザーに対応するデータは移行されません。Helpshift のシステムでは、新規のユーザーとして扱われます。
 
 </Admonition>
 
-## Helpshiftの依存関係を更新する {#update-helpshift-dependencies}
+## Helpshift の依存関係を更新する {#update-helpshift-dependencies}
 
-レガシーSDKとSDK XのXcodeおよびiOSのバージョン要件は、変更されていません。
+レガシー SDK と SDK X の Xcode および iOS のバージョン要件は、変更されていません。
 
-### CocoaPodsを使った自動統合
+### CocoaPods を使った自動統合
 
-- Podfileから既存のHelpshiftの依存関係を削除する
-- Helpshift SDK Xをプロジェクトに追加するには、[こちら](/sdkx_ios/getting-started#cocoapods)の手順に従ってください
+- Podfile から既存の Helpshift の依存関係を削除する
+- Helpshift SDK X をプロジェクトに追加するには、[こちら](/sdkx_ios/getting-started#cocoapods)の手順に従ってください
 
 ### 手動での統合
 
-- プロジェクトからHelpshiftに関連するファイルをすべて削除します。関連するファイルには、以下のものがあります。
-  - 使用するHelpshift SDKのバージョンに応じたHelpshift.xcframeworkまたはHelpshift.framework
+- プロジェクトから Helpshift に関連するファイルをすべて削除します。関連するファイルには、以下のものがあります。
+  - 使用する Helpshift SDK のバージョンに応じた Helpshift.xcframework または Helpshift.framework
   - HelpshiftCustomLocalizations/フォルダー
   - HelpshiftCustomThemes/フォルダー
-- Helpshift SDK Xをプロジェクトに追加するには、[こちら](/sdkx_ios/getting-started#manual-integration)の手順に従ってください
+- Helpshift SDK X をプロジェクトに追加するには、[こちら](/sdkx_ios/getting-started#manual-integration)の手順に従ってください
 
 ## コードの変更 {#code-changes}
 
-Helpshiftの依存関係を更新した後にプロジェクトのコンパイルを試みると、コンパイルエラーが発生します。これは、レガシーSDKとSDK Xの間で一部のAPIのメソッド名とシグネチャが変更されていることが原因となっています。
+Helpshift の依存関係を更新した後にプロジェクトのコンパイルを試みると、コンパイルエラーが発生します。これは、レガシー SDK と SDK X の間で一部の API のメソッド名とシグネチャが変更されていることが原因となっています。
 
 #### インポート文
 
-- `Helpshift`モジュールは、`Helpshift`ではなく`HelpshiftX`と呼ばれています。 Helpshift APIを使用する予定のすべてのファイルで、`@import Helpshift;`を`@import HelpshiftX;`で置き換えてください。
+- `Helpshift`モジュールは、`Helpshift`ではなく`HelpshiftX`と呼ばれています。 Helpshift API を使用する予定のすべてのファイルで、`@import Helpshift;`を`@import HelpshiftX;`で置き換えてください。
 - プロジェクトのヘッダーファイルで`#import <Helpshift/HelpshiftCore.h>`のようなインポート文を使用している場合には、モジュールのインポート文に置き換える必要があります。
 
-#### Helpshiftのインストール呼び出し
+#### Helpshift のインストール呼び出し
 
-既存のHelpshiftインストール呼び出しを削除し、以下のように置き換えてください。
+既存の Helpshift インストール呼び出しを削除し、以下のように置き換えてください。
 
 ```objc
 @import HelpshiftX;
@@ -125,55 +122,55 @@ Helpshiftの依存関係を更新した後にプロジェクトのコンパイ�
 
 詳細については、「[SDK X・はじめに](/sdkx_ios/getting-started#start-using)」ガイドをご参照ください。
 
-#### Helpshiftのインストール呼び出しの構成
+#### Helpshift のインストール呼び出しの構成
 
-SDK Xのインストール呼び出しは、`HelpshiftInstallConfig`オブジェクトではなく辞書を持っています。インストール構成プロパティの辞書キーへのマッピングは、以下の通りです。
+SDK X のインストール呼び出しは、`HelpshiftInstallConfig`オブジェクトではなく辞書を持っています。インストール構成プロパティの辞書キーへのマッピングは、以下の通りです。
 
-| レガシーSDKのInstallConfigプロパティ | SDK Xのインストール辞書キー |
-| --------------------------------- | ---------------------------- |
-| enableLogging                     | enableLogging                |
-| enableInAppNotifications          | enableInAppNotification      |
+| レガシー SDK の InstallConfig プロパティ | SDK X のインストール辞書キー |
+| ---------------------------------------- | ---------------------------- |
+| enableLogging                            | enableLogging                |
+| enableInAppNotifications                 | enableInAppNotification      |
 
-その他の非推奨となった構成はすべて削除されており、もうサポートされていません。インストール構成の詳細については、[SDKの構成](/sdkx_ios/sdk-configuration/)ガイドをご参照ください。
+その他の非推奨となった構成はすべて削除されており、もうサポートされていません。インストール構成の詳細については、[SDK の構成](/sdkx_ios/sdk-configuration/)ガイドをご参照ください。
 
-#### HelpshiftのConversation APIとFAQ API
+#### Helpshift の Conversation API と FAQ API
 
-APIのシグネチャは変更されています。既存のAPI呼び出しを、以下の新しいものに更新してください。
+API のシグネチャは変更されています。既存の API 呼び出しを、以下の新しいものに更新してください。
 
-| レガシーSDKのAPI                               | SDK X API                      |
+| レガシー SDK の API                          | SDK X API                      |
 | -------------------------------------------- | ------------------------------ |
 | `showConversation:withOptions:`              | `showConversationWith:config:` |
 | `showFAQs:withOptions:`                      | `showFAQsWith:config:`         |
 | `showFAQSection:withController:withOptions:` | `showFAQSection:with:config:`  |
 | `showSingleFAQ:withController:withOptions:`  | `showSingleFAQ:with:config:`   |
-| タグによるFAQのフィルタリング                        | 現在サポートされていません        |
-| ガイド付きの問題提出                          | 現在サポートされていません        |
-| 埋め込みのメッセージングエクスペリエンス                | 現在サポートされていません        |
+| タグによる FAQ のフィルタリング              | 現在サポートされていません     |
+| ガイド付きの問題提出                         | 現在サポートされていません     |
+| 埋め込みのメッセージングエクスペリエンス     | 現在サポートされていません     |
 
-SDK XのConversation APIとFAQ APIの詳細については、[Helpshift API](sdkx_ios/support-tools/)ガイドをご参照ください。
+SDK X の Conversation API と FAQ API の詳細については、[Helpshift API](sdkx_ios/support-tools/)ガイドをご参照ください。
 
-#### Conversation APIとFAQ APIの構成
+#### Conversation API と FAQ API の構成
 
-SDK XのConversation APIとFAQ APIは、`HelpshiftAPIConfig`オブジェクトではなく辞書パラメーターを持っています。API構成プロパティの辞書キーへのマッピングは、以下の通りです。
+SDK X の Conversation API と FAQ API は、`HelpshiftAPIConfig`オブジェクトではなく辞書パラメーターを持っています。API 構成プロパティの辞書キーへのマッピングは、以下の通りです。
 
-| レガシーHelpshiftAPIConfigプロパティ | SDK X API辞書キー | 注意                                                                                                 |
-| ---------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------- |
-| presentFullScreenOniPad            | presentFullScreenOniPad  | -                                                                                                     |
-| enableFullPrivacy                  | enableFullPrivacy        | -                                                                                                     |
-| customIssueFields                  | cifs                     | -                                                                                                     |
-| showConversationResolutionQuestion | -                        | 「アプリの設定」、「解決の体験」、「解決に関する質問」トグルの順に移動し、管理者ダッシュボードへと移動します      |
-| enableTypingIndicator              | -                        | 「アプリの設定」、「サポートの体験」、「エージェントの入力インジケーターを表示する」トグルの順に移動し、管理者ダッシュボードへと移動します |
-|                                    |                          |                                                                                                       |
+| レガシー HelpshiftAPIConfig プロパティ | SDK X API 辞書キー      | 注意                                                                                                                                       |
+| -------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| presentFullScreenOniPad                | presentFullScreenOniPad | -                                                                                                                                          |
+| enableFullPrivacy                      | enableFullPrivacy       | -                                                                                                                                          |
+| customIssueFields                      | cifs                    | -                                                                                                                                          |
+| showConversationResolutionQuestion     | -                       | 「アプリの設定」、「解決の体験」、「解決に関する質問」トグルの順に移動し、管理者ダッシュボードへと移動します                               |
+| enableTypingIndicator                  | -                       | 「アプリの設定」、「サポートの体験」、「エージェントの入力インジケーターを表示する」トグルの順に移動し、管理者ダッシュボードへと移動します |
+|                                        |                         |                                                                                                                                            |
 
-その他の構成はすべて非推奨となっており、もうサポートされていません。API構成の詳細については、[SDKの構成](/sdkx_ios/sdk-configuration/)ガイドをご参照ください。
+その他の構成はすべて非推奨となっており、もうサポートされていません。API 構成の詳細については、[SDK の構成](/sdkx_ios/sdk-configuration/)ガイドをご参照ください。
 
 #### Helpshift User Management API
 
-ユーザーのログイン/ログアウトを管理するために、以下のAPIを置き換えます。
+ユーザーのログイン/ログアウトを管理するために、以下の API を置き換えます。
 
 ##### ログイン
 
-レガシーSDKのログインコードを
+レガシー SDK のログインコードを
 
 ```objc
 HelpshiftUserBuilder *userBuilder = [[HelpshiftUserBuilder alloc] initWithIdentifier:@"unique-user-id-746501"
@@ -184,7 +181,7 @@ HelpshiftUser *user = userBuilder.build;
 [HelpshiftCore login:user];
 ```
 
-SDK Xのログインコードで置き換えます。
+SDK X のログインコードで置き換えます。
 
 ```objc
 NSDictionary *userDetails = @{ HelpshiftUserName:@"John Doe",
@@ -197,40 +194,40 @@ NSDictionary *userDetails = @{ HelpshiftUserName:@"John Doe",
 
 <Admonition type="info" title="注意">
 
-SDK Xへの移行を行う際は、不一致を回避するためにアクティブユーザーを再度ログインさせることをお勧めします。
+SDK X への移行を行う際は、不一致を回避するためにアクティブユーザーを再度ログインさせることをお勧めします。
 
 </Admonition>
 
-その他のユーザー管理APIも変更されています。
+その他のユーザー管理 API も変更されています。
 
-| アクション               | レガシーSDKのAPI                        | SDK X API                                |
-| -------------------- | ------------------------------------- | ---------------------------------------- |
-| ログアウト               | `[HelpshiftCore logout];`             | `[Helpshift logout];`                    |
+| アクション         | レガシー SDK の API                   | SDK X API                                |
+| ------------------ | ------------------------------------- | ---------------------------------------- |
+| ログアウト         | `[HelpshiftCore logout];`             | `[Helpshift logout];`                    |
 | 匿名ユーザーの消去 | `[HelpshiftCore clearAnonymousUser];` | `[Helpshift clearAnonymousUserOnLogin];` |
 
-SDK Xのユーザー管理については、[ユーザー](/sdkx_ios/users/)ガイドをご参照ください。
+SDK X のユーザー管理については、[ユーザー](/sdkx_ios/users/)ガイドをご参照ください。
 
 #### デザインとテーマ設定
 
-SDKのデザインとテーマ設定は、SDK Xではすべて管理者ダッシュボードへと移動しています。テーマ設定APIのすべての呼び出しと、テーマ設定に関連するすべてのファイルをプロジェクトから削除してください。削除されたAPIは、以下の通りです。-
+SDK のデザインとテーマ設定は、SDK X ではすべて管理者ダッシュボードへと移動しています。テーマ設定 API のすべての呼び出しと、テーマ設定に関連するすべてのファイルをプロジェクトから削除してください。削除された API は、以下の通りです。-
 
 - `setTheme:`
 - `setLightTheme:darkTheme:`
 
-テーマ設定は、管理者ダッシュボードから構成が可能です。詳細については、[SDK Xのテーマ設定](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/)ガイドをご参照ください。
+テーマ設定は、管理者ダッシュボードから構成が可能です。詳細については、[SDK X のテーマ設定](https://support.helpshift.com/kb/article/configure-look-and-feel-settings/)ガイドをご参照ください。
 
 #### 文字列のカスタマイズ
 
-文字列のカスタマイズは、まだサポートされておりません。Helpshiftダッシュボードに移行される予定です。SDK Xには反映されなくなるため、アプリで行ったHelpshift SDK関連の文字列カスタマイズはすべて削除してください。
+文字列のカスタマイズは、まだサポートされておりません。Helpshift ダッシュボードに移行される予定です。SDK X には反映されなくなるため、アプリで行った Helpshift SDK 関連の文字列カスタマイズはすべて削除してください。
 
 #### Notification API
 
-APIのシグネチャは変更されています。既存のAPI呼び出しを、以下に説明する新しいものに更新してください。
+API のシグネチャは変更されています。既存の API 呼び出しを、以下に説明する新しいものに更新してください。
 
-| アクション                       | レガシーSDKのAPI                                            | SDK X API                                          |
-| ---------------------------- | --------------------------------------------------------- | -------------------------------------------------- |
-| デバイストークンを登録する        | `[HelpshiftCore registerDeviceToken:deviceToken];`        | `[Helpshift registerDeviceToken:deviceToken];`     |
-| アプリ内通知を一時停止する   | `[HelpshiftSupport pauseDisplayOfInAppNotification:YES];` | `[Helpshift pauseDisplayOfInAppNotification:YES];` |
+| アクション                       | レガシー SDK の API                                       | SDK X API                                          |
+| -------------------------------- | --------------------------------------------------------- | -------------------------------------------------- |
+| デバイストークンを登録する       | `[HelpshiftCore registerDeviceToken:deviceToken];`        | `[Helpshift registerDeviceToken:deviceToken];`     |
+| アプリ内通知を一時停止する       | `[HelpshiftSupport pauseDisplayOfInAppNotification:YES];` | `[Helpshift pauseDisplayOfInAppNotification:YES];` |
 | 未読メッセージ数をリクエストする | `[HelpshiftSupport requestUnreadMessagesCount:YES];`      | `[Helpshift requestUnreadMessageCount:YES];`       |
 
 未読メッセージの数を受信するデリゲートメソッドも変更されました。変更前:
@@ -259,7 +256,7 @@ APIのシグネチャは変更されています。既存のAPI呼び出しを�
 
 ##### 通知を処理する
 
-通知のクリックを処理するには、レガシーSDKのコードを置き換えます。
+通知のクリックを処理するには、レガシー SDK のコードを置き換えます。
 
 ```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
@@ -274,7 +271,7 @@ APIのシグネチャは変更されています。既存のAPI呼び出しを�
 }
 ```
 
-SDK Xのコードで以下のように置き換えます。
+SDK X のコードで以下のように置き換えます。
 
 ```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
@@ -291,38 +288,38 @@ SDK Xのコードで以下のように置き換えます。
 
 <Admonition type="info" title="注意">
 
-プッシュ通知を使用している場合には、不一致の可能性を回避するためのアプリのアップグレードを終えた後にSDK Xでプッシュトークンの再登録を行うことをお勧めします。
+プッシュ通知を使用している場合には、不一致の可能性を回避するためのアプリのアップグレードを終えた後に SDK X でプッシュトークンの再登録を行うことをお勧めします。
 
 </Admonition>
 
-SDK XのNotification APIの詳細については、[通知](/sdkx_ios/notifications/)ガイドをご参照ください。
-SDK Xのデリゲートの詳細については、[デリゲート](/sdkx_ios/delegates/)ガイドをご参照ください。
+SDK X の Notification API の詳細については、[通知](/sdkx_ios/notifications/)ガイドをご参照ください。
+SDK X のデリゲートの詳細については、[デリゲート](/sdkx_ios/delegates/)ガイドをご参照ください。
 
 #### インターナショナリゼーション
 
-SDKの言語を設定するAPIは、以下のように変更されています。
+SDK の言語を設定する API は、以下のように変更されています。
 
-| レガシーSDKのAPI                       | SDK X API                       |
+| レガシー SDK の API                  | SDK X API                       |
 | ------------------------------------ | ------------------------------- |
 | `[HelpshiftCore setLanguage:@"fr"];` | `[Helpshift setLanguage:"fr"];` |
 
 <Admonition type="info" title="注意">
 
-不一致の可能性を回避するために、SDK Xでアプリをアップグレードする際にSDKの言語をもう一度設定し直すことをお勧めします。
+不一致の可能性を回避するために、SDK X でアプリをアップグレードする際に SDK の言語をもう一度設定し直すことをお勧めします。
 
 </Admonition>
 
-SDK Xのインターナショナリゼーションの詳細やサポートされている言語のリストについては、[インターナショナリゼーション](/sdkx_ios/internationalization/)ガイドをご参照ください。
+SDK X のインターナショナリゼーションの詳細やサポートされている言語のリストについては、[インターナショナリゼーション](/sdkx_ios/internationalization/)ガイドをご参照ください。
 
 #### トラッキング
 
-以下のAPIをレガシーSDKから置き換えてください。
+以下の API をレガシー SDK から置き換えてください。
 
 ##### メタデータ
 
-メタデータの代わりに、CIFの使用を推奨しております。
+メタデータの代わりに、CIF の使用を推奨しております。
 
-レガシーSDKはメタデータAPIを活用して会話にメタデータを付与します（[こちら](/ios/tracking#metadata)をご参照ください）。メタデータを付与するためのレガシーSDKコードを、同等のSDK Xコードに置き換えます。
+レガシー SDK はメタデータ API を活用して会話にメタデータを付与します（[こちら](/ios/tracking#metadata)をご参照ください）。メタデータを付与するためのレガシー SDK コードを、同等の SDK X コードに置き換えます。
 
 ```objc
 NSDictionary *customMetadata = @{ @"usertype": @"paid",
@@ -336,7 +333,7 @@ NSDictionary *config = @{ @"customMetadata" : customMetadata };
 
 ##### タグ
 
-レガシーSDKはメタデータAPIを活用して会話にタグを付与します。タグを付与するために、レガシーSDKコードを置き換えます。
+レガシー SDK はメタデータ API を活用して会話にタグを付与します。タグを付与するために、レガシー SDK コードを置き換えます。
 
 ```objc
 HelpshiftAPIConfigBuilder *builder = [[HelpshiftAPIConfigBuilder alloc] init];
@@ -346,7 +343,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 [HelpshiftSupport showFAQs:self withConfig:apiConfig]
 ```
 
-同等のSDK Xのコードで以下のように置き換えます。
+同等の SDK X のコードで以下のように置き換えます。
 
 ```objc
 NSArray *tags = @[@"feedback",@"paid user",@"v4.1"];
@@ -356,7 +353,7 @@ NSDictionary *config = @{@"tags":tags};
 
 ##### カスタム問題フィールド
 
-レガシーSDKのコードを以下のように置き換えます。
+レガシー SDK のコードを以下のように置き換えます。
 
 ```objc
 NSMutableDictionary *customIssueFieldsDict = [NSMutableDictionary dictionary];
@@ -373,7 +370,7 @@ HelpshiftAPIConfig *apiConfig = [builder build];
 [HelpshiftSupport showFAQs:self withConfig:apiConfig];
 ```
 
-SDK Xのコードで以下のように置き換えます。
+SDK X のコードで以下のように置き換えます。
 
 ```objc
 NSDictionary *cifs = @{ @"name": @{ @"type":@"singleline", @"value":@"John Doe" },
@@ -387,33 +384,29 @@ NSDictionary *config = @{ @"cifs" : cifs };
 [Helpshift showConversationWith:self config:config];
 ```
 
-<Admonition type="info" title="注意">
-  <b>"customIssueFields"</b>{" "}
-キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
-<b>"cifs"</b>キーの使用を強く推奨します。
-</Admonition>
+<CustomIssueFieldsKeyDeprecationNotice />
 
-##### Breadcrumbsとデバッグログ
+##### Breadcrumbs とデバッグログ
 
-| アクション            | レガシーSDKのAPI                                         | SDK X API                                       |
-| ----------------- | ------------------------------------------------------ | ----------------------------------------------- |
-| Breadcrumbsを残す | `[HelpshiftSupport leaveBreadCrumb:@"Custom String"];` | `[Helpshift leaveBreadcrumb:@"Custom String"];` |
-| Breadcrumbsを消去する | `[HelpshiftSupport clearBreadCrumbs];`                 | `[Helpshift clearBreadcrumbs];`                 |
-| デバッグログを追加する    | `[HelpshiftSupport addLog:message];`                   | `[Helpshift addLog:message];`                   |
+| アクション             | レガシー SDK の API                                    | SDK X API                                       |
+| ---------------------- | ------------------------------------------------------ | ----------------------------------------------- |
+| Breadcrumbs を残す     | `[HelpshiftSupport leaveBreadCrumb:@"Custom String"];` | `[Helpshift leaveBreadcrumb:@"Custom String"];` |
+| Breadcrumbs を消去する | `[HelpshiftSupport clearBreadCrumbs];`                 | `[Helpshift clearBreadcrumbs];`                 |
+| デバッグログを追加する | `[HelpshiftSupport addLog:message];`                   | `[Helpshift addLog:message];`                   |
 
-SDK XのトラッキングAPIについては、[トラッキング](/sdkx_ios/tracking/)ガイドをご参照ください。
+SDK X のトラッキング API については、[トラッキング](/sdkx_ios/tracking/)ガイドをご参照ください。
 
-#### Helpshiftのデリゲート
+#### Helpshift のデリゲート
 
-Helpshiftのデリゲートを設定するためのAPIは、以下のように変更されています。
+Helpshift のデリゲートを設定するための API は、以下のように変更されています。
 
-| レガシーSDKのAPI                                              | SDK X API                                            |
+| レガシー SDK の API                                         | SDK X API                                            |
 | ----------------------------------------------------------- | ---------------------------------------------------- |
 | `[[HelpshiftSupport sharedInstance] setDelegate:delegate];` | `[[Helpshift sharedInstance] setDelegate:delegate];` |
 
-レガシーSDKでは、SDKの各イベントは個別のメソッドを持っていました。SDK Xでは、すべてのイベントはデリゲートの`handleHelpshiftEvent:withData:`メソッドで受信されます。イベントの一覧については、[こちらのガイド](/sdkx_ios/delegates#helpshift-delegate-events)をご参照ください。
+レガシー SDK では、SDK の各イベントは個別のメソッドを持っていました。SDK X では、すべてのイベントはデリゲートの`handleHelpshiftEvent:withData:`メソッドで受信されます。イベントの一覧については、[こちらのガイド](/sdkx_ios/delegates#helpshift-delegate-events)をご参照ください。
 
-SDK XでサポートされていないレガシーSDKメソッドの中で、対応するイベントがないものは以下の通りです。
+SDK X でサポートされていないレガシー SDK メソッドの中で、対応するイベントがないものは以下の通りです。
 
 - `userDidClickOnActionWithType:withData:`
 - `displayAttachmentFileAtLocation:onViewController:`
@@ -421,23 +414,24 @@ SDK XでサポートされていないレガシーSDKメソッドの中で、対
 
 ## レビューとフィードバック {#review-feedback}
 
-エージェントによるアプリのレビューは、SDK Xではサポートされています。この機能の詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)をご参照ください
-  
-以下の機能は、SDK Xで非推奨となりました。
+エージェントによるアプリのレビューは、SDK X ではサポートされています。この機能の詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)をご参照ください
+
+以下の機能は、SDK X で非推奨となりました。
+
 - [手動のアプリ評価リクエスト](/ios/reviews-and-feedback/#app-rating-api)
 - [自動のレビューリクエスト](/ios/reviews-and-feedback/#automatic-review-request)
 
 #### ディープリンク
 
-ディープリンクは、レガシーSDKと同様にSDK Xでもサポートされています。詳細については、[ディープリンク](/sdkx_ios/deep-linking/)をご参照ください。
+ディープリンクは、レガシー SDK と同様に SDK X でもサポートされています。詳細については、[ディープリンク](/sdkx_ios/deep-linking/)をご参照ください。
 
 ## トラブルシューティング
 
-### SDK Xへのアップグレード後のコンパイルエラー
+### SDK X へのアップグレード後のコンパイルエラー
 
-- サポートされているAPIおよび構成については、このガイドに記載されているように、すべてのレガシーSDKコードが対応するSDK Xコードに置き換えられていることをご確認ください。
-- サポートされていないAPIおよび構成については、このガイドに記載されているように、すべてのレガシーSDKコードが削除されていることをご確認ください。
+- サポートされている API および構成については、このガイドに記載されているように、すべてのレガシー SDK コードが対応する SDK X コードに置き換えられていることをご確認ください。
+- サポートされていない API および構成については、このガイドに記載されているように、すべてのレガシー SDK コードが削除されていることをご確認ください。
 
 ## お問い合わせ
 
-レガシーSDKからSDK Xへの移行に関して問題が発生した場合には、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。
+レガシー SDK から SDK X への移行に関して問題が発生した場合には、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。
