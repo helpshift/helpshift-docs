@@ -141,6 +141,43 @@ You should call this API before a conversation starts. In other words, it works 
 
 The Helpshift Widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
 
+### On Web Chat Runtime Error {#on-webchat-runtime-error}
+
+<Admonition type="danger" title="Note">
+
+We highly recommend enabling this event listener since it can help you catch and handle important errors.
+
+</Admonition>
+
+This event is fired when there is a runtime error from Web Chat which requires your attention. Such events may be generated if there is an issue with the integration which can be handled programmatically.  
+To listen to this event, add the following code after the embed code.
+
+#### Adding the On Web Chat Runtime Error event handler
+
+```javascript
+var onWebChatRuntimeErrorHandler = function (type, info) {
+  console.log(type, info);
+};
+Helpshift(
+  "addEventListener",
+  "onWebChatRuntimeError",
+  onWebChatRuntimeErrorHandler
+);
+```
+
+#### Removing the Web Chat Runtime Error event handler
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "onWebChatRuntimeError",
+  onWebChatRuntimeErrorHandler
+);
+```
+
+The possible errors that can be generated are provided here:
+::TODO::
+
 ### New Unread Messages Event {#new-unread-messages-event}
 
 This event gets fired when there are new unread message for the user. To listen to this event, add the following code after the embed code.
