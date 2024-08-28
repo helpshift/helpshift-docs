@@ -43,14 +43,7 @@ const announcements = [
     date: "10 Oct 2022",
     title: "SDK X 10.2.0 released",
     info: `SDK X 10.2.0 is now released for iOS and Android! Upgrade to get the latest features`,
-  },
-  {
-    date: "1 June 2022",
-    title: "Feedback+ SDK released",
-    info: `Helpshift's first SDK with a free tier to help you get early feedback from your users`,
-    link: "/freesdk",
-    linkTitle: "Read the guide",
-  },
+  }
 ];
 
 export default function AnnouncementList() {
