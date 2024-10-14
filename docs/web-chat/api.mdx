@@ -137,6 +137,142 @@ You should call this API before a conversation starts. In other words, it works 
 
 </Admonition>
 
+## Login {#login}
+
+The Login API is introduced along with the [new Identity system](/web-chat/users/#managing-users-with-the-identity-system).
+You can refer to the linked section for details.
+
+## Update global user data {#update-global-user-data}
+
+This event is used in conjunction with the [new Identity system](/web-chat/users/#managing-users-with-the-identity-system) and is used to update the global data associated with a logged-in user.
+
+The following key/value pairs are accepted in this API call:
+```ts
+interface CustomUserFields {
+  [key: string]: string
+}
+
+interface GlobalUserData {
+     // Note that all primitive values must be coerced to string
+     first_name?: "string",
+     last_name?: "string",
+     full_name?: "string",
+     display_name?: "string",
+     last_country?: "string",
+     last_city?: "string",
+     age?: "string",
+     lifetime_value?: "string",
+     user_persona?: "string",
+     user_vip_segment?: "string",
+     user_support_status?: "string"
+     last_active_date?: "string" // epoch time in ms/seconds
+     accepted_t_and_c?: "string" // true/false converted to string
+     preferred_language?:"string"
+     full_privacy_enabled?: "string"
+
+     // Non-primitives
+     new_tags?: Array<string>
+     tags_to_remove?: Array<string>
+     reset_tags?: Array<string>
+     custom_user_fields?: CustomUserFields
+}
+```
+
+Example:
+```js
+  // ... Some custom logic here that obtains user data
+  const full_name = "John Doe";
+
+  Helpshift("updateGlobalUserData", {full_name})
+```
+
+<Admonition type="info" title="Info">
+
+You can plug this API call into any place where you collect user data. However, be careful not to call it in any
+useEffect-like callbacks or frequently-firing events, since rate-limiting restrictions may kick in.
+
+Global user data is also referred to as **core attributes**.
+
+</Admonition>
+
+For a list of errors that can occur when using this API, refer [UPDATE_GLOBAL_USER_DATA_FAILED](#update-global-user-data-failed).
+
+## Update app user data {#update-app-user-data}
+
+This event is used in conjunction with the [new Identity system](/web-chat/users/#managing-users-with-the-identity-system) and is used to update the app data associated with a logged-in user.
+
+The following key/value pairs are accepted in this API call:
+```ts
+interface CustomUserFields {
+  [key: string]: string
+}
+
+interface AppUserData {
+     // Note that all primitive values must be coerced to string
+      app_version: "string",
+      user_vip_segment: "string",
+      sdk_version: "string",
+      language:"string",
+      app_rating: "string",
+      user_paying_segment: "string",
+      country: "string"
+      user_support_status: "string"
+      user_persona: "boolean string"
+      accepted_t_and_c: "string"
+      user_level: "string",
+      app_status: "string",
+      city: "string",
+      lifetime_value: "string",
+
+
+      // Non-primitives
+      custom_user_fields?: CustomUserFields
+}
+```
+
+Example:
+```js
+  // ... Some custom logic here that obtains user data
+  const app_rating = "5";
+
+  Helpshift("updateAppUserData", {app_rating})
+```
+
+<Admonition type="info" title="Info">
+
+You can plug this API call into any place where you collect user data. However, be careful not to call it in any
+useEffect-like callbacks or frequently-firing events, since rate-limiting restrictions may kick in.
+
+App user data is also referred to as **app attributes**.
+
+</Admonition>
+
+For a list of errors that can occur when using this API, refer [UPDATE_APP_USER_DATA_FAILED](#update-app-user-data-failed).
+
+## Add user identities {#add-user-identities}
+
+This event is used in conjunction with the [new Identity system](/web-chat/users/#managing-users-with-the-identity-system) and is used to update identities associated with a logged-in user.
+
+Note that although the API is named `identities`, if you wish to send multiple identities, they must be a part of the JWT's payload itself.
+Essentially, the API expects a string JWT and NOT an array.
+
+Example:
+```js
+  // ... Some custom logic here that obtains user data
+  const identities = "header.payload.hash";
+  Helpshift("addUserIdentities", identities)
+```
+
+<Admonition type="info" title="Info">
+
+You can plug this API call into any place where you collect user identities. However, be careful not to call it in any
+useEffect-like callbacks or frequently-firing events, since rate-limiting restrictions may kick in.
+
+</Admonition>
+
+For a list of errors that can occur when using this API, refer [ADD_USER_IDENTITY_FAILED](#add-user-identity-failed).
+
+
 ## Events {#events}
 
 The Helpshift Widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
@@ -682,8 +818,9 @@ interface InvalidPayloadDetails {
 
 </table>
 
-##### UPDATE_GLOBAL_USER_DATA_FAILED
+##### UPDATE_GLOBAL_USER_DATA_FAILED {#update-global-user-data-failed}
 This error can occur when you attempt to update global user data with the new Identity System.
+Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
 
 <table>
 
@@ -734,8 +871,9 @@ Client-side validation. Fired when you attempt to call this API, but `authentica
 </tr>
 </table>
 
-##### UPDATE_APP_USER_DATA_FAILED
+##### UPDATE_APP_USER_DATA_FAILED {#update-app-user-data-failed}
 This error can occur when you attempt to update the _app_ user data with the new Identity System.
+Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
 
 <table>
 
@@ -787,7 +925,10 @@ Client-side validation. Fired when you attempt to call this API, but `authentica
 
 </table>
 
-##### ADD_USER_IDENTITY_FAILED
+##### ADD_USER_IDENTITY_FAILED {#add-user-identity-failed}
+
+This error can occur when you attempt to update the a user identity with the new Identity System.
+Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
 
 <table>
 
@@ -829,7 +970,7 @@ Client-side validation. Fired when you attempt to call this API, but `authentica
 
 </table>
 
-##### IDENTITY_PROFILE_UPDATE_FAILED
+##### IDENTITY_PROFILE_UPDATE_FAILED {#identity-profile-update-failed}
 
 Web Chat batches your user data updates and syncs them periodically.
 As a result of this, if a validation failure occurs on the server-side, this error will
