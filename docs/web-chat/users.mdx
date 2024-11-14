@@ -306,6 +306,24 @@ Helpshift("updateHelpshiftConfig")
 // ^ This will trigger the onLoginRequest event.
 ```
 
+### Logging out your end-users {#logout-end-users}
+To log out your end-users, you can use the logout API.
+
+
+```js
+Helpshift("logout");
+```
+
+Note that after calling this API, Web Chat will clear any user specific data from the `helpshiftConfig`
+object, and reset the chat to an anonymous user. Depending on the value of `helpshiftConfig.clearAnonymousUserOnLogin`,
+this can either be the previous anonymous user or a new anonymous user.
+
+<Admonition type="info" title="Tip">
+
+For a better user experience, consider hiding the chat widget after the user logs out.
+
+</Admonition>
+
 ### Optimizations
 
 <Admonition type="info" title="Note">
