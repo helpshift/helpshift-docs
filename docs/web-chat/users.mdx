@@ -243,6 +243,17 @@ Helpshift("addEventListener", "onLoginRequest", async ({userId, userEmail}) => {
 });
 ```
 
+<Admonition type="info">
+
+Helpshift can also trigger the `onLoginRequest` event to reverify your user session  if we detect
+suspicious activity or if the user's session is about to expire. In such cases, the same event handler
+is sufficient for reverification, as long as you provide a JWT that has been generated within the last 24h.
+
+We wait for the `onLoginRequest` callback to be executed for 5 seconds before we consider the session as expired.
+If this happens, we replace the chat with a full screen session expired message.
+
+</Admonition>
+
 ### With anonymous users {#with-anon-users}
 
 We recommend logging in your end-user into Helpshift as early as possible, since it helps
