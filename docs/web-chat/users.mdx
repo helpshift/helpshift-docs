@@ -243,6 +243,35 @@ Helpshift("addEventListener", "onLoginRequest", async ({userId, userEmail}) => {
 });
 ```
 
+#### Identity token format {#identity-token-format}
+
+The identity token must be a **JWT signed using the shared secret** from your app settings in the dashboard. 
+When decoded, it must adhere to the following format:
+
+```ts
+interface Identity {
+    identifier: "uid" | "email" | "phone_number" | "facebook_id" |
+                "discord_id"|"whatsapp_id"|"google_playstore_id"|
+                "apple_gamecenter_id" | "nintendo_id" | "psn_id" |
+                "xbox_live_id" | "steam_id",
+    value: string,
+    metadata?: {
+        [key:string]: string
+    }
+}
+
+interface IdentityToken {
+  identities: Identity[],
+  iat: number // UNIX epoch time in seconds, generated in the last 24h or earlier
+}
+```
+
+<Admonition type="danger" title="Important">
+
+Always generate the JWT on the server side, and store your shared secret securely.
+
+</Admonition>
+
 <Admonition type="info">
 
 Helpshift can also trigger the `onLoginRequest` event to reverify your user session  if we detect
