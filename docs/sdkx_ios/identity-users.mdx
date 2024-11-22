@@ -83,7 +83,7 @@ The API signature for the login API is -
 
 ```
 login(withIdentity:config:success:failure:)
-- identity - String (must be valid JWT)
+- identity - String (must be valid JWT or an empty string)
 - config - [String: Any]
 - success - (() -> Void)
 - failure - ((reason: String, errors: [String: String]) -> Void)
@@ -110,6 +110,8 @@ The identity token must be a JWT signed using the shared secret from your app se
   "iat": // UNIX epoch time in seconds, generated in the last 24h or earlier
 }
 ```
+
+Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
 
 Additionally, following rules apply depending on the value of `full_privacy_enabled` flag in config.
 - If full privacy flag is false, one of uid or email is mandatory in the identities array.
@@ -164,7 +166,7 @@ Helpshift.logout()
 
 ### Logout due to session expiry
 
-User logout can also be triggered by the SDK itself when the current user’s login session expires. This login session is independent from your app’s login session. When this happens, SDK will send the `userSessionExpired` event to your app immediately as well on each app foreground. In response to this event, you should obtain a fresh JWT for the app’s current user from your backend and call the login API with the new JWT and login config to start a fresh SDK login session.
+User logout can also be triggered by the SDK itself when the current user’s login session expires. This login session is independent from your app’s login session. When this happens, SDK will send the `userSessionExpired` event to your app immediately as well on each app foreground. In response to this event, you should obtain a fresh JWT for the app’s current user from your backend and call the login API with the new JWT and login config to start a fresh SDK login session. SDK will stop sending this event after a successful login.
 
 If you wish to proactively refresh your logged in user’s credentials with Helpshift so that the session never expires, you can additionally listen to `refreshUserCredentials` event. This event is sent by the SDK some time before the session actually expires. This gives your app a chance to re-login the current user and maintain their session.
 

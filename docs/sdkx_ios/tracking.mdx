@@ -271,9 +271,9 @@ Debug logs are collected within the set debug logs limit. The limit is set under
 
 </Admonition>
 
-## Update global user data
+## Update global user attributes
 
-This API is meant to be used along with the new [User Identity system](/sdkx_ios/identity-users). Use this API to update global data associated with the logged in user.
+This API is meant to be used along with the new [User Identity system](/sdkx_ios/identity-users). Use this API to update global attributes associated with the logged in user.
 
 <Tabs groupId="ios-languages">
 
@@ -309,7 +309,7 @@ Global attributes must be one of the following types -
 - `full_name` - String
 - `last_country` - String
 - `last_city` - String
-- `age` -  Int or String
+- `age` -  String
 - `lifetime_value` - String
 - `user_persona` - String
 - `user_vip_segment` - String
@@ -317,7 +317,7 @@ Global attributes must be one of the following types -
 - `last_active_date` - UNIX epoch time in seconds
 - `accepted_t_and_c` - Boolean or String
 - `preferred_language` - String
-- `full_privacy_enabled` -  Boolean or String
+- `full_privacy_enabled` - String
 - `new_tags` - String Array
 - `tags_to_remove` - String Array
 - `reset_tags` - String Array
@@ -326,9 +326,9 @@ Global attributes must be one of the following types -
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
 For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
 
-## Update app specific user data
+## Update app specific user attributes
 
-This API is meant to be used along with the new [User Identity system](/sdkx_ios/identity-users). Use this API to update app specific data associated with the logged in user.
+This API is meant to be used along with the new [User Identity system](/sdkx_ios/identity-users). Use this API to update app specific attributes associated with the logged in user.
 
 <Tabs groupId="ios-languages">
 
@@ -381,7 +381,7 @@ For more details on the error events that can be triggered by this API, please r
 
 <Admonition type="info" title="Note">
 
-Attributes update APIs sync their data with Helpshift servers in batches. There is a chance of attribute updates 
+Attributes update APIs sync attributes with Helpshift servers in batches. There is a chance of attribute updates 
 being lost in case the user is logged out from the SDK before the current batch update is synced.
 
 </Admonition>
