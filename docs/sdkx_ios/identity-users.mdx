@@ -130,7 +130,9 @@ We recommend logging in your end-user into Helpshift as early as possible, since
 
 However, in the case where you have anonymous users, all you have to do is login with an empty JWT string, and Helpshift will take care of generating an anonymous UID and logging your end-user in.
 
-SDK will try it’s best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you pass in a non-empty JWT to login, the existing anonymous user will be lost and a new one will be created on the next login with empty JWT.
+SDK will try it’s best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
+
+After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `addUserIdentities` API is a no-op if current user is anonymous.
 
 ### Best practices to follow for login API
 
@@ -170,7 +172,7 @@ For more details on these events, please check the [Delegates](/sdkx_ios/delegat
 
 ### Updating user identities
 
-Use the `addUserIdentities` API to update the identities associated with the logged in user.
+Use the `addUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
 
 <Tabs groupId="ios-languages">
 <TabItem value="Using Objective-C" label="Using Objective-C">
