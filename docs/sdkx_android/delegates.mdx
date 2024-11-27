@@ -514,18 +514,14 @@ The constants for value of data is present in `InvalidDataErrorReason` file.
 Identities JWT not in valid format
 
 - APIs - `addUserIdentities`
-- Data - no
-
-Data - no
+- Data - null
 
 ### IAT_IS_MANDATORY
 
 The `iat` key is missing in JWT. Issued At Timestamp or `iat` is a mandatory key in the JWT payload.
 
 - APIs - `addUserIdentities`
-- Data - no
-
-Data - no
+- Data - null
 
 ### IDENTITY_DATA_INVALID
 
@@ -533,8 +529,6 @@ Some of the identities in the JWT payload are not valid
 
 - APIs - `addUserIdentities`
 - Data -
-
-Data -
 
 | Key                                      | Value                                 | Recovery                                                                                            |
 | ---------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -550,17 +544,15 @@ Data -
 
 Number of identities in JWT payload is more than the permissible limit
 
-APIs - `addUserIdentities`
-
-Data - no
+- APIs - `addUserIdentities`
+- Data - null
 
 ### IDENTITY_DATA_SYNC_FAILED
 
 User identities failed to sync with backend
 
-APIs - `addUserIdentities`
-
-Data -
+- APIs - `addUserIdentities`
+- Data -
 
 | Key                             | Value        | Recovery |
 | ------------------------------- | ------------ | -------- |
@@ -570,17 +562,15 @@ Data -
 
 Number of unsynced app or master attributes exceeds the permissible limit
 
-APIs - `updateAppAttributes`, `updateMasterAttributes`
-
-Data - no
+- APIs - `updateAppAttributes`, `updateMasterAttributes`
+- Data - null
 
 ### APP_ATTRIBUTES_VALIDATION_FAILED / MASTER_ATTRIBUTES_VALIDATION_FAILED
 
 Validation of individual entries inside the attributes dictionary failed
 
-APIs - `updateAppAttributes`, `updateMasterAttributes`
-
-Data -
+- APIs - `updateAppAttributes`, `updateMasterAttributes`
+- Data -
 
 | Key                              | Value                       | Recovery                                                                                                        |
 | -------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -593,9 +583,8 @@ Data -
 
 Attributes failed to sync with backend
 
-APIs - `updateAppAttributes`, `updateMasterAttributes`
-
-Data -
+- APIs - `updateAppAttributes`, `updateMasterAttributes`
+- Data -
 
 | Key                              | Value        | Recovery |
 | -------------------------------- | ------------ | -------- |
@@ -605,20 +594,19 @@ Data -
 
 Identity feature is not enabled for your domain
 
-APIs - `addUserIdentities`, `updateAppAttributes`, `updateMasterAttributes`
-
-Data - no
+- APIs - `addUserIdentities`, `updateAppAttributes`, `updateMasterAttributes`
+- Data - null
 
 ### USER_SESSION_EXPIRED
 
 Sent when the SDK's user session expires. Once the session expires, SDK will keep sending this event to your app on each foreground.
 In response to this event, you should refresh the JWT for the current user and [log them in](/sdkx_android/identity-users.mdx) again with the new JWT.
 
-Data - no
+Data - null
 
 ### REFRESH_USER_CREDENTIALS
 
 Sent when the SDK's user session is about to expire. This gives you a chance to proactively refresh the JWT for the current user and
 log them in the SDK with the new JWT to avoid disrupting their session.
 
-Data - no
+Data - null
