@@ -24,9 +24,18 @@ Setting up the Identity System requires some development effort, but provides ma
 
 ### Prerequisites​
 
+<Admonition type="info" title="NOTE">
+  This feature is in closed beta. Contact Helpshift Customer Success team to
+  enable this feature.
+</Admonition>
+
 - Ensure that the Identity System is enabled for your domain (reach out to Helpshift support if you wish to enable this)
 - Ensure that you have the secret key from Helpshift dashboard. The secret key can be generated from the “User Identity Verification (New ID System)” section of your app’s settings.
-    <Image src="/static/books/helpshiftx/dashboard_identity_secret_key.png" width="full" />
+  {" "}
+  <Image
+    src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
+    width="full"
+  />
 - Ensure that you have an endpoint set up for obtaining user JWTs on-demand. This endpoint should use the secret key generated above to sign the JWT. (TODO KB link)
 
 ### Logging in your end-users
@@ -35,7 +44,6 @@ In order to use the new Identity system, you need to implement the following ste
 
 1. Obtain a JWT for the given user from your dedicated endpoint
 2. Log your user in with the JWT + full privacy information
-
 
 ```java
 //  Step 1: Get the JWT and and login config like full privacy flag.
@@ -66,7 +74,7 @@ The API signature for the login API is -
 loginWithIdentity(
  String identitiesJWT, (must be valid JWT)
  Map<String, Object> loginConfig,
- HelpshiftUserLoginEventsListener userLoginEventsListener 
+ HelpshiftUserLoginEventsListener userLoginEventsListener
  )
 ```
 
@@ -92,11 +100,14 @@ The identity token must be a JWT signed using the shared secret from your app se
 }
 ```
 
+Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
+
 Additionally, following rules apply depending on the value of `full_privacy_enabled` flag in config.
+
 - If full privacy flag is false, one of uid or email is mandatory in the identities array.
 - If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
-    - If uid is present - SDK will use the uid to identify the user.
-    - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
+  - If uid is present - SDK will use the uid to identify the user.
+  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
 - Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
 
 <Admonition type="info" title="Important">
@@ -111,7 +122,9 @@ We recommend logging in your end-user into Helpshift as early as possible, since
 
 However, in the case where you have anonymous users, all you have to do is login with an empty JWT string, and Helpshift will take care of generating an anonymous UID and logging your end-user in.
 
-SDK will try it’s best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you pass in a non-empty JWT to login, the existing anonymous user will be lost and a new one will be created on the next login with empty JWT.
+SDK will try it’s best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
+
+After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `addUserIdentities` API is a no-op if current user is anonymous.
 
 ### Best practices to follow for login API
 
@@ -130,7 +143,7 @@ Once a user logs out from your app, you should call the logout API to ensure no 
 
 ### Logout due to session expiry
 
-User logout can also be triggered by the SDK itself when the current user’s login session expires. This login session is independent from your app’s login session. When this happens, SDK will send the `userSessionExpired` event to your app immediately as well on each app foreground. In response to this event, you should obtain a fresh JWT for the app’s current user from your backend and call the login API with the new JWT and login config to start a fresh SDK login session.
+User logout can also be triggered by the SDK itself when the current user’s login session expires. This login session is independent from your app’s login session. When this happens, SDK will send the `userSessionExpired` event to your app immediately as well on each app foreground. In response to this event, you should obtain a fresh JWT for the app’s current user from your backend and call the login API with the new JWT and login config to start a fresh SDK login session. SDK will stop sending this event after a successful login.
 
 If you wish to proactively refresh your logged in user’s credentials with Helpshift so that the session never expires, you can additionally listen to `refreshUserCredentials` event. This event is sent by the SDK some time before the session actually expires. This gives your app a chance to re-login the current user and maintain their session.
 
@@ -138,18 +151,19 @@ For more details on these events, please check the [Delegates](/sdkx_android/del
 
 ### Updating user identities
 
-Use the `addUserIdentities` API to update the identities associated with the logged in user.
+Use the `addUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
 
 ```java
 Helpshift.addUserIdentities(identitiesJwt);
 ```
+
 You need to obtain a JWT for new identities from your dedicated endpoint. Please check the Prerequisites section on this page for more details.
 
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_android/delegates.mdx/#user-identity-system-events) page.
 
 ## Login failure reasons
 
-Identity system login can fail for any of the reasons mentioned below. A reason may have associated errors that may help narrow pinpoint the exact cause of the failure. As an example, if the failure is due to an invalid key in identities JWT, the errors dictionary will contain the exact key (or keys)  found to be invalid. The value against this key will indicate what failed (value too big, value type not supported etc).
+Identity system login can fail for any of the reasons mentioned below. A reason may have associated errors that may help narrow pinpoint the exact cause of the failure. As an example, if the failure is due to an invalid key in identities JWT, the errors dictionary will contain the exact key (or keys) found to be invalid. The value against this key will indicate what failed (value too big, value type not supported etc).
 
 The constants for these failure reasons are defined in `UserLoginFailureReason` file. The constants for errors are defined in `InvalidDataErrorReason` file.
 
@@ -171,11 +185,11 @@ Some keys or values in the login config are not valid
 
 Errors -
 
-| Key                    | Value                             | Recovery                                                                    |
-| ---------------------- | --------------------------------- | --------------------------------------------------------------------------- |
+| Key                    | Value                       | Recovery                                                                    |
+| ---------------------- | --------------------------- | --------------------------------------------------------------------------- |
 | One of the passed keys | EXCEEDED_KEY_LENGTH_LIMIT   | Ensure key length is within permissible limit                               |
 | One of the passed keys | EXCEEDED_VALUE_LENGTH_LIMIT | Ensure value length is within permissible limit                             |
-| One of the passed keys | INVALID_VALUE_TYPE         | Ensure value is one of the supported types - String, Bool or a numeric type |
+| One of the passed keys | INVALID_VALUE_TYPE          | Ensure value is one of the supported types - String, Bool or a numeric type |
 
 ### INVALID_IDENTITY_TOKEN
 
@@ -189,15 +203,15 @@ Some of the identities in the JWT payload are not valid
 
 Errors -
 
-| Key                                      | Value                                     | Recovery                                                                                            |
-| ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| One of the passed identity keys          | EXCEEDED_KEY_LENGTH_LIMIT           | Ensure key length is within permissible limit                                                       |
-| One of the passed identity keys          | EXCEEDED_VALUE_LENGTH_LIMIT         | Ensure value length is within permissible limit                                                     |
-| One of the passed identity keys          | EMPTY_DATA                        | Ensure key or value is a valid non-empty value                                                      |
-| One of the passed identity keys          | META_DATA_EXCEEDED_COUNT_LIMIT       | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
+| Key                                      | Value                                 | Recovery                                                                                            |
+| ---------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| One of the passed identity keys          | EXCEEDED_KEY_LENGTH_LIMIT             | Ensure key length is within permissible limit                                                       |
+| One of the passed identity keys          | EXCEEDED_VALUE_LENGTH_LIMIT           | Ensure value length is within permissible limit                                                     |
+| One of the passed identity keys          | EMPTY_DATA                            | Ensure key or value is a valid non-empty value                                                      |
+| One of the passed identity keys          | META_DATA_EXCEEDED_COUNT_LIMIT        | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
 | One of the passed identity metadata keys | META_DATA_EXCEEDED_KEY_LENGTH_LIMIT   | Ensure metadata key length is within permissible limit                                              |
 | One of the passed identity metadata keys | META_DATA_EXCEEDED_VALUE_LENGTH_LIMIT | Ensure metadata value length is within permissible limit                                            |
-| One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE          | Ensure metadata key or value is a valid non-empty value                                             |
+| One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE           | Ensure metadata key or value is a valid non-empty value                                             |
 
 ### LOGIN_CONFIG_SIZE_LIMIT_EXCEEDED
 
@@ -223,15 +237,9 @@ JWT payload must contain an identity for either uid or email. Providing both ide
 
 Errors - no
 
-### HelpshiftIatIsMandatory
-
-iat key is missing in the JWT. Issued At Timestamp or “iat“ is a mandatory key in the JWT payload.
-
-Errors - no
-
 ### IAT_IS_MANDATORY
 
-Login failed due to network error.
+iat key is missing in the JWT. Issued At Timestamp or “iat“ is a mandatory key in the JWT payload.
 
 Errors - no
 

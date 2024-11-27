@@ -53,6 +53,14 @@ Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in 
 
 </div>
 
+<Admonition type="info" title="Note">
+
+- From 10.4.0,
+  - Error Logs will always get logged regardless of `enableLogging` config.
+  - Debug logs are now based solely on the enableLogging flag, irrespective of whether the app is in debug or release variant.
+
+</Admonition>
+
 Example:
 
 ```java
@@ -73,13 +81,6 @@ Example:
       }
     }
 ```
-<Admonition type="info" title="Note">
-
-- From 10.4.0,
-  - Error Logs will always get logged regardless of `enableLogging` config.
-  - Debug logs are now based solely on the enableLogging flag, irrespective of whether the app is in debug or release variant.
-
-</Admonition>
 
 ## FAQ Filtering by tags {#faq-filtering}
 
@@ -347,19 +348,17 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
 
     // ....
     // user specific config
-    
+
     // This is used for the first issue in the session
     localConfig.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
     // This will be used for all subsequent issues in that session
     subsequentIssuesInSameSessionConfig.put("initialUserMessage", "");
     localConfig.put("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig);
-    
+
     return localConfig;
   }
 }
 ```
-
-
 
 ## Screen Orientation {#screen-orientation}
 

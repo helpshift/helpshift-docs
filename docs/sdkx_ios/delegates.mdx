@@ -265,7 +265,7 @@ This event is triggered when the user receives any message from an agent in a co
 - Event data:
 
 | Key (Constant)                | Key (Raw)   | Type   |
-|-------------------------------|-------------|--------|
+| ----------------------------- | ----------- | ------ |
 | HelpshiftEventDataPublishID   | publishId   | String |
 | HelpshiftEventDataCreatedTime | createdTs   | Number |
 | HelpshiftEventDataMessageType | type        | String |
@@ -275,7 +275,7 @@ This event is triggered when the user receives any message from an agent in a co
 The `attachments` array is an array of dictionaries, with one dictionary for each attachment. The data for attachment dictionary is -
 
 | Key (Constant)                | Key (Raw)   | Type   |
-|-------------------------------|-------------|--------|
+| ----------------------------- | ----------- | ------ |
 | HelpshiftEventDataURL         | url         | String |
 | HelpshiftEventDataContentType | contentType | String |
 | HelpshiftEventDataFileName    | fileName    | String |
@@ -352,14 +352,15 @@ This event is triggered when the user clicks on the link or call action of an ac
 - Event name raw value: `userClickOnAction`
 - Event Data:
 
-| Key (Constant)                | Key (Raw)  | Type   |
-|-------------------------------|------------|--------|
-| HelpshiftEventDataActionType  | actionType | String |
-| HelpshiftEventDataActionData  | actionData | String |
+| Key (Constant)               | Key (Raw)  | Type   |
+| ---------------------------- | ---------- | ------ |
+| HelpshiftEventDataActionType | actionType | String |
+| HelpshiftEventDataActionData | actionData | String |
 
 `HelpshiftEventDataActionType` can be one of -
-  - `HelpshiftEventDataActionTypeCall` or `call`
-  - `HelpshiftEventDataActionTypeLink` or `link`
+
+- `HelpshiftEventDataActionTypeCall` or `call`
+- `HelpshiftEventDataActionTypeLink` or `link`
 
 <Admonition type="info" title="Note">
 
@@ -808,8 +809,6 @@ Data -
 | One of the passed attribute keys | HelpshiftValueLengthLimitExceeded | Ensure value length is within permissible limit                                                                 |
 | One of the passed attribute keys | HelpshiftCountLimitExceeded       | Reduce the number of entries in the collection for specified key                                                |
 | One of the passed attribute keys | HelpshiftInvalidValueType         | Ensure value is one of the supported types - String, Bool, Number, String array or a String - String dictionary |
-| One of the passed attribute keys | HelpshiftKeyLengthLimitExceeded   | Ensure all keys in the collection for specified key are within permissible limit                                |
-|                                  | HelpshiftValueLengthLimitExceeded | Ensure all values in the collection for specified key are within permissible limit                              |
 
 ### HelpshiftEventUpdateAppAttributesSyncFailed / HelpshiftEventUpdateMasterAttributesSyncFailed
 
@@ -840,7 +839,7 @@ Data - no
 
 ### HelpshiftEventRefreshUserCredentials
 
-Sent when the SDK's user session is about to expire. This gives you a chance to proactively refresh the JWT for the current user and 
+Sent when the SDK's user session is about to expire. This gives you a chance to proactively refresh the JWT for the current user and
 log him in the SDK with the new JWT to avoid disrupting his session.
 
 Data - no
