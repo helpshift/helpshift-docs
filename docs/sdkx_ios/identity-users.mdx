@@ -31,7 +31,7 @@ This feature is in closed beta. Contact Helpshift Customer Success team to enabl
 </Admonition>
 
 - Ensure that the Identity System is enabled for your domain (reach out to Helpshift support if you wish to enable this)
-- Ensure that you have the secret key from Helpshift dashboard. The secret key can be generated from the “User Identity Verification (New ID System)” section of your app’s settings.
+- Ensure that you have the secret key from Helpshift Dashboard. The secret key can be generated from the “User Identity Verification (New ID System)” section of your app’s settings.
   {" "}
   <Image
     src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
@@ -41,7 +41,7 @@ This feature is in closed beta. Contact Helpshift Customer Success team to enabl
 
 ### Logging in your end-users
 
-In order to use the new Identity system, you need to implement the following steps:
+In order to use the new Identity System, you need to implement the following steps:
 
 1. Obtain a JWT for the given user from your dedicated endpoint
 2. Log your user in with the JWT + full privacy information
@@ -103,7 +103,7 @@ The failure reasons and possible recovery steps are documented in the [Login fai
 
 ### Identity token format​
 
-The identity token must be a JWT signed using the shared secret from your app settings in the dashboard. When decoded, it must adhere to the following JSON format -
+The identity token must be a JWT signed using the shared secret from your app's settings in the Dashboard. When decoded, it must adhere to the following JSON format -
 
 ```json
 {
@@ -143,13 +143,13 @@ We recommend logging in your end-user into Helpshift as early as possible, since
 
 However, in the case where you have anonymous users, all you have to do is login with an empty JWT string, and Helpshift will take care of generating an anonymous UID and logging your end-user in.
 
-SDK will try it’s best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
+SDK will try its best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
 
 After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `addUserIdentities` API is a no-op if current user is anonymous.
 
 ### Best practices to follow for login API
 
-- Call the login API once when the user logs in to your app. Avoid calling it in response to repeat-able events like app foreground, right before opening support section of your app etc.
+- Call the login API once when the user logs in to your app. Avoid calling it in response to repeatable events like app foreground, right before opening support section of your app, etc.
 - When you have more information to associate with current logged in user, use the `addUserIdentities` API and not the login API. Calling login API will necessarily log out the current user and log in a new user.
 - The `uid` or `email` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
 - If you are setting `full_privacy_enabled` to true, you shouldn't use `email` as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
