@@ -9,14 +9,7 @@ import {
   CodeBlock,
   Tabs,
   TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
   Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
 } from "@site/src/components/forDocs";
 
 import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
@@ -275,5 +268,126 @@ Debug logs are collected within the set debug logs limit. The limit is set under
 - In the `addLog` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
   - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
   - `"key - value"` - ** Simple string, This is supported **
+
+</Admonition>
+
+## Update global user attributes
+
+This API is meant to be used along with the new [User Identity system](/sdkx_ios/identity-users). Use this API to update global attributes associated with the logged in user.
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary<NSString *, id> *attributes = @{
+    // Add attributes here
+};
+[Helpshift updateMasterAttributes:attributes];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+let attributes: [String: Any] = [
+    // Add attributes here
+]
+Helpshift.updateMasterAttributes(attributes)
+```
+
+</TabItem>
+
+</Tabs>
+
+Global attributes must be one of the following types -
+
+- `first_name` - String
+- `last_name` - String
+- `display_name` - String
+- `full_name` - String
+- `last_country` - String
+- `last_city` - String
+- `age` - String
+- `lifetime_value` - String
+- `user_persona` - String
+- `user_vip_segment` - String
+- `user_support_status` - String
+- `last_active_date` - UNIX epoch time in seconds
+- `accepted_t_and_c` - Boolean or String
+- `preferred_language` - String
+- `full_privacy_enabled` - String
+- `new_tags` - String Array
+- `tags_to_remove` - String Array
+- `reset_tags` - String Array
+- `custom_user_fields` - String → String Dictionary
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
+
+If the attributes dictionary contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes dictionary contains supported key, but with unsupported value type, the entry will be ignored.
+
+## Update app specific user attributes
+
+This API is meant to be used along with the new [User Identity system](/sdkx_ios/identity-users). Use this API to update app specific attributes associated with the logged in user.
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary<NSString *, id> *attributes = @{
+    // Add attributes here
+};
+[Helpshift updateAppAttributes:attributes];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+let attributes: [String: Any] = [
+    // Add attributes here
+]
+Helpshift.updateAppAttributes(attributes)
+```
+
+</TabItem>
+
+</Tabs>
+
+App specific attributes must be one of the following types -
+
+- `device_model` - String
+- `os_version` - String
+- `app_version` - String
+- `sdk_version` - String
+- `country` - String
+- `city` - String
+- `user_vip_segment` - String
+- `language` - String
+- `app_rating` - String
+- `user_paying_segment` - String
+- `user_support_status` - String
+- `user_persona` - String
+- `accepted_t_and_c` - String
+- `user_level` - String
+- `app_status` - String
+- `lifetime_value` - String
+- `custom_user_fields` - String → String Dictionary
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
+
+If the attributes dictionary contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes dictionary contains supported key, but with unsupported value type, the entry will be ignored.
+
+<Admonition type="info" title="Note">
+
+Attributes update APIs sync attributes with Helpshift servers in batches. There is a chance of attribute updates
+being lost in case the user is logged out from the SDK before the current batch update is synced.
 
 </Admonition>

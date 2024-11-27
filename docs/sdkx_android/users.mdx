@@ -25,6 +25,14 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
+<Admonition type="warning" title="Before you proceed">
+
+This section describes how you can integrate users with the legacy method. For integrating with the new Identity System, please refer [this page](/sdkx_android/identity-users).
+
+We recommend using the new Identity System if you require faster context collection, an easier agent experience, and enhanced security and spam protection.
+
+</Admonition>
+
 ## How to Identify and Manage Users {#identify-and-manage-users}
 
 ### Logging in users {#logging-in-users}
@@ -121,7 +129,8 @@ You need to be aware of some considerations when using the `Helpshift.login()` A
 
 <Admonition type="info" title="Note">
 
-From 10.3.0, `Helpshift.login()` API will return a boolean indicating whether login was successful or not. This change is in existing API to introduce mandatory validations for login parameters and hence this might affect code compilation.
+- From 10.3.0, `Helpshift.login()` API will return a boolean indicating whether login was successful or not. This change is in existing API to introduce mandatory validations for login parameters and hence this might affect code compilation.
+- Login needs to be called only once and not on every app start until logout is called
 
 </Admonition>
 
