@@ -26,7 +26,7 @@ Setting up the Identity System requires some development effort, but provides ma
 
 <Admonition type="info" title="NOTE">
 
-This feature is in closed beta. Contact Helpshift Customer Success team to enable this feature.
+This feature is in closed beta. Contact Helpshift Support team to enable this feature.
 
 </Admonition>
 
@@ -37,7 +37,7 @@ This feature is in closed beta. Contact Helpshift Customer Success team to enabl
     src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
     width="full"
   />
-- Ensure that you have an endpoint set up for obtaining user JWTs on-demand. This endpoint should use the secret key generated above to sign the JWT. (TODO KB link)
+- Ensure that you have an endpoint set up for obtaining user JWTs on-demand. This endpoint should use the secret key generated above to sign the JWT.
 
 ### Logging in your end-users
 
@@ -150,7 +150,7 @@ After you login with an anonymous user, you can’t add more identities for this
 ### Best practices to follow for login API
 
 - Call the login API once when the user logs in to your app. Avoid calling it in response to repeatable events like app foreground, right before opening support section of your app, etc.
-- When you have more information to associate with current logged in user, use the `addUserIdentities` API and not the login API. Calling login API will necessarily log out the current user and log in a new user.
+- When you have more information to associate with current logged in user, use the `addUserIdentities` API and not the login API. Calling the login API will log out the current user and log in a new user.
 - The `uid` or `email` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
 - If you are setting `full_privacy_enabled` to true, you shouldn't use `email` as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
 
