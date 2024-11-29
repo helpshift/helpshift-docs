@@ -98,6 +98,14 @@ login(withIdentity:config:success:failure:)
 - failure - ((reason: String, errors: [String: String]) -> Void)
 ```
 
+Following rules apply depending on the value of `full_privacy_enabled` flag in config.
+
+- If full privacy flag is false, one of uid or email is mandatory in the identities array.
+- If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
+  - If uid is present - SDK will use the uid to identify the user.
+  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
+- Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
+
 The failure reasons and possible recovery steps are documented in the [Login failure reasons](#login-failure-reasons) section.
 
 ### Identity token format​
@@ -121,14 +129,6 @@ The identity token must be a JWT signed using the shared secret from your app's 
 ```
 
 Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
-
-Additionally, following rules apply depending on the value of `full_privacy_enabled` flag in config.
-
-- If full privacy flag is false, one of uid or email is mandatory in the identities array.
-- If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
-  - If uid is present - SDK will use the uid to identify the user.
-  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
-- Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
 
 <Admonition type="info" title="Important">
 
@@ -208,6 +208,136 @@ Helpshift.addUserIdentities(identitiesJwt)
 You need to obtain a JWT for new identities from your dedicated endpoint. Please check the Prerequisites section on this page for more details.
 
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates.mdx/#user-identity-system-events) page.
+
+### Troubleshooting and tips
+LogIn failure can be detected by listening to the [failure](/sdkx_ios/identity-user-hub/#logging-in-your-end-users) callbacks. The possible reasons for login failure are cited in the [Login failure reasons](/sdkx_ios/identity-user-hub/#login-failure-reasons) section.
+
+If your login is still failing, you can investigate these other potential reasons:
+
+- Ensure that your JWT endpoint is generating tokens in the accepted format
+- Ensure that your JWT endpoint is signing tokens with the shared secret
+- Ensure that your JWT endpoint has an iat (issued_at_time) value that is NOT older than 24h
+- In case you are caching the JWT, ensure that you do not cache it for longer than 24h.
+
+### Update global user data
+
+Use this API to update global attributes associated with the logged in user.
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary<NSString *, id> *attributes = @{
+    // Add attributes here
+};
+[Helpshift updateMasterAttributes:attributes];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+let attributes: [String: Any] = [
+    // Add attributes here
+]
+Helpshift.updateMasterAttributes(attributes)
+```
+
+</TabItem>
+
+</Tabs>
+
+Global attributes must be one of the following types -
+
+- `first_name` - String
+- `last_name` - String
+- `display_name` - String
+- `full_name` - String
+- `last_country` - String
+- `last_city` - String
+- `age` - Int or String
+- `lifetime_value` - String
+- `user_persona` - String
+- `user_vip_segment` - String
+- `user_support_status` - String
+- `last_active_date` - String // UNIX epoch time in seconds
+- `accepted_t_and_c` - String
+- `preferred_language` - String
+- `new_tags` - List< String >
+- `tags_to_remove` - List< String >
+- `reset_tags` - List< String >
+- `custom_user_fields` - Map<String, String>
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
+
+If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
+
+### Update app specific user data
+
+Use this API to update app specific attributes associated with the logged in user.
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary<NSString *, id> *attributes = @{
+    // Add attributes here
+};
+[Helpshift updateAppAttributes:attributes];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+let attributes: [String: Any] = [
+    // Add attributes here
+]
+Helpshift.updateAppAttributes(attributes)
+```
+
+</TabItem>
+
+</Tabs>
+App specific attributes must be one of the following types -
+
+- `device_model` - String
+- `os_version` - String
+- `app_version` - String
+- `sdk_version` - String
+- `country` - String
+- `city` - String
+- `user_vip_segment` - String
+- `language` - String
+- `app_rating` - String
+- `user_paying_segment` - String
+- `user_support_status` - String
+- `user_persona` - String
+- `accepted_t_and_c` - String
+- `user_level` - String
+- `app_status` - String
+- `lifetime_value` - String
+- `custom_user_fields` - Map<String,String>
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
+
+If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
+
+<Admonition type="info" title="Note">
+
+Attributes update APIs sync attributes with Helpshift servers in batches. There is a chance of attribute updates
+being lost in case the user is logged out from the SDK before the current batch update is synced.
+
+</Admonition>
+
 
 ## Login failure reasons
 
