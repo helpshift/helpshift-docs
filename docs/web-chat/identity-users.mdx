@@ -84,7 +84,22 @@ Helpshift("addEventListener", "onLoginRequest", async ({userId, userEmail}) => {
 });
 ```
 
-## Identity token format {#identity-token-format}
+### Full privacy scenarios {#full-privacy-scenarios}
+
+The following rules apply depending on the value of the `full_privacy_enabled` flag:
+* If full privacy flag is false, one of `userId` or `userEmail` is mandatory, unless you are logging in an anonymous user.
+* If `userId` is present and `full_privacy_enabled` is also true - Web Chat will use the `userId` to identify the user.
+* If `userId` is absent and `full_privacy_enabled` is true - Web Chat will generate an anonymous ID and use this ID to identify the user.
+* Full privacy is assumed to be false if no value is specified, or if the passed value is invalid.
+
+### Best practices to follow for Login API {#login-best-practices}
+
+* When you have more information to associate with current logged in user, use the `addUserIdentities` API.
+* The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
+* If you are setting full_privacy_enabled to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+* For logging in a new user, first use the logout API, update the `userId` and `userEmail` in `helpshiftConfig`, and call `updateHelpshiftConfig`, to retrigger a new login request.
+
+### Identity token format {#identity-token-format}
 
 The identity token must be a **JWT signed using the shared secret** from your app settings in the dashboard.
 When decoded, it must adhere to the following format:
@@ -237,7 +252,6 @@ interface GlobalUserData {
      last_active_date?: "string" // epoch time in ms/seconds
      accepted_t_and_c?: "string" // true/false converted to string
      preferred_language?:"string"
-     full_privacy_enabled?: "string"
 
      // Non-primitives
      new_tags?: Array<string>
