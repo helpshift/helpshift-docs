@@ -137,6 +137,12 @@ You should call this API before a conversation starts. In other words, it works 
 
 </Admonition>
 
+## User Hub APIs {#user-hub-apis}
+
+Our new Identity system - [User Hub](/web-chat/identity-users), introduces various
+APIs for managing users and their data. Refer to the linked section for details.
+
+
 ## Events {#events}
 
 The Helpshift Widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
@@ -518,5 +524,52 @@ Helpshift(
   "removeEventListener",
   "userClickOnAction",
   userClickOnActionEventHandler
+);
+```
+
+### On Login Request Event {#on-login-request}
+
+The `onLoginRequest` event is used to request you to login your end-user. This event is intended
+to work with the new Identity system - [User Hub](/web-chat/identity-users).
+You can refer to the linked section for details.
+
+### On Web Chat Runtime Error {#on-webchat-runtime-error}
+
+<Admonition type="danger" title="Note">
+
+We highly recommend enabling this event listener since it can help you catch and handle important errors.
+
+</Admonition>
+
+This event is fired when there is a runtime error from Web Chat which requires your attention. Such events may be generated if there is an issue with the integration which can be handled programmatically.
+To listen to this event, add the following code after the embed code.
+
+#### Adding the On Web Chat Runtime Error event handler
+
+```typescript
+interface WebChatRuntimeError {
+  error: string;
+  reason?: string;
+  details?: object;
+}
+
+const onWebChatRuntimeErrorHandler = function ({error, reason, details}: WebChatRuntimeError) {
+  console.log({error, reason, details});
+};
+
+Helpshift(
+  "addEventListener",
+  "onWebChatRuntimeError",
+  onWebChatRuntimeErrorHandler
+);
+```
+
+#### Removing the Web Chat Runtime Error event handler
+
+```javascript
+Helpshift(
+  "removeEventListener",
+  "onWebChatRuntimeError",
+  onWebChatRuntimeErrorHandler
 );
 ```

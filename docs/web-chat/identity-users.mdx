@@ -1,0 +1,711 @@
+---
+sidebar_position: 45
+title: User Hub
+description: "Identify and manage users with the Identity System"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# User Hub {#user-hub}
+
+<Admonition type="info" title="note">
+
+This feature is in closed beta. Contact Helpshift Customer Success to enable this feature.
+
+</Admonition>
+
+The new Identity System provides many advantages, with minimal efforts (as outlined below) over the legacy method, in the form of faster context collection,
+easier agent experience, and enhanced security and spam protection.
+
+## Prerequisites
+
+1. Ensure that the Identity System is enabled for your domain (reach out to Helpshift Customer Success if you wish to enable this)
+2. Ensure that you have an endpoint set up for obtaining user JWTs on-demand
+
+## Logging in your end-users {#login-user}
+
+In order to use the new Identity system, you need to implement the following steps:
+1. Specify the `authenticateWith` parameter in `helpshiftConfig` prior to loading Web Chat
+2. Ensure that `userId` and/or `userEmail` are specified in `helpshiftConfig`
+3. Start listening for the `onLoginRequest` event from Helpshift
+4. Obtain a JWT for the given user from your dedicated endpoint
+5. Log your user in with the JWT + full privacy information
+
+```js
+window.helpshiftConfig = {
+  // ... your other config values
+  // Step 1
+  authenticateWith: "identities",
+
+  // Step 2
+  userEmail: "<your-user-email>",
+  userId: "<your-user-id>"
+}
+
+/////////////////////////////////
+// Your embed script goes here //
+/////////////////////////////////
+
+// Step 3: Add the event listener
+Helpshift("addEventListener", "onLoginRequest", async ({userId, userEmail}) => {
+
+    // Step 3:
+    // Note: Your implementation here may vary. This is just an example.
+    const identityToken = await fetch("<your-jwt-endpoint>", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({userId, userEmail})
+    })
+
+    // Step 4:
+    // Note: The userId/userEmail specified in the identity_token
+    // MUST match the values specified in the helpshiftConfig object.
+    // If they do not match, the login will be unsuccessful.
+    Helpshift("login", {
+      identity_token: identityToken,
+      full_privacy_enabled: false // or true. Assumed false if not specified
+    });
+});
+```
+
+### Full privacy scenarios {#full-privacy-scenarios}
+
+The following rules apply depending on the value of the `full_privacy_enabled` flag:
+* If full privacy flag is false, one of `userId` or `userEmail` is mandatory, unless you are logging in an anonymous user.
+* If `userId` is present and `full_privacy_enabled` is also true - Web Chat will use the `userId` to identify the user.
+* If `userId` is absent and `full_privacy_enabled` is true - Web Chat will generate an anonymous ID and use this ID to identify the user.
+* Full privacy is assumed to be false if no value is specified, or if the passed value is invalid.
+
+### Best practices to follow for Login API {#login-best-practices}
+
+* When you have more information to associate with current logged in user, use the `addUserIdentities` API.
+* The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
+* If you are setting full_privacy_enabled to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+* For logging in a new user, first use the logout API, update the `userId` and `userEmail` in `helpshiftConfig`, and call `updateHelpshiftConfig`, to retrigger a new login request.
+
+### Identity token format {#identity-token-format}
+
+The identity token must be a **JWT signed using the shared secret** from your app settings in the dashboard.
+When decoded, it must adhere to the following format:
+
+```ts
+interface Identity {
+    identifier: "uid" | "email" | "phone_number" | "facebook_id" |
+                "discord_id"|"whatsapp_id"|"google_playstore_id"|
+                "apple_gamecenter_id" | "nintendo_id" | "psn_id" |
+                "xbox_live_id" | "steam_id",
+    value: string,
+    metadata?: {
+        [key:string]: string
+    }
+}
+
+interface IdentityToken {
+  identities: Identity[],
+  iat: number // UNIX epoch time in seconds, generated in the last 24h or earlier
+}
+```
+
+<Admonition type="danger" title="Important">
+
+Always generate the JWT on the server side, and store your shared secret securely.
+
+</Admonition>
+
+<Admonition type="info">
+
+Helpshift can also trigger the `onLoginRequest` event to reverify your user session  if we detect
+suspicious activity or if the user's session is about to expire. In such cases, the same event handler
+is sufficient for reverification, as long as you provide a JWT that has been generated within the last 24h.
+
+We wait for the `onLoginRequest` callback to be executed for 5 seconds before we consider the session as expired.
+If this happens, we replace the chat with a full screen session expired message.
+
+</Admonition>
+
+## With anonymous users {#with-anon-users}
+
+We recommend logging in your end-user into Helpshift as early as possible, since it helps
+streamline the entire support experience.
+
+However, in the case where you have anonymous users, all you have to do is set the `authenticateWith` value,
+and Helpshift will take care of generating an anonymous UID and logging your end-user in.
+
+The `userId` and `userEmail` values can be omitted altogether or set to an empty string, `""`.
+
+```js
+window.helpshiftConfig = {
+  // ... your other config values
+  authenticateWith: "identities"
+  // Notice that "userId" and "userEmail" are not specified here
+}
+
+/////////////////////////////////
+// Your embed script goes here //
+/////////////////////////////////
+```
+
+## Retroactively logging your end-user in {#retroactively-login-user}
+In certain cases, your end-user may be anonymous for a short while before you log them in. In such cases, you will have to
+update `helpshiftConfig` and call the `Helpshift("updateHelpshiftConfig")` API to trigger a new login.
+
+```js
+window.helpshiftConfig = {
+  // ... your other config values
+  authenticateWith: "identities"
+  // Anonymous user since no userId/userEmail are provided
+}
+
+/////////////////////////////////
+// Your embed script goes here //
+/////////////////////////////////
+
+// Register your event listener
+Helpshift("addEventListener", "onLoginRequest", async ({userId, userEmail}) => {
+
+    const identityToken = await fetch("<your-jwt-endpoint>", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({userId, userEmail})
+    })
+
+    Helpshift("login", {
+      identity_token: identityToken,
+      full_privacy_enabled: false // or true. Assumed false if not specified
+    });
+});
+
+// At some point in the future, when your user logs in:
+window.helpshiftConfig.userId = "<your-user-id>"
+window.helpshiftConfig.userEmail = "<your-user-email>"
+
+Helpshift("updateHelpshiftConfig")
+// ^ This will trigger the onLoginRequest event.
+```
+
+## Adding more user identities {#add-user-identities}
+
+Note that although the API is named `identities`, if you wish to send multiple identities, they must be a part of the JWT's payload itself.
+Essentially, the API expects a single string JWT and NOT an array of JWTs.
+
+Example:
+```js
+  // ... Some custom logic here that obtains user data
+  const identities = "header.payload.hash";
+  Helpshift("addUserIdentities", identities)
+```
+
+Refer to [identity token format](#identity-token-format) for the schema of the identity
+token.
+
+<Admonition type="info" title="Info">
+
+You can plug this API call into any place where you collect user identities. However, be careful not to call it in any
+useEffect-like callbacks or frequently-firing events, since rate-limiting restrictions may kick in.
+
+</Admonition>
+
+For a list of errors that can occur when using this API, refer [ADD_USER_IDENTITY_FAILED](#add-user-identity-failed).
+
+## Updating global user data {#update-global-user-data}
+
+You can update your user's global data using this API.
+
+The following key/value pairs are accepted in this API call:
+```ts
+interface CustomUserFields {
+  [key: string]: string
+}
+
+interface GlobalUserData {
+     // Note that all primitive values must be coerced to string
+     first_name?: "string",
+     last_name?: "string",
+     full_name?: "string",
+     display_name?: "string",
+     last_country?: "string",
+     last_city?: "string",
+     age?: "string",
+     lifetime_value?: "string",
+     user_persona?: "string",
+     user_vip_segment?: "string",
+     user_support_status?: "string"
+     last_active_date?: "string" // epoch time in ms/seconds
+     accepted_t_and_c?: "string" // true/false converted to string
+     preferred_language?:"string"
+
+     // Non-primitives
+     new_tags?: Array<string>
+     tags_to_remove?: Array<string>
+     reset_tags?: Array<string>
+     custom_user_fields?: CustomUserFields
+}
+```
+
+Example:
+```js
+  // ... Some custom logic here that obtains user data
+  const full_name = "John Doe";
+
+  Helpshift("updateGlobalUserData", {full_name})
+```
+
+<Admonition type="info" title="Info">
+
+You can plug this API call into any place where you collect user data. However, be careful not to call it in any
+useEffect-like callbacks or frequently-firing events, since rate-limiting restrictions may kick in.
+
+Global user data is also referred to as **core attributes**.
+
+</Admonition>
+
+For a list of errors that can occur when using this API, refer [UPDATE_GLOBAL_USER_DATA_FAILED](#update-global-user-data-failed).
+
+## Updating app user data {#update-app-user-data}
+
+You can update your user's app or website-specific data using this API.
+
+The following key/value pairs are accepted in this API call:
+```ts
+interface CustomUserFields {
+  [key: string]: string
+}
+
+interface AppUserData {
+     // Note that all primitive values must be coerced to string
+      app_version: "string",
+      user_vip_segment: "string",
+      sdk_version: "string",
+      language:"string",
+      app_rating: "string",
+      user_paying_segment: "string",
+      country: "string"
+      user_support_status: "string"
+      user_persona: "boolean string"
+      accepted_t_and_c: "string"
+      user_level: "string",
+      app_status: "string",
+      city: "string",
+      lifetime_value: "string",
+
+
+      // Non-primitives
+      custom_user_fields?: CustomUserFields
+}
+```
+
+Example:
+```js
+  // ... Some custom logic here that obtains user data
+  const app_rating = "5";
+
+  Helpshift("updateAppUserData", {app_rating})
+```
+
+<Admonition type="info" title="Info">
+
+You can plug this API call into any place where you collect user data. However, be careful not to call it in any
+useEffect-like callbacks or frequently-firing events, since rate-limiting restrictions may kick in.
+
+App user data is also referred to as **app attributes**.
+
+</Admonition>
+
+For a list of errors that can occur when using this API, refer [UPDATE_APP_USER_DATA_FAILED](#update-app-user-data-failed).
+
+## Logging out your end-users {#logout-end-users}
+To log out your end-users, you can use the logout API.
+
+
+```js
+Helpshift("logout");
+```
+
+Note that after calling this API, Web Chat will clear any user specific data from the `helpshiftConfig`
+object, and reset the chat to an anonymous user. Depending on the value of `helpshiftConfig.clearAnonymousUserOnLogin`,
+this can either be the previous anonymous user or a new anonymous user.
+
+<Admonition type="info" title="Tip">
+
+For a better user experience, consider hiding the chat widget after the user logs out.
+
+</Admonition>
+
+## Optimizations
+
+<Admonition type="info" title="Note">
+
+Web Chat will run smoothly even without these optimizations. However, if you want to see
+faster load times for Web Chat, and reduced load on your infrastructure, you may choose to implement these
+optimizations.
+
+</Admonition>
+
+### Send the identity_token in SSR requests {#send-identity-token-in-ssr}
+If your application uses SSR, you can send the `identity_token` as part of your page load,
+injecting it in the `onLoginRequest` callback directly.
+
+_Please ensure that you do not set this value in a global variable to minimize the security risks for your
+end-user._
+
+<Admonition type="info" title="Caveat">
+
+Helpshift fires the `onLoginRequest` event if we detect suspicious end-user activity. In such cases,
+your page will provide a stale ID token, which will result in an expired support session.
+
+A refresh of the page would allow their session to be restored.
+
+This is usually not an issue for most end-users, but in case you want instant support session recovery, a JWT endpoint
+would become necessary.
+
+</Admonition>
+
+### Caching the identity_token {#caching-id-token}
+We highly discourage caching the `identity_token` on the client-side since it increases the potential
+attack surface for XSS. However, you may choose to cache it on the server-side, provided that the cache
+is invalidated before 24 hours elapse.
+
+## Troubleshooting and tips {#troubleshooting-and-tips}
+
+Login failure can be detected by listening to the [`onWebChatRuntimeError` event](/web-chat/api/#on-webchat-runtime-error).
+The possible reasons for login failure are cited in the [`LOGIN_FAILED` runtime errors](#login-failed).
+
+If your login is still failing, you can investigate these other potential reasons:
+1. Ensure that your JWT endpoint is generating tokens in the accepted format
+2. Ensure that your JWT endpoint is signing tokens with the shared secret
+3. Ensure that your JWT endpoint has an `iat` (issued_at_time) value that is NOT older than 24h
+4. In case you are caching the JWT, ensure that you do not cache it for longer than 24h.
+
+## API failure reasons
+
+You can subscribe to the [onWebChatRuntimeError](/web-chat/api/#on-webchat-runtime-error) event
+to handle these errors programmatically. The following errors are emitted for the User Identity APIs:
+
+### LOGIN_FAILED {#login-failed}
+Occurs when the user login fails.
+The following reason and details combinations are possible in this scenario:
+
+<table>
+
+<tr>
+<th>Reason</th>
+<th>Details</th>
+<th>Notes</th>
+</tr>
+
+<tr>
+<td>AUTHENTICATE_WITH_FIELD_INCORRECT</td>
+<td></td>
+<td>
+
+Client-side validation. Fired when you attempt to call Login, but `authenticateWith: "identities"` is not set in the `helpshiftConfig`.
+
+</td>
+</tr>
+
+<tr>
+<td>JWT_IS_INVALID</td>
+<td></td>
+<td>Client-side validation.  Fired when the JWT format is incorrect.</td>
+</tr>
+
+<tr>
+<td>IDENTITIES_KEY_ABSENT</td>
+<td></td>
+<td>
+
+Client-side validation. Fired when your JWT payload is missing the `identities` key.
+
+</td>
+</tr>
+
+<tr>
+<td>USERID_AND_EMAIL_MISSING</td>
+<td></td>
+<td>Client-side validation. </td>
+</tr>
+
+<tr>
+<td>CONFIG_JWT_EMAIL_MISMATCH</td>
+<td>
+
+```ts
+interface ConfigJwtEmailMismatchDetails {
+  jwtEmail: string,
+  configEmail: string
+}
+```
+
+</td>
+<td>Client-side validation.</td>
+</tr>
+
+<tr>
+<td>CONFIG_JWT_USER_ID_MISMATCH</td>
+<td>
+
+```ts
+interface ConfigJwtEmailMismatchDetails {
+  jwtUserId: string,
+  configUserId: string
+}
+```
+
+</td>
+<td>Client-side validation.</td>
+</tr>
+
+<tr>
+<td>IDENTITIES_FEATURE_DISABLED</td>
+<td></td>
+<td>Server-side validation.</td>
+</tr>
+
+<tr>
+<td>IDENTITIES_INVALID_TOKEN</td>
+<td></td>
+<td>
+
+Server-side validation. Fired when your ID token is invalid.
+Check [these troubleshooting steps](##troubleshooting-and-tips) for help with debugging this.
+
+</td>
+</tr>
+
+<tr>
+<td> IDENTITIES_INVALID_PAYLOAD </td>
+
+<td>
+
+```ts
+interface InvalidPayloadDetails {
+  missingFields?: Array<string>
+  invalidFields?: Array<string>
+  invalidIdentities?: Array<string>
+  invalidIdentityTokens?: Array<string>
+}
+```
+
+</td>
+<td>Server-side validation.</td>
+</tr>
+
+<tr>
+<td> INTERNAL_HELPSHIFT_ERROR_DURING_USER_LOGIN </td>
+<td></td>
+<td>Server-side issue. Try refreshing or check the Helpshift status page.</td>
+</tr>
+
+
+</table>
+
+### ADD_USER_IDENTITY_FAILED {#add-user-identity-failed}
+
+This error can occur when you attempt to update the a user identity with the new Identity System.
+Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
+
+<table>
+
+<tr>
+<th>Reason</th>
+<th>Details</th>
+<th>Notes</th>
+</tr>
+
+<tr>
+<td>AUTHENTICATE_WITH_FIELD_INCORRECT</td>
+<td></td>
+<td>
+
+Client-side validation. Fired when you attempt to call this API, but `authenticateWith: "identities"` is not set in the `helpshiftConfig`.
+
+</td>
+</tr>
+
+<tr>
+<td>JWT_IS_INVALID</td>
+<td>
+
+```ts
+interface JwtIsInvalidDetails {
+  expectedDataType: string,
+  receivedDataType: string
+}
+```
+In case the problem is not due to invalid data type, you might not receive the `details` key.
+
+</td>
+<td>
+
+Client-side validation. Fired when you attempt to call this API, but `authenticateWith: "identities"` is not set in the `helpshiftConfig`.
+
+</td>
+</tr>
+
+</table>
+
+### UPDATE_GLOBAL_USER_DATA_FAILED {#update-global-user-data-failed}
+This error can occur when you attempt to update global user data with the new Identity System.
+Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
+
+<table>
+
+<tr>
+<th>Reason</th>
+<th>Details</th>
+<th>Notes</th>
+</tr>
+
+<tr>
+<td>AUTHENTICATE_WITH_FIELD_INCORRECT</td>
+<td></td>
+<td>
+
+Client-side validation. Fired when you attempt to call this API, but `authenticateWith: "identities"` is not set in the `helpshiftConfig`.
+
+</td>
+</tr>
+
+<tr>
+<td>MAX_KEY_VALUES_LIMIT_EXCEEDED</td>
+<td>
+
+```ts
+  interface MaxKeyValuesLimitExceededDetails {
+    receivedTotalKeys: number,
+    maxKeysAllowed: number
+  }
+```
+
+</td>
+<td>Client-side validation. Only 100 keys are allowed per update you send.</td>
+</tr>
+
+<tr>
+<td>MAX_KEY_VALUES_CHAR_LIMIT_EXCEEDED</td>
+<td>
+
+```ts
+  interface MaxKeyValuesCharLimitExceededDetails {
+    invalidKeys: Array<string>,
+    invalidValues: Array<string>
+  }
+```
+
+</td>
+<td>Client-side validation. The client-side limit is 1000 characters per key or value that you send.</td>
+</tr>
+</table>
+
+### UPDATE_APP_USER_DATA_FAILED {#update-app-user-data-failed}
+This error can occur when you attempt to update the _app_ user data with the new Identity System.
+Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
+
+<table>
+
+<tr>
+<th>Reason</th>
+<th>Details</th>
+<th>Notes</th>
+</tr>
+
+<tr>
+<td>AUTHENTICATE_WITH_FIELD_INCORRECT</td>
+<td></td>
+<td>
+
+Client-side validation. Fired when you attempt to call this API, but `authenticateWith: "identities"` is not set in the `helpshiftConfig`.
+
+</td>
+</tr>
+
+<tr>
+<td>MAX_KEY_VALUES_LIMIT_EXCEEDED</td>
+<td>
+
+```ts
+  interface MaxKeyValuesLimitExceededDetails {
+    receivedTotalKeys: number,
+    maxKeysAllowed: number
+  }
+```
+
+</td>
+<td>Client-side validation. Only 100 keys are allowed per update you send.</td>
+</tr>
+
+<tr>
+<td>MAX_KEY_VALUES_CHAR_LIMIT_EXCEEDED</td>
+<td>
+
+```ts
+  interface MaxKeyValuesCharLimitExceededDetails {
+    invalidKeys: Array<string>,
+    invalidValues: Array<string>
+  }
+```
+
+</td>
+<td>Client-side validation. The client-side limit is 1000 characters per key or value that you send.</td>
+</tr>
+
+</table>
+
+### IDENTITY_PROFILE_UPDATE_FAILED {#identity-profile-update-failed}
+
+Web Chat batches your user data updates and syncs them periodically.
+As a result of this, if a validation failure occurs on the server-side, this error will
+report it.
+
+<table>
+
+<tr>
+<th>Reason</th>
+<th>Details</th>
+<th>Notes</th>
+</tr>
+
+<tr>
+<td>IDENTITIES_FEATURE_DISABLED</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>IDENTITIES_INVALID_PAYLOAD</td>
+<td>
+
+```ts
+interface IdentitiesInvalidPayloadDetails {
+  missingFields?: Array<string>,
+  invalidAppAttributes?: Array<string>,
+  invalidCoreAttributes?: Array<string>,
+  invalidIdentities?: Array<string>,
+  invalidIdentityTokens?: Array<string>
+}
+```
+
+</td>
+<td></td>
+</tr>
+
+</table>
