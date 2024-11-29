@@ -733,6 +733,16 @@ Locally saved unread message count are useful for saving an additional network c
 
 When using Identity system related APIs, the related events are communicated to your app using the events mentioned in this section. Events can have associated data which gives more information on the corresponding event.
 
+Where applicable, the max permissible limits are defined as follows -
+
+- Key length - Max 255 chars
+- Value length for identity - Max 300 chars
+- Value length for UID identity - Max 750 chars
+- Value length for CUF - Max 255 chars
+- Value length for multiline CUF - Max 100000 chars
+- Value length for user tags - Max 100 chars
+- Collection size - Max 30 entries
+
 ### HelpshiftIdentityTokenInvalid
 
 Identities JWT not in valid format
@@ -825,7 +835,7 @@ Identity feature is not enabled for your domain
 ### HelpshiftEventUserSessionExpired
 
 Sent when the SDK's user session expires. Once the session expires, SDK will keep sending this event to your app on each foreground.
-In response to this event, you should refresh the JWT for the current user and [log them in](/sdkx_ios/identity-users.mdx) again with the new JWT.
+In response to this event, you should refresh the JWT for the current user and [log them in](/sdkx_ios/identity-user-hub/) again with the new JWT.
 
 - Data - nil
 

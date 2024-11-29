@@ -1,6 +1,6 @@
 ---
 sidebar_position: 45
-title: Identity User Management
+title: User Hub
 description: Learn more about identifying and managing users.
 ---
 
@@ -20,12 +20,12 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 ## Managing users with the Identity System​
 
-Setting up the Identity System requires some development effort, but provides many advantages over the legacy method in the form of faster context collection, easier agent experience, enhanced security, and spam protection.
+Setting up the new Identity System ( "User Hub" ) requires some development effort, but provides many advantages over the legacy method in the form of faster context collection, easier agent experience, enhanced security, and spam protection.
 
 ### Prerequisites​
 
 <Admonition type="info" title="NOTE">
-  This feature is in closed beta. Contact Helpshift Support team to enable this
+  This feature is in closed beta. Contact Helpshift Customer Success team to enable this
   feature.
 </Admonition>
 
@@ -79,6 +79,14 @@ loginWithIdentity(
  )
 ```
 
+Following rules apply depending on the value of `full_privacy_enabled` flag in config.
+
+- If full privacy flag is false, one of uid or email is mandatory in the identities array.
+- If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
+  - If uid is present - SDK will use the uid to identify the user.
+  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
+- Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
+
 The failure reasons and possible recovery steps are documented in the [Login failure reasons](#login-failure-reasons) section.
 
 ### Identity token format​
@@ -103,13 +111,6 @@ The identity token must be a JWT signed using the shared secret from your app se
 
 Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
 
-Additionally, following rules apply depending on the value of `full_privacy_enabled` flag in config.
-
-- If full privacy flag is false, one of uid or email is mandatory in the identities array.
-- If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
-  - If uid is present - SDK will use the uid to identify the user.
-  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
-- Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
 
 <Admonition type="info" title="Important">
 
@@ -150,7 +151,7 @@ If you wish to proactively refresh your logged in user’s credentials with Help
 
 For more details on these events, please check the [Delegates](/sdkx_android/delegates/#helpshifteventusersessionexpired) page.
 
-### Updating user identities
+### Adding user identities
 
 Use the `addUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
 
@@ -162,6 +163,98 @@ You need to obtain a JWT for new identities from your dedicated endpoint. Please
 
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_android/delegates.mdx/#user-identity-system-events) page.
 
+### Troubleshooting and tips
+Login failure can be detected by listening to the [HelpshiftUserLoginEventsListener](/sdkx_android/identity-user-hub/#logging-in-your-end-users) listener. The possible reasons for login failure are cited in the [Login failure reasons](/sdkx_android/identity-user-hub/#login-failure-reasons) section.
+
+If your login is still failing, you can investigate these other potential reasons:
+
+- Ensure that your JWT endpoint is generating tokens in the accepted format
+- Ensure that your JWT endpoint is signing tokens with the shared secret
+- Ensure that your JWT endpoint has an iat (issued_at_time) value that is NOT older than 24h
+- In case you are caching the JWT, ensure that you do not cache it for longer than 24h.
+
+### Update global user data
+
+Use this API to update global attributes associated with the logged in user.
+
+```java
+  Map<String, Object> masterAttributes = new HashMap<>();
+  // put appropriate master attribute key and its value
+  masterAttributes.put("<master-attribute-key>", "<master-attribute-value>");
+  Helpshift.updateMasterAttributes(masterAttributes);
+```
+
+Global attributes must be one of the following types -
+
+- `first_name` - String
+- `last_name` - String
+- `display_name` - String
+- `full_name` - String
+- `last_country` - String
+- `last_city` - String
+- `age` - Int or String
+- `lifetime_value` - String
+- `user_persona` - String
+- `user_vip_segment` - String
+- `user_support_status` - String
+- `last_active_date` - String // UNIX epoch time in seconds
+- `accepted_t_and_c` - String
+- `preferred_language` - String
+- `new_tags` - List< String >
+- `tags_to_remove` - List< String >
+- `reset_tags` - List< String >
+- `custom_user_fields` - Map<String, String>
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_android/delegates/#user-identity-system-events) page.
+
+If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
+
+### Update app specific user data
+
+Use this API to update app specific attributes associated with the logged in user.
+
+```java
+  Map<String, Object> appAttributes = new HashMap<>();
+  // put appropriate app attribute key and its value
+  appAttributes.put("<app-attribute-key>", "<app-attribute-value>");
+  Helpshift.updateAppAttributes(appAttributes);
+```
+
+App specific attributes must be one of the following types -
+
+- `device_model` - String
+- `os_version` - String
+- `app_version` - String
+- `sdk_version` - String
+- `country` - String
+- `city` - String
+- `user_vip_segment` - String
+- `language` - String
+- `app_rating` - String
+- `user_paying_segment` - String
+- `user_support_status` - String
+- `user_persona` - String
+- `accepted_t_and_c` - String
+- `user_level` - String
+- `app_status` - String
+- `lifetime_value` - String
+- `custom_user_fields` - Map<String,String>
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_android/delegates/#user-identity-system-events) page.
+
+If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
+
+<Admonition type="info" title="Note">
+
+Attributes update APIs sync attributes with Helpshift servers in batches. There is a chance of attribute updates
+being lost in case the user is logged out from the SDK before the current batch update is synced.
+
+</Admonition>
+
 ## Login failure reasons
 
 Identity system login can fail for any of the reasons mentioned below. A reason may have associated errors that may help pinpoint the exact cause of the failure. As an example, if the failure is due to an invalid key in identities JWT, the errors dictionary will contain the exact key (or keys) found to be invalid. The value against this key will indicate what failed (value too big, value type not supported, etc).
@@ -170,9 +263,14 @@ The constants for these failure reasons are defined in `UserLoginFailureReason` 
 
 Where applicable, the max permissible limits are defined as follows -
 
-- Key length - Max 1000 chars
-- Value length - Max 10,000 chars
-- Collection size - Max 100 entries
+- Key length - Max 255 chars
+- Value length for identity - Max 300 chars
+- Value length for UID identity - Max 750 chars
+- Value length for CUF - Max 255 chars
+- Value length for multiline CUF - Max 100000 chars
+- Value length for user tags - Max 100 chars
+- Collection size - Max 30 entries
+
 
 ### LOGIN_IN_PROGRESS
 
