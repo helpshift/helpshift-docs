@@ -395,7 +395,20 @@ If your login is still failing, you can investigate these other potential reason
 3. Ensure that your JWT endpoint has an `iat` (issued_at_time) value that is NOT older than 24h
 4. In case you are caching the JWT, ensure that you do not cache it for longer than 24h.
 
-## API failure reasons
+## System limits
+
+When using the User Identity APIs, the following system-level limits are applicable. Where applicable, these
+limits will also be reported to you as documented in the [API failure reasons](#api-failure-reasons).
+
+* Key lengths across all APIs - Max 255 chars
+* Value length for any identity (except `uid`) - Max 300 chars
+* Value length for `uid` identity - Max 750 chars
+* Value length for CUF - Max 255 chars
+* Value length for multiline CUF - Max 100000 chars
+* Value length for user tags - Max 100 chars
+* Collection size - Max 30 entries
+
+## API failure reasons {#api-failure-reasons}
 
 You can subscribe to the [onWebChatRuntimeError](/web-chat/api/#on-webchat-runtime-error) event
 to handle these errors programmatically. The following errors are emitted for the User Identity APIs:
