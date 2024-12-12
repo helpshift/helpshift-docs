@@ -180,6 +180,34 @@ When making a request to Helpshift with no `userAuthToken` or an invalid `userAu
   - The Web Chat widget will show an error (if it's opened by means of the `open` API).
 - If the logged-in users are verified (i.e. a valid `userAuthToken` is provided), they are able to see their previous conversations and create new Issues. The UI for verified logged-in users looks and works exactly the same as it would if Identity Verification were turned off. Only unverified users are impacted as described above.
 
+#### User auth failure event
+
+If you wish to programmatically handle Identity Verification failure, you can do so using the `userAuthFailure` event:
+
+```ts
+
+interface AuthFailureData {
+  message: "missing user auth token" | "invalid user auth token"
+}
+
+const userAuthFailureHandler = function ({ message }: AuthFailureData) {
+  console.log(message)
+  // ... Handle auth failure
+};
+
+Helpshift(
+  "addEventListener",
+  "userAuthFailure",
+  userAuthFailureHandler
+);
+```
+
+To stop listening to this event, you can remove the event listener:
+
+```js
+Helpshift("removeEventListener", "userAuthFailure", userAuthFailureHandler)
+```
+
 ### Testing & Troubleshooting {#testing-and-troubleshooting}
 
 [How do I test that I have User Identity Verification set up correctly?](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/881-user-identity-verification-how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/)
