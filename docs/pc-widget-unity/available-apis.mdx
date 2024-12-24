@@ -1,0 +1,72 @@
+---
+sidebar_position: 50
+title: List of Available APIs
+description: "List of available APIs for Helpshift PC widget"
+---
+
+### Helpshift.Initialize
+**Parameters:**
+- path (string): The base path to the Application's streaming assets, e.g., Application.streamingAssetsPath.
+- helpshiftConfig (object): A configuration object for the widget.
+  
+**Description:** Initializes the HelpShift widget and runs it in the background, enabling it to listen for notifications. If notifications are a high priority, this method should be called when the game starts to ensure timely event handling.
+  
+**Example Usage:**
+```
+Helpshift.Initialize(Application.streamingAssetsPath, helpshiftConfig);
+```
+
+### Helpshift.Show
+**Parameters:** None
+
+**Description:**
+
+Displays the HelpShift widget on the screen.
+- This is typically invoked during the on-click action of a clickable element (e.g., a button).
+- `Important:` Ensure that HelpShift.Initialize() has been called earlier in the game flow before invoking this method; otherwise, the widget will not function properly.
+
+**Example Usage:**
+```
+Helpshift.Show()
+```
+
+### HelpShift.Hide
+**Parameters:** None
+
+**Description:**
+
+Hides the HelpShift widget from the screen.
+- `Note:` Clicking the "X" button on the widget also triggers the hide functionality.
+- `Usage:` Typically used in scenarios where the widget needs to be temporarily removed from view to avoid distractions, adapt to UI changes, or maintain a seamless user experience during specific gameplay moments, such as cutscenes, high-focus sequences, or state transitions.
+- `Behaviour:` The widget is hidden instead of closed to ensure the background event system remains active for handling notifications.
+
+**Example Usage:**
+```
+Helpshift.Hide()
+```
+### HelpShift.CleanUp
+**Parameters:** None
+
+**Description:**
+
+Shuts down the Helpshift widget and terminates its background process. This method should be called during game shutdown to release resources and ensure proper cleanup.
+
+- `Usage:` Call this inside Unity's `OnApplicationQuit()` method.
+
+**Example Usage:**
+```
+Helpshift.CleanUp()
+```
+
+### HelpShift.Update ( Optional )
+**Parameters:** None
+
+**Description:**
+
+Handles events sent from the HelpShift widget to Unity. This method is typically called inside Unity's Update() method.
+- `Note:` This is optional in the current workflow as no events are being sent from the widget to Unity.
+
+**Example Usage:**
+```
+Helpshift.Update()
+```
