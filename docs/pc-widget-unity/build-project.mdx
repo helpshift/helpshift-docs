@@ -1,0 +1,75 @@
+---
+sidebar_position: 20
+title: Building Project
+description: ""
+---
+import {
+  Image,
+  DownloadButton
+} from "@site/src/components/forDocs";
+
+## Building the Projects
+
+<DownloadButton classes="mb-3" text="Download PC Widget"/>
+
+The repository contains 3 projects:
+- ***HSUnityWidget*** which is a sample Unity Project.
+- ***HSWidgetLibrary*** which is a .NET Framework dll project that runs in Unity and has the necessary APIs for integration.
+- ***WPFWebview*** which is a .NET CORE WPF application that hosts the web view.
+
+### WPFWebView
+
+This is a .NET Core WPF application.
+
+**Output:**
+2 files (*Support.exe* and *WebView2Loader.dll*)
+
+**Building the Project**:
+Use `Publish Selection` option from the Build menu item
+
+<Image src="/static/books/pc-widget-unity/publish-selection.png" width="half" />
+
+
+Configure the Publish option to produce the files in a local folder.
+Use the below Publish profile settings.
+
+<Image src="/static/books/pc-widget-unity/publish-setting.png" width="half" />
+
+Publish the build and copy *Support.exe* and *WebView2Loader.dll* to the Unity sample project as below to the StreamingAssets folder.
+Copying to StreamingAssets folder ensures that these binaries are copied to the final Unity player build.
+
+If we are making any changes to this project, we should copy both the files to the StreamingAssets folders of the Sample Unity project
+
+<Image src="/static/books/pc-widget-unity/streammingpath.png" width="half" />
+
+### HSWidgetLibrary
+
+This is a .NET framework class library project that integrates into the Unity layer and acts as a bridge between Unity and WebView.
+
+Build the project in the `Release` configuration using the Build menu item
+
+<Image src="/static/books/pc-widget-unity/build-solution.png" width="half" />
+
+**Output:** `HSWidgetLibrary.dll` and `Newtonsoft.Json.dll` files that are placed in the Plugins folder of the Sample Unity project
+
+<SideBySide class="grid grid-cols-2 gap-2">
+
+<Image src="/static/books/pc-widget-unity/plugin-1.png" />
+
+<Image src="/static/books/pc-widget-unity/plugin-2.png" />
+
+</SideBySide>
+
+### HSUnityWidget
+
+This is a sample Unity project from which the final Unity package is created which can be integrated to other games.
+
+**Output:** A .unitypackage file
+
+Go to the Assests menu item and click on Export package
+
+<Image src="/static/books/pc-widget-unity/export-package.png" width="half" />
+
+Select the following files and click on Export ( Save it with any name )
+
+<Image src="/static/books/pc-widget-unity/click-on-export.png" width="half" />

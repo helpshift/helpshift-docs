@@ -1,0 +1,147 @@
+---
+sidebar_position: 50
+title: Configuration
+description: "Configuration options for Helpshift PC widget - Unity"
+---
+
+import {
+  Image
+} from "@site/src/components/forDocs";
+
+
+## Configuration
+
+A configuration object has to be created, which should be passed to the `initialize` API.
+Below are the configuration options that we have.
+
+### Properties:
+
+**Domain** `(Required)`
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Specifies the domain for the widget to operate.
+
+**PlatformId** `(Required)`
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Unique identifier for the platform.
+
+**AppId** `(Required)`
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Unique identifier for the application.
+
+**WidgetType** `(Required)`
+- `Type`: string
+- `Default`: `helpcenter_and_webchat`
+- `Description`: Defines the type of widget. Common options include `helpcenter_and_webchat`,`helpcenter` and `webchat`.
+
+**UserId**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Identifier for the user interacting with the widget.
+
+**UserName**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Name of the user.
+
+**UserEmail**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Email address of the user.
+
+**Language**
+- `Type`: string
+- `Default`: `en`
+- `Description`: Language preference for the widget. Example: `en`, `fr`.
+
+**ConversationPrefillText**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Prefill text for initiating a conversation.
+
+**InitialUserMessage**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Initial message displayed to the user.
+
+**FullPrivacy**
+- `Type`: bool
+- `Default`: false
+- `Description`: Indicates if full privacy mode is enabled.
+
+**InitiateChatOnLoad**
+- `Type`: bool
+- `Default`: false
+- `Description`: Automatically initiate a chat when the widget loads.
+
+**ClearAnonymousUserOnLogin**
+- `Type`: bool
+- `Default`: false
+- `Description`: Clears anonymous user data upon login.
+
+**EnableLogging**
+- `Type`: bool
+- `Default`: false
+- `Description`: Enables logging for debugging purposes.
+
+**Cifs**
+- `Type`: bool
+- `Default`: false
+- `Description`: Configuration identifier for specific integrations.
+
+**Tags**
+- `Type`: `List<string>`
+- `Default`: `new List<string>()`
+- `Description`: A list of tags to associate with the widget.
+
+**FaqId**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Identifier for a specific FAQ.
+
+**SectionId**
+- `Type`: string
+- `Default`: string.Empty
+- `Description`: Identifier for a specific section.
+
+**ResizeMode**
+- Type: ResizeMode
+- Default: ResizeMode.SlimRight
+- Description: Determines how the widget resizes. Example values include `ResizeMode.SlimRight`, `ResizeMode.SlimCenter`,`ResizeMode.SlimLeft`,`ResizeMode.WideCenter` and `ResizeMode.FullScreen`.
+
+### Usage
+
+```
+var config = new HelpshiftConfig
+{
+    Domain = "mydomain",
+    PlatformId = "mydomain_platform_123",
+    AppId = "3",
+    WidgetType = "helpcenter_and_webchat",
+    ////////////////////////////////////
+    // Configure the rest of the required options
+    ///////////////////////////////////// 
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath,config);
+
+```
+
+### Mode Previews
+**SlimRight ( Default )**
+<Image src="/static/books/pc-widget-unity/preview-right.png" width="half" />
+
+**SlimLeft**
+<Image src="/static/books/pc-widget-unity/preview-left.png" width="half" />
+
+**SlimCenter**
+<Image src="/static/books/pc-widget-unity/preview-center.png" width="half" />
+
+**WideCenter**
+<Image src="/static/books/pc-widget-unity/preview-wide-center.png" width="half" />
+
+**FullScreen**
+<Image src="/static/books/pc-widget-unity/preview-fullscreen.png" width="half" />
