@@ -1,5 +1,5 @@
 ---
-sidebar_position: 50
+sidebar_position: 30
 title: Configuration
 description: "Configuration options for Helpshift PC widget - Unity"
 ---
@@ -8,140 +8,204 @@ import {
   Image
 } from "@site/src/components/forDocs";
 
-
 ## Configuration
 
 A configuration object has to be created, which should be passed to the `initialize` API.
 Below are the configuration options that we have.
 
-### Properties:
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Domain</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>True</td>
+      <td>Specifies the domain for the widget to operate.</td>
+    </tr>
+    <tr>
+      <td>PlatformId</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>True</td>
+      <td>Unique identifier for the platform.</td>
+    </tr>
+    <tr>
+      <td>AppId</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>True</td>
+      <td>Unique identifier for the application.</td>
+    </tr>
+    <tr>
+      <td>WidgetType</td>
+      <td>string</td>
+      <td><code>helpcenter_and_webchat</code></td>
+      <td>True</td>
+      <td>Defines the type of widget. Common options include <code>helpcenter_and_webchat</code>, <code>helpcenter</code>, and <code>webchat</code>.</td>
+    </tr>
+    <tr>
+      <td>UserId</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Identifier for the user interacting with the widget.</td>
+    </tr>
+    <tr>
+      <td>UserName</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Name of the user.</td>
+    </tr>
+    <tr>
+      <td>UserEmail</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Email address of the user.</td>
+    </tr>
+    <tr>
+      <td>Language</td>
+      <td>string</td>
+      <td><code>en</code></td>
+      <td>False</td>
+      <td>Language preference for the widget. Example: <code>en</code>, <code>fr</code>.</td>
+    </tr>
+    <tr>
+      <td>ConversationPrefillText</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Prefill text for initiating a conversation.</td>
+    </tr>
+    <tr>
+      <td>InitialUserMessage</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Initial message displayed to the user.</td>
+    </tr>
+    <tr>
+      <td>FullPrivacy</td>
+      <td>bool</td>
+      <td><code>false</code></td>
+      <td>False</td>
+      <td>Indicates if full privacy mode is enabled.</td>
+    </tr>
+    <tr>
+      <td>InitiateChatOnLoad</td>
+      <td>bool</td>
+      <td><code>false</code></td>
+      <td>False</td>
+      <td>Automatically initiate a chat when the widget loads.</td>
+    </tr>
+    <tr>
+      <td>ClearAnonymousUserOnLogin</td>
+      <td>bool</td>
+      <td><code>false</code></td>
+      <td>False</td>
+      <td>Clears anonymous user data upon login.</td>
+    </tr>
+    <tr>
+      <td>EnableLogging</td>
+      <td>bool</td>
+      <td><code>false</code></td>
+      <td>False</td>
+      <td>Enables logging for debugging purposes.</td>
+    </tr>
+    <tr>
+      <td>Cifs</td>
+      <td>bool</td>
+      <td><code>false</code></td>
+      <td>False</td>
+      <td>Configuration identifier for specific integrations.</td>
+    </tr>
+    <tr>
+      <td>Tags</td>
+      <td>List&lt;string&gt;</td>
+      <td><code>new List&lt;string&gt;()</code></td>
+      <td>False</td>
+      <td>A list of tags to associate with the widget.</td>
+    </tr>
+    <tr>
+      <td>FaqId</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Identifier for a specific FAQ.</td>
+    </tr>
+    <tr>
+      <td>SectionId</td>
+      <td>string</td>
+      <td><code>""</code></td>
+      <td>False</td>
+      <td>Identifier for a specific section.</td>
+    </tr>
+    <tr>
+      <td>ResizeMode</td>
+      <td>ResizeMode</td>
+      <td><code>ResizeMode.SlimRight</code></td>
+      <td>False</td>
+      <td>Determines how the widget resizes. Example values include <code>ResizeMode.SlimRight</code>, <code>ResizeMode.SlimCenter</code>, <code>ResizeMode.SlimLeft</code>, <code>ResizeMode.WideCenter</code>, and <code>ResizeMode.FullScreen</code>.</td>
+    </tr>
+  </tbody>
+</table>
 
-**Domain** `(Required)`
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Specifies the domain for the widget to operate.
-
-**PlatformId** `(Required)`
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Unique identifier for the platform.
-
-**AppId** `(Required)`
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Unique identifier for the application.
-
-**WidgetType** `(Required)`
-- `Type`: string
-- `Default`: `helpcenter_and_webchat`
-- `Description`: Defines the type of widget. Common options include `helpcenter_and_webchat`,`helpcenter` and `webchat`.
-
-**UserId**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Identifier for the user interacting with the widget.
-
-**UserName**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Name of the user.
-
-**UserEmail**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Email address of the user.
-
-**Language**
-- `Type`: string
-- `Default`: `en`
-- `Description`: Language preference for the widget. Example: `en`, `fr`.
-
-**ConversationPrefillText**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Prefill text for initiating a conversation.
-
-**InitialUserMessage**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Initial message displayed to the user.
-
-**FullPrivacy**
-- `Type`: bool
-- `Default`: false
-- `Description`: Indicates if full privacy mode is enabled.
-
-**InitiateChatOnLoad**
-- `Type`: bool
-- `Default`: false
-- `Description`: Automatically initiate a chat when the widget loads.
-
-**ClearAnonymousUserOnLogin**
-- `Type`: bool
-- `Default`: false
-- `Description`: Clears anonymous user data upon login.
-
-**EnableLogging**
-- `Type`: bool
-- `Default`: false
-- `Description`: Enables logging for debugging purposes.
-
-**Cifs**
-- `Type`: bool
-- `Default`: false
-- `Description`: Configuration identifier for specific integrations.
-
-**Tags**
-- `Type`: `List<string>`
-- `Default`: `new List<string>()`
-- `Description`: A list of tags to associate with the widget.
-
-**FaqId**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Identifier for a specific FAQ.
-
-**SectionId**
-- `Type`: string
-- `Default`: string.Empty
-- `Description`: Identifier for a specific section.
-
-**ResizeMode**
-- Type: ResizeMode
-- Default: ResizeMode.SlimRight
-- Description: Determines how the widget resizes. Example values include `ResizeMode.SlimRight`, `ResizeMode.SlimCenter`,`ResizeMode.SlimLeft`,`ResizeMode.WideCenter` and `ResizeMode.FullScreen`.
 
 ### Usage
 
-```
+```csharp
 var config = new HelpshiftConfig
 {
     Domain = "mydomain",
     PlatformId = "mydomain_platform_123",
     AppId = "3",
     WidgetType = "helpcenter_and_webchat",
-    ////////////////////////////////////
-    // Configure the rest of the required options
-    ///////////////////////////////////// 
 };
 
 // Pass the configuration to the initialize API
-Helpshift.Initialize(Application.streamingAssetsPath,config);
+Helpshift.Initialize(Application.streamingAssetsPath, config);
 
 ```
 
 ### Mode Previews
-**SlimRight ( Default )**
-<Image src="/static/books/pc-widget-unity/preview-right.png" width="half" />
 
-**SlimLeft**
-<Image src="/static/books/pc-widget-unity/preview-left.png" width="half" />
-
-**SlimCenter**
-<Image src="/static/books/pc-widget-unity/preview-center.png" width="half" />
-
-**WideCenter**
-<Image src="/static/books/pc-widget-unity/preview-wide-center.png" width="half" />
-
-**FullScreen**
-<Image src="/static/books/pc-widget-unity/preview-fullscreen.png" width="half" />
+<table>
+  <thead>
+    <tr>
+      <th>Mode</th>
+      <th>Preview</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SlimRight (Default)</td>
+      <td><Image src="/static/books/pc-widget-unity/preview-right.png" width="half" centered /></td>
+    </tr>
+    <tr>
+      <td>SlimLeft</td>
+      <td><Image src="/static/books/pc-widget-unity/preview-left.png" width="half" centered /></td>
+    </tr>
+    <tr>
+      <td>SlimCenter</td>
+      <td><Image src="/static/books/pc-widget-unity/preview-center.png" width="half" centered /></td>
+    </tr>
+    <tr>
+      <td>WideCenter</td>
+      <td><Image src="/static/books/pc-widget-unity/preview-wide-center.png" width="half" centered /></td>
+    </tr>
+    <tr>
+      <td>FullScreen</td>
+      <td><Image src="/static/books/pc-widget-unity/preview-fullscreen.png" width="half" centered /></td>
+    </tr>
+  </tbody>
+</table>

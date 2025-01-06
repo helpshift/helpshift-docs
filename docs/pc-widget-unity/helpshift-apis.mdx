@@ -1,0 +1,74 @@
+---
+sidebar_position: 20
+title: Helpshift APIs
+description: "List of available APIs for Helpshift PC widget"
+---
+
+<table>
+    <tr>
+        <th>API</th>
+        <th>Description</th>
+        <th>Parameters</th>
+        <th>Example Usage</th>
+    </tr>
+    <tr>
+        <td>Helpshift.Initialize</td>
+        <td>
+            Initializes the Helpshift widget and runs it in the background, enabling it to listen for notifications.<br/><br/>
+            If notifications are a high priority, this method should be called when the game starts to ensure timely event handling.
+        </td>
+        <td>
+            <ul>
+                <li>path (string): The base path to the Application's streaming assets, e.g., Application.streamingAssetsPath.</li>
+                <li>helpshiftConfig (object): A configuration object for the widget.</li>
+            </ul>
+        </td>
+        <td>
+           <code>Helpshift.Initialize(Application.streamingAssetsPath, helpshiftConfig);</code>
+        </td>
+    </tr>
+    <tr>
+        <td>Helpshift.Show</td>
+        <td>
+            Displays the Helpshift widget on the screen. This is typically invoked during the on-click action of a clickable element (e.g., a button).<br/><br/>
+            Ensure that <code>Helpshift.Initialize()</code> has been called earlier in the game flow before invoking this method; otherwise, the widget will not function properly.
+        </td>
+        <td>None</td>
+        <td>
+            <code>Helpshift.Show()</code>
+        </td>
+    </tr>
+    <tr>
+        <td>Helpshift.Hide</td>
+        <td>
+            Temporarily hides the Helpshift widget from the screen. This can also be triggered by clicking the "X" button on the widget.<br/><br/>
+            Typically used when the widget should be hidden to minimize distractions, adjust to UI changes, or ensure a smooth user experience during focused gameplay moments, such as cutscenes, high-concentration sequences, or transitions between states. The widget is hidden rather than closed to keep the background event system active for handling notifications.
+        </td>
+        <td>None</td>
+        <td>
+            <code>Helpshift.Hide()</code>
+        </td>
+    </tr>
+    <tr>
+        <td>Helpshift.CleanUp</td>
+        <td>
+            Destroy the Helpshift widget and terminates its background process. This method should be called during game shutdown to release resources and ensure proper cleanup.<br/><br/>
+            Call this inside Unity's <code>OnApplicationQuit()</code> method.
+        </td>
+        <td>None</td>
+        <td>
+           <code>Helpshift.CleanUp()</code>
+        </td>
+    </tr>
+    <tr>
+        <td>Helpshift.Update (Optional)</td>
+        <td>
+            Handles events sent from the Helpshift widget to Unity. This method is typically called inside Unity's <code>Update()</code> method.<br/><br/>
+            This is optional in the current workflow as no events are being sent from the widget to Unity.
+        </td>
+        <td>None</td>
+        <code>
+            Helpshift.Update()
+        </code>
+    </tr>
+</table>
