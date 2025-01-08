@@ -5,170 +5,25 @@ description: "Configuration options for Helpshift PC widget - Unity"
 ---
 
 import {
-  Image
+  Image,
+  Admonition
 } from "@site/src/components/forDocs";
 
 
 A configuration object has to be created, which should be passed to the `initialize` API.
-Below are the configuration options that we have.
+Below are the configuration options that we have**.**
 
-<table>
-  <thead>
-    <tr>
-      <th>Property</th>
-      <th>Type</th>
-      <th>Default</th>
-      <th>Required</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Domain</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>True</td>
-      <td>Specifies the domain for the widget to operate.</td>
-    </tr>
-    <tr>
-      <td>PlatformId</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>True</td>
-      <td>Unique identifier for the platform.</td>
-    </tr>
-    <tr>
-      <td>AppId</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>True</td>
-      <td>Unique identifier for the application.</td>
-    </tr>
-    <tr>
-      <td>WidgetType</td>
-      <td>string</td>
-      <td><code>helpcenter_and_webchat</code></td>
-      <td>True</td>
-      <td>Defines the type of widget. Common options include <code>helpcenter_and_webchat</code>, <code>helpcenter</code>, and <code>webchat</code>.</td>
-    </tr>
-    <tr>
-      <td>UserId</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Identifier for the user interacting with the widget.</td>
-    </tr>
-    <tr>
-      <td>UserName</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Name of the user.</td>
-    </tr>
-    <tr>
-      <td>UserEmail</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Email address of the user.</td>
-    </tr>
-    <tr>
-      <td>Language</td>
-      <td>string</td>
-      <td><code>en</code></td>
-      <td>False</td>
-      <td>Language preference for the widget. Example: <code>en</code>, <code>fr</code>.</td>
-    </tr>
-    <tr>
-      <td>ConversationPrefillText</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Prefill text for initiating a conversation.</td>
-    </tr>
-    <tr>
-      <td>InitialUserMessage</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Initial message displayed to the user.</td>
-    </tr>
-    <tr>
-      <td>FullPrivacy</td>
-      <td>bool</td>
-      <td><code>false</code></td>
-      <td>False</td>
-      <td>Indicates if full privacy mode is enabled.</td>
-    </tr>
-    <tr>
-      <td>InitiateChatOnLoad</td>
-      <td>bool</td>
-      <td><code>false</code></td>
-      <td>False</td>
-      <td>Automatically initiate a chat when the widget loads.</td>
-    </tr>
-    <tr>
-      <td>ClearAnonymousUserOnLogin</td>
-      <td>bool</td>
-      <td><code>false</code></td>
-      <td>False</td>
-      <td>Clears anonymous user data upon login.</td>
-    </tr>
-    <tr>
-      <td>EnableLogging</td>
-      <td>bool</td>
-      <td><code>false</code></td>
-      <td>False</td>
-      <td>Enables logging for debugging purposes.</td>
-    </tr>
-    <tr>
-      <td>Cifs</td>
-      <td>bool</td>
-      <td><code>false</code></td>
-      <td>False</td>
-      <td>Configuration identifier for specific integrations.</td>
-    </tr>
-    <tr>
-      <td>Tags</td>
-      <td>List&lt;string&gt;</td>
-      <td><code>new List&lt;string&gt;()</code></td>
-      <td>False</td>
-      <td>A list of tags to associate with the widget.</td>
-    </tr>
-    <tr>
-      <td>FaqId</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Identifier for a specific FAQ.</td>
-    </tr>
-    <tr>
-      <td>SectionId</td>
-      <td>string</td>
-      <td><code>""</code></td>
-      <td>False</td>
-      <td>Identifier for a specific section.</td>
-    </tr>
-    <tr>
-      <td>ResizeMode</td>
-      <td>ResizeMode</td>
-      <td><code>ResizeMode.SlimRight</code></td>
-      <td>False</td>
-      <td>Determines how the widget resizes. Example values include <code>ResizeMode.SlimRight</code>, <code>ResizeMode.SlimCenter</code>, <code>ResizeMode.SlimLeft</code>, <code>ResizeMode.WideCenter</code>, and <code>ResizeMode.FullScreen</code>.</td>
-    </tr>
-  </tbody>
-</table>
+# Mandatory Configuration
 
-
-### Usage
 
 ```csharp
+using HSWidgetLibrary
+
 var config = new HelpshiftConfig
 {
-    Domain = "mydomain",
-    PlatformId = "mydomain_platform_123",
-    AppId = "3",
-    WidgetType = "helpcenter_and_webchat",
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>"
 };
 
 // Pass the configuration to the initialize API
@@ -176,7 +31,300 @@ Helpshift.Initialize(Application.streamingAssetsPath, config);
 
 ```
 
-### Mode Previews
+1. Replace `YOUR_DOMAIN` with your Helpshift domain.
+   For example, _happyapps_ if your dashboard sits at _happyapps.helpshift.com_.
+2. Replace `YOUR_PLATFORM_ID` with details found at `Settings` > `SDKs (for Developers)`.
+   <Image src="/static/books/web-chat/wc-embed-sdk.png" width="full" />
+3. Replace `YOUR_APP_ID` with details found at `Settings` > `Your App (eg. Helpshift Demo App)` > `Publish ID`.
+   <Image src="/static/books/hs-widget/app-id.jpg" width="full" />
+
+Above mentioned configuration like `Domain`, `PlatformId`, `AppId` are mandatory for initializing the Helpshift PC Widget. For additional configurations refer below.
+
+# Optional Configuration
+
+## Widget Type {#widget-type}
+
+The `WidgetType` config value controls whether both Helpcenter and Web Chat or only Helpcenter or only Web Chat should be loaded in Helpshift Widget.
+
+<Admonition type="info" title="Note">
+
+The `WidgetType` configuration will not work with [```Helpshift.Update()```](/pc-widget-unity/helpshift-apis/#helpshiftupdate-optional) API. It will work only when added with [```Helpshift.Initialize()```](/pc-widget-unity/helpshift-apis/#helpshiftinitialize) . 
+
+</Admonition>
+
+To show **both Helpcenter and Webchat** in the Helpshift Widget, use the following configuration
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    WidgetType = "helpcenter_and_webchat"
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+To show **only Helpcenter** in the Helpshift Widget, use the following configuration:
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    WidgetType = "helpcenter"
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+To show **only Webchat** in the Helpshift Widget, use the following configuration:
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    WidgetType = "webchat"
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+
+## Theming {#theming}
+
+You can configure the Helpcenter and Web Chat's color scheme directly from the Helpshift Dashboard. For more details, refer to [For Support Admins: Configure the User Experience of Helpcenter](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1169-help-center-procedure-configure-look-and-feel-settings-for-sdk-x-help-center-2-0-web-support-portals-and-web-chat-v2/) and [For Support Admins: Configure the User Experience of Web Chat](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/900-web-chat-understand-the-appearance-of-web-chat-ui-elements-sdk-x/) and in our Knowledge Base.
+
+## Bots {#bots}
+
+Bots can be enabled in Web Chat to automatically provide help and gather information from users to help your Agents resolve Issues faster. Helpshift has 3 default Bots:
+
+- **QuickSearch Bot** - deflect common problems by automatically suggesting relevant FAQs to users
+- **Identity Bot** - prompt your users for their name and/or email before they create an issue
+- **CSAT Bot** - automatically ask for feedback after an Issue is resolved
+
+For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/681-bot-procedures-create-and-configure-a-custom-bot-or-feedback-bot/) in our Knowledge Base.
+
+## Full Privacy {#full-privacy}
+
+In the `HelpshiftConfig` object at the time of initialization, setting the `FullPrivacy` option to `true` ensures [COPPA](http://www.coppa.org/) compliance by:
+
+- Disabling user-initiated screenshots (users will not be able to attach files, including images, using Web Chat).
+- Making sure that Personally Identifiable Information (PII) such as name and email are not collected by Web Chat (using Identity Bot and/or the helpshiftWidgetConfig object). This means that if you set `UserName` and `UserEmail`, with `FullPrivacy` set to `true`, Helpshift will not use the `UserName` and `UserEmail` values.
+
+Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
+By default, `FullPrivacy` is set to `false`.
+
+##### Example Embed Code
+
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    FullPrivacy = true
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+## Initiating chat {#initiate-chat}
+
+Developers can start a new chat when the previous issue is resolved, without needing any user action like clicking the `New Conversation` button or going through the post resolution flow like feedback bot for the previously resolved issue.
+
+To do the above mentioned action, the developer will have to set `InitiateChatOnLoad` config in `HelpshiftWidgetConfig` and then use the [Helpshift.Update()](/pc-widget-unity/helpshift-apis/#helpshiftupdate-optional) API to start the new chat when the previous issue is resolved.
+
+##### Example Embed Code
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    InitiateChatOnLoad = true
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+## Initial user message {#initial-user-message}
+
+##### Example Embed Code
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    InitialUserMessage = "Some initial user message"
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+## Conversation prefill text {#conversation-prefill-text}
+
+##### Example embed code:
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+    Domain = "<YOUR_DOMAIN>",
+    PlatformId = "<YOUR_PLATFORM_ID>",
+    AppId = "<YOUR_APP_ID>",
+
+    ConversationPrefillText = "Some prefill text"
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+## Showing a Particular FAQ Section {#faq-section-view}
+
+You can use this configuration to show FAQs from a particular FAQ section.
+
+**You will need the `publish-id` of the FAQ section to use this API:**
+
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
+
+##### Example embed code:
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+  SectionId = "333",
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+## Showing a Particular FAQ {#faq-question-view}
+
+You can use this configuration to show a single FAQ.
+
+**You'll need the `publish-id` of the FAQ to use this API:**
+
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
+
+<Admonition type="info" title="Note">
+
+FAQ ID takes precedence over Section ID. So if both are given, FAQ will be shown.
+
+</Admonition>
+
+##### Example embed code:
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+  FaqId = "645",
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+## Tags
+
+We have FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are :
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />
+2. Once the FAQs are tagged, they can be filtered in Helpshift Widget using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+- Issue tags are used to filter the FAQ list in the Helpcenter on Helpshift Widget with the filter rules.
+- Search tags (a.k.a Search Keywords) While searching on Helpcenter in Helpshift Widget it gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+```csharp
+using HSWidgetLibrary
+
+var config = new HelpshiftConfig
+{
+  Tags = new List<string> { "iphone", "ipad" },
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+```
+
+## Resize Modes {#resize-modes}
+
+Determines how the widget resizes. Example values include `ResizeMode.SlimRight`, `ResizeMode.SlimCenter`, `ResizeMode.SlimLeft`, `ResizeMode.WideCenter`, and `ResizeMode.FullScreen`.
+
+<Admonition type="info" title="Note">
+By default, the widget is set to <code>ResizeMode.SlimRight</code>.
+</Admonition>
+
+##### Example embed code:
+
+```csharp
+var config = new HelpshiftConfig
+{
+    Domain = "mydomain",
+    PlatformId = "mydomain_platform_123",
+    AppId = "3",
+    ResizeMode = "SlimRight"
+};
+
+// Pass the configuration to the initialize API
+Helpshift.Initialize(Application.streamingAssetsPath, config);
+
+```
+
+#### Mode Previews
 
 <table>
   <thead>
