@@ -13,9 +13,9 @@ import {
 This page provides a list of APIs available for the Helpshift PC Widget along with their descriptions, parameters, and usage examples.
 </Intro>
 
-## Helpshift.Initialize
+## Initialize PC Widget
 
-**Description:**  
+#### Description
 Initializes the Helpshift PC Widget and runs it in the background, enabling it to listen for notifications. If notifications are a high priority, this method should be called when the game starts to ensure timely event handling.
 
 **Parameters:**
@@ -23,7 +23,7 @@ Initializes the Helpshift PC Widget and runs it in the background, enabling it t
 | Parameter        | Type   | Description                                                                              |
 |-------------------|--------|------------------------------------------------------------------------------------------|
 | `path`           | string | The base path to the application's streaming assets, e.g., `Application.streamingAssetsPath`. |
-| `helpshiftConfig` | object | A configuration object for the Helpshift PC Widget.                                                  |
+| `helpshiftConfig` | HelpshiftConfig | A configuration object for the Helpshift PC Widget.                                                  |
 
 **Example Usage:**
 
@@ -33,9 +33,9 @@ Helpshift.Initialize(Application.streamingAssetsPath, helpshiftConfig);
 
 ---
 
-## Helpshift.Show
+## Show PC Widget
 
-**Description:**  
+#### Description  
 Displays the Helpshift PC Widget on the screen. This is typically invoked during the on-click action of a clickable element (e.g., a button). Ensure that `Helpshift.Initialize()` has been called earlier in the game flow before invoking this method; otherwise, the Helpshift PC Widget will not function properly.
 
 **Parameters:**
@@ -50,9 +50,9 @@ Helpshift.Show();
 
 ---
 
-## Helpshift.Hide
+## Hide PC Widget
 
-**Description:**  
+#### Description  
 Temporarily hides the Helpshift PC Widget from the screen. This can also be triggered by clicking the "X" button on the Helpshift PC Widget. This method is typically used when the Helpshift PC Widget should be hidden to minimize distractions, adjust to UI changes, or ensure a smooth user experience during focused gameplay moments such as cutscenes, high-concentration sequences, or transitions between states. The Helpshift PC Widget remains active in the background to handle notifications.
 
 **Parameters:**
@@ -67,9 +67,9 @@ Helpshift.Hide();
 
 ---
 
-## Helpshift.CleanUp
+## CleanUp PC Widget
 
-**Description:**  
+#### Description  
 Destroys the Helpshift PC Widget and terminates its background process. This method should be called during game shutdown to release resources and ensure proper cleanup. Call this inside Unity's `OnApplicationQuit()` method.
 
 **Parameters:**
@@ -84,9 +84,9 @@ Helpshift.CleanUp();
 
 ---
 
-## Helpshift.Update (Optional)
+## Update PC Widget (Optional)
 
-**Description:**  
+#### Description  
 Handles events sent from the Helpshift PC Widget to Unity. This method is typically called inside Unity's `Update()` method. Note that this is optional in the current workflow as no events are being sent from the Helpshift PC Widget to Unity.
 
 **Parameters:**
