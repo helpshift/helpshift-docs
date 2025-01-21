@@ -47,7 +47,7 @@ Helpshift.Initialize(Application.streamingAssetsPath, config);
 
 ## Widget Type {#widget-type}
 
-The `WidgetType` config value controls whether both Helpcenter and Web Chat or only Helpcenter or only Web Chat should be loaded in Helpshift Widget.
+The `WidgetType` config value controls whether both Helpcenter and Web Chat or only Helpcenter or only Web Chat should be loaded in Helpshift PC Widget.
 
 <Admonition type="info" title="Note">
 
@@ -55,7 +55,7 @@ The `WidgetType` configuration will not work with [```Helpshift.Update()```](/pc
 
 </Admonition>
 
-To show **both Helpcenter and Webchat** in the Helpshift Widget, use the following configuration
+To show **both Helpcenter and Webchat** in the Helpshift PC Widget, use the following configuration
 
 ```csharp
 using HSWidgetLibrary
@@ -73,7 +73,7 @@ var config = new HelpshiftConfig
 Helpshift.Initialize(Application.streamingAssetsPath, config);
 ```
 
-To show **only Helpcenter** in the Helpshift Widget, use the following configuration:
+To show **only Helpcenter** in the Helpshift PC Widget, use the following configuration:
 
 ```csharp
 using HSWidgetLibrary
@@ -91,7 +91,7 @@ var config = new HelpshiftConfig
 Helpshift.Initialize(Application.streamingAssetsPath, config);
 ```
 
-To show **only Webchat** in the Helpshift Widget, use the following configuration:
+To show **only Webchat** in the Helpshift PC Widget, use the following configuration:
 
 ```csharp
 using HSWidgetLibrary
@@ -280,23 +280,44 @@ FAQ filtering is a 2 step approach :
 
 1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
    <Image src="/static/books/ios/faq-filtering.png" width="full" />
-2. Once the FAQs are tagged, they can be filtered in Helpshift Widget using the filter options described here.
+2. Once the FAQs are tagged, they can be filtered in Helpshift PC Widget using the filter options described below.
 
 <Admonition type="info" title="Note">
 
 Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
 
-- Issue tags are used to filter the FAQ list in the Helpcenter on Helpshift Widget with the filter rules.
-- Search tags (a.k.a Search Keywords) While searching on Helpcenter in Helpshift Widget it gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+- Issue tags are used to filter the FAQ list in the Helpcenter on Helpshift PC Widget with the filter rules.
+- Search tags (a.k.a Search Keywords) While searching on Helpcenter in Helpshift PC Widget it gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
 
 </Admonition>
+
+#### How to use FAQ filtering
+
+You can use this configuration by `filter` key in the `helpshiftWidgetConfig` config. The `filter` key will be an object containing 2 keys
+
+- operator : one of `AND`, `OR`, `NOT` which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query
+
+|              |                                                                                |
+| ------------ | ------------------------------------------------------------------------------ |
+| Option:      | <code>filter</code>                                                            |
+| Sub-Options: | <code>tags</code> / <code>operator</code>                                      |
+| Default      | <code>nil</code>                                                               |
+
+
+##### Example embed code:
 
 ```csharp
 using HSWidgetLibrary
 
+var filter = new Dictionary<string, dynamic>();
+
+filter["tags"] = new string[] { "premium", "support" };
+filter["operator"] = "AND";
+
 var config = new HelpshiftConfig
 {
-  Tags = new List<string> { "iphone", "ipad" },
+  Filter = filter
 };
 
 // Pass the configuration to the initialize API
