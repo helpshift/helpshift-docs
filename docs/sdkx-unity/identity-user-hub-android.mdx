@@ -44,20 +44,54 @@ Setting up the new Identity System ( "User Hub" ) requires some development effo
 In order to use the new Identity System, you need to implement the following steps:
 
 1. Obtain a JWT for the given user from your dedicated endpoint
-2. Log your user in with the JWT + full privacy information
+2. Implement the IHelpshiftUserLoginEventListener interface
 
-```java
- // TO DO Code sample
+```csharp
+public class HelpshiftUserLoginEventListener : IHelpshiftUserLoginEventListener
+{
+    public void OnLoginSuccess()
+    {
+        // Login is successful
+        Debug.Log("Helpshift - IdentityLogin - Login was successful!");
+    }
+
+    public void OnLoginFailure(string reason, Dictionary<string, string> errorMap)
+    {
+        // login failed 
+        Debug.Log("Helpshift - IdentityLogin - Login was failed! reason "+ reason + ", errorMap" + errorMap);
+    }
+}
+```
+
+3. Log your user in with the JWT + full privacy information
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+    var loginConfigMap = new Dictionary<string, object>();
+
+    loginConfigMap.Add("full_privacy_enabled", false);
+
+    helpshiftSdk.LoginWithIdentity("identitiesJWT", loginConfigMap, new HelpshiftUserLoginEventListener() );
+    }
+}
 ```
 
 The API signature for the login API is -
 
 ```
-loginWithIdentity(
- String identitiesJWT, (must be valid JWT)
- Map<String, Object> loginConfig,
- HelpshiftUserLoginEventsListener userLoginEventsListener
- )
+LoginWithIdentities(
+    string identitiesJwt, 
+    Dictionary<string, object> loginConfigMap, 
+    IHelpshiftUserLoginEventListener helpshiftUserLoginEventListener
+)
 ```
 
 Following rules apply depending on the value of `full_privacy_enabled` flag in config.
@@ -107,7 +141,7 @@ However, in the case where you have anonymous users, all you have to do is login
 
 SDK will try its best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
 
-After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `addUserIdentities` API is a no-op if current user is anonymous.
+After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `AddUserIdentities` API is a no-op if current user is anonymous.
 
 ### Best practices to follow for login API
 
@@ -120,8 +154,20 @@ After you login with an anonymous user, you can’t add more identities for this
 
 Once a user logs out from your app, you should call the logout API to ensure no one else can view this user's conversations.
 
-```java
-   Helpshift.logout();
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    helpshiftSdk.Logout();
+    }
+}
 ```
 
 ### Logout due to session expiry
@@ -136,8 +182,20 @@ For more details on these events, please check the [Delegates](/sdkx-unity/deleg
 
 Use the `AddUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
 
-```java
-Helpshift.addUserIdentities(identitiesJwt);
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    helpshiftSdk.AddUserIdentities("identitiesJWT");
+    }
+}
 ```
 
 You need to obtain a JWT for new identities from your dedicated endpoint. Please check the Prerequisites section on this page for more details.
@@ -158,11 +216,23 @@ If your login is still failing, you can investigate these other potential reason
 
 Use this API to update global attributes associated with the logged in user.
 
-```java
-  Map<String, Object> masterAttributes = new HashMap<>();
-  // put appropriate master attribute key and its value
-  masterAttributes.put("<master-attribute-key>", "<master-attribute-value>");
-  Helpshift.updateMasterAttributes(masterAttributes);
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> masterAttributes = new Dictionary<string, object>();
+    masterAttributes.Add("<master-attribute-key>", "<master-attribute-value>");
+
+    helpshiftSdk.UpdateMasterAttributes(masterAttributes);
+    }
+}
 ```
 
 Global attributes must be one of the following types -
@@ -196,11 +266,23 @@ If the attributes map contains supported key, but with unsupported value type, t
 
 Use this API to update app specific attributes associated with the logged in user.
 
-```java
-  Map<String, Object> appAttributes = new HashMap<>();
-  // put appropriate app attribute key and its value
-  appAttributes.put("<app-attribute-key>", "<app-attribute-value>");
-  Helpshift.updateAppAttributes(appAttributes);
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> appAttributes = new Dictionary<string, object>();
+    appAttributes.Add("<app-attribute-key>", "<app-attribute-value>");
+
+    helpshiftSdk.UpdateAppAttributes(appAttributes);
+    }
+}
 ```
 
 App specific attributes must be one of the following types -
