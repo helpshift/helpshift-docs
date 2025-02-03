@@ -25,8 +25,8 @@ Setting up the new Identity System ( "User Hub" ) requires some development effo
 ### Prerequisites​
 
 <Admonition type="info" title="NOTE">
-  This feature is in closed beta. Contact Helpshift Customer Success team to enable this
-  feature.
+  This feature is in closed beta. Contact Helpshift Customer Success team to
+  enable this feature.
 </Admonition>
 
 - Ensure that the Identity System is enabled for your domain (reach out to Helpshift Support if you wish to enable this)
@@ -44,7 +44,7 @@ Setting up the new Identity System ( "User Hub" ) requires some development effo
 In order to use the new Identity System, you need to implement the following steps:
 
 1. Obtain a JWT for the given user from your dedicated endpoint
-2. Implement the IHelpshiftUserLoginEventListener interface
+2. Implement the IHelpshiftUserLoginEventListener interface to handle identity login success and failure callbacks
 
 ```csharp
 public class HelpshiftUserLoginEventListener : IHelpshiftUserLoginEventListener
@@ -57,7 +57,7 @@ public class HelpshiftUserLoginEventListener : IHelpshiftUserLoginEventListener
 
     public void OnLoginFailure(string reason, Dictionary<string, string> errorMap)
     {
-        // login failed 
+        // login failed
         Debug.Log("Helpshift - IdentityLogin - Login was failed! reason "+ reason + ", errorMap" + errorMap);
     }
 }
@@ -88,8 +88,8 @@ The API signature for the login API is -
 
 ```
 LoginWithIdentities(
-    string identitiesJwt, 
-    Dictionary<string, object> loginConfigMap, 
+    string identitiesJwt,
+    Dictionary<string, object> loginConfigMap,
     IHelpshiftUserLoginEventListener helpshiftUserLoginEventListener
 )
 ```
@@ -125,7 +125,6 @@ The identity token must be a JWT signed using the shared secret from your app se
 ```
 
 Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
-
 
 <Admonition type="info" title="Important">
 
@@ -203,6 +202,7 @@ You need to obtain a JWT for new identities from your dedicated endpoint. Please
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android.mdx/#user-identity-system-events) page.
 
 ### Troubleshooting and tips
+
 Login failure can be detected by listening to the [HelpshiftUserLoginEventsListener](/sdkx-unity/identity-user-hub-android/#logging-in-your-end-users) listener. The possible reasons for login failure are cited in the [Login failure reasons](/sdkx-unity/identity-user-hub-android/#login-failure-reasons) section.
 
 If your login is still failing, you can investigate these other potential reasons:
@@ -333,7 +333,6 @@ Where applicable, the max permissible limits are defined as follows -
 - Value length for multiline CUF - Max 100000 chars
 - Value length for user tags - Max 100 chars
 - Collection size - Max 30 entries
-
 
 ### LOGIN_IN_PROGRESS
 
