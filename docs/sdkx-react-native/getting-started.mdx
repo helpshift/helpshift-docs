@@ -31,10 +31,22 @@ Guide to integrating the React Native plugin for the Helpshift SDK X. You can al
 
 ## Requirements {#version-requirements}
 
-- Node v16 or above
+- Node v18 or above
 - Android Studio
-- Xcode 10 or above
+- Xcode 12 or above
 - Java Development Kit
+- Supported Android OS versions:
+  - SDK X is functional only above API Level 24 i.e Android OS 7 Nougat and above.
+  - The minSDKVersion in code is kept as API Level 16 to allow importing the SDK and compiling in apps that allow installation till API Level 16 i.e Android 4.4 Jelly Bean.
+  - If your app is installed on a device below API level 24 (i.e below Android OS 7 Nougat) then you can choose to have a different medium for providing support. For example, Email, Web etc. We log an UnsupportedOSVersionException if the SDK is initialized below API Level 24.
+- Supported iOS versions: iOS 13 and above
+- For details regarding Helpshift SDK's support policy, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
+
+<Admonition type="info" title="Note">
+
+With 10.3.1 release, react native version support has been upgraded to v0.70.15 & above.
+
+</Admonition>
 
 ## Installation {#adding-to-project}
 
@@ -86,7 +98,7 @@ When the “User Attachments” feature is enabled from the In-app SDK Configura
 <Image
   src="/static/books/react-native/attachment_picker_ios.png"
   width="half"
-/>{" "}
+/>
 
 To use the photo library, Apple requires the app to have Usage Description strings in the Info.plist while. Failing to add these strings might result in app rejection. The following strings are needed for the attachment feature:
 
@@ -116,13 +128,13 @@ Note that the above strings are just a suggested description. If you need locali
 
 1. First, create an app on the Helpshift Dashboard
 
-   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />
 
 2. Create an app with **Android** and **iOS** as selected `Platform`
    <Image
      src="/static/books/helpshiftx/create_app_with_android_platform.png"
      width="full"
-   />{" "}
+   />
 
 Helpshift uniquely identifies each registered App with a combination of 2 tokens:
 

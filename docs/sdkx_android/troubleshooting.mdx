@@ -53,7 +53,11 @@ We do not collect or store logs when the app is in release/production mode.
 
 ## SDK integration {#integration-issues}
 
-### Using AndroidX support libraries {#steps-to-build-with-android-x}
+### Moved to AndroidX ( 10.3.0 and above versions )
+
+Helpshift SDK X has completely moved to AndroidX from `10.3.0`. If client app is using legacy libraries then SDK X will not compile.
+
+### Using AndroidX support libraries ( 10.2.X and below versions ) {#steps-to-build-with-android-x}
 
 Helpshift SDK X uses legacy Android support libraries. If you want to use AndroidX libraries in your application, please follow these steps to make Helpshift SDK compatible with AndroidX:
 
@@ -84,7 +88,7 @@ For Example -
 
 If you are unable to load chat screen and find this error in console or android logcat,
 
-```
+```text
 Access to XMLHttpRequest at 'https://api.helpshift.com/websdk/……' from origin
 'https://…...webchat.helpshift.com' has been blocked by CORS policy: Request
 header field accept-language is not allowed by Access-Control-Allow-Headers in
@@ -105,7 +109,7 @@ Still, if you are not getting notifications, then check the following.
 
 - You have to enable the Cloud messaging API (legacy) from Firebase console and provided the Server key inside it in your dashboard as mentioned here [Notifications](/sdkx_android/notifications#push-via-helpshift).
 
-<Image src="/static/books/helpshiftx/gcm-key-example.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/gcm-key-example.png" width="full" />
 
 ### Notifications not showing in the notification bar
 
@@ -116,3 +120,12 @@ If your app has targeted Android 13 (API Level 33), then this might be a cause f
 If you want your app to be able to post notifications then you need to ask for the Notification permissions. Refer to the [Android documentation](https://developer.android.com/develop/ui/views/notifications/notification-permission) for further reference.
 
 Helpshift SDK will not be asking for notification permissions. It depends on the application for it.
+
+## Misc
+
+### Handling attachments not supported by browsers on device
+
+* When the user clicks on an attachment in a conversation, the SDK tries to open it in the browser by default since we try to open it directly from the CDN Url.
+* If the browser is not able to open the file, it downloads the files on the device.
+* You can add handling in your app to open or consume such files by providing the user an option to open the file in your app when the user tries to open the downloaded file.
+* Refer to intent filters [here](https://developer.android.com/guide/components/intents-filters) for more information on handling system wide open file actions by the user.

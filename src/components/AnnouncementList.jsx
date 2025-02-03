@@ -8,11 +8,49 @@ import Translate, { translate } from "@docusaurus/Translate";
 
 const announcements = [
   {
-    date: translate({ message: "10 Nov 2022" }),
-    title: translate({ message: "New dev docs launched!" }),
-    info: translate({
-      message: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation.`,
-    }),
+    date: "27 Nov 2024",
+    title: "SDK X Android 10.4.0 released",
+    info: `SDK X Android 10.4.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx_android",
+    linkTitle: "SDK X Android 10.4.0",
+  },
+  {
+    date: "27 Nov 2024",
+    title: "SDK X iOS 10.4.0 released",
+    info: `SDK X iOS 10.4.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx_ios",
+    linkTitle: "SDK X iOS 10.4.0",
+  },
+  {
+    date: "4 March 2024",
+    title: "SDK X React-Native 10.3.1 released",
+    info: `SDK X React-Native 10.3.1 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-react-native",
+    linkTitle: "SDK X React-Native 10.3.1",
+  },
+  {
+    date: "25 Jan 2024",
+    title: "SDK X Unreal 10.3.0 released",
+    info: `SDK X Unreal 10.3.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-unreal",
+    linkTitle: "SDK X Unreal 10.3.0",
+  },
+  {
+    date: "27 Nov 2023",
+    title: "SDK X Unity 10.3.0 released",
+    info: `SDK X Unity 10.3.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-unity",
+    linkTitle: "SDK X Unity 10.3.0",
+  },
+  {
+    date: "31 Oct 2023",
+    title: "SDK X 10.3.0 released",
+    info: `SDK X 10.3.0 is now released for iOS and Android! Upgrade to get the latest features`,
+  },
+  {
+    date: "10 Nov 2022",
+    title: "New dev docs launched!",
+    info: `The new developer docs are now available in beta! The older site is still available in case you need to access legacy documentation.`,
     link: "https://old-developers.helpshift.com",
     linkTitle: translate({ message: "old-developers.helpshift.com" }),
   },
@@ -22,15 +60,6 @@ const announcements = [
     info: translate({
       message: `SDK X 10.2.0 is now released for iOS and Android! Upgrade to get the latest features`,
     }),
-  },
-  {
-    date: translate({ message: "1 June 2022" }),
-    title: translate({ message: "Feedback+ SDK released" }),
-    info: translate({
-      message: `Helpshift's first SDK with a free tier to help you get early feedback from your users`,
-    }),
-    link: "/freesdk",
-    linkTitle: translate({ message: "Read the guide" }),
   },
 ];
 

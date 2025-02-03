@@ -105,7 +105,7 @@ You can use the API call
 
 **You will need the `publish-id` of the FAQ section to use this API:**
 
-<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -126,7 +126,7 @@ You can use the API call `Helpshift.showSingleFAQ(Activity a, String questionPub
 
 **You'll need the `publish-id` of the FAQ to use this API:**
 
-<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
 
 Example: `Helpshift.showSingleFAQ(MyActivity.this, "51", configMap);` where `MyActivity.this` is the Activity you're calling Helpshift from and "51" is the FAQ publish-id.
 
@@ -137,3 +137,35 @@ Supports these [API Options](/sdkx_android/sdk-configuration/).
 
 For more info about this API and languages you can refer [here](/sdkx_android/i18n/).
 
+## Getting SDK Version {#get-sdk-version}
+
+You can use `getSDKVersion` API to get the current version of Helpshift SDK X.
+
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version
+
+</Admonition>
+
+```java
+  // Returns SDK version as a string eg. "10.3.0"
+  String helpshiftVersion = Helpshift.getSDKVersion();
+```
+
+## Closing a Helpshift Session {#close-session}
+
+You can use `Helpshift.closeSession` API to close an active SDK session. If no SDK session is active, calling this API will have no effect.
+
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version.
+
+</Admonition>
+
+```java
+  // closes Helpshift sdk session
+  Helpshift.closeSession();
+```
+
+## User Hub APIs
+Our new Identity system - [User Hub](/sdkx_android/identity-user-hub/), introduces various APIs for managing users and their data. Refer to the linked section for details.

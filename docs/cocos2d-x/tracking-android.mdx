@@ -106,7 +106,7 @@ sent along with the next reported issue. When the user exits out of the Help sec
 
 </Admonition>
 
-<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
+<Image src="/static/books/android/metadata-tags.png" width="half" />
 
 You can attach tags with metadata to every reported issue via the
 `HS_TAGS_KEY` macro. This is used with the config dictionary as follows:
@@ -115,7 +115,6 @@ You can attach tags with metadata to every reported issue via the
 / .code-header /
 
 ```cpp
-
     ValueMap config;
     ValueMap meta;
     meta["usertype"] = Value("paid");
@@ -130,14 +129,12 @@ You can attach tags with metadata to every reported issue via the
     config[HS_META_DATA_KEY] = Value(meta);
 
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 **For cocos2d-x 2.x**
 / .code-header /
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     cocos2d::CCDictionary *meta = new CCDictionary();
     meta->setObject(new CCString("54$"), "Money spent");
@@ -149,8 +146,6 @@ You can attach tags with metadata to every reported issue via the
     meta->setObject(tags, HS_TAGS_KEY);
     config->setObject(meta, HS_META_DATA_KEY);
     HelpshiftCocos2dx::showFAQs(config);
-
-
 ```
 
 ## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
@@ -300,7 +295,6 @@ You can check if the user has any active Conversations on the device with `Helps
 For Example:
 
 ```cpp
-
     void conversationActive(bool isActive) {
         if (isActive == "true") {
             // Active Conversation.
@@ -309,5 +303,4 @@ For Example:
         }
     }
     HelpshiftCocos2dx::checkIfConversationActive(conversationActive);
-
 ```

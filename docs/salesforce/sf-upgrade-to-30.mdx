@@ -63,15 +63,15 @@ Skip 3.0 upgrade steps and navigate below to the new version heading.
 1. Login to your Salesforce org which has the earlier package (eg. 2.19/2.11) installed.
 2. Open a new browser tab and paste the package URL. (Package URL would be available on app exchange post-release.)
 3. Once the page is loaded, a screen similar to the below would be seen
-   <Image src="/static/books/salesforce/30-install-screen.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/30-install-screen.png" width="full" />
 4. The upgrade page would show the current version and the new version. In the above image, the current version is 2.19.
 5. Choose “Install for Admins only“ and the package will be installed in approximately 5-10 minutes.
 
 ## After upgrading the package {#after-upgrading-the-package}
 
 1. Things to check after upgrade \*\*\* IMP
-   1. Verify whether the following picklist values are present in the Helpshift **Helpshift**Message_Type**c** field. This field can be found on the Helpshift Case Comment object from the object manager. [Add the new ones]
-   ```
+   1. Verify whether the following picklist values are present in **Helpshift_Message_Type__c** field. This field can be found on the Helpshift Case Comment object from the object manager. [Add the new ones]
+   ```text
    bot_control_message
    text
    faq
@@ -81,60 +81,62 @@ Skip 3.0 upgrade steps and navigate below to the new version heading.
    resolution_rsp
    confirmation_rejected
    confirmation_accepted
+   intents_with_option_input
+   empty_msg_with_intent_auto_assignment
+   rsp_intents_with_option_input
+   si_skip
+   empty_msg_with_intent_auto_assignment
+   si_intent
+   si_with_text
    ```
    {" "}
    <Image
      src="/static/books/salesforce/30-message-type-picklist.png"
      width="full"
    />
-   2. Check if Helpshift_Standard_Object has the new Apex classes permissions. If
-   not, add them directly. ![](/static/books/salesforce/30-helpshift-standard-object-permission-set.png)
+   2. Check if Helpshift_Standard_Object permission set has the new Apex classes permissions. If
+   not, add them directly as shown below.
    <Image src="/static/books/salesforce/30-apex-class.png" width="full" />
-   ``` Helpshift.AdminController Helpshift.AdminControllerTest Helpshift.AdminSettingController
-   Helpshift.AdminSettingControllerTest Helpshift.FieldMappingController Helpshift.FieldMappingControllerTest
-   Helpshift.LoggingService Helpshift.LoggingServiceTest Helpshift.MessengerController
-   Helpshift.MessengerControllerTest Helpshift.StatusMappingController Helpshift.StatusMappingControllerTest
-   Helpshift.TriggerUtility Helpshift.TriggerUtilityTest ```
 2. Helpshift Admin (LWC) tab is automatically included in the Helpshift app
-   <Image src="/static/books/salesforce/30-admin-tab.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/30-admin-tab.png" width="full" />
 3. If Helpshift Admin (LWC) tab is not visible , please follow below steps
    1. Click on Setup icon (:gear:)
-      <Image src="/static/books/salesforce/30-setup-nav.png" width="full" />{" "}
+      <Image src="/static/books/salesforce/30-setup-nav.png" width="full" />
    2. Search for App Manager in search and click on it
-      <Image src="/static/books/salesforce/30-setup-home.png" width="full" />{" "}
+      <Image src="/static/books/salesforce/30-setup-home.png" width="full" />
    3. Search for Helpshift classic app and click on edit
-      <Image src="/static/books/salesforce/30-app-manager.png" width="full" />{" "}
+      <Image src="/static/books/salesforce/30-app-manager.png" width="full" />
    4. Add all the required Helpshift tabs as seen
       <Image
         src="/static/books/salesforce/30-add-tab-in-app.png"
         width="full"
-      />{" "}
+      />
    5. Click on Save as below
       <Image
         src="/static/books/salesforce/30-click-save-app.png"
         width="full"
-      />{" "}
+      />
 4. Manually add the new Helpshift Messenger to the case record page. (Steps for this are described in the next section.)
 5. Click on the Helpshift Health Check tab and ensure there are no errors
-   <Image src="/static/books/salesforce/30-health-check.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/30-health-check.png" width="full" />
 
 ## Steps for adding new messenger {#steps-for-adding-new-messenger}
 
 1. Navigate to any Helpshift case record from the list view
-   <Image src="/static/books/salesforce/30-helpshift-cases.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/30-helpshift-cases.png" width="full" />
 2. Click on the Gear icon (:gear:) and choose Edit Page
-   <Image src="/static/books/salesforce/30-edit-page.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/30-edit-page.png" width="full" />
 3. Remove the old messenger component by clicking on the delete icon
    <Image
      src="/static/books/salesforce/30-delete-old-messenger.png"
      width="full"
-   />{" "}
+   />
 4. From the Components panel, drag the messenger component to the appropriate section(main, left, etc.) on the page
    ![](/static/books/salesforce/30-new-messenger-name.png)
    <Image
      src="/static/books/salesforce/30-drag-new-messenger.png"
      width="full"
-   />{" "}
+   />
 5. Save the changes.
 6. New messenger is ready for use.
 
@@ -143,36 +145,36 @@ Skip 3.0 upgrade steps and navigate below to the new version heading.
 ### Message send button renamed as 'Reply' {#message-send-button-renamed-as-reply}
 
 - The message send button has become more intuitive using the button icon.
-  <Image src="/static/books/salesforce/30-message-send-comp.jpg" width="full" />{" "}
+  <Image src="/static/books/salesforce/30-message-send-comp.jpg" width="full" />
 
 ### Outbound messages are left aligned {#outbound-messages-are-left-aligned}
 
 - Messages sent by an agent would be left aligned as per common chat interfaces.
-  <Image src="/static/books/salesforce/30-message-alignment.jpg" width="full" />{" "}
+  <Image src="/static/books/salesforce/30-message-alignment.jpg" width="full" />
 
 ### End Conversation button replaced with Resolve at the bottom of the messenger {#end-conversation-button-replaced-with-resolve-at-the-bottom-of-the-messenger}
 
 - Resolve button position similar to Helpshift agent dashboard.
-  <Image src="/static/books/salesforce/30-resolve-button.jpg" width="full" />{" "}
+  <Image src="/static/books/salesforce/30-resolve-button.jpg" width="full" />
 
 ### Redaction settings moved to the bottom of messenger {#redaction-settings-moved-to-the-bottom-of-messenger}
 
 - Redaction operation made easy to use.
-  <Image src="/static/books/salesforce/30-redaction.jpg" width="full" />{" "}
+  <Image src="/static/books/salesforce/30-redaction.jpg" width="full" />
 
 ### Send/Read receipts appearance change {#send-read-receipts-appearance-change}
 
 - Send/Read receipts similar to Helpshift messenger
-  <Image src="/static/books/salesforce/30-send-read-ticks.jpg" width="full" />{" "}
+  <Image src="/static/books/salesforce/30-send-read-ticks.jpg" width="full" />
 
 ### Chatbox height increase and placeholder text change {#chatbox-height-increase-and-placeholder-text-change}
 
 - Chatbox height is increased for accommodating longer messages. The height can be further increased by dragging the bottom right corner.
-  <Image src="/static/books/salesforce/30-chatbox-height.jpg" width="full" />{" "}
+  <Image src="/static/books/salesforce/30-chatbox-height.jpg" width="full" />
 
 ### Dashboard URL field label change {#dashboard-url-field-label-change}
 
-<Image src="/static/books/salesforce/30-hs-issue-id.jpg" width="full" />{" "}
+<Image src="/static/books/salesforce/30-hs-issue-id.jpg" width="full" />
 
 ## Upgrading to 3.3 {#upgrading-to-3}
 
@@ -181,21 +183,21 @@ Tab highlighting can be enabled for Salesforce Console Apps like Service Console
 ### Step 1 (Add highlight tab component to utility) {#add-highlight-tab-component-to-utility}
 
 1. Navigate to Setup and search for App Manager.
-   <Image src="/static/books/salesforce/search-app-manager.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/search-app-manager.png" width="full" />
 2. Search for the desired console app and click on edit as shown below :
    <Image
      src="/static/books/salesforce/search-for-the-service-app.png"
      width="full"
-   />{" "}
+   />
 3. In the editor, click on Utility Items (Desktop Only) as shown below :
-   <Image src="/static/books/salesforce/see-utility-item.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/see-utility-item.png" width="full" />
 4. Click on Add Utility Item and search for highlightTab :
    <Image
      src="/static/books/salesforce/add-component-to-utility.png"
      width="full"
-   />{" "}
+   />
 5. After choosing the highlightTab component, click on Save :
-   <Image src="/static/books/salesforce/add-cmp-click-save.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/add-cmp-click-save.png" width="full" />
 
 ### Step 2 (Add new dashboard to the app) {#add-new-dashboard-to-the-app}
 
@@ -203,21 +205,21 @@ New Helpshift Dashboard is automatically included in the Helpshift App.
 If it’s not visible, please follow the below steps :
 
 1. Click on the Setup icon
-   <Image src="/static/books/salesforce/click-on-setup.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/click-on-setup.png" width="full" />
 2. Search for App Manager in search and click on it
    <Image
      src="/static/books/salesforce/search-for-app-manager.png"
      width="full"
-   />{" "}
+   />
 3. Search for the Helpshift classic app and click on edit
-   <Image src="/static/books/salesforce/see-helpshift-app.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/see-helpshift-app.png" width="full" />
 4. Add the New Dashboard tab as shown below :
    <Image
      src="/static/books/salesforce/add-the-new-dashboard-tab.png"
      width="full"
-   />{" "}
+   />
 5. Click on Save below
-   <Image src="/static/books/salesforce/click-on-save-below.png" width="full" />{" "}
+   <Image src="/static/books/salesforce/click-on-save-below.png" width="full" />
 
 ### Other functionalities with the new package {#other-functionalities-with-the-new-package}
 
@@ -225,9 +227,9 @@ If it’s not visible, please follow the below steps :
    <Image
      src="/static/books/salesforce/domain-name-on-dashboard.png"
      width="full"
-   />{" "}
+   />
 2. On click of the Assign Permission button, you will be notified via email after the job completion
    <Image
      src="/static/books/salesforce/permission-email-confirmation.png"
      width="full"
-   />{" "}
+   />

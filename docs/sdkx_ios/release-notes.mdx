@@ -5,39 +5,77 @@ description: Read the Release Notes in detail.
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
   LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
   DownloadButton,
-  Steps,
-  Step,
 } from "@site/src/components/forDocs";
 
 # Release Notes
 
-<Intro>
-
-</Intro>
-
 <LatestSdkVersion>
 
-## 10.2.3
+## 10.4.1
 
 <DownloadButton
   text="Download SDK"
   link="[% sdkx_ios.sdk_url %]"
-  classes="mb-4"
-/>
+  classes="mb-4"/>
 
-_March 13, 2023_
+_January 30, 2025_
+
+- Fixed a rare crash that would happen on closing any SDK screen.
 
 </LatestSdkVersion>
+
+## 10.4.0
+
+_November 27, 2024_
+
+- Added support for iOS 18 and iPadOS 18.
+- Added support for User Hub (User Identity & Profiles) and related user data collection APIs.
+  - For more details on user identities, refer [User Identities](/sdkx_ios/identity-user-hub/) page.
+  - For more details on user data collection, refer [Tracking](/sdkx_ios/tracking/#update-global-user-data) page.
+- Updated SDK logging to use OSLog framework instead of NSLog.
+- Error logs from SDK will always be printed on console.
+- SDK privacy manifest no longer includes user ID and email declarations. Apps using these fields need to declare it in their own manifest files.
+- Fixed a bug where some traces of bitcode were present in SDK framework, causing issues when uploading the app to App Store Connect.
+- Included debug symbols (dsym) file inside the framework.
+  - The disk size has been increased due to this addition.
+  - Does not affect the size of the HelpshiftX binary.
+  - dsym files are optional and can be removed if not needed from these locations: `HelpshiftX.xcframework/ios-arm64_armv7/dSYMs/` and `HelpshiftX.xcframework/ios-arm64_i386_x86_64-simulator/dSYMs/`.
+- Fixed a bug where interacting with any webchat-related notification from the stack failed to clear rest of the notifications.
+- Attachment(Image/Video) upload will be no-op below iOS 14.
+
+## 10.3.1
+
+_June 13, 2024_
+
+** Release Notes **
+
+- Fixed a bug where existing user conversation was lost if new user login happens while chat screen is open.
+
+## 10.3.0
+
+_October 31, 2023_
+
+** Release Notes **
+
+- Users can select and send more than one attachment in conversations.
+  - Support for multiple attachments in bot upload step will be added in Q1’24.
+- Added support for iOS 17 and iPadOS 17.
+- Added privacy manifest file to record data collection and required reasons API used by the SDK.
+- Added a new API for fetching SDK X version. For more details, refer [here](/sdkx_ios/support-tools/#getting-the-sdk-version).
+- Added a new API for closing the currently active SDK session. For more details, refer [here](/sdkx_ios/support-tools/#closing-an-open-sdk-session).
+- Deprecated ViewController-based public APIs in favor of newer ViewController-less variants. For more details, refer [Helpshift APIs](/sdkx_ios/support-tools/).
+- Login API now returns a boolean indicating whether login was successful or not. This change is in the existing API to introduce mandatory validations for login parameters and hence this might affect your code compilation. For more details, refer [Users](/sdkx_ios/users/#logged-in-users).
+- Added support for attachments in Smart FAQs.
+- Replaced static constants with extern constants for better compatibility in apps having multiple translation units.
+- Fixed crash on selecting unsupported attachments using file picker.
+- Fixed a bug where `presentFullScreenOniPad` config was not being honored on opening SDK screen via notification click.
+- Removed bitcode support from SDK X framework. SDK X now ships in non-bitcode variant only.
+
+## 10.2.3
+
+_March 13, 2023_
 
 ** Release Notes **
 

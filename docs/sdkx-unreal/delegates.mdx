@@ -45,16 +45,25 @@ You can listen to the events fired by Helpshift. All the events are defined in `
 
 </Centered>
 
+<Admonition type="info" title="Note">
+
+Events invoked before binding `BindEventDelegate` cannot be received again.
+
+</Admonition>
+
+
 ## Events {#helpshift-events}
 
-### Helpshift session started event {#session-delegates}
+### Helpshift Session Delegates {#session-delegates}
+
+#### Helpshift session started event {#helpshift-session-started}
 
 This event gets fired when the Helpshift session starts
 
 - Event name: `HelpshiftEventSDKSessionStarted`
 - Event data: `null`
 
-### Helpshift session ended event {#session-delegates}
+#### Helpshift session ended event {#helpshift-session-ended}
 
 This event gets fired when the Helpshift session ends.
 
@@ -67,7 +76,7 @@ This event gets fired when you call `RequestUnreadMessageCount(FetchFromServer)`
 
 - Event name: `HelpshiftEventReceivedUnreadMessageCount`
 - Event data keys:
-  - `HelpshiftEventDataMessageCount (int)`
+  - `HelpshiftEventDataMessageCount (int32)`
   - `HelpshiftEventDataMessageCountFromCache`
 
 ### Conversation Status Event {#conversation-status}
@@ -76,8 +85,8 @@ This event contains information about the current ongoing conversation.
 
 - Event name: `HelpshiftEventConversationStatus`
 - Event data:
-  - `HelpshiftEventDataLatestIssueId (string)`
-  - `HelpshiftEventDataLatestIssuePublishId (string)`
+  - `HelpshiftEventDataLatestIssueId (FString)`
+  - `HelpshiftEventDataLatestIssuePublishId (FString)`
   - `HelpshiftEventDataIsIssueOpen (bool)`
 
 ### Widget Toggle Event {#widget-toggle-event}
@@ -87,12 +96,37 @@ This event is triggered when the user opens or exits the chat screen. This event
 - Event name: `HelpshiftEventWidgetToggle`
 - Event data: `HelpshiftEventDataSDKVisible (bool)`
 
+### User Click On Action Event {#user-click-on-action}
+
+This event is triggered when the user clicks on the link or call action of an action card message.
+
+- Event Name : `HelpshiftEventUserClickOnAction`
+- Event data: 
+  - `HelpshiftEventDataActionData `
+  - `HelpshiftEventDataActionType `
+  - `HelpshiftEventDataActionTypeCall `
+  - `HelpshiftEventDataActionTypeLink `
+
+| Key (Constant)                | Key (Raw)  | Type   |
+|-------------------------------|------------|--------|
+| HelpshiftEventUserClickOnAction  | userClickOnAction | FString |
+| HelpshiftEventDataActionType  | actionType | FString |
+| HelpshiftEventDataActionData  | actionData | FString |
+| HelpshiftEventDataActionTypeCall  | call | FString |
+| HelpshiftEventDataActionTypeLink  | link | FString |
+
+<Admonition type="info" title="Note">
+
+The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
 ### Conversation Start Event {#conversation-start-event}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
 - Event name: `HelpshiftEventConversationStart`
-- Event data: `HelpshiftEventDataMessage (string)`
+- Event data: `HelpshiftEventDataMessage (FString)`
 
 ### Message Add Event {#message-add-event}
 
@@ -101,7 +135,43 @@ This event is triggered when the user adds a message in a conversation. It might
 - Event name: `HelpshiftEventMessageAdd`
 - Event data keys:
   - `HelpshiftEventDataMessageType` - `HelpshiftEventDataMessageTypeAttachment` or `HelpshiftEventDataMessageTypeText`
-  - `HelpshiftEventDataMessageBody (string)`
+  - `HelpshiftEventDataMessageBody (FString)`
+
+### Agent Message Received Event {#agent-message-received}
+
+This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
+
+- Event name : `HelpshiftEventAgentMessageReceived`
+- Event data:
+
+  | Key                 | Key ( Raw ) | Type   | Value |
+  |-------------------------------|--------|--------|--------- |
+  | HelpshiftEventDataPublishID | publishId | FString | Conversation ID of the ongoing issue |
+  | HelpshiftEventDataMessageType | type | FString | Message Type of the message |
+  | HelpshiftEventDataMessageBody | body | FString | The actual message sent by the agent or empty |
+  | HelpshiftEventDataCreatedTime | createdTs | int32 | Unix epoch timestamp in ms |
+  | HelpshiftEventDataAttachments | attachments | Map<FString, Object>> | Attachments, if they are present |
+  | HelpshiftEventDataURL | url | FString | URL of the attachment |
+  | HelpshiftEventDataContentType | contentType | FString | MIME type of the attachment |
+  | HelpshiftEventDataFileName | fileName | FString | File name of the attachment |
+  | HelpshiftEventDataSize | size | int32 | Size of the attachment in bytes |
+  | HelpshiftEventDataMessageTypeAppReviewRequest | app_review_request | FString | Message type when agent request for App Review |
+  | HelpshiftEventDataMessageTypeScreenshotRequest | screenshot_request | FString | Message type when agent request screen shot |
+  | HelpshiftEventDataMessageTypeText | type | FString | Message type of text|
+ 
+<Admonition type="info" title="Note"> 
+
+- For Android , this delegate is available from 10.3.0 and above versions
+- The key constants are available from SDK X 10.3.0 onwards. For older SDK X versions, please use the raw keys instead.
+- The attachments key is only present if the agent has sent attachments.
+- Since attachments sent by agents may not have the necessary MIME type or name, it is possible that `HelpshiftEvent.DATA_CONTENT_TYPE` is absent from the payload.
+  For such cases, file type can be inferred from extension from file name
+- HelpshiftEventDataMessageType has following types : 
+  - HelpshiftEventDataMessageTypeAppReviewRequest
+  - HelpshiftEventDataMessageTypeScreenshotRequest
+  - HelpshiftEventDataMessageTypeText
+
+</Admonition>
 
 ### CSAT Submit Event {#csat-submit-event}
 

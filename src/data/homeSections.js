@@ -97,21 +97,6 @@ export default [
         color: "from-purple-600 to-purple-800",
       },
       {
-        title: translate({ message: "Feedback+ SDK" }),
-        image: "/img/star.png",
-        alt: translate({ message: "Star" }),
-        link: "/freesdk",
-        description: translate({
-          message:
-            "Get early feedback on iOS and Android apps with a generous free tier",
-        }),
-        tag: {
-          title: translate({ message: "New" }),
-          colorClasses: "bg-green-500 text-white",
-        },
-        color: "from-amber-500 to-amber-700",
-      },
-      {
         title: translate({ message: "PC and Console" }),
         image: "/img/pc-console.png",
         link: "/pc-and-console",

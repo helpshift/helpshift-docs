@@ -1,0 +1,20 @@
+import { Admonition } from "@site/src/components/forDocs";
+
+If the end user starts a new conversation immediately in the same session,
+then, by default, the initial user message is applied to all subsequent issues in the same session.
+You can change this behaviour by setting the `initialUserMessage` key in `subsequentIssuesInSameSessionConfig`
+to an appropriate value.
+
+You can set the initial user message to an empty string, which will clear it and allow the
+end-user to type a message for their subsequent issues. Alternatively, you can also supply a non-empty string
+which will be used for all subsequent issues in the same session.
+
+**We recommend setting this value to an empty string unless you want to run specific automation
+flows for subsequent issues in the same session.**
+
+<Admonition type="info" title="Note">
+
+Currently, only the initial user message can be reset. Tags, Custom Issue Fields, and Conversation Prefill
+Text values stay the same for subsequent issues in the same session.
+
+</Admonition>

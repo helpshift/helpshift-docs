@@ -40,19 +40,16 @@ For example:
 Class Definition:
 
 ```objc
-
     #import <Foundation/Foundation.h>
     #import "HelpshiftSupport.h"
 
     @interface MyDelegates : NSObject <HelpshiftSupportDelegate>
     @end
-
 ```
 
 Class Implementation
 
 ```objc
-
     #import <Foundation/Foundation.h>
     #import "HelpshiftSupport.h"
     #import "MyDelegates.h"
@@ -111,13 +108,11 @@ Class Implementation
     }
 
     @end
-
 ```
 
 Class Usage:
 
 ```objc
-
 	@property (strong, nonatomic) MyDelegate *delegate;
 	.
 	.
@@ -125,7 +120,6 @@ Class Usage:
 	.
     delegate = [[MyDelegates alloc] init];
     [[HelpshiftSupport sharedInstance] setDelegate:delegate];
-
 ```
 
 Please make sure you call `setDelegate` method before calling any Helpshift FAQ
@@ -159,12 +153,9 @@ As soon as an end user opens the conversation screen, they see a greeting messag
 For example:
 
 ```objc
-
     - (void) newConversationStartedWithMessage:(NSString *)newMessage {
         // your code for tracking new conversation
     }
-
-
 ```
 
 ### New message delegate {#delegate-user-replied-to-conversation}
@@ -181,24 +172,20 @@ All the replies from end users to Bot (QuickSearch Bot, Identity Bot) are also c
 </Admonition>
 
 ```objc
-
     static NSString *HelpshiftSupportUserAcceptedTheSolution = @"User accepted the solution";
     static NSString *HelpshiftSupportUserRejectedTheSolution = @"User rejected the solution";
     static NSString *HelpshiftSupportUserSentScreenShot = @"User sent a screenshot";
     static NSString *HelpshiftSupportUserReviewedTheApp = @"User reviewed the app";
-
 ```
 
 Example usage:
 
 ```objc
-
     - (void) userRepliedToConversationWithMessage:(NSString *)newMessage {
       if ([newMessage isEqualToString:HelpshiftSupportUserAcceptedTheSolution]) {
         // your code here
       }
     }
-
 ```
 
 ### Conversation ended delegate {#delegate-conversation-ended}
@@ -206,11 +193,9 @@ Example usage:
 This delegate is called whenever the ongoing Conversation is resolved, rejected from the Dashboard, timed out or archived.
 
 ```objc
-
     - (void) conversationEnded {
         // your code here
     }
-
 ```
 
 ### Customer satisfaction survey delegate {#csat-completed}
@@ -220,11 +205,9 @@ If you want to keep track of when your app user completes the customer satisfact
 Example usage:
 
 ```objc
-
     - (void) userCompletedCustomerSatisfactionSurvey:(NSInteger)rating withFeedback:(NSString *)feedback {
         // your code here
     }
-
 ```
 
 ### New message received count delegate {#newmessage-recieved}
@@ -234,11 +217,9 @@ This delegate is the response to the `requestUnreadMessagesCount:` method. It pr
 Example usage:
 
 ```objc
-
     - (void) didReceiveUnreadMessagesCount:(NSInteger)count {
         // your code here
     }
-
 ```
 
 ### New in-app message received count delegate {#newmessageinapp-recieved}
@@ -249,11 +230,9 @@ In-app notifications are push notifications that are received when the app is in
 Example usage:
 
 ```objc
-
     - (void) didReceiveInAppNotificationWithMessageCount:(NSInteger)count {
         // your code here
     }
-
 ```
 
 ### Display attachment delegate {#display-attachment}
@@ -264,12 +243,9 @@ If the app does not wish to handle the attachment, and this delegate is not impl
 Example usage:
 
 ```objc
-
     - (void) displayAttachmentFileAtLocation:(NSURL *)fileLocation onViewController:(UIViewController *)parentViewController {
         // your code here
     }
-
-
 ```
 
 ### Authentication failure delegate {#authetication-failure}
@@ -288,9 +264,7 @@ This delegate method is called when user clicks on action card button.
 Example usage:
 
 ```objc
-
     - (void) userDidClickOnActionWithType:(HelpshiftActionType)helpshiftAction withData:(NSString *)actionData {
         // your code here
-```
-
     }
+```

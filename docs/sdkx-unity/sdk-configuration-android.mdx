@@ -25,6 +25,9 @@ import ConversationPrefillTextSdkxUnityCode from "@site/docs/_partials/_conversa
 import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
 import ConversationInitialUserMessageCode from "@site/docs/_partials/_convInitialUserMessageUnityCode.mdx";
 
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageUnityCode from "@site/docs/_partials/_clearInitialUserMessageUnityCode.mdx";
+
 # SDK Configuration
 
 <Intro>
@@ -154,7 +157,6 @@ public class MyGameControl : MonoBehaviour
         help.Install(appId, domainName, configMap);
     }
 }
-
 ```
 
 ### Notification Channels {#notificationChannels}
@@ -211,6 +213,78 @@ public class MyGameControl : MonoBehaviour
 }
 ```
 
+## FAQ Filtering by tags {#faq-filtering}
+
+We have FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are:
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+#### How to use FAQ filtering
+
+This will be a config option which will be supported by the `showFAQs` and `showFAQSection` APIs.
+
+The `filter` option will be a map containing 2 keys
+
+- operator : one of `AND`, `OR`, `NOT` which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query
+
+The `filter` option should be added as an object against key “filter” in the map `config` that is taken by showFAQs, showFAQSection and showSingleFAQ APIs.
+
+|              |                                                                                |
+| ------------ | ------------------------------------------------------------------------------ |
+| Option:      | <code>filter</code>                                                            |
+| Sub-Options: | <code>tags</code> / <code>operator</code>                                      |
+| Default      | <code>null</code>                                                              |
+| Min SDK      | v10.0.0                                                                        |
+| Supported by | <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code> |
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> config = new Dictionary<string, object>();
+
+        Dictionary<string, object> filter = new Dictionary<string, object>
+        {
+            { "tags", new string[] { "tag1", "tag2" } },
+            { "operator", "AND" }
+        };
+
+        config["filter"] = filter;
+
+        help.ShowFAQs(config);
+    }
+}
+```
+
 ## Conversation prefill text {#conversation-prefill-text}
 
 <ConversationPrefillTextDescription />
@@ -222,6 +296,36 @@ public class MyGameControl : MonoBehaviour
 <ConversationInitialUserMessage />
 
 <ConversationInitialUserMessageCode />
+
+## Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+<ClearInitialUserMessageUnityCode />
+
+For outbound support scenarios make sure to add this config in the user specific config callback
+`getLocalAPIConfig` you get when you register `HelpshiftSdk.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())`.
+
+```csharp
+// initialise proactiveConfig collector
+
+   public class ProactiveConfigCollector : IHelpshiftProactiveAPIConfigCollector
+    {
+        public Dictionary<string, object> getLocalApiConfig()
+        {
+            Dictionary<string, object> proactiveConfig = new Dictionary<string, object>();
+            Dictionary<string, object> subsequentIssuesInSameSessionConfig = new Dictionary<string, object>();
+
+            // user specific config
+            proactiveConfig.Add("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+
+            subsequentIssuesInSameSessionConfig.Add("initialUserMessage", "");
+            proactiveConfig.Add("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig)
+            ..
+            ..
+            return proactiveConfig;
+        }
+    }
+```
 
 ## Screen Orientation {#screen-orientation}
 
@@ -314,7 +418,7 @@ public class MyGameControl : MonoBehaviour
 
     void OpenHelpshift() {
       Dictionary<string, object> configMap = new Dictionary<string, object>();
-      configMap.Add("fullPrivacy", "true");
+      configMap.Add("fullPrivacy", true);
       help.ShowConversation(configMap);
     }
 }

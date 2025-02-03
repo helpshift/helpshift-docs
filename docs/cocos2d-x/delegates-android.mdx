@@ -49,7 +49,6 @@ If you want to keep track of when helpshift session ends in your app, you can im
 For example:
 
 ```cpp
-
     void hsSessionBegun() {
       CCLOG("Helpshift Session began");
     }
@@ -60,7 +59,6 @@ For example:
     .
     .
     HelpshiftCocos2dx::registerSessionDelegates(hsSessionBegun, hsSessionEnded);
-
 ```
 
 ## Conversation delegates {#conversation-delegates}
@@ -84,12 +82,10 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
 ```cpp
-
     #define HS_USER_ACCEPTED_SOLUTION "User accepted the solution"
     #define HS_USER_REJECTED_SOLUTION "User rejected the solution"
     #define HS_USER_SENT_SCREENSHOT "User sent a screenshot"
     #define HS_USER_REVIEWED_APP "User reviewed the app"
-
 ```
 
 <Admonition type="info" title="Note">
@@ -120,7 +116,6 @@ This delegate callback can be implemented to check if an ongoing Conversation ha
 For example:
 
 ```cpp
-
     void newConversationHandler (const char *message) {
       CCLOG("New conversation started with message : %s", message);
     }
@@ -148,7 +143,6 @@ For example:
                                                      csatHandler,
                                                      notificationHandler,
                                                      conversationEnded);
-
 ```
 
 ## Display attachment delegate {#display-attachment}
@@ -164,7 +158,6 @@ If your application wants to handle a certain file type in a custom way, the app
 Example
 
 ```java
-
     HashMap config = new HashMap();
     String[] fileFormats = new String[]{"token"};
     config.put("supportedFileFormats", fileFormats);
@@ -173,15 +166,12 @@ Example
                             "domain.helpshift.com",
                             "appId",
                             config);
-
 ```
 
 The application also needs to register the function which will be called when the Helpshift SDK detects a file with the registered file extension.
 
 ```cpp
-
     static void registerDisplayAttachmentDelegate (void (*displayAttachmentListener)(const char *filePath));
-
 ```
 
 After the attachment is downloaded, Helpshift checks for any app which can open it. If no such app is found, then we fall back to passing the file to the delegate handler in the app. There are two possible variants of the path parameter in HandleTapOnAttachmentFile(string path), one is FilePath and the other one is Uri.
@@ -255,7 +245,6 @@ If identity verification fails, the SDK will invoke one of the following delegat
 </table>
 
 ```cpp
-
     void authenticationFailure(HelpshiftCocosUser *user, HSAuthenticationFailureReason reason) {
         if (reason == HSAuthenticationFailureReason::HSAuthTokenNotProvided) {
 	    ...
@@ -264,7 +253,6 @@ If identity verification fails, the SDK will invoke one of the following delegat
         }
     }
     HelpshiftCocos2dx::registerAuthenticationFailureDelegate(authenticationFailure);
-
 ```
 
 ### User click on action delegate {#user-click-action}
@@ -283,7 +271,6 @@ This delegate method is called when the user clicks on the action in Action Card
 For example:
 
 ```cpp
-
     void onActionCardClicked(HSActionType actiontype, const char *actionData) {
         if(actionType == HSActionType::HSActionTypeCall) {
       ...
@@ -292,5 +279,4 @@ For example:
         }
     }
     HelpshiftCocos2dx::registerActionCardDelegate(onActionCardClicked);
-
 ```

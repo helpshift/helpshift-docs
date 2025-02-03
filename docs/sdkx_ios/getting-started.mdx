@@ -25,10 +25,11 @@ import {
 
 ## Requirements {#version-requirements}
 
-- Xcode 12.0 and above.
+- Xcode 12.0 and above
 - Cocoapods v1.10.0
 - Supported iOS versions:
-  - iOS 16, 15, 14, 13, 12, 11, 10
+  - iOS 14 and above
+- For details regarding Helpshift SDK's iOS support policy, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
 
 ## Automated Integration using Cocoapods {#cocoapods}
 
@@ -81,7 +82,7 @@ The zip file contains:
 
 #### Non-bitcode build of SDK X
 
-Since bitcode has been deprecated starting Xcode 14, we have created a non-bitcode build based on the latest version of SDK X. This build can be downloaded from [here](https://d3e51fp79zp4el.cloudfront.net/sdkx/latest/ios/helpshiftx-sdk-ios-non-bitcode.zip).
+Since bitcode has been deprecated by Apple starting Xcode 14, SDK X builds don't contain bitcode starting from 10.3.0 release.
 
 </Admonition>
 
@@ -120,12 +121,6 @@ Note that this is just a suggested description. If you need localisations for th
 
 </Admonition>
 
-<Admonition type="caution" title="Warning">
-
-Attachments uploads are not supported on iOS 10.x and below due to issues with permissions.
-
-</Admonition>
-
 ## Start using Helpshift {#start-using}
 
 Helpshift is now integrated in your app and ready to collect meaningful data about your users.
@@ -134,10 +129,10 @@ Helpshift is now integrated in your app and ready to collect meaningful data abo
 
 1. First, create an app on the Helpshift Dashboard
 
-   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />
 
 2. Create an app with **iOS** as a selected `Platform`
-   <Image src="/static/books/sdkx_ios/select_platform.png" width="full" />{" "}
+   <Image src="/static/books/sdkx_ios/select_platform.png" width="full" />
 
 Helpshift uniquely identifies each registered App using a combination
 of 2 tokens.
@@ -158,15 +153,15 @@ To obtain these values:
 3. Select your App and from the dropdowns
 4. Copy the two tokens present in the "iOS" table
 
-<Image src="/static/books/sdkx_ios/copy_keys.png" width="full" />{" "}
+<Image src="/static/books/sdkx_ios/copy_keys.png" width="full" />
 
 Initialize the SDK by calling `installWithPlatformId:` method.
 
 You can optionally pass the configuration dictionary to `installWithPlatformId:` API. To see supported configurations, check the [SDK Configuration](/sdkx_ios/sdk-configuration.mdx) page.
 
-<Tabs>
+<Tabs groupId="ios-languages">
 
-<TabItem value="Using Objective-C" label="Using Objective-C">
+<TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 @import HelpshiftX;
@@ -184,7 +179,7 @@ You can optionally pass the configuration dictionary to `installWithPlatformId:`
 ```
 
 </TabItem>
-<TabItem value="Using Swift" label="Using Swift">
+<TabItem value="Swift" label="Swift">
 
 ```swift
 import HelpshiftX
@@ -203,7 +198,6 @@ import HelpshiftX
 
 </Tabs>
 
-
 #### Initializing Helpshift in your app for China {#chinasupport}
 
 A special install config key, `isForChina`, should be used for integrating Helphift SDK for China region.
@@ -211,9 +205,9 @@ This config key accepts a boolean value. Pass `true` if you are integrating the 
 
 Add the following code in your AppDelegate class -
 
-<Tabs>
+<Tabs groupId="ios-languages">
 
-<TabItem value="Using Objective-C" label="Using Objective-C">
+<TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 @import HelpshiftX;
@@ -233,7 +227,7 @@ Add the following code in your AppDelegate class -
 ```
 
 </TabItem>
-<TabItem value="Using Swift" label="Using Swift">
+<TabItem value="Swift" label="Swift">
 
 ```swift
 import HelpshiftX
@@ -251,6 +245,7 @@ import HelpshiftX
     }
 ...
 ```
+
 </TabItem>
 
 </Tabs>

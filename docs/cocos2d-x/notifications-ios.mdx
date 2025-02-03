@@ -41,7 +41,6 @@ If your app does not already use push, you will need to enable push for your app
 <TabItem value="Using UILocalNotification framework" label="Using UILocalNotification framework">
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
         ...
         UIUserNotificationType notificationType = UIUserNotificationTypeBadge |UIUserNotificationTypeAlert;
@@ -50,14 +49,12 @@ If your app does not already use push, you will need to enable push for your app
         [[UIApplication sharedApplication] registerForRemoteNotifications];
         ...
     }
-
 ```
 
 </TabItem>
 <TabItem value="Using UNUserNotification framework" label="Using UNUserNotification framework">
 
 ```objc
-
     - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
         ...
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -69,7 +66,6 @@ If your app does not already use push, you will need to enable push for your app
         [UIApplication sharedApplication registerForRemoteNotifications];
         ...
     }
-
 ```
 
 </TabItem>
@@ -98,7 +94,7 @@ Please note that you need to use the same bundle identifier in the app as the on
   src="/static/books/ios/helpshift-push-notifications.png"
   width="full"
   alt="helpshift-push-notifications.png"
-/>{" "}
+/>
 
 You can configure whether to send a badge or not, and sound alerts if you provided custom sounds bundled with your app to handle notifications. Save it and you're all set.
 
@@ -120,7 +116,7 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
   src="/static/books/ios/passwordexpiry.png"
   width="full"
   alt="passwordexpiry.png"
-/>{" "}
+/>
 
 ### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
 
@@ -141,11 +137,9 @@ to invoke the `registerDeviceToken:` API call inside the application delegate me
 `application:didRegisterForRemoteNotificationsWithDeviceToken:`
 
 ```objc
-
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
-
 ```
 
 When a push notification is received, the application delegate didReceiveRemoteNotification: is called. Additionally:
@@ -160,7 +154,6 @@ Example usage:
 When receiving remote notifications when the app starts for the first time, or after being killed by the user:
 
 ```objc
-
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
         app->run();
@@ -177,13 +170,11 @@ When receiving remote notifications when the app starts for the first time, or a
         }
         ...
     }
-
 ```
 
 For the didReceiveRemoteNotification delegate -
 
 ```objc
-
     - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
         if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
             [HelpshiftCore handleRemoteNotification:userInfo
@@ -191,7 +182,6 @@ For the didReceiveRemoteNotification delegate -
                                  withController:self.window.rootViewController];
         }
     }
-
 ```
 
 If you need to handle badge reset in the application icon, you can do
@@ -221,11 +211,9 @@ to invoke the `registerDeviceToken:` API call inside the application delegate me
 `application:didRegisterForRemoteNotificationsWithDeviceToken:`I
 
 ```objc
-
     - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [HelpshiftCore registerDeviceToken:deviceToken];
     }
-
 ```
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
@@ -241,7 +229,6 @@ Example usage:
 For the userNotificationCenter:willPresentNotification:withCompletionHandler: delegate -
 
 ```objc
-
     - (void) userNotificationCenter:(UNUserNotificationCenter *)center
       willPresentNotification:(UNNotification *)notification
       withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
@@ -252,13 +239,11 @@ For the userNotificationCenter:willPresentNotification:withCompletionHandler: de
       }
       completionHandler(...);
     }
-
 ```
 
 For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler: delegate -
 
 ```objc
-
     - (void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
       if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
           [HelpshiftCore handleNotificationResponseWithActionIdentifier:response.actionIdentifier
@@ -267,7 +252,6 @@ For the userNotificationCenter:didReceiveNotificationResponse:withCompletionHand
       }
       completionHandler();
     }
-
 ```
 
 If you need to handle badge reset in the application icon, you can do
@@ -304,13 +288,13 @@ These notifications are sent when an agent replies to a customer's issue. Your c
   src="/static/books/ios/in-app-notification-badge-count-1.png"
   width="quarter"
   alt="in-app-notification-badge-count-1.png"
-/>{" "}
+/>
 
 <Image
   src="/static/books/ios/in-app-notification-badge-count-2.png"
   width="quarter"
   alt="in-app-notification-badge-count-2.png"
-/>{" "}
+/>
 
 </SideBySide>
 
@@ -344,7 +328,6 @@ Example:
 <TabItem value="Cocos2d-x 3.x" label="Cocos2d-x 3.x">
 
 ```cpp
-
     ValueMap config;
     config[HS_ENABLE_IN_APP_NOTIFICATION] = Value("yes");
 
@@ -352,21 +335,18 @@ Example:
                                "domain.helpshift.com",
                                "appId",
                                config);
-
 ```
 
 </TabItem>
 <TabItem value="Cocos2d-x 2.x" label="Cocos2d-x 2.x">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     config->setObject(new CCString("yes"), HS_ENABLE_IN_APP_NOTIFICATION);
     HelpshiftCocos2dx::install("apikey",
                                "domain.helpshift.com",
                                "appId",
                                config);
-
 ```
 
 </TabItem>
@@ -380,9 +360,7 @@ If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotifi
 Example:
 
 ```cpp
-
     HelpshiftCocos2dx::pauseDisplayOfInAppNotification(true);
-
 ```
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
@@ -390,13 +368,10 @@ Example:
 This API takes a function pointer as an argument and calls that function with the count of unread messages as its parameter. The first parameter (isRemote) passed to the API requestUnreadMessagesCount will decide if the count is to be fetched remotely.
 
 ```cpp
-
 	void didReceiveUnreadMessagesCount(int count) {
 		printf("Unread message count: %d\n", count);
 	}
 	HelpshiftCocos2dx::requestUnreadMessagesCount(true, didReceiveUnreadMessagesCount);
-
-
 ```
 
 <Admonition type="info" title="Note">

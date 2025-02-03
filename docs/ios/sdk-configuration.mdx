@@ -49,14 +49,12 @@ Upon setting this option to YES, Helpshift SDK will switch between default light
 Example:
 
 ```objc
-
     HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
     installConfigBuilder.enableAutomaticThemeSwitching = YES;
 
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
-
 ```
 
 </TabItem>
@@ -73,12 +71,10 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY"
                          domainName:@"YOUR_DOMAIN_NAME"
                               appID:@"YOUR_APP_ID"
                         withOptions:@{@"enableAutomaticThemeSwitching" : @"YES"}];
-
 ```
 
 </TabItem>
@@ -117,13 +113,11 @@ If the value of this option is set to `NO` then the FAQs for French translation 
 Example:
 
 ```objc
-
 	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
 	installConfigBuilder.enableDefaultFallbackLanguage = NO;
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
-
 ```
 
 </TabItem>
@@ -140,10 +134,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
                         withOptions:@{@"enableDefaultFallbackLanguage" : @"NO"}];
-
 ```
 
 </TabItem>
@@ -181,7 +173,6 @@ Example:
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
-
 ```
 
 </TabItem>
@@ -204,7 +195,6 @@ Example:
                          domainName:"<YOUR_COMPANY>.helpshift.com"
                               appID:"<YOUR_APP_ID>"
                         withOptions:installConfig];
-
 ```
 
 </TabItem>
@@ -230,13 +220,11 @@ This option disables the iOS view transition animations when launching or closin
 Example:
 
 ```objc
-
     HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
     installConfigBuilder.disableEntryExitAnimations = YES;
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
-
 ```
 
 </TabItem>
@@ -253,10 +241,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
     withOptions:@{@"disableEntryExitAnimations" : @"YES"}];
-
 ```
 
 </TabItem>
@@ -291,13 +277,11 @@ If you are using a 3rd party push plugin OR if you have already wired up the req
 Example:
 
 ```objc
-
 	HelpshiftInstallConfigBuilder *installConfigBuilder = [[HelpshiftInstallConfigBuilder alloc] init];
 	installConfigBuilder.disableAutomaticPushHandling = YES;
     HelpshiftInstallConfig *installConfig = [installConfigBuilder build];
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID" withConfig:installConfig];
-
 ```
 
 </TabItem>
@@ -314,10 +298,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftCore installForApiKey:@"YOUR_API_KEY" domainName:@"YOUR_DOMAIN_NAME" appID:@"YOUR_APP_ID"
                         withOptions:@{@"disableAutomaticPushHandling" : @"YES"}];
-
 ```
 
 </TabItem>
@@ -442,7 +424,6 @@ Example:
 - Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
 
 ```objc
-
         CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
         CTCarrier *carrier = [netinfo subscriberCellularProvider];
         HsEnableContactUs value = HsEnableContactUsAfterViewingFAQs;
@@ -454,7 +435,6 @@ Example:
         HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
         apiBuilder.enableContactUs = value;
         [HelpshiftSupport showFAQs:self withConfig:apiBuilder.build];
-
 ```
 
 ## presentFullScreenOniPad {#presentFullScreenOniPad}
@@ -478,12 +458,10 @@ The default value is NO, presents support views as UIModalPresentationFormSheet.
 Example:
 
 ```objc
-
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.presentFullScreenOniPad = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -500,10 +478,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showFAQs:self
                    withOptions:@{@"presentFullScreenOniPad":@"YES"}];
-
 ```
 
 </TabItem>
@@ -539,12 +515,10 @@ To send personally identifiable information through custom meta-data, the inform
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.enableFullPrivacy = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -561,10 +535,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showFAQs:self
                    withOptions:@{@"enableFullPrivacy":@"YES"}];
-
 ```
 
 </TabItem>
@@ -613,7 +585,7 @@ It will be turned _ON_ if any of the values is set to `YES`.
 <Image
   src="/static/books/misc/resolution-question-app-setting.png"
   width="full"
-/>{" "}
+/>
 
 ### For older SDK versions between v3.11.0 to v7.0
 
@@ -633,12 +605,10 @@ This option is set to YES by default, which means that the user will be presente
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.showConversationResolutionQuestion = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -654,10 +624,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"showConversationResolutionQuestion":@"NO"}];
-
 ```
 
 </TabItem>
@@ -688,7 +656,6 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
 ```objc
-
     - (IBAction) showHelp {
         id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfig:configObject];
         id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfig:configObject];
@@ -700,15 +667,12 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 		HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
 		[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
     }
-
-
 ```
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```objc
-
     - (IBAction) showHelp {
         id faqSectionFlow = [HelpshiftSupport flowToShowFAQSectionForPublishId:@"1" withDisplayText:@"FAQ Section" andConfigOptions:yourConfigOptions];
         id singleFAQFlow = [HelpshiftSupport flowToShowSingleFAQForPublishId:@"2" withDisplayText:@"Single FAQ" andConfigOptions:yourConfigOptions];
@@ -718,7 +682,6 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
         NSDictionary *customContactUsOptions = @ {@"customContactUsFlows" : @[faqSectionFlow, singleFAQFlow, showConversationFlow1, showConversationFlow2]};
         [HelpshiftSupport showFAQs:self withOptions:customContactUsOptions];
     }
-
 ```
 
 </TabItem>
@@ -740,7 +703,6 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 <TabItem value="Using Api Config object" label="Using Api Config object">
 
 ```objc
-
     - (IBAction) showHelp {
         id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfig:configOptions];
         id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our in app purchases" andConfig:configObject];
@@ -757,14 +719,12 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 
 		[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
     }
-
 ```
 
 </TabItem>
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```objc
-
     - (IBAction) showHelp {
         id showConversationFlow1 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our app" andConfigOptions:yourConfigOptions];
         id showConversationFlow2 = [HelpshiftSupport flowToShowConversationWithDisplayText:@"Contact Us about our in app purchases" andConfigOptions:yourConfigOptions];
@@ -777,7 +737,6 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
         NSDictionary *customContactUsOptions = @ {@"customContactUsFlows" : @[faqSectionFlow, singleFAQFlow, showConversationFlow1, showConversationFlow2]};
         [HelpshiftSupport showFAQs:self withOptions:customContactUsOptions];
     }
-
 ```
 
 </TabItem>
@@ -811,7 +770,6 @@ The showConversationInfoScreen flag will determine if the user can see the Conve
 Example:
 
 ```objc
-
 ```
 
 HelpshiftAPIConfigBuilder *apiConfigBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
@@ -833,11 +791,8 @@ HelpshiftAPIConfig *builder = [apiConfigBuilder build];
 Example:
 
 ```objc
-
     NSDictionary *config = @{@"showConversationInfoScreen":@"yes"};
     [HelpshiftSupport showFAQs:self withOptions:config];
-
-
 ```
 
 </TabItem>
@@ -863,7 +818,7 @@ If this configuration is turned ON from the configurations page OR if an SDK con
 <Image
   src="/static/books/misc/enable-typing-indicator-app-setting.png"
   width="full"
-/>{" "}
+/>
 
 <Centered width="quarter">
 
@@ -890,12 +845,10 @@ For older SDK versions between v6.0.0 to v7.0, please read the following:
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiConfigBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiConfigBuilder.enableTypingIndicator = YES;
     HelpshiftAPIConfig *builder = [apiConfigBuilder build];
     [HelpshiftSupport showConversation:self withConfig:builder];
-
 ```
 
 </TabItem>
@@ -912,11 +865,8 @@ Example:
 Example:
 
 ```objc
-
     NSDictionary *config = @{@"enableTypingIndicator":@"yes"};
     [HelpshiftSupport showFAQs:self withOptions:config];
-
-
 ```
 
 </TabItem>
@@ -968,12 +918,10 @@ Set the value to YES to go directly to the Conversation view. Use this option wh
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
 	apiBuilder.gotoConversationAfterContactUs = YES;
 	HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
 	[HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -990,10 +938,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"gotoConversationAfterContactUs":@"YES"}];
-
 ```
 
 </TabItem>
@@ -1033,12 +979,10 @@ Set the value to YES to require the user to fill out a valid email address when 
 Example:
 
 ```objc
-
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.requireEmail = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -1055,10 +999,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"requireEmail":@"YES"}];
-
 ```
 
 </TabItem>
@@ -1109,12 +1051,10 @@ Set this flag to NO to make Name and Email fields visible when a user files an i
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.hideNameAndEmail = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -1131,10 +1071,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"hideNameAndEmail":@"YES"}];
-
 ```
 
 </TabItem>
@@ -1191,12 +1129,10 @@ The conversationPrefillText API option prefills a new conversation with the supp
 Example:
 
 ```objc
-
 	HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.conversationPrefillText = @"preFillString";
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showConversation:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -1213,11 +1149,9 @@ Example:
 Example:
 
 ```objc
-
     NSString *preFillString = [MyApp getExceptionData];
     [HelpshiftSupport showConversation:self
                            withOptions:@{@"conversationPrefillText":preFillString}];
-
 ```
 
 </TabItem>
@@ -1267,12 +1201,10 @@ From v4.13.0 and above, the showSearchOnNewConversation flag is also effective i
 Example:
 
 ```objc
-
     HelpshiftAPIConfigBuilder *apiBuilder = [[HelpshiftAPIConfigBuilder alloc] init];
     apiBuilder.showSearchOnNewConversation = YES;
     HelpshiftAPIConfig *apiConfigObject = [apiBuilder build];
     [HelpshiftSupport showFAQs:self withConfig:apiConfigObject];
-
 ```
 
 </TabItem>
@@ -1289,10 +1221,8 @@ Example:
 Example:
 
 ```objc
-
     [HelpshiftSupport showConversation:self
                                  withOptions:@{@"showSearchOnNewConversation":@"YES"}];
-
 ```
 
 </TabItem>

@@ -67,8 +67,9 @@ export default function LegacyEolAdmonition() {
           "Helpshift’s Legacy SDKs (SDK Version <=7.x.x) reached their end of life on 31 Dec 2022, and end of support on 31 March 2023. Please upgrade to the Latest SDK if you haven't already. ",
       })}
       <a href={newBookLink} target="_blank" rel="noreferrer">
-        <Translate>Latest SDK.</Translate>
-      </a>{" "}
+        Latest SDK
+      </a>
+      if you haven&apos;t already.
     </Admonition>
   );
 }

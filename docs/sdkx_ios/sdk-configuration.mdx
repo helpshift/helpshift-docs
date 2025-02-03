@@ -21,6 +21,7 @@ import {
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
 import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
 
 # SDK Configuration
 
@@ -52,6 +53,13 @@ Upon setting `enableLogging` to `YES`, Helpshift SDK logs will be generated in t
 
 </div>
 
+<Admonition type="info" title="Note">
+
+- From 10.4.0,
+  - Error Logs will always get logged regardless of `enableLogging` config.
+
+</Admonition>
+
 Example:
 
 <Tabs groupId="ios-languages">
@@ -77,6 +85,79 @@ Helpshift.install(withPlatformId: "<PLATFORM_ID>", domain: "<DOMAIN>", config: c
 </TabItem>
 
 </Tabs>
+
+## FAQ Filtering by tags {#faq-filtering}
+
+We have FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are :
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+#### How to use FAQ filtering
+
+This will be a config option which will be supported by the `showFAQs` and `showFAQSection` APIs.
+
+The `filter` option will be a dictionary containing 2 keys
+
+- operator : one of `AND`, `OR`, `NOT` which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query
+
+The `filter` option will be should be added as an object against key “filter” in the dictionary `config` that is taken by showFAQs, showFAQSection and showSingleFAQ APIs.
+
+|              |                                                                                |
+| ------------ | ------------------------------------------------------------------------------ |
+| Option:      | <code>filter</code>                                                            |
+| Sub-Options: | <code>tags</code> / <code>operator</code>                                      |
+| Default      | <code>nil</code>                                                               |
+| Min SDK      | v10.0.0                                                                        |
+| Supported by | <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code> |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"filter": @{ @"tags": @[@"game", @"paid"], @"operator": @"AND"} };
+[Helpshift showFAQs:self config:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["filter": ["tags": ["game", "paid"], "operator": "AND"]]
+Helpshift.showFAQs(self, config: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="Note">
+
+You can have only one tag filter config which will be respected on showFAQs, showFAQSection and showSingleFAQ. Also the tag filtering respects only one operator.
+
+</Admonition>
 
 ## Enable Contact Us {#enableContactUs}
 
@@ -362,12 +443,12 @@ Helpshift.showConversation(with:self, config:config)
 
 <ConversationInitialUserMessage />
 
-|               |                                      |
-| ------------- | ------------------------------------ |
-| Option:       | <code>initialUserMessage</code> |
-| Values:       | Any string value                     |
-| Default:      | <code>""</code>                      |
-| Min SDK       | v10.0.0                              |
+|               |                                                     |
+| ------------- | --------------------------------------------------- |
+| Option:       | <code>initialUserMessage</code>                     |
+| Values:       | Any string value                                    |
+| Default:      | <code>""</code>                                     |
+| Min SDK       | v10.0.0                                             |
 | Supported by: | <code>showConversation</code> <code>showFAQs</code> |
 
 Example:
@@ -387,6 +468,43 @@ NSDictionary *config = @{ @"initialUserMessage": @"INSERT YOUR INITIAL USER MESS
 ```swift
 let config = ["initialUserMessage": "INSERT YOUR INITIAL USER MESSAGE"]
 Helpshift.showConversation(with:self, config:config)
+```
+
+</TabItem>
+
+</Tabs>
+
+## Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{
+    @"initialUserMessage": @"INSERT YOUR INITIAL USER MESSAGE",
+    @"subsequentIssuesInSameSessionConfig": @{
+        @"initialUserMessage": @""
+    }
+};
+
+[Helpshift showConversationWithConfig:config];
+```
+
+</TabItem>
+
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config = ["initialUserMessage": "INSERT YOUR INITIAL USER MESSAGE",
+              "subsequentIssuesInSameSessionConfig": [
+                "initialUserMessage": "" ]
+             ]
+Helpshift.showConversation(withConfig:config)
 ```
 
 </TabItem>

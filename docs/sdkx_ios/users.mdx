@@ -9,19 +9,19 @@ import {
   CodeBlock,
   Tabs,
   TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
 } from "@site/src/components/forDocs";
 
 <Admonition type="info" title="Note">
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
+
+</Admonition>
+
+<Admonition type="warning" title="Before you proceed">
+
+This section describes how you can integrate users with the legacy method. For integrating with the new Identity System `User Hub`, please refer [this page](/sdkx_ios/identity-user-hub).
+
+We recommend using the new Identity System if you require faster context collection, an easier agent experience, and enhanced security and spam protection.
 
 </Admonition>
 
@@ -58,7 +58,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
     <th>Parameter</th>
     <th>Require/Optional</th>
     <th>SDK Description</th>
-    <th>Inportant Considerations</th>
+    <th>Important Considerations</th>
   </tr>
   <tr>
     <td>userName</td>
@@ -113,6 +113,7 @@ You should call Helpshift SDK's Login API whenever the user successfully logs in
 You need to be aware of some considerations when using the `loginUser:` API -
 
 - In order to create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
+- The login API returns a boolean value indicating whether the passed `userId` or `userEmail` are valid or not.
 - The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should **NOT** be duplicated for two or more different users.
 - If the login API is called with different user identifier, then it first logs out the currently logged-in user and then logs in with this user identifier.
 - It is best to call login immediately when your app user logs in.
@@ -147,7 +148,8 @@ if ([userName length] > 0) {
     [userData setObject:userName forKey:@"userName"];
 }
 
-[Helpshift login:userData];
+BOOL loggedIn = [Helpshift login:userData];
+NSLog(@"Helpshift login status : %@", loggedIn);
 ```
 
 </TabItem>
@@ -176,7 +178,8 @@ if !userName.isEmpty {
     userData["userName"] = userName
 }
 
-Helpshift.login(userData)
+let loggedIn = Helpshift.login(userData)
+print("Helpshift login status : \(loggedIn)")
 ```
 
 </TabItem>

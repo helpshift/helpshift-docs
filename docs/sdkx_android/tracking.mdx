@@ -121,7 +121,7 @@ employeeName.put("type", "singleline");
 employeeName.put("value", "Bugs helpshift");
 
 Map<String, String> isPro = new HashMap<>();
-isPro.put("type", "boolean");
+isPro.put("type", "checkbox");
 isPro.put("value", "true");
 
 Map<String, Object> cifMap = new HashMap<>();
@@ -204,3 +204,27 @@ Debug logs are collected within the set debug logs limit. The limit is set under
   - `"key - value"` - ** Simple string, This is supported **
 
 </Admonition>
+
+## Tracking user-specific metadata
+
+### Update global user data
+
+This API is meant to be used along with the new [User Identity system](/sdkx_android/identity-user-hub). Use this API to [update global attributes](/sdkx_android/identity-user-hub/#update-global-user-data) associated with the logged in user.
+
+```java
+  Map<String, Object> masterAttributes = new HashMap<>();
+  // put appropriate master attribute key and its value
+  masterAttributes.put("<master-attribute-key>", "<master-attribute-value>");
+  Helpshift.updateMasterAttributes(masterAttributes);
+```
+
+### Update app specific user data
+
+This API is meant to be used along with the new [User Identity system](/sdkx_android/identity-user-hub). Use this API to [update app specific attributes](/sdkx_android/identity-user-hub/#update-app-specific-user-data) associated with the logged in user.
+
+```java
+  Map<String, Object> appAttributes = new HashMap<>();
+  // put appropriate app attribute key and its value
+  appAttributes.put("<app-attribute-key>", "<app-attribute-value>");
+  Helpshift.updateAppAttributes(appAttributes);
+```

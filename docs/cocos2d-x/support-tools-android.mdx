@@ -37,9 +37,7 @@ There are 4 different ways in which the Helpshift SDK can be presented in your a
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
 ```cpp
-
     HelpshiftCocos2dx::showConversation();
-
 ```
 
 You can use the `showConversation` API to provide a way for the user to send feedback or start a new conversation
@@ -61,9 +59,7 @@ resolution is accepted by the user) or rejected by the agent.
 ## Integrating FAQs {#faqs-view}
 
 ```cpp
-
     HelpshiftCocos2dx::showFAQs();
-
 ```
 
 You can use the `showFAQs` API call to provide a way for the user to invoke the purpose built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface.
@@ -77,29 +73,27 @@ Check out [API Options](#api-options) for more configuration.
   src="/static/books/android/showfaqs.png"
   width="quarter"
   alt="showFAQs.png"
-/>{" "}
+/>
 
 <Image
   src="/static/books/android/faqsearch.png"
   width="quarter"
   alt="faqSearch.png"
-/>{" "}
+/>
 
 </SideBySide>
 
 ## Showing a Particular FAQ Section {#faq-section-view}
 
 ```cpp
-
     HelpshiftCocos2dx::showFAQSection("11");
-
 ```
 
 You can use the `showFAQSection` API call to show faqs from a particular FAQ section.
 
 **You will need the `publish-id` of the FAQ section in this case.**
 
-<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, Facebook and Twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -111,23 +105,21 @@ Check out [API Options](#api-options) for more configuration.
   src="/static/books/android/showfaqsection.png"
   width="quarter"
   alt="showFAQSection.png"
-/>{" "}
+/>
 
 </SideBySide>
 
 ## Showing a Particular FAQ Question {#faq-question-view}
 
 ```cpp
-
     HelpshiftCocos2dx::showSingleFAQ("51");
-
 ```
 
 You can use the `showSingleFAQ` API call to show a single faq question.
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
 
 Check out [API Options](#api-options) for more configuration.
 
@@ -137,7 +129,7 @@ Check out [API Options](#api-options) for more configuration.
   src="/static/books/android/showsinglefaq.png"
   width="quarter"
   alt="showSingleFAQ.png"
-/>{" "}
+/>
 
 </SideBySide>
 
@@ -152,7 +144,7 @@ Typical cases why you would want to use FAQ filtering are :
 FAQ filtering is a 2 step approach
 
 1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘phone’ & ‘tablet’.
-   <Image src="/static/books/android/faq-filtering.png" width="full" />{" "}
+   <Image src="/static/books/android/faq-filtering.png" width="full" />
 2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
 
 <Admonition type="info" title="Note">
@@ -175,7 +167,6 @@ Usage :
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueVector tags;
     tags.push_back(Value(""));
     tags.push_back(Value("Testing1"));
@@ -192,14 +183,12 @@ Usage :
     config[HS_WITH_TAGS_MATCHING] = filter;
 
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCArray *tags = new cocos2d::CCArray();
     tags->addObject(new CCString("Testing1"));
     tags->addObject(new CCString("Cocos2dx"));
@@ -210,7 +199,6 @@ Usage :
     config->setObject(faqMap, HS_WITH_TAGS_MATCHING);
 
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
@@ -273,7 +261,6 @@ Usage :
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueVector forms;
     ValueMap conversationMap;
     conversationMap[HS_FLOW_TYPE] = HS_CONVERSATION_FLOW;
@@ -304,14 +291,12 @@ Usage :
     forms.push_back(Value(nestedMap));
 
     HelpshiftCocos2dx::showDynamicForm("Dynamic it is !", forms);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCArray *forms = CCArray::create();
     cocos2d::CCDictionary *conversationForm = CCDictionary::create();
     conversationForm->setObject(new CCString(HS_CONVERSATION_FLOW), HS_FLOW_TYPE);
@@ -343,7 +328,6 @@ Usage :
     forms->addObject(nestedForm);
 
     HelpshiftCocos2dx::showDynamicForm("Dynamic it is !", forms);
-
 ```
 
 </TabItem>

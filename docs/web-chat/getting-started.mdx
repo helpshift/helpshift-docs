@@ -29,13 +29,13 @@ Adding Helpshift Web Chat into your website is really easy. Follow this step-by-
 
 ## Introduction {#intro}
 
-<Image src="/static/books/web-chat/wc-embedded.png" width="major" centered />{" "}
+<Image src="/static/books/web-chat/wc-embedded.png" width="major" centered />
 
 Helpshift’s Web Chat widget allows you to provide a live chat experience on your website. It just takes one line of JavaScript to embed Web Chat on your website.
 
 ## Before you begin {#prerequisites}
 
-In your Helpshift Dashboard, make sure you've added `Web Chat` as a platorm supported by your App. [Here's how to do it.](https://support.helpshift.com/kb/article/web-chat#section-one)
+In your Helpshift Dashboard, make sure you've added `Web Chat` as a platorm supported by your App. [Here's how to do it.](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/887-web-chat-guide/)
 
 ## **Step 1:** Add the Web Chat embed code {#add-embed-code}
 
@@ -62,19 +62,25 @@ In case you don't have a prepared embed code, add this snippet just before the c
 
   !function(t,e){if("function"!=typeof window.Helpshift){var n=function(){n.q.push(arguments)};n.q=[],window.Helpshift=n;var i,a=t.getElementsByTagName("script")[0];if(t.getElementById(e))return;i=t.createElement("script"),i.async=!0,i.id=e,i.src="https://webchat.helpshift.com/webChat.js";var o=function(){window.Helpshift("init")};window.attachEvent?i.attachEvent("onload",o):i.addEventListener("load",o,!1),a.parentNode.insertBefore(i,a)}else window.Helpshift("update")}(document,"hs-chat");
 </script>
-
 ```
 
 1. Replace `YOUR_DOMAIN` with your Helpshift domain.
    For example, _happyapps_ if your dashboard sits at _happyapps.helpshift.com_
 1. Replace `YOUR_PLATFORM_ID` with details found at `Settings` > `SDKs (for Developers)`
-   <Image src="/static/books/web-chat/wc-embed-sdk.png" width="full" />{" "}
+   <Image src="/static/books/web-chat/wc-embed-sdk.png" width="full" />
+
+<Admonition type="info" title="Best practice">
+
+We highly recommend attaching the **Web Chat runtime error** event listener after the embed script.
+This can help you discover integration errors as well as handle certain error scenarios programmatically.
+Ref: [On Web Chat Runtime Error](/web-chat/api/#on-webchat-runtime-error)
+</Admonition>
 
 ## **Step 2:** Start using Helpshift Web Chat {#start-using}
 
 Helpshift Web Chat is now available on your website. Test it out by starting a chat.
 
-<Image src="/static/books/web-chat/wc-embed-success.png" width="full" />{" "}
+<Image src="/static/books/web-chat/wc-embed-success.png" width="full" />
 
 <Admonition type="info" title="Note">
 

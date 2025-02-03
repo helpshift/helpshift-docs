@@ -37,9 +37,7 @@ There are 6 different ways in which the Helpshift SDK can be presented in your a
 ## Integrating Contact Us & In App Messaging {#conversation-view}
 
 ```csharp
-
     HelpshiftApi.HelpshiftSupport.ShowConversation(activity, convConfig); // activity is the Activity you’re calling Helpshift from.
-
 ```
 
 You can use the `ShowConversation` api to provide a way for the user to send feedback or start a new conversation
@@ -61,9 +59,7 @@ resolution is accepted by the user) or rejected by the agent.
 ## Integrating FAQs {#faqs-view}
 
 ```csharp
-
     HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, faqsConfig); //activity is the Activity you’re calling Helpshift from.
-
 ```
 
 You can use the `ShowFAQs` api call to provide a way for the user to invoke the purpose built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface.
@@ -77,13 +73,13 @@ Check out [API Options](/xamarin/sdk-configuration-android#api-options) for more
   src="/static/books/android/showfaqs.png"
   width="quarter"
   alt="showFAQs.png"
-/>{" "}
+/>
 
 <Image
   src="/static/books/android/faqsearch.png"
   width="quarter"
   alt="faqSearch.png"
-/>{" "}
+/>
 
 </SideBySide>
 
@@ -98,7 +94,7 @@ Typical cases why you would want to use FAQ filtering are :
 FAQ filtering is a 2 step approach
 
 1. FAQs need to be classified using the issue tags field on the dashboard e.g. tags ‘iphone’ & ‘ipad’.
-   <Image src="/static/books/android/faq-filtering.png" width="full" />{" "}
+   <Image src="/static/books/android/faq-filtering.png" width="full" />
 2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
 
 <Admonition type="info" title="Note">
@@ -121,14 +117,12 @@ Usage :
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
 
 ```csharp
-
     HsOperator operator = HsOperator.Or;
     string[] tags = new string[] {"tag1", "tag2"};
     HelpshiftFAQFilter filter = new HelpshiftFAQFilter(operator, tags);
     HelpshiftAPIConfig config = new HelpshiftAPIConfig.Builder()
                                     .SetWithTagsMatching(filter)
                                     .build();
-
 ```
 
 The `SetWithTagsMatching` call will take the `HelpshiftFAQFilter` object, which takes two parameters
@@ -139,7 +133,6 @@ The `SetWithTagsMatching` call will take the `HelpshiftFAQFilter` object, which 
 Example:
 
 ```csharp
-
     HsOperator operator = HsOperator.Or;
     string[] tags = new string[] {"android-phone", "android-tablet"};
     HelpshiftFAQFilter filter = new HelpshiftFAQFilter(operator, tags);
@@ -147,7 +140,6 @@ Example:
                                     .SetWithTagsMatching(filter)
                                     .build();
     HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, config);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -196,7 +188,7 @@ HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, configD);
   src="/static/books/android/showfaqsection.png"
   width="quarter"
   alt="showFAQSection.png"
-/>{" "}
+/>
 
 </SideBySide>
 
@@ -208,7 +200,7 @@ You can use the `ShowFAQSection` api call to show faqs from a particular FAQ sec
 
 **You'll need the `publish-id` of the section in this case:**
 
-<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
 
 This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to login to using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -222,7 +214,7 @@ Check out [API Options](/xamarin/sdk-configuration-android#api-options) for more
   src="/static/books/android/showsinglefaq.png"
   width="quarter"
   alt="showSingleFAQ.png"
-/>{" "}
+/>
 
 </SideBySide>
 
@@ -234,7 +226,7 @@ You can use the `ShowSingleFAQ` api call to show a single faq question.
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
 
 ## Guided Issue Filing {#dynamic-forms}
 

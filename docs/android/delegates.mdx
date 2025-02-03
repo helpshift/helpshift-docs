@@ -40,7 +40,6 @@ For example:
 Class Implementation:
 
 ```java
-
     import com.helpshift.support.Support.Delegate
     ...
     ...
@@ -102,16 +101,13 @@ Class Implementation:
       }
 
     }
-
 ```
 
 Class Usage:
 
 ```java
-
     MyDelegates delegates = new MyDelegates();
     Support.setDelegate(delegates);
-
 ```
 
 Please make sure you call `setDelegate` method before calling any Helpshift FAQ
@@ -152,11 +148,9 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 For example:
 
 ```java
-
     public void newConversationStarted (String newConversationMessage) {
       // your code here
     }
-
 ```
 
 ### Conversation Ended {#delegate-conversation-ended}
@@ -168,11 +162,9 @@ This delegate callback can be implemented to check if an ongoing Conversation ha
 For example:
 
 ```java
-
     public void conversationEnded () {
       // your code here
     }
-
 ```
 
 ### New message delegate {#delegate-user-replied-to-conversation}
@@ -182,24 +174,20 @@ For example:
 If you want to keep track of when your app users send new messages to an ongoing conversation, you can implement this delegate. This delegates will get called every time a user replies to a conversation. The delegate method will receive the new message's content in it's arguments. if the message is of a special type then it will be one of the following four messages.
 
 ```java
-
     public static final String UserAcceptedTheSolution = "User accepted the solution";
     public static final String UserRejectedTheSolution = "User rejected the solution";
     public static final String UserSentScreenShot = "User sent a screenshot";
     public static final String UserReviewedTheApp = "User reviewed the app";
-
 ```
 
 For example:
 
 ```java
-
     public void userRepliedToConversation (String newMessage) {
       if (newMessage.equals(Support.UserAcceptedTheSolution)) {
         // your code here
       }
     }
-
 ```
 
 <Admonition type="info" title="Note">
@@ -217,13 +205,11 @@ If you want to keep track of when your app user completes the customer satisfact
 For example:
 
 ```java
-
     public void userCompletedCustomerSatisfactionSurvey (int rating, String feedback) {
       if (rating < 3) {
         // your code goes here
       }
     }
-
 ```
 
 ### Display attachment delegate {#display-attachment}
@@ -252,11 +238,9 @@ You can also use this delegate to keep your badge counts updated.
 For example:
 
 ```java
-
     public void didReceiveNotification (int newMessagesCount) {
         // your code goes here
     }
-
 ```
 
 ### User click on action delegate {#user-click-action}
@@ -277,9 +261,7 @@ This delegate method is called when user clicks on an action in Action Card bot.
 For example:
 
 ```java
-
     public void userClickOnAction(ActionType actionType, String actionData) {
           // your code
       }
-
 ```

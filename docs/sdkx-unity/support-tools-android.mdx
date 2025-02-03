@@ -149,7 +149,7 @@ void ShowFAQSection(string sectionPublishId){
 
 **You'll need the `publish-id` of the section in this case:**
 
-<Image src="/static/books/misc/section-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/section-publish-id.png" width="full" />
 
 ## Showing a Particular FAQ {#faq-view}
 
@@ -190,8 +190,38 @@ void ShowFAQs(string faqPublishId){
 
 **You'll need the `publish-id` of the FAQ in this case:**
 
-<Image src="/static/books/misc/faq-publish-id.png" width="full" />{" "}
+<Image src="/static/books/misc/faq-publish-id.png" width="full" />
 
-### Set SDK language {#set-language-api}
+## Closing an open SDK session
+
+You can use the API `CloseSession()` to close an active SDK session. Calling this API will close any open SDK screens and invoke the corresponding [lifecycle delegate methods](/sdkx-unity/delegates-android/#session-delegates). If no SDK session is active, calling this API will have no effect.
+
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version
+
+</Admonition>
+
+```csharp
+HelpshiftSdk.GetInstance().CloseSession();
+```
+
+## Getting the SDK version
+
+You can use the API `SdkVersion()` to get the current version of Helpshift SDK.
+
+<Admonition type="info" title="Note">
+
+This API is available from 10.3.0 version.
+
+</Admonition>
+
+```csharp
+// Returns SDK version as a string eg. "10.3.0"
+string version = HelpshiftSdk.GetInstance().SdkVersion();
+Debug.Log("Helpshift - SDK Version is :" + version);
+```
+
+## Set SDK language {#set-language-api}
 
 For more info about this API and languages you can refer [here](/sdkx-unity/i18n-android/)

@@ -103,12 +103,10 @@ You should call Helpshift SDK's login API whenever the user successfully logs in
 </table>
 
 ```csharp
-
     HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
                                           .SetName("John Doe")
                                           .Build();
     HelpshiftCore.Login(user);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -131,9 +129,7 @@ _Note:_ The logout API is expected to be used in conjunction with the login API.
 #### How to use
 
 ```csharp
-
     HelpshiftCore.Logout();
-
 ```
 
 <Admonition type="info" title="Note">
@@ -157,9 +153,7 @@ An anonymous user is someone who can access the app without a username and passw
 If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUser` functionality. When this API is used, anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again for the end users.
 
 ```csharp
-
     HelpshiftCore.ClearAnonymousUser();
-
 ```
 
 <Admonition type="info" title="Note">
@@ -183,13 +177,11 @@ In order to ensure your users are verified, you should provide a 'user authentic
 You can send the 'user authentication token' with the Login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
 ```csharp
-
     HelpshiftUser user = new HelpshiftUser.Builder(<"unique-user-id-746501">, <"unique-email@some_domain.com">)
                                           .SetName("John Doe")
                                           .SetAuthToken("generated-user-authentication-token")
                                           .Build();
     HelpshiftCore.Login(user);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -258,7 +250,6 @@ The error strings can be customised in the SDK.
 Example:
 
 ```csharp
-
 	public void AuthenticationFailed(HelpshiftUser user, AuthenticationFailureReason reason)
     {
         if(reason == AuthenticationFailureReason.AuthTokenNotProvided)
@@ -269,7 +260,6 @@ Example:
             ...
         }
     }
-
 ```
 
 #### Testing & Troubleshooting {#identity-verification-troubleshooting}

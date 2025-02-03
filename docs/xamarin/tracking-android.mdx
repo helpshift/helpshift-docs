@@ -108,7 +108,7 @@ Any modified metadata (updated during an active conversation) will only be sent 
 
 </Admonition>
 
-<Image src="/static/books/android/metadata-tags.png" width="half" />{" "}
+<Image src="/static/books/android/metadata-tags.png" width="half" />
 
 Examples :
 
@@ -120,7 +120,6 @@ You can attach tags with metadata to every reported issue via a reserved constan
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
 
 ```csharp
-
     string[] tags = new string[] { "feedback", "paid user" };
     Dictionary<string, object> userData = new Dictionary<string, object>();
     userData.Add("usertype", "paid");
@@ -131,7 +130,6 @@ You can attach tags with metadata to every reported issue via a reserved constan
                                                          .SetCustomMetadata(metadata)
                                                          .Build();
     HelpshiftApi.HelpshiftSupport.ShowFAQs(this, apiConfig);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -144,7 +142,6 @@ Applicable to version 3.0.0 and above.
 <TabItem value="Using Dictionary" label="Using Dictionary">
 
 ```csharp
-
     Dictionary<string, object> config = new Dictionary<string, object>();
     config.Add(HelpshiftApi.HelpshiftSupport.HSTAGSKEY, new String[] {"Whale","feedback","paid user"});
     config.Add("User","paid");
@@ -152,7 +149,6 @@ Applicable to version 3.0.0 and above.
     Dictionary<string, object> configMap = new Dictionary<string, object>();
     configMap.Add(HelpshiftApi.HelpshiftSupport.HSCUSTOMMETADATAKEY,config);
     HelpshiftApi.HelpshiftSupport.showFAQs(configMap);
-
 ```
 
 </TabItem>
@@ -194,7 +190,6 @@ Possible datatypes to be passed into the config are:
 <TabItem value="Using HelpshiftAPIConfig" label="Using HelpshiftAPIConfig">
 
 ```csharp
-
     Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]>();
      // The format for calling Add is customIssueFields.Add(<key>, new string[]{<datatype>, <value>});
     customIssueFields.Add("join_date", new string[]{"dt", "1505927361535"});
@@ -209,7 +204,6 @@ Possible datatypes to be passed into the config are:
                                                          .SetCustomIssueFields(customIssueFields)
                                                          .Build();
     HelpshiftApi.HelpshiftSupport.ShowFAQs(activity, apiConfig);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -224,7 +218,6 @@ Applicable to version 3.0.0 and above.
 The SDK allows the addition of a dictionary of Custom Issue Fields by using the `HelpshiftApi.HelpshiftSupport.HSCUSTOMISSUEFIELDKEY` key to the config dictionary.
 
 ```csharp
-
     Dictionary<string, object> configD = new Dictionary<string, object>();
 
     Dictionary<string, string[]> customIssueFields = new Dictionary<string, string[]> ();
@@ -237,7 +230,6 @@ The SDK allows the addition of a dictionary of Custom Issue Fields by using the 
 
     configD.Add(HelpshiftApi.HelpshiftSupport.HSCUSTOMISSUEFIELDKEY, customIssueFields);
     HelpshiftApi.HelpshiftSupport.ShowFAQs(configD);
-
 ```
 
 </TabItem>
@@ -257,15 +249,12 @@ This API determines if there is currently an ongoing Conversation in the SDK. Yo
 For example:
 
 ```csharp
-
     HelpshiftApi.HelpshiftSupport.CheckIfConversationActive();
-
 ```
 
 You can implement the "DidCheckIfConversationActive" delegate method like the following example:
 
 ```csharp
-
     using HelpshiftApi;
 
     public class  HSDelegate : ISupportDelegate {

@@ -23,7 +23,7 @@ import {
 
 ## SDK integration {#integration-issues}
 
-### Using AndroidX support libraries {#steps-to-build-with-android-x}
+### Using AndroidX support libraries with 10.2.3 and below {#steps-to-build-with-android-x}
 
 Helpshift Unity SDK X uses legacy Android support libraries.
 If you want to use AndroidX libraries in your application please follow these steps to make Helpshift SDK compatible with AndroidX:
@@ -59,7 +59,7 @@ If you are using **`Gradle`** to resolve support library requirements:
 
 - Update dependencies section of the `<project>/Assets/Plugins/Android/mainTemplate.gradle` or `build.gradle` file to use the AndroidX material library as:
 
-```
+```groovy
 dependencies {
   ...
   implementation 'com.google.android.material:material:1.0.0'
@@ -68,6 +68,10 @@ dependencies {
 ```
 
 After all these changes, **ensure there are no legacy Android support libraries present** in your project. Build your app and verify if all the UI screens are working as expected.
+
+### Moved to AndroidX ( 10.3.0 and above versions )
+
+Helpshift Unity SDK X has completely moved to AndroidX from `10.3.0`. If client app is using legacy libraries then SDK X will not compile.
 
 ## Sample Scene integration {#sample-scene-integration-issues}
 

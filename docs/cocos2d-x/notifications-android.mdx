@@ -36,7 +36,7 @@ Configure Push and In-app notifications.
   src="/static/books/android/urbanairshipnotif.png"
   width="quarter"
   alt="urbanAirshipNotif.png"
-/>{" "}
+/>
 
 Helpshift allows you to send Push notifications when an agent replies to a conversation.
 
@@ -61,12 +61,12 @@ Notifications** settings section for the app.
   src="/static/books/android/helpshift-push-notifications.png"
   width="major"
   alt="helpshift-push-notifications.png"
-/>{" "}
+/>
 
 And for FCM users, the API key can be found at your
 [Firebase API Console](https://console.firebase.google.com/)
 
-<Image src="/static/books/android/fcm_console.png" width="major" />{" "}
+<Image src="/static/books/android/fcm_console.png" width="major" />
 
 <br />
 
@@ -82,22 +82,17 @@ And for FCM users, the API key can be found at your
 1. Send the device registration id to Helpshift via the `Core.registerDeviceToken` API
 
 ```java
-
-
-
         import com.helpshift.Core;
 
         private void sendRegistrationIdToBackend() {
           // Send registrationId to Helpshift
           Core.registerDeviceToken(context, regid);
         }
-
 ```
 
 2. Use `Core.handlePush` API which takes a Map argument.
 
 ```java
-
         @Override
         public void onMessageReceived(RemoteMessage message) {
           Map<String, String> data = message.getData();
@@ -116,7 +111,6 @@ And for FCM users, the API key can be found at your
             Core.handlePush(this, data);
           }
         }
-
 ```
 
 ## In-app notifications {#in-app-notifications}
@@ -160,21 +154,18 @@ Example:
 / .code-header /
 
 ```cpp
-
     ValueMap config;
     config[HS_ENABLE_IN_APP_NOTIFICATION] = Value("yes");
     HelpshiftCocos2dx::install("<YOUR_API_KEY>",
                                "<YOUR_COMPANY>.helpshift.com",
                                "<YOUR_APP_ID>",
                                config);
-
 ```
 
 **For cocos2d-x 2.x**
 / .code-header /
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     config->setObject(new CCString("yes"), HS_ENABLE_IN_APP_NOTIFICATION);
 
@@ -182,7 +173,6 @@ Example:
                                "<YOUR_COMPANY>.helpshift.com",
                                "<YOUR_APP_ID>",
                                config);
-
 ```
 
 ### Customizing notification icons {#customizing-notification-icons}
@@ -192,7 +182,6 @@ By default the application icon is used as the notification icon. You can custom
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("notificationIcon", R.drawable.notification_icon_small);
     config.put("largeNotificationIcon", R.drawable.notification_icon_large);
@@ -201,7 +190,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ### Customizing notification sound {#customizing-notification-sound}
@@ -211,7 +199,6 @@ By default the default device notification sound is used for helpshift notificat
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("notificationSound", R.raw.notification_sound);
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -219,7 +206,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ### Notification channels {#notification-channels}
@@ -233,10 +219,8 @@ Applicable to SDK v1.8.0 and above.
 Starting from Android Oreo, Helpshift notifications will have a default channel set as `In-app Support`. The name and description for this default channel can be changed by setting the following settings. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
 
 ```cpp
-
     <string name="hs__default_notification_channel_name">Example Support Name</string>
     <string name="hs__default_notification_channel_desc">Example Support Description</string>
-
 ```
 
 If you want to customize the notification channels, you can create your own custom channels and set their channel IDs in the in the config dictionary passed to the `install` corresponsing to following key: `supportNotificationChannelId`
@@ -244,7 +228,6 @@ If you want to customize the notification channels, you can create your own cust
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("supportNotificationChannelId", "SUPPORT_CHANNEL_ID");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -252,7 +235,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ## Showing notification count when replies are sent to the user {#showing-notification-count}
@@ -262,7 +244,6 @@ posted, you can get the notification count synchronously from
 cache or asynchronously from the server by setting the `isAsync` flag. Example:-
 
 ```cpp
-
     void didReceiveNotificationCountListenerArg(int count) {
         CCLOG("HelpshiftCocos2dx::didReceiveNotificationCountListenerArg : %d.", count);
     }
@@ -271,7 +252,6 @@ cache or asynchronously from the server by setting the `isAsync` flag. Example:-
     // OR
     // asynchronously from the server.
     HelpshiftCocos2dx::getNotificationCount(true, didReceiveNotificationCountListenerArg);
-
 ```
 
 <Admonition type="info" title="Note">

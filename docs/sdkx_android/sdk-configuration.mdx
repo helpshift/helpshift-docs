@@ -21,6 +21,7 @@ import {
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
 import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
 
 # SDK Configuration
 
@@ -52,6 +53,14 @@ Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in 
 
 </div>
 
+<Admonition type="info" title="Note">
+
+- From 10.4.0,
+  - Error Logs will always get logged regardless of `enableLogging` config.
+  - Debug logs are now based solely on the enableLogging flag, irrespective of whether the app is in debug or release variant.
+
+</Admonition>
+
 Example:
 
 ```java
@@ -72,6 +81,72 @@ Example:
       }
     }
 ```
+
+## FAQ Filtering by tags {#faq-filtering}
+
+We have FAQ filtering capability by tags.
+With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
+
+Typical cases why you would want to use FAQ filtering are:
+
+- You want to show specific FAQs for specific audience. E.g. if you may categorize the users as ‘beginner’, ‘intermediate’ or ‘expert’ based on your business logic.
+- You may want to show specific FAQs based on the device. E.g. a set of FAQs for iPad vs. iPhone.
+
+FAQ filtering is a 2 step approach :
+
+1. FAQs need to be classified using the `<issue tags>` field on the dashboard e.g. tags `iphone` & `ipad`.
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />
+2. Once the FAQs are tagged, they can be filtered at the SDK using the filter options described here.
+
+<Admonition type="info" title="Note">
+
+Helpshift has 2 types of tags mainly ‘Issue Tags’ & ‘Search Tags’.
+
+- Issue tags are used to filter the FAQ list on the SDK with the filter rules.
+- Search tags (a.k.a Search Keywords) When performing in-app search, Helpshift SDK gives preference to these keywords. You can also use this to add alternative keywords that users might search for, but which may not exist in the FAQ title or the content.
+
+</Admonition>
+
+#### How to use FAQ filtering
+
+This will be a config option which will be supported by the `showFAQs` and `showFAQSection` APIs.
+
+The `filter` option will be a map containing 2 keys
+
+- operator : one of `AND`, `OR`, `NOT` which will serve as conditional operators for the given tags.
+- tags : the actual tags in the query
+
+The `filter` option should be added as an object against key “filter” in the map `config` that is taken by showFAQs, showFAQSection and showSingleFAQ APIs.
+
+|              |                                                                                |
+| ------------ | ------------------------------------------------------------------------------ |
+| Option:      | <code>filter</code>                                                            |
+| Sub-Options: | <code>tags</code> / <code>operator</code>                                      |
+| Default      | <code>null</code>                                                              |
+| Min SDK      | v10.0.0                                                                        |
+| Supported by | <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code> |
+
+Example:
+
+```java
+ Map<String, Object> config = new HashMap<>();
+
+ // .. other configs
+
+ Map<String, Object> filter = new HashMap<>();
+ filter.put("tags", new String[]{"tag1", "tag2"});
+ filter.put("operator", "AND");
+
+ config.put("filter", filter);
+
+ Helpshift.showFAQs(MainActivity.this, config);
+```
+
+<Admonition type="info" title="Note">
+
+You can have only one tag filter config which will be respected on showFAQs, showFAQSection and showSingleFAQ. Also the tag filtering respects only one operator.
+
+</Admonition>
 
 ## Enable Contact Us {#enableContactUs}
 
@@ -223,6 +298,66 @@ Map<String, Object> config = new HashMap<>();
 // .. other configs
 config.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
 Helpshift.showConversation(MainActivity.this, config);
+```
+
+## Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+Example:
+
+```java
+Map<String, Object> subsequentIssuesInSameSessionConfig = new HashMap<>();
+subsequentIssuesInSameSessionConfig.put("initialUserMessage", "");
+
+Map<String, Object> config = new HashMap<>();
+
+// This is used for the first issue in the session
+config.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+
+// This will be used for all subsequent issues in that session
+config.put("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig);
+
+Helpshift.showConversation(MainActivity.this, config);
+```
+
+For outbound support scenarios make sure to add this config in the user specific config callback
+`getAPIConfig` you get when you register `Helpshift.setHelpshiftProactiveConfigCollector()`.
+
+```java
+public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector{
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    //...
+
+    // initialise proactiveConfig collector
+    Helpshift.setHelpshiftProactiveConfigCollector(this);
+
+    //...
+  }
+
+  //...
+
+  @Override
+  public Map<String, Object> getAPIConfig() {
+
+    // config map
+    Map<String, Object> localConfig = new HashMap<>();
+    Map<String, Object> subsequentIssuesInSameSessionConfig = new HashMap<>();
+
+    // ....
+    // user specific config
+
+    // This is used for the first issue in the session
+    localConfig.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+    // This will be used for all subsequent issues in that session
+    subsequentIssuesInSameSessionConfig.put("initialUserMessage", "");
+    localConfig.put("subsequentIssuesInSameSessionConfig", subsequentIssuesInSameSessionConfig);
+
+    return localConfig;
+  }
+}
 ```
 
 ## Screen Orientation {#screen-orientation}

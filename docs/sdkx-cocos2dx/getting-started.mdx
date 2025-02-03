@@ -24,9 +24,18 @@ You're 3 steps away from adding great in-app support to your Cocos2dx Game.
 # Requirements {#version-requirements}
 
 - Xcode 12.0 and above.
-- Supported iOS versions - iOS 12 and above
-- Supported Android versions - API level 21 and above
+- Supported iOS versions - iOS 13 and above
+- Supported Android versions - API level 24 and above i.e Android OS 7 Nougat and above.
 - Cocos2dx 3.x and above
+
+<Admonition type="info" title="Note">
+
+- Update (August 2023): SDK X 10.2.x is functional only above API Level 24 i.e Android OS 7 Nougat and above.
+- SDK 10.3.0 functions and is supported on Android 7 and above (API level 24 and above). You can still compile your app using a minimum API level of 16, but the support starts for API level 24 and above.
+  For details regarding Helpshift SDK's Android OS support policy, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
+
+</Admonition>
+
 ## Step 1 - Download the Cocos2d-x plugin for Helpshift {#download}
 
 <DownloadButton
@@ -62,9 +71,35 @@ The Helpshift SDK X Cocos package contains the following files:
 
 ## Add Helpshift dependencies in your project
 
+If you are on SDK X or migrating to SDK X please note the following requirements:
+
+- SDK X is functional only above API Level 24 i.e Android OS 7 Nougat and above.
+- The `minSDKVersion` in code is kept as API Level 16 to allow importing the SDK and compiling in apps that allow installation till API Level 16 i.e Android 4.4 Jelly Bean.
+- If your app is installed on a device below API level 24 (i.e below Android OS 7 Nougat) then you can choose to have a different medium for providing support. For example, Email, Web etc. We throw an `UnsupportedOSVersionException` if the SDK is initialized below API Level 24. Please catch and use this exception according to your needs. Refer: [Initializing the SDK](/sdkx-cocos2dx/getting-started/#initialize).
+
 1.  Copy the `Helpshift.aar` file from the `android/proj.android-studio/libs` present inside plugin folder to the `libs` directory of your android project.
 
 2.  Add dependency to Helpshift SDK in your `app/build.gradle` file.
+
+<Tabs>
+<TabItem value=">= 10.3.0" label="10.3.X">
+
+```groovy
+repositories {
+    //your other repositories
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    // your other dependencies
+
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation(name: 'Helpshift', ext:'aar')
+}
+```
+
+</TabItem>
+<TabItem value="<= 10.2.X>" label="Below 10.2.0">
 
 ```groovy
 repositories {
@@ -79,6 +114,9 @@ dependencies {
     implementation(name: 'Helpshift', ext:'aar')
 }
 ```
+
+</TabItem>
+</Tabs>
 
 3.  Link Helpshift files in your project as source depending on your build system.
 
@@ -144,13 +182,13 @@ If your game does not use this permission, you would need to add this key as wel
 
 1. First, create a game on the Helpshift Dashboard
 
-   <Image src="/static/books/helpshiftx/add_app.png" width="full" />{" "}
+   <Image src="/static/books/helpshiftx/add_app.png" width="full" />
 
 2. Create a game with **Android** and **iOS** as a selected `Platform`
    <Image
      src="/static/books/helpshiftx/create_app_with_android_platform.png"
      width="full"
-   />{" "}
+   />
 
 Helpshift uniquely identifies each registered game with a combination of 2 tokens:
 
@@ -270,7 +308,7 @@ Calling any API before the install call would throw an unchecked `HelpshiftIniti
 
 **UnsupportedOSVersionException**
 
-Calling `install()` below Android SDK version 21 will throw this checked exception. All the APIs will be non operable.
+Calling `install()` below Android SDK version 24 will throw this checked exception. All the APIs will be non operable.
 
 </Admonition>
 </TabItem>

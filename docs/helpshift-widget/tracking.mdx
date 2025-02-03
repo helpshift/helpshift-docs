@@ -1,0 +1,108 @@
+---
+sidebar_position: 50
+title: Tracking
+description: "Attach metadata via Helpshift Widget."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Tracking {#tracking}
+
+<Intro>
+
+Attach metadata via Helpshift Widget.
+
+</Intro>
+
+## Adding Tags to Conversations {#adding-tags}
+
+You can attach tags while reporting an issue by passing them to the `helpshiftWidgetConfig` object at the time of initialization. You can pass an **array of strings** which will get added as Tags when the issue is created.
+
+For example:
+
+```javascript
+// Make this change to the embed code placed before the closing </body> tag.
+
+window.helpshiftWidgetConfig = {
+  platformId: "<YOUR_APP_ID>",
+  domain: "<YOUR_DOMAIN>",
+  tags: ["foo", "bar"],
+};
+```
+
+<Admonition type="info" title="Note">
+
+**On tag names & compatibility**
+
+- Tags must be pre-created in the Helpshift Dashboard (Settings → Tags), otherwise they will be ignored.
+- The attached tags must exactly match the tags present on the dashboard.
+
+</Admonition>
+
+## Set Custom Issue Fields {#set-custom-issue-fields}
+
+If you want to set Custom Issue Fields at the time of issue creation, you can pass them to the `helpshiftWidgetConfig` object at the time of initialization.
+
+```javascript
+
+window.helpshiftWidgetConfig = {
+  platformId: "<YOUR_APP_ID>",
+  domain: "<YOUR_DOMAIN>",
+  cifs: {
+    // Key of the Custom Issue Field
+    version: {
+        // Type of Custom Issue Field
+        type: "number",
+        // Value to set for Custom Issue Field
+        value: "10.0",
+    },
+    userInfo: {
+        // Type of Custom Issue Field
+        type: "singleline",
+        // Value to set for Custom Issue Field
+        value: "We have a new user!",
+    },
+  }
+};
+```
+
+The following are the valid values for the type property of a Custom Issue Field.
+
+- singleline
+- multiline
+- number
+- checkbox
+- dropdown
+- date
+
+Compatibility table for type and values:
+
+| Type       | Value   | Comments                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | Character limit of 255                                          |
+| multiline  | string  | Character limit of 100,000                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | Drop-down options should exist for the given Custom Issue Field |
+| date       | number  | Epoch time. For example - **Date.now()**                        |
+| checkbox   | boolean |                                                                 |
+
+<Admonition type="info" title="Note">
+
+- This config should be called before the issue is created (i.e. before the Helpshift Widget launcher is clicked or the [Open Widget API](/helpshift-widget/api/#open-widget) is called). You won't be able to update Custom Issue Fields after the issue is created.
+- If any of the keys, types or values are invalid, that particular Custom Issue Field will get dropped.
+- If you want to update the Custom Issue Fields for subsequent issue creations, you need to update the cifs config in the helpshiftWidgetConfig object and then use the [updateHelpshiftWidgetConfig](/helpshift-widget/api/#update-helpshift-widget-config) API to update the Custom Issue Fields for subsequent issue creations.
+
+</Admonition>

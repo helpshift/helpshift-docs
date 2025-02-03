@@ -51,7 +51,6 @@ variable to `"no"` in the config dictionary passed to the `install`.
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("enableInAppNotification", "yes");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -59,7 +58,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ### Customizing notification icons {#customizing-notification-icons}
@@ -69,7 +67,6 @@ By default the application icon is used as the notification icon. You can custom
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("notificationIcon", R.drawable.notification_icon_small);
     config.put("largeNotificationIcon", R.drawable.notification_icon_large);
@@ -78,7 +75,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ### Customizing notification sound {#customizing-notification-sound}
@@ -88,7 +84,6 @@ By default the default device notification sound is used for helpshift notificat
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("notificationSound", R.raw.notification_sound);
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -96,7 +91,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ### Notification channels {#notification-channels}
@@ -110,10 +104,8 @@ Applicable to SDK v1.8.0 and above.
 Starting from Android Oreo, Helpshift notifications will have a default channel set as `In-app Support`. The name and description for this default channel can be changed by setting the following settings. If you want to customize the name and description for the default channel, you can do so by using the following resources in your strings.xml file:
 
 ```cpp
-
     <string name="hs__default_notification_channel_name">Example Support Name</string>
     <string name="hs__default_notification_channel_desc">Example Support Description</string>
-
 ```
 
 If you want to customize the notification channels, you can create your own custom channels and set their channel IDs in the in the config dictionary passed to the `install` corresponsing to following key: `supportNotificationChannelId`.
@@ -121,7 +113,6 @@ If you want to customize the notification channels, you can create your own cust
 For Example:
 
 ```cpp
-
     HashMap config = new HashMap();
     config.put("supportNotificationChannelId", "SUPPORT_CHANNEL_ID");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -129,8 +120,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
-
 ```
 
 ### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
@@ -156,7 +145,6 @@ This configuration does not apply to the QuickSearch Bot suggested FAQs.
 For Example:
 
 ```java
-
     HashMap config = new HashMap();
     config.put("enableDefaultFallbackLanguage", "yes");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -164,8 +152,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
-
 ```
 
 ### Using Custom Fonts {#usingCustomFonts}
@@ -183,7 +169,6 @@ Applicable to version 1.4.0 and above.
 For Example:
 
 ```java
-
     HashMap config = new HashMap();
     config.put("font", "fonts/DancingScript-Regular.ttf");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -191,7 +176,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 **Step 3:** Test the font in simulator. Errors in font names are ignored by the SDK &mdash;
@@ -200,7 +184,7 @@ For Example:
   src="/static/books/android/font-in-use.png"
   width="quarter"
   centered
-/>{" "}
+/>
 
 ### screenOrientation {#screenOrientation}
 
@@ -226,7 +210,6 @@ For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTA
 For Example:
 
 ```java
-
     HashMap config = new HashMap();
     config.put("screenOrientation", ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -234,7 +217,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 <Admonition type="info" title="Note">
@@ -261,7 +243,6 @@ Upon setting enableLogging to "yes", Helpshift SDK logs will be generated in the
 For Example:
 
 ```java
-
     HashMap config = new HashMap();
     config.put("enableLogging", "yes");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -269,7 +250,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
 ```
 
 ### disableErrorReporting {#disableErrorReporting}
@@ -289,7 +269,6 @@ Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK w
 For Example:
 
 ```java
-
     HashMap config = new HashMap();
     config.put("disableErrorReporting", "yes");
     HelpshiftBridge.install(this, // "this" should be the application object
@@ -297,8 +276,6 @@ For Example:
                             "<YOUR_HELPSHIFT_DOMAIN>.helpshift.com",
                             "YOUR_APP_ID",
                             config);
-
-
 ```
 
 ## API Options {#api-options}
@@ -337,24 +314,20 @@ Example:
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config[HS_ENABLE_CONTACT_US] = HS_ENABLE_CONTACT_US_NEVER;
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *enableContactUs = new CCString(HS_ENABLE_CONTACT_US_NEVER);
 
     config->setObject(enableContactUs, HS_ENABLE_CONTACT_US);
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
@@ -399,22 +372,18 @@ Example:
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config["gotoConversationAfterContactUs"] = Value("yes");
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     config->setObject(new CCString("yes"), HS_GOTO_CONVERSATION_AFTER_CONTACT_US);
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
@@ -455,24 +424,20 @@ For example:
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
-```cppp
-
+```cpp
     ValueMap config;
     config["requireEmail"] = Value("yes");
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *requireEmail = new CCString("yes");
     config->setObject(requireEmail, HS_REQUIRE_EMAIL);
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
@@ -522,23 +487,19 @@ For example:
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config["hideNameAndEmail"] = Value("yes");
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *hideNameEmail = new CCString("yes");
     config->setObject(hideNameEmail, HS_HIDE_NAME_AND_EMAIL);
     HelpshiftCocos2dx::showFAQs(config);
-
 ```
 
 </TabItem>
@@ -572,23 +533,19 @@ Example:
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config[HS_CONVERSATION_PREFILL_TEXT] = Value("This is prefilled text");
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *prefill = new CCString("This is prefilled");
     config->setObject(prefill, HS_CONVERSATION_PREFILL_TEXT);
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
@@ -632,23 +589,19 @@ Example:
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config["enableFullPrivacy"] = Value("yes");
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *enableFullPrivacy = new CCString("yes");
     config->setObject(enableFullPrivacy, HS_ENABLE_FULL_PRIVACY);
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
@@ -701,24 +654,20 @@ Example:
 
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
-```cppp
-
+```cpp
     ValueMap config;
     config[HS_SHOW_SEARCH_ON_NEW_CONVERSATION] = Value("yes");
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *showSearchOnNewConversation = new CCString("yes");
     config->setObject(showSearchOnNewConversation, HS_SHOW_SEARCH_ON_NEW_CONVERSATION);
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
@@ -742,7 +691,7 @@ If you want to use this feature, you can turn the feature on and off ("Resolutio
 <Image
   src="/static/books/android/conversation-resolution-flag.png"
   width="full"
-/>{" "}
+/>
 
 #### For Older Cocos2d-x SDK versions 1.9.0 and below, please read the following:
 
@@ -767,23 +716,19 @@ Example :
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config[HS_SHOW_CONVERSATION_RESOLUTION_QUESTION] = Value("yes")
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *showConversationResolutionQuestion = new CCString("yes");
     config->setObject(showConversationResolutionQuestion, HS_SHOW_CONVERSATION_RESOLUTION_QUESTION);
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
@@ -819,7 +764,6 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     void AppDelegate::menuHelpCallback(Ref* pSender) {
          ValueVector forms;
 
@@ -851,14 +795,12 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 
      HelpshiftCocos2dx::showFAQs(showFAQsConfig);
     }
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     void AppDelegate::menuHelpCallback(Ref* pSender) {
         cocos2d::CCArray *forms = CCArray::create();
 
@@ -890,7 +832,6 @@ Let's say you want the users to see a particular FAQ section, a single FAQ and 2
 
      HelpshiftCocos2dx::showFAQs(showFAQsConfig);
     }
-
 ```
 
 </TabItem>
@@ -912,7 +853,6 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     void AppDelegate::menuHelpCallback(Ref* pSender) {
          ValueVector forms;
 
@@ -949,14 +889,12 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 
          HelpshiftCocos2dx::showFAQs(showFAQsConfig);
     }
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     void AppDelegate::menuHelpCallback(Ref* pSender) {
         cocos2d::CCArray *forms = CCArray::create();
 
@@ -993,7 +931,6 @@ Let's say you want to configure `singleFAQFlow` in the above example to show `sh
 
         HelpshiftCocos2dx::showFAQs(showFAQsConfig);
     }
-
 ```
 
 </TabItem>
@@ -1035,23 +972,19 @@ Example :
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap config;
     config[HS_SHOW_CONVERSATION_INFO_SCREEN] = Value("yes")
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = new cocos2d::CCDictionary();
     CCString *showConversationInfoScreen = new CCString("yes");
     config->setObject(showConversationInfoScreen, HS_SHOW_CONVERSATION_INFO_SCREEN);
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>
@@ -1123,23 +1056,19 @@ For Example:
 <TabItem value="For Cocos2d-x 3.x " label="For Cocos2d-x 3.x ">
 
 ```cpp
-
     ValueMap showConversationConfig;
     showConversationConfig[HS_ENABLE_TYPING_INDICATOR] = Value("yes");
     HelpshiftCocos2dx::showConversation(showConversationConfig);
-
 ```
 
 </TabItem>
 <TabItem value="For Cocos2d-x 2.x :" label="For Cocos2d-x 2.x :">
 
 ```cpp
-
     cocos2d::CCDictionary *config = CCDictionary::create();
     CCString *enableTypingIndicator = CCString::create("yes");
     config->setObject(enableTypingIndicator, HS_ENABLE_TYPING_INDICATOR);
     HelpshiftCocos2dx::showConversation(config);
-
 ```
 
 </TabItem>

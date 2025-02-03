@@ -42,7 +42,7 @@ async function createConfig() {
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
-    favicon: "img/favicon.ico",
+    favicon: "img/favicon.png",
 
     // Even if you don't use internationalization or i18n, you can use this field to set useful
     // metadata like html lang. For example, if your site is Chinese, you may want

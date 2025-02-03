@@ -20,8 +20,8 @@ import {
 } from "@site/src/components/forDocs";
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
-
 import ConversationInitialUserMessage from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx";
 
 # SDK Configuration
 
@@ -143,6 +143,21 @@ showFAQsWithConfig({
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
 - Provide country-based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
 
+## Initiate new conversation on chat screen load {#initiate-chat}
+
+In `config` map of `showConversation(config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
+
+Example:
+
+```java
+let config = {
+  ... other configs ,
+  initiateChatOnLoad: true/false,
+}
+
+showConversation(config);
+```
+
 ## Conversation prefill text {#conversation-prefill-text}
 
 <ConversationPrefillTextDescription />
@@ -188,6 +203,37 @@ let config = {
 
 showConversation(config);
 ```
+
+
+## Clearing Initial User Message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+Example:
+
+```js
+let config = {
+  initialUserMessage: "<INSERT YOUR INITIAL MESSAGE HERE>",
+  subsequentIssuesInSameSessionConfig: {
+    initialUserMessage: ""
+  }
+}
+
+showConversation(config);
+```
+For outbound support scenarios make sure to add this config in the user specific config.
+
+```js
+let config = {
+  initialUserMessage: "<INSERT YOUR INITIAL MESSAGE HERE>",
+  subsequentIssuesInSameSessionConfig: {
+    initialUserMessage: ""
+  }
+}
+
+handleProactiveLink(notificationData.helpshift_proactive_link, config);
+```
+
 
 ## Android Specific Configurations
 

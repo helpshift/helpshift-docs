@@ -20,6 +20,8 @@ import {
 } from "@site/src/components/forDocs";
 
 import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
+import InitialUserMessageDescription from "@site/docs/_partials/_conversationInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearInitialUserMessageDescription.mdx"
 
 # Configuration
 
@@ -113,7 +115,7 @@ helpshiftConfig.widgetOptions = {
 
 ## Theming {#theming}
 
-You can configure the Web Chat's greeting and color scheme directly from the Helpshift Dashboard. For more details, refer to [For Support Admins: Configure the User Experience](https://support.helpshift.com/kb/article/web-chat#section-three) in our Knowledge Base.
+You can configure the Web Chat's greeting and color scheme directly from the Helpshift Dashboard. For more details, refer to [For Support Admins: Configure the User Experience](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/900-web-chat-understand-the-appearance-of-web-chat-ui-elements-sdk-x/) in our Knowledge Base.
 
 ## Bots {#bots}
 
@@ -123,7 +125,7 @@ Bots can be enabled in Web Chat to automatically provide help and gather informa
 - **Identity Bot** - prompt your users for their name and/or email before they create an issue
 - **CSAT Bot** - automatically ask for feedback after an Issue is resolved
 
-For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/kb/article/web-chat#section-four) in our Knowledge Base.
+For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/681-bot-procedures-create-and-configure-a-custom-bot-or-feedback-bot/) in our Knowledge Base.
 
 ## Full Privacy {#full-privacy}
 
@@ -133,12 +135,6 @@ In the `helpshiftConfig` object at the time of initialization, setting the `full
 - Making sure that Personally Identifiable Information (PII) such as name and email are not collected by Web Chat (using Identity Bot and/or the helpshiftConfig object). This means that if you set `userName` and `userEmail`, with `fullPrivacy` set to `true`, Helpshift will not use the `userName` and `userEmail` values.
 
 Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
-
-<Admonition type="info" title="Note">
-
-If you are creating issues with the `fullPrivacy` option set to `true`, then don’t use `New Issue Automation` (Refer [here](https://support.helpshift.com/kb/article/how-do-i-set-up-new-issue-automations/)) to auto-resolve them on the Agent dashboard. [Use `Time based Automation` (Refer [here](https://support.helpshift.com/kb/article/what-are-time-based-automations-and-how-do-i-set-them-up/)) instead]
-
-</Admonition>
 
 ##### Example Embed Code
 
@@ -168,7 +164,36 @@ window.helpshiftConfig.initiateChatOnLoad = true;
 Helpshift("updateHelpshiftConfig");
 ```
 
-To open the widget [open](https://developers.helpshift.com/web-chat/api/#open-widget) API can be used.
+To open the widget, [Open Widget API](https://developers.helpshift.com/web-chat/api/#open-widget) can be used.
+
+## Initial user message {#initial-user-message}
+
+<InitialUserMessageDescription />
+
+##### Example Embed Code
+
+```javascript
+window.helpshiftConfig.initialUserMessage = "Some initial user message";
+
+Helpshift("updateHelpshiftConfig");
+```
+
+## Clear initial user message {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+
+##### Example Embed Code
+
+```js
+window.helpshiftConfig.initialUserMessage = "Your initial user message";
+
+// Set this config to clear or override the initial user message for
+// subsequent issues in the same session
+window.helpshiftConfig.subsequentIssuesInSameSessionConfig = {
+  initialUserMessage: ""
+}
+Helpshift("updateHelpshiftConfig")
+```
 
 ## Conversation prefill text {#conversation-prefill-text}
 
@@ -181,4 +206,4 @@ window.helpshiftConfig.conversationPrefillText = "INSERT YOUR PREFILL TEXT";
 Helpshift("updateHelpshiftConfig");
 ```
 
-To open the widget [open](https://developers.helpshift.com/web-chat/api/#open-widget) API can be used.
+To open the widget, [Open Widget API](https://developers.helpshift.com/web-chat/api/#open-widget) can be used.
