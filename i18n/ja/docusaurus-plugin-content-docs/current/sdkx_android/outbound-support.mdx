@@ -1,7 +1,7 @@
 ---
 sidebar_position: 85
 title: アウトバウンドサポート
-description: "アウトバウンドサポートを使用すれば、アプリ内で発生した問題を消費者と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。"
+description: "アウトバウンドサポートを使用すれば、アプリ内で発生した問題を顧客と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。"
 ---
 
 import {
@@ -19,11 +19,13 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
 # アウトバウンドサポート {#outbound-support}
 
 <Intro>
 
-アウトバウンドサポートを使用すれば、アプリ内で発生した問題を消費者と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。
+アウトバウンドサポートを使用すれば、アプリ内で発生した問題を顧客と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。
 
 </Intro>
 
@@ -41,13 +43,13 @@ SDKに含まれているすべてのパブリックAPIは、[Helpshift.install()
 
 「**新しいリンク**」ボタンが表示されているはずです。「新しいリンク」ボタンをクリックし、**チャット、ヘルプセンター、シングルFAQ、FAQセクション**などのアクションと、Helpshift SDKにペイロードとして送信する**CIF、タグ、最初のユーザーメッセージ**などのデータを選択します。
 
-<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />
 
 最後に、URLエンコードされたペイロードのリンクを取得します。既存のプッシュ通知システムを使用して、このリンクを通知ペイロードに埋め込まれたエンドユーザーへと送信します。
 
 YOUR_APP_IDENTIFIERには、アプリを識別する一意の文字列を指定できます。たとえば、myAppやmyAppSupportなど、アプリのディープリンクURLで使用するスキームのようなものを指定します。
 
-<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />
 
 ## プッシュ通知のデータをHelpshiftにデリゲートする {#delegate-notification-data}
 
@@ -185,8 +187,4 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
 }
 ```
 
-<Admonition type="info" title="注意">
-  <b>"customIssueFields"</b>{" "}
-キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
-<b>"cifs"</b>キーの使用を強く推奨します。
-</Admonition>
+<CustomIssueFieldsKeyDeprecationNotice />

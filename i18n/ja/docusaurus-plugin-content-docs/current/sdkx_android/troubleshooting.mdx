@@ -53,7 +53,11 @@ SDKのデバッグログの共有は、以下の手順で行うことができ�
 
 ## SDKの統合 {#integration-issues}
 
-### AndroidXサポートライブラリの使用 {#steps-to-build-with-android-x}
+### AndroidX（バージョン10.3.0以上）に移行しました
+
+Helpshift SDK Xは、`10.3.0`からAndroidXへと完全に移行しました。クライアントアプリがレガシーライブラリを使用している場合、SDK Xはコンパイルを実行しません。
+
+### AndroidXサポートライブラリの使用（バージョン10.2.X以下） {#steps-to-build-with-android-x}
 
 Helpshift SDK Xでは、レガシー版のAndroidサポートライブラリを使用しています。アプリケーションでAndroidXライブラリを使用する場合には、以下の手順に従ってHelpshift SDKとAndroidXの互換性を確保してください。
 
@@ -84,7 +88,7 @@ Jetifierをインストールするには、[このzipファイルをダウン�
 
 チャット画面を読み込むことができず、コンソールやAndroidのLogcatでこのエラーが表示される場合には、
 
-```
+```text
 Access to XMLHttpRequest at 'https://api.helpshift.com/websdk/……' from origin
 'https://…...webchat.helpshift.com' has been blocked by CORS policy: Request
 header field accept-language is not allowed by Access-Control-Allow-Headers in
@@ -105,7 +109,7 @@ Helpshiftからプッシュ通知を取得できない場合には、[通知](/s
 
 - FirebaseコンソールからCloud Messaging API（レガシー）を有効にし、[通知](/sdkx_android/notifications#push-via-helpshift)に記載されているように、ダッシュボードでサーバーキーを入力してください。
 
-<Image src="/static/books/helpshiftx/gcm-key-example.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/gcm-key-example.png" width="full" />
 
 ### 通知バーに通知が表示されない
 
@@ -116,3 +120,12 @@ Android 13では、アプリが通知を送信できるようにエンドユー�
 アプリが通知を送信できるようにするには、通知の許可を要求する必要があります。詳細については、[Androidドキュメンテーション](https://developer.android.com/develop/ui/views/notifications/notification-permission)をご参照ください。
 
 Helpshift SDKが通知の許可を要求することはありません。これに関しては、アプリケーションに依存しています。
+
+## その他
+
+### デバイスのブラウザーがサポートしていない添付ファイルの処理
+
+* ユーザーが会話の中で添付ファイルをクリックすると、SDKはデフォルトでブラウザーで添付ファイルを開こうとします。これは、CDNのURLから直接開こうとすることが原因です。
+* ブラウザーがファイルを開けない場合には、デバイス上のファイルをダウンロードします。
+* ユーザーがダウンロードしたファイルを開こうとする際にファイルをアプリで開くオプションを提供することにより、そういったファイルを開いたり消費したりする処理をアプリに追加することができます。
+* ユーザーによるシステム全体でのファイルを開く操作の処理については、[こちら](https://developer.android.com/guide/components/intents-filters)のインテントフィルターを参照してください。

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 90
 title: Helpshiftのデリゲート
-description: "Helpshift SDKでは、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。"
+description: "Helpshiftのデリゲートでは、アプリの開発者がSDKによって生成されたグローバルイベントを追跡できるようにコールバックやイベントを提供しています。"
 ---
 
 import {
@@ -9,33 +9,26 @@ import {
   CodeBlock,
   Tabs,
   TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
   Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
 } from "@site/src/components/forDocs";
 
-# Helpshift のデリゲート {#delegates}
+# Helpshiftのデリゲート {#delegates}
 
 <Intro>
 
-Helpshift SDK では、アプリの開発者がヘルプセクション内でのユーザーアクティビティを追跡できるようにデリゲートコールバックが提供されています。
+Helpshiftのデリゲートでは、アプリの開発者がSDKによって生成されたグローバルイベントを追跡できるようにコールバックやイベントを提供しています。
 
 </Intro>
 
 <Admonition type="info" title="注意">
 
-SDK に含まれているすべてのパブリック API は、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介して SDK を初期化した後に呼び出す必要があります
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
 
 </Admonition>
 
-## Helpshift のデリゲート実装 {#helpshift-delegates-implementation}
+## Helpshiftのデリゲート実装 {#helpshift-delegates-implementation}
 
-Helpshift サポートデリゲートを実装したクラスを定義し、`sharedInstance`の`delegate`プロパティを設定してそれを Helpshift に渡す必要があります。
+Helpshiftサポートデリゲートを実装したクラスを定義し、`sharedInstance`の`delegate`プロパティを設定してそれをHelpshiftに渡す必要があります。
 
 ### 例 {#helpshift-delegate-example}
 
@@ -97,9 +90,9 @@ Helpshift.sharedInstance().delegate = delegateHandler
 
 </Tabs>
 
-API がデリゲートメソッドをコールバックできるように、デリゲートは必ず Conversation API を呼び出す前に設定してください。
+SDKによって生成されたイベントを逃さないように、デリゲートはHelpshift Install APIを呼び出した直後に設定してください。
 
-## Helpshift のイベント {#helpshift-delegate-events}
+## Helpshiftのイベント {#helpshift-delegate-events}
 
 ### 会話の状態イベント {#conversationStatus}
 
@@ -107,7 +100,7 @@ API がデリゲートメソッドをコールバックできるように、デ�
 
 - イベントの名前: `HelpshiftEventNameConversationStatus` <br />
 - イベントのデータ:
-  - `HelpshiftEventDataLatestIssueId` <br />
+- `HelpshiftEventDataLatestIssueId` <br />
   - `HelpshiftEventDataLatestIssuePublishId` <br />
   - `HelpshiftEventDataIsIssueOpen`
 
@@ -271,26 +264,26 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 - イベントの名前の生の値: `agentMessageReceived`
 - イベントのデータ:
 
-| キー（定数）                  | キー（生）  | データ型 |
-| ----------------------------- | ----------- | -------- |
-| HelpshiftEventDataPublishID   | publishId   | 文字列   |
-| HelpshiftEventDataCreatedTime | createdTs   | 数値     |
-| HelpshiftEventDataMessageType | type        | 文字列   |
-| HelpshiftEventDataMessageBody | body        | 文字列   |
-| HelpshiftEventDataAttachments | attachments | 配列     |
+| キー（定数）                | キー（生）   | データ型   |
+| ----------------------------- | ----------- | ------ |
+| HelpshiftEventDataPublishID   | publishId   | 文字列 |
+| HelpshiftEventDataCreatedTime | createdTs   | 数値 |
+| HelpshiftEventDataMessageType | type        | 文字列 |
+| HelpshiftEventDataMessageBody | body        | 文字列 |
+| HelpshiftEventDataAttachments | attachments | 配列  |
 
-`attachments`配列は辞書配列であり、各添付ファイルに対して 1 件の辞書を保持しています。添付ファイルの辞書のデータは、以下の通りです。
+`attachments`配列は辞書配列であり、各添付ファイルに対して1件の辞書を保持しています。添付ファイルの辞書のデータは、以下の通りです。
 
-| キー（定数）                  | キー（生）  | データ型 |
-| ----------------------------- | ----------- | -------- |
-| HelpshiftEventDataURL         | url         | 文字列   |
-| HelpshiftEventDataContentType | contentType | 文字列   |
-| HelpshiftEventDataFileName    | fileName    | 文字列   |
-| HelpshiftEventDataSize        | size        | 数値     |
+| キー（定数）                | キー（生）   | データ型   |
+| ----------------------------- | ----------- | ------ |
+| HelpshiftEventDataURL         | url         | 文字列 |
+| HelpshiftEventDataContentType | contentType | 文字列 |
+| HelpshiftEventDataFileName    | fileName    | 文字列 |
+| HelpshiftEventDataSize        | size        | 数値 |
 
 <Admonition type="info" title="注意">
 
-キーの定数は、SDK X 10.3.0 以降で利用可能です。古いバージョンの SDK X では、生のキーを代わりに使用してください。
+キーの定数は、SDK X 10.3.0以降で利用可能です。古いバージョンのSDK Xでは、生のキーを代わりに使用してください。
 
 </Admonition>
 
@@ -359,10 +352,10 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 - イベントの名前の生の値:`userClickOnAction`
 - イベントのデータ:
 
-| キー（定数）                 | キー（生） | データ型 |
-| ---------------------------- | ---------- | -------- |
-| HelpshiftEventDataActionType | actionType | 文字列   |
-| HelpshiftEventDataActionData | actionData | 文字列   |
+| キー（定数）               | キー（生）  | データ型   |
+| ---------------------------- | ---------- | ------ |
+| HelpshiftEventDataActionType | actionType | 文字列 |
+| HelpshiftEventDataActionData | actionData | 文字列 |
 
 `HelpshiftEventDataActionType`は、次のいずれかです: -
 
@@ -371,7 +364,7 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 <Admonition type="info" title="注意">
 
-キーの定数は、SDK X 10.3.0 以降で利用可能です。古いバージョンの SDK X では、生のキーを代わりに使用してください。
+キーの定数は、SDK X 10.3.0以降で利用可能です。古いバージョンのSDK Xでは、生のキーを代わりに使用してください。
 
 </Admonition>
 
@@ -405,14 +398,14 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-### CSAT の送信イベント {#csatSubmit}
+### CSATの送信イベント {#csatSubmit}
 
-このイベントは、会話の終了後にユーザーが CSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーが CSAT フォームを介して提供した（星による）評価と追加のコメントを示しています。
+このイベントは、会話の終了後にユーザーがCSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーがCSATフォームを介して提供した（星による）評価と追加のコメントを示しています。
 
 - イベントの名前: `HelpshiftEventNameCSATSubmit`
 - イベントのデータ:
   - `HelpshiftEventDataRating`
-  - `HelpshiftEventDataAdditionalFeedback`
+- `HelpshiftEventDataAdditionalFeedback`
 
 <Tabs groupId="ios-languages">
 
@@ -614,11 +607,11 @@ func authenticationFailedForUser(withReason reason: HelpshiftAuthenticationFailu
 
 </Tabs>
 
-### Helpshift セッションのデリゲート {#session-delegates}
+### Helpshiftセッションのデリゲート {#session-delegates}
 
-#### Helpshift セッションの開始
+#### Helpshiftセッションの開始
 
-Helpshift セッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshift セッションが開始するたびに発動します。
+Helpshiftセッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが開始するたびに発動します。
 
 - イベントの名前: `HelpshiftEventNameSessionStarted`
 
@@ -650,9 +643,9 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-#### Helpshift セッションの終了
+#### Helpshiftセッションの終了
 
-Helpshift セッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshift セッションが終了するたびに発動します。
+Helpshiftセッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが終了するたびに発動します。
 
 - イベントの名前: `HelpshiftEventNameSessionEnded`
 
@@ -686,14 +679,14 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 ### 未読メッセージ数の計測イベント {#unreadMessageCount}
 
-既存の会話で受信した新規メッセージの数を計測する場合は、この`[Helpshift requestUnreadMessageCount:];` API を呼び出します。
+既存の会話で受信した新規メッセージの数を計測する場合は、この`[Helpshift requestUnreadMessageCount:];` APIを呼び出します。
 
 未読メッセージの数は、このイベントを介してアプリに伝達されます。また、このイベントを使用してバッジの表示数を更新し続けることもできます。
 
 - イベントの名前: `HelpshiftEventDataUnreadMessageCount`
 - イベントのデータ:
-  - `HelpshiftEventDataUnreadMessageCount`
-  - `HelpshiftEventDataUnreadMessageCountIsFromCache`
+- `HelpshiftEventDataUnreadMessageCount`
+- `HelpshiftEventDataUnreadMessageCountIsFromCache`
 
 例:
 
@@ -730,8 +723,115 @@ func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any
 
 </Tabs>
 
-`[Helpshift requestUnreadMessageCount:YES];`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたは Helpshift サーバーのいずれかから取得されます。Helpshift サーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）に API に対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内に API が呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は 1 分、そして非アクティブな問題の場合には 5 分に設定されています。
+`[Helpshift requestUnreadMessageCount:YES];`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたはHelpshiftサーバーのいずれかから取得されます。Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内にAPIが呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
 
-ローカルに保存されている現在の通知数を取得する場合、パラメータを false に設定した同じ`[Helpshift requestUnreadMessageCount:NO];`メソッドを呼び出します。この場合、SDK はローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
+ローカルに保存されている現在の通知数を取得する場合、パラメータをfalseに設定した同じ`[Helpshift requestUnreadMessageCount:NO];`メソッドを呼び出します。この場合、SDKはローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
 
 ローカルに保存されている未読メッセージの数は、追加のネットワーク呼び出しを節約するのに役立ちます。
+
+## ユーザーアイデンティティシステムイベント
+
+アイデンティティシステム関連のAPIを使用する場合、このセクションで説明するイベントを使用して関連するイベントがアプリに伝達されます。イベントには、対応するイベントの詳細情報を提供する関連データを持たせることができます。
+
+### HelpshiftIdentityTokenInvalid
+
+アイデンティティJWTが有効な形式ではありません
+
+- API - `addUserIdentities`
+- データ - nil
+
+### HelpshiftIatIsMandatory
+
+JWTにiatキーがありません。Issued At Timestampまたは"iat"は、JWTペイロードの必須キーです。
+
+- API - `addUserIdentities`
+- データ - nil
+
+### HelpshiftIdentitiesDataInvalid
+
+JWTペイロードのアイデンティティの一部が有効ではありません
+
+- API - `addUserIdentities`
+- データ -
+
+| キー                                      | 値                                     | リカバリー                                                                                            |
+| ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftKeyLengthLimitExceeded           | キーの長さが許容範囲内であることをご確認ください                                                       |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftValueLengthLimitExceeded         | 値の長さが許容範囲内であることをご確認ください                                                     |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftEmptyData                        | キーまたは値が空でない有効な値であることをご確認ください                                                      |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftMetadataCountLimitExceeded       | このアイデンティティのメタデータ辞書のエントリー総数が許容範囲内であることをご確認ください |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataKeyLengthLimitExceeded   | メタデータキーの長さが許容範囲内であることをご確認ください                                              |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataValueLengthLimitExceeded | メタデータの値の長さが許容範囲内であることをご確認ください                                            |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataEmptyKeyOrValue          | メタデータのキーまたは値が空でない有効な値であることをご確認ください                                             |
+
+### HelpshiftIdentitiesSizeLimitExceeded
+
+JWTペイロードのアイデンティティの数が許容上限を超えています
+
+- API - `addUserIdentities`
+- データ - nil
+
+### HelpshiftEventAddUserIdentitiesSyncFailed
+
+ユーザーアイデンティティをバックエンドと同期できませんでした
+
+- API - `addUserIdentities`
+- データ -
+
+| キー                             | 値                | リカバリー |
+| ------------------------------- | -------------------- | -------- |
+| 渡されたアイデンティティキーのいずれか1つ | HelpshiftInvalidData | NA       |
+
+### HelpshiftEventAppAttributesLimitExceeded/HelpshiftEventMasterAttributesLimitExceeded
+
+同期されていないアプリまたはマスター属性の数が許容上限を超えています
+
+- API - `updateAppAttributes`、`updateMasterAttributes`
+- データ - nil
+
+### HelpshiftEventUpdateAppAttributesValidationFailed/HelpshiftEventUpdateMasterAttributesValidationFailed
+
+属性辞書内の個々のエントリーの検証に失敗しました
+
+- API - `updateAppAttributes`、`updateMasterAttributes`
+- データ -
+
+| キー                              | 値                             | リカバリー                                                                                                        |
+| -------------------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 渡された属性キーのいずれか1つ | HelpshiftKeyLengthLimitExceeded   | キーの長さが許容範囲内であることをご確認ください                                                                   |
+| 渡された属性キーのいずれか1つ | HelpshiftValueLengthLimitExceeded | 値の長さが許容範囲内であることをご確認ください                                                                 |
+| 渡された属性キーのいずれか1つ | HelpshiftCountLimitExceeded       | 指定したキーのコレクション内のエントリーの数を減らしてください                                                |
+| 渡された属性キーのいずれか1つ | HelpshiftInvalidValueType         | 値が対応する型（文字列、ブール値、数値、文字列配列、または文字列-文字列辞書のいずれか）であることをご確認ください |
+
+### HelpshiftEventUpdateAppAttributesSyncFailed/HelpshiftEventUpdateMasterAttributesSyncFailed
+
+バックエンドとの属性の同期に失敗しました
+
+- API - `updateAppAttributes`、`updateMasterAttributes`
+
+- データ -
+
+| キー                              | 値                | リカバリー |
+| -------------------------------- | -------------------- | -------- |
+| 渡された属性キーのいずれか1つ | HelpshiftInvalidData | NA       |
+
+### HelpshiftEventUserIdentityNotEnabled
+
+ご利用のドメインでアイデンティティ機能が有効化されていません
+
+- API - `addUserIdentities`、`updateAppAttributes`、`updateMasterAttributes`
+- データ - nil
+
+### HelpshiftEventUserSessionExpired
+
+SDKのユーザーセッションの期限が切れたときに送信されます。セッションの有効期限が切れると、SDKはフォアグラウンドになるたびにこのイベントをアプリに送信し続けます。
+このイベントに応答して現在のユーザーのJWTを更新し、新しいJWTでもう一度[ユーザーをログインさせる](/sdkx_ios/identity-user-hub.mdx)必要があります。
+
+データ - nil
+
+### HelpshiftEventRefreshUserCredentials
+
+SDKのユーザーセッションがまもなく期限切れになるタイミングで送信されます。これにより、現在のユーザーのJWTを前もって更新し、
+新しいJWTを用いてSDKにログインすることによってセッションが中断されないようにすることができます。
+
+データ - nil

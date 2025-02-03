@@ -1,0 +1,305 @@
+---
+sidebar_position: 45
+title: ユーザーアイデンティティと管理
+description: ユーザーの識別と管理について詳しく説明します。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Image,
+} from "@site/src/components/forDocs";
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## アイデンティティシステムによるユーザーの管理​
+
+アイデンティティシステムのセットアップにはある程度の開発労力が必要となりますが、コンテキスト収集の高速化、エージェントエクスペリエンスの簡素化、セキュリティの強化、スパムからの保護など、従来の方式に比べて多くのメリットがあります。
+
+### 前提条件​
+
+<Admonition type="info" title="注意">
+
+この機能はクローズドベータ版です。この機能を有効にするには、Helpshiftのサポートチームまでお問い合わせください。
+
+</Admonition>
+
+- アイデンティティシステムがご利用のドメインで有効になっていることをご確認ください（有効化する場合には、Helpshiftのサポートまでお問い合わせください）
+- Helpshift ダッシュボードで、秘密鍵があることを確認します。秘密鍵は、アプリの設定の「ユーザーアイデンティティ認証（新アイデンティティシステム）」セクションから生成することができます。
+  {" "}
+  <Image
+    src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
+    width="full"
+  />
+- ユーザーJWTをオンデマンドで取得するためのエンドポイントが設定されていることをご確認ください。このエンドポイントは、上記の手順で生成した秘密鍵を使用してJWTに署名を行う必要があります。
+
+### エンドユーザーのログイン
+
+新しいアイデンティティシステムを使用するには、以下の手順を実行する必要があります。
+
+1. 専用のエンドポイントから指定のユーザーのJWTを取得する
+2. JWTと全プライバシー情報を使用してユーザーをログインさせる
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+// Step 1: Get the JWT and and login config like full privacy flag.
+NSString *jwt = @"";
+NSDictionary<NSString *, id> *config = @{
+    // Full privacy is assumed false if not specified
+    @"full_privacy_enabled": @(false),
+};
+
+// Step 2: Call the loginWithIdentity API.
+[Helpshift loginWithIdentity:jwt config:config success:^{
+    // Step 3:  Handle login success.
+} failure:^(NSString *reason, NSDictionary<NSString *,NSString *> *errors) {
+    // Step 4: Handle login failure. The reason and errors parameters
+    // provide more information on what exactly failed.
+}];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+// Step 1: Get the JWT and and login config like full privacy flag.
+let jwt = ""
+let config: [String: Any] = [
+    // Full privacy is assumed false if not specified
+    "full_privacy_enabled": false
+]
+
+// Step 2: Call the loginWithIdentity API.
+Helpshift.login(withIdentity: jwt, config: config) {
+    // Step 3:  Handle login success.
+} failure: { reason, errors in
+    // Step 4: Handle login failure. The reason and errors parameters
+    // provide more information on what exactly failed.
+}
+```
+
+</TabItem>
+</Tabs>
+
+Login APIのAPIシグネチャは、以下の通りです。
+
+```
+login(withIdentity:config:success:failure:)
+- identity - String (must be valid JWT or an empty string)
+- config - [String: Any]
+- success - (() -> Void)
+- failure - ((reason: String, errors: [String: String]) -> Void)
+```
+
+失敗の理由と利用可能な復旧手順については、[ログイン失敗の理由](#login-failure-reasons)セクションに記載されています。
+
+### アイデンティティトークンの形式​
+
+アイデンティティトークンは、ダッシュボードのアプリ設定にある共有シークレットを使用して署名されたJWTである必要があります。デコードする際は、以下のJSON形式を遵守してください。
+
+```json
+{
+  "identities": [{
+    "identifier": "uid" | "email" | "phone_number" | "facebook_id" |
+                  "discord_id"|"whatsapp_id"|"google_playstore_id"|
+                  "apple_gamecenter_id" | "nintendo_id" | "psn_id" |
+                  "xbox_live_id" | "steam_id"
+    "value": "string",
+    "metadata": {
+      "string": "string"
+    }
+  }],
+  "iat": // UNIX epoch time in seconds, generated in the last 24h or earlier
+}
+```
+
+この契約では`identities`キーは配列の指定を想定しているため、アイデンティティオブジェクトを複数指定できることにご注意ください。
+
+さらに、configの`full_privacy_enabled`フラグの値に応じて以下のルールが適用されます。
+
+- フルプライバシーフラグがfalseの場合、アイデンティティ配列にはuidかemailのいずれかが必須となります。
+- フルプライバシーフラグがtrueの場合、アイデンティティキーは必須ではなくなります。ただし、uidキーの有無によって動作は変わります。
+- uidが存在する場合 - SDKはユーザーの識別にuidを使用します。
+- uidが存在しない場合 - SDKは匿名IDを生成し、このIDを使用してユーザーを識別します。
+- 値が指定されていない場合、または渡された値がブール値のために解析できない場合、フルプライバシーはfalseとして見なされます。
+
+<Admonition type="info" title="重要">
+
+JWTは常にサーバー側で生成し、共有シークレットは安全な場所で保管してください。
+
+</Admonition>
+
+### 匿名ユーザーでのログイン
+
+サポートエクスペリエンス全体の円滑化に役立つため、エンドユーザーはできる限り早期にHelpshiftにログインさせることをお勧めします。
+
+しかしながら、匿名ユーザーがいる場合には空のJWT文字列を使用してログインするだけでHelpshiftが匿名UIDを生成し、エンドユーザーをログインさせます。
+
+SDKは、空のJWTを渡す限り、複数回のログインにわたって同一の匿名ユーザーを維持するために最善を尽くします。一度空でないJWTを使用してログインすると既存の匿名ユーザーは失われ、次に空のJWTを使用してログインしたときに新しい匿名ユーザーが作成されます。
+
+匿名ユーザーでログインした後、後からこのユーザーのアイデンティティをさらに追加することはできません。つまり、`addUserIdentities`APIは現在のユーザーが匿名である場合には処理されません。
+
+### Login APIのベストプラクティス
+
+- Login APIは、ユーザーがアプリにログインする際に一度呼び出します。アプリのフォアグラウンドや、アプリのサポートセクションを開く直前など、繰り返し発生するイベントに応じて呼び出すのは避けてください。
+現在のログインユーザーに関連付けられるより多くの情報がある場合には、Login APIではなく`addUserIdentities`APIを使用します。Login APIを呼び出すと現在のユーザーはログアウトされ、新しいユーザーがログインします。
+- `uid`または`email`は、すべてのアプリユーザーの間でユーザーを一意に識別する必要があります。2人以上の異なるユーザーが重複して使用するべきではありません。
+- `full_privacy_enabled`をtrueに設定している場合、そのユーザーのLogin APIで`email`を唯一の識別子として使うべきではありません。これを行うと、結果的に匿名ユーザーが作成されてしまいます。
+
+### ユーザーのログアウト
+
+ユーザーがアプリからログアウトしたら、Logout APIを呼び出して他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+[Helpshift logout];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.logout()
+```
+
+</TabItem>
+</Tabs>
+
+### セッションの期限切れによるログアウト
+
+ユーザーのログアウトは、現在のユーザーのログインセッションが期限切れになったタイミングでSDK自体によりトリガーすることもできます。このログインセッションは、アプリのログインセッションから独立しています。このような場合、SDKはアプリがフォアグラウンドになるたびに即座に`userSessionExpired`イベントをアプリに送信します。このイベントに応じてバックエンドからアプリの現在のユーザーの新しいJWTを取得し、新しいJWTとログイン構成を使用してLogin APIを呼び出して、SDKの新しいログインセッションを開始する必要があります。ログインに成功すると、SDKはこのイベントの送信を停止します。
+
+Helpshiftを使用してログインユーザーの認証情報を前もって更新し、セッションの有効期限が切れないようにする場合には、`refreshUserCredentials`イベントをリッスンすることも可能です。このイベントは、セッションの期限が実際に切れるある程度前にSDKから送信されます。これにより、アプリに現在のユーザーを再ログインさせ、セッションを維持できるようになります。
+
+これらのイベントの詳細については、[デリゲート](/sdkx_ios/delegates/#helpshifteventusersessionexpired)ページをご参照ください。
+
+### ユーザーアイデンティティの更新
+
+`addUserIdentities`APIを使用して、ログインユーザーに関連付けられているアイデンティティを更新します。このAPIは、匿名でないログインユーザーのアイデンティティのみを更新します。現在のユーザーが空のJWTでログインしている場合（匿名ユーザー）、このAPIの処理は行われません。
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSString *identitiesJwt = @"";
+[Helpshift addUserIdentities:identitiesJwt];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let identitiesJwt = ""
+Helpshift.addUserIdentities(identitiesJwt)
+```
+
+</TabItem>
+</Tabs>
+
+新しいアイデンティティのJWTは専用のエンドポイントから取得する必要があります。詳細については、このページの「前提条件」セクションをご確認ください。
+
+このAPIは、既存のHelpshiftデリゲートシステムを活用してエラーが発生した際にアプリに通知を行います。このAPIでトリガーできるエラーイベントの詳細については、[デリゲート](/sdkx_ios/delegates.mdx/#user-identity-system-events)ページを参照してください。
+
+## ログイン失敗の理由
+
+アイデンティティシステムのログインは、以下のいずれかの理由により失敗する場合があります。理由には、失敗の正確な原因を特定する際に役立つ関連エラーが含まれている場合があります。たとえば、アイデンティティJWTのキーが無効であることが失敗の原因である場合、エラー辞書には無効であることが明らかになった正確なキーが含まれます。このキーに対応する値は、失敗の原因を示しています（値が大きすぎる、値の型がサポートされていない、など）。
+
+これらの失敗の理由の定数は、`HelpshiftUserLoginFailureReason.h`ヘッダーファイルで定義されています。エラーの定数は、`HelpshiftDelegate.h`ヘッダーファイルで定義されています。
+
+該当する場合、許容上限の最大値は以下のように定義されます。
+
+- キーの長さ - 最大1000文字
+- 値の長さ - 最大10,000文字
+- コレクションのサイズ - 最大100エントリー
+
+### HelpshiftLoginInProgress
+
+別のログイン要求がすでに進行中です
+
+エラー - なし
+
+### HelpshiftLoginConfigInvalid
+
+ログイン構成内の一部のキーまたは値が無効です
+
+エラー -
+
+| キー                    | 値                             | リカバリー                                                                    |
+| ---------------------- | --------------------------------- | --------------------------------------------------------------------------- |
+| 渡されたキーのいずれか1つ | HelpshiftKeyLengthLimitExceeded   | キーの長さが許容範囲内であることをご確認ください                               |
+| 渡されたキーのいずれか1つ | HelpshiftValueLengthLimitExceeded | 値の長さが許容範囲内であることをご確認ください                             |
+| 渡されたキーのいずれか1つ | HelpshiftInvalidValueType         | 値が対応する型（文字列、ブール値、数値）のいずれかであることをご確認ください |
+
+### HelpshiftIdentityTokenInvalid
+
+アイデンティティJWTが有効な形式ではありません
+
+エラー - なし
+
+### HelpshiftIdentitiesDataInvalid
+
+JWTのペイロードのアイデンティティの一部が有効ではありません
+
+エラー -
+
+| キー                                      | 値                                     | リカバリー                                                                                            |
+| ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftKeyLengthLimitExceeded           | キーの長さが許容範囲内であることをご確認ください                                                       |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftValueLengthLimitExceeded         | 値の長さが許容範囲内であることをご確認ください                                                     |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftEmptyData                        | キーまたは値が空でない有効な値であることをご確認ください                                                      |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftMetadataCountLimitExceeded       | このアイデンティティのメタデータ辞書のエントリー総数が許容範囲内であることをご確認ください |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataKeyLengthLimitExceeded   | メタデータキーの長さが許容範囲内であることをご確認ください                                              |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataValueLengthLimitExceeded | メタデータの値の長さが許容範囲内であることをご確認ください                                            |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataEmptyKeyOrValue          | メタデータのキーまたは値が空でない有効な値であることをご確認ください                                             |
+
+### HelpshiftLoginConfigSizeLimitExceeded
+
+ログイン構成のエントリーの数が許容上限を超えています
+
+エラー - なし
+
+### HelpshiftIdentitiesSizeLimitExceeded
+
+JWTのペイロードのアイデンティティの数が許容上限を超えています
+
+エラー - なし
+
+### HelpshiftIdentityFeatureNotEnabled
+
+ご利用のドメインでアイデンティティ機能が有効化されていません
+
+エラー - なし
+
+### HelpshiftUidOrEmailIsMandatory
+
+JWTのペイロードには、uidまたはemailのいずれかのアイデンティティが含まれている必要があります。両方のIDが含まれていても問題ありません。このルールの1つの例外は、ログイン構成でフルプライバシーがtrueに設定されている場合です。この場合、uidが含まれていなければSDKはユーザーに匿名IDを生成します。
+
+エラー - なし
+
+### HelpshiftIatIsMandatory
+
+JWTにiatキーがありません。Issued At Timestampまたは"iat"は、JWTのペイロードの必須キーです。
+
+エラー - なし
+
+### HelpshiftNetworkError
+
+ネットワークエラーによりログインに失敗しました
+
+エラー - なし
+
+### HelpshiftUnknownError
+
+不明なエラーによりログインに失敗しました
+
+エラー - なし
