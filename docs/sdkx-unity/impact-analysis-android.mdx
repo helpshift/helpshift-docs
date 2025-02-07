@@ -36,6 +36,39 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 </Admonition>
 
+## v10.4.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift android plugin will add approximately `330 Kb` to your application's release APK.
+The `330 Kb` size includes total impact with all the resources and code.
+With the appcompat library which is required for the SDK X, it will add around `1MB` of size.
+
+### Method count {#methods-count}
+
+The Helpshift SDK X will add 1404 methods to your dex:
+
+| Package           | Method Count |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1608` |
+
+### Memory usage {#memory-usage}
+
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `6.27`                          |                        `107-112` |
+| showFAQSection                         | `5.25`                          |                          `82-94` |
+| showSingleFAQ                          | `4.82`                          |                          `75-85` |
+| showConversation (conversational mode) | `7.10`                          |                        `132-138` |
+
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Google Pixel 6 running Android 14.
+
+</Admonition>
+
 ## v10.3.0
 
 ### SDK payload in your app {#payload-size}
