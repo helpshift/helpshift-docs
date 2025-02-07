@@ -138,3 +138,25 @@ Now, archive project and check again. This should ideally resolve your issue. We
 
 - In-app notifications appear with a somewhat glitchy animation on iOS 18.0. The issue appears to have been fixed in iOS 18.1.
 - Few push notifications are not received to users running iOS 18.
+
+### Using dSYM for HelpshiftX
+
+#### Why is dSYM Required?
+
+- **Xcode 16 Warning:** If you upload an app without including the HelpshiftX dSYM file, Xcode 16 will display a warning.
+- **Crash Symbolication:** The dSYM file is essential for debugging and crash report symbolication in Xcode and external crash reporting tools.
+
+#### Steps to Include HelpshiftX dSYM
+
+##### 1. Extract the dSYM File
+
+- Locate the `HelpshiftX.framework.dSYM` file inside the provided zip folder.
+- Navigate to `Assets/Helpshift/Editor/HelpshiftPostProcess.cs`.
+- Uncomment the relevant script section.
+- Update the absolute path to the extracted dSYM file:
+
+```sh
+FRAMEWORK_DSYM_PATH="<ABSOLUTE_PATH_TO_THE_DSYM>"
+```
+
+- The script will automatically copy HelpshiftX.framework.dSYM into the dSYMs folder of your app during the Xcode build process.

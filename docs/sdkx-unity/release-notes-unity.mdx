@@ -42,17 +42,14 @@ Feb 1st, 2025
 - Error logs from SDK will always be printed on console.
 - SDK privacy manifest no longer includes user ID and email declarations. Apps using these fields need to declare it in their own manifest files.
 - Fixed a bug where some traces of bitcode were present in SDK framework, causing issues when uploading the app to App Store Connect.
-- Included debug symbols (dsym) file inside the framework.
-  - The disk size has been increased due to this addition.
-  - Does not affect the size of the HelpshiftX binary.
-  - dsym files are optional and can be removed if not needed from these locations: `HelpshiftX.xcframework/ios-arm64_armv7/dSYMs/` and `HelpshiftX.xcframework/ios-arm64_i386_x86_64-simulator/dSYMs/`.
+- Included debug symbols (HelpshiftX.framework.dSYM ) file inside the zip file.
 - Fixed a bug where interacting with any webchat-related notification from the stack failed to clear rest of the notifications.
 - Attachment(Image/Video) upload will be no-op below iOS 14.
 
 **Android**
 
 - Added support for Android 15.
-- SDK now compiles with API level 35, i.e compileSdk 35.  
+- SDK now compiles with API level 35, i.e compileSdk 35.
 - The SDK artefact is now compiled with Java 8.
 - `minSDKVersion` is now updated to 19.
 - Fixed an edge case bug where message count was incorrect when login and unread message count APIs were invoked in quick succession.
