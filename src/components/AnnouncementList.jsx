@@ -7,7 +7,7 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
-    date: "27 Feb 2025",
+    date: "11 Feb 2025",
     title: "SDK X Unity 10.4.0 released",
     info: `SDK X Unity 10.4.0 is now released for iOS and Android! Upgrade to get the latest features`,
     link: "/sdkx-unity",
