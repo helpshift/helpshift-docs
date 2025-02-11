@@ -150,9 +150,36 @@ Now, archive project and check again. This should ideally resolve your issue. We
 
 ##### 1. Extract the dSYM File
 
-- Locate the `HelpshiftX.framework.dSYM` file inside the provided zip folder.
+- Locate the `HelpshiftX.framework.dSYM` file inside the provided zip file.
 - Navigate to `Assets/Helpshift/Editor/HelpshiftPostProcess.cs`.
 - Uncomment the relevant script section.
+
+```sh
+ /* [REMOVE COMMENTED TO INCLUDE HELPSHIFTX DSYMS]
+        // Check if the Run Script phase is already added
+        if (!project.isShellScriptAdded(unityAppTargetGuid, "HS Copy dSYM File"))
+        {
+          // Define the script name and path for your custom dSYM copying
+          string scriptCommand = @"
+          FRAMEWORK_NAME=""HelpshiftX""
+          FRAMEWORK_DSYM_PATH=""<ABSOLUTE_PATH_TO_THE_DSYM>""
+          APP_DSYM_PATH=""${DWARF_DSYM_FOLDER_PATH}""
+
+          if [ -d ""${FRAMEWORK_DSYM_PATH}"" ]; then
+              cp -R ""${FRAMEWORK_DSYM_PATH}"" ""${APP_DSYM_PATH}""
+          else
+              echo ""⚠️ No dSYM found at ${FRAMEWORK_DSYM_PATH}""
+          fi
+          ";
+          // Add the Run Script phase to copy dSYM if not already added
+          project.AddShellScriptBuildPhase(unityAppTargetGuid,
+              "HS Copy dSYM File",
+              "/bin/sh",
+              scriptCommand);
+          }
+[REMOVE] */
+```
+
 - Update the absolute path to the extracted dSYM file:
 
 ```sh
