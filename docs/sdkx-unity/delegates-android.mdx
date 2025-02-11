@@ -547,3 +547,119 @@ public class HSEventsListener: IHelpshiftEventsListener
       }
   }
 ```
+
+## User Identity System Events
+
+When using Identity system related APIs, the related events are communicated to your app using the events mentioned in this section. Events can have associated data which gives more information on the corresponding event.All these events can be found in HelpshiftEvent.cs file.
+
+Where applicable, the max permissible limits are defined as follows -
+
+- Key length - Max 255 chars
+- Value length for any identity (except `uid`) - Max 300 chars
+- Value length for `uid` identity - Max 750 chars
+- Value length for CUF - Max 255 chars
+- Value length for multiline CUF - Max 100000 chars
+- Value length for user tags - Max 100 chars
+- Collection size - Max 30 entries
+
+### INVALID_IDENTITY_TOKEN
+
+Identities JWT not in valid format
+
+- APIs - `AddUserIdentities`
+- Data - null
+
+### IAT_IS_MANDATORY
+
+The `iat` key is missing in JWT. Issued At Timestamp or `iat` is a mandatory key in the JWT payload.
+
+- APIs - `AddUserIdentities`
+- Data - null
+
+### IDENTITY_DATA_INVALID
+
+Some of the identities in the JWT payload are not valid
+
+- APIs - `AddUserIdentities`
+- Data -
+
+| Key                                      | Value                                 | Recovery                                                                                            |
+| ---------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| One of the passed identity keys          | EXCEEDED_KEY_LENGTH_LIMIT             | Ensure key length is within permissible limit                                                       |
+| One of the passed identity keys          | EXCEEDED_VALUE_LENGTH_LIMIT           | Ensure value length is within permissible limit                                                     |
+| One of the passed identity keys          | EMPTY_DATA                            | Ensure key or value is a valid non-empty value                                                      |
+| One of the passed identity keys          | META_DATA_EXCEEDED_COUNT_LIMIT        | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
+| One of the passed identity metadata keys | META_DATA_EXCEEDED_KEY_LENGTH_LIMIT   | Ensure metadata key length is within permissible limit                                              |
+| One of the passed identity metadata keys | META_DATA_EXCEEDED_VALUE_LENGTH_LIMIT | Ensure metadata value length is within permissible limit                                            |
+| One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE           | Ensure metadata key or value is a valid non-empty value                                             |
+
+### IDENTITY_DATA_LIMIT_EXCEEDED
+
+Number of identities in JWT payload is more than the permissible limit
+
+- APIs - `AddUserIdentities`
+- Data - null
+
+### IDENTITY_DATA_SYNC_FAILED
+
+User identities failed to sync with backend
+
+- APIs - `AddUserIdentities`
+- Data -
+
+| Key                             | Value        | Recovery |
+| ------------------------------- | ------------ | -------- |
+| One of the passed identity keys | INVALID_DATA | NA       |
+
+### APP_ATTRIBUTES_LIMIT_EXCEEDED / MASTER_ATTRIBUTES_LIMIT_EXCEEDED
+
+Number of unsynced app or master attributes exceeds the permissible limit
+
+- APIs - `UpdateAppAttributes`, `UpdateMasterAttributes`
+- Data - null
+
+### APP_ATTRIBUTES_VALIDATION_FAILED / MASTER_ATTRIBUTES_VALIDATION_FAILED
+
+Validation of individual entries inside the attributes dictionary failed
+
+- APIs - `UpdateAppAttributes`, `UpdateMasterAttributes`
+- Data -
+
+| Key                              | Value                       | Recovery                                                                                                        |
+| -------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| One of the passed attribute keys | EXCEEDED_KEY_LENGTH_LIMIT   | Ensure key length is within permissible limit                                                                   |
+| One of the passed attribute keys | EXCEEDED_VALUE_LENGTH_LIMIT | Ensure value length is within permissible limit                                                                 |
+| One of the passed attribute keys | EXCEEDED_COUNT_LIMIT        | Reduce the number of entries in the collection for specified key                                                |
+| One of the passed attribute keys | INVALID_VALUE_TYPE          | Ensure value is one of the supported types - String, Bool, Number, String array or a String - String dictionary |
+
+### APP_ATTRIBUTES_SYNC_FAILED / MASTER_ATTRIBUTES_SYNC_FAILED
+
+Attributes failed to sync with backend
+
+- APIs - `UpdateAppAttributes`, `UpdateMasterAttributes`
+- Data -
+
+| Key                              | Value        | Recovery |
+| -------------------------------- | ------------ | -------- |
+| One of the passed attribute keys | INVALID_DATA | NA       |
+
+### IDENTITY_FEATURE_NOT_ENABLED
+
+Identity feature is not enabled for your domain
+
+- APIs - `AddUserIdentities`, `UpdateAppAttributes`, `UpdateMasterAttributes`
+- Data - null
+
+### USER_SESSION_EXPIRED
+
+Sent when the SDK's user session expires. Once the session expires, SDK will keep sending this event to your app on each foreground.
+In response to this event, you should refresh the JWT for the current user and [log them in](/sdkx-unity/identity-user-hub-android/) again with the new JWT.
+
+Data - null
+
+### REFRESH_USER_CREDENTIALS
+
+Sent when the SDK's user session is about to expire. This gives you a chance to proactively refresh the JWT for the current user and
+log them in the SDK with the new JWT to avoid disrupting their session.
+
+Data - null
