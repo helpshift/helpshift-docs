@@ -79,7 +79,7 @@ public class MyGameControl : MonoBehaviour
 
     loginConfigMap.Add("full_privacy_enabled", false);
 
-    helpshiftSdk.LoginWithIdentity("identitiesJWT", loginConfigMap, new HelpshiftUserLoginEventListener() );
+    helpshiftSdk.LoginWithIdentity(<identitiesJwt>, loginConfigMap, new HelpshiftUserLoginEventListener() );
     }
 }
 ```
@@ -144,10 +144,11 @@ After you login with an anonymous user, you can’t add more identities for this
 
 ### Best practices to follow for login API
 
-- Call the login API once when the user logs in to your app. Avoid calling it in response to repeatable events like app foreground, right before opening support section of your app etc.
+- Call the login API only once when the user logs in to your app. Avoid calling it in response to repeatable events like app foreground, right before opening support section of your app etc.
 - When you have more information to associate with current logged in user, use the `AddUserIdentities` API and not the login API. Calling login API will log out the current user and log in a new user.
 - The `uid` or `email` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
 - If you are setting `full_privacy_enabled` to true, you shouldn't use `email` as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+- When setting `full_privacy_enabled` to true, it is encouraged to use `uid` as identifier and other identifiers will be dropped as potential PII data.
 
 ### Logging out users
 
@@ -161,7 +162,7 @@ public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk helpshiftSdk;
 
-    void Awake(){
+    void LogoutUser(){
     this.helpshiftSdk = HelpshiftSdk.GetInstance();
 
     helpshiftSdk.Logout();
@@ -180,6 +181,7 @@ For more details on these events, please check the [Delegates](/sdkx-unity/deleg
 ### Adding user identities
 
 Use the `AddUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
+This API should be called only once for a unique set of identities since Helpshift won't de-duplicate any identities before adding.
 
 ```csharp
 using Helpshift;
@@ -189,15 +191,15 @@ public class MyGameControl : MonoBehaviour
 {
     private HelpshiftSdk helpshiftSdk;
 
-    void Awake(){
+    void AddIdentities(){
     this.helpshiftSdk = HelpshiftSdk.GetInstance();
 
-    helpshiftSdk.AddUserIdentities("identitiesJWT");
+    helpshiftSdk.AddUserIdentities(<identitiesJWT>);
     }
 }
 ```
 
-You need to obtain a JWT for new identities from your dedicated endpoint. Please check the Prerequisites section on this page for more details.
+You need to obtain a JWT for new identities from your dedicated endpoint. Please check the [Prerequisites section](/sdkx-unity/identity-user-hub-ios/#prerequisites) for more details.
 
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-ios.mdx/#user-identity-system-events) page.
 
