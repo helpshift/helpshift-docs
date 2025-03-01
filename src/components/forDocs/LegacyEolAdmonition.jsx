@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Admonition } from "@site/src/components/forDocs";
+import Translate, { translate } from "@docusaurus/Translate";
 
 export default function LegacyEolAdmonition() {
   const [newBookLink, setNewBookLink] = useState("");
@@ -50,7 +51,8 @@ export default function LegacyEolAdmonition() {
   };
 
   useEffect(() => {
-    const legacyBookPath = location?.pathname?.split("/")[1];
+    const pathSplit = location?.pathname?.split("/");
+    const legacyBookPath = pathSplit[pathSplit.length - 1];
 
     if (legacyBookPath) {
       const newBookInfo = legacyToNewBookPaths[legacyBookPath];
@@ -59,9 +61,11 @@ export default function LegacyEolAdmonition() {
   }, []);
 
   return (
-    <Admonition type="danger" title="Important">
-      Helpshift’s Legacy SDKs (SDK Version &lt;=7.x.x) reached their end of life
-      on 31 Dec 2022, and end of support on 31 March 2023. Please upgrade to the{" "}
+    <Admonition type="danger" title={translate({ message: "Important" })}>
+      {translate({
+        message:
+          "Helpshift’s Legacy SDKs (SDK Version <=7.x.x) reached their end of life on 31 Dec 2022, and end of support on 31 March 2023. Please upgrade to the Latest SDK if you haven't already. ",
+      })}
       <a href={newBookLink} target="_blank" rel="noreferrer">
         Latest SDK
       </a>
