@@ -23,11 +23,44 @@ import {
 
 <LatestSdkVersion>
 
+## v10.4.0
+
+_Mar 10th, 2025_
+
+</LatestSdkVersion>
+
+** Release Notes: **
+
+- Added support for User Hub (User Identity & Profiles) and related user data collection APIs.
+  - For more details on user identities, refer [User Identities](/sdkx-unreal/identity-user-hub/) page.
+  - For more details on user data collection, refer [Tracking](/sdkx-unreal/tracking/#update-global-user-data) page.
+
+**iOS**
+
+- Added support for iOS 18 and iPadOS 18.
+- Added a new API to pause display of in-app notifications. For more details, refer [here](/sdkx-unreal/notifications-ios/#pause-in-app-notifications).
+- Updated SDK logging to use OSLog framework instead of NSLog.
+- Error logs from SDK will always be printed on console.
+- SDK privacy manifest no longer includes user ID and email declarations. Apps using these fields need to declare it in their own manifest files.
+- Fixed a bug where some traces of bitcode were present in SDK framework, causing issues when uploading the app to App Store Connect.
+- Fixed a bug where interacting with any webchat-related notification from the stack failed to clear rest of the notifications.
+- Attachment(Image/Video) upload will not be supported below iOS 14.
+
+**Android**
+
+- Added support for Android 15.
+- SDK now compiles with API level 35, i.e compileSdk 35.
+- The SDK artefact is now compiled with Java 8.
+- `minSDKVersion` is now updated to 19. Refer [OS support policy](/sdkx-unreal/getting-started/#version-requirements) for more details.
+- Fixed an edge case bug where message count was incorrect when login and unread message count APIs were invoked in quick succession.
+- Error logs from SDK will always get logged on logcat.
+- Debug build for debug logs is not required any more, only `enableLogging` flag needs to be set to `true`.
+- Webviews will now load with enhanced security flag [MIXED_CONTENT_NEVER_ALLOW.](https://developer.android.com/reference/android/webkit/WebSettings#MIXED_CONTENT_NEVER_ALLOW)
+- Helpshift.aar file location has changed to `Assets/Helpshift/Plugins/Android/`. Remove the old plugin completely and then import the new plugin.
+
 ## v10.3.0
 
 _Jan 25th, 2023_
-
-</LatestSdkVersion>
 
 ** Release Notes: **
 
