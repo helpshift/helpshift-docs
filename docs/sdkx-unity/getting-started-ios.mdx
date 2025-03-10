@@ -40,16 +40,18 @@ Guide to integrating the Unity plugin for the Helpshift SDK X which you can call
 <DownloadButton
   text="Download SDK"
   link="[% sdkx-unity.ios.sdk_url %]"
-  classes="mb-4"/>
+  classes="mb-4"
+/>
 
 HelpshiftX SDK _.zip_ folder includes:
 
 <div className="text-sm compact ">
 
-|                                               |             |
-| ----------------------------------------------|-------------|
-| helpshiftX-plugin-unity-v10.3.1.unitypackage | Unity package of Helpshift SDK X         |
-| unity-jar-resolver (v1.2.170.0)              | Resolves Android Helpshift package support lib dependencies. |
+|                                              |                                                                                                                 |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| helpshiftX-plugin-unity-v10.4.0.unitypackage | Unity package of Helpshift SDK X                                                                                |
+| unity-jar-resolver (v1.2.170.0)              | Resolves Android Helpshift package support lib dependencies.                                                    |
+| iOS/dSYM/HelpshiftX.framework.dSYM           | Debugging symbol file for HelpshiftX framework, used for symbolication of crash reports and debugging in Xcode. |
 
 </div>
 
@@ -193,7 +195,7 @@ public class MyGameControl : MonoBehaviour
     private HelpshiftSdk help;
     ...
     void Awake() {
-        help = HelpshiftSdk.GetInstance();        
+        help = HelpshiftSdk.GetInstance();
         var configMap = new Dictionary<string, object>()
             {
                 { "isForChina", true },

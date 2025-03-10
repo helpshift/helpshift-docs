@@ -133,3 +133,57 @@ done
 Now, archive project and check again. This should ideally resolve your issue. We will be updating our script in Helpshift unitypackage with the above changes soon.
 
 <UserClickOnActionDelegateIssue />
+
+### Push notification related issues on iOS 18
+
+- In-app notifications appear with a somewhat glitchy animation on iOS 18.0. The issue appears to have been fixed in iOS 18.1.
+- Few push notifications are not received to users running iOS 18.
+
+### Using dSYM for HelpshiftX
+
+#### Why is dSYM Required?
+
+- **Xcode 16 Warning:** If you upload an app without including the HelpshiftX dSYM file, Xcode 16 will display a warning.
+- **Crash Symbolication:** The dSYM file is essential for debugging and crash report symbolication in Xcode and external crash reporting tools.
+
+#### Steps to Include HelpshiftX dSYM
+
+##### 1. Extract the dSYM File
+
+- Locate the `HelpshiftX.framework.dSYM` file inside the provided zip file.
+- Navigate to `Assets/Helpshift/Editor/HelpshiftPostProcess.cs`.
+- Uncomment the relevant script section.
+
+```sh
+ /* [REMOVE COMMENTED TO INCLUDE HELPSHIFTX DSYMS]
+        // Check if the Run Script phase is already added
+        if (!project.isShellScriptAdded(unityAppTargetGuid, "HS Copy dSYM File"))
+        {
+          // Define the script name and path for your custom dSYM copying
+          string scriptCommand = @"
+          FRAMEWORK_NAME=""HelpshiftX""
+          FRAMEWORK_DSYM_PATH=""<ABSOLUTE_PATH_TO_THE_DSYM>""
+          APP_DSYM_PATH=""${DWARF_DSYM_FOLDER_PATH}""
+
+          if [ -d ""${FRAMEWORK_DSYM_PATH}"" ]; then
+              cp -R ""${FRAMEWORK_DSYM_PATH}"" ""${APP_DSYM_PATH}""
+          else
+              echo ""⚠️ No dSYM found at ${FRAMEWORK_DSYM_PATH}""
+          fi
+          ";
+          // Add the Run Script phase to copy dSYM if not already added
+          project.AddShellScriptBuildPhase(unityAppTargetGuid,
+              "HS Copy dSYM File",
+              "/bin/sh",
+              scriptCommand);
+          }
+[REMOVE] */
+```
+
+- Update the absolute path to the extracted dSYM file:
+
+```sh
+FRAMEWORK_DSYM_PATH="<ABSOLUTE_PATH_TO_THE_DSYM>"
+```
+
+- The script will automatically copy HelpshiftX.framework.dSYM into the dSYMs folder of your app during the Xcode build process.
