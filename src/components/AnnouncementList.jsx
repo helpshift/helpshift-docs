@@ -7,6 +7,13 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "10 Mar 2025",
+    title: "SDK X Unreal 10.4.0 released",
+    info: `SDK X Unreal 10.4.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-unreal",
+    linkTitle: "SDK X Unreal 10.4.0",
+  },
+  {
     date: "11 Feb 2025",
     title: "SDK X Unity 10.4.0 released",
     info: `SDK X Unity 10.4.0 is now released for iOS and Android! Upgrade to get the latest features`,
@@ -64,7 +71,7 @@ const announcements = [
     date: "10 Oct 2022",
     title: "SDK X 10.2.0 released",
     info: `SDK X 10.2.0 is now released for iOS and Android! Upgrade to get the latest features`,
-  }
+  },
 ];
 
 export default function AnnouncementList() {
