@@ -23,6 +23,33 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 You can find impact analysis reports for every version of the Helpshift SDK below.
 
+## 10.4.0 - iOS
+
+Performed on following versions -
+
+- macOS 15.3
+- Xcode 16.2.0
+- iOS 18.2.1 (iPhone 15 Plus)
+
+Memory Usage will increase with number of messages in a conversation.
+
+### Disk space
+
+When a Cocos2dx iOS game is integrated with Helpshift plugin, the increase in the size of IPA file is around 350 KB.
+
+### Memory usage
+
+|                                         |                                                                        |
+| --------------------------------------- | ---------------------------------------------------------------------- |
+| Chat screen (`showConversation()`)      | adds `6.3` MB (This depends on number of messages on the chat screen). |
+| FAQs screen (`showFAQs()`)              | adds `5.4` MB (This depends on number of FAQ sections on the screen).  |
+| FAQ section screen (`showFAQSection()`) | adds `5.1` MB (This depends on number of FAQS in the section).         |
+| Single FAQ screen (`showFAQ()`)         | adds `4.8` MB (This depends on content of the FAQ).                    |
+
+## 10.4.0 - Android
+
+TODO
+
 ## 10.3.0 - iOS
 
 Performed on following versions -
