@@ -258,31 +258,31 @@ Where applicable, the max permissible limits are defined as follows -
 - Value length for user tags - Max 100 chars
 - Collection size - Max 30 entries
 
-### HelpshiftLoginInProgress
+### loginInProgress
 
 Another login request is already in progress
 
 Errors - no
 
-### HelpshiftLoginConfigInvalid
+### loginConfigInvalid
 
 Some keys or values in the login config are not valid
 
 Errors -
 
-| Key                    | Value                             | Recovery                                                                    |
-| ---------------------- | --------------------------------- | --------------------------------------------------------------------------- |
-| One of the passed keys | HelpshiftKeyLengthLimitExceeded   | Ensure key length is within permissible limit                               |
-| One of the passed keys | HelpshiftValueLengthLimitExceeded | Ensure value length is within permissible limit                             |
-| One of the passed keys | HelpshiftInvalidValueType         | Ensure value is one of the supported types - String, Bool or a numeric type |
+| Key                    | Value                       | Recovery                                                                    |
+| ---------------------- | --------------------------- | --------------------------------------------------------------------------- |
+| One of the passed keys | EXCEEDED_KEY_LENGTH_LIMIT   | Ensure key length is within permissible limit                               |
+| One of the passed keys | EXCEEDED_VALUE_LENGTH_LIMIT | Ensure value length is within permissible limit                             |
+| One of the passed keys | INVALID_VALUE_TYPE          | Ensure value is one of the supported types - String, Bool or a numeric type |
 
-### HelpshiftIdentityTokenInvalid
+### identityTokenInvalid
 
 Identities JWT not in valid format
 
 Errors - no
 
-### HelpshiftIdentitiesDataInvalid
+### identitiesDataInvalid
 
 Some of the identities in the JWT payload are not valid
 
@@ -290,51 +290,51 @@ Errors -
 
 | Key                                      | Value                                     | Recovery                                                                                            |
 | ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| One of the passed identity keys          | HelpshiftKeyLengthLimitExceeded           | Ensure key length is within permissible limit                                                       |
-| One of the passed identity keys          | HelpshiftValueLengthLimitExceeded         | Ensure value length is within permissible limit                                                     |
-| One of the passed identity keys          | HelpshiftEmptyData                        | Ensure key or value is a valid non-empty value                                                      |
-| One of the passed identity keys          | HelpshiftMetadataCountLimitExceeded       | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
-| One of the passed identity metadata keys | HelpshiftMetadataKeyLengthLimitExceeded   | Ensure metadata key length is within permissible limit                                              |
-| One of the passed identity metadata keys | HelpshiftMetadataValueLengthLimitExceeded | Ensure metadata value length is within permissible limit                                            |
-| One of the passed identity metadata keys | HelpshiftMetadataEmptyKeyOrValue          | Ensure metadata key or value is a valid non-empty value                                             |
+| One of the passed identity keys          | EXCEEDED_KEY_LENGTH_LIMIT           | Ensure key length is within permissible limit                                                       |
+| One of the passed identity keys          | EXCEEDED_VALUE_LENGTH_LIMIT         | Ensure value length is within permissible limit                                                     |
+| One of the passed identity keys          | EMPTY_DATA                        | Ensure key or value is a valid non-empty value                                                      |
+| One of the passed identity keys          | METADATA_EXCEEDED_COUNT_LIMIT       | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
+| One of the passed identity metadata keys | METADATA_EXCEEDED_KEY_LENGTH_LIMIT   | Ensure metadata key length is within permissible limit                                              |
+| One of the passed identity metadata keys | METADATA_EXCEEDED_VALUE_LENGTH_LIMIT | Ensure metadata value length is within permissible limit                                            |
+| One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE          | Ensure metadata key or value is a valid non-empty value                                             |
 
-### HelpshiftLoginConfigSizeLimitExceeded
+### loginConfigSizeLimitExceeded
 
 Number of entries in login config is more than the permissible limit
 
 Errors - no
 
-### HelpshiftIdentitiesSizeLimitExceeded
+### identitiesSizeLimitExceeded
 
 Number of identities in JWT payload is more than the permissible limit
 
 Errors - no
 
-### HelpshiftIdentityFeatureNotEnabled
+### identityFeatureNotEnabled
 
 Identity feature is not enabled for your domain
 
 Errors - no
 
-### HelpshiftUidOrEmailIsMandatory
+### uidOrEmailIsMandatory
 
 JWT payload must contain an identity for either uid or email. Providing both identities is also fine. One exception to this rule is when full privacy is set to true in login config. In this case, if uid is not provided, SDK will generate an anonymous ID for the user.
 
 Errors - no
 
-### HelpshiftIatIsMandatory
+### iatIsMandatory
 
 iat key is missing in the JWT. Issued At Timestamp or “iat“ is a mandatory key in the JWT payload.
 
 Errors - no
 
-### HelpshiftNetworkError
+### networkError
 
 Login failed due to network error.
 
 Errors - no
 
-### HelpshiftUnknownError
+### unknownError
 
 Login failed due to some unknown error.
 
