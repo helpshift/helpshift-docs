@@ -55,7 +55,7 @@ There are two ways of providing the payload -
 ## Request Payloads {#request-payloads}
 
 
-# create_core_profiles
+### create_core_profiles
 
 Each entry in the payload should be a JSON map, containing one or more of the below fields. At least one identity is required. The response will contain the new core profile’s ID.
 
@@ -69,31 +69,34 @@ Each entry in the payload should be a JSON map, containing one or more of the be
 | custom_fields         | JSON map of custom user fields.   | <code> {"region": "APAC",<br /> "instance": "apac-21",<br /> "player_level": 455,<br /> "signup_date": "2023-05-12"} </code> |
 | full_privacy_enabled  | Did the user enable full privacy? | <code> false </code>   |
 | last_country          | End User’s country. <br /><br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code. | <code> India </code>, <code>IN </code>, or <code>IND</code>  |
-| last_country          | End User’s country. <br /><br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code. | <code> India </code>, <code>IN </code>, or <code>IND</code>  |
 | last_city             | End User’s city.                                                                            | <code> Pune </code>                                          |
 | age                   | End User’s Age.                                                                             | <code> 30 </code>                                            |
 | lifetime_value        | End User Lifetime Value                                                                     | <code> 1023.99 </code>                                       |
 | user_persona          | End User Persona                                                                            | <code> Streamer </code>                                      |
-| user_paying_segment   | End User Segmentation                                                                       | <code> Premium </code>                                       |
-| user_paying_segment   | End User Segmentation                                                                       | <code> Diamond Class </code>                                 |
-| user_level            | End User Level                                                                              | <code> 455 </code>                                           |
-| accepted_t_and_c      | Whether end user has accepted the terms and conditions.                                     | <code> true </code>                                          |
-| app_status            | End User App Status                                                                         | <code> Unlocked </code>                                      |
+| user_vip_segment      | End User VIP Segmentation                                                                   | <code> Diamond Class </code>                                 |
 | user_support_status   | End User Support Status                                                                     | <code> Active </code>                                        |
-| country               | End User’s country. <br /> <br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code.| <code> India </code>, <code>IN </code>, or <code>IND</code>  |
-| app_status            | End User App Status                                                                         | <code> Unlocked </code>                                      |
-| city                  | End User’s city.                                                                            | <code> Pune </code>                                          |
-| language              | ISO639-1 language code                                                                      | <code> en </code>                                            |
-| app_rating            | End User provided rating to app                                                             | <code> 4 </code>                                             |
-| lifetime_value        | End User Lifetime Value                                                                     | <code> 1023.99 </code>                                       |
-
-
+| accepted_t_and_c      | Whether end user has accepted the terms and conditions.                                     | <code> true </code>                                          |
+| preferred_language    | ISO 639-1 language code                                                                     | <code> en </code>                                            |
+| last_active_date      | Timestamp based on Unix epoch (with milliseconds).                                          | <code> 1714627659283 </code>                                 |
 
 </div>
 
-# get_core_profiles
 
-Each entry in the payload is a JSON map containing just the ```text core-profile-id``` of the core profile. The response will contain all the data for each core profile.
+### update_core_profiles
+
+This payload is identical to the payload for <code>create_core_profiles</code> , with one additional field - <code>core-profile-id</code> , which is the ID of the core profile to be updated.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                             | Example                           |
+| --------------------- | ----------------------------------------------------------------------------------- | --------------------------------- |
+| core-profile-id       | Core Profile Publish ID                                                             | <code> 1666311221477632 </code>   |
+
+</div>
+
+### get_core_profiles
+
+Each entry in the payload is a JSON map containing just the <code>core-profile-id</code> of the core profile. The response will contain all the data for each core profile.
 
 <div className="text-sm compact ">
 
