@@ -60,10 +60,22 @@ Each entry in the payload should be a JSON map, containing one or more of the be
 
 <div className="text-sm compact ">
 
-| Field         | Details                                                                                                                     | Example                           |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| identities    | Array of maps, each map contains an identity value which can be used to uniquely identify the end user. <br /> The map can also contain additional metadata as string key-value pairs, these metadata are stored as is, and not processed. <br /> The valid identity types are - <br /> <ul><li>uid</li> <li>email</li> <li>phone_number</li> <li>facebook_id</li> <li>discord_id</li> <li>whatsapp_id</li> <li>google_playstore_id</li> <li>apple_gamecenter_id</li> <li>nintendo_id</li> <li>psn_id</li> <li>xbox_live_id</li> <li>steam_id</li> </ul> | <code> [{"uid": "uid-1"}, <br /> {"email": "user@example.org", "verified": "true""}, <br /> {"discord_id": "293846823745"}] </code> |
-
+| Field                 | Details                                                                                                                     | Example                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| identities            | Array of maps, each map contains an identity value which can be used to uniquely identify the end user. <br /> The map can also contain additional metadata as string key-value pairs, these metadata are stored as is, and not processed. <br /> <br /> The valid identity types are - <br /> <ul><li>uid</li> <li>email</li> <li>phone_number</li> <li>facebook_id</li> <li>discord_id</li> <li>whatsapp_id</li> <li>google_playstore_id</li> <li>apple_gamecenter_id</li> <li>nintendo_id</li> <li>psn_id</li> <li>xbox_live_id</li> <li>steam_id</li> </ul> | <code> [{"uid": "uid-1"}, <br /> {"email": "user@example.org", "verified": "true""}, <br /> {"discord_id": "293846823745"}] </code> |
+| names                 | JSON map containing the end user’s name. The following components are supported, any combination can be provided - <br /> <br /> <ul><li>first_name</li> <li>last_name</li> <li>full_name</li> <li>display_name</li> </ul> | <code> {"first_name": "Jane",<br /> "last_name": "Doe"} </code> |
+| tags                  | JSON array of user tags. | <code> [“vip”, “open_beta”, "streamer"] </code>  |
+| custom_fields         | JSON map of custom user fields.   | <code> {"region": "APAC",<br /> "instance": "apac-21",<br /> "player_level": 455,<br /> "signup_date": "2023-05-12"} </code> |
+| full_privacy_enabled  | Did the user enable full privacy? | <code> false </code>   |
+| last_country          | End User’s country. <br /><br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code. | <code> India </code>, <code>IN </code>, or <code>IND</code>  |
+| last_country          | End User’s country. <br /><br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code. | <code> India </code>, <code>IN </code>, or <code>IND</code>  |
+| last_city             | End User’s city.                                                                            | <code> Pune </code>                                          |
+| age                   | End User’s Age.                                                                             | <code> 30 </code>                                            |
+| lifetime_value        | End User Lifetime Value                                                                     | <code> 1023.99 </code>                                       |
+| user_persona          | End User Persona                                                                            | <code> Streamer </code>                                      |
+| user_paying_segment   | End User Segmentation                                                                       | <code> Premium </code>                                       |
+| user_paying_segment   | End User Segmentation                                                                       | <code> Diamond Class </code>                                 |
+| user_level            | End User Level                                                                              | <code> 455 </code>                                           |
 
 </div>
 
