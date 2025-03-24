@@ -96,6 +96,32 @@ Any existing values will be overwritten with the values in the latest payload.
 
 </div>
 
+
+### update_app_profiles
+
+Each entry in the payload is a JSON map containing one or more of the following fields. The <code>pid</code> is required, as it identifies the end user app profile. The ID can be fetched using the Helpshift REST APIs, especially the Get Multiple Issues API.
+
+| Field                 | Details                                                                                    | Example                                                                                                    |
+| --------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| pid                   | App Profile ID                                                                             | <code> domain_profile_4d0d12f4eb0cba8d4d4ace68187bccc7437e4df9 </code>                                     |
+| custom_fields         | JSON map of custom user fields (at app level).                                             | <code> {"region": "APAC", <br />"instance": "apac-21", <br />"player_level": 455,<br /> "signup_date": "2023-05-12"} </code>   |
+| user_persona          | End User Persona                                                                           | <code> Streamer </code>                                                                                    |
+| user_paying_segment   | End User Segmentation                                                                      | <code> Premium </code>                                                                                     |
+| user_vip_segment      | End User VIP Segmentation                                                                  | <code> Diamond Class </code>                                                                               |
+| user_level            | End User Level                                                                             | <code> 455 </code>                                                                                         |
+| accepted_t_and_c      | Whether end user has accepted the terms and conditions.                                    | <code> true </code>                                                                                        |
+| app_status            | End User App Status                                                                        | <code> Unlocked </code>                                                                                    |
+| user_support_status   | End User Support Status                                                                    | <code> Active </code>                                                                                      |
+| country               | End User’s country <br /> <br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code.| <code> India </code>, <code>IN </code>, or <code>IND</code>                                                |
+| city                  | End User’s city.                                                                           | <code> Pune </code>                                                                                        |
+| language              | ISO639-1 language code                                                                     | <code> en </code>                                                                                          |
+| app_rating            | End User provided rating to app                                                            | <code> 4 </code>                                                                                           |
+| lifetime_value        | End User Lifetime Value                                                                    | <code> 1023.99 </code>                                                                                     |
+
+
+</div>
+
+
 ### get_core_profiles
 
 Each entry in the payload is a JSON map containing just the <code>core-profile-id</code> of the core profile. The response will contain all the data for each core profile.
@@ -106,5 +132,18 @@ Each entry in the payload is a JSON map containing just the <code>core-profile-i
 | --------------------- | ----------------------------------------------------------------------------------- | --------------------------------- |
 | core-profile-id       | Core Profile Publish ID                                                             | <code> 1666311221477632 </code>   |
 
+</div>
+
+### get_app_profiles
+
+Each entry in the payload is a JSON map containing just the pid of the app profile. The response will contain all the data for each app profile.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                             | Example                                                               |
+| --------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| pid                   | App Profile ID                                                                      | <code> domain_profile_4d0d12f4eb0cba8d4d4ace68187bccc7437e4df9 </code>|
 
 </div>
+
+
