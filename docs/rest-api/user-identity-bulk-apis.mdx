@@ -52,7 +52,54 @@ There are two ways of providing the payload -
 4. Using the Task ID, poll the **Get Task Status API** until the status is `completed`. The values of `errors` and results can be used to determine if the task completed successfully, or with errors.
 5. Use the **Get Task Results** and **Get Task Errors APIs** to retrieve data, or any errors.
 
-## Request Payloads(#request-payloads)
+## Request Payloads {#request-payloads}
+
+#create_core_profiles
+
+Each entry in the payload should be a JSON map, containing one or more of the below fields. At least one identity is required. The response will contain the new core profile’s ID.
+
+<div className="text-sm compact ">
+
+| Field         | Details                                                | Example                           |
+| ------------- | ------------------------------------------------------ | --------------------------------- |
+| identities    | Array of maps, each map contains an identity value     | ```text[{"uid": "uid-1"},         |
+                                                                            {"email": "user@example.org",    |
+                                                                            "verified": "true""},            |
+                                                                             {"discord_id": "293846823745"}] |
+|                                                                          ```                               |
+|                 which can be used to uniquely identify the end user.                                       |
+|                                                                                                            |
+|                 The map can also contain additional metadata as string                                     |
+|                 key-value pairs, these metadata are stored as is, and                                      |
+|                 not processed.                                                                             |    
+|                                                                                                            |
+|                 The valid identity types are -                                                             |
+|                 - uid                                                                                      |
+|                 - email                                                                                    |
+|                 - phone_number                                                                             |
+|                 - facebook_id                                                                              |
+|                 - discord_id                                                                               |
+|                 - whatsapp_id                                                                              |
+|                 - google_playstore_id                                                                      |
+|                 - apple_gamecenter_id                                                                      |
+|                 - nintendo_id                                                                              |
+|                 - psn_id                                                                                   |
+|                 - xbox_live_id                                                                             |
+|               | - steam_id                                                                                 |
+| names         | JSON map containing the end user’s name. The following                                     |
+                  components are supported, any combination can be                                           |
+                  provided -                                                                                 |
+|                 - first_name                                                                   |           |
+|                 - last_name                                                                    |           |
+|                 - full_name                                                                    |           | 
+|                 - display_name                                                                 |           | 
+|               |                                                                                |           |
+
+
+
+</div>
+
+
 
 
    
