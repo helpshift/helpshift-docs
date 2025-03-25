@@ -1,30 +1,21 @@
 ---
 sidebar_position: 30
 title: User Hub Bulk APIs
-description: "We will describe the various APIs available to import your end users' data into Helpshift, and export current end user data from Helpshift."
+description: "Use the Bulk APIs available to import your end users' data into Helpshift, and export current end user data from Helpshift."
 ---
-
-
-<Intro>
-We will describe the various APIs available to import your end users' data into Helpshift, and export current end user data from Helpshift.
-</Intro>
 
 ### Introduction {#introduction}
 
-- The User Hub Bulk APIs can be used to import your end users' data into Helpshift, and export current end user data from Helpshift.
-- See [POSTMAN Collection](https://www.postman.com/helpshift/helpshift-public-workspace/collection/7y24ugu/helpshift-identity-bulk-apis) for details on the API endpoints. Use the **Create Bulk Action** Task API to create bulk
-  action tasks which will be processed asynchronously.
-- The data to be imported is specified as a payload in the API request. Each payload is an JSON array of maps, each map containing the data for a
-  single end user profile. There is a limit of 10000 payloads in a single request.
-- The data to be imported is specified as a payload in the API request. Each payload is an JSON array of maps, each map containing the data for a
-  single end user profile. There is a limit of 10000 payloads in a single request.
-
+ The User Hub Bulk APIs can be used to import your end users' data into Helpshift, and export current end user data from Helpshift.<br />
+ See [POSTMAN Collection](https://documenter.getpostman.com/view/14405739/2sAYkKGwzQ) for details on the API endpoints. Use the **Create Bulk Action** Task API to create bulk
+ action tasks which will be processed asynchronously.<br />
+ The data to be imported is specified as a payload in the API request. Each payload is a JSON array of maps, each map containing the data for a
+ single end user profile. There is a limit of 10000 payloads in a single request.
   
-### Usage {#usage}
 
 There are two ways of providing the payload -
 
-1. Directly as a request parameter containing a JSON encoded string, using the x-www-form-urlencoded content type. This is suitable for smaller payloads.
+Directly as a request parameter containing a JSON encoded string, using the x-www-form-urlencoded content type. This is suitable for smaller payloads.
    
    ```text
    curl --location 'https://api.helpshift.com/v2/domain/identity/bulk_actions' \
@@ -33,7 +24,7 @@ There are two ways of providing the payload -
    --data-urlencode 'payload=[{"identities":[{"uid":"uid-1"}],"last_country":"India","last_city":"Pune"},{"identities":[{"uid":"uid-2"}],"last_country":"Pakistan","last_city":"Karachi"},
    {"identities":[{"uid":"uid-3"}],"last_country":"Sri Lanka","last_city":"Colombo"}]'
    ```
-2. As a file, using the multipart/form-data content type. The file must be in JSONL format, with each line being a complete JSON map containing the data for
+As a file, using the multipart/form-data content type. The file must be in JSONL format, with each line being a complete JSON map containing the data for
    a single record. This is recommended for larger payloads.
    
    ```text
@@ -47,10 +38,13 @@ There are two ways of providing the payload -
    {"identities":[{"uid":"uid-2"}],"last_country":"Pakistan","last_city":"Karachi"}
    {"identities":[{"uid":"uid-3"}],"last_country":"Sri Lanka","last_city":"Colombo"}
    ```
-3. Use the **Create Bulk Action** Task API to upload data into Helpshift, or request data export from Helpshift. In either case, the expected request format for each task type is listed below.
+
+### Usage {#usage}
+
+1. Use the **Create Bulk Action** Task API to upload data into Helpshift, or request data export from Helpshift. In either case, the expected request format for each task type is listed below.
    The API response will contain a `Task ID`.
-4. Using the Task ID, poll the **Get Task Status API** until the status is `completed`. The values of `errors` and results can be used to determine if the task completed successfully, or with errors.
-5. Use the **Get Task Results** and **Get Task Errors APIs** to retrieve data, or any errors.
+2. Using the Task ID, poll the **Get Task Status API** until the status is `completed`. The values of `errors` and results can be used to determine if the task completed successfully, or with errors.
+3. Use the **Get Task Results** and **Get Task Errors APIs** to retrieve data, or any errors.
 
 ## Request Payloads {#request-payloads}
 
