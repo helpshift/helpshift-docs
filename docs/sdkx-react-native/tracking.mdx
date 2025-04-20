@@ -200,3 +200,23 @@ if (logLevel == "Verbose") {
 ```
 
 Debug logs are collected within the set debug logs limit. The limit is set under the SDK Configurations section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
+
+## Tracking user-specific metadata
+
+### Update global user data
+This API is meant to be used along with the new [User Identity system](/sdkx-react-native//identity-user-hub). Use this API to [update global attributes](/sdkx-cocos2dx/identity-user-hub/#update-global-user-data) associated with the logged in user.
+```js
+
+updateMasterAttributes({"<master attribute key>":"<master attribute value>" });
+
+```
+
+### Update app specific user data
+
+This API is meant to be used along with the new [User Identity system](/sdkx-react-native/identity-user-hub). Use this API to [update app specific attributes](/sdkx-cocos2dx/identity-user-hub/#update-app-specific-user-data) associated with the logged in user.
+
+```js
+
+updateAppAttributes({"<app attribute key>":"<app attribute value>" });
+
+```
