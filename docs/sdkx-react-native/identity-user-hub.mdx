@@ -14,7 +14,7 @@ import {
 
 <Admonition type="info" title="Note">
 
-All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx-unity/getting-started-android#adding-to-project)
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx-react-native/getting-started/#adding-to-project)
 
 </Admonition>
 
@@ -129,7 +129,7 @@ User logout can also be triggered by the SDK itself when the current user’s lo
 
 If you wish to proactively refresh your logged in user’s credentials with Helpshift so that the session never expires, you can additionally listen to `refreshUserCredentials` event. This event is sent by the SDK some time before the session actually expires. This gives your app a chance to re-login the current user and maintain their session.
 
-For more details on these events, please check the [Delegates](/sdkx-unity/delegates-android/#user_session_expired) page.
+For more details on these events, please check the [Delegates](/sdkx-react-native/delegates/#user_session_expired) page.
 
 ### Adding user identities
 
@@ -144,7 +144,7 @@ addUserIdentities(jwtToken);
 
 You need to obtain a JWT for new identities from your dedicated endpoint. Please check the Prerequisites section on this page for more details.
 
-This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android.mdx/#user-identity-system-events) page.
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-react-native/delegates/#user-identity-system-events) page.
 
 ### Troubleshooting and tips
 
@@ -193,7 +193,7 @@ Global attributes must be one of the following types -
 - `custom_user_fields` - object<String, String>
 
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
-For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android/#user-identity-system-events) page.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-react-native/delegates/#user-identity-system-events) page.
 
 If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
 If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
@@ -234,7 +234,7 @@ App specific attributes must be one of the following types -
 - `custom_user_fields` - object<String,String>
 
 This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
-For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android/#user-identity-system-events) page.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-react-native/delegates/#user-identity-system-events) page.
 
 If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
 If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
