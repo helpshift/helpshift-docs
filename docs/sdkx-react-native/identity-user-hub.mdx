@@ -46,7 +46,7 @@ In order to use the new Identity System, you need to implement the following ste
 1. Obtain a JWT for the given user from your dedicated endpoint
 2. Log your user in with the JWT + full privacy information
 
-```js
+```javascript
 
 loginWithIdentity(jwtToken, {"full_privacy_enabled": false})
       .then(() =>  {
@@ -116,7 +116,7 @@ After you login with an anonymous user, you can’t add more identities for this
 
 Once a user logs out from your app, you should call the logout API to ensure no one else can view this user's conversations.
 
-```js
+```javascript
 import {logout} from "helpshift-plugin-sdkx-react-native";
 
 logout()
@@ -135,7 +135,7 @@ For more details on these events, please check the [Delegates](/sdkx-react-nativ
 
 Use the `addUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
 
-```js
+```javascript
 import {addUserIdentities} from "helpshift-plugin-sdkx-react-native";
 // other imports
 
@@ -161,7 +161,7 @@ If your login is still failing, you can investigate these other potential reason
 
 Use this API to update global attributes associated with the logged in user.
 
-```js
+```jjavascripts
 import {updateMasterAttributes} from "helpshift-plugin-sdkx-react-native";
 // other imports
 
@@ -202,7 +202,7 @@ If the attributes map contains supported key, but with unsupported value type, t
 
 Use this API to update app specific attributes associated with the logged in user.
 
-```js
+```javascript
 
 import {updateAppAttributes} from "helpshift-plugin-sdkx-react-native";
 // other imports

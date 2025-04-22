@@ -27,7 +27,16 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Intro>
 
+
+<Admonition type="warning" title="Architecture Update SDKX 10.4.0">
+With SDK X 10.4.0 and above, Helpshift has introduced a new implementation approach for delegate events in React Native's new architecture. Please refer to the respective sections below to implement according to your app's architecture (Old or New).
+Additionally, with SDK X 10.4.0 and above, `eventData` no longer needs to be parsed on Android. It is provided as an object and can be consumed directly.
+
+</Admonition>
+
 ## Helpshift Delegate implementation {#delegate-implementation}
+
+### Old Architecture
 
 - To use Helpshift Delegate please import `helpshiftEmitter`
 - To use Helpshift Delegate constants please import `helpshiftConstants`
@@ -37,12 +46,6 @@ For example:
 ```javascript
 import { helpshiftEmitter , helpshiftConstants } from "helpshift-plugin-sdkx-react-native";
 ```
-
-<Admonition type="info" title="Note">
-
-`helpshiftConstants` is available from SDK X 10.3.1 onwards. For older SDK X versions, please use the raw keys instead.
-
-</Admonition>
 
 To handle helpshift events, you can use following listener.
 
@@ -59,11 +62,51 @@ const handleCallbacks = () => {
 
 We need add a listener with helpshiftEmitter for "onEventOccurred" and "onUserAuthenticationFailure".
 
+
+### New Architecture (SDK X 10.4.0+)
+
+```javascript
+import {
+  onEventOccurredListener,
+  onUserAuthFailedListener,
+  HelpshiftEventData
+} from "helpshift-plugin-sdkx-react-native";
+
+useEffect(() => {
+  const helpshiftEvent = onEventOccurredListener(handleEvent);
+  const onUserAuthFailed = onUserAuthFailedListener(handleUserAuthFailed);
+
+  return () => {
+    helpshiftEvent?.remove();
+    onUserAuthFailed?.remove();
+  };
+}, []);
+
+const handleEvent = React.useCallback((payload: HelpshiftEventData) => {
+  // use payload
+}, []);
+
+const handleUserAuthFailed = React.useCallback((payload: HelpshiftEventData) => {
+  // use payload
+}, []);
+
+```
+
+<Admonition type="info" title="Note">
+
+`helpshiftConstants` is available from SDK X 10.3.1 onwards. For older SDK X versions, please use the raw keys instead.
+
+</Admonition>
+
 ## Events {#helpshift-events}
 
 ### Helpshift session started event {#session-delegates}
 
 This event gets fired when the Helpshift session starts
+
+
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
 
 ```javascript
 helpshiftEmitter.addListener("onEventOccurred", (data) => {
@@ -72,10 +115,27 @@ helpshiftEmitter.addListener("onEventOccurred", (data) => {
   }
 });
 ```
+</TabItem>
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName === "helpshiftSessionStarted") {
+    // Your code here
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### Helpshift session ended event {#session-delegates}
 
 This event gets fired when the Helpshift session ends.
+
+
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
 
 ```javascript
 helpshiftEmitter.addListener("onEventOccurred", (data) => {
@@ -84,70 +144,109 @@ helpshiftEmitter.addListener("onEventOccurred", (data) => {
   }
 });
 ```
+</TabItem>
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName === "helpshiftSessionEnded") {
+    // Your code here
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
+
 
 ### Unread Message Count Event {#unreadMessageCount}
 
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(shouldFetchFromServer: boolean)`. The count of the number of messages will be conveyed to your app via this event.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
 helpshiftEmitter.addListener("onEventOccurred", (data) => {
   if (data.eventName == "receivedUnreadMessageCount") {
-    try {
       let countData =
-        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
+        Platform.OS == data.eventData
       console.log(countData.count);
-    } catch (err) {
-      console.error("Parsing Error", err);
-    }
   }
 });
+
 ```
+</TabItem>
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName === "receivedUnreadMessageCount") {
+         console.log(countData.count);
+
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### Conversation Status Event {#conversation-status}
 
 This event contains information about the current ongoing conversation.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == 'conversationStatus') {
-    try {
-      let eventData =
-        Platform.OS == 'ios' ? data.eventData : JSON.parse(data.eventData);
-      if(eventData.hasOwnProperty('latestIssueId')){
-          console.log(eventData.latestIssueId);
-      }
-      if(eventData.hasOwnProperty('latestIssuePublishId')){
-          console.log(eventData.latestIssuePublishId);
-      }
-      if(eventData.hasOwnProperty('open')){
-          console.log(eventData.open);
-      }
-    } catch (err) {
-      console.error('Parsing Error', err);
-    }
+      console.log(data.eventData);
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName === "conversationStatus") {
+      console.log(data.eventData);
+  }
+}, []);
+```
+</TabItem>
+</Tabs>
 
 ### Widget Toggle Event {#widget-toggle-event}
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
-  if (data.eventName == "widgetToggle") {
-    try {
-      let eventData =
-        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
-      if (eventData.hasOwnProperty("visible")) {
-        console.log(eventData.visible);
-      }
-    } catch (err) {
-      console.error("Parsing Error", err);
-    }
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
+  if (data.eventName == 'widgetToggle') {
+     // handle event
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName === "widgetToggle") {
+     // handle event
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### User Click On Action Event {#user-click-on-action}
 
@@ -174,68 +273,95 @@ The key constants are available from SDK X 10.3.1 onwards. For older SDK X versi
 
 </Admonition>
 
-```javascript
-helpshiftEmitter.addListener(
-    helpshiftConstants.HANDLE_HELPSHIFT_EVENT,
-    (data) => {
-      if (data.eventName == helpshiftConstants.HELPSHIFT_EVENT_NAME_USER_CLICK_ON_ACTION) {
-        try {
-          let eventActionType =
-            eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE];
-          let eventActionData =
-            eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_DATA];
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
 
-          console.log('Event Receivd for ' + data.eventName + ' action type : ' + eventActionType + ' action data ' + eventActionData );
-        } catch (err) {
-          console.error('Parsing Error', err);
-        }
-      }
-    }
-  );
+```javascript
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
+  if (data.eventName == helpshiftConstants.HELPSHIFT_EVENT_NAME_USER_CLICK_ON_ACTION) {
+      let eventActionType = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE];
+      let eventActionData = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_DATA];
+
+      console.log('Event Receivd for ' + data.eventName + ' action type : ' + eventActionType + ' action data ' + eventActionData );
+  }
+});
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == helpshiftConstants.HELPSHIFT_EVENT_NAME_USER_CLICK_ON_ACTION) {
+      let eventActionType = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_TYPE];
+      let eventActionData = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ACTION_DATA];
+
+      console.log('Event Receivd for ' + data.eventName + ' action type : ' + eventActionType + ' action data ' + eventActionData );
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
+
 
 ### Conversation Start Event {#conversation-start-event}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == "conversationStart") {
-    try {
-      let eventData =
-        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
-      if (eventData.hasOwnProperty("message")) {
-        console.log(eventData.message);
-      }
-    } catch (err) {
-      console.error("Parsing Error", err);
-    }
+      console.log(data.eventData.message);
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == "conversationStart") {
+    console.log(data.eventData.message);
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### Message Add Event {#message-add-event}
 
 This event is triggered when the user adds a message to a conversation. It might be a text message, a response via bot input, or an attachment. The event data object has the `type` and `body` keys, which indicate the type and body of the message added by the user. For your reference, see the below example.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == "messageAdd") {
-    try {
-      let eventData =
-        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
-      if (eventData.hasOwnProperty("body")) {
-        console.log(eventData.body);
-      }
-      if (eventData.hasOwnProperty("type")) {
-        console.log(eventData.type);
-      }
-    } catch (err) {
-      console.error("Parsing Error", err);
-    }
+      console.log(data.eventData);
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == "messageAdd") {
+      console.log(data.eventData);
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### Agent Message Received Event {#agent-message-received}
 
@@ -268,6 +394,9 @@ This event is triggered when the user receives any message from an agent in a co
   - `helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE_TEXT`
 
 </Admonition>
+
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
 
 ```javascript
 helpshiftEmitter.addListener(
@@ -316,77 +445,199 @@ helpshiftEmitter.addListener(
   }
 );
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == helpshiftConstants.HELPSHIFT_EVENT_NAME_AGENT_MESSAGE_RECEIVED) {
+      try {
+        let publishId = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_PUBLISH_ID];
+        let type = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_TYPE];
+        let body = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_MESSAGE_BODY];
+        let createdTs = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_CREATED_TIME];
+
+        // isEmpty is undefined and empty check
+        if (isEmpty(publishId) && isEmpty(type) && isEmpty(body) && createdTs == null) {
+          console.log('Received no data');
+          return;
+        }
+
+        console.log('publishId ' + publishId + ' type ' + type + ' body ' + body + ' createdTs ' + createdTs);
+        let attachments = eventData[helpshiftConstants.HELPSHIFT_EVENT_DATA_ATTACHMENTS];
+
+        if (attachments && attachments.length > 0) {
+          attachments.forEach((attachment, index) => {
+            let url = attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_URL];
+            let contentType = attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_CONTENT_TYPE];
+            let fileName = attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_FILE_NAME];
+            let size =attachment[helpshiftConstants.HELPSHIFT_EVENT_DATA_SIZE];
+
+            if (isEmpty(url) && isEmpty(fileName) && size == null) {
+              console.log('Received no data for attachment ' + (index + 1));
+            }
+
+            if (isEmpty(url) || isEmpty(fileName) || size == null) {
+              console.log('Received incomplete data for attachment ' + (index + 1));
+            }
+
+            console.log('Attachment No. : ' + (index + 1) + ', url: ' + url + ', contentType: ' + contentType + ', fileName: ' + fileName + ', size: ' + size );
+          });
+        } else {
+          console.log('No attachments received in message');
+        }
+      } catch (err) {
+        console.error('Parsing Error', err);
+      }
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### CSAT Submit Event {#csat-submit-event}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == "csatSubmit") {
-    try {
-      let eventData =
-        Platform.OS == "ios" ? data.eventData : JSON.parse(data.eventData);
-      if (eventData.hasOwnProperty("rating")) {
-        console.log(eventData.rating);
-      }
-      if (eventData.hasOwnProperty("additionalFeedback")) {
-        console.log(eventData.additionalFeedback);
-      }
-    } catch (err) {
-      console.error("Parsing Error", err);
-    }
+      console.log(data.eventData.rating);
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == "csatSubmit") {
+      console.log(data.eventData.rating);
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### Conversation End Event {#conversation-end-event}
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == "conversationEnd") {
-    console.log("Conversation Ended");
+      console.log("Conversation Ended");
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == "conversationEnd") {
+    console.log("Conversation Ended");
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### Conversation Rejected Event {#conversation-rejected-event}
 
 This event is triggered when an agent rejects the conversation.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
+  if (data.eventName == "conversationRejected") {
+      console.log("Conversation Rejected");
+  }
+});
+```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
   if (data.eventName == "conversationRejected") {
     console.log("Conversation Rejected");
   }
-});
+}, []);
 ```
+
+</TabItem>
+</Tabs>
 
 ### Conversation Resolved Event {#conversation-resolved-event}
 
-This event is triggered when an agent resolves the conversation.
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
 
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == "conversationResolved") {
-    console.log("Conversation Resolved");
+      console.log("Conversation Resolved");
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == "conversationResolved") {
+    console.log("Conversation Resolved");
+  }
+}, []);
+```
+</TabItem>
+</Tabs>
 
 ### Conversation Reopened Event {#conversation-reopened-event}
 
 When the resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
+
 ```javascript
-helpshiftEmitter.addListener("onEventOccurred", (data) => {
+helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == "conversationReopened") {
-    console.log("Conversation Reopened");
+      console.log("Conversation Reopened");
   }
 });
 ```
+</TabItem>
+
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleEvent = React.useCallback((data) => {
+  if (data.eventName == "conversationReopened") {
+    console.log("Conversation Reopened");
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ### User Authentication Failed Event {#user-authentication-failed-event}
 
@@ -395,6 +646,9 @@ If you have `User Authentication` enabled on the Dashboard and if you pass an in
 You need add a listener with helpshiftEmitter for "onUserAuthenticationFailure".
 
 You will receive various string name on onUserAuthenticationFailure event as shown in example.
+
+<Tabs>
+<TabItem value="old" label="Old Architecture" default>
 
 ```javascript
 helpshiftEmitter.addListener("onUserAuthenticationFailure", (data) => {
@@ -407,6 +661,24 @@ helpshiftEmitter.addListener("onUserAuthenticationFailure", (data) => {
   }
 });
 ```
+
+</TabItem>
+<TabItem value="new" label="New Architecture">
+
+```javascript
+const handleUserAuthFailed = React.useCallback((data) => {
+  if (data.eventName === "REASON_AUTH_TOKEN_NOT_PROVIDED") {
+    console.log("no user authentication token provided");
+  } else if (data.eventName === "REASON_INVALID_AUTH_TOKEN") {
+    console.log("user authentication token is invalid");
+  } else if (data.eventName === "UNKNOWN") {
+    console.log("the reason for the authentication failure is unknown");
+  }
+}, []);
+```
+
+</TabItem>
+</Tabs>
 
 ## User Identity System Events
 
