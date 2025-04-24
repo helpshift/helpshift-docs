@@ -200,7 +200,9 @@ This event contains information about the current ongoing conversation.
 ```javascript
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == 'conversationStatus') {
-      console.log(data.eventData);
+    console.log(data?.eventData?.latestIssueId);
+    console.log(data?.eventData?.latestIssuePublishId);
+    console.log(data?.eventData?.open);
   }
 });
 ```
@@ -211,7 +213,9 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 ```javascript
 const handleEvent = React.useCallback((data) => {
   if (data.eventName === "conversationStatus") {
-      console.log(data.eventData);
+      console.log(data?.eventData?.latestIssueId);
+      console.log(data?.eventData?.latestIssuePublishId);
+      console.log(data?.eventData?.open);
   }
 }, []);
 ```
@@ -228,7 +232,7 @@ This event is triggered when the user opens or exits the chat screen. This event
 ```javascript
 helpshiftEmitter.addListener('onEventOccurred', (data) => {
   if (data.eventName == 'widgetToggle') {
-     // handle event
+      console.log(data?.eventData?.visible);
   }
 });
 ```
@@ -239,7 +243,7 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 ```javascript
 const handleEvent = React.useCallback((data) => {
   if (data.eventName === "widgetToggle") {
-     // handle event
+      console.log(data?.eventData?.visible);
   }
 }, []);
 ```
@@ -312,7 +316,7 @@ This event triggers when the user sends the first message in a conversation. The
 <TabItem value="old" label="Old Architecture" default>
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
   if (data.eventName == "conversationStart") {
       console.log(data.eventData.message);
   }
@@ -341,9 +345,10 @@ This event is triggered when the user adds a message to a conversation. It might
 <TabItem value="old" label="Old Architecture" default>
 
 ```javascript
-helpshiftEmitter.addListener('onEventOccurred', (data) => {
+helpshiftEmitter.addListener("onEventOccurred", (data) => {
   if (data.eventName == "messageAdd") {
-      console.log(data.eventData);
+    console.log(data?.eventData?.body);
+    console.log(data?.eventData?.type);
   }
 });
 ```
@@ -354,7 +359,8 @@ helpshiftEmitter.addListener('onEventOccurred', (data) => {
 ```javascript
 const handleEvent = React.useCallback((data) => {
   if (data.eventName == "messageAdd") {
-      console.log(data.eventData);
+    console.log(data?.eventData?.body);
+    console.log(data?.eventData?.type);
   }
 }, []);
 ```
@@ -714,15 +720,15 @@ Some of the identities in the JWT payload are not valid
 - APIs - `addUserIdentities`
 - Data -
 
-| Key                                      | Value                                     | Recovery                                                                                            |
-| ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| One of the passed identity keys          | HelpshiftKeyLengthLimitExceeded           | Ensure key length is within permissible limit                                                       |
-| One of the passed identity keys          | HelpshiftValueLengthLimitExceeded         | Ensure value length is within permissible limit                                                     |
-| One of the passed identity keys          | HelpshiftEmptyData                        | Ensure key or value is a valid non-empty value                                                      |
-| One of the passed identity keys          | HelpshiftMetadataCountLimitExceeded       | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
-| One of the passed identity metadata keys | HelpshiftMetadataKeyLengthLimitExceeded   | Ensure metadata key length is within permissible limit                                              |
-| One of the passed identity metadata keys | HelpshiftMetadataValueLengthLimitExceeded | Ensure metadata value length is within permissible limit                                            |
-| One of the passed identity metadata keys | HelpshiftMetadataEmptyKeyOrValue          | Ensure metadata key or value is a valid non-empty value                                             |
+| Key                                      | Value                                  | Recovery                                                                                            |
+| ---------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| One of the passed identity keys          | EXCEEDED_KEY_LENGTH_LIMIT              | Ensure key length is within permissible limit                                                       |
+| One of the passed identity keys          | EXCEEDED_VALUE_LENGTH_LIMIT            | Ensure value length is within permissible limit                                                     |
+| One of the passed identity keys          | EMPTY_DATA                             | Ensure key or value is a valid non-empty value                                                      |
+| One of the passed identity keys          | METADATA_EXCEEDED_COUNT_LIMIT          | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
+| One of the passed identity metadata keys | METADATA_EXCEEDED_KEY_LENGTH_LIMIT     | Ensure metadata key length is within permissible limit                                              |
+| One of the passed identity metadata keys | METADATA_EXCEEDED_VALUE_LENGTH_LIMIT   | Ensure metadata value length is within permissible limit                                            |
+| One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE            | Ensure metadata key or value is a valid non-empty value                                             |
 
 ### HelpshiftIdentitiesSizeLimitExceeded
 
