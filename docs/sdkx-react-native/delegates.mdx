@@ -699,21 +699,21 @@ Where applicable, the max permissible limits are defined as follows -
 - Value length for user tags - Max 100 chars
 - Collection size - Max 30 entries
 
-### HelpshiftIdentityTokenInvalid
+### IDENTITY_TOKEN_INVALID
 
 Identities JWT not in valid format
 
 - APIs - `addUserIdentities`
 - Data - nil
 
-### HelpshiftIatIsMandatory
+### IAT_IS_MANDATORY
 
 iat key is missing in the JWT. Issued At Timestamp or “iat“ is a mandatory key in the JWT payload
 
 - APIs - `addUserIdentities`
 - Data - nil
 
-### HelpshiftIdentitiesDataInvalid
+### IDENTITY_DATA_INVALID
 
 Some of the identities in the JWT payload are not valid
 
@@ -730,14 +730,14 @@ Some of the identities in the JWT payload are not valid
 | One of the passed identity metadata keys | METADATA_EXCEEDED_VALUE_LENGTH_LIMIT   | Ensure metadata value length is within permissible limit                                            |
 | One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE            | Ensure metadata key or value is a valid non-empty value                                             |
 
-### HelpshiftIdentitiesSizeLimitExceeded
+### IDENTITIES_SIZE_LIMIT_EXCEEDED
 
 Number of identities in JWT payload is more than the permissible limit
 
 - APIs - `addUserIdentities`
 - Data - nil
 
-### HelpshiftEventAddUserIdentitiesSyncFailed
+### ADD_USER_IDENTITIES_SYNC_FAILED
 
 User identities failed to sync with backend
 
@@ -748,7 +748,7 @@ User identities failed to sync with backend
 | ------------------------------- | -------------------- | -------- |
 | One of the passed identity keys | HelpshiftInvalidData | NA       |
 
-### HelpshiftEventAppAttributesLimitExceeded / HelpshiftEventMasterAttributesLimitExceeded
+### APP_ATTRIBUTES_LIMIT_EXCEEDED / MASTER_ATTRIBUTES_LIMIT_EXCEEDED
 
 Number of unsynced app or master attributes exceeds the permissible limit
 
@@ -762,14 +762,14 @@ Validation of individual entries inside the attributes dictionary failed
 - APIs - `updateAppAttributes`, `updateMasterAttributes`
 - Data -
 
-| Key                              | Value                             | Recovery                                                                                                        |
-| -------------------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| One of the passed attribute keys | HelpshiftKeyLengthLimitExceeded   | Ensure key length is within permissible limit                                                                   |
-| One of the passed attribute keys | HelpshiftValueLengthLimitExceeded | Ensure value length is within permissible limit                                                                 |
-| One of the passed attribute keys | HelpshiftCountLimitExceeded       | Reduce the number of entries in the collection for specified key                                                |
-| One of the passed attribute keys | HelpshiftInvalidValueType         | Ensure value is one of the supported types - String, Bool, Number, String array or a String - String dictionary |
+| Key                              | Value                       | Recovery                                                                                                        |
+| -------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| One of the passed attribute keys | EXCEEDED_KEY_LENGTH_LIMIT   | Ensure key length is within permissible limit                                                                   |
+| One of the passed attribute keys | EXCEEDED_VALUE_LENGTH_LIMIT | Ensure value length is within permissible limit                                                                 |
+| One of the passed attribute keys | EXCEEDED_COUNT_LIMIT        | Reduce the number of entries in the collection for specified key                                                |
+| One of the passed attribute keys | INVALID_VALUE_TYPE          | Ensure value is one of the supported types - String, Bool, Number, String array or a String - String dictionary |
 
-### HelpshiftEventUpdateAppAttributesSyncFailed / HelpshiftEventUpdateMasterAttributesSyncFailed
+### UPDATE_APP_ATTRIBUTES_SYNC_FAILED / UPDATE_MASTER_ATTRIBUTES_SYNC_FAILED
 
 Attributes failed to sync with backend
 
@@ -779,23 +779,23 @@ Data -
 
 | Key                              | Value                | Recovery |
 | -------------------------------- | -------------------- | -------- |
-| One of the passed attribute keys | HelpshiftInvalidData | NA       |
+| One of the passed attribute keys | INVALID_DATA | NA       |
 
-### HelpshiftEventUserIdentityNotEnabled
+### USER_IDENTITY_NOT_ENABLED
 
 Identity feature is not enabled for your domain
 
 - APIs - `addUserIdentities`, `updateAppAttributes`, `updateMasterAttributes`
 - Data - nil
 
-### HelpshiftEventUserSessionExpired
+### USER_SESSION_EXPIRED
 
 Sent when the SDK's user session expires. Once the session expires, SDK will keep sending this event to your app on each foreground.
 In response to this event, you should refresh the JWT for the current user and [log them in](/sdkx-react-native/identity-user-hub/) again with the new JWT.
 
 - Data - nil
 
-### HelpshiftEventRefreshUserCredentials
+### REFRESH_USER_CREDENTIALS
 
 Sent when the SDK's user session is about to expire. This gives you a chance to proactively refresh the JWT for the current user and
 log them in the SDK with the new JWT to avoid disrupting their session.
