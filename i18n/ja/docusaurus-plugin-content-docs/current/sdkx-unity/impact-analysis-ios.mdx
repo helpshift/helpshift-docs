@@ -23,7 +23,7 @@ import {
 
 <Intro>
 
-SDK のリリースごとに、このページでは SDK がアプリケーションのビルドと実行時間のさまざまな側面に与える影響を追跡します。
+SDKのリリースごとに、このページではSDKがアプリケーションのビルドと実行時間のさまざまな側面に与える影響を追跡します。
 
 </Intro>
 
@@ -31,112 +31,135 @@ SDK のリリースごとに、このページでは SDK がアプリケーシ�
 
 **アプリの起動時間**
 
-Helpshift の初期化はすべてバックグラウンドのスレッドで実行されるため、Helpshift SDK がアプリの起動時間に影響を与えることはありません。
+Helpshiftの初期化はすべてバックグラウンドのスレッドで実行されるため、Helpshift SDKがアプリの起動時間に影響を与えることはありません。
 
 </Admonition>
 
 # バージョン別のレポート {#version-impact}
 
-Helpshift SDK の各バージョンのインパクト分析レポートについては、以下でご確認いただけます。
+Helpshift SDKの各バージョンのインパクト分析レポートについては、以下でご確認いただけます。
+
+## 10.4.0
+
+<Admonition type="info" title="注意">
+
+Unity 2018.4.f361、macOS 14.3.1、Xcode 15.0の環境でビルドしたデモアプリをiOS 18.1.1（iPhone 15）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
+
+</Admonition>
+
+### ディスク容量
+
+Unity iOSアプリが`HelpshiftX.framework`と統合された場合、IPAファイルサイズの増加量は約`369`KBです。
+
+### RAMの使用量
+
+以下は、デバッグモードでのHelpshift APIのメモリ使用量です。（値はおおよそのものです）
+
+|                                                       |               |
+| ----------------------------------------------------- | ------------- |
+| **Helpshiftのチャット画面（`ShowConversation`）**      |    `8.1`MB   |
+| **HelpshiftのFAQ画面（`ShowFAQs`）**              |    `5.8`MB   |
+| **HelpshiftのFAQセクション画面（`ShowFAQSection`）** |    `6.2`MB   |
+| **Helpshiftの単一のFAQ画面（`ShowFAQ`）**         |    `8.5`MB   |
 
 ## 10.3.0
 
 <Admonition type="info" title="注意">
 
-Unity 2021.3.14f1、macOS 13.5.1、Xcode 15.1 の環境でビルドしたデモアプリを iOS 17.2（iPhone 15 Plus）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
+Unity 2021.3.14f1、macOS 13.5.1、Xcode 15.1の環境でビルドしたデモアプリをiOS 17.2（iPhone 15 Plus）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
 ### ディスク容量
 
-Unity iOS アプリが`HelpshiftX.framework`と統合された場合、IPA ファイルサイズの増加量は約`369`KB です。
+Unity iOSアプリが`HelpshiftX.framework`と統合された場合、IPAファイルサイズの増加量は約`369`KBです。
 
-### RAM の使用量
+### RAMの使用量
 
-以下は、デバッグモードでの Helpshift API のメモリ使用量です。（値はおおよそのものです）
+以下は、デバッグモードでのHelpshift APIのメモリ使用量です。（値はおおよそのものです）
 
-|                                                         |                           |
-| ------------------------------------------------------- | ------------------------- |
-| **Helpshift のチャット画面（`ShowConversation`）**      | `10.3`MB が追加されます。 |
-| **Helpshift の FAQ 画面（`ShowFAQs`）**                 | `6.1`MB が追加されます。  |
-| **Helpshift の FAQ セクション画面（`ShowFAQSection`）** | `7.3`MB が追加されます。  |
-| **Helpshift の単一の FAQ 画面（`ShowFAQ`）**            | `8.8`MB が追加されます。  |
+|                                                       |                |
+| ----------------------------------------------------- | -------------- |
+| **Helpshiftのチャット画面（`ShowConversation`）**      |    `10.3`MB   |
+| **HelpshiftのFAQ画面（`ShowFAQs`）**              |    `6.1`MB    |
+| **HelpshiftのFAQセクション画面（`ShowFAQSection`）** |    `7.3`MB    |
+| **Helpshiftの単一のFAQ画面（`ShowFAQ`）**         |    `8.8`MB    |
 
 ## 10.1.0
 
 <Admonition type="info" title="注意">
 
-Unity 2019.4.11f1、macOS 12.1、Xcode 13.2 の環境でビルドしたデモアプリを iOS 15.1（iPhone X）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
+Unity 2019.4.11f1、macOS 12.1、Xcode 13.2の環境でビルドしたデモアプリをiOS 15.1（iPhone X）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
 ### ディスク容量
 
-Unity iOS アプリが`HelpshiftX.framework`と統合された場合、IPA ファイルサイズの増加量は約`240`KB です。
+Unity iOSアプリが`HelpshiftX.framework`と統合された場合、IPAファイルサイズの増加量は約`240`KBです。
 
-### RAM の使用量
+### RAMの使用量
 
-以下は、デバッグモードでの Helpshift API のメモリ使用量です。（値はおおよそのものです）
+以下は、デバッグモードでのHelpshift APIのメモリ使用量です。（値はおおよそのものです）
 
-|                                                                     |                                                                                    |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **Helpshift のチャット画面（<code>showConversation:</code>）**      | <code>10.3</code>MB が追加されます（チャット画面上のメッセージの数に依存します）。 |
-| **Helpshift の FAQ 画面（<code>showFAQs:</code>）**                 | <code>10.1</code>MB が追加されます。                                               |
-| **Helpshift の FAQ セクション画面（<code>showFAQSection:</code>）** | <code>10</code>MB が追加されます。                                                 |
-| **Helpshift の単一の FAQ 画面（<code>showFAQ:</code>）**            | <code>10</code>MB が追加されます。                                                 |
+|                                                                   |                                                                                    |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      |     <code>10.3</code>MB（チャット画面上のメッセージの数に依存します）。  |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              |     <code>10.1</code>MB                                                          |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** |     <code>10</code>MB                                                            |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         |     <code>10</code>MB                                                           |
 
 ## 10.0.0
 
 <Admonition type="info" title="注意">
 
-Unity 2019.4.11f1、macOS 10.15.7、Xcode 12.0 の環境でビルドしたデモアプリを iOS 14.0（iPhone X）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
+Unity 2019.4.11f1、macOS 10.15.7、Xcode 12.0の環境でビルドしたデモアプリをiOS 14.0（iPhone X）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
 ### ディスク容量
 
-Unity iOS アプリが`HelpshiftX.framework`と統合された場合、IPA ファイルサイズの増加量は約`200`KB です。
+Unity iOSアプリが`HelpshiftX.framework`と統合された場合、IPAファイルサイズの増加量は約`200`KBです。
 
-### RAM の使用量
+### RAMの使用量
 
-以下は、デバッグモードでの Helpshift API のメモリ使用量です。（値はおおよそのものです）
+以下は、デバッグモードでのHelpshift APIのメモリ使用量です。（値はおおよそのものです）
 
-|                                                                     |                                                                                   |
-| ------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift のチャット画面（<code>showConversation:</code>）**      | <code>8.6</code>MB が追加されます（チャット画面上のメッセージの数に依存します）。 |
-| **Helpshift の FAQ 画面（<code>showFAQs:</code>）**                 | <code>8.3</code>MB が追加されます。                                               |
-| **Helpshift の FAQ セクション画面（<code>showFAQSection:</code>）** | <code>8.1</code>MB が追加されます。                                               |
-| **Helpshift の単一の FAQ 画面（<code>showFAQ:</code>）**            | <code>8</code>MB が追加されます。                                                 |
+|                                                                   |                                                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      |    <code>8.6</code>MB（チャット画面上のメッセージの数に依存します）。   |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              |    <code>8.3</code>MB                                                           |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** |    <code>8.1</code>MB                                                           |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         |    <code>8</code>MB                                                             |
 
 ## 1.0.0-beta
 
 <Admonition type="info" title="注意">
 
-Unity 2019.4.11f1、OS X 10.15.6、Xcode 11 の環境でビルドしたデモアプリを iOS 12.4.5（iPhone 6 Plus）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
+Unity 2019.4.11f1、OS X 10.15.6、Xcode 11の環境でビルドしたデモアプリをiOS 12.4.5（iPhone 6 Plus）でテストしています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
 ### ディスク容量
 
-Dynamic Framework が占有するディスク容量です。
+Dynamic Frameworkが占有するディスク容量です。
 
 フレームワークの合計サイズは`1.7 MB`です。
 
 内訳は以下の通りです。
 
 | アーキテクチャ | サイズ（MB） |
-| -------------- | ------------ |
-| arm64          | 0.421        |
-| armv7          | 0.373        |
-| i386           | 0.368        |
-| x86_64         | 0.372        |
+| ------------ | --------- |
+| arm64        | 0.421     |
+| armv7        | 0.373     |
+| i386         | 0.368     |
+| x86_64       | 0.372     |
 
-Unity iOS アプリが HelpshiftX フレームワークと統合された場合、IPA ファイルサイズの増加はフレームワークのビットコード版と非ビットコード版の両方について約`140 KB`KB です。
+Unity iOSアプリがHelpshiftXフレームワークと統合された場合、IPAファイルサイズの増加はフレームワークのビットコード版と非ビットコード版の両方について約`140 KB`KBです。
 
-### RAM の使用量
+### RAMの使用量
 
 メモリの使用量（デバッグモードでは、値はおおよそのものです。）
 
-|                                                                |                                                                                   |
-| -------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift のチャット画面（<code>showConversation:</code>）** | <code>4.5</code>MB が追加されます（チャット画面上のメッセージの数に依存します）。 |
+|                                                              |                                                                                   |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）** | <code>4.5</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。 |

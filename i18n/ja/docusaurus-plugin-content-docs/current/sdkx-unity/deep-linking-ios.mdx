@@ -1,0 +1,84 @@
+---
+sidebar_position: 100
+title: FAQにおけるディープリンク
+description: "カスタムURLスキームを使用して、アプリ内でのディープリンクをサポートします"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# FAQにおけるディープリンク {#ios-deep-links}
+
+<Intro>
+
+カスタムURLスキームを使用して、アプリ内でのディープリンクをサポートします
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## FAQにおけるディープリンク {#custom-url-in-faqs}
+
+カスタムURLスキームを使用して、HelpshiftのFAQからアプリ内の特定のセクションへとユーザーを誘導します。これらのスキームを使用することで、よりシームレスな体験をユーザーに提供できるようになります。たとえば、あなたのiOSアプリ内に会員登録用の画面がある場合、FAQにある「登録」リンクをクリックすることでユーザーを直接その画面へと誘導することができます。
+
+### FAQにカスタムURLスキームを挿入する
+
+FAQを編集する際に、テキストを選択してから「リンクを作成する」をクリックします。
+
+<Image
+  src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-1.png"
+  width="half"
+  alt="add-deep-link-to-faq-sdkx-1.png"
+/>
+
+ポップアップ表示されたダイアログにカスタムURLを入力し、FAQを保存します。
+
+<Image
+  src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-2.png"
+  width="half"
+  alt="add-deep-link-to-faq-sdkx-2.png"
+/>
+
+## iOSアプリでディープリンクを扱う {#handle-deep-link}
+
+ディープリンクとは、ユーザーがカスタムURLをクリックした際にそのURLが何を行うかを開発者が自由に決定できるカスタムリンクURLのことを指します。ディープリンクの使用例には、ユーザーをチャット画面からレビューページへとリダイレクトする必要がある場合や、チャット画面からFAQページまたはFAQセクションへとリダイレクトする必要がある場合のインスタンスなどが挙げられます。
+
+ディープリンクでは、`myscheme://example.com`のようなカスタムURLスキームを設定することができます。たとえば、URL`myscheme://FAQID`（FAQIDはFAQの公開IDを指しています）では関連するFAQが会話画面内で開きます。開発者がmyschemeを扱う場合には、対応するFAQ IDを用いて`showSingleFAQ`APIを呼び出す必要があります。
+
+iOSアプリでカスタムURLを扱う場合には、アプリのInfo.plistがFAQで使用されるカスタムURLスキームをサポートしていることを最初にご確認ください。[詳細情報](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app)
+
+その後は、`Helpshift/Plugins/iOS/HsUnityAppController.mm`に`onOpenURL:(NSNotification*)notification`を実装し、`HsUnityAppController`クラスを`AppDelegateListener`プロトコルに適合させる必要があります。
+
+```objc
+- (void)onOpenURL:(NSNotification*)notification;
+
+    NSURL *url = notification.userInfo[@"url"];
+
+    if([[url host] isEqualToString:@"helpshift"]) {
+        NSArray *components = [[url path] componentsSeparatedByString:@"/"];
+        if([components count] == 3) {
+            if([[components objectAtIndex:1] isEqualToString:@"section"]) {
+                [Helpshift showFAQSection:[components objectAtIndex:2] with:[UIApplication sharedApplication].keyWindow.rootViewController config:@{}];
+            } else if([[components objectAtIndex:1] isEqualToString:@"faq"]) {
+                [Helpshift showSingleFAQ:[components objectAtIndex:2] with:[UIApplication sharedApplication].keyWindow.rootViewController config:@{}];
+            }
+        }
+    }
+}
+```

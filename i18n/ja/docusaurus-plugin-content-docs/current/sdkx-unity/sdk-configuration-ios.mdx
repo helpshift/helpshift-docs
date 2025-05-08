@@ -19,8 +19,14 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-import ConversationPrefillTextDescription from "@site/docs/_partials/_conversationPrefillTextDescription.mdx";
-import ConversationPrefillTextSdkxUnityCode from "@site/docs/_partials/_conversationPrefillTextSdkxUnityCode.mdx";
+import ConversationPrefillTextDescription from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_conversationPrefillTextDescription.mdx";
+import ConversationPrefillTextSdkxUnityCode from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_conversationPrefillTextSdkxUnityCode.mdx";
+
+import ConversationInitialUserMessage from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_conversationInitialUserMessageDescription.mdx";
+import ConversationInitialUserMessageCode from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_convInitialUserMessageUnityCode.mdx";
+
+import ClearInitialUserMessageDescription from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_clearInitialUserMessageDescription.mdx";
+import ClearInitialUserMessageUnityCode from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_clearInitialUserMessageUnityCode.mdx";
 
 # SDKの構成
 
@@ -49,6 +55,12 @@ enableLoggingを`true`に設定すると、Helpshift SDKのログがXcodeのコ�
 | フラグ    | <code>HelpshiftSdk.ENABLE_LOGGING</code> |
 | 値  | <code>true</code>/<code>false</code>     |
 | デフォルト | <code>false</code>                       |
+
+<Admonition type="info" title="注意">
+
+- 10.4.0以降、- エラーログは`enableLogging`の構成に関わらず常に記録されます。
+
+</Admonition>
 
 </div>
 
@@ -144,6 +156,78 @@ public class MyGameControl : MonoBehaviour
 }
 ```
 
+## タグによるFAQのフィルタリング {#faq-filtering}
+
+タグによるFAQのフィルタリングが可能です。
+エンドユーザーが、たとえばユーザー属性やデバイスプロファイルに基づいて絞り込みをするなど、関連コンテンツを表示できるようにすることを目的として、開発者がこのFAQのフィルタリング機能を選択して適切な利用者に対して絞り込みが行われたFAQのリストを表示できるようになりました。
+
+FAQのフィルタリングを使用する典型的なケースについては、以下の通りです。
+
+- 特定の対象に向けて特定のFAQを表示する場合。例: ビジネスロジックに基づいてユーザーを「初心者」、「中級者」、「上級者」に分類する。
+- デバイスの種類に基づいて特定のFAQを表示する場合。例: iPad向けとiPhone向けにFAQのセットを切り替える。
+
+FAQのフィルタリングの手順には、2段階のアプローチが用意されています。
+
+1. FAQは、ダッシュボードの`<issue tags>`フィールド（例: タグ`iphone`やタグ`ipad`など）を使用して分類する必要があります。
+   <Image src="/static/books/ios/faq-filtering.png" width="full" />
+2. FAQへのタグ付けが完了すると、本項で説明されているフィルタリングオプションを使用して、SDKでフィルタリングができるようになります。
+
+<Admonition type="info" title="注意">
+
+Helpshiftでは、主に「問題タグ」と「検索タグ」の2種類のタグが用意されています。
+
+- 問題タグは、SDKのFAQのリストをフィルタリングルールでフィルタリングするために使用されます。
+- 検索タグ（検索キーワードとも呼ばれています） アプリ内検索を実行する場合、Helpshift SDKはこれらのキーワードを優先します。また、FAQのタイトルや内容には含まれていないものの、ユーザーが検索する可能性のある代替のキーワードを追加するためにこれを使用することもできます。
+
+</Admonition>
+
+#### FAQのフィルタリングの使用方法
+
+このオプションは`showFAQs` APIおよび`showFAQSection` APIで対応している設定オプションです。
+
+`filter`オプションは、以下の2つのキーを含むマップです。
+
+- 演算子: `AND`、`OR`、`NOT`のいずれか1つであり、設定されているタグの条件演算子として機能します。
+- タグ: クエリ内の実際のタグです。
+
+`filter`オプションは、showFAQs API、showFAQSection API、showSingleFAQ APIで使用される`config`マップの"filter"キーに対するオブジェクトとして追加されます。
+
+|              |                                                                                |
+| ------------ | ------------------------------------------------------------------------------ |
+| オプション:      | <code>filter</code>                                                            |
+| サブオプション: | <code>tags</code>/<code>operator</code>                                      |
+| デフォルト      | <code>null</code>                                                              |
+| 最低限必要なSDKバージョン      | v10.0.0                                                                        |
+| 対応 | <code>showFAQs</code>、<code>showFAQSection</code>、<code>showSingleFAQ</code> |
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> config = new Dictionary<string, object>();
+
+        Dictionary<string, object> filter = new Dictionary<string, object>
+        {
+            { "tags", new string[] { "tag1", "tag2" } },
+            { "operator", "AND" }
+        };
+
+        config["filter"] = filter;
+
+        help.ShowFAQs(config);
+    }
+}
+```
+
 ## お問い合わせを有効にする {#enableContactUs}
 
 ユーザーがFAQを表示しているときに、Helpshiftの「お問い合わせ」ボタンを表示するかどうかを制御します。このオプションをカスタマイズすることにより、サポートへのお問い合わせをより簡単にしたり、難しくしたりすることができます。指定した場合、この設定は管理者ダッシュボードで設定した**お問い合わせを有効にする**の値よりも優先されます。
@@ -178,6 +262,17 @@ public class MyGameControl : MonoBehaviour
 
 <ConversationPrefillTextSdkxUnityCode />
 
+## 会話の最初のユーザーメッセージ {#conversation-initial-user-message}
+
+<ConversationInitialUserMessage />
+
+<ConversationInitialUserMessageCode />
+
+## 最初のユーザーメッセージのクリア {#clearing-initial-user-message}
+
+<ClearInitialUserMessageDescription />
+<ClearInitialUserMessageUnityCode />
+
 #### ベストプラクティス
 
 - 有料ユーザーに対してはenableContactUsを`ALWAYS`に設定し、無料ユーザーに対しては`AFTER_VIEWING_FAQS`に設定することにより、階層ベースのサポートを提供することができます。
@@ -208,7 +303,75 @@ public class MyGameControl : MonoBehaviour
 
     void OpenHelpshift() {
       Dictionary<string, object> configMap = new Dictionary<string, object>();
-      configMap.Add("fullPrivacy", "true");
+      configMap.Add("fullPrivacy", true);
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## iPadでの全画面表示 {#presentFullScreenOniPad}
+
+`presentFullScreenOniPad`フラグは、iPadでサポートビューを`UIModalPresentationFullScreen`と`UIModalPresentationFormSheet`のどちらのモーダルプレゼンテーションスタイルで表示するかを決定します。この構成は、iPhoneには影響を与えません。
+
+デフォルトの値は`false`で、`UIModalPresentationFormSheet`でサポートビューを表示します。値が`true`に設定されている場合、サポートビューは`UIModalPresentationFullScreen`で表示されます。Helpshiftを全画面モードで表示するには、この設定を使用します。
+
+|              |                                                                     |
+| ------------ | ------------------------------------------------------------------- |
+| オプション       | <code>presentFullScreenOniPad</code>                                |
+| 値       | <code>true</code>/<code>false</code>                              |
+| デフォルト      | <code>false</code>                                                  |
+| 最低限必要なSDKバージョン      | v10.0.0                                                             |
+| 対応 | <code>showConversation/showFAQs/showFAQSection/showSingleFAQ</code> |
+
+例:
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("presentFullScreenOniPad", true);
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+## チャット画面の読み込み中に新しい会話を開始する {#initiateChatOnLoad}
+
+`showConversation:`の構成辞書で`initiateChatOnLoad`オプションを`true`に設定すると、エンドユーザーが「新しい会話」ボタンをクリックしたり、前の問題のフィードバックボットのような解決後のフローを経由することなく、前の問題が解決した直後に新しい会話を開始できるようになります。
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| オプション:       | <code>initiateChatOnLoad</code>        |
+| 値:       | <code>true</code>/<code>false</code> |
+| デフォルト:      | <code>false</code>                     |
+| 最低限必要なSDKバージョン       | v10.0.0                                |
+| サポート: | <code>showConversation</code>          |
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("initiateChatOnLoad", true);
       help.ShowConversation(configMap);
     }
 }

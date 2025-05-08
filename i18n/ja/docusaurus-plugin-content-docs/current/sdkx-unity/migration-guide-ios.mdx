@@ -19,6 +19,8 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import CustomIssueFieldsKeyDeprecationNotice from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
 # 移行ガイド
 
 <Intro>
@@ -51,19 +53,18 @@ SDK X UnityプラグインはハイブリッドSDKであり、ダウンタイム
   />
 </Steps>
 
-## サポートされていない機能 {#unsupported-features}
+## 非対応の機能 {#unsupported-features}
 
 現時点で以下のAPI/機能を使用している場合には、SDK Xへの移行の延期を推奨しています -
 
 - [ガイド付きの問題提出](/unity/support-tools-ios#dynamic-forms)
-- [タグによるFAQのフィルタリング](/unity/support-tools-ios#faq-filtering)
 - [問題に関する記述の長さの最小値設定](/unity/sdk-configuration-ios#issue-description-minimum-length)
 - [SDKのUI文字列のカスタマイズ](/unity/string-customization-ios/)
 - [ライトテーマとダークテーマの切り替え](/unity/design-ios#skinning)
 
 これらの機能はまだ開発中であり、2022年のロードマップに追加される可能性があります。上記のAPI/機能に関しては、[support@helpshift.com](mailto:support@helpshift.com)までお問い合わせください。
 
-## サポートされているSDKのバージョン {#supported-sdk-versions}
+## 対応するSDKのバージョン {#supported-sdk-versions}
 
 移行が成功すれば、SDKのあるバージョンから別のバージョンへと移行してもユーザーのデータとチャット履歴は保持されます。バージョン4以上のSDK UnityプラグインからSDK X Unityプラグインへの移行がサポートされています。
 
@@ -140,8 +141,8 @@ APIのシグネチャは変更されています。既存のAPI呼び出しを�
 | `showFAQs(configMap)`                         | `ShowFAQs(configMap)`                 |
 | `showFAQSection(sectionPublishId, configMap)` | `ShowFAQSection(sectionId,configMap)` |
 | `showSingleFAQ(questionPublishId, configMap)` | `ShowSingleFAQ(faqId,configMap)`      |
-| タグによるFAQのフィルタリング                         | 現在サポートされていません               |
-| ガイド付きの問題提出                           | 現在サポートされていません               |
+| タグによるFAQのフィルタリング                         | 現在対応していません               |
+| ガイド付きの問題提出                           | 現在対応していません               |
 
 Conversation APIとFAQ APIの詳細については、[Helpshift API](/sdkx-unity/support-tools-ios/)ガイドをご参照ください。
 
@@ -429,11 +430,7 @@ config.put("cifs", cifMap);
 _support.ShowFAQs(MainActivity.this, config);
 ```
 
-<Admonition type="info" title="注意">
-  <b>"customIssueFields"</b>{" "}
-キーの使用が非推奨になることをお知らせします。カスタム問題フィールドを渡す方法として、{" "}
-<b>"cifs"</b>キーの使用を強く推奨します。
-</Admonition>
+<CustomIssueFieldsKeyDeprecationNotice />
 
 #### Breadcrumbs
 
@@ -470,8 +467,9 @@ SDK X UnityプラグインでサポートされていないレガシーSDK Unity
 ### レビューとフィードバック
 
 エージェントによるアプリのレビューは、SDK Xではサポートされています。この機能の詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)をご参照ください
-  
+
 以下の機能は、SDK Xで非推奨となりました。
+
 - [手動のアプリ評価リクエスト](/unity/reviews-and-feedback-ios/#app-rating-api)
 - [自動のレビューリクエスト](/unity/reviews-and-feedback-ios/#configuring-automatic-review-requests)
 

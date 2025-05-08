@@ -1,7 +1,7 @@
 ---
 sidebar_position: 85
 title: アウトバウンドサポート
-description: "アウトバウンドサポートを使用すれば、アプリ内で発生した問題を消費者と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。"
+description: "アウトバウンドサポートを使用すれば、アプリ内で発生した問題を顧客と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。"
 ---
 
 import {
@@ -23,41 +23,41 @@ import {
 
 <Intro>
 
-アウトバウンドサポートを使用すれば、アプリ内で発生した問題を消費者と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。
+アウトバウンドサポートを使用すれば、アプリ内で発生した問題を顧客と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。
 
 </Intro>
 
 <Admonition type="info" title="注意">
 
-SDK に含まれているすべてのパブリック API は、[Helpshift.install() API](/sdkx-unity/getting-started-ios#start-using)を介して SDK を初期化した後に呼び出す必要があります
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx-unity/getting-started-ios#start-using)を介してSDKを初期化した後に呼び出す必要があります
 
 </Admonition>
 
 この機能の使用手順は、以下の通りです。
 
-アウトバウンドサポート用のリンクを生成するには、Helpshift のダッシュボードで、「**設定**」、「**ワークフロー**」、「**アウトバウンドのサポート**」の順に移動します。
+アウトバウンドサポート用のリンクを生成するには、Helpshiftのダッシュボードで、「**設定**」、「**ワークフロー**」、「**アウトバウンドのサポート**」の順に移動します。
 
 ![](/static/books/helpshiftx/outbound-support.png)
 
-「**リンクを作成**」ボタンが表示されているはずです。「リンクを作成」ボタンをクリックし、**チャット、ヘルプセンター、シングル FAQ、FAQ セクション**などのアクションと、Helpshift SDK にペイロードとして送信する**CIF、タグ、最初のユーザーメッセージ**などのデータを選択します。
+「**リンクを作成**」ボタンが表示されているはずです。「リンクを作成」ボタンをクリックし、**チャット、ヘルプセンター、シングルFAQ、FAQセクション**などのアクションと、Helpshift SDKにペイロードとして送信する**CIF、タグ、最初のユーザーメッセージ**などのデータを選択します。
 
-<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />
 
-最後に、URL エンコードされたペイロードのリンクを取得します。既存のプッシュ通知システムを使用して、このリンクを通知ペイロードに埋め込まれたエンドユーザーへと送信します。
+最後に、URLエンコードされたペイロードのリンクを取得します。既存のプッシュ通知システムを使用して、このリンクを通知ペイロードに埋め込まれたエンドユーザーへと送信します。
 
-YOUR_APP_IDENTIFIER には、アプリを識別する一意の文字列を指定できます。たとえば、myApp や myAppSupport など、アプリのディープリンク URL で使用するスキームのようなものを指定します。
+YOUR_APP_IDENTIFIERには、アプリを識別する一意の文字列を指定できます。たとえば、myAppやmyAppSupportなど、アプリのディープリンクURLで使用するスキームのようなものを指定します。
 
-<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />{" "}
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />
 
-## プッシュ通知のデータを Helpshift SDK にデリゲートする {#delegate-notification-data}
+## プッシュ通知のデータをHelpshift SDKにデリゲートする {#delegate-notification-data}
 
-アウトバウンドサポートのデータを Helpshift に渡すには、以下の手順に従ってください。
+アウトバウンドサポートのデータをHelpshiftに渡すには、以下の手順に従ってください。
 
 1. アプリのプッシュ通知システムを使用して積極的なサポートを実施するユーザーにプッシュ通知を送信します
 
-2. ユーザーが通知を介してアプリを開いたときに、通知データを`application:didReceiveRemoteNotification:`または`application:didReceiveRemoteNotification:fetchCompletionHandler:`の`handleProactiveLink:(NSString *) proactiveLink`関数を呼び出すことによって Helpshift SDK に渡すようにアプリ内でこの通知を処理します。
+2. ユーザーが通知を介してアプリを開いたときに、通知データを`application:didReceiveRemoteNotification:`または`application:didReceiveRemoteNotification:fetchCompletionHandler:`の`handleProactiveLink:(NSString *) proactiveLink`関数を呼び出すことによってHelpshift SDKに渡すようにアプリ内でこの通知を処理します。
 
-3. 提供されたリンクからデータを読み取り、アウトバウンドサポートダッシュボードから提供された構成を用いて Helpshift のサポートを開きます。
+3. 提供されたリンクからデータを読み取り、アウトバウンドサポートダッシュボードから提供された構成を用いてHelpshiftのサポートを開きます。
 
 ```objc
 [Helpshift handleProactiveLink:proactiveLink];
@@ -65,7 +65,7 @@ YOUR_APP_IDENTIFIER には、アプリを識別する一意の文字列を指定
 
 <Admonition type="danger" title="重要">
 
-- アウトバウンドサポートと Helpshift の両方の通知を管理する必要があります。例として、Helpshift のチャットメッセージの通知を受信すると、`[Helpshift handleNotificationWithUserInfoDictionary:]`に続いて`completionHandler(UNNotificationPresentationOptionNone);`を呼び出すことができます。アウトバウンドサポートの通知を受信すると、`completionHandler(UNNotificationPresentationOptionAlert);`を実行することができます。
+- アウトバウンドサポートとHelpshiftの両方の通知を管理する必要があります。例として、Helpshiftのチャットメッセージの通知を受信すると、`[Helpshift handleNotificationWithUserInfoDictionary:]`に続いて`completionHandler(UNNotificationPresentationOptionNone);`を呼び出すことができます。アウトバウンドサポートの通知を受信すると、`completionHandler(UNNotificationPresentationOptionAlert);`を実行することができます。
 
 - これはあくまでも参考のための例です。実際の実装内容は、アプリの通知処理コードに依存します。
 
@@ -88,7 +88,7 @@ YOUR_APP_IDENTIFIER には、アプリを識別する一意の文字列を指定
 
 ### 通知の処理:
 
-以下のコードでは、`Helpshift.handleProactiveLink()`を呼び出してプッシュ通知のデータを Helpshift SDK にデリゲートする方法を示しています。
+以下のコードでは、`Helpshift.handleProactiveLink()`を呼び出してプッシュ通知のデータをHelpshift SDKにデリゲートする方法を示しています。
 
 ```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
@@ -111,19 +111,19 @@ YOUR_APP_IDENTIFIER には、アプリを識別する一意の文字列を指定
 
 ユーザーが通知をクリックした際に、アプリ内の現在のユーザーに固有の構成を追加したい場合があるかもしれません。
 
-ローカル API の構成を設定することにより、Helpshift SDK は（先のステップで述べたように）アウトバウンドサポートのリンクに埋め込まれた構成と、実行時に提供されるローカル構成の両方から構成をマージすることができます。このローカル API の構成は、`showConversation()`や`showFAQs()`のようなその他の API に期待される構成と全く同じです。
+ローカルAPIの構成を設定することにより、Helpshift SDKは（先のステップで述べたように）アウトバウンドサポートのリンクに埋め込まれた構成と、実行時に提供されるローカル構成の両方から構成をマージすることができます。このローカルAPIの構成は、`showConversation()`や`showFAQs()`のようなその他のAPIに期待される構成と全く同じです。
 
 この構成は、現在の問題と、同じセッションで提出された次の問題に使用されます。
 
 <Admonition type="info" title="注意">
 
-この API は、[Helpshift Installation API](/sdkx-unity/getting-started-ios#initializing)よりも後、そして`Helpshift.handleProactiveLink()`よりも前に呼び出す必要があります。
+このAPIは、[Helpshift Installation API](/sdkx-unity/getting-started-ios#initializing)よりも後、そして`Helpshift.handleProactiveLink()`よりも前に呼び出す必要があります。
 
 </Admonition>
 
-いずれかのクラスのパブリックインターフェース`IHelpshiftProactiveAPIConfigCollector`を実装し、`SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())`メソッドを呼び出して Helpshift SDK のインストール呼び出しの後に構成コレクターデリゲートを初期化します。
+いずれかのクラスのパブリックインターフェース`IHelpshiftProactiveAPIConfigCollector`を実装し、`SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())`メソッドを呼び出してHelpshift SDKのインストール呼び出しの後に構成コレクターデリゲートを初期化します。
 
-`showConversation()`や`showFAQs()`のようなその他のパブリック API で追加する場合と同じフォーマットで、ユーザー固有の構成を追加するための`getLocalApiConfig()`メソッドを実装する必要があります。
+`showConversation()`や`showFAQs()`のようなその他のパブリックAPIで追加する場合と同じフォーマットで、ユーザー固有の構成を追加するための`getLocalApiConfig()`メソッドを実装する必要があります。
 
 この構成と、アウトバウンドサポートのリンクに埋め込まれている構成をマージします。**タグ、CIF**など、アウトバウンドサポートのリンクからの構成データをローカル構成に追加します。コンフリクトが発生した場合には、アウトバウンドサポートの構成が優先されます。
 
