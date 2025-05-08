@@ -8,6 +8,27 @@ import Translate, { translate } from "@docusaurus/Translate";
 
 const announcements = [
   {
+    date: "29 Apr 2025",
+    title: "SDK X React-Native native 10.4.0 released",
+    info: `SDK X React-Native 10.4.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-react-native",
+    linkTitle: "SDK X React-Native 10.4.0",
+  },
+  {
+    date: "10 Mar 2025",
+    title: "SDK X Unreal 10.4.0 released",
+    info: `SDK X Unreal 10.4.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-unreal",
+    linkTitle: "SDK X Unreal 10.4.0",
+  },
+  {
+    date: "11 Feb 2025",
+    title: "SDK X Unity 10.4.0 released",
+    info: `SDK X Unity 10.4.0 is now released for iOS and Android! Upgrade to get the latest features`,
+    link: "/sdkx-unity",
+    linkTitle: "SDK X Unity 10.4.0",
+  },
+  {
     date: "27 Nov 2024",
     title: "SDK X Android 10.4.0 released",
     info: `SDK X Android 10.4.0 is now released! Upgrade to get the latest features`,

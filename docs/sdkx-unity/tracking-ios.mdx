@@ -240,3 +240,51 @@ HelpshiftLog.d("debug-tag", "debug-message");
 ```
 
 Debug logs are collected within the set debug logs limit. The limit is set under the _SDK Configurations_ section for App Settings in the Helpshift’s Agent Dashboard. Debug logs are collected in a FIFO queue.
+
+## Tracking user-specific metadata
+
+### Update global user data
+
+This API is meant to be used along with the new [User Identity system](/sdkx-unity/identity-user-hub-ios). Use this API to [update global attributes](/sdkx-unity/identity-user-hub-ios/#update-global-user-data) associated with the logged in user.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> masterAttributes = new Dictionary<string, object>();
+    masterAttributes.Add("<master-attribute-key>", "<master-attribute-value>");
+
+    helpshiftSdk.UpdateMasterAttributes(masterAttributes);
+    }
+}
+```
+
+### Update app specific user data
+
+This API is meant to be used along with the new [User Identity system](/sdkx-unity/identity-user-hub-ios). Use this API to [update app specific attributes](/sdkx-unity/identity-user-hub-ios/#update-app-specific-user-data) associated with the logged in user.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> appAttributes = new Dictionary<string, object>();
+    appAttributes.Add("<app-attribute-key>", "<app-attribute-value>");
+
+    helpshiftSdk.UpdateAppAttributes(appAttributes);
+    }
+}
+```

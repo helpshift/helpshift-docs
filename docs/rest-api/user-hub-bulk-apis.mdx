@@ -1,0 +1,145 @@
+---
+sidebar_position: 30
+title: User Hub Bulk APIs
+description: "Use the Bulk APIs available to import your end users' data into Helpshift, and export current end user data from Helpshift."
+---
+
+### Introduction {#introduction}
+
+ The User Hub Bulk APIs can be used to import your end users' data into Helpshift, and export current end user data from Helpshift.<br />
+ See [POSTMAN Collection](https://documenter.getpostman.com/view/14405739/2sAYkKGwzQ) for details on the API endpoints. Use the **Create Bulk Action** Task API to create bulk
+ action tasks which will be processed asynchronously.<br />
+ The data to be imported is specified as a payload in the API request. Each payload is a JSON array of maps, each map containing the data for a
+ single end user profile. There is a limit of 10000 payloads in a single request.
+  
+
+There are two ways of providing the payload -
+
+Directly as a request parameter containing a JSON encoded string, using the x-www-form-urlencoded content type. This is suitable for smaller payloads.
+   
+   ```text
+   curl --location 'https://api.helpshift.com/v2/domain/identity/bulk_actions' \
+   --header 'Content-Type: application/x-www-form-urlencoded' \
+   --data-urlencode 'action=create_core_profiles' \
+   --data-urlencode 'payload=[{"identities":[{"uid":"uid-1"}],"last_country":"India","last_city":"Pune"},{"identities":[{"uid":"uid-2"}],"last_country":"Pakistan","last_city":"Karachi"},
+   {"identities":[{"uid":"uid-3"}],"last_country":"Sri Lanka","last_city":"Colombo"}]'
+   ```
+As a file, using the multipart/form-data content type. The file must be in JSONL format, with each line being a complete JSON map containing the data for
+   a single record. This is recommended for larger payloads.
+   
+   ```text
+   curl --location 'https://api.helpshift.com/v2/wabbit/identity/bulk_actions' \
+   --form 'action="update_core_profiles"' \
+   --form 'payload=@"data.jsonl"'
+   ```
+   where `data.jsonl` has the following contents - 
+   ```text
+   {"identities":[{"uid":"uid-1"}],"last_country":"India","last_city":"Pune"}
+   {"identities":[{"uid":"uid-2"}],"last_country":"Pakistan","last_city":"Karachi"}
+   {"identities":[{"uid":"uid-3"}],"last_country":"Sri Lanka","last_city":"Colombo"}
+   ```
+
+### Usage {#usage}
+
+1. Use the **Create Bulk Action** Task API to upload data into Helpshift, or request data export from Helpshift. In either case, the expected request format for each task type is listed below.
+   The API response will contain a `Task ID`.
+2. Using the Task ID, poll the **Get Task Status API** until the status is `completed`. The values of `errors` and results can be used to determine if the task completed successfully, or with errors.
+3. Use the **Get Task Results** and **Get Task Errors APIs** to retrieve data, or any errors.
+
+## Request Payloads {#request-payloads}
+
+
+### Create Core Profiles
+
+Each entry in the payload should be a JSON map, containing one or more of the below fields. At least one identity is required. The response will contain the new core profile’s ID.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                                                                     | Example                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| identities            | Array of maps, each map contains an identity value which can be used to uniquely identify the end user. <br /> The map can also contain additional metadata as string key-value pairs, these metadata are stored as is, and not processed. <br /> <br /> The valid identity types are - <br /> <ul><li>uid</li> <li>email</li> <li>phone_number</li> <li>facebook_id</li> <li>discord_id</li> <li>whatsapp_id</li> <li>google_playstore_id</li> <li>apple_gamecenter_id</li> <li>nintendo_id</li> <li>psn_id</li> <li>xbox_live_id</li> <li>steam_id</li> </ul> | <code> [{"uid": "uid-1"}, <br /> {"email": "user@example.org", "verified": "true""}, <br /> {"discord_id": "293846823745"}] </code> |
+| names                 | JSON map containing the end user’s name. The following components are supported, any combination can be provided - <br /> <br /> <ul><li>first_name</li> <li>last_name</li> <li>full_name</li> <li>display_name</li> </ul> | <code> {"first_name": "Jane",<br /> "last_name": "Doe"} </code> |
+| tags                  | JSON array of user tags. | <code> [“vip”, “open_beta”, "streamer"] </code>  |
+| custom_fields         | JSON map of custom user fields.   | <code> {"region": "APAC",<br /> "instance": "apac-21",<br /> "player_level": 455,<br /> "signup_date": "2023-05-12"} </code> |
+| full_privacy_enabled  | Did the user enable full privacy? | <code> false </code>   |
+| last_country          | End User’s country. <br /><br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code. | <code> India </code>, <code>IN </code>, or <code>IND</code>  |
+| last_city             | End User’s city.                                                                            | <code> Pune </code>                                          |
+| age                   | End User’s Age.                                                                             | <code> 30 </code>                                            |
+| lifetime_value        | End User Lifetime Value                                                                     | <code> 1023.99 </code>                                       |
+| user_persona          | End User Persona                                                                            | <code> Streamer </code>                                      |
+| user_vip_segment      | End User VIP Segmentation                                                                   | <code> Diamond Class </code>                                 |
+| user_support_status   | End User Support Status                                                                     | <code> Active </code>                                        |
+| accepted_t_and_c      | Whether end user has accepted the terms and conditions.                                     | <code> true </code>                                          |
+| preferred_language    | ISO 639-1 language code                                                                     | <code> en </code>                                            |
+| last_active_date      | Timestamp based on Unix epoch (with milliseconds).                                          | <code> 1714627659283 </code>                                 |
+
+</div>
+
+
+### Update Core Profiles
+
+This payload is identical to the payload for <code>create_core_profiles</code> , with one additional field - <code>core-profile-id</code> , which is the ID of the core profile to be updated.
+<br />
+Any existing values will be overwritten with the values in the latest payload.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                             | Example                           |
+| --------------------- | ----------------------------------------------------------------------------------- | --------------------------------- |
+| core-profile-id       | Core Profile Publish ID                                                             | <code> 1666311221477632 </code>   |
+
+</div>
+
+
+### Update App Profiles
+
+Each entry in the payload is a JSON map containing one or more of the following fields. The <code>pid</code> is required, as it identifies the end user app profile. The ID can be fetched using the Helpshift REST APIs, especially the Get Multiple Issues API.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                                    | Example                                                                                                    |
+| --------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| pid                   | App Profile ID                                                                             | <code> domain_profile_4d0d12f4eb0cba8d4d4ace68187bccc7437e4df9 </code>                                     |
+| custom_fields         | JSON map of custom user fields (at app level).                                             | <code> {"region": "APAC", <br />"instance": "apac-21", <br />"player_level": 455,<br /> "signup_date": "2023-05-12"} </code>   |
+| user_persona          | End User Persona                                                                           | <code> Streamer </code>                                                                                    |
+| user_paying_segment   | End User Segmentation                                                                      | <code> Premium </code>                                                                                     |
+| user_vip_segment      | End User VIP Segmentation                                                                  | <code> Diamond Class </code>                                                                               |
+| user_level            | End User Level                                                                             | <code> 455 </code>                                                                                         |
+| accepted_t_and_c      | Whether end user has accepted the terms and conditions.                                    | <code> true </code>                                                                                        |
+| app_status            | End User App Status                                                                        | <code> Unlocked </code>                                                                                    |
+| user_support_status   | End User Support Status                                                                    | <code> Active </code>                                                                                      |
+| country               | End User’s country <br /> <br /> Either ISO-3166 country name, or 2/3 letter ISO-3166 code.| <code> India </code>, <code>IN </code>, or <code>IND</code>                                                |
+| city                  | End User’s city.                                                                           | <code> Pune </code>                                                                                        |
+| language              | ISO639-1 language code                                                                     | <code> en </code>                                                                                          |
+| app_rating            | End User provided rating to app                                                            | <code> 4 </code>                                                                                           |
+| lifetime_value        | End User Lifetime Value                                                                    | <code> 1023.99 </code>                                                                                     |
+
+
+</div>
+
+
+### Get Core Profiles
+
+Each entry in the payload is a JSON map containing just the <code>core-profile-id</code> of the core profile. The response will contain all the data for each core profile.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                             | Example                           |
+| --------------------- | ----------------------------------------------------------------------------------- | --------------------------------- |
+| core-profile-id       | Core Profile Publish ID                                                             | <code> 1666311221477632 </code>   |
+
+</div>
+
+### Get App Profiles
+
+Each entry in the payload is a JSON map containing just the pid of the app profile. The response will contain all the data for each app profile.
+
+<div className="text-sm compact ">
+
+| Field                 | Details                                                                             | Example                                                               |
+| --------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| pid                   | App Profile ID                                                                      | <code> domain_profile_4d0d12f4eb0cba8d4d4ace68187bccc7437e4df9 </code>|
+
+</div>
+
+

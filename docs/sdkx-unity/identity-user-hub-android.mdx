@@ -1,0 +1,419 @@
+---
+sidebar_position: 185
+title: User Hub
+description: Learn more about identifying and managing users.
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Image,
+} from "@site/src/components/forDocs";
+
+<Admonition type="info" title="Note">
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx-unity/getting-started-android#adding-to-project)
+
+</Admonition>
+
+## Managing users with the Identity System​
+
+Setting up the new Identity System ( "User Hub" ) requires some development effort, but provides many advantages over the legacy method in the form of faster context collection, easier agent experience, enhanced security, and spam protection.
+
+### Prerequisites​
+
+<Admonition type="info" title="NOTE">
+  This feature is in closed beta. Contact Helpshift Customer Success team to
+  enable this feature.
+</Admonition>
+
+- Ensure that the Identity System is enabled for your domain (reach out to Helpshift Support if you wish to enable this)
+- Ensure that you have the secret key from Helpshift Dashboard. The secret key can be generated from the “User Identity Verification (New ID System)” section of your app’s settings.
+
+  <Image
+    src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
+    width="full"
+  />
+
+- Ensure that you have an endpoint set up for obtaining user JWTs on-demand. This endpoint should use the secret key generated above to sign the JWT.
+
+### Logging in your end-users
+
+In order to use the new Identity System, you need to implement the following steps:
+
+1. Obtain a JWT for the given user from your dedicated endpoint
+2. Implement the IHelpshiftUserLoginEventListener interface to handle identity login success and failure callbacks
+
+```csharp
+public class HelpshiftUserLoginEventListener : IHelpshiftUserLoginEventListener
+{
+    public void OnLoginSuccess()
+    {
+        // Login is successful
+        Debug.Log("Helpshift - IdentityLogin - Login was successful!");
+    }
+
+    public void OnLoginFailure(string reason, Dictionary<string, string> errorMap)
+    {
+        // login failed
+        Debug.Log("Helpshift - IdentityLogin - Login was failed! reason "+ reason + ", errorMap" + errorMap);
+    }
+}
+```
+
+3. Log your user in with the JWT + full privacy information
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+    var loginConfigMap = new Dictionary<string, object>();
+
+    loginConfigMap.Add("full_privacy_enabled", false);
+
+    helpshiftSdk.LoginWithIdentity(<identitiesJwt>, loginConfigMap, new HelpshiftUserLoginEventListener() );
+    }
+}
+```
+
+The API signature for the login API is -
+
+```
+LoginWithIdentities(
+    string identitiesJwt,
+    Dictionary<string, object> loginConfigMap,
+    IHelpshiftUserLoginEventListener helpshiftUserLoginEventListener
+)
+```
+
+Following rules apply depending on the value of `full_privacy_enabled` flag in config.
+
+- If full privacy flag is false, one of uid or email is mandatory in the identities array.
+- If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
+  - If uid is present - SDK will use the uid to identify the user.
+  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
+- Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
+
+The failure reasons and possible recovery steps are documented in the [Login failure reasons](#login-failure-reasons) section.
+
+### Identity token format​
+
+The identity token must be a JWT signed using the shared secret from your app settings in the dashboard. When decoded, it must adhere to the following JSON format -
+
+```json
+{
+  "identities": [{
+    "identifier": "uid" | "email" | "phone_number" | "facebook_id" |
+                  "discord_id"|"whatsapp_id"|"google_playstore_id"|
+                  "apple_gamecenter_id" | "nintendo_id" | "psn_id" |
+                  "xbox_live_id" | "steam_id"
+    "value": "string",
+    "metadata": {
+      "string": "string"
+    }
+  }],
+  "iat": // UNIX epoch time in seconds, generated in the last 24h or earlier
+}
+```
+
+Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
+
+<Admonition type="info" title="Important">
+
+Always generate the JWT on the server side, and store your shared secret securely.
+
+</Admonition>
+
+### Logging in with anonymous users
+
+We recommend logging in your end-user into Helpshift as early as possible, since it helps streamline the entire support experience.
+
+However, in the case where you have anonymous users, all you have to do is login with an empty JWT string, and Helpshift will take care of generating an anonymous UID and logging your end-user in.
+
+SDK will try its best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
+
+After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `AddUserIdentities` API is a no-op if current user is anonymous.
+
+### Best practices to follow for login API
+
+- Call the login API only once when the user logs in to your app. Avoid calling it in response to repeatable events like app foreground, right before opening support section of your app etc.
+- When you have more information to associate with current logged in user, use the `AddUserIdentities` API and not the login API. Calling login API will log out the current user and log in a new user.
+- The `uid` or `email` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
+- If you are setting `full_privacy_enabled` to true, you shouldn't use `email` as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+- When setting `full_privacy_enabled` to true, it is encouraged to use `uid` as identifier and other identifiers will be dropped as potential PII data.
+
+### Logging out users
+
+Once a user logs out from your app, you should call the logout API to ensure no one else can view this user's conversations.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void LogoutUser(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    helpshiftSdk.Logout();
+    }
+}
+```
+
+### Logout due to session expiry
+
+User logout can also be triggered by the SDK itself when the current user’s login session expires. This login session is independent from your app’s login session. When this happens, SDK will send the `userSessionExpired` event to your app immediately as well on each app foreground. In response to this event, you should obtain a fresh JWT for the app’s current user from your backend and call the login API with the new JWT and login config to start a fresh SDK login session. SDK will stop sending this event after a successful login.
+
+If you wish to proactively refresh your logged in user’s credentials with Helpshift so that the session never expires, you can additionally listen to `refreshUserCredentials` event. This event is sent by the SDK some time before the session actually expires. This gives your app a chance to re-login the current user and maintain their session.
+
+For more details on these events, please check the [Delegates](/sdkx-unity/delegates-android/#user_session_expired) page.
+
+### Adding user identities
+
+Use the `AddUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
+This API should be called only once for a unique set of identities since Helpshift won't de-duplicate any identities before adding.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void AddIdentities(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    helpshiftSdk.AddUserIdentities(<identitiesJWT>);
+    }
+}
+```
+
+You need to obtain a JWT for new identities from your dedicated endpoint. Please check the [Prerequisites section](/sdkx-unity/identity-user-hub-android/#prerequisites) for more details.
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android.mdx/#user-identity-system-events) page.
+
+### Troubleshooting and tips
+
+Login failure can be detected by listening to the [HelpshiftUserLoginEventsListener](/sdkx-unity/identity-user-hub-android/#logging-in-your-end-users) listener. The possible reasons for login failure are cited in the [Login failure reasons](/sdkx-unity/identity-user-hub-android/#login-failure-reasons) section.
+
+If your login is still failing, you can investigate these other potential reasons:
+
+- Ensure that your JWT endpoint is generating tokens in the accepted format
+- Ensure that your JWT endpoint is signing tokens with the shared secret
+- Ensure that your JWT endpoint has an iat (issued_at_time) value that is NOT older than 24h
+- In case you are caching the JWT, ensure that you do not cache it for longer than 24h.
+
+### Update global user data
+
+Use this API to update global attributes associated with the logged in user.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> masterAttributes = new Dictionary<string, object>();
+    masterAttributes.Add("<master-attribute-key>", "<master-attribute-value>");
+
+    helpshiftSdk.UpdateMasterAttributes(masterAttributes);
+    }
+}
+```
+
+Global attributes must be one of the following types -
+
+- `first_name` - String
+- `last_name` - String
+- `display_name` - String
+- `full_name` - String
+- `last_country` - String
+- `last_city` - String
+- `age` - String (String value of Integer)
+- `lifetime_value` - String (String value of Integer)
+- `user_persona` - String
+- `user_vip_segment` - String
+- `user_support_status` - String
+- `last_active_date` - String // UNIX epoch time in seconds
+- `accepted_t_and_c` - String ("true" or "false")
+- `preferred_language` - String
+- `new_tags` - List< String >
+- `tags_to_remove` - List< String >
+- `reset_tags` - List< String >
+- `custom_user_fields` - Map<String, String>
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android/#user-identity-system-events) page.
+
+If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
+
+### Update app specific user data
+
+Use this API to update app specific attributes associated with the logged in user.
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> appAttributes = new Dictionary<string, object>();
+    appAttributes.Add("<app-attribute-key>", "<app-attribute-value>");
+
+    helpshiftSdk.UpdateAppAttributes(appAttributes);
+    }
+}
+```
+
+App specific attributes must be one of the following types -
+
+- `device_model` - String
+- `os_version` - String
+- `app_version` - String
+- `sdk_version` - String
+- `country` - String
+- `city` - String
+- `user_vip_segment` - String
+- `language` - String
+- `app_rating` - String
+- `user_paying_segment` - String
+- `user_support_status` - String
+- `user_persona` - String
+- `accepted_t_and_c` - String ("true" or "false")
+- `user_level` - String
+- `app_status` - String
+- `lifetime_value` - String
+- `custom_user_fields` - Map<String,String>
+
+This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
+For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx-unity/delegates-android/#user-identity-system-events) page.
+
+If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
+If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
+
+<Admonition type="info" title="Note">
+
+Attributes update APIs sync attributes with Helpshift servers in batches. There is a chance of attribute updates
+being lost in case the user is logged out from the SDK before the current batch update is synced.
+
+</Admonition>
+
+## Login failure reasons
+
+Identity system login can fail for any of the reasons mentioned below. A reason may have associated errors that may help pinpoint the exact cause of the failure. As an example, if the failure is due to an invalid key in identities JWT, the errors dictionary will contain the exact key (or keys) found to be invalid. The value against this key will indicate what failed (value too big, value type not supported, etc).
+
+The constants for these failure reasons are defined in `HelpshiftEvent` file.
+
+Where applicable, the max permissible limits are defined as follows -
+
+- Key length - Max 255 chars
+- Value length for identity - Max 300 chars
+- Value length for UID identity - Max 750 chars
+- Value length for CUF - Max 255 chars
+- Value length for multiline CUF - Max 100000 chars
+- Value length for user tags - Max 100 chars
+- Collection size - Max 30 entries
+
+### LOGIN_IN_PROGRESS
+
+Another login request is already in progress
+
+Errors - no
+
+### LOGIN_CONFIG_INVALID
+
+Some keys or values in the login config are not valid
+
+Errors -
+
+| Key                    | Value                       | Recovery                                                                    |
+| ---------------------- | --------------------------- | --------------------------------------------------------------------------- |
+| One of the passed keys | EXCEEDED_KEY_LENGTH_LIMIT   | Ensure key length is within permissible limit                               |
+| One of the passed keys | EXCEEDED_VALUE_LENGTH_LIMIT | Ensure value length is within permissible limit                             |
+| One of the passed keys | INVALID_VALUE_TYPE          | Ensure value is one of the supported types - String, Bool or a numeric type |
+
+### INVALID_IDENTITY_TOKEN
+
+Identities JWT not in valid format
+
+Errors - no
+
+### IDENTITIES_DATA_INVALID
+
+Some of the identities in the JWT payload are not valid
+
+Errors -
+
+| Key                                      | Value                                 | Recovery                                                                                            |
+| ---------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| One of the passed identity keys          | EXCEEDED_KEY_LENGTH_LIMIT             | Ensure key length is within permissible limit                                                       |
+| One of the passed identity keys          | EXCEEDED_VALUE_LENGTH_LIMIT           | Ensure value length is within permissible limit                                                     |
+| One of the passed identity keys          | EMPTY_DATA                            | Ensure key or value is a valid non-empty value                                                      |
+| One of the passed identity keys          | META_DATA_EXCEEDED_COUNT_LIMIT        | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
+| One of the passed identity metadata keys | META_DATA_EXCEEDED_KEY_LENGTH_LIMIT   | Ensure metadata key length is within permissible limit                                              |
+| One of the passed identity metadata keys | META_DATA_EXCEEDED_VALUE_LENGTH_LIMIT | Ensure metadata value length is within permissible limit                                            |
+| One of the passed identity metadata keys | METADATA_EMPTY_KEY_OR_VALUE           | Ensure metadata key or value is a valid non-empty value                                             |
+
+### LOGIN_CONFIG_SIZE_LIMIT_EXCEEDED
+
+Number of entries in login config is more than the permissible limit
+
+Errors - no
+
+### IDENTITIES_SIZE_LIMIT_EXCEEDED
+
+Number of identities in JWT payload is more than the permissible limit
+
+Errors - no
+
+### IDENTITY_FEATURE_NOT_ENABLED
+
+Identity feature is not enabled for your domain
+
+Errors - no
+
+### UID_OR_EMAIL_IS_MANDATORY
+
+JWT payload must contain an identity for either uid or email. Providing both identities is also fine. One exception to this rule is when full privacy is set to true in login config. In this case, if uid is not provided, SDK will generate an anonymous ID for the user.
+
+Errors - no
+
+### IAT_IS_MANDATORY
+
+iat key is missing in the JWT. Issued At Timestamp or “iat“ is a mandatory key in the JWT payload.
+
+Errors - no
+
+### NETWORK_ERROR
+
+Login failed due to network error.
+
+Errors - no
+
+### UNKNOWN_ERROR
+
+Login failed due to some unknown error.
+
+Errors - no
