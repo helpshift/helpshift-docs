@@ -1,0 +1,417 @@
+---
+sidebar_position: 185
+title: ユーザーハブ
+description: ユーザーの識別と管理について詳しく説明します。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Image,
+} from "@site/src/components/forDocs";
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx-unity/getting-started-android#adding-to-project)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## アイデンティティシステムによるユーザーの管理​
+
+新しいアイデンティティシステム（"ユーザーハブ"）のセットアップにはある程度の開発労力が必要となりますが、コンテキスト収集の高速化、エージェントエクスペリエンスの簡素化、セキュリティの強化、スパムからの保護など、従来の方式に比べて多くのメリットがあります。
+
+### 前提条件​
+
+<Admonition type="info" title="注意">
+  この機能はクローズドベータ版です。この機能を有効にするには、Helpshiftのカスタマーサクセスチームまで
+お問い合わせください。
+</Admonition>
+
+- アイデンティティシステムがご利用のドメインで有効になっていることをご確認ください（有効化する場合には、Helpshiftのサポートまでお問い合わせください）
+- Helpshift ダッシュボードで、秘密鍵があることを確認します。秘密鍵は、アプリの設定の「ユーザーアイデンティティ認証（新アイデンティティシステム）」セクションから生成することができます。
+
+  <Image
+    src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
+    width="full"
+  />
+
+- ユーザーJWTをオンデマンドで取得するためのエンドポイントが設定されていることをご確認ください。このエンドポイントは、上記の手順で生成した秘密鍵を使用してJWTに署名を行う必要があります。
+
+### エンドユーザーのログイン
+
+新しいアイデンティティシステムを使用するには、以下の手順を実行する必要があります。
+
+1. 専用のエンドポイントから指定のユーザーのJWTを取得する
+2. IHelpshiftUserLoginEventListenerインターフェースを実装し、IDログインの成功と失敗のコールバックを処理する
+
+```csharp
+public class HelpshiftUserLoginEventListener : IHelpshiftUserLoginEventListener
+{
+    public void OnLoginSuccess()
+    {
+        // Login is successful
+        Debug.Log("Helpshift - IdentityLogin - Login was successful!");
+    }
+
+    public void OnLoginFailure(string reason, Dictionary<string, string> errorMap)
+    {
+        // login failed
+        Debug.Log("Helpshift - IdentityLogin - Login was failed! reason "+ reason + ", errorMap" + errorMap);
+    }
+}
+```
+
+3. JWTと完全なプライバシー情報を使用してユーザーをログインさせる
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+    var loginConfigMap = new Dictionary<string, object>();
+
+    loginConfigMap.Add("full_privacy_enabled", false);
+
+    helpshiftSdk.LoginWithIdentity("identitiesJWT", loginConfigMap, new HelpshiftUserLoginEventListener() );
+    }
+}
+```
+
+Login APIのAPIシグネチャは、以下の通りです。
+
+```
+LoginWithIdentities(
+    string identitiesJwt,
+    Dictionary<string, object> loginConfigMap,
+    IHelpshiftUserLoginEventListener helpshiftUserLoginEventListener
+)
+```
+
+configの`full_privacy_enabled`フラグの値に応じて、以下のルールが適用されます。
+
+- フルプライバシーフラグがfalseの場合、アイデンティティ配列にはuidかemailのいずれかが必須となります。
+- フルプライバシーフラグがtrueの場合、アイデンティティキーは必須ではなくなります。ただし、uidキーの有無によって動作は変わります。
+- uidが存在する場合 - SDKはユーザーの識別にuidを使用します。
+- uidが存在しない場合 - SDKは匿名IDを生成し、このIDを使用してユーザーを識別します。
+- 値が指定されていない場合、または渡された値がブール値のために解析できない場合、フルプライバシーはfalseとして見なされます。
+
+失敗の理由と利用可能なリカバリーの手順は、「[ログイン失敗の理由](#login-failure-reasons)」セクションに記載されています。
+
+### アイデンティティトークンの形式​
+
+アイデンティティトークンは、ダッシュボードのアプリ設定にある共有シークレットを使用して署名されたJWTである必要があります。デコードする際は、以下のJSON形式を遵守してください。
+
+```json
+{
+  "identities": [{
+    "identifier": "uid" | "email" | "phone_number" | "facebook_id" |
+                  "discord_id"|"whatsapp_id"|"google_playstore_id"|
+                  "apple_gamecenter_id" | "nintendo_id" | "psn_id" |
+                  "xbox_live_id" | "steam_id"
+    "value": "string",
+    "metadata": {
+      "string": "string"
+    }
+  }],
+  "iat": // UNIX epoch time in seconds, generated in the last 24h or earlier
+}
+```
+
+この契約では`identities`キーは配列を想定しているため、複数のIDオブジェクトを指定できることにご注意ください。
+
+<Admonition type="info" title="重要">
+
+JWTは常にサーバー側で生成し、共有シークレットは安全な場所で保管してください。
+
+</Admonition>
+
+### 匿名ユーザーでのログイン
+
+サポートエクスペリエンス全体の円滑化に役立つため、エンドユーザーはできる限り早期にHelpshiftにログインさせることをお勧めします。
+
+しかしながら、匿名ユーザーがいる場合には空のJWT文字列を使用してログインするだけでHelpshiftが匿名UIDを生成し、エンドユーザーをログインさせます。
+
+SDKは、空のJWTを渡す限り、複数回のログインにわたって同一の匿名ユーザーを維持するために最善を尽くします。一度空でないJWTを使用してログインすると既存の匿名ユーザーは失われ、次に空のJWTを使用してログインしたときに新しい匿名ユーザーが作成されます。
+
+匿名ユーザーでログインした後、後からこのユーザーのアイデンティティをさらに追加することはできません。つまり、`AddUserIdentities`APIは現在のユーザーが匿名である場合には処理されません。
+
+### Login APIのベストプラクティス
+
+- Login APIは、ユーザーがアプリにログインする際に一度呼び出します。アプリのフォアグラウンドや、アプリのサポートセクションを開く直前など、繰り返し発生するイベントに応じて呼び出すのは避けてください。
+現在のログインユーザーに関連付けられるより多くの情報がある場合には、Login APIではなく`AddUserIdentities`APIを使用します。Login APIを呼び出すと現在のユーザーはログアウトされ、新しいユーザーがログインします。
+- `uid`または`email`は、すべてのアプリユーザーの間でユーザーを一意に識別する必要があります。2人以上の異なるユーザーが重複して使用するべきではありません。
+- `full_privacy_enabled`をtrueに設定している場合、そのユーザーのLogin APIで`email`を唯一の識別子として使うべきではありません。これを行うと、結果的に匿名ユーザーが作成されてしまいます。
+
+### ユーザーのログアウト
+
+ユーザーがアプリからログアウトしたら、Logout APIを呼び出して他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    helpshiftSdk.Logout();
+    }
+}
+```
+
+### セッションの期限切れによるログアウト
+
+ユーザーのログアウトは、現在のユーザーのログインセッションが期限切れになったタイミングでSDK自体によりトリガーすることもできます。このログインセッションは、アプリのログインセッションから独立しています。このような場合、SDKはアプリがフォアグラウンドになるたびに即座に`userSessionExpired`イベントをアプリに送信します。このイベントに応じてバックエンドからアプリの現在のユーザーの新しいJWTを取得し、新しいJWTとログイン構成を使用してLogin APIを呼び出して、SDKの新しいログインセッションを開始する必要があります。ログインに成功すると、SDKはこのイベントの送信を停止します。
+
+Helpshiftを使用してログインユーザーの認証情報を前もって更新し、セッションの有効期限が切れないようにする場合には、`refreshUserCredentials`イベントをリッスンすることも可能です。このイベントは、セッションの期限が実際に切れるある程度前にSDKから送信されます。これにより、アプリに現在のユーザーを再ログインさせ、セッションを維持できるようになります。
+
+これらのイベントの詳細については、[デリゲート](/sdkx-unity/delegates-android/#user_session_expired)ページをご参照ください。
+
+### ユーザーアイデンティティの追加
+
+`AddUserIdentities`APIを使用して、ログインユーザーに関連付けられているアイデンティティを更新します。このAPIは、匿名でないログインユーザーのアイデンティティのみを更新します。現在のユーザーが空のJWTでログインしている場合（匿名ユーザー）、このAPIの処理は行われません。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    helpshiftSdk.AddUserIdentities("identitiesJWT");
+    }
+}
+```
+
+新しいアイデンティティのJWTは専用のエンドポイントから取得する必要があります。詳細については、このページの「前提条件」セクションをご確認ください。
+
+このAPIは、既存のHelpshiftデリゲートシステムを活用してエラーが発生した際にアプリに通知を行います。このAPIでトリガーできるエラーイベントの詳細については、[デリゲート](/sdkx-unity/delegates-android.mdx/#user-identity-system-events)ページを参照してください。
+
+### トラブルシューティングとヒント
+
+ログインの失敗は、[HelpshiftUserLoginEventsListener](/sdkx-unity/identity-user-hub-android/#logging-in-your-end-users)リスナーをリッスンすることで検出可能です。ログインの失敗理由として考えられるものは、「[ログイン失敗の理由](/sdkx-unity/identity-user-hub-android/#login-failure-reasons)」セクションに記載されています。
+
+それでもログインに失敗する場合には、以下に記載するその他の原因を調べてみてください。
+
+- JWTエンドポイントが承認されている形式でトークンを生成していることを確認する
+- JWTエンドポイントが共有シークレットを使用してトークンに署名していることを確認する
+- JWTエンドポイントが24時間以内のiat（issued_at_time）値を保持していることを確認する
+- JWTをキャッシュしている場合には、24時間以上キャッシュしないようにしてください。
+
+### グローバルユーザーデータの更新
+
+ログインユーザーに関連するグローバル属性を更新するには、このAPIを使用してください。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> masterAttributes = new Dictionary<string, object>();
+    masterAttributes.Add("<master-attribute-key>", "<master-attribute-value>");
+
+    helpshiftSdk.UpdateMasterAttributes(masterAttributes);
+    }
+}
+```
+
+グローバル属性は、以下のいずれかの型である必要があります。
+
+- `first_name` - 文字列
+- `last_name` - 文字列
+- `display_name` - 文字列
+- `full_name` - 文字列
+- `last_country` - 文字列
+- `last_city` - 文字列
+- `age` - 文字列（文字列値または整数）
+- `lifetime_value` - 文字列（文字列値または整数）
+- `user_persona` - 文字列
+- `user_vip_segment` - 文字列
+- `user_support_status` - 文字列
+- `last_active_date` - 文字列//UNIXエポック時間（秒）
+- `accepted_t_and_c` - 文字列（「true」または「false」）
+- `preferred_language` - 文字列
+- `new_tags` - リスト< String >
+- `tags_to_remove` - リスト< String >
+- `reset_tags` - リスト< String >
+- `custom_user_fields` - マップ<String, String>
+
+このAPIは、既存のHelpshiftデリゲートシステムを活用してエラーが発生した際にアプリに通知を行います。
+このAPIでトリガーできるエラーイベントの詳細については、[デリゲート](/sdkx-unity/delegates-android/#user-identity-system-events)ページを参照してください。
+
+属性マップに対応していないキーが含まれている場合、エラーイベントはデリゲートを通じて通知されます。
+属性マップに対応内のキーが含まれていたとしても、対応していない型の値が含まれている場合にはそのエントリーは無視されます。
+
+### アプリ固有のユーザーデータの更新
+
+ログインユーザーに関連するアプリ固有の属性を更新するには、このAPIを使用してください。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> appAttributes = new Dictionary<string, object>();
+    appAttributes.Add("<app-attribute-key>", "<app-attribute-value>");
+
+    helpshiftSdk.UpdateAppAttributes(appAttributes);
+    }
+}
+```
+
+アプリ固有の属性は、以下のいずれかの型である必要があります。
+
+- `device_model` - 文字列
+- `os_version` - 文字列
+- `app_version` - 文字列
+- `sdk_version` - 文字列
+- `country` - 文字列
+- `city` - 文字列
+- `user_vip_segment` - 文字列
+- `language` - 文字列
+- `app_rating` - 文字列
+- `user_paying_segment` - 文字列
+- `user_support_status` - 文字列
+- `user_persona` - 文字列
+- `accepted_t_and_c` - 文字列（「true」または「false」）
+- `user_level` - 文字列
+- `app_status` - 文字列
+- `lifetime_value` - 文字列
+- `custom_user_fields` - マップ<String,String>
+
+このAPIは、既存のHelpshiftデリゲートシステムを活用してエラーが発生した際にアプリに通知を行います。
+このAPIでトリガーできるエラーイベントの詳細については、[デリゲート](/sdkx-unity/delegates-android/#user-identity-system-events)ページを参照してください。
+
+属性マップに対応していないキーが含まれている場合、エラーイベントはデリゲートを通じて通知されます。
+属性マップに対応内のキーが含まれていたとしても、対応していない型の値が含まれている場合にはそのエントリーは無視されます。
+
+<Admonition type="info" title="注意">
+
+Attributes Update APIは、属性をHelpshiftサーバーと一括で同期します。進行中の一括更新の同期が完了する前に
+ユーザーがSDKからログアウトした場合、属性の更新状況が失われてしまう可能性があります。
+
+</Admonition>
+
+## ログイン失敗の理由
+
+アイデンティティシステムのログインは、以下のいずれかの理由により失敗する場合があります。理由には、失敗の正確な原因を特定する際に役立つ関連エラーが含まれている場合があります。たとえば、アイデンティティJWTのキーが無効であることが失敗の原因である場合、エラー辞書には無効であることが明らかになった正確なキーが含まれます。このキーに対応する値は、失敗の原因を示しています（値が大きすぎる、値の型が対応していない、など）。
+
+これらの失敗の理由の定数は、`HelpshiftEvent`ファイルで定義されています。
+
+該当する場合、許容上限の最大値は以下のように定義されます。
+
+- キーの長さ - 最大255文字
+- IDの値の長さ - 最大300文字
+- ID UIDの値の長さ - 最大750文字
+- CUFの値の長さ - 最大255文字
+- マルチラインCUFの値の長さ - 最大100000文字
+- ユーザータグの値の長さ - 最大100文字
+- コレクションのサイズ - 最大30エントリー
+
+### LOGIN_IN_PROGRESS
+
+別のログイン要求がすでに進行中です
+
+エラー - なし
+
+### LOGIN_CONFIG_INVALID
+
+ログイン構成内の一部のキーまたは値が無効です
+
+エラー -
+
+| キー                    | 値                       | リカバリー                                                                    |
+| ---------------------- | --------------------------- | --------------------------------------------------------------------------- |
+| 渡されたキーのいずれか1つ | EXCEEDED_KEY_LENGTH_LIMIT   | キーの長さが許容範囲内であることをご確認ください                               |
+| 渡されたキーのいずれか1つ | EXCEEDED_VALUE_LENGTH_LIMIT | 値の長さが許容範囲内であることをご確認ください                             |
+| 渡されたキーのいずれか1つ | INVALID_VALUE_TYPE          | 値が対応する型（文字列、ブール値、数値）のいずれかであることをご確認ください |
+
+### INVALID_IDENTITY_TOKEN
+
+アイデンティティ JWTが有効な形式ではありません
+
+エラー - なし
+
+### IDENTITIES_DATA_INVALID
+
+JWTのペイロードのアイデンティティの一部が有効ではありません
+
+エラー -
+
+| キー                                      | 値                                 | リカバリー                                                                                            |
+| ---------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| 渡されたアイデンティティキーのいずれか1つ          | EXCEEDED_KEY_LENGTH_LIMIT             | キーの長さが許容範囲内であることをご確認ください                                                       |
+| 渡されたアイデンティティキーのいずれか1つ          | EXCEEDED_VALUE_LENGTH_LIMIT           | 値の長さが許容範囲内であることをご確認ください                                                     |
+| 渡されたアイデンティティキーのいずれか1つ          | EMPTY_DATA                            | キーまたは値が空でない有効な値であることをご確認ください                                                      |
+| 渡されたアイデンティティキーのいずれか1つ          | META_DATA_EXCEEDED_COUNT_LIMIT        | このアイデンティティのメタデータ辞書のエントリー総数が許容範囲内であることをご確認ください |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | META_DATA_EXCEEDED_KEY_LENGTH_LIMIT   | メタデータキーの長さが許容範囲内であることをご確認ください                                              |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | META_DATA_EXCEEDED_VALUE_LENGTH_LIMIT | メタデータの値の長さが許容範囲内であることをご確認ください                                            |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | METADATA_EMPTY_KEY_OR_VALUE           | メタデータのキーまたは値が空でない有効な値であることをご確認ください                                             |
+
+### LOGIN_CONFIG_SIZE_LIMIT_EXCEEDED
+
+ログイン構成のエントリーの数が許容上限を超えています
+
+エラー - なし
+
+### IDENTITIES_SIZE_LIMIT_EXCEEDED
+
+JWTのペイロードのアイデンティティの数が許容上限を超えています
+
+エラー - なし
+
+### IDENTITY_FEATURE_NOT_ENABLED
+
+ご利用のドメインでアイデンティティ機能が有効化されていません
+
+エラー - なし
+
+### UID_OR_EMAIL_IS_MANDATORY
+
+JWTのペイロードには、uidまたはemailのいずれかのアイデンティティが含まれている必要があります。両方のアイデンティティが含まれていても問題ありません。このルールの1つの例外は、ログイン構成でフルプライバシーがtrueに設定されている場合です。この場合、uidが含まれていなければSDKはユーザーに匿名IDを生成します。
+
+エラー - なし
+
+### IAT_IS_MANDATORY
+
+JWTにiatキーがありません。Issued At Timestampまたは"iat"は、JWTのペイロードの必須キーです。
+
+エラー - なし
+
+### NETWORK_ERROR
+
+ネットワークエラーによりログインに失敗しました
+
+エラー - なし
+
+### UNKNOWN_ERROR
+
+不明なエラーによりログインに失敗しました
+
+エラー - なし
