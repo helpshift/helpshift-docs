@@ -4,6 +4,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { translate } from "@docusaurus/Translate";
 
 export default function DownloadButton({ link, text, classes }) {
   return (
@@ -13,7 +14,7 @@ export default function DownloadButton({ link, text, classes }) {
           classes ? classes : ""
         }`}
       >
-        {text || "Download SDK"}
+        {text || translate({ message: "Download SDK" })}
       </button>
     </a>
   );
