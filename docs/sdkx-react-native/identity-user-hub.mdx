@@ -177,16 +177,16 @@ Global attributes must be one of the following types -
 - `last_name` - String
 - `display_name` - String
 - `full_name` - String
-- `last_country` - String
+- `last_country` - String // Full country name or country code, as per ISO-3166
 - `last_city` - String
-- `age` - String (String value of Integer)
-- `lifetime_value` - String (String value of Integer)
+- `age` - String // String value of Integer; 0 < age < 150
+- `lifetime_value` - String // String value of Integer
 - `user_persona` - String
 - `user_vip_segment` - String
 - `user_support_status` - String
 - `last_active_date` - String // UNIX epoch time in seconds
 - `accepted_t_and_c` - String ("true" or "false")
-- `preferred_language` - String
+- `preferred_language` - String // ISO639-1 language code
 - `new_tags` - Array< String >
 - `tags_to_remove` - Array< String >
 - `reset_tags` - Array< String >
@@ -217,14 +217,18 @@ App specific attributes must be one of the following types -
 
 - `device_model` - String
 - `os_version` - String
-- `app_version` - String
+- `app_version` - String // Maximum length of 10 characters
 - `sdk_version` - String
-- `country` - String
+- `country` - String // Full country name or country code, as per ISO-3166
 - `city` - String
 - `user_vip_segment` - String
-- `language` - String
+- `language` - String // ISO639-1 language code
 - `app_rating` - String
-- `user_paying_segment` - String
+- `user_paying_segment` - String // Must be one of the following values:
+  - `low_paying`
+  - `medium_paying`
+  - `high_paying`
+  - `non_paying`
 - `user_support_status` - String
 - `user_persona` - String
 - `accepted_t_and_c` - String ("true" or "false")
