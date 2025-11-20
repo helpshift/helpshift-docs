@@ -13,18 +13,37 @@ import {
 
 <LatestSdkVersion>
 
-## 10.4.1
+## 10.5.0
+
+_December 03, 2025_
 
 <DownloadButton
   text="Download SDK"
   link="[% sdkx_ios.sdk_url %]"
   classes="mb-4"/>
 
+- Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations. For more details, pleaes refer [this KB article](link).
+  - For integration details, please refer [Proactive Engagement](/sdkx_ios/proactive-engagement)
+  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for these permissions for your application. Please refer [Notifications](/sdkx_ios/notifications) page.
+- Deprecated old [Outbound Support](/sdkx-ios/outbound-support) with introduction of Proactive Engagement.
+- Added support for iOS 26 and iPadOS 26.
+- Stopped technical support for iOS 14 and below. SDK will remain compile-able on these versions, but functionality might be broken.
+- Updated to Xcode 16 for SDK compilation.
+- Existing [pauseDisplayOfInAppNotification](/sdkx_ios/delegates/#unreadMessageCount) API now supports pausing of Proactive Engagement in-app notifications.
+- Added support to provide [unread message count delegate](/sdkx_ios/delegates/#unreadMessageCount) callback when a message is received even via internal polling. This helps in better tracking of unread messages by the client application.
+  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount:](/sdkx_ios/notifications/#notification-badges)
+- Removed close button from In-App notification for issue messages and they can now be swiped to dismiss.
+- Introduced new APIs to handle push notifications better for the SDK. Please refer [Notifications](/sdkx_ios/notifications) page.
+- Some SDK APIs have been deprecated. For a full list of deprecated APIs and their replacements, refer our [SDK X 10.5.0 Migration guide](link).
+- Some deprecated SDK APIs have been removed. For a full list of removed APIs and their replacements, refer our [SDK X 10.5.0 Migration guide](link).
+
+</LatestSdkVersion>
+
+## 10.4.1
+
 _January 30, 2025_
 
 - Fixed a rare crash that would happen on closing any SDK screen.
-
-</LatestSdkVersion>
 
 ## 10.4.0
 
