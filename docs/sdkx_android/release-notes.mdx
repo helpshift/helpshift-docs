@@ -21,7 +21,33 @@ import {
 
 # Release Notes
 
+
 <LatestSdkVersion>
+
+## 10.5.0
+
+_December 3rd, 2025_
+
+** Release Notes **
+
+- Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations. For more details please refer:  TODO KB article link for proactive engagement
+  - For integration details please refer [Proactive Engagement](/sdkx_android/proactive-engagement)
+  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for the [POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission ) permission yourself.
+- SDK now compiles with API level 36, i.e compileSdk 36.
+- Added new API to pause in-app notifications. This will pause/unpause in-app notifications for Proactive Engagement notifications. Please refer [shouldPauseInAppNotification](link to the api doc) here for details
+- No issues observed in the SDK in supporting Android 16 latest updates.
+- End of technical support for bugs reported on Android 7 and below, although SDK will be compatible and no functionality is affected.
+- Added support to provide [unread message count delegate](/sdkx_android/delegates/#unread-message-count) callback when a message is received even via push notifications or internal polling. This would help in better tracking of unread messages by the client application.
+  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount(boolean shouldFetchFromServer)](https://developers.helpshift.com/sdkx_android/notifications/#showing-notification-count ) API.
+- Remove usage of deprecated Android APIs being used in the SDK.
+  - Activity.getWindow().setStatusBarColor() is deprecated but needs to be used below Android 15, hence it has been kept unchanged internally.
+- We have started adopting some Java 8 features in the SDK. If you run into any Java 8 related build or runtime failures then please refer to [this guide from Android](https://developer.android.com/studio/write/java8-support)
+  - We currently use Lambda Expressions only.
+
+**Bug fixes**
+
+- Fixed a bug where Helpcenter screen was detecting application foreground events incorrectly.
+- Fixed an intermittent bug where application was crashing due to Webview not being available on the device. The SDK will now ignore the cases where Webview is not available and will be in no-op mode.
 
 ## 10.4.0
 
