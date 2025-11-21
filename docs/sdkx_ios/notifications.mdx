@@ -35,26 +35,48 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+Notifications can be sent to your users when:
 
-Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
+- You reply to an issue submitted by them
+- You send a [Proactive Engagement](/sdkx_ios/proactive-engagement) notification targeting the user
 
-If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code to your AppDelegate's `application:didFinishLaunchingWithOptions:` method:
+Setting push notifications involves configuring both the Helpshift admin dashboard as well as the client app.
+
+## Configure push notifications in the Helpshift admin dashboard {##configure-helpshift-push-admin}
+
+<ConfigurePushNotificationsiOS />
+
+## Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
+
+<Admonition type="info" title="Note">
+
+When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
+You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+
+</Admonition>
+
+### Request notification permission and register your app for push {#push-permission}
+
+If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add notification permission request and push registration code in your AppDelegate's `application:didFinishLaunchingWithOptions:` method:
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    ...
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
-                                                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-        ...
+                          completionHandler:^(BOOL granted, NSError *_Nullable error) {
+        if(!granted) {
+            NSLog(@"Notification auth denied");
+        } else {
+            NSLog(@"Notification auth granted");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIApplication.sharedApplication registerForRemoteNotifications];
+            });
+        }
     }];
-    [UIApplication sharedApplication registerForRemoteNotifications];
-    ...
 }
 ```
 
@@ -66,9 +88,14 @@ func application(_ application: UIApplication,
                 didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     let center = UNUserNotificationCenter.current()
     center.delegate = self
-    center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
-        if let error = error {
-            NSLog("Error while requesting notification permissions: \(error.localizedDescription)")
+    center.requestAuthorization(options: [.badge,.alert,.sound]) { granted, error in
+        if granted {
+            print("Notification auth granted")
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        } else {
+            print("Notification auth denied")
         }
     }
 }
@@ -77,16 +104,7 @@ func application(_ application: UIApplication,
 </TabItem>
 </Tabs>
 
-<ConfigurePushNotificationsiOS />
-
-### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
-
-<Admonition type="info" title="Note">
-
-When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
-You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
-
-</Admonition>
+### Pass registered push token to Helpshift {#push-pass-to-helpshift}
 
 For Helpshift SDK to work with the Helpshift push notification service
 you will need to invoke the `registerDeviceToken:` api call inside the application delegate method
@@ -95,7 +113,6 @@ you will need to invoke the `registerDeviceToken:` api call inside the applicati
 In your app delegate file it will look something like this:
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
@@ -114,37 +131,39 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 ```
 
 </TabItem>
-
 </Tabs>
 
-#### If your app uses UNNotification framework {#unnotification-framework}
+### Implement push delegates {#push-delegates}
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
 
-1. If a notification arrives while your app is in the foreground, UNUserNotificationCenterDelegate's `userNotificationCenter:willPresentNotification:withCompletionHandler:` is called.
-1. The system does not call the `userNotificationCenter:willPresentNotification:withCompletionHandler:` method when your app is in the background or is not running. In those cases, the system alerts the user according to the information in the notification itself.
-   When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method.
+- If a notification arrives while your app is in the foreground, UNUserNotificationCenterDelegate's `userNotificationCenter:willPresentNotification:withCompletionHandler:` is called.
+- If a notification arrives while your app is in background or terminated, the system **does not** call the `userNotificationCenter:willPresentNotification:withCompletionHandler:` method. Instead, the system alerts the user according to the information in the notification itself.
+- When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method.
 
-In all of the above cases, you should check the "origin" field of the notification dictionary and call `handleNotificationWithUserInfoDictionary:isAppLaunch:` API if the origin of the notification is "helpshift". The Helpshift SDK will check Issues for which the notifications were received and will launch the Conversation screen for those Issues automatically. The isAppLaunch boolean flag here is used to distinguish between an active or backgrounded app vs. an app that was killed by the user. In the latter case, this flag should be set to true.
+In both cases, you should check the "origin" field of the notification dictionary and call the corresponding SDK APIs (mentioned below) if the origin is "helpshift". The Helpshift SDK will handle the notification transparently depending on it's payload: 
 
-Example usage:
+- For notifications sent in response to agent replies on user's support conversations, the SDK will open the corresponding conversation.
+- For proactive engagement notifications, the SDK will perform the dashboard configured action.
 
-For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` delegate -
+#### Push delegate when app is in foreground {#push-delegates-foreground}
+
+For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` delegate, invoke the `handleForegroundNotification:withCompletionHandler:` SDK API -
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
-    willPresentNotification:(UNNotification *)notification
-    withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-    if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:false];
-        completionHandler(UNNotificationPresentationOptionNone);
+        willPresentNotification:(UNNotification *)notification
+          withCompletionHandler:(void (^)(UNNotificationPresentationOptions)) completionHandler {
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
+        [Helpshift handleForegroundNotification:userInfo withCompletionHandler:completionHandler];
     } else {
-        // Handling for non-helpshift push notifications received when app is in foreground
+        completionHandler(UNNotificationPresentationOptionBanner |
+                          UNNotificationPresentationOptionSound  |
+                          UNNotificationPresentationOptionList);
     }
 }
 ```
@@ -153,37 +172,40 @@ For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` 
 <TabItem value="Swift" label="Swift">
 
 ```swift
-func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    if notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false)
-        completionHandler([])
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+) {
+    let userInfo = notification.request.content.userInfo
+    if let origin = userInfo["origin"] as? String, origin == "helpshift" {
+        Helpshift.handleForegroundNotification(userInfo, withCompletionHandler: completionHandler)
     } else {
-        // Handling for non-helpshift push notifications received when app is in foreground
+        completionHandler([.banner, .sound, .list])
     }
 }
 ```
 
 </TabItem>
-
 </Tabs>
 
-For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate -
+#### Push delegate when app is in background or not running {#push-delegates-background}
+
+For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate, invoke the `handleBackgroundNotificationClick:withCompletionHandler:` SDK API -
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-didReceiveNotificationResponse:(UNNotificationResponse *)response
-         withCompletionHandler:(void (^)(void))completionHandler {
-    if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
-                                                isAppLaunch:YES];
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler {
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
+        [Helpshift handleBackgroundNotificationClick:userInfo withCompletionHandler:completionHandler];
     } else {
-        // Handling for non-helpshift push notifications received when app is in background or killed
+        completionHandler();
     }
-    completionHandler();
 }
 ```
 
@@ -191,40 +213,42 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 <TabItem value="Swift" label="Swift">
 
 ```swift
-func userNotificationCenter(_ center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    if response.notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo, isAppLaunch: true)
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+) {
+    let userInfo = response.notification.request.content.userInfo
+    if let origin = userInfo["origin"] as? String, origin == "helpshift" {
+        Helpshift.handleBackgroundNotificationClick(userInfo, withCompletionHandler: completionHandler)
     } else {
-        // Handling for non-helpshift push notifications received when app is in background or killed
+        completionHandler()
     }
-    completionHandler()
 }
 ```
 
 </TabItem>
-
 </Tabs>
 
-### Badge count {#badge-count}
-
-If you need to handle badge reset in the application icon, you can do
-something like below in the `applicationDidBecomeActive:` delegate
-method:
-
-```objc
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-}
-```
+### Configure NotificationService extension
 
 <Admonition type="info" title="Note">
 
-- To test Push Notifications for an app that is already in production please refer to [this.](/ios/troubleshooting#test-push-production)
-- You should check the origin and call the `handleRemoteNotfication` as soon as you get the callback. SDK checks the state of the app (Active / Inactive) and based on it, decides to show chat screen or in-app notification. Delay in calling handleRemoteNotification could result in SDK to get inaccurate application state.
-- If you are using Xcode 11 for building and deploying your app, please refer to our [troubleshooting guide](/ios/troubleshooting#xcode11)
+Your app only needs to configure the NotificationService extension if you are using Proactive Engagement feature. For support notifications, you can skip this configuration.
 
 </Admonition>
+
+TODO-JJ Add content
+
+### Configure silent push notifications
+
+<Admonition type="info" title="Note">
+
+Your app only needs to configure the silent push notifications if you are using Proactive Engagement feature. For support notifications, you can skip this configuration.
+
+</Admonition>
+
+TODO-JJ Add content
 
 ## In-app notifications {#in-app-notifications}
 
@@ -241,8 +265,6 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 />
 
 </SideBySide>
-
-## Configuring In-app notifications {#optional-flags}
 
 The Helpshift [install call](/sdkx_ios/getting-started#initializing) supports flags for configuring SDK behaviour.
 Currently we support one flag i.e `enableInAppNotification`.
@@ -454,3 +476,16 @@ to retrieve the unread messages count stored locally and display the unread coun
 Refer [Unread Message Count Event](/sdkx_ios/delegates#unreadMessageCount) for knowing more on how the SDK notifies of the unread count to your app.
 
 </Admonition>
+
+### Reset badge count {#reset-badge-count}
+
+If you need to handle badge reset in the application icon, you can do
+something like below in the `applicationDidBecomeActive:` delegate
+method:
+
+```objc
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+```
