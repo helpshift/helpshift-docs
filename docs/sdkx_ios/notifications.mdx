@@ -230,7 +230,7 @@ func userNotificationCenter(
 </TabItem>
 </Tabs>
 
-### Configure NotificationService extension
+### Configure NotificationService extension {#notification-service}
 
 <Admonition type="info" title="Note">
 
@@ -238,23 +238,53 @@ Your app only needs to configure the NotificationService extension if you are us
 
 </Admonition>
 
-TODO-JJ Add content
+If you are using Helpshift's [Proactive Engagement](/sdkx-ios/proactive-engagement) feature, you will need to add a NotificationService extension to your app. This extension lets the app intercept the notification and modify it's payload before iOS system posts the notification in system tray. For more details on what this service extension does and how to configure it in your app, you can refer the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
 
-### Configure silent push notifications
+Helpshift uses this extension to download images to display in the push notification. If your app already has a NotificationService extension, you can re-use it for handling Helpshift notifications. In the `didReceiveNotificationRequest:withContentHandler:` method of your notification service, call the corresponding Helpshift API -
 
-<Admonition type="info" title="Note">
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
 
-Your app only needs to configure the silent push notifications if you are using Proactive Engagement feature. For support notifications, you can skip this configuration.
+```objc
+- (void) didReceiveNotificationRequest:(UNNotificationRequest *)request
+                    withContentHandler:(void (^)(UNNotificationContent *content))contentHandler {
+    NSString *origin = request.content.userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleBackgroundNotification:request
+                           withContentHandler:contentHandler];
+    } else {
+        contentHandler(request.content);
+    }
+}
+```
 
-</Admonition>
+</TabItem>
+<TabItem value="Swift" label="Swift">
 
-TODO-JJ Add content
+```swift
+override func didReceive(
+    _ request: UNNotificationRequest,
+    withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void
+) {
+    let origin = request.content.userInfo["origin"] as? String
+    if origin == "helpshift" {
+        Helpshift.handleBackgroundNotification(request, withContentHandler: contentHandler)
+    } else {
+        contentHandler(request.content)
+    }
+}
+```
+
+</TabItem>
+</Tabs>
 
 ## In-app notifications {#in-app-notifications}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
 
-These notifications are sent when an agent replies to a customer's issue. Your customers can click on these banners to go straight into the conversation screen.
+These notifications are sent in following cases -
+1. An agent replies to a customer's issue. Your customers can click on these banners to go straight into the conversation screen.
+2. The user receives a Proactive Engagement notification of In-App type while they are actively using your app. Clicking the banner will perform the action you have configured for the notification on admin dashboard.
 
 <SideBySide>
 
@@ -266,10 +296,16 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 </SideBySide>
 
-The Helpshift [install call](/sdkx_ios/getting-started#initializing) supports flags for configuring SDK behaviour.
-Currently we support one flag i.e `enableInAppNotification`.
-
 ### Enabling/Disabling In-app notifications {#enable-disable-in-app}
+
+<Admonition type="info" title="Note">
+
+This section is applicable only for support in-app notifications, not for proactive engagement notifications.
+
+</Admonition>
+
+
+You can enable/disable support in-app notifications using the `enableInAppNotification` flag in the Helpshift [install call](/sdkx_ios/getting-started#initializing).
 
 <div className="compact ">
 
@@ -281,15 +317,11 @@ Currently we support one flag i.e `enableInAppNotification`.
 
 </div>
 
-If you do not want the in-app notifications support provided by the
-Helpshift SDK, please set this flag to `NO`. The default value of this
-flag is `YES` i.e in-app notifications will be enabled.<br />
-Read more about in-app notifications in the [Notifications section.](/sdkx_ios/notifications#in-app-notifications)
+The default value of this flag is `YES` i.e support in-app notifications will be enabled.
 
 Example:
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
@@ -308,17 +340,15 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 ```
 
 </TabItem>
-
 </Tabs>
 
 ### Pausing In-app notifications {#pause-in-app}
 
-If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotification` to pause/resume the notifications. When `YES` is passed to this method, display of in-app notifications is paused even if they arrive. When you pass `NO`, the in-app notifications start displaying.
+Use the API `pauseDisplayOfInAppNotification` to pause/resume the notifications. When `YES` is passed to this method, display of in-app notifications is paused even if they arrive. When you pass `NO`, the in-app notifications start displaying. Note that if you have [disabled support in-app notifications](#enable-disable-in-app), this flag will have no effect for support notifications. It will still work for proactive engagement in-app notifications.
 
 Example:
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
@@ -335,7 +365,6 @@ Helpshift.pauseDisplayOf(inAppNotification: false) // To resume showing the in-a
 ```
 
 </TabItem>
-
 </Tabs>
 
 ## Notification badges {#notification-badges}
