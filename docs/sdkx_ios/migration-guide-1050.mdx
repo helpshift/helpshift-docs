@@ -27,7 +27,7 @@ With SDK X 10.5.0, we have made changes to some public APIs. If you are upgradin
 
 The existing push notification handling API - `handleNotification:withUserInfoDictionary:isAppLaunch:` - has been marked as deprecated. You should replace it's usage with one of the new APIs - based on the calling context.
 
-Replace usage of deprecated API in `userNotificationCenter:willPresent:withCompletionHandler:` with `handleForegroundNotification:withCompletionHandler:` -
+Replace usage of deprecated API in `userNotificationCenter:willPresent:withCompletionHandler:` with [`handleForegroundNotification:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-foreground) -
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
@@ -102,7 +102,7 @@ func userNotificationCenter(
 </TabItem>
 </Tabs>
 
-Replace usage of deprecated API in `userNotificationCenter:didReceive:withCompletionHandler:` with `handleBackgroundNotificatinClick:withCompletionHandler:` -
+Replace usage of deprecated API in `userNotificationCenter:didReceive:withCompletionHandler:` with [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-background) -
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
@@ -179,13 +179,13 @@ Following APIs that were deprecated in older versions of the SDK have now been r
 
 | Removed API                                                            | Replacement API                                                                                         |
 |------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| `clearAnonymousUserOnLogin`                                            | `clearAnonymousUserOnLogin:`  - Pass boolean true to clear/false to not clear                           |
-| `showConversationWith:config:`                                         | `showConversationWithConfig:`  - No need to pass in view controller                                     |
-| `showFAQsWith:config:`                                                 | `showFAQsWithConfig:`  - No need to pass in view controller                                             |
-| `showFAQSection:with:config:`                                          | `showFAQSection:withConfig:`  - No need to pass in view controller                                      |
-| `showSingleFAQ:with:config:`                                           | `showSingleFAQ:withConfig:`  - No need to pass in view controller                                       |
-| `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | `handleForegroundNotification:withCompletionHandler:` - When notification is received in foreground     |
-| `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | `handleBackgroundNotificationClick:withCompletionHandler:` - When notification is clicked in background |
+| `clearAnonymousUserOnLogin`                                            | [`clearAnonymousUserOnLogin:`](/sdkx_ios/users/#anonymous-users)  - Pass boolean true to clear/false to not clear                           |
+| `showConversationWith:config:`                                         | [`showConversationWithConfig:`](/sdkx_ios/support-tools/#conversation-view)  - No need to pass in view controller                                     |
+| `showFAQsWith:config:`                                                 | [`showFAQsWithConfig:`](/sdkx_ios/support-tools/#faqs-view)  - No need to pass in view controller                                             |
+| `showFAQSection:with:config:`                                          | [`showFAQSection:withConfig:`](/sdkx_ios/support-tools/#faq-section-view)  - No need to pass in view controller                                      |
+| `showSingleFAQ:with:config:`                                           | [`showSingleFAQ:withConfig:`](/sdkx_ios/support-tools/#faq-view)  - No need to pass in view controller                                       |
+| `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | [`handleForegroundNotification:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-foreground) - When notification is received in foreground     |
+| `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-background) - When notification is clicked in background |
 
 ## New APIs {#new-apis}
 
