@@ -192,6 +192,18 @@ func userNotificationCenter(
 
 For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate, invoke the `handleBackgroundNotificationClick:withCompletionHandler:` SDK API -
 
+<Admonition type="warning" title="Threading requirement">
+
+The completion handler provided by
+`userNotificationCenter(_:didReceive:withCompletionHandler:)`
+**must be invoked on the main thread**.
+
+Invoking it from a background thread can result in
+`NSInternalInconsistencyException` crashes, especially when the app is
+launched from a background or killed state.
+
+</Admonition>
+
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
 
@@ -201,7 +213,12 @@ For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHan
           withCompletionHandler:(void (^)(void))completionHandler {
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
-        [Helpshift handleBackgroundNotificationClick:userInfo withCompletionHandler:completionHandler];
+        [Helpshift handleBackgroundNotificationClick:userInfo
+                               withCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler();
+            });
+        }];
     } else {
         completionHandler();
     }
@@ -219,7 +236,11 @@ func userNotificationCenter(
 ) {
     let userInfo = response.notification.request.content.userInfo
     if let origin = userInfo["origin"] as? String, origin == "helpshift" {
-        Helpshift.handleBackgroundNotificationClick(userInfo, withCompletionHandler: completionHandler)
+        Helpshift.handleBackgroundNotificationClick(userInfo) {
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
     } else {
         completionHandler()
     }
