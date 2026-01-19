@@ -104,6 +104,18 @@ func userNotificationCenter(
 
 Replace usage of deprecated API in `userNotificationCenter:didReceive:withCompletionHandler:` with [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-background) -
 
+<Admonition type="warning" title="Threading requirement">
+
+The completion handler provided by
+`userNotificationCenter:didReceive:withCompletionHandler:`
+**must be invoked on the main thread**.
+
+Invoking it from a background thread can result in
+`NSInternalInconsistencyException` crashes, especially when the app is
+launched from a background or killed state.
+
+</Admonition>
+
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
 
@@ -132,7 +144,11 @@ Replace usage of deprecated API in `userNotificationCenter:didReceive:withComple
     NSString *origin = userInfo[@"origin"];
     if([@"helpshift" isEqualToString:origin]) {
         [Helpshift handleBackgroundNotificationClick:userInfo
-                              withCompletionHandler:completionHandler];
+                               withCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler();
+            });
+        }];
     } else {
         // Handling for non-helpshift push notifications received when app is in background or killed
     }
@@ -163,7 +179,11 @@ func userNotificationCenter(
     withCompletionHandler completionHandler: @escaping () -> Void
 ) {
     if response.notification.request.content.userInfo["origin"] as? String == "helpshift" {
-      Helpshift.handleBackgroundNotificationClick(response.notification.request.content.userInfo, withCompletionHandler: completionHandler)
+        Helpshift.handleBackgroundNotificationClick(userInfo) {
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
     } else {
       // Handling for non-helpshift push notifications received when app is in background or killed
     }
