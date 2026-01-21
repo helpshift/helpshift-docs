@@ -1,0 +1,194 @@
+---
+sidebar_position: 250
+title: インパクト分析
+description: "以下の番号は、Helpshift Unityプラグインと統合された枠組みとなるサンプルアプリを示しています。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# インパクト分析 {#performance}
+
+<Intro>
+
+以下の番号は、Helpshift Unityプラグインと統合された枠組みとなるサンプルアプリ
+を示しています。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+**アプリの起動時間**
+
+Helpshiftの初期化はすべてバックグラウンドのスレッドで実行されるため、Helpshift SDKがアプリの起動時間に影響を与えることはありません。
+
+</Admonition>
+
+## v10.4.0
+
+### アプリ内のSDKペイロード {#payload-size}
+
+Helpshift Androidプラグインは、アプリケーションのリリースAPKに約`330 Kb`を追加します。
+`330 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+SDK Xにappcompatライブラリを使用すると、約`1MB`が追加されます。
+
+### メソッドの数 {#methods-count}
+
+Helpshift SDK Xは、あなたのdexに1608件のメソッドを追加します。
+
+| パッケージ           | メソッドの数 |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1608` |
+
+### メモリの使用量 {#memory-usage}
+
+| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `6.27`                          |                        `107-112` |
+| showFAQSection                         | `5.25`                          |                          `82-94` |
+| showSingleFAQ                          | `4.82`                          |                          `75-85` |
+| showConversation（会話モード） | `7.10`                          |                        `132-138` |
+
+このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+
+<Admonition type="info" title="注意">
+
+Android 14を搭載したGoogle Pixel 6上のデモアプリでテストされています。
+
+</Admonition>
+
+## v10.3.0
+
+### アプリ内のSDKペイロード {#payload-size}
+
+Helpshift Androidプラグインは、アプリケーションのリリースAPKに約`250 Kb`を追加します。
+`250 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+SDK Xにappcompatライブラリを使用すると、約`1MB`が追加されます。
+
+### メソッドの数 {#methods-count}
+
+Helpshift SDK Xは、あなたのdexに1404件のメソッドを追加します。
+
+| パッケージ           | メソッドの数 |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1404` |
+
+### メモリの使用量 {#memory-usage}
+
+| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `4.6`                          |                         `95-105` |
+| showFAQSection                         | `4.30`                          |                          `75-90` |
+| showSingleFAQ                          | `3.80`                          |                          `45-65` |
+| showConversation（会話モード） | `5.50`                          |                            `135` |
+
+このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+
+<Admonition type="info" title="注意">
+
+Android 11を搭載したGoogle Pixel 4a上のデモアプリでテストされています。
+
+</Admonition>
+
+
+## v10.1.0​
+
+### アプリ内のSDKペイロード {#payload-size}
+
+Helpshift Androidプラグインは、アプリケーションのリリースAPKに`162 Kb`を追加します。
+`162 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+SDK Xにappcompatライブラリを使用すると、約`1MB`が追加されます。
+
+### メソッドの数 {#methods-count}
+
+Helpshift SDK Xは、あなたのdexに1088件のメソッドを追加します。
+
+| パッケージ           | メソッドの数 |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1088` |
+
+### メモリの使用量 {#memory-usage}
+
+| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `4.40`                          |                         `95-105` |
+| showFAQSection                         | `4.40`                          |                          `75-90` |
+| showSingleFAQ                          | `3.35`                          |                          `45-65` |
+| showConversation（会話モード） | `5.80`                          |                            `135` |
+
+このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+
+<Admonition type="info" title="注意">
+
+Android 11を搭載したGoogle Pixel 4a上のデモアプリでテストされています。
+
+</Admonition>
+
+## v10.0.0
+
+### アプリ内のSDKペイロード {#payload-size}
+
+Helpshift Androidプラグインは、アプリケーションのリリースAPKに`144 Kb`を追加します。
+`144 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+SDK Xにappcompatライブラリを使用すると、約`1MB`が追加されます。
+
+### メソッドの数 {#methods-count}
+
+Helpshift SDK Xは、あなたのdexに1006件のメソッドを追加します。
+
+| パッケージ           | メソッドの数 |
+| ----------------- | -----------: |
+| **com.helpshift** |       `1006` |
+
+### メモリの使用量 {#memory-usage}
+
+| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `4.30`                          |                         `90-100` |
+| showFAQSection                         | `4.30`                          |                          `70-85` |
+| showSingleFAQ                          | `3.30`                          |                          `40-60` |
+| showConversation（会話モード） | `5.70`                          |                            `130` |
+
+このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+
+<Admonition type="info" title="注意">
+
+Android 11を搭載したGoogle Pixel 4a上のデモアプリでテストされています。
+
+</Admonition>
+
+## v1.0.0-beta​ {#integration-impact-100-beta}
+
+### アプリ内のSDKペイロード {#payload-size-100-beta}
+
+Helpshift Androidプラグインは、アプリケーションのリリースAPKに`92`KBを追加します。92KBというサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。SDK Xにappcompatライブラリを使用すると、約1MBが追加されます。
+
+### メソッドの数 {#methods-count-100-beta}
+
+Helpshift SDK Xは、あなたのdexに518件のメソッドを追加します。
+
+| パッケージ           | メソッドの数 |
+| ----------------- | -----------: |
+| **com.helpshift** |        `518` |
+
+### メモリの使用量 {#memory-usage-100}
+
+`HelpshiftSdk.GetInstance().ShowConversation(configMap)` APIを呼び出してHelpshiftの会話画面を開くと、約20 - 25MBのメモリが消費されます。このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+
+<Admonition type="info" title="注意">
+
+Android 10が搭載されたSamsung Galaxy M11上のデモアプリでテストされています。
+
+</Admonition>

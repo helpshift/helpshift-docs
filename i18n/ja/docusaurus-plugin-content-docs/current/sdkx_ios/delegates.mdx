@@ -1,0 +1,837 @@
+---
+sidebar_position: 90
+title: Helpshiftのデリゲート
+description: "Helpshiftのデリゲートでは、アプリの開発者がSDKによって生成されたグローバルイベントを追跡できるようにコールバックやイベントを提供しています。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Intro,
+} from "@site/src/components/forDocs";
+
+# Helpshiftのデリゲート {#delegates}
+
+<Intro>
+
+Helpshiftのデリゲートでは、アプリの開発者がSDKによって生成されたグローバルイベントを追跡できるようにコールバックやイベントを提供しています。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## Helpshiftのデリゲート実装 {#helpshift-delegates-implementation}
+
+Helpshiftサポートデリゲートを実装したクラスを定義し、`sharedInstance`の`delegate`プロパティを設定してそれをHelpshiftに渡す必要があります。
+
+### 例 {#helpshift-delegate-example}
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+// Class implementation
+#import <Foundation/Foundation.h>
+@import HelpshiftX;
+
+@interface MyDelegates ()<HelpshiftDelegate>
+@end
+
+@implementation MyDelegates
+
+- (void) handleHelpshiftEvent:(NSString *)eventName withData(NSDictionary *)data {
+    // your code here
+}
+
+- (void) authenticationFailedForUserWithReason(HelpshiftAuthenticationFailureReason)reason {
+    // your code here
+}
+
+@end
+
+// Class Usage
+@property (strong, nonatomic) MyDelegate *delegate;
+....
+delegate = [[MyDelegates alloc] init];
+Helpshift.sharedInstance.delegate = self;
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+import Foundation
+import HelpshiftX
+
+// Class implementation
+class HelpshiftDelegateHandler: HelpshiftDelegate {
+    func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+        // Your code here
+    }
+
+    func authenticationFailedForUser(with reason: HelpshiftAuthenticationFailureReason) {
+        // Your code here
+    }
+}
+
+// Class usage
+let delegateHandler = HelpshiftDelegateHandler()
+Helpshift.sharedInstance().delegate = delegateHandler
+```
+
+</TabItem>
+
+</Tabs>
+
+SDKによって生成されたイベントを逃さないように、デリゲートはHelpshift Install APIを呼び出した直後に設定してください。
+
+## Helpshiftのイベント {#helpshift-delegate-events}
+
+### 会話の状態イベント {#conversationStatus}
+
+このイベントには、現在進行中の会話に関する情報が含まれています。
+
+- イベントの名前: `HelpshiftEventNameConversationStatus` <br />
+- イベントのデータ:
+- `HelpshiftEventDataLatestIssueId` <br />
+  - `HelpshiftEventDataLatestIssuePublishId` <br />
+  - `HelpshiftEventDataIsIssueOpen`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationStatus]) {
+        NSLog(@"Issue ID: %@", data[HelpshiftEventDataLatestIssueId]);
+        NSLog(@"Publish ID: %@", data[HelpshiftEventDataLatestIssuePublishId]);
+        NSLog(@"Is issue open: %@", data[HelpshiftEventDataIsIssueOpen]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationStatus {
+        guard let data = data else { return }
+        let issueId = data[HelpshiftEventDataLatestIssueId]
+        let publishId = data[HelpshiftEventDataLatestIssuePublishId]
+        let issueOpen = data[HelpshiftEventDataIsIssueOpen]
+
+        print("Issue id \(issueId), publishId: \(publishId), issueOpen: \(issueOpen)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### ウィジェットの切り替えイベント {#widgetToggle}
+
+このイベントは、ユーザーがチャット画面を開いたり閉じたりしたときにトリガーされます。このイベントは、`"visible"`キーのブール値を用いてトリガーされます。ご参考までに、以下の例をご確認ください:
+
+- イベントの名前: `HelpshiftEventNameWidgetToggle`
+- イベントのデータ: `HelpshiftEventDataVisible`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameWidgetToggle]) {
+        NSLog(@"Is chat screen visible: %@", data[HelpshiftEventDataVisible]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameWidgetToggle {
+        guard let data = data else { return }
+        let widgetStatus = data[HelpshiftEventDataVisible]
+        print("Is chat screen visible: \(widgetStatus)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 会話の開始イベント {#conversationStart}
+
+このイベントは、ユーザーが会話の中で最初のメッセージを送信したときにトリガーされます。イベントのデータオブジェクトには`message`キーが含まれており、これにはエンドユーザーが会話を始めるために送信したメッセージの文字列が含まれています。
+
+- イベントの名前: `HelpshiftEventNameConversationStart`
+- イベントのデータ: `HelpshiftEventDataMessage`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationStart]) {
+        NSLog(@"Conversation started with text: %@", data[HelpshiftEventDataMessage]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationStart {
+        guard let data = data else { return }
+        let messageBody = data[HelpshiftEventDataMessage]
+        print("Conversation started with text: \(messageBody))")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### メッセージの追加イベント {#messageAdd}
+
+このイベントは、ユーザーが会話内でメッセージを追加したときにトリガーされます。追加されるメッセージには、テキストメッセージ、ボットの入力を介した応答、添付ファイルなどが想定されています。イベントのデータオブジェクトには`type`キーと`body`キーが含まれており、これらはユーザーが追加したメッセージの種類と本文を示しています。
+
+- イベントの名前: `HelpshiftEventNameMessageAdd`
+- イベントのデータ:
+  - `HelpshiftEventDataMessageType`
+  - `HelpshiftEventDataMessageTypeText`
+  - `HelpshiftEventDataMessageTypeAttachment`
+  - `HelpshiftEventDataMessageBody`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameMessageAdd]) {
+        NSLog(@"New message added with body: %@", data[HelpshiftEventDataMessageBody]);
+        NSLog(@"New message added with type: %@", data[HelpshiftEventDataMessageType]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameMessageAdd {
+        guard let data = data else { return }
+        let messageBody = data[HelpshiftEventDataMessageBody]
+        let messageType = data[HelpshiftEventDataMessageType]
+        print("Message: \(messageBody), type: \(messageType)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### エージェントメッセージの受信イベント
+
+このイベントは、ユーザーが会話中にエージェントから何らかのメッセージを受信したときにトリガーされます。このメッセージには、テキストメッセージ、添付ファイル、アプリのレビューのリクエスト、またはスクリーンショットのリクエストなどが含まれます。このデリゲートは、ボットによるメッセージや自動送信メッセージに対してはトリガーされません。
+
+- イベントの名前の定数: `HelpshiftEventNameAgentMessageReceived`
+- イベントの名前の生の値: `agentMessageReceived`
+- イベントのデータ:
+
+| キー（定数）                | キー（生）   | データ型   |
+| ----------------------------- | ----------- | ------ |
+| HelpshiftEventDataPublishID   | publishId   | 文字列 |
+| HelpshiftEventDataCreatedTime | createdTs   | 数値 |
+| HelpshiftEventDataMessageType | type        | 文字列 |
+| HelpshiftEventDataMessageBody | body        | 文字列 |
+| HelpshiftEventDataAttachments | attachments | 配列  |
+
+`attachments`配列は辞書配列であり、各添付ファイルに対して1件の辞書を保持しています。添付ファイルの辞書のデータは、以下の通りです。
+
+| キー（定数）                | キー（生）   | データ型   |
+| ----------------------------- | ----------- | ------ |
+| HelpshiftEventDataURL         | url         | 文字列 |
+| HelpshiftEventDataContentType | contentType | 文字列 |
+| HelpshiftEventDataFileName    | fileName    | 文字列 |
+| HelpshiftEventDataSize        | size        | 数値 |
+
+<Admonition type="info" title="注意">
+
+キーの定数は、SDK X 10.3.0以降で利用可能です。古いバージョンのSDK Xでは、生のキーを代わりに使用してください。
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    if([eventName isEqualToString:HelpshiftEventNameAgentMessageReceived]) {
+        NSLog(@"Conversation publish ID : %@", data[HelpshiftEventDataPublishID]);
+        NSLog(@"Message created timestamp: %@", data[HelpshiftEventDataCreatedTime]);
+        NSLog(@"Message type: %@", data[HelpshiftEventDataMessageType]);
+        NSLog(@"Message body: %@", data[HelpshiftEventDataMessageBody]);
+
+        NSArray<NSDictionary *> *attachments = data[HelpshiftEventDataAttachments];
+        if(attachments) {
+            NSLog(@"Message has %lu attachments", (unsigned long)attachments.count);
+            for(NSDictionary *attachment in attachments) {
+                NSLog(@"Attachment file name: %@", attachment[HelpshiftEventDataFileName]);
+                NSLog(@"Attachment size: %@", attachment[HelpshiftEventDataSize]);
+                NSLog(@"Attachment content type: %@", attachment[HelpshiftEventDataContentType]);
+                NSLog(@"Attachment URL: %@", attachment[HelpshiftEventDataURL]);
+            }
+        } else {
+            NSLog(@"Message has no attachments");
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameAgentMessageReceived {
+        print("Conversation publish ID : \(data![HelpshiftEventDataPublishID]!)")
+        print("Message created timestamp: \(data![HelpshiftEventDataCreatedTime]!)")
+        print("Message type: \(data![HelpshiftEventDataMessageType]!)")
+        print("Message body: \(data![HelpshiftEventDataMessageBody]!)")
+        if let attachments = data?[HelpshiftEventDataAttachments] as? [[AnyHashable: Any]] {
+            print("Message has \(attachments.count) attachments")
+            for attachment in attachments {
+                print("Attachment file name: \(attachment[HelpshiftEventDataFileName]!)")
+                print("Attachment size: \(attachment[HelpshiftEventDataSize]!)")
+                print("Attachment content type: \(attachment[HelpshiftEventDataContentType]!)")
+                print("Attachment URL: \(attachment[HelpshiftEventDataURL]!)")
+            }
+        } else {
+            print("Message has no attachments")
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### アクション時のユーザークリックイベント
+
+このイベントは、ユーザーがアクションカードメッセージのリンクやアクションの呼び出しをクリックした時にトリガーされます。イベントのデータオブジェクトには`actionType`キーと`actionData`キーがあり、アクションの種類とアクションに関連付けられているデータを示しています。
+
+- イベントの名前の定数: `HelpshiftEventNameUserClickOnAction`
+- イベントの名前の生の値:`userClickOnAction`
+- イベントのデータ:
+
+| キー（定数）               | キー（生）  | データ型   |
+| ---------------------------- | ---------- | ------ |
+| HelpshiftEventDataActionType | actionType | 文字列 |
+| HelpshiftEventDataActionData | actionData | 文字列 |
+
+`HelpshiftEventDataActionType`は、次のいずれかです: -
+
+- `HelpshiftEventDataActionTypeCall`または`call`
+- `HelpshiftEventDataActionTypeLink`または`link`
+
+<Admonition type="info" title="注意">
+
+キーの定数は、SDK X 10.3.0以降で利用可能です。古いバージョンのSDK Xでは、生のキーを代わりに使用してください。
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameUserClickOnAction]) {
+        NSLog(@"User click on action type: %@", data[HelpshiftEventDataActionType]);
+        NSLog(@"Data for clicked action: %@", data[HelpshiftEventDataActionData]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameUserClickOnAction {
+        print("User click on action type: \(data[HelpshiftEventDataActionType])")
+        print("Data for clicked action: \(data[HelpshiftEventDataActionData])")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### CSATの送信イベント {#csatSubmit}
+
+このイベントは、会話の終了後にユーザーがCSAT（顧客満足度）評価を送信したときにトリガーされます。イベントのデータオブジェクトには`rating`キーと`additionalFeedback`キーが含まれており、これらはユーザーがCSATフォームを介して提供した（星による）評価と追加のコメントを示しています。
+
+- イベントの名前: `HelpshiftEventNameCSATSubmit`
+- イベントのデータ:
+  - `HelpshiftEventDataRating`
+- `HelpshiftEventDataAdditionalFeedback`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameCSATSubmit]) {
+        NSLog(@"CSAT Submitted with rating: %@", data[HelpshiftEventDataRating]);
+        NSLog(@"CSAT Submitted with feedback: %@", data[HelpshiftEventDataAdditionalFeedback]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameCSATSubmit {
+        guard let data = data else { return }
+        let rating = data[HelpshiftEventDataRating]
+        let feedback = daat[HelpshiftEventDataAdditionalFeedback]
+        print("CSAT Rating: \(rating), feedback:\(feedback))")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 会話の終了イベント {#conversationEnd}
+
+このイベントは会話が終了（解決または拒否）し、再開できない場合にトリガーされます。
+
+- イベントの名前: `HelpshiftEventNameConversationEnd`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationEnd]) {
+        NSLog(@"Conversation ended.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationEnd {
+        print("Conversation ended")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 会話の拒否イベント {#conversationRejected}
+
+このイベントは、エージェントが会話を拒否したときにトリガーされます。
+
+- イベントの名前: `HelpshiftEventNameConversationRejected`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationRejected]) {
+        NSLog(@"Conversation rejected.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationRejected {
+        print("Conversation rejected")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 会話の解決イベント {#conversationResolved}
+
+このイベントは、エージェントが会話を解決したときにトリガーされます。
+
+イベントの名前: `HelpshiftEventNameConversationResolved`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationResolved]) {
+        NSLog(@"Conversation resolved.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationResolved {
+        print("Conversation resolved")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 会話の再開イベント {#conversationReopened}
+
+解決に関する質問が有効化されている場合、ユーザーに対して解決の内容に満足しているかどうかが質問されます。ユーザーがそれを拒否し、新しいメッセージを送信すると会話が再開され、会話の再開イベントがトリガーされます。
+
+イベントの名前: `HelpshiftEventNameConversationReopened`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameConversationReopened]) {
+        NSLog(@"Conversation reopened.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameConversationReopened {
+        print("Conversation reopened")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### ユーザー認証の失敗イベント {#authetication-failure}
+
+ダッシュボードで`User Authentication`機能が有効化された状態で`Helpshift.login(userDataMap)`で無効なトークンを渡すと、理由に関する文字列とともにこのイベントを受け取ります。詳細については、[こちらを参照してください](/sdkx_ios/users)。
+
+理由の種類:
+
+- `HelpshiftAuthenticationFailureReasonAuthTokenNotProvided`
+- `HelpshiftAuthenticationFailureReasonInvalidAuthToken`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) authenticationFailedForUserWithReason:(HelpshiftAuthenticationFailureReason)reason {
+    // Handle authentication failure
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func authenticationFailedForUser(withReason reason: HelpshiftAuthenticationFailureReason) {
+  // Handle authentication failure
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Helpshiftセッションのデリゲート {#session-delegates}
+
+#### Helpshiftセッションの開始
+
+Helpshiftセッションがアプリ内でいつ開始したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが開始するたびに発動します。
+
+- イベントの名前: `HelpshiftEventNameSessionStarted`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameSessionStarted]) {
+        NSLog(@"Helpshift session started.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+        if eventName == HelpshiftEventNameSessionStarted {
+            print("Helpshift session started.")
+        }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Helpshiftセッションの終了
+
+Helpshiftセッションがアプリ内でいつ終了したかを追跡する場合は、このデリゲートコールバックを実装します。このデリゲートは、Helpshiftセッションが終了するたびに発動します。
+
+- イベントの名前: `HelpshiftEventNameSessionEnded`
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameSessionEnded]) {
+        NSLog(@"Helpshift session ended.");
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+        if eventName == HelpshiftEventNameSessionEnded {
+            print("Helpshift session ended.")
+        }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 未読メッセージ数の計測イベント {#unreadMessageCount}
+
+既存の会話で受信した新規メッセージの数を計測する場合は、この`[Helpshift requestUnreadMessageCount:];` APIを呼び出します。
+
+未読メッセージの数は、このイベントを介してアプリに伝達されます。また、このイベントを使用してバッジの表示数を更新し続けることもできます。
+
+- イベントの名前: `HelpshiftEventDataUnreadMessageCount`
+- イベントのデータ:
+- `HelpshiftEventDataUnreadMessageCount`
+- `HelpshiftEventDataUnreadMessageCountIsFromCache`
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) handleHelpshiftEvent:(NSString *)eventName withData:(NSDictionary *)data {
+    ...
+    if([eventName isEqualToString:HelpshiftEventNameReceivedUnreadMessageCount]) {
+        int count = data[HelpshiftEventDataUnreadMessageCount];
+        NSLog(@"Unread count: %d", data[HelpshiftEventDataUnreadMessageCount]);
+        NSLog(@"Is unreadCount served from local cache : %d", data[HelpshiftEventDataUnreadMessageCountIsFromCache]);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func handleHelpshiftEvent(_ eventName: String, withData data: [AnyHashable : Any]?) {
+    if eventName == HelpshiftEventNameReceivedUnreadMessageCount {
+        guard let data = data else { return }
+        let count = data[HelpshiftEventDataUnreadMessageCount] as? Int
+        let isFromCache = data[HelpshiftEventDataUnreadMessageCount] as? Bool
+        print("Count: \(count), fromCache: \(isFromCache)")
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+`[Helpshift requestUnreadMessageCount:YES];`メソッドを呼び出すと、上記のデリゲートメソッド内のサーバーから通知の数が非同期で返されます。この通知の数は、キャッシュまたはHelpshiftサーバーのいずれかから取得されます。Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ最新の値が返されます。レート制限の期間内にAPIが呼び出された場合には、ローカルキャッシュから値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。
+
+ローカルに保存されている現在の通知数を取得する場合、パラメータをfalseに設定した同じ`[Helpshift requestUnreadMessageCount:NO];`メソッドを呼び出します。この場合、SDKはローカルで利用可能な未読メッセージの数をこのデリゲートメソッド内で返します。
+
+ローカルに保存されている未読メッセージの数は、追加のネットワーク呼び出しを節約するのに役立ちます。
+
+## ユーザーアイデンティティシステムイベント
+
+アイデンティティシステム関連のAPIを使用する場合、このセクションで説明するイベントを使用して関連するイベントがアプリに伝達されます。イベントには、対応するイベントの詳細情報を提供する関連データを持たせることができます。
+
+### HelpshiftIdentityTokenInvalid
+
+アイデンティティJWTが有効な形式ではありません
+
+- API - `addUserIdentities`
+- データ - nil
+
+### HelpshiftIatIsMandatory
+
+JWTにiatキーがありません。Issued At Timestampまたは"iat"は、JWTペイロードの必須キーです。
+
+- API - `addUserIdentities`
+- データ - nil
+
+### HelpshiftIdentitiesDataInvalid
+
+JWTペイロードのアイデンティティの一部が有効ではありません
+
+- API - `addUserIdentities`
+- データ -
+
+| キー                                      | 値                                     | リカバリー                                                                                            |
+| ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftKeyLengthLimitExceeded           | キーの長さが許容範囲内であることをご確認ください                                                       |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftValueLengthLimitExceeded         | 値の長さが許容範囲内であることをご確認ください                                                     |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftEmptyData                        | キーまたは値が空でない有効な値であることをご確認ください                                                      |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftMetadataCountLimitExceeded       | このアイデンティティのメタデータ辞書のエントリー総数が許容範囲内であることをご確認ください |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataKeyLengthLimitExceeded   | メタデータキーの長さが許容範囲内であることをご確認ください                                              |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataValueLengthLimitExceeded | メタデータの値の長さが許容範囲内であることをご確認ください                                            |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataEmptyKeyOrValue          | メタデータのキーまたは値が空でない有効な値であることをご確認ください                                             |
+
+### HelpshiftIdentitiesSizeLimitExceeded
+
+JWTペイロードのアイデンティティの数が許容上限を超えています
+
+- API - `addUserIdentities`
+- データ - nil
+
+### HelpshiftEventAddUserIdentitiesSyncFailed
+
+ユーザーアイデンティティをバックエンドと同期できませんでした
+
+- API - `addUserIdentities`
+- データ -
+
+| キー                             | 値                | リカバリー |
+| ------------------------------- | -------------------- | -------- |
+| 渡されたアイデンティティキーのいずれか1つ | HelpshiftInvalidData | NA       |
+
+### HelpshiftEventAppAttributesLimitExceeded/HelpshiftEventMasterAttributesLimitExceeded
+
+同期されていないアプリまたはマスター属性の数が許容上限を超えています
+
+- API - `updateAppAttributes`、`updateMasterAttributes`
+- データ - nil
+
+### HelpshiftEventUpdateAppAttributesValidationFailed/HelpshiftEventUpdateMasterAttributesValidationFailed
+
+属性辞書内の個々のエントリーの検証に失敗しました
+
+- API - `updateAppAttributes`、`updateMasterAttributes`
+- データ -
+
+| キー                              | 値                             | リカバリー                                                                                                        |
+| -------------------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 渡された属性キーのいずれか1つ | HelpshiftKeyLengthLimitExceeded   | キーの長さが許容範囲内であることをご確認ください                                                                   |
+| 渡された属性キーのいずれか1つ | HelpshiftValueLengthLimitExceeded | 値の長さが許容範囲内であることをご確認ください                                                                 |
+| 渡された属性キーのいずれか1つ | HelpshiftCountLimitExceeded       | 指定したキーのコレクション内のエントリーの数を減らしてください                                                |
+| 渡された属性キーのいずれか1つ | HelpshiftInvalidValueType         | 値が対応する型（文字列、ブール値、数値、文字列配列、または文字列-文字列辞書のいずれか）であることをご確認ください |
+
+### HelpshiftEventUpdateAppAttributesSyncFailed/HelpshiftEventUpdateMasterAttributesSyncFailed
+
+バックエンドとの属性の同期に失敗しました
+
+- API - `updateAppAttributes`、`updateMasterAttributes`
+
+- データ -
+
+| キー                              | 値                | リカバリー |
+| -------------------------------- | -------------------- | -------- |
+| 渡された属性キーのいずれか1つ | HelpshiftInvalidData | NA       |
+
+### HelpshiftEventUserIdentityNotEnabled
+
+ご利用のドメインでアイデンティティ機能が有効化されていません
+
+- API - `addUserIdentities`、`updateAppAttributes`、`updateMasterAttributes`
+- データ - nil
+
+### HelpshiftEventUserSessionExpired
+
+SDKのユーザーセッションの期限が切れたときに送信されます。セッションの有効期限が切れると、SDKはフォアグラウンドになるたびにこのイベントをアプリに送信し続けます。
+このイベントに応答して現在のユーザーのJWTを更新し、新しいJWTでもう一度[ユーザーをログインさせる](/sdkx_ios/identity-user-hub.mdx)必要があります。
+
+データ - nil
+
+### HelpshiftEventRefreshUserCredentials
+
+SDKのユーザーセッションがまもなく期限切れになるタイミングで送信されます。これにより、現在のユーザーのJWTを前もって更新し、
+新しいJWTを用いてSDKにログインすることによってセッションが中断されないようにすることができます。
+
+データ - nil

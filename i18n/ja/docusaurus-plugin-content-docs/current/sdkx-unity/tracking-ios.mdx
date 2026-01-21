@@ -1,0 +1,290 @@
+---
+sidebar_position: 80
+title: トラッキング（iOS）
+description: "ユーザーが新しい会話を開始する際のイベントとユーザーアクションを追跡します。SDKを介して開始されたすべての会話に、カスタムメタデータを添付します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import CustomIssueFieldsKeyDeprecationNotice from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
+# トラッキング（<small>iOS</small>） {#tracking}
+
+<Intro>
+
+ユーザーが新しい会話を開始する際のイベントとユーザーアクションを追跡します。
+SDKを介して開始されたすべての会話に、カスタムメタデータを添付します。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## 会話にタグを追加する {#adding-tags}
+
+`ShowConversation`を呼び出す際に`configMap`オブジェクトにタグを渡すことにより、問題を報告する際にタグを添付できるようになります。キー`"tags"`を持つ**文字列の配列**を渡すことができるようになり、問題の作成時にタグとして追加されます。
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+void Awake(){
+    // install call here
+}
+
+// configuration map
+void openHelpshift(){
+
+    Dictionary<string, object> configMap = new Dictionary<string, object>();
+    // other configurations
+    // ..
+    configMap.Add("tags", new String[] { "tag1", "tag2" })
+
+    // open the support chat screen
+    help.ShowConversation(configMap);
+}
+```
+
+<Admonition type="info" title="注意">
+
+**タグの名前と互換性について**
+
+- タグについては、Helpshiftダッシュボード（`Settings`、`Tags`の順に移動）で事前に作成しておく必要があります。作成していない場合には、これらは無視されます。
+- 添付されているタグは、ダッシュボードに表示されているタグと完全に一致している必要があります。
+
+</Admonition>
+
+## 会話にカスタムメタデータを追加する
+
+問題の作成時にカスタムメタデータを追加する場合には、以下の手順に従ってください。
+
+1. トップレベルのカスタムメタデータ`Map`を初期化します
+2. カスタムメタデータ`Map`を定義します
+3. カスタムメタデータ`Map`にキーと値のペアを追加します
+4. カスタムメタデータ`Map`をトップレベル`Map`に追加します
+5. キー`"customMetadata"`を持つ`configMap`への`Map`を、SDK X APIのいずれか（`ShowConversation(configMap)`のように）に渡します。
+
+```csharp
+Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
+    customMetadataMap.Add("Level", "9");
+    customMetadataMap.Add("Spend", "46.55 USD");
+    customMetadataMap.Add("Device Timestamp", DateTime.UtcNow.ToLongTimeString());
+
+    Map<String, Object> config = new HashMap<>();
+    // other configs...
+    //..
+    config.put("customMetadata", customMetadataMap);
+
+    Helpshift.showConversation(MainActivity.this, config);
+```
+
+<Admonition type="info" title="注意">
+
+メタデータは、String型のキーと値のペアとしてのみ送信が可能となります。
+
+- 一度customMetadataが設定されてしまうと、それをリセットするにはSDK XのAPIを空の辞書を用いて呼び出さなければいけなくなります。
+
+```csharp
+Dictionary<string, string> customMetadataMap = new Dictionary<string, string>();
+
+    Map<String, Object> config = new HashMap<>();
+    // other configs...
+    //..
+    config.put("customMetadata", customMetadataMap);
+
+    Helpshift.showConversation(MainActivity.this, config);
+```
+
+</Admonition>
+
+## カスタム問題フィールドを設定する {#set-custom-issue-fields}
+
+問題の作成時にカスタム問題フィールドを設定する場合には、以下の手順に従ってください。
+
+1. トップレベルのカスタム問題フィールド`Dictionary`を初期化します
+2. カスタム問題フィールド`Dictionary`を定義します
+3. そのカスタム問題フィールドのために`"type"`と`"value"`を追加します
+4. カスタム問題フィールドマップをトップレベルのマップに追加します（keyに構成したキーを、valueにカスタム問題フィールドマップを設定します）
+5. マップを`ShowConversation(configMap)`のキー`"cifs"`とともに`configMap`に渡します。
+
+```csharp
+    Dictionary<string, object> joiningDate = new Dictionary<string, object>();
+    joiningDate.Add("type", "date");
+    joiningDate.Add("value", DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+
+    Dictionary<string, string> stockLevel = new Dictionary<string, string>();
+    stockLevel.Add("type", "number");
+    stockLevel.Add("value", "1505");
+
+    Dictionary<string, string> employeeName = new Dictionary<string, string>();
+    employeeName.Add("type", "singleline");
+    employeeName.Add("value", "Bugs helpshift");
+
+    Dictionary<string, string> isPro = new Dictionary<string, string>();
+    isPro.Add("type", "checkbox");
+    isPro.Add("value", "true");
+
+    Dictionary<string, object> cifDictionary = new Dictionary<string, object>();
+    cifDictionary.Add("joining_date", joiningDate);
+    cifDictionary.Add("stock_level", stockLevel);
+    cifDictionary.Add("employee_name", employeeName);
+    cifDictionary.Add("is_pro", isPro);
+
+
+    Map<String, Object> config = new HashMap<>();
+    // other configs...
+    //..
+    config.put("cifs", cifMap);
+
+    Helpshift.showConversation(MainActivity.this, config);
+```
+
+<CustomIssueFieldsKeyDeprecationNotice />
+
+カスタム問題フィールドの`type`キーの有効な値は、以下の通りです。
+
+- "singleline"
+- "multiline"
+- "number"
+- "checkbox"
+- "dropdown"
+- "date"
+
+データ型と値の互換性については、以下の表をご覧ください。
+
+| データ型       | 値   | コメント                                                        |
+| ---------- | ------- | --------------------------------------------------------------- |
+| singleline | string  | 255文字の文字数制限があります                                          |
+| multiline  | string  | 100.000文字の文字数制限があります                                      |
+| number     | string  |                                                                 |
+| dropdown   | string  | ドロップダウンオプションは特定のカスタム問題フィールドのために存在する必要があります |
+| date       | number  | ミリ秒単位のエポック時間です。例: **DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()** |
+| checkbox   | string  | ブール値による文字列表現です。例: "true"または"false"。これは、ダッシュボードのチェックボックス型のカスタム問題フィールドに対応しています。 |
+
+<Admonition type="info" title="注意">
+
+カスタム問題フィールドのキーと互換性について
+
+- カスタム問題フィールドは、Helpshiftダッシュボード（`Settings`、`Custom Issue Fields`の順に移動します）で作成する必要があります。そうでない場合には、これらは無視されます。詳細については、[こちら](https://support.helpshift.com/kb/article/custom-issue-fields/)をご参照ください
+
+</Admonition>
+
+<Admonition type="info" title="注意">
+
+**Breadcrumbs**および**デバッグログ** APIでは、フォーマットされた文字列の受け渡しはサポートされていません。データの受け渡しについては、シンプルなString型のみが推奨されています。
+
+<p className="m-0">例:</p>
+
+- "{\"key\":\"value\"}" - **JSON文字列、これはサポートされていません**
+- "キー - 値" - **シンプルな文字列、これはサポートされています**
+
+</Admonition>
+
+## Breadcrumbs {#breadcrumbs}
+
+<Admonition type="info" title="注意">
+
+SDK X Unity v10.1.0以上に対応しています。
+
+</Admonition>
+
+Breadcrumbsは、イベントやエンドユーザーのアクションの追跡に使用されます。これは、お客様がHelpshiftのエージェントダッシュボードにあるすべての新しい会話と一緒に渡されるエンドユーザーのアクションに関するデバッグ情報を追加する際に役立ちます。 Breadcrumbsを残すには、`LeaveBreadcrumb` APIを使用できます。
+例:
+
+```csharp
+HelpshiftSdk _support = HelpshiftSdk.GetInstance();
+_support.LeaveBreadcrumb("Add breadcrumb");
+```
+
+Breadcrumbsは、設定されているBreadcrumbsの制限内で収集されます。制限は、Helpshiftのエージェントダッシュボードにある「アプリの設定」の_SDKの構成_セクションで設定します。Breadcrumbsは、FIFOキューに集められます。Breadcrumbsを消去する場合には、`ClearBreadcrumbs` APIを使用します。
+例:
+
+```csharp
+HelpshiftSdk _support = HelpshiftSdk.GetInstance();
+_support.ClearBreadcrumbs();
+```
+
+## デバッグログ {#debug-logs}
+
+<Admonition type="info" title="注意">
+
+SDK X Unity v10.1.0以上に対応しています。
+
+</Admonition>
+
+Helpshiftのエージェントダッシュボードにあるエンドユーザーによって提出された新しい会話ごとに、追加のデバッグログを渡したい場合があるかもしれません。その場合、さまざまな程度のロギングを提供する`HelpshiftLog`クラスとそのメソッドをインスタンス化して使用することができます。たとえば、デバッグレベルのログを添付する場合には、以下のコードを追加してください。
+例:
+
+```csharp
+using Helpshift;
+HelpshiftLog.d("debug-tag", "debug-message");
+```
+
+デバッグログは、設定されているデバッグログの制限内で収集されます。制限は、Helpshiftのエージェントダッシュボードにある「アプリの設定」の_SDKの構成_セクションで設定します。デバッグログは、FIFOキューに集められます。
+
+## ユーザー固有のメタデータのトラッキング
+
+### グローバルユーザーデータの更新
+
+このAPIは、新しい[ユーザーIDシステム](/sdkx-unity/identity-user-hub-ios)とともに使用することを意図しています。ログインユーザーに関連する[グローバル属性を更新する](/sdkx-unity/identity-user-hub-ios/#update-global-user-data)には、このAPIを使用してください。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> masterAttributes = new Dictionary<string, object>();
+    masterAttributes.Add("<master-attribute-key>", "<master-attribute-value>");
+
+    helpshiftSdk.UpdateMasterAttributes(masterAttributes);
+    }
+}
+```
+
+### アプリ固有のユーザーデータの更新
+
+このAPIは、新しい[ユーザーIDシステム](/sdkx-unity/identity-user-hub-ios)とともに使用することを意図しています。ログインユーザーに関連する[アプリ固有の属性を更新する](/sdkx-unity/identity-user-hub-ios/#update-app-specific-user-data)には、このAPIを使用してください。
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk helpshiftSdk;
+
+    void Awake(){
+    this.helpshiftSdk = HelpshiftSdk.GetInstance();
+
+    Dictionary<string, object> appAttributes = new Dictionary<string, object>();
+    appAttributes.Add("<app-attribute-key>", "<app-attribute-value>");
+
+    helpshiftSdk.UpdateAppAttributes(appAttributes);
+    }
+}
+```

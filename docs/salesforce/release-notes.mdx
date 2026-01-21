@@ -1,7 +1,7 @@
 ---
 sidebar_position: 20
-title: Release Notes
-description: Read the Release Notes in detail
+title: リリースノート
+description: 詳細については、リリースノートをご確認ください
 ---
 
 import {
@@ -19,197 +19,172 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Release Notes
-
-## 3.10
-
-_May 31, 2024_
-
-** Release Notes **
-
-- Salesforce integration will support LanguageAI, which allows agents to converse with multi-lingual end users.
-- Salesforce Messenger will support 47 languages out of the box, with English as default. Details of the supported languages can be found [here](https://developers.helpshift.com/android/i18n/).
-- Agents can now reply to customers in their own languages and translate customer replies to English.
-- Bug fixes
-
-
-## 3.9
-
-_March 12, 2024_
-
-** Release Notes **
-
-- Text direction in messages will be detected automatically, and agents can set the text direction manually.
-- Agents will now be able to assign issues (Cases) to bots enabling them to leverage the power of Helpshift bots in Salesforce messenger.
-- Smart intents will now be visible in Salesforce messenger.
-- Bug fixes
-
+# リリースノート
 
 ## 3.8
 
-_September 25, 2023_
+_2022 年 9 月 25 日_
 
-** Release Notes **
+**リリースノート**
 
-- Case comments for closed cases can now be archived. Admins will see an option to archive data in : Helpshift Admin (LWC) -> Settings -> Archive data.
-  - This will help in reducing storage for Helpshift Cases in Salesforce.
-- Added fixes for improving package security.
-- Bug fixes
-
+- 終了したケースのコメントをアーカイブできるようになりました。管理者は、以下の場所でデータをアーカイブするオプションを確認することができます。「Helpshift の管理者（LWC）」->「設定」->「データのアーカイブ」。
+- これは、Salesforce の Helpshift のケースのストレージの削減に役立ちます。
+- パッケージのセキュリティ向上となる修正を追加しました。
+- バグを修正しました。
 
 ## 3.3
 
-_November 15, 2022_
+_2022 年 11 月 15 日_
 
-** Release Notes **
+**リリースノート**
 
-- Fixed an issue were Case tab highlighting was not working for Salesforce Console apps.
-- Helpshift domain connected with Salesforce organisation will be visible on Health check page.
-- An email will be sent to the logged in user after Assign Permissions job is completed.
-- New, faster Helpshift dashboard will now be available as "New Helpshift Dashboard" tab.
-- Bug fixes
+- Salesforce コンソールアプリで「ケース」タブのハイライトが機能しない問題を修正しました。
+- Salesforce 組織に接続されている Helpshift のドメインが、「ヘルスチェック」ページに表示されるようになりました。
+- アクセス許可の割り当てジョブが完了すると、ログインしているユーザーにメールが送信されるようになりました。
+- より高速な新しい Helpshift ダッシュボードが「新しい Helpshift ダッシュボード」タブとして利用できるようになりました。
+- バグを修正しました。
 
 ## 3.1
 
-_August 17, 2022_
+_2022 年 8 月 17 日_
 
-** Release Notes **
+**リリースノート**
 
-- Fixed an issue where messages were out of order. The bug was reproducible when a Case created before 3.0 upgrade was opened in new messenger.
-- Fixed an issue due to which a non-HS user was not able to respond on Cases.
-- Messenger is now compatible to be used in Salesforce Service Console.
-- Fixed an issue where attachment preview was not visible right after sending it.
+- メッセージが順番通りに表示されない問題を修正しました。このバグは、3.0 へのアップグレードの前に作成されたケースを新しいメッセンジャーで開いた場合に再現されました。
+- Helpshift ユーザー以外がケースに応答できない問題を修正しました。
+- Salesforce サービスコンソールでメッセンジャーを使用できるようになりました。
+- 送信直後に添付ファイルのプレビューが表示されない問題を修正しました。
 
-** Upgrade guide **
+**アップグレードガイド**
 
-To upgrade to 3.1 please refer to the guide [here](/salesforce/sf-upgrade-to-30/)
+3.1 へのアップグレードについては、[こちら](/salesforce/sf-upgrade-to-30/)のガイドを参照してください。
 
 ## 3.0
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-3.0 package Update
+3.0 パッケージのアップデート
 
-We found few issues in package release 3.0 which are fixed in 3.1 release.
+3.0 パッケージのリリースではいくつかの問題が見つかりましたが、3.1 リリースでは修正されています。
 
-**Action needed:**
+**以下のアクションが必要です。**
 
-- If you are planning to install or are in the process of installing package 3.0, please install 3.1 instead.
-- If you have already installed/upgraded to package 3.0 , please upgrade to 3.1 package.
+- 3.0 パッケージをインストールする予定の方、またはインストール中の方は、代わりに 3.1 をインストールしてください。
+- すでに 3.0 パッケージをインストール/アップグレードしている場合には、3.1 パッケージへとアップグレードしてください。
 
 </Admonition>
 
-_July 8, 2022_
+_2022 年 7 月 8 日_
 
-** Release Notes **
+**リリースノート**
 
-- Added ** New Messenger ** and ** New Admin Tab ** optimized using Lightning Web Component.
-  _ Optimized messenger for faster loading and syncing of messages.
-  _ Better UI/UX resembling Helpshift's agent experience. \* Non-disruptive messages for providing feedback on user actions.
-- Enhanced logging to enable troubleshooting.
-  _ Administrator can configure logs for a specific user or set of users.
-  _ INFO log level added along with ERROR log level.
-- Bug fixes
+- Lightning Web コンポーネント使用して最適化された**新しいメッセンジャー**と**新しい管理タブ**を追加しました。
+  _ メッセンジャーを最適化し、メッセージの読み込みと同期を高速化しました。
+  _ Helpshift のエージェントエクスペリエンスに似た、より良い UI/UX を導入しました。\*ユーザーのアクションに対するフィードバックを提供するための非破壊的メッセージを導入しました。
+- ロギングを強化し、トラブルシューティングに対応できるようにしました。
+  _ 管理者は、特定のユーザーまたは一連のユーザーのログを構成することができます。
+  _ ERROR ログレベルに加えて、INFO ログレベルが追加されました。
+- バグを修正しました。
 
-** Upgrade guide **
+**アップグレードガイド**
 
-To upgrade to 3.0 please refer to the guide [here](https://support.helpshift.com/kb/article/guide-salesforce-3-0-package-upgrade/)
+3.0 へのアップグレードについては、[こちら](https://support.helpshift.com/kb/article/guide-salesforce-3-0-package-upgrade/)のガイドを参照してください。
 
 ## 2.22.0
 
-_May 4, 2022_
+_2022 年 5 月 4 日_
 
-** Release Notes **
+**リリースノート**
 
-- Message and Attachment redactions will be supported for closed cases too.
-- Attachment in bots will be supported from this version onwards.
-- Bug fixes.
+- メッセージと添付ファイルの再編集がクローズされたケースでもサポートされるようになりました。
+- このバージョンからボットで添付ファイルがサポートされるようになりました。
+- バグを修正しました。
 
 ## 2.21.0
 
-_March 7, 2022_
+_2022 年 3 月 7 日_
 
-** Release Notes **
+**リリースノート**
 
-- Message and Attachment redactions will be supported from this version onwards.
-  _ Agents will see an option to select messages and/or attachments in an open conversation. They can redact those messages and/or attachments from Salesforce and Helpshift.
-  _ This redaction is currently not supported for closed cases on Salesforce.
-- Introduced message "read" state indicators.
-  _ When an Agent message is delivered, it will be marked as SENT (single tick).
-  _ When the end user opens or reads the message, it will be marked as READ (double tick).
+- このバージョンから、メッセージと添付ファイルの再編集がサポートされるようになりました。
+- エージェントに対して、オープンな会話でメッセージや添付ファイルを選択するオプションが表示されるようになりました。エージェントは、Salesforce や Helpshift からこれらのメッセージおよび添付ファイルを編集できるようになります。
+- この再編集は、現時点では Salesforce のクローズされたケースではサポートされていません。
+- メッセージの「既読」状態インジケーターを導入しました。
+- エージェントのメッセージが配信されると、「送信済」（チェックマーク 1 個）として表示されます。
+- エンドユーザーがメッセージを開くか、または読むと、「既読」（チェックマーク 2 個）として表示されます。
 
 ## 2.20.0
 
-_December 17, 2021_
+_2021 年 12 月 17 日_
 
-** Release Notes **
+**リリースノート**
 
-- Fixed the problem of out-of-order messages. Case comments in the Messenger will now always be in order.
+- メッセージが順番通りに表示されない問題を修正しました。メッセンジャー内のケースのコメントが、常に順番通りに表示されるようになりました。
 
 ## 2.19.0
 
-_November 18, 2021_
+_2021 年 11 月 18 日_
 
-** Release Notes **
+**リリースノート**
 
-- Feedback bots will be supported from this version onwards. Admins can create feedback bots on the Helpshift dashboard and assign them on issue resolutions. \* Please ensure that the Issue fields "csat-rating", "csat-comment" and "csat-label" are mapped correctly on the admin page to collect the feedback separately.
+- このバージョンからフィードバックボットがサポートされるようになりました。管理者は Helpshift ダッシュボードでフィードバックボットを作成し、問題の解決に割り当てることができるようになります。\*フィードバックを個別に収集するには、管理ページで問題フィールドの"csat-rating"、"csat-comment"、"csat-label"が正しくマッピングされていることをご確認ください。
 
 ## 2.18.0
 
-_October 8, 2021_
+_2021 年 10 月 8 日_
 
-** Release Notes **
+**リリースノート**
 
-- Introduced a new action for automatic permissions assignment. Admins can auto-assign all permissions required for the Integration to work correctly (CRUD and FLS). They can do so via Settings -> Permissions -> "Assign Permission".
-- Status check page will show field mappings between Helpshift and Salesforce. Admins can now verify their settings from here.
+- アクセス許可を自動で割り当てるための新しいアクションを導入しました。管理者は、この統合が正しく動作するために必要となるすべてのアクセス許可を自動で割り当てることができます（CRUD および FLS）。「設定」->「アクセス許可」->「アクセス許可の割り当て」の順に移動して適用することができます。
+- 「状態の確認」ページで、Helpshift と Salesforce の間のフィールドマッピングが表示されるようになりました。管理者は、ここから設定を確認できるようになります。
 
 ## 2.17.0
 
-** Release Notes **
+**リリースノート**
 
-- Fixed an issue related to knowledge article sync from Salesforce to Helpshift when only one language knowledge article was enabled in Salesforce.
-- Removed namespace dependencies in the package.
-- Added new security fixes.
+- Salesforce でナレッジ記事が 1 つの言語でのみ有効化されている場合に発生する、Salesforce から Helpshift へのナレッジ記事の同期に関する問題を修正しました。
+- パッケージ内の名前空間の依存関係を削除しました。
+- 新しいセキュリティ修正を追加しました。
 
 ## 2.16.0
 
-** Release Notes **
+**リリースノート**
 
-- Fixed an issue with case bidirectional sync.
-- Added new security fixes.
+- ケースの双方向同期に関する問題を修正しました。
+- 新しいセキュリティ修正を追加しました。
 
 ## 2.15.0
 
-** Release Notes **
+**リリースノート**
 
-- Added the following functionalities:
-  _ Logger service
-  _ Health check page
-- Revamped the "add user" page.
-- Added support for agents's nickname in messenger.
-- Added new security fixes.
+- 以下の機能を追加しました。
+  _ ロガーサービス。
+  _ 「ヘルスチェック」ページ。
+- 「ユーザーの追加」ページを刷新しました。
+- メッセンジャーにエージェントのニックネームのサポートを追加しました。
+- 新しいセキュリティ修正を追加しました。
 
 ## 2.14.1
 
-** Release Notes **
+**リリースノート**
 
-- Fixed a typo in attachment error text.
+- 添付ファイルのエラーテキストの誤字を修正しました。
 
 ## 2.14.0
 
-_April 29, 2021_
+_2021 年 4 月 29 日_
 
-** Release Notes **
+**リリースノート**
 
-- Improved adding agents implementation, now supports adding multiple agents in one API call. Adding agents from the Salesforce UI will not show an "undefined" error. Also, new informational alerts are shown as below:
-  _ success: number of successfully added agents.
-  _ failure: number of failed agents. \* partial failure: number of successfully added agents and number of failed agents.
+- エージェントの追加に関する実装を改善し、1 回の API 呼び出しで複数のエージェントを追加できるようになりました。Salesforce UI からエージェントを追加しても、"未定義"エラーが表示されなくなります。また、新しい情報アラートが以下のように表示されます。
+  _ 成功: 正常に追加されたエージェントの数。
+  _ 失敗: 追加に失敗したエージェントの数。\*部分的失敗: 正常に追加されたエージェントの数と、追加に失敗したエージェントの数。
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Adding agents can fail due to multiple reasons. Please reach out to Helpshift in case of failure.
+エージェントの追加は、複数の理由により失敗する可能性があります。失敗した場合には、Helpshift までお問い合わせください。
 
 </Admonition>
 
-- Added a warning while sending a message for advisors who don't have a Helpshift profile identifier in Salesforce. This warning message can be configured from "Custom Meta -> Custom label" settings.
-- Added an error when an attachment is added with more than 70 characters in the file name.
+- Salesforce で Helpshift のプロフィール識別子を持たないアドバイザーにメッセージを送信する際の警告を追加しました。この警告メッセージは、「カスタムメタ」->「カスタムラベル」の順に移動した場所にある設定から構成することができます。
+- ファイル名が 70 文字を超えている添付ファイルが追加された場合のエラーを追加しました。
