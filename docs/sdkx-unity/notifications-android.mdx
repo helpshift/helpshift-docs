@@ -119,7 +119,20 @@ public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedE
 
 If your application is not running and it receives a push notification then it will start the application in background (by invoking the push notification receiver registered in java). In this case, UnityEngine might not be initialized and the C# api `HelpshiftSdk.HandlePushNotification` might not be useful.
 
-If you are unable to delegate the push notification payload from the Java receiver class to C# api's then, for such cases, you can use the native Java api `HelpshiftUnity.handlePush(Context context, Intent intent)` to handle push notifications from Helpshift.
+If you are unable to delegate the push notification payload from the Java receiver class to C# api's then, for such cases, you can use the native Java api `HelpshiftUnity.handlePush(Context context, Map<String, String> data)` to handle push notifications from Helpshift.
+
+You can use below sample project for integration of push notification in java layer. This project routes Helpshift push notifications directly to the native Helpshift SDK for reliable background and killed-state handling, while forwarding all non-Helpshift notifications to Unity’s default FCM service to avoid conflicts with other SDKs.
+
+#### Steps to support push notification in background or killed state
+
+  1. In your Unity project, navigate to `Assets/Plugins/Android`
+  2. From the unzipped Helpshift Unity SDK, copy [`HelpshiftBackgroundFCM.androidlib`](/sdkx-unity/getting-started-android#getting-sdk) folder to above path.
+
+<Admonition type="info" title="Note">
+
+If your application is intergrating multiple sdk then you need to handle its implementation in Java layer.
+
+</Admonition>
 
 In Java implementation of the receiver for push notifications, you can use this api as in the following example.
 
@@ -145,6 +158,7 @@ public class HelpshiftCustomFCMService extends ListenerService {
     }
 }
 ```
+
 
 Refer the sample project for [FCM Unity plugin](https://firebase.google.com/docs/cloud-messaging/unity/client) integration with Helpshift SDK [here](https://github.com/helpshift/helpshift-unity-examples/tree/master/Helpshift-Unity-SDKX-Apps).
 
