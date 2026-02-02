@@ -32,7 +32,7 @@ Proactive Engagement lets you reach out to your players by sending Push/In app N
 <Admonition type="info" title="Note">
 
 - This feature is available from SDK X 10.5.0 onwards.
-- All the public APIs in the SDK should be called after initializing the SDK via [Helpshift.install() API](/sdkx-unity/getting-started-android#initializing)
+- All the public APIs in the SDK should be called after initializing the SDK via [HelpshiftSdk.GetInstance().Install() API](/sdkx-unity/getting-started-android#initializing)
 - Before starting with Proactive Engagement, please ensure that you have integrated push notifications with Helpshift SDK, please refer [Notifications](/sdkx-unity/notifications-android#push-via-helpshift) section for integration guide.
 - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for the [POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission) permission yourself.
 
@@ -116,11 +116,11 @@ To publish a notification follow these steps:
 
 ## Setting defaults for notification properties
 
-- If you need to set some defaults to be used in proactive notifications then you can use this API. We recommend to call this API right after `Helpshift.Install()` call.
+- If you need to set some defaults to be used in proactive notifications then you can use this API. We recommend to call this API right after `HelpshiftSdk.GetInstance().Install()` call.
 - Following configurations are available via this api
   - `notificationIconId` : Notification icon file name without extension, for small icon to be used for proactive notification. If not configured then app icon will be used by default.
   - `largeNotificationIconId` : Large notification icon file name without extension, for large notification image. This will be used when an image is not configured in the notification on Dashboard.
-  - `soundId` : Sound resource name wothout extension, for the sound to be used for proactive notification. If not provided then system default sound will be used. Note that this sound will be associated with the default notification channel that SDK creates for Proactive Engagement notifications. Refer below section.
+  - `soundId` : Sound resource name without extension, for the sound to be used for proactive notification. If not provided then system default sound will be used. Note that this sound will be associated with the default notification channel that SDK creates for Proactive Engagement notifications. Refer below section.
 
 ### Custom notification channels for Proactive Engagement notifications
 
@@ -137,7 +137,7 @@ To publish a notification follow these steps:
 
 |               |                                        |
 | ------------- | -------------------------------------- |
-| API:       | <code>Helpshift.SetProactivePushNotificationDefaults()</code>   |
+| API:       | <code>HelpshiftSdk.SetProactivePushNotificationDefaults()</code>   |
 | Values:       | <code>Dictionary<string, object>();</code> |
 | Min SDK       | v10.5.0                                |
 | Should be called after | <code>Install()</code>                 |
@@ -155,6 +155,7 @@ public class MyGameControl : MonoBehaviour
     private HelpshiftSdk help;
     ...
     void Awake() {
+        help = HelpshiftSdk.GetInstance();
         help.Install(..);
         ..
         ..
@@ -188,7 +189,7 @@ For example, the user is on app startup screen, the app is still loading, user i
 
 |               |                                        |
 | ------------- | -------------------------------------- |
-| API:       | <code>Helpshift.PauseDisplayOfInAppNotification()</code>   |
+| API:       | <code>HelpshiftSdk.PauseDisplayOfInAppNotification()</code>   |
 | Values:       | <code>Boolean</code> |
 | Min SDK       | v10.5.0                                |
 | Should be called after | <code>Install()</code>                 |
@@ -196,19 +197,29 @@ For example, the user is on app startup screen, the app is still loading, user i
 </div>
 
 ```csharp
-  using Helpshift
+using Helpshift;
 
-  void Awake(){
-      // Install call here
-  }
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
 
-  void PauseDisplayOfInAppNotification()
-  {
-      //... Assuming Helpshift.install() is already called.
+    void Awake()
+    {
+        // Get Helpshift instance
+        help = HelpshiftSdk.GetInstance();
+        ..
+        //Install call with config
+        help.Install(..);
+    }
 
-      // based on state of your app, decide to pause/unpause proactive engagement notifications.
-      help.PauseDisplayOfInAppNotification(true/false);
-  }
+
+    // based on state of your app, decide to pause/unpause proactive engagement notifications.
+    public void PauseDisplayOfInAppNotification(Boolean shouldPause)
+    {
+        help.PauseDisplayOfInAppNotification(shouldPause);
+    }
+}
+
 ```
 
 
@@ -218,7 +229,7 @@ For example, the user is on app startup screen, the app is still loading, user i
 - This configuration is used when no configuration is provided from the Dashboard when configuring the notification. This configuration data is exactly same as we would expect in other APIs like ShowConversation() or ShowFAQs().
 - We will also use this configuration for the next issue filed in the same session.
 For example, if the user starts a conversation via proactive engagement notification and the conversation gets resolved in the same session and the user starts another conversation then this configuration will be used for the new conversation.
-- Note: You need to call this API after `Helpshift.install() API and before Helpshift.HandlePushNotification()`
+- Note: You need to call this API after `HelpshiftSdk.Install() API and before HelpshiftSdk.HandlePushNotification()`
 - Implement public interface `IHelpshiftProactiveAPIConfigCollector` in one of your classes and call `HelpshiftSdk.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector())` method to initialise the config collector delegate after the initializing the Helpshift SDK.
 - You will have to implement the method `getLocalApiConfig()` where you can add any user specific config in the same format as you add in other public APIs like `ShowConversation()` or `ShowFAQs()`.
 - `IHelpshiftProactiveAPIConfigCollector.getLocalApiConfig()` is invoked by the SDK before handling the notification click action and evaluating the configuration to be used for handling the notification.
@@ -226,37 +237,39 @@ For example, if the user starts a conversation via proactive engagement notifica
 
 
 ```csharp
- public class MyGameControl : MonoBehaviour
-  {
-      private HelpshiftSdk help;
+using Helpshift;
 
-      void Awake()
-      {
-          help = HelpshiftSdk.GetInstance();
-          help.Install( .. );
-          ..
-          ..
-          help.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector());
-      }
-  }
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+
+    void Awake()
+    {
+        help = HelpshiftSdk.GetInstance();
+        help.Install( .. );
+        ..
+        ..
+        help.SetHelpshiftProactiveConfigCollector(new ProactiveConfigCollector());
+    }
+}
 ```
 
 ```csharp
 // initialise proactiveConfig collector
 
-    public class ProactiveConfigCollector : IHelpshiftProactiveAPIConfigCollector
+public class ProactiveConfigCollector : IHelpshiftProactiveAPIConfigCollector
+{
+    public Dictionary<string, object> getLocalApiConfig()
     {
-        public Dictionary<string, object> getLocalApiConfig()
-        {
-            Dictionary<string, object> proactiveConfig = new Dictionary<string, object>();
-            proactiveConfig.Add("initialUserMessage", "Hi there!");
-            proactiveConfig.Add("fullPrivacy", true);
-            proactiveConfig.Add("tags", new string[] { "vip", "payment", "blocked", "renewal" });
-            ..
-            ..
-            return proactiveConfig;
-        }
+        Dictionary<string, object> proactiveConfig = new Dictionary<string, object>();
+        proactiveConfig.Add("initialUserMessage", "Hi there!");
+        proactiveConfig.Add("fullPrivacy", true);
+        proactiveConfig.Add("tags", new string[] { "vip", "payment", "blocked", "renewal" });
+        ..
+        ..
+        return proactiveConfig;
     }
+}
 
 ```
 
