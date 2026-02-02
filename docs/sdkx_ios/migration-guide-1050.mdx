@@ -1,0 +1,233 @@
+---
+sidebar_position: 145
+title: Migration Guide - SDK X 10.5.0
+description: "This migration guide will walk you through the steps you need to take in order to migrate from SDK X 10.4.1 and below to SDK X 10.5.0 and above"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Intro,
+} from "@site/src/components/forDocs";
+
+<Intro>
+
+This migration guide will walk you through the steps you need to take in order to migrate from SDK X 10.4.x and below to SDK X 10.5.0 and above.
+
+</Intro>
+
+# Intro
+
+With SDK X 10.5.0, we have made changes to some public APIs. If you are upgrading from SDK X 10.4.x or below, this page documents the changes you will need to make in your app after upgrading to SDK X 10.5.0. If you are integrating SDK X 10.5.0 or above from scratch, please refer [Getting Started](/sdkx_ios/getting-started) page instead.
+
+## Deprecated APIs {#deprecated-apis}
+
+
+The existing push notification handling API - `handleNotification:withUserInfoDictionary:isAppLaunch:` - has been marked as deprecated. You should replace it's usage with one of the new APIs - based on the calling context.
+
+Replace usage of deprecated API in `userNotificationCenter:willPresent:withCompletionHandler:` with [`handleForegroundNotification:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-foreground) -
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+// DEPRECATED
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    NSString *origin = userInfo[@"origin"];
+
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:userInfo
+                                                isAppLaunch:NO];
+        completionHandler(UNNotificationPresentationOptionNone);
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+    }
+}
+
+// REPLACEMENT
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    NSString *origin = userInfo[@"origin"];
+
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleForegroundNotification:userInfo
+                          withCompletionHandler:completionHandler];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+// DEPRECATED
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+) {
+    if notification.request.content.userInfo["origin"] as? String == "helpshift" {
+        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false)
+        completionHandler([])
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+    }
+}
+
+// REPLACEMENT
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+) {
+   if notification.request.content.userInfo["origin"] as? String == "helpshift" {
+       Helpshift.handleForegroundNotification(userInfo, withCompletionHandler: completionHandler)
+   } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+   }
+}
+```
+
+</TabItem>
+</Tabs>
+
+Replace usage of deprecated API in `userNotificationCenter:didReceive:withCompletionHandler:` with [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-background) -
+
+<Admonition type="warning" title="Threading requirement">
+
+The completion handler provided by
+`userNotificationCenter:didReceive:withCompletionHandler:`
+**must be invoked on the main thread**.
+
+Invoking it from a background thread can result in
+`NSInternalInconsistencyException` crashes, especially when the app is
+launched from a background or killed state.
+
+</Admonition>
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+// DEPRECATED
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler
+{
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    NSString *origin = userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:userInfo
+                                                isAppLaunch:YES];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in background or killed
+    }
+}
+
+// REPLACEMENT
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler
+{
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    NSString *origin = userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleBackgroundNotificationClick:userInfo
+                               withCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler();
+            });
+        }];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in background or killed
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+// DEPRECATED
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+) {
+    if response.notification.request.content.userInfo["origin"] as? String == "helpshift" {
+        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo, isAppLaunch: true)
+    } else {
+        // Handling for non-helpshift push notifications received when app is in background or killed
+    }
+}
+
+// REPLACEMENT
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+) {
+    if response.notification.request.content.userInfo["origin"] as? String == "helpshift" {
+        Helpshift.handleBackgroundNotificationClick(userInfo) {
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
+    } else {
+      // Handling for non-helpshift push notifications received when app is in background or killed
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Removed APIs {#removed-apis}
+
+Following APIs that were deprecated in older versions of the SDK have now been removed altogether. The replacement APIs are mentioned alongside. If you are using any of the removed APIs in your app, you will get compilation errors. So it is essential to migrate to the replacement APIs in this case.
+
+| Removed API                                                            | Replacement API                                                                                         |
+|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `clearAnonymousUserOnLogin`                                            | [`clearAnonymousUserOnLogin:`](/sdkx_ios/users/#anonymous-users)  - Pass boolean true to clear/false to not clear                           |
+| `showConversationWith:config:`                                         | [`showConversationWithConfig:`](/sdkx_ios/support-tools/#conversation-view)  - No need to pass in view controller                                     |
+| `showFAQsWith:config:`                                                 | [`showFAQsWithConfig:`](/sdkx_ios/support-tools/#faqs-view)  - No need to pass in view controller                                             |
+| `showFAQSection:with:config:`                                          | [`showFAQSection:withConfig:`](/sdkx_ios/support-tools/#faq-section-view)  - No need to pass in view controller                                      |
+| `showSingleFAQ:with:config:`                                           | [`showSingleFAQ:withConfig:`](/sdkx_ios/support-tools/#faq-view)  - No need to pass in view controller                                       |
+| `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | [`handleForegroundNotification:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-foreground) - When notification is received in foreground     |
+| `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-background) - When notification is clicked in background |
+
+## New APIs {#new-apis}
+
+SDK X 10.5.0 introduces following new APIs for handling push notifications. For full details on how to configure push notifications in your app, please refer the [Notifications](/sdkx_ios/notifications) page.
+
+1. **API for handling notifications received when app is in foreground**
+
+**API signature** - `handleForegroundNotification:withCompletionHandler:`
+
+**Purpose** - Handle notification received when app is in foreground. Meant to be called from `userNotificationCenter:willPresent:` system method. Check [this section](/sdkx_ios/notifications/#push-delegates-foreground) for usage.
+
+2. **API for handling notifications received when is in background/terminated**
+
+**API signature** - `handleBackgroundNotificationClick:withCompletionHandler:`
+
+**Purpose** - Handle notification clicked when app is in background. Meant to be called from `userNotificationCenter:didReceive:` system method. Check [this section](/sdkx_ios/notifications/#push-delegates-background) for usage.
+
+3. **API for handling notifications in NotificationService extension**
+
+**API signature** - `handleBackgroundNotification:withContentHandler:`
+
+**Purpose** - Handle notification received by app's NotificationService extension. Meant to be called from `didReceive:withContentHandler:` notification service method. Check [this section](/sdkx_ios/notifications/#notification-service) for usage.
+
+
+
