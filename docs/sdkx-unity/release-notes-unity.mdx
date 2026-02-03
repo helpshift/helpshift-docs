@@ -23,6 +23,32 @@ import {
 
 <LatestSdkVersion>
 
+## v10.5.0
+
+Feb 6th, 2026
+
+
+</LatestSdkVersion>
+
+** Release Notes: **
+
+- Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
+
+
+**Android**
+
+- Added support for Android 16.
+- SDK now compiles with API level 36, i.e compileSdk 36.
+- Deprecated old [Outbound Support](/sdkx-unity/outbound-support-android/) with introduction of **Proactive Engagement**.
+  - For integration details please refer [Proactive Engagement](/sdkx-unity/proactive-engagement-android)
+  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for the [POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission) permission yourself.
+- Added new API to pause in-app notifications. This will pause/unpause in-app notifications for Proactive Engagement notifications. Please refer [PauseDisplayOfInAppNotification](/sdkx-unity/proactive-engagement-android/#pausing-inapp-notifications) here for details.
+- Added support to provide [unread message count delegate](/sdkx-unity/delegates-android/#unreadMessageCount) callback when a message is received even via push notifications or internal polling. This would help in better tracking of unread messages by the client application.
+  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount](/sdkx_android/notifications/#showing-notification-count) API.
+- End of technical support for bugs reported on Android 7 and below, although SDK will be compatible and no functionality is affected.
+- We have started adopting some Java 8 features in the SDK. If you run into any Java 8 related build or runtime failures then please refer to [this guide from Android](https://developer.android.com/studio/write/java8-support)
+  - We currently use Lambda Expressions only.
+
 ## v10.4.0
 
 August 15th, 2025
@@ -31,7 +57,6 @@ August 15th, 2025
 
 Feb 11th, 2025
 
-</LatestSdkVersion>
 
 ** Release Notes: **
 
