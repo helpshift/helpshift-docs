@@ -35,6 +35,23 @@ Feb 6th, 2026
 - Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
 
 
+**iOS**
+
+- Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
+  - For integration details, please refer [Proactive Engagement](/sdkx-unity/proactive-engagement-ios)
+  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for these permissions for your application. Please refer [Notifications](/sdkx-unity/notifications-ios) page.
+- Deprecated old [Outbound Support](/sdkx-unity/outbound-support-ios) with introduction of Proactive Engagement.
+- Added support for iOS 26 and iPadOS 26.
+- Stopped technical support for iOS 14 and below. SDK will remain compile-able on these versions, but functionality might be broken.
+- Updated to Xcode 16 for SDK compilation.
+- Existing [pauseDisplayOfInAppNotification](/sdkx-unity/notifications-ios/#pause-in-app) API now supports pausing of Proactive Engagement in-app notifications.
+- Added support to provide [unread message count delegate](/sdkx-unity/delegates-ios/#unreadMessageCount) callback when a message is received even via internal polling. This helps in better tracking of unread messages by the client application.
+  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount:](/sdkx-unity/notifications-ios/#notification-badges)
+- Removed close button from In-App notification for issue messages and they can now be swiped to dismiss.
+- Introduced new APIs to handle push notifications better for the SDK. Please refer [Notifications](/sdkx-unity/notifications-ios) page.
+- Some SDK APIs have been deprecated. For a full list of deprecated APIs and their replacements, refer [SDK X 10.5.0 Migration guide](/sdkx-unity/migration-guide-1050).
+- Some deprecated SDK APIs have been removed. For a full list of removed APIs and their replacements, refer [SDK X 10.5.0 Migration guide](/sdkx-unity/migration-guide-1050).
+
 **Android**
 
 - Added support for Android 16.
