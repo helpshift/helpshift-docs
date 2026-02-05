@@ -293,6 +293,19 @@ public class HSEventsListener : IHelpshiftEventsListener
 
 The notification count is fetched via this API from the SDK cache and Helpshift's servers (indicated by the value of `fromCache` in the example above). However, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
 
+**Showing notification counts at appropriate places would help
+you draw in your users so that you can engage them more in conversations
+and hence solve their problems better**. To display the notification
+count of unread messages stored locally to your users, you can call `RequestUnreadMessageCount`:
+
+```csharp
+// Requesting unread count
+private void RequestUnreadCount()
+{
+    Helpshift.RequestUnreadMessageCount(true);
+}
+```
+
 ### Reset badge count {#reset-badge-count}
 If you need to handle badge reset in the application icon, you can do
 something like below in the `applicationDidBecomeActive:` delegate
