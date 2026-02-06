@@ -41,6 +41,17 @@ An easy way to setup push notifications is to uncomment relevant code in the `Hs
 
 </Admonition>
 
+<Admonition type="info" title="Note">
+
+`C#` handling of notifications is **not supported** in Unity Plugin version 10.5.0.  
+The `HandlePushNotification(pushNotificationData)` API is deprecated for iOS.  
+
+Please use the following Objective-C APIs instead:  
+- `[Helpshift handleForegroundNotification:withCompletionHandler:]`  
+- `[Helpshift handleBackgroundNotificationClick:withCompletionHandler:]`
+
+</Admonition>
+
 Notifications can be sent to your users when:
 
 - You reply to an issue submitted by them
