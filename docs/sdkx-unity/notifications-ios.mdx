@@ -180,6 +180,101 @@ Helpshift uses this extension to download images to display in the push notifica
 }
 ```
 
+<Admonition type="info" title="Notification Service Extension integration via Helpshift post process script (Optional)">
+
+If push notifications with rich content are not working on iOS, it is likely that the **Notification Service Extension (NSE)** target was not added to the Xcode project.
+If your app **already has a Notification Service Extension**, you can reuse it for handling Helpshift notifications.
+
+If your app **does not have an NSE**, you can optionally enable one using the Unity iOS post-process script provided by Helpshift.
+</Admonition>
+
+<Admonition type="note" title="When is this required?">
+
+This setup is required **only** if you are using **Proactive Engagement** and do **not** already have a Notification Service Extension in your app.
+
+</Admonition>
+
+#### Enable NSE via Unity HelpshiftPostProcess.cs Script
+
+This approach is useful if you **do not already have an NSE** in your iOS app and want Unity to automatically configure it during the Xcode project generation.
+
+1. Navigate to `Assets/Helpshift/Editor/HelpshiftPostProcess.cs` file inside the provided zip file.
+2. Locate the block marked with `--REMOVE_LINE--` under the **“Add Notification Service Extension”** section.
+3. **Uncomment the entire block** to allow the post-process script to:
+   - Create the Notification Service Extension target
+   - Copy NSE source files into the Xcode project
+   - Apply required build settings
+   - Link required frameworks
+
+```sh
+/* --REMOVE_LINE--
+// ------------------ Add Notification Service Extension ------------------
+string nseTargetName = "SdkXUnityProjectNSExtension";
+
+string projectRelativeNseFolder = "Libraries/Helpshift/Example/SdkXUnityProjectNSExtension";
+string sourceFolder = Path.Combine(Application.dataPath, "Helpshift/Example/SdkXUnityProjectNSExtension");
+string diskNseFolder = Path.Combine(path, projectRelativeNseFolder);
+
+// Ensure folder exists
+if (Directory.Exists(diskNseFolder))
+Directory.Delete(diskNseFolder, true);
+Directory.CreateDirectory(diskNseFolder);
+
+// Copy files from Unity project → Xcode project
+string plistDisk = Path.Combine(diskNseFolder, "Info.plist");
+string headerDisk = Path.Combine(diskNseFolder, "SdkXUnityNotificationService.h");
+string implDisk   = Path.Combine(diskNseFolder, "SdkXUnityNotificationService.m");
+
+File.Copy(Path.Combine(sourceFolder, "Info.plist"), plistDisk, true);
+File.Copy(Path.Combine(sourceFolder, "SdkXUnityNotificationService.h"), headerDisk, true);
+File.Copy(Path.Combine(sourceFolder, "SdkXUnityNotificationService.m"), implDisk, true);
+
+// Xcode project paths
+string plistProj = projectRelativeNseFolder + "/Info.plist";
+string headerProj = projectRelativeNseFolder + "/SdkXUnityNotificationService.h";
+string implProj = projectRelativeNseFolder + "/SdkXUnityNotificationService.m";
+
+// Check if NSE target already exists
+string nseTargetGuid = project.TargetGuidByName(nseTargetName);
+if (string.IsNullOrEmpty(nseTargetGuid))
+    {
+        nseTargetGuid = PBXProjectExtensions.AddAppExtension(
+        project,
+        unityAppTargetGuid,
+        nseTargetName,
+        PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS) + "." + nseTargetName,
+        plistProj);
+    }
+
+// Disable Bitcode for NSE
+project.SetBuildProperty(nseTargetGuid, "ENABLE_BITCODE", "NO");
+project.SetBuildProperty(nseTargetGuid, "CURRENT_PROJECT_VERSION", "1");
+project.SetBuildProperty(nseTargetGuid, "ALWAYS_SEARCH_USER_PATHS", "NO");
+project.SetBuildProperty(nseTargetGuid, "STRIP_INSTALLED_PRODUCT", "NO");
+project.SetBuildProperty(nseTargetGuid, "STRIP_STYLE", "none");
+project.SetBuildProperty(nseTargetGuid, "IPHONEOS_DEPLOYMENT_TARGET", "15.0");
+
+
+// Add header and .m file to target
+string headerGuid = project.AddFile(headerDisk, headerProj, PBXSourceTree.Source);
+string implGuid   = project.AddFile(implDisk, implProj, PBXSourceTree.Source);
+project.AddFileToBuild(nseTargetGuid, headerGuid);
+project.AddFileToBuild(nseTargetGuid, implGuid);
+
+// Add HelpshiftX.framework to NSE target
+project.AddFileToBuild(nseTargetGuid, frameworkGuid);
+
+// Add framework search path for NSE
+project.AddBuildProperty(nseTargetGuid,
+                        "FRAMEWORK_SEARCH_PATHS",
+                        Path.Combine(Application.dataPath,
+                        "Helpshift/Plugins/iOS"));
+
+// Add UserNotifications.framework
+project.AddFrameworkToProject(nseTargetGuid, "UserNotifications.framework", false);
+--REMOVE_LINE-- */
+```
+
 ## In-app notifications {#in-app-notifications}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
