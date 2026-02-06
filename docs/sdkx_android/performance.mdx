@@ -1,7 +1,7 @@
 ---
 sidebar_position: 130
-title: インパクト分析
-description: "SDKのリリースごとに、このページではSDKがアプリケーションのビルドと実行時間のさまざまな側面に与える影響を追跡します。"
+title: Impact Analysis
+description: "For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application."
 ---
 
 import {
@@ -19,203 +19,236 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# インパクト分析 {#performance}
+# Impact Analysis {#performance}
 
 <Intro>
 
-以下の番号は、Helpshift SDKと統合された枠組みとなるサンプルアプリ
-を示しています。
+The following numbers are representative of a skeletal sample app
+integrated with the Helpshift SDK.
 
 </Intro>
 
+## v10.5.0
+
+### SDK payload in your app {#payload-size}
+
+The Helpshift SDK X will add `294 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v8.1.0` and Gradle `v8.1`.
+The `294 Kb` size includes total impact with all the resources and code.
+
+### Method count {#methods-count}
+
+The Helpshift SDK X will add 2209 methods to your dex:
+
+| Package           | Method Count |
+| ----------------- | -----------: |
+| **com.helpshift** |       `2209` |
+
+### Memory usage {#memory-usage}
+
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `7.25`                          |                        `112-118` |
+| showFAQSection                         | `7.05`                          |                        `104-110` |
+| showSingleFAQ                          | `5.85`                          |                         `98-105` |
+| showConversation (conversational mode) | `8.45`                          |                        `139-145` |
+
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Google Pixel 6 running Android 16.
+
+</Admonition>
+
 ## v10.4.0
 
-### アプリ内のSDKペイロード {#payload-size}
+### SDK payload in your app {#payload-size}
 
-Helpshift SDK Xは、アプリケーションのリリースAPKに`246 Kb`を追加します。
-この分析は、Android Gradle Plugin `v8.1.0`とGradle `v8.1`を使用して実行されました。
-`246 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+The Helpshift SDK X will add `246 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v8.1.0` and Gradle `v8.1`.
+The `246 Kb` size includes total impact with all the resources and code.
 
-### メソッドの数 {#methods-count}
+### Method count {#methods-count}
 
-Helpshift SDK Xは、あなたのdexに1765件のメソッドを追加します。
+The Helpshift SDK X will add 1765 methods to your dex:
 
-| パッケージ           | メソッドの数 |
+| Package           | Method Count |
 | ----------------- | -----------: |
 | **com.helpshift** |       `1765` |
 
-### メモリの使用量 {#memory-usage}
+### Memory usage {#memory-usage}
 
-| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
 | -------------------------------------- | ------------------------------- | -------------------------------: |
 | showFAQs                               | `6.35`                          |                         `102-110` |
 | showFAQSection                         | `5.15`                          |                          `92-102` |
 | showSingleFAQ                          | `4.75`                          |                          `85-95` |
-| showConversation（会話モード） | `7.55`                          |                            `132-138` |
+| showConversation (conversational mode) | `7.55`                          |                            `132-138` |
 
-このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-Android 15を搭載したGoogle Pixel 6上のデモアプリでテストされています。
+Tested with a demo app on Google Pixel 6 running Android 15.
 
 </Admonition>
 
 ## v10.3.0
 
-### アプリ内のSDKペイロード {#payload-size}
+### SDK payload in your app {#payload-size}
 
-Helpshift SDK Xは、アプリケーションのリリースAPKに`231 Kb`を追加します。
-この分析は、Android Gradle Plugin `v3.4.2`とGradle `v5.3`を使用して実行されました。
-`231 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+The Helpshift SDK X will add `231 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v3.4.2` and Gradle `v5.3`.
+The `231 Kb` size includes total impact with all the resources and code.
 
-### メソッドの数 {#methods-count}
+### Method count {#methods-count}
 
-Helpshift SDK Xは、あなたのdexに1373件のメソッドを追加します。
+The Helpshift SDK X will add 1373 methods to your dex:
 
-| パッケージ           | メソッドの数 |
+| Package           | Method Count |
 | ----------------- | -----------: |
 | **com.helpshift** |       `1373` |
 
-### メモリの使用量 {#memory-usage}
+### Memory usage {#memory-usage}
 
-| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
 | -------------------------------------- | ------------------------------- | -------------------------------: |
 | showFAQs                               | `4.65`                          |                         `102-110` |
 | showFAQSection                         | `4.65`                          |                          `80-90` |
 | showSingleFAQ                          | `3.55`                          |                          `55-70` |
-| showConversation（会話モード） | `6.05`                          |                            `142-148` |
+| showConversation (conversational mode) | `6.05`                          |                            `142-148` |
 
-このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-Android 14を搭載したGoogle Pixel 6上のデモアプリでテストされています。
+Tested with a demo app on Google Pixel 6 running Android 14.
 
 </Admonition>
 
 ## v10.2.0
 
-### アプリ内のSDKペイロード {#payload-size}
+### SDK payload in your app {#payload-size}
 
-Helpshift SDK Xは、アプリケーションのリリースAPKに`212 Kb`を追加します。
-この分析は、Android Gradle Plugin `v3.4.2`とGradle `v5.3`を使用して実行されました。
-`212 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+The Helpshift SDK X will add `212 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v3.4.2` and Gradle `v5.3`.
+The `212 Kb` size includes total impact with all the resources and code.
 
-### メソッドの数 {#methods-count}
+### Method count {#methods-count}
 
-Helpshift SDK Xは、あなたのdexに1294件のメソッドを追加します。
+The Helpshift SDK X will add 1294 methods to your dex:
 
-| パッケージ           | メソッドの数 |
+| Package           | Method Count |
 | ----------------- | -----------: |
 | **com.helpshift** |       `1294` |
 
-### メモリの使用量 {#memory-usage}
+### Memory usage {#memory-usage}
 
-| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
 | -------------------------------------- | ------------------------------- | -------------------------------: |
 | showFAQs                               | `4.50`                          |                         `95-105` |
 | showFAQSection                         | `4.50`                          |                          `75-90` |
 | showSingleFAQ                          | `3.45`                          |                          `45-65` |
-| showConversation（会話モード） | `5.95`                          |                            `135` |
+| showConversation (conversational mode) | `5.95`                          |                            `135` |
 
-このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-Android 13が搭載されたGoogle Pixel 6上のデモアプリでテストされています。
+Tested with a demo app on Google Pixel 6 running Android 13.
 
 </Admonition>
 
-## v10.1.0​
+## v10.1.0
 
-### アプリ内のSDKペイロード {#payload-size}
+### SDK payload in your app {#payload-size}
 
-Helpshift SDK Xは、アプリケーションのリリースAPKに`140 Kb`を追加します。
-この分析は、Android Gradle Plugin `v3.4.2`とGradle `v5.3`を使用して実行されました。
-`140 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+The Helpshift SDK X will add `140 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v3.4.2` and Gradle `v5.3`.
+The `140 Kb` size includes total impact with all the resources and code.
 
-### メソッドの数 {#methods-count}
+### Method count {#methods-count}
 
-Helpshift SDK Xは、あなたのdexに1128件のメソッドを追加します。
+The Helpshift SDK X will add 1128 methods to your dex:
 
-| パッケージ           | メソッドの数 |
+| Package           | Method Count |
 | ----------------- | -----------: |
 | **com.helpshift** |       `1128` |
 
-### メモリの使用量 {#memory-usage}
+### Memory usage {#memory-usage}
 
-| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
 | -------------------------------------- | ------------------------------- | -------------------------------: |
 | showFAQs                               | `4.40`                          |                         `95-105` |
 | showFAQSection                         | `4.40`                          |                          `75-90` |
 | showSingleFAQ                          | `3.35`                          |                          `45-65` |
-| showConversation（会話モード） | `5.80`                          |                            `135` |
+| showConversation (conversational mode) | `5.80`                          |                            `135` |
 
-このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-Android 11を搭載したGoogle Pixel 4a上のデモアプリでテストされています。
+Tested with a demo app on Google Pixel 4A running Android 11.
 
 </Admonition>
 
 ## v10.0.0
 
-### アプリ内のSDKペイロード {#payload-size}
+### SDK payload in your app {#payload-size}
 
-Helpshift SDK Xは、アプリケーションのリリースAPKに`120 Kb`を追加します。
-この分析は、Android Gradle Plugin `v3.4.2`とGradle `v5.3`を使用して実行されました。
-`120 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+The Helpshift SDK X will add `120 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v3.4.2` and Gradle `v5.3`.
+The `120 Kb` size includes total impact with all the resources and code.
 
-### メソッドの数 {#methods-count}
+### Method count {#methods-count}
 
-Helpshift SDK Xは、あなたのdexに966件のメソッドを追加します。
+The Helpshift SDK X will add 966 methods to your dex:
 
-| パッケージ           | メソッドの数 |
+| Package           | Method Count |
 | ----------------- | -----------: |
 | **com.helpshift** |        `966` |
 
-### メモリの使用量 {#memory-usage}
+### Memory usage {#memory-usage}
 
-| Helpshift APIの起動                   | Javaヒープメモリ（単位: MB） | 総メモリ使用量（単位: MB） |
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
 | -------------------------------------- | ------------------------------- | -------------------------------: |
 | showFAQs                               | `4.30`                          |                         `90-100` |
 | showFAQSection                         | `4.30`                          |                          `70-85` |
 | showSingleFAQ                          | `3.30`                          |                          `40-60` |
-| showConversation（会話モード） | `5.70`                          |                            `130` |
+| showConversation (conversational mode) | `5.70`                          |                            `130` |
 
-このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-Android 11を搭載したGoogle Pixel 4a上のデモアプリでテストされています。
+Tested with a demo app on Google Pixel 4A running Android 11.
 
 </Admonition>
 
-## v1.0.0-beta​
+## v1.0.0-beta
 
-### アプリ内のSDKペイロード {#payload-size}
+### SDK payload in your app {#payload-size}
 
-Helpshift SDK Xは、アプリケーションのリリースAPKに`83 Kb`を追加します。この分析は、Android Gradle Plugin v3.4.2とGradle v5.1.1を使用して実行されました。
-`83 Kb`というサイズには、すべてのリソースとコードを含む影響の合計値が含まれています。
+The Helpshift SDK X will add `83 Kb` to your application's release APK. This analysis was done with Android Gradle Plugin v3.4.2 and Gradle v5.1.1.
+The `83 Kb` size includes total impact with all the resources and code.
 
-### メソッドの数 {#methods-count}
+### Method count {#methods-count}
 
-Helpshift SDK Xは、あなたのdexに475件のメソッドを追加します。
+The Helpshift SDK X will add 475 methods to your dex:
 
-| パッケージ           | メソッドの数 |
+| Package           | Method Count |
 | ----------------- | -----------: |
 | **com.helpshift** |        `475` |
 
-### メモリの使用量 {#memory-usage}
+### Memory usage {#memory-usage}
 
-`Helpshift.showConversation (Myactivity.this, configMap)` APIを呼び出してHelpshiftの会話画面を開くと、
-約20 - 25MBのメモリが消費されます。
-このメモリへの影響は、アプリが実行されているデバイスのOSおよびメモリ構成にも依存します。
+On opening the Helpshift conversation screen by calling `Helpshift.showConversation (Myactivity.this, configMap)` API,  
+will consume around 20-25 MB of memory.
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-Android 10が搭載されたSamsung Galaxy M11上のデモアプリでテストされています。
+Tested with a demo app on Samsung Galaxy M11 running Android 10.
 
 </Admonition>

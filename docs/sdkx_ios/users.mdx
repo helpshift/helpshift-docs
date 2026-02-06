@@ -1,7 +1,7 @@
 ---
 sidebar_position: 40
-title: ユーザーの識別と管理
-description: ユーザーの識別と管理について詳しく説明します。
+title: User Identification & Management
+description: Learn more about identifying and managing users.
 ---
 
 import {
@@ -11,115 +11,115 @@ import {
   TabItem,
 } from "@site/src/components/forDocs";
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
-
-</Admonition>
-
-<Admonition type="warning" title="先に進む前に">
-
-このセクションでは、従来の方式でユーザーを統合する方法について説明します。新しいIDシステムとの統合については、[このページ](/sdkx_ios/identity-users)を参照してください。
-
-より迅速なコンテキストの収集、より簡単なエージェントエクスペリエンス、より強化されたセキュリティおよびスパム対策が必要な場合には、新しいIDシステムの使用をお勧めします。
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
 
 </Admonition>
 
-# ユーザーの識別と管理 {#users}
+<Admonition type="warning" title="Before you proceed">
 
-## ログインユーザー {#logged-in-users}
+This section describes how you can integrate users with the legacy method. For integrating with the new Identity System `User Hub`, please refer [this page](/sdkx_ios/identity-user-hub).
 
-#### 概要
-
-ログインユーザーとは、ユーザー名とパスワードを入力した後にのみサポートチームと連絡を取ることができるユーザーのことを指しています。ログインユーザーがいる場合には、エージェントがユーザーにパーソナライズされたサポート体験を提供できるように、Login APIを使用してユーザーの識別子（ユーザーIDおよび/またはメールアドレス）を渡すことを強くお勧めしています。また、Login APIを使用することでユーザーの会話はログイン時にのみ利用可能となります。
-
-<Admonition type="info" title="注意">
-
-ユーザーの会話は、会話を開始するために使用したデバイス上でのみ利用可能となります。デバイスをまたいで会話を利用することはできません。
+We recommend using the new Identity System if you require faster context collection, an easier agent experience, and enhanced security and spam protection.
 
 </Admonition>
 
-#### 識別子として提供されるもの
+# How to Identify and Manage Users {#users}
 
-ユーザーの識別には、`userID`および/または`userEmail`を提供することが可能です。弊社ではユーザーIDの使用を強く推奨しております。ユーザーを識別するためにメールアドレスを使用する場合には、`loginUser:` API内の辞書としてそれを`userEmail`フィールドで渡す必要があります。`userID`と`userEmail`の両方を使用する場合、以下のロジックが適用されます。
+## Logged-in users {#logged-in-users}
 
-- ユーザーを検索する際、`userId`は`userEmail`よりも優先度が高くなっています
-- ユーザーIDが既存のユーザーに一致した場合、そのユーザーのメールアドレスは更新されます（メールアドレスが提供されている場合）
-- メールアドレスが既存のユーザーに一致した場合、以下のロジックが適用されます。
-  - メールアドレスが一致したユーザーにユーザーIDが存在しない場合、そのユーザーIDがそのユーザーに追加されます（ユーザーIDが提供されている場合）
-  - もしもそのユーザーIDがメールアドレスが一致しているユーザーに対して既に存在する場合、新しいユーザーが作成されます（異なるユーザーIDが提供されている場合）
+#### Overview
 
-#### 使用方法
+A logged-in user is someone who can contact your support team only after providing a username and password. If you have logged-in users, we highly recommend passing the user's identifiers (user ID and/or email) using the Login API so that your Agents can provide a personalized support experience to your users. Using the Login API also ensures that a user's conversations are available only to them when they log in.
 
-ユーザーがアプリへのログインに成功するたびに、Helpshift SDKのLogin APIを呼び出す必要があります。Login APIは、以下のパラメーターを持っています。
+<Admonition type="info" title="Note">
+
+User's conversation will only be available on the device used to start the conversation. The conversation will not be available across devices.
+
+</Admonition>
+
+#### What to provide as identifiers
+
+You can provide either `userID` and/or `userEmail` to identify your users. We highly recommend using a user ID to identify your users. However, if you use emails to identify your users, then you should pass them in the `userEmail` field as a dictionary in the `loginUser:` API. The following logic applies when you use both `userID` as well as `userEmail`:
+
+- When looking up users, the priority of `userId` is higher than that of `userEmail`
+- When the user ID matches an exisiting user, that user's email will be updated (if the email is provided)
+- When the email matches an existing user, the following logic applies:
+  - If the user ID does not exist for a user matched by email, then the user ID will be added for that user (if a user ID is provided)
+  - If the user ID already exists on the user matched by email, then a new user will be created (if a different user ID is provided)
+
+#### How to use
+
+You should call Helpshift SDK's Login API whenever the user successfully logs into your app. The Login API takes the following parameters:
 
 <table>
   <tr>
-    <th>パラメーター</th>
-    <th>必須/オプション</th>
-    <th>SDKの説明</th>
-    <th>重要事項</th>
+    <th>Parameter</th>
+    <th>Require/Optional</th>
+    <th>SDK Description</th>
+    <th>Important Considerations</th>
   </tr>
   <tr>
     <td>userName</td>
-    <td>オプション</td>
-    <td>エージェントがエンドユーザーとやり取りをする際に使用する名前を入力します。ユーザーの名前が分からない場合には空白のままにすることができ、（有効化されている場合には）アイデンティティボットがそのユーザーに名前を尋ねます。値を指定すると、アイデンティティボットはユーザーに再度名前を尋ねなくなります。</td>
+    <td>Optional</td>
+    <td>Provide the name you'd like your Agents to use when interacting with end users. If you don't know the user's name, you can leave it blank, and the Identity Bot (when enabled) will ask that user for their name. If you provide a value, the Identity Bot will not ask the user for their name again.</td>
    <td>
-      最大長は255文字です。これよりも長い値は切り捨てられます。
-      <li> userNameの値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+      Max length: 255 characters. Values larger than this will be truncated.
+      <li> If the value of userName is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
     </td>
   </tr>
   <tr>
     <td>userId</td>
-    <td>メールアドレスが提供されていない場合には必須の識別子となります</td>
-    <td>ユーザー固有の識別子です。ユーザーIDは一意である必要があります。異なるユーザーに同一のユーザーIDを使用させるべきではありません。</td>
+    <td>Required as an identifier if email is not provided</td>
+    <td>A user's unique identifier. User IDs must be unique. You should not use the same user ID for different users.</td>
     <td>
       <ul>
-        <li>先頭および末尾のスペースは許可されません。中間にスペースを入れることは可能です。先頭および末尾にスペースが含まれているユーザーIDを許可すると、結果的に匿名ユーザーが作成されてしまいます。</li>
-        <li>ユーザーIDは常に大文字と小文字を区別します（たとえば、1abcと1ABCは別のIDとなります）。</li>
-        <li>ユーザーのメールアドレスを"userID"として使用しないでください。ユーザーの識別にメールアドレスを利用する場合には、"userEmail"として使用してください。</li>
-        <li>メールアドレスだけでなくユーザーIDも使用する場合には、その後の呼び出しでユーザーIDが存在することを確認してください。複数のプロファイルが同じメールアドレスを使用している場合、メールアドレスを使用するだけではすべてのプロファイルが返されてしまいます。</li>
-         <li> "userId"の値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+        <li>Leading / trailing spaces are not allowed. Spaces in between are allowed. User IDs with leading / trailing spaces will result in the creation of an anonymous user.</li>
+        <li>User ID is always case-sensitive (eg. '1abc' is different from '1ABC').</li>
+        <li>Do not provide the user's email address as 'userID'. If you use email addresses to identify users, provide them as 'userEmail'.</li>
+        <li>If you are using the user ID as well as email, ensure that the User ID is present in subsequent calls - just providing email will return any profile if multiple profiles have the same email.</li>
+         <li> If the value of "userId" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
     </td>
   </tr>
   <tr>
     <td>userEmail</td>
-    <td>ユーザーIDが提供されていない場合には必須の識別子となります</td>
-    <td>ユーザーのメールアドレスです。ユーザーのメールアドレスが分からない場合には空白のままにすることができ、（有効化されている場合には）アイデンティティボットがそのユーザーにメールアドレスを尋ねます。値を指定すると、アイデンティティボットはユーザーに再度メールアドレスを尋ねなくなります。</td>
+    <td>Required as an identifier if the user ID is not provided</td>
+    <td>A user's email address. If you don't know the user's email, you can leave it blank and the Identity Bot (when enabled) will ask the user for their email. If you provide a value, then the Identity Bot will not ask the user for their email again.</td>
     <td>
       <ul>
-        <li>メールアドレスの形式は、有効なものである必要があります（"my@email.com"の形式を使用する必要があります）無効なメールアドレスを許可すると、結果的に匿名ユーザーが作成されてしまいます。</li>
-        <li>先頭および末尾のスペースは許可されません。先頭および末尾にスペースが含まれているメールアドレスを許可すると、結果的に匿名ユーザーが作成されてしまいます。</li>
-        <li>メールアドレスでは、大文字と小文字は常に区別されません（たとえば、MY@EMAIL.COMとmy@email.comは同じメールアドレスです）。</li>
-        <li> "userEmail"の値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+        <li>Email format should be valid (should be in the format "my@email.com". Invalid emails will result in the creation of an anonymous user.</li>
+        <li>Leading / trailing spaces are not allowed. Emails with leading / trailing spaces will result in the creation of an anonymous user.</li>
+        <li>Email is always case insensitive (eg. 'MY@EMAIL.COM' is same as 'my@email.com').</li>
+        <li> If the value of "userEmail" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
 </td>
   </tr>
   <tr>
     <td>userAuthToken</td>
-    <td>オプション</td>
-    <td>SHA256を使用したハッシュベースのメッセージ認証コード（HMAC）を介して生成されたユーザー認証トークンです。第三者がユーザーに代わって問題を提出したり、ユーザーのプロパティを更新したりできないようにする場合には、HMACダイジェストを使用する必要があります。 詳細は<a href="https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/">こちら</a>。</td>
+    <td>Optional</td>
+    <td>A user authentication token generated via Hash-Based Message Authentication Code (HMAC) using SHA256. You should provide an HMAC Digest if you want to ensure that 3rd parties cannot file issues on behalf of your users or update their properties. Details <a href="https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/">here</a>.</td>
     <td>
       <ul>
-        <li>ユーザーが確実に問題を提出できるようにするために、有効なHMACダイジェストを使用する必要があります。詳細は<a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">こちら</a>。</li>
-        <li> "userAuthToken"の値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+        <li>A valid HMAC Digest should be provided in order to ensure your users can file issues. Details <a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">here</a>.</li>
+        <li> If the value of "userAuthToken" is empty string, after trimming spaces, then do not include this parameter in "login" call. </li>
       </ul>
 </td>
 
   </tr>
 </table>
 
-`loginUser:` APIを使用する際は、以下の点に注意する必要があります。-
+You need to be aware of some considerations when using the `loginUser:` API -
 
-- Helpshiftでログインユーザーを作成するには、`userId`または`userEmail`のいずれかを使用する必要があります。
-- ログインAPIは、渡された`userId`または`userEmail`が有効かどうかを示すブーリアン値を返します。
-- `userId`または`userEmail`は、すべてのアプリユーザーの間でユーザーを一意に識別する必要があります。2人以上の異なるユーザーが重複して使用するべきでは**ありません**。
-- Login APIが異なるユーザー識別子を用いて呼び出された場合には、最初に現在のログインユーザーをログアウトし、次にこのユーザー識別子を用いてログインを行います。
-- アプリのユーザーがログインしたら、すぐにloginの呼び出しを行うのがベストです。
-- `fullPrivacy`をtrueに設定している場合、そのユーザーのLogin APIでメールアドレスを唯一の識別子として使うべきではありません。これを行うと、結果的に匿名ユーザーが作成されてしまいます。
+- In order to create a logged-in user in Helpshift, the use of either `userId` or `userEmail` is required.
+- The login API returns a boolean value indicating whether the passed `userId` or `userEmail` are valid or not.
+- The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should **NOT** be duplicated for two or more different users.
+- If the login API is called with different user identifier, then it first logs out the currently logged-in user and then logs in with this user identifier.
+- It is best to call login immediately when your app user logs in.
+- If you are setting `fullPrivacy` to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
 
-例:
+Example:
 
 <Tabs groupId="ios-languages">
 
@@ -186,19 +186,19 @@ print("Helpshift login status : \(loggedIn)")
 
 </Tabs>
 
-## ユーザーのログアウト {#logging-out-users}
+## Logging out users {#logging-out-users}
 
-#### 概要
+#### Overview
 
-ユーザーがアプリからログアウトしたら、Helpshift SDKのLogout APIを呼び出し、他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
+Once a user logs out from your app, you should call the Helpshift SDK logout API to ensure no one else can view this user's conversations.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-- Logout APIは、Login APIと組み合わせて使用することが期待されています。
+- The logout API is expected to be used in conjunction with the login API.
 
 </Admonition>
 
-例:
+Example:
 
 <Tabs groupId="ios-languages">
 
@@ -219,31 +219,31 @@ Helpshift.logout()
 
 </Tabs>
 
-## 匿名ユーザー {#anonymous-users}
+## Anonymous Users {#anonymous-users}
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-clearAnonymousUserOnLogin() APIは非推奨です。匿名ユーザーの管理については、新しいAPIが追加されています。
-
-</Admonition>
-
-#### 概要
-
-匿名ユーザーとは、ユーザー名とパスワードなしでアプリにアクセスできるユーザーのことを指します。Login API経由でユーザー識別子（ユーザーIDおよび/またはメールアドレス）が渡されていない場合、Helpshiftはそのユーザーが匿名ユーザーであり、現在ログインしていないものとみなします。
-
-複数のログインユーザー/匿名ユーザーが同じデバイスを使用してサポート会話中に情報のやり取りを行う（理想としてはログインをまたいだ共有を許可したくない）ユースケースの場合には、`clearAnonymousUserOnLogin:` APIを使用する必要があります。
-
-- `shouldClear`が**true**の場合 – 匿名ユーザーは、どのユーザーがログインしても消去されます。一度消去されると、そういったユーザー（およびその会話）は二度と取得できなくなります。
-
-- `shouldClear`が**false**の場合 – 匿名ユーザーのデータは保存され、ログインユーザーがログアウトすると、匿名ユーザーの会話履歴が表示されます。
-
-<Admonition type="info" title="注意">
-
-clearAnonymousUserOnLogin() APIは、ログインユーザーのエクスペリエンスには一切影響を与えません。
+clearAnonymousUserOnLogin() API is deprecated. We have added a new API to manage anonymous users.
 
 </Admonition>
 
-例:
+#### Overview
+
+An anonymous user is someone who can access the app without a username and password. If a user identifier (user ID and/or email) is not passed via the login API, then Helpshift assumes that the user is an anonymous user and is not currently logged in.
+
+If your use case involves multiple logged-in/anonymous users using the same device and discussing info during support conversations (which you ideally wouldn't want to be shared across logins), you should use the `clearAnonymousUserOnLogin:` API.
+
+- If `shouldClear` is **true** – anonymous users are cleared whenever any user logs in. Once cleared, such users (and their conversations) cannot be fetched again.
+
+- If `shouldClear` is **false** – anonymous user data will be saved and if a logged-in user is logged out, you will see anonymous user’s conversation history.
+
+<Admonition type="info" title="Note">
+
+The clearAnonymousUserOnLogin() API does not impact the logged-in user's experience at all.
+
+</Admonition>
+
+Example:
 
 <Tabs groupId="ios-languages">
 
@@ -264,27 +264,27 @@ Helpshift.clearAnonymousUserOnLogin(clearAnonymousUser)
 
 </Tabs>
 
-## ユーザーの本人確認 {#verify-identity-of-users}
+## Verifying the identity of users {#verify-identity-of-users}
 
-### アプリ内で本人確認を構成する {#configure-identity-verification}
+### Configuring identity verification in your app {#configure-identity-verification}
 
-#### 概要
+#### Overview
 
-ユーザーの本人確認は、お客様のアプリからHelpshiftへのすべてのリクエストが正当なエンドユーザーからのものであることを確認するためのセキュリティ施策です。これにより、第三者やハッカーによるユーザーのなりすましを防止することができます。ユーザーの本人確認に関する詳細情報と設定の手順については、[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)をご参照ください。
-ユーザーを確実に認証するためには、初期化の際に`loginUser` APIの`userData`辞書とともにユーザー認証トークンを提供する必要があります。ユーザー認証トークンの生成手順については、[こちら](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/)をご参照ください。ユーザー認証トークンはHMACダイジェストであり、SHA256を使用したHMACを介して生成されます。
+User Identity Verification is a security measure that verifies that all requests made from your app to Helpshift are coming from authentic end users. This prevents 3rd parties or hackers from impersonating your users. You can learn more about User Identity Verification and the steps to configure it [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/).
+In order to ensure your users are verified, you should provide a 'user authentication token' with the `userData` dictionary in the `loginUser` API at the time of initialization. You can find the steps to generate a 'user authentication token' [here](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/). The 'user authentication token' is an HMAC Digest, which is generated via HMAC using SHA256.
 
-#### HMACダイジェストを送信してユーザーの本人確認をする
+#### Sending the HMAC Digest to verify users' identity
 
-Login APIの呼び出しでユーザー認証トークンを送信することができます。 Helpshiftダッシュボード（ドキュメントは[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)）で本人確認が有効になっている場合、Helpshiftは共有秘密鍵を使用して固有のユーザー認証トークンを再計算し、お客様から送信されたユーザー認証トークンと再計算された値を比較します。それらが一致していればユーザーの本人確認がされたことになり、ユーザーは問題を提出することができます。
+You can send the 'user authentication token' with the Login API call. If Identity Verification is enabled on the Helpshift Dashboard (documentation [here](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)), Helpshift recalculates the unique 'user authentication token' using the shared secret key, and compares the 'user authentication token' sent by you to the recalculated value. If they're equal, then the user's identity is verified, and they are able to file Issues.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-- ダッシュボードでアプリの秘密鍵が再生成された場合、有効なユーザー認証トークンを生成するために、エンドポイントのコードも確実に更新する必要があります。この後は、古い秘密鍵を使用して生成されたユーザー認証トークンを使用したリクエストが無効になるように、管理者はダッシュボードから古い秘密鍵を削除する必要があります。
-- fullPrivacyフラグをYESに設定している場合、ユーザー認証トークンはユーザーIDに対してのみ生成されます。
+- If the secret key is regenerated for an app on the Dashboard, you should ensure that you update your endpoint code as well, in order to generate a valid 'user authentication token'. After this, your Admins should delete the old secret key from the Dashboard in order to ensure requests using a 'user authentication token' generated using the old secret key become invalid.
+- If you are setting fullPrivacy flag to YES, the 'user authentication token' should be generated only on the user ID.
 
 </Admonition>
 
-例:
+Example:
 
 <Tabs groupId="ios-languages">
 
@@ -359,26 +359,26 @@ Helpshift.login(userData)
 
 </Tabs>
 
-## 本人確認の失敗 {#identity-verification-failure}
+## Identity Verification Failure {#identity-verification-failure}
 
-#### 概要
+#### Overview
 
-本人確認がオンになっている場合、ユーザー認証トークンがない、もしくは無効なユーザー認証トークンを用いた状態でログインリクエストが行われると、本人確認が失敗となります。本人確認に失敗すると、以下のようになります。
+When Identity Verification is turned 'On' and a login request is made with no 'user authentication token' or with an invalid 'user authentication token' identity verification will fail. If identity verification fails, the following will hold true:
 
-- 匿名ユーザー（あなたが識別子を提供していないユーザー）は、常に問題を提出することができます。
-- ログインユーザー（あなたがユーザーIDやメールアドレスなどの識別子を提供しているユーザー）は、認証されていない場合には問題を提出したり会話を確認したりすることができません。未認証のログインユーザーに対しては、フォームまたは対話型UIでエラーが表示されます。
+- Anonymous users (users for whom you are not providing any identifiers) are always able to file Issues.
+- Logged-in users (users for whom you are providing an identifier such as user ID or email) will not be able to file Issues or see conversations if they are unverified. Unverified logged-in users will see an error on the form or conversational UI.
 
-ログインユーザーが認証されると（つまり、有効なユーザー認証トークンが提供されると）、前回の問題を確認したり、新しい課題を作成したりすることができるようになります。認証が完了したログインユーザーのUIは本人確認がオフになっている場合とまったく同じように表示され、動作します。上記のような影響を受けるのは、認証が完了していないユーザーのみです。
+If the logged-in users are verified (i.e., a valid 'user authentication token' is provided), they are able to see the previous Issue or create a new Issue. The UI for verified, logged-in users looks & works exactly the same as it would if 'Identity verification' were turned off. Only unverified users get impacted as listed above.
 
-#### 失敗デリゲートの使用方法
+#### How to use the failure delegates
 
-本人確認に失敗した場合、SDKは以下のデリゲートのいずれかを呼び出し、アプリケーションに失敗を通知します。
+If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
 
 <table>
   <tr>
-    <th>認証失敗の理由</th>
-    <th>呼び出されるタイミング</th>
-    <th>使用するタイミング</th>
+    <th>Authentication failure reason</th>
+    <th>When is it called</th>
+    <th>When to use</th>
   </tr>
   <tr>
     <td>
@@ -386,17 +386,17 @@ Helpshift.login(userData)
       <br />
       AuthTokenNotProvided
     </td>
-    <td>ユーザー認証トークンが提供されなかったとき</td>
+    <td>When no 'user authentication token' is provided</td>
     <td>
-      SDKの実装時にユーザー認証トークンを送信する予定はないものの、
-将来的に実装する予定がある場合には、この失敗デリゲートを使用してアプリのアップデートを促すような
-独自のアラートをユーザーに対して表示することができます。ユーザー認証トークンを
-使用せずにLogin APIを使用している場合には、ダッシュボードで本人確認を
-有効にするとこれらのユーザーは未認証であるとみなされてしまうため、
-これを使用すると良いかもしれません。このデリゲートの使用については、完全に任意となっております。
-前述の通り、Helpshiftでは
-未認証のユーザーが問題を提出することは
-できません。
+      If you do not plan on sending a 'user authentication token' when
+      implementing SDK, but plan on implementing it in the future, you can use
+      this failure delegate to show your own alerts to the user, such as a
+      prompt to update the app. You may want to use this if you are using the
+      login API without the 'user authentication token', since these users will
+      be considered unverified once 'Identity Verification' is enabled on the
+      Dashboard. Using this delegate is completely optional - Helpshift will
+      prevent unverified users from being able to file Issues, as mentioned
+      previously.
     </td>
   </tr>
   <tr>
@@ -405,36 +405,36 @@ Helpshift.login(userData)
       <br />
       InvalidAuthToken
     </td>
-    <td>ユーザー認証トークンが無効だったとき</td>
+    <td>When the 'user authentication token' is invalid</td>
     <td>
-      Login APIを介して提供されるHMACダイジェストが無効な場合、Helpshift
-はユーザーによる問題の提出を阻止します。以下の場合、ユーザー認証トークン
-が無効である可能性があります。
+      If the HMAC Digest being provided via LoginAPI is invalid, then Helpshift
+      will prevent the users from filing Issues. The 'user authentication token'
+      can be invalid if:
       <ul>
         <li>
-          プログラミングにミスがある場合。HMACダイジェストの生成方法については、{" "}
-<a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
-こちら
-</a>
-をご参照ください。
+          You made a programming error. Check how to generate HMAC Digest{" "}
+          <a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
+            here
+          </a>
+          .
         </li>
         <li>
-          ダッシュボードで秘密鍵を再生成したものの、
-ユーザー認証トークンを更新していなかった場合。
+          You regenerated the secret key on the Dashboard, but didn't update the
+          'user authentication token'.
         </li>
-        <li>第三者がリクエストを試みている場合。</li>
+        <li>A 3rd party is trying to make requests.</li>
       </ul>
-      ユーザー認証トークンが無効な場合、前述の通りエンドユーザーは問題を提出できず、
-エラーが表示されます。独自のアラートを表示したり、サーバーから正しい認証トークンを
-再取得したい場合には、
-このデリゲートを使用します。
+      When the 'user authentication token' is invalid, end-users will not able
+      to file Issues and an error is shown to them, as mentioned previously. You
+      can use this delegate if you want to show your own alerts or re-fetch the
+      correct auth token from your server.
     </td>
   </tr>
 </table>
 
-認証失敗の理由は、列挙型`HelpshiftAuthenticationFailureReason`でラップされています。
+The authentication failure reason is wrapped in an enum `HelpshiftAuthenticationFailureReason`.
 
-例:
+Example:
 
 <Tabs groupId="ios-languages">
 
@@ -459,6 +459,6 @@ func authenticationFailedForUser(withReason reason: HelpshiftAuthenticationFailu
 
 </Tabs>
 
-## テストとトラブルシューティング {#identity-verification-testing-troubleshooting}
+## Testing & Troubleshooting {#identity-verification-testing-troubleshooting}
 
-本人確認が正しくセットアップされているかどうかをテストする手順については、[こちら](https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly)をご参照ください。
+Steps to test that Identity Verification is correctly set up are available [here](https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly).

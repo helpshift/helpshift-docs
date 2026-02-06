@@ -1,7 +1,7 @@
 ---
 sidebar_position: 150
-title: トラブルシューティング
-description: SDKに関するよくある問題と、その解決策について詳しく説明します。
+title: Troubleshooting
+description: Learn more about common SDK problems and their solutions.
 ---
 
 import {
@@ -10,45 +10,45 @@ import {
 
 import UserClickOnActionDelegateIssue from "@site/docs/_partials/_troubleShootingUserClickOnActionDelegate.mdx";
 
-# トラブルシューティング {#troubleshoot}
+# Troubleshooting {#troubleshoot}
 
-## 既知の問題 {#known-issues}
+## Known Issues {#known-issues}
 
-### 添付ファイルフローのための写真ライブラリのアクセス許可 {#photos-library-permission}
+### Photos library Permission for Attachment Flows {#photos-library-permission}
 
-アプリでアクセス許可**NSPhotoLibraryUsageDescription**が宣言されていない場合、アプリがリジェクトされてしまう可能性があります。これを修正するには、以下のキーと説明を追加する必要があります。
+If your app does not declare the **NSPhotoLibraryUsageDescription** permission, It might cause app rejection. To fix this, you will have to add the following key and description.
 
-**NSPhotoLibraryUsageDescription**キーをアプリケーションのInfo.plistファイルに追加する
+Add **NSPhotoLibraryUsageDescription** key in your application info plist file
 
-**NSPhotoLibraryUsageDescriptionの説明テキスト**は、次の通りです。「このアプリは、ヘルプやサポートを目的として、添付ファイルとして送信する画像をユーザーが手動で選択できるようにするために、写真ライブラリにアクセスする必要があります。」
+**NSPhotoLibraryUsageDescription Description text**: "We need to access photos library to allow users manually pick images meant to be sent as attachment for help and support reasons."
 
-### 添付ファイルフローのためのカメラのアクセス許可 {#camera-permission-for-attachments}
+### Camera Permission for Attachment Flows {#camera-permission-for-attachments}
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-この問題はSDK X 10.2.0で解決されました。以下の説明は、SDK X 10.2.0以下のバージョンに適用されます。
+This issue is resolved with SDK X 10.2.0. The following instructions apply to versions below SDK X 10.2.0.
 
 </Admonition>
 
-SDK Xの会話の添付ファイル機能では、添付ファイルメニューが開きます。これはSafariのネイティブメニューであり、現時点で3つのオプションがありますが、そのうちの一つが「写真またはビデオを撮る」です。このオプションを使用するには、アプリのXcodeプロジェクトのInfo.plistファイルでカメラのアクセス許可を宣言する必要があります。宣言せずにユーザーがこのオプションを選択してしまうと、アプリがクラッシュする可能性があります。現時点では、このオプションを非表示にすることはできません。このオプションを無効にする機能については、今後ロードマップに追加される予定です。
+The attachment features of SDK X conversations opens the attachment menu. This is Safari's native menu with 3 options as of now, one of which is “Take Photo or Video”. This option requires your app to declare the camera permissions in your Xcode project's Info.plist file. If you don't declare it, and if the user selects this option, your app may crash. This option cannot be hidden as of now. We have it in our roadmap to add the ability to disable this option, though.
 
-このクラッシュを回避するには、XcodeプロジェクトのInfo.plistファイルに以下のキーを追加する必要があります。
+To avoid this crash, you need to add the following keys in your Xcode project's Info.plist file.
 
 - NSPhotoLibraryUsageDescription
 
 - NSCameraUsageDescription
 
-ユーザーに添付ファイルの送信を要求しないユースケースの場合には、管理者ダッシュボードのアプリの設定ページでユーザーの添付ファイルの構成を無効にする必要があります。これにより会話で添付ファイルアイコンが完全に非表示となるため、上記のアクセス許可をInfo.plistファイルに追加する必要がなくなります。ユーザー側の添付ファイルの構成を無効にすると同時に、エージェント側の添付ファイルの要求機能も使用しないようにしてください。
+If your use-case allows you to not ask users to send attachments, you should disable the user attachments configuration on your app's App Settings page on the Admin Dashboard. This will hide the attachment icon altogether from the conversation, and you will not need to add the above-mentioned permissions to Info.plist file. Along with disabling the user attachments configuration, you should also not use the request attachment feature for the Agents.
 
-<Admonition type="info" title="注意">
+<Admonition type="info" title="Note">
 
-添付ファイル機能: 次の機能により、ユーザーは会話の中で添付ファイルを送信することができます — 返信ボックスの添付ファイルアイコンと、エージェントによる添付ファイルの要求メッセージ。
+Attachment features: These features let users send an attachment during a conversation — attachment icon in the reply box and request attachment message by agent.
 
 </Admonition>
 
 <UserClickOnActionDelegateIssue />
 
-### iOS 18におけるプッシュ通知関連の問題
+### Push notification related issues on iOS 18
 
-- iOS 18.0では、アプリ内通知のアニメーション表示に不具合が見られるようです。この問題は、iOS 18.1で修正されています。
-- iOS 18を使用しているユーザーに対しては、一部のプッシュ通知が届かない場合があります。
+- In-app notifications appear with a somewhat glitchy animation on iOS 18.0. The issue appears to have been fixed in iOS 18.1.
+- Few push notifications are not received to users running iOS 18.
