@@ -1,7 +1,7 @@
 ---
 sidebar_position: 110
-title: Release Notes
-description: Read the Release Notes in detail.
+title: リリースノート
+description: 詳細については、リリースノートをご確認ください。
 ---
 
 import {
@@ -19,156 +19,122 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Release Notes
+# リリースノート
 
 <LatestSdkVersion>
 
-## 10.5.0
-
-_December 3rd, 2025_
-
-** Release Notes **
-
-- Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.  
-  - For integration details please refer [Proactive Engagement](/sdkx_android/proactive-engagement)
-  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for the [POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission) permission yourself.
-- Added support for Android 16.
-  - SDK now compiles with API level 36, i.e compileSdk 36.
-  - No breaking changes were observed in the SDK by supporting Android 16.
-- Deprecated old [Outbound Support](/sdkx_android/outbound-support/) with introduction of **Proactive Engagement**.
-- Added new API to pause in-app notifications. This will pause/unpause in-app notifications for Proactive Engagement notifications. Please refer [shouldPauseInAppNotification](/sdkx_android/proactive-engagement/#pausing-inapp-notifications) here for details.
-- End of technical support for bugs reported on Android 7 and below, although SDK will be compatible and no functionality is affected.
-- Added support to provide [unread message count delegate](/sdkx_android/delegates/#unread-message-count) callback when a message is received even via push notifications or internal polling. This would help in better tracking of unread messages by the client application.
-  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount](/sdkx_android/notifications/#showing-notification-count) API.
-- Remove usage of deprecated Android APIs being used in the SDK.
-  - Activity.getWindow().setStatusBarColor() is deprecated but needs to be used below Android 15, hence it has been kept unchanged internally.
-- We have started adopting some Java 8 features in the SDK. If you run into any Java 8 related build or runtime failures then please refer to [this guide from Android](https://developer.android.com/studio/write/java8-support)
-  - We currently use Lambda Expressions only.
-
-**Bug fixes**
-
-- Fixed a bug where Helpcenter screen was detecting application foreground events incorrectly.
-- Fixed an intermittent bug where application was crashing due to Webview not being available on the device. The SDK will now ignore the cases where Webview is not available and will be in no-op mode.
-
 ## 10.4.0
 
-_August 15th, 2025_
+_2024年11月27日_
 
-- Android 16 is supported without any changes required in the SDK.
+**リリースノート**
 
-_November 27th, 2024_
-
-** Release Notes **
-
-- Added support for Android 15.
-- **Breaking changes** fixed to support Android 15: 
-  - Fixed the window insets issue which extended the UI beyond camera cutouts and soft navigation bars.
-- SDK now compiles with API level 35, i.e compileSdk 35.  
-- The SDK artefact is now compiled with Java 8.
-- `minSDKVersion` is now updated to 19.
-- Added support for User Hub (User Identity & Profiles) and related user data collection APIs.
-  - For more details on user identities, refer [User Identities](/sdkx_android/identity-user-hub/) page.
-  - For more details on user data collection, refer [Tracking](/sdkx_android/tracking/#update-global-user-data) page.
-- Fixed an edge case bug where message count was incorrect when login and unread message count APIs were invoked in quick succession.
-- Error logs from SDK will always get logged on logcat.
-- Debug build for debug logs is not required any more, only `enableLogging` flag needs to be set to `true`.
-- Webviews will now load with enhanced security flag [MIXED_CONTENT_NEVER_ALLOW.](https://developer.android.com/reference/android/webkit/WebSettings#MIXED_CONTENT_NEVER_ALLOW)
+- Helpshift SDKがAndroid 15対応となりました。
+- Helpshift SDKがAPIレベル35でコンパイルできるようになりました。
+- Helpshift SDKがJAVA 8でコンパイルできるようになりました。
+- ユーザーIDや関連するユーザーデータ収集APIのサポートを追加しました。
+- ユーザーIDの詳細については、[ユーザーID](/sdkx_android/identity-users/)ページを参照してください。
+- ユーザーデータの収集の詳細については、[トラッキング](/sdkx_android/tracking/#update-global-user-data)ページをご参照ください。
+- Login APIと未読メッセージ数の計測APIが連続して呼び出された場合にメッセージ数が正しく計測されなくなるという特殊ケースのバグを修正しました。
+- SDKからのエラーログは常に記録されます。
+- デバッグログ用のデバッグビルドが必要なくなりました。enableLoggingフラグをtrueに設定するだけでOKです。
+- WebViewが強化されたセキュリティフラグMIXED_CONTENT_NEVER_ALLOWを使用して読み込みを行うようになりました。
 
 ## 10.3.0
 
-_October 31st, 2023_
+_2023年10月31日_
 
-** Release Notes **
+**リリースノート**
 
-- Added support for Android 14.
-- SDK X now supports only Android 7, i.e API Level 24, and above. SDK will be non-operational when your app is installed on a device below Android 7 Nougat.
-- Moved to AndroidX Support libraries. SDK X will not compile with legacy Android Support libraries anymore.
-- Added support for sending multiple attachments in conversations (Support for multiple attachment in bot upload step will be added in Q1`24).
-- Added a new API to fetch SDK X version. For more details, [refer here](/sdkx_android/support-tools#get-sdk-version).
-- Added a new API to close active SDK session. For more details, [refer here](/sdkx_android/support-tools#close-session).
-- Added a new delegate event `agentMessageReceived` when agent sends a message. For more details, [refer here](/sdkx_android/delegates#agent-message-received).
-- `Helpshift.login()` API now returns a boolean indicating whether login was successful or not. This change is in existing API to introduce mandatory validations for login parameters and hence this might affect existing code compilation. For more details, [refer here](/sdkx_android/users#logging-in-users).
-- Added support for attachments in Smart FAQs.
+- Android 14への対応を追加しました。
+- SDK Xは現在、Android 7（APIレベル24以上）のみに対応しています。Android 7 Nougat以下のデバイスにアプリをインストールした場合、SDKは動作しません。
+- AndroidXサポートライブラリに移行しました。SDK Xは従来のAndroidサポートライブラリではコンパイルできません。
+- 会話での複数の添付ファイルの送信のサポートを追加しました（ボットのアップロード手順での複数の添付ファイルのサポートは、2024年の第一四半期に追加される予定です）。
+- SDK Xのバージョンを取得するAPIを追加しました。詳細については、[こちらを参照してください](/sdkx_android/support-tools#get-sdk-version)。
+- アクティブなSDKセッションを終了する新しいAPIを追加しました。詳細については、[こちらを参照してください](/sdkx_android/support-tools#close-session)。
+- エージェントがメッセージを送信する際の新しいデリゲートイベント`agentMessageReceived`を追加しました。詳細については、[こちらを参照してください](/sdkx_android/delegates#agent-message-received)。
+- `Helpshift.login()` APIが、ログインが成功したかどうかを示すブーリアン値を返すようになりました。この変更は、ログインパラメーターに必須となる検証機能を導入するために既存のAPIに加えられたものであり、コードのコンパイルに影響を与える可能性があります。詳細については、[こちらを参照してください](/sdkx_android/users#logging-in-users)。
+- スマートFAQに添付ファイルへの対応を追加しました。
 
 
 ## 10.2.2
 
-_March 6th, 2023_
+_2023年3月6日_
 
-** Release Notes **
+**リリースノート**
 
-- Fix a bug where chat screen went blank if app is in killed state and chat screen is first opened via a notification and then subsequently opened in-app.
-- Fix a bug where debug logs were not attached to an issue if it contained special characters.
-- Fix a bug where chat notifications were not cancelled when chat screen was opened.
+- アプリが強制終了された状態にあり、最初に通知によりチャット画面が開かれ、その後アプリ内で開かれた場合、チャット画面が空白になってしまうバグを修正しました。
+- 問題に特殊文字が含まれている場合に、デバッグログが添付されないバグを修正しました。
+- チャット画面を開いたときに、チャット通知が消去されないバグを修正しました。
 
 ## 10.2.0
 
-_October 11, 2022_
+_2022年10月11日_
 
 </LatestSdkVersion>
 
-** Release Notes **
+**リリースノート**
 
-- Added the capability for Outbound Support. You can reach out to your users proactively without they having to raise a ticket first. For more details, refer [Outbound support](/sdkx_android/outbound-support).
+- アウトバウンドサポートの機能を追加しました。ユーザーがチケットを先に発行しなくても、積極的に連絡を取ることができます。詳細については、[アウトバウンドサポート](/sdkx_android/outbound-support)をご参照ください。
 
-- Fixed usage of `enableInAppNotification` flag. Changed behaviour to always allow notifications when it is from push.
+- `enableInAppNotification`フラグの使い方を修正しました。プッシュ通知の場合、常に通知を許可するように変更しました。
 
-- Introduced a new API `clearAnonymousUserOnLogin(boolean clearAnonymousUser)` to support maintaining anonymous user on login. For more details, refer [Anonymous users](/sdkx_android/users#anonymous-users)
+- 匿名ユーザーのログインの維持に対応する新しいAPI `clearAnonymousUserOnLogin(boolean clearAnonymousUser)`を導入しました。詳細については、[匿名ユーザー](/sdkx_android/users#anonymous-users)をご参照ください。
 
-- `clearAnonymousUserOnLogin()` API will be deprecated.
+- `clearAnonymousUserOnLogin()` APIが非推奨になります。
 
-- As part of Android 13 updates, support for App level language has been introduced. Preference will be given to App level language, if set, over the device level language.
+- Android 13のアップデートの一環として、アプリレベルの言語のサポートが導入されました。設定されている場合には、デバイスレベルの言語よりもアプリレベルの言語が優先されます。
 
-- Fixed application crash that occurs on some devices when uploading attachment in chat screen.
+- チャット画面で添付ファイルをアップロードする際に、一部のデバイスでアプリケーションのクラッシュが発生するバグを修正しました。
 
 ## 10.1.0
 
-_December 22, 2021_
+_2021年12月22日_
 
-** Release Notes **
+**リリースノート**
 
-- Added support for adding breadcrumbs and debug logs to a new conversation filed by an end-user. For more details refer [Tracking](/sdkx_android/tracking).
+- エンドユーザーが提出した新しい会話に、Breadcrumbsとデバッグログを追加するサポートを追加しました。詳細については、[トラッキング](/sdkx_android/tracking)をご参照ください。
 
-- Added support for showing an announcement in Help Center. For more details refer [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/).
+- ヘルプセンターにお知らせを表示できるようにするサポートを追加しました。詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/)をご参照ください。
 
-- Added migration support from legacy SDK to SDK X. For more details on how to migrate, refer our [migration guide](/sdkx_android/migration-guide)
+- レガシーSDKからSDK Xへの移行のサポートを追加しました。移行方法の詳細については、[移行ガイド](/sdkx_android/migration-guide)をご参照ください
 
 ## 10.0.2
 
-_October 29, 2021_
+_2021年10月29日_
 
-** Release Notes **
+**リリースノート**
 
-- Comply with PendingIntent flag requirements expected on apps targeting Android 12 (API level 31).
+- Android 12（APIレベル31）を対象とするアプリに期待されるPendingIntentフラグの要件に準拠しました。
 
 ## 10.0.1
 
-_Aug 30, 2021_
+_2021年8月30日_
 
-** Release Notes **
+**リリースノート**
 
-- Fixed a bug where file chooser is not allowing to select whitelisted attachments while sending attachments in chat.
+- チャットで添付ファイルを送信する際に、ホワイトリストに登録されている添付ファイルがファイル選択ツールで選択できなくなるバグを修正しました。
 
 ## 10.0.0
 
-_May 12, 2021_
+_2021年5月12日_
 
-** Release Notes **
+**リリースノート**
 
-- Launched next-generation SDK X v10.0.0 which has lower size foot-print and requires minimal SDK upgrades to adopt new features and bug fixes.
+- フットプリントが小さく、新機能の追加やバグの修正のためのSDKのアップグレードが最小限で済む次世代SDK X v10.0.0を発表しました。
 
-** Getting started guide **
+**スタートガイド**
 
-- To start using SDK X 10.0.0, please refer to the guide [here](/sdkx_android/getting-started)
+- SDK X 10.0.0の使用を開始するには、[こちら](/sdkx_android/getting-started)のガイドをご参照ください
 
 ## 1.0.0-beta
 
-_September 25, 2020_
+_2020年9月25日_
 
-** Release Notes **
+**リリースノート**
 
-- Launched next-generation SDK X Beta which has lower size foot-print and does not require SDK upgrades to adopt new features and bug fixes
+- フットプリントが小さく、新機能の追加やバグの修正のためにSDKのアップグレードが必要ない次世代SDK X Betaの提供を開始しました。
 
-** Getting started guide **
+**スタートガイド**
 
-- To start using SDK X 1.0.0 beta, please refer to the guide [here](/sdkx_android/getting-started)
+- SDK X 10.0.0 betaの使用を開始するには、[こちら](/sdkx_android/getting-started)のガイドをご参照ください

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 120
-title: Impact Analysis
-description: "For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application."
+title: インパクト分析
+description: "SDKのリリースごとに、このページではSDKがアプリケーションのビルドと実行時間のさまざまな側面に与える影響を追跡します。"
 ---
 
 import {
@@ -19,253 +19,221 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Impact Analysis {#performance}
+# インパクト分析 {#performance}
 
 <Intro>
 
-For every release of the SDK, this page tracks the impact of the SDK on various build and runtime aspects of your application.
+SDKのリリースごとに、このページではSDKがアプリケーションのビルドと実行時間のさまざまな側面に与える影響を追跡します。
 
 </Intro>
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-**App Launch Time**
+**アプリの起動時間**
 
-Since all the Helpshift initialization takes place on a background thread, the Helpshift SDK does not affect app launch times.
-
-</Admonition>
-
-# Version specific reports {#version-impact}
-
-You can find impact analysis reports for every version of the Helpshift SDK below.
-
-## 10.5.0
-
-<Admonition type="info" title="Note">
-
-Performed on macOS 15.7.2, with Xcode 26.1.1 and iOS 26.1 (iPhone 15 Plus). Memory usage will increase with number of messages in a conversation.
+Helpshiftの初期化はすべてバックグラウンドのスレッドで実行されるため、Helpshift SDKがアプリの起動時間に影響を与えることはありません。
 
 </Admonition>
 
-### Disk space
+# バージョン別のレポート {#version-impact}
 
-This is the amount of disk space the xcframework takes up.
-
-The size of the xcframework is 4.6 MB for device and 5.6 MB for the simulator. Total size is 10.3 MB.
-
-The breakage is as follows:
-
-| Architecture | Size (MB) Device | Size (MB) Simulator |
-| ------------ | ---------------- | ------------------- |
-| arm64        | 1.00             | 0.93                |
-| x86_64       | NA               | 1.01                |
-
-When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `603` KB.
-
-### Ram usage
-
-|                                                                   |                                                                                   |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>5.2</code> MB ( Depends on number of messages on the chat screen).     |
-| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>4.1</code> MB.                                                         |
-| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>2.8</code> MB.                                                         |
-| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>4.3</code> MB.                                                         |
+Helpshift SDKの各バージョンのインパクト分析レポートについては、以下でご確認いただけます。
 
 ## 10.4.0
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Performed on macOS 14.6.1, with Xcode 16.0.0 and iOS 18.1.1 (iPhone 15). Memory usage will increase with number of messages in a conversation.
+macOS 14.6.1、Xcode 16.0.0、iOS 18.1.1（iPhone 15）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
-### Disk space
+### ディスク容量
 
-This is the amount of disk space the xcframework takes up.
+xcframeworkが占有するディスク容量です。
 
-The size of the xcframework is 7.2 MB for device and 8.1 MB for the simulator. Total size is 15.3 MB.
+xcframeworkのサイズは、デバイスが7.2MB、シミュレーターが8.1MBです。合計サイズは15.3MBです。
 
-The breakage is as follows:
+内訳は以下の通りです。
 
-| Architecture | Size (MB) Device | Size (MB) Simulator |
+| アーキテクチャ | デバイスのサイズ（MB） | シミュレーターのサイズ（MB） |
 | ------------ | ---------------- | ------------------- |
 | arm64        | 0.85             | 0.83                |
 | x86_64       | NA               | 0.77                |
 
-When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `647` KB.
+iOSアプリが`HelpshiftX.xcframework`と統合された場合、IPAファイルサイズの増加は約`647`KBです。
 
-### Ram usage
+### RAMの使用量
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>4.1</code> MB ( Depends on number of messages on the chat screen).     |
-| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>3.6</code> MB.                                                         |
-| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>3.5</code> MB.                                                         |
-| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>3.3</code> MB.                                                         |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      | <code>4.1</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。     |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              | <code>3.6</code>MBが追加されます。                                                         |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** | <code>3.5</code>MBが追加されます。                                                         |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         | <code>3.3</code>MBが追加されます。                                                         |
 
 ## 10.3.0
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Performed on macOS 13.5.1, with Xcode 15.0.0 and iOS 17.0.3 (iPhone 15 Plus). Memory Usage will increase with number of messages in a conversation.
+macOS 13.5.1、Xcode 15.0.0、iOS 17.0.3（iPhone 15 Plus）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
-### Disk space
+### ディスク容量
 
-This is the amount of disk space the xcframework takes up.
+xcframeworkが占有するディスク容量です。
 
-The size of the xcframework is 1.2 MB for device and 2 MB for the simulator. Total size is 3.2 MB.
+xcframeworkのサイズは、デバイスが1.2MB、シミュレーターが2MBです。合計サイズは3.2MBです。
 
-The breakage is as follows:
+内訳は以下の通りです。
 
-| Architecture | Size (MB) Device | Size (MB) Simulator |
+| アーキテクチャ | デバイスのサイズ（MB） | シミュレーターのサイズ（MB） |
 | ------------ | ---------------- | ------------------- |
 | arm64        | 0.85             | 0.83                |
 | x86_64       | NA               | 0.77                |
 
-When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `366` KB.
+iOSアプリが`HelpshiftX.xcframework`と統合された場合、IPAファイルサイズの増加は約`366`KBです。
 
-### Ram usage
+### RAMの使用量
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>3.7</code> MB ( Depends on number of messages on the chat screen).     |
-| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>2.8</code> MB.                                                         |
-| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>4.1</code> MB.                                                         |
-| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>2.3</code> MB.                                                         |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      | <code>3.7</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。     |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              | <code>2.8</code>MBが追加されます。                                                         |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** | <code>4.1</code>MBが追加されます。                                                         |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         | <code>2.3</code>MBが追加されます。                                                         |
 
 ## 10.2.0
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Performed on macOS 11.4, with Xcode 12.5.1 and iOS 15.1 (iPhone XR). Memory Usage will increase with number of messages in a conversation.
+macOS 11.4、Xcode 12.5.1、iOS 15.1（iPhone XR）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
-### Disk space
+### ディスク容量
 
-This is the amount of disk space the xcframework takes up.
+xcframeworkが占有するディスク容量です。
 
-The size of the xcframework is 7.4 MB for device and 5.3 MB for the simulator. Total size is 12.7 MB.
+xcframeworkのサイズは、デバイスが7.4MB、シミュレーターが5.3MBです。合計サイズは12.7MBです。
 
-The breakage is as follows:
+内訳は以下の通りです。
 
-| Architecture | Size (MB) Device | Size (MB) Simulator |
+| アーキテクチャ | デバイスのサイズ（MB） | シミュレーターのサイズ（MB） |
 | ------------ | ---------------- | ------------------- |
 | arm64        | 3.45             | 3.55                |
 | armv7        | 3.37             | NA                  |
 | i386         | NA               | 0.61                |
 | x86_64       | NA               | 0.67                |
 
-When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `268` KB.
+iOSアプリが`HelpshiftX.xcframework`と統合された場合、IPAファイルサイズの増加は約`268`KBです。
 
-### Ram usage
+### RAMの使用量
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>3.5</code> MB (This depends on number of messages on the chat screen). |
-| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>3.2</code> MB.                                                         |
-| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>3.4</code> MB.                                                         |
-| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>3.4</code> MB.                                                         |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      | <code>3.5</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。 |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              | <code>3.2</code>MBが追加されます。                                                         |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** | <code>3.4</code>MBが追加されます。                                                         |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         | <code>3.4</code>MBが追加されます。                                                         |
 
 ## 10.1.0
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Performed on macOS 11.4, with Xcode 12.5.1 and iOS 15.1 (iPhone XR). Memory Usage will increase with number of messages in a conversation.
+macOS 11.4、Xcode 12.5.1、iOS 15.1（iPhone XR）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
-### Disk space
+### ディスク容量
 
-This is the amount of disk space the xcframework takes up.
+xcframeworkが占有するディスク容量です。
 
-The size of the xcframework is 6.6 MB for device and 4.7 MB for the simulator. Total size is 11.3 MB.
+xcframeworkのサイズは、デバイスが6.6MB、シミュレーターが4.7MBです。合計サイズは11.3MBです。
 
-The breakage is as follows:
+内訳は以下の通りです。
 
-| Architecture | Size (MB) Device | Size (MB) Simulator |
+| アーキテクチャ | デバイスのサイズ（MB） | シミュレーターのサイズ（MB） |
 | ------------ | ---------------- | ------------------- |
 | arm64        | 3.09             | 3.17                |
 | armv7        | 2.98             | NA                  |
 | i386         | NA               | 5.32                |
 | x86_64       | NA               | 5.89                |
 
-When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `240` KB.
+iOSアプリが`HelpshiftX.xcframework`と統合された場合、IPAファイルサイズの増加は約`240`KBです。
 
-### Ram usage
+### RAMの使用量
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>4.6</code> MB (This depends on number of messages on the chat screen). |
-| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>3.9</code> MB.                                                         |
-| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>4.1</code> MB.                                                         |
-| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>4.3</code> MB.                                                         |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      | <code>4.6</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。 |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              | <code>3.9</code>MBが追加されます。                                                         |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** | <code>4.1</code>MBが追加されます。                                                         |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         | <code>4.3</code>MBが追加されます。                                                         |
 
 ## 10.0.0
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Performed on OS X 10.15.7, with Xcode 12.0 and iOS 14.0 (iPhone X). Memory Usage will increase with number of messages in a conversation.
+OS X 10.15.7、Xcode 12.0、iOS 14.0（iPhone X）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
-### Disk space
+### ディスク容量
 
-This is the amount of disk space the xcframework takes up.
+xcframeworkが占有するディスク容量です。
 
-The size of the xcframework is 5.9 MB for device and 4.2 MB for the simulator
+xcframeworkのサイズは、デバイスが5.9MB、シミュレーターが4.2MBです
 
-The breakage is as follows:
+内訳は以下の通りです。
 
-| Architecture | Size (MB) Device | Size (MB) Simulator |
+| アーキテクチャ | デバイスのサイズ（MB） | シミュレーターのサイズ（MB） |
 | ------------ | ---------------- | ------------------- |
 | arm64        | 2.87             | 2.92                |
 | armv7        | 2.81             | NA                  |
 | i386         | NA               | 5.11                |
 | x86_64       | NA               | 5.53                |
 
-When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `200` KB.
+iOSアプリが`HelpshiftX.xcframework`と統合された場合、IPAファイルサイズの増加は約`200`KBです。
 
-### Ram usage
+### RAMの使用量
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>4.8</code> MB (This depends on number of messages on the chat screen). |
-| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>4.4</code> MB.                                                         |
-| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>4.3</code> MB.                                                         |
-| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>4.1</code> MB.                                                         |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      | <code>4.8</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。 |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              | <code>4.4</code>MBが追加されます。                                                         |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** | <code>4.3</code>MBが追加されます。                                                         |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         | <code>4.1</code>MBが追加されます。                                                         |
 
 ## 1.0.0-beta
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-Performed on OS X 10.15.6, with Xcode 10.2 and iOS 12.4.5 (iPhone 6 Plus). Memory Usage will increase with number of messages in a conversation.
+OS X 10.15.6、Xcode 10.2、iOS 12.4.5（iPhone 6 Plus）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
 
 </Admonition>
 
-### Disk space
+### ディスク容量
 
-This is the amount of disk space the dynamic framework takes up.
+Dynamic Frameworkが占有するディスク容量です。
 
-The total size of framework is `1.7 MB`.
+フレームワークの合計サイズは`1.7 MB`です。
 
-The breakage is as follows:
+内訳は以下の通りです。
 
-| Architecture | Size (MB) |
+| アーキテクチャ | サイズ（MB） |
 | ------------ | --------- |
 | arm64        | 0.421     |
 | armv7        | 0.373     |
 | i386         | 0.368     |
 | x86_64       | 0.372     |
 
-When an iOS app is integrated with the HelpshiftX framework, the increase in the size of the IPA file is around `140 KB` for both bitcode and non-bitcode versions of the framework.
+iOSアプリがHelpshiftXフレームワークと統合された場合、IPAファイルサイズの増加はフレームワークのビットコード版と非ビットコード版の両方について約`140 KB`KBです。
 
-### Ram usage
+### RAMの使用量
 
-Memory usage (In debug mode. Values are approximate.)
+メモリの使用量（デバッグモードでは、値はおおよそのものです。）
 
 |                                                              |                                                                                   |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)** | adds <code>4.5</code> MB (This depends on number of messages on the chat screen). |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）** | <code>4.5</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。 |

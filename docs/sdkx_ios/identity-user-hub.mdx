@@ -1,7 +1,7 @@
 ---
 sidebar_position: 45
-title: User Hub
-description: Learn more about identifying and managing users.
+title: ユーザーアイデンティティと管理
+description: ユーザーの識別と管理について詳しく説明します。
 ---
 
 import {
@@ -12,37 +12,39 @@ import {
   Image,
 } from "@site/src/components/forDocs";
 
-<Admonition type="info" title="Note">
+<Admonition type="info" title="注意">
 
-All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
 
 </Admonition>
 
-## Managing users with the Identity System​
+## アイデンティティシステムによるユーザーの管理​
 
-Setting up the new Identity System ( "User Hub" ) requires some development effort, but provides many advantages over the legacy method in the form of faster context collection, easier agent experience, enhanced security and spam protection.
+アイデンティティシステムのセットアップにはある程度の開発労力が必要となりますが、コンテキスト収集の高速化、エージェントエクスペリエンスの簡素化、セキュリティの強化、スパムからの保護など、従来の方式に比べて多くのメリットがあります。
 
-### Prerequisites​
+### 前提条件​
 
-<Admonition type="info" title="NOTE">
-  This feature is in closed beta. Contact Helpshift Customer Success team to enable this
-  feature.
+<Admonition type="info" title="注意">
+
+この機能はクローズドベータ版です。この機能を有効にするには、Helpshiftのサポートチームまでお問い合わせください。
+
 </Admonition>
 
-- Ensure that the Identity System is enabled for your domain (reach out to Helpshift Support if you wish to enable this)
-- Ensure that you have the secret key from Helpshift Dashboard. The secret key can be generated from the “User Identity Verification (New ID System)” section of your app’s settings.
+- アイデンティティシステムがご利用のドメインで有効になっていることをご確認ください（有効化する場合には、Helpshiftのサポートまでお問い合わせください）
+- Helpshift ダッシュボードで、秘密鍵があることを確認します。秘密鍵は、アプリの設定の「ユーザーアイデンティティ認証（新アイデンティティシステム）」セクションから生成することができます。
+  {" "}
   <Image
     src="/static/books/helpshiftx/dashboard_identity_secret_key.png"
     width="full"
   />
-- Ensure that you have an endpoint set up for obtaining user JWTs on-demand. This endpoint should use the secret key generated above to sign the JWT.
+- ユーザーJWTをオンデマンドで取得するためのエンドポイントが設定されていることをご確認ください。このエンドポイントは、上記の手順で生成した秘密鍵を使用してJWTに署名を行う必要があります。
 
-### Logging in your end-users
+### エンドユーザーのログイン
 
-In order to use the new Identity System, you need to implement the following steps:
+新しいアイデンティティシステムを使用するには、以下の手順を実行する必要があります。
 
-1. Obtain a JWT for the given user from your dedicated endpoint
-2. Log your user in with the JWT + full privacy information
+1. 専用のエンドポイントから指定のユーザーのJWTを取得する
+2. JWTと全プライバシー情報を使用してユーザーをログインさせる
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
@@ -87,7 +89,7 @@ Helpshift.login(withIdentity: jwt, config: config) {
 </TabItem>
 </Tabs>
 
-The API signature for the login API is -
+Login APIのAPIシグネチャは、以下の通りです。
 
 ```
 login(withIdentity:config:success:failure:)
@@ -97,19 +99,11 @@ login(withIdentity:config:success:failure:)
 - failure - ((reason: String, errors: [String: String]) -> Void)
 ```
 
-Following rules apply depending on the value of `full_privacy_enabled` flag in config.
+失敗の理由と利用可能な復旧手順については、[ログイン失敗の理由](#login-failure-reasons)セクションに記載されています。
 
-- If full privacy flag is false, one of uid or email is mandatory in the identities array.
-- If full privacy flag is true, no identity keys are mandatory. However the behaviour changes depending on the presence of uid key -
-  - If uid is present - SDK will use the uid to identify the user.
-  - If uid is absent - SDK will generate an anonymous ID and use this ID to identify the user.
-- Full privacy is assumed to be false if no value is specified, or if the passed value can’t be parsed as a boolean type.
+### アイデンティティトークンの形式​
 
-The failure reasons and possible recovery steps are documented in the [Login failure reasons](#login-failure-reasons) section.
-
-### Identity token format​
-
-The identity token must be a JWT signed using the shared secret from your app's settings in the Dashboard. When decoded, it must adhere to the following JSON format -
+アイデンティティトークンは、ダッシュボードのアプリ設定にある共有シークレットを使用して署名されたJWTである必要があります。デコードする際は、以下のJSON形式を遵守してください。
 
 ```json
 {
@@ -127,34 +121,42 @@ The identity token must be a JWT signed using the shared secret from your app's 
 }
 ```
 
-Note that `identities` key expects an array in this contract, allowing you to specify more than one identity objects.
+この契約では`identities`キーは配列の指定を想定しているため、アイデンティティオブジェクトを複数指定できることにご注意ください。
 
-<Admonition type="info" title="Important">
+さらに、configの`full_privacy_enabled`フラグの値に応じて以下のルールが適用されます。
 
-Always generate the JWT on the server side, and store your shared secret securely.
+- フルプライバシーフラグがfalseの場合、アイデンティティ配列にはuidかemailのいずれかが必須となります。
+- フルプライバシーフラグがtrueの場合、アイデンティティキーは必須ではなくなります。ただし、uidキーの有無によって動作は変わります。
+- uidが存在する場合 - SDKはユーザーの識別にuidを使用します。
+- uidが存在しない場合 - SDKは匿名IDを生成し、このIDを使用してユーザーを識別します。
+- 値が指定されていない場合、または渡された値がブール値のために解析できない場合、フルプライバシーはfalseとして見なされます。
+
+<Admonition type="info" title="重要">
+
+JWTは常にサーバー側で生成し、共有シークレットは安全な場所で保管してください。
 
 </Admonition>
 
-### Logging in with anonymous users
+### 匿名ユーザーでのログイン
 
-We recommend logging in your end-user into Helpshift as early as possible, since it helps streamline the entire support experience.
+サポートエクスペリエンス全体の円滑化に役立つため、エンドユーザーはできる限り早期にHelpshiftにログインさせることをお勧めします。
 
-However, in the case where you have anonymous users, all you have to do is login with an empty JWT string, and Helpshift will take care of generating an anonymous UID and logging your end-user in.
+しかしながら、匿名ユーザーがいる場合には空のJWT文字列を使用してログインするだけでHelpshiftが匿名UIDを生成し、エンドユーザーをログインさせます。
 
-SDK will try its best to maintain the same anonymous user across multiple logins as long as you pass empty JWT. Once you login with a non-empty JWT, the existing anonymous user will be lost and a new one will be created the next time you login with empty JWT.
+SDKは、空のJWTを渡す限り、複数回のログインにわたって同一の匿名ユーザーを維持するために最善を尽くします。一度空でないJWTを使用してログインすると既存の匿名ユーザーは失われ、次に空のJWTを使用してログインしたときに新しい匿名ユーザーが作成されます。
 
-After you login with an anonymous user, you can’t add more identities for this user later. That is to say, `addUserIdentities` API is a no-op if current user is anonymous.
+匿名ユーザーでログインした後、後からこのユーザーのアイデンティティをさらに追加することはできません。つまり、`addUserIdentities`APIは現在のユーザーが匿名である場合には処理されません。
 
-### Best practices to follow for login API
+### Login APIのベストプラクティス
 
-- Call the login API once when the user logs in to your app. Avoid calling it in response to repeatable events like app foreground, right before opening support section of your app, etc.
-- When you have more information to associate with current logged in user, use the `addUserIdentities` API and not the login API. Calling the login API will log out the current user and log in a new user.
-- The `uid` or `email` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
-- If you are setting `full_privacy_enabled` to true, you shouldn't use `email` as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
+- Login APIは、ユーザーがアプリにログインする際に一度呼び出します。アプリのフォアグラウンドや、アプリのサポートセクションを開く直前など、繰り返し発生するイベントに応じて呼び出すのは避けてください。
+現在のログインユーザーに関連付けられるより多くの情報がある場合には、Login APIではなく`addUserIdentities`APIを使用します。Login APIを呼び出すと現在のユーザーはログアウトされ、新しいユーザーがログインします。
+- `uid`または`email`は、すべてのアプリユーザーの間でユーザーを一意に識別する必要があります。2人以上の異なるユーザーが重複して使用するべきではありません。
+- `full_privacy_enabled`をtrueに設定している場合、そのユーザーのLogin APIで`email`を唯一の識別子として使うべきではありません。これを行うと、結果的に匿名ユーザーが作成されてしまいます。
 
-### Logging out users
+### ユーザーのログアウト
 
-Once a user logs out from your app, you should call the logout API to ensure no one else can view this user's conversations.
+ユーザーがアプリからログアウトしたら、Logout APIを呼び出して他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
@@ -173,17 +175,17 @@ Helpshift.logout()
 </TabItem>
 </Tabs>
 
-### Logout due to session expiry
+### セッションの期限切れによるログアウト
 
-User logout can also be triggered by the SDK itself when the current user’s login session expires. This login session is independent from your app’s login session. When this happens, SDK will send the `userSessionExpired` event to your app immediately as well on each app foreground. In response to this event, you should obtain a fresh JWT for the app’s current user from your backend and call the login API with the new JWT and login config to start a fresh SDK login session. SDK will stop sending this event after a successful login.
+ユーザーのログアウトは、現在のユーザーのログインセッションが期限切れになったタイミングでSDK自体によりトリガーすることもできます。このログインセッションは、アプリのログインセッションから独立しています。このような場合、SDKはアプリがフォアグラウンドになるたびに即座に`userSessionExpired`イベントをアプリに送信します。このイベントに応じてバックエンドからアプリの現在のユーザーの新しいJWTを取得し、新しいJWTとログイン構成を使用してLogin APIを呼び出して、SDKの新しいログインセッションを開始する必要があります。ログインに成功すると、SDKはこのイベントの送信を停止します。
 
-If you wish to proactively refresh your logged in user’s credentials with Helpshift so that the session never expires, you can additionally listen to `refreshUserCredentials` event. This event is sent by the SDK some time before the session actually expires. This gives your app a chance to re-login the current user and maintain their session.
+Helpshiftを使用してログインユーザーの認証情報を前もって更新し、セッションの有効期限が切れないようにする場合には、`refreshUserCredentials`イベントをリッスンすることも可能です。このイベントは、セッションの期限が実際に切れるある程度前にSDKから送信されます。これにより、アプリに現在のユーザーを再ログインさせ、セッションを維持できるようになります。
 
-For more details on these events, please check the [Delegates](/sdkx_ios/delegates/#helpshifteventusersessionexpired) page.
+これらのイベントの詳細については、[デリゲート](/sdkx_ios/delegates/#helpshifteventusersessionexpired)ページをご参照ください。
 
-### Adding user identities
+### ユーザーアイデンティティの更新
 
-Use the `addUserIdentities` API to update the identities associated with the logged in user. This API updates the identities for a non-anonymous logged in user only. If your current user has been logged in with an empty JWT (aka an anonymous user), this API will be no-op.
+`addUserIdentities`APIを使用して、ログインユーザーに関連付けられているアイデンティティを更新します。このAPIは、匿名でないログインユーザーのアイデンティティのみを更新します。現在のユーザーが空のJWTでログインしている場合（匿名ユーザー）、このAPIの処理は行われません。
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
@@ -204,252 +206,100 @@ Helpshift.addUserIdentities(identitiesJwt)
 </TabItem>
 </Tabs>
 
-You need to obtain a JWT for new identities from your dedicated endpoint. Please check the Prerequisites section on this page for more details.
+新しいアイデンティティのJWTは専用のエンドポイントから取得する必要があります。詳細については、このページの「前提条件」セクションをご確認ください。
 
-This API leverages the existing Helpshift delegates system to notify the app in case of any errors. For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates.mdx/#user-identity-system-events) page.
+このAPIは、既存のHelpshiftデリゲートシステムを活用してエラーが発生した際にアプリに通知を行います。このAPIでトリガーできるエラーイベントの詳細については、[デリゲート](/sdkx_ios/delegates.mdx/#user-identity-system-events)ページを参照してください。
 
-### Troubleshooting and tips
-LogIn failure can be detected by listening to the [failure](/sdkx_ios/identity-user-hub/#logging-in-your-end-users) callbacks. The possible reasons for login failure are cited in the [Login failure reasons](/sdkx_ios/identity-user-hub/#login-failure-reasons) section.
+## ログイン失敗の理由
 
-If your login is still failing, you can investigate these other potential reasons:
+アイデンティティシステムのログインは、以下のいずれかの理由により失敗する場合があります。理由には、失敗の正確な原因を特定する際に役立つ関連エラーが含まれている場合があります。たとえば、アイデンティティJWTのキーが無効であることが失敗の原因である場合、エラー辞書には無効であることが明らかになった正確なキーが含まれます。このキーに対応する値は、失敗の原因を示しています（値が大きすぎる、値の型がサポートされていない、など）。
 
-- Ensure that your JWT endpoint is generating tokens in the accepted format
-- Ensure that your JWT endpoint is signing tokens with the shared secret
-- Ensure that your JWT endpoint has an iat (issued_at_time) value that is NOT older than 24h
-- In case you are caching the JWT, ensure that you do not cache it for longer than 24h.
+これらの失敗の理由の定数は、`HelpshiftUserLoginFailureReason.h`ヘッダーファイルで定義されています。エラーの定数は、`HelpshiftDelegate.h`ヘッダーファイルで定義されています。
 
-### Update global user data
+該当する場合、許容上限の最大値は以下のように定義されます。
 
-Use this API to update global attributes associated with the logged in user.
-
-<Tabs groupId="ios-languages">
-
-<TabItem value="Objective-C" label="Objective-C">
-
-```objc
-NSDictionary<NSString *, id> *attributes = @{
-    // Add attributes here
-};
-[Helpshift updateMasterAttributes:attributes];
-```
-
-</TabItem>
-
-<TabItem value="Swift" label="Swift">
-
-```swift
-let attributes: [String: Any] = [
-    // Add attributes here
-]
-Helpshift.updateMasterAttributes(attributes)
-```
-
-</TabItem>
-
-</Tabs>
-
-Global attributes must be one of the following types -
-
-- `first_name` - String
-- `last_name` - String
-- `display_name` - String
-- `full_name` - String
-- `last_country` - String // Full country name or country code, as per ISO-3166
-- `last_city` - String
-- `age` - Int or String // 0 < age < 150
-- `lifetime_value` - String // String value of Integer
-- `user_persona` - String
-- `user_vip_segment` - String
-- `user_support_status` - String
-- `last_active_date` - String // UNIX epoch time in seconds
-- `accepted_t_and_c` - String
-- `preferred_language` - String // ISO639-1 language code
-- `new_tags` - List< String >
-- `tags_to_remove` - List< String >
-- `reset_tags` - List< String >
-- `custom_user_fields` - Map<String, String>
-
-<Admonition type="info" title="Note">
-
-User Tags and Custom User Fields (CUF) must reference values that already exist in the Helpshift system. Using unknown or undefined values will result in failure.
-For more details, refer to the [Configure CUFs](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1275-user-hub-configuring-user-fields/) and [Configure User Tags](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1276-user-hub-configuring-user-tags/) pages.
-
-</Admonition>
-
-This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
-For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
-
-If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
-If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
-
-### Update app specific user data
-
-Use this API to update app specific attributes associated with the logged in user.
-
-<Tabs groupId="ios-languages">
-
-<TabItem value="Objective-C" label="Objective-C">
-
-```objc
-NSDictionary<NSString *, id> *attributes = @{
-    // Add attributes here
-};
-[Helpshift updateAppAttributes:attributes];
-```
-
-</TabItem>
-
-<TabItem value="Swift" label="Swift">
-
-```swift
-let attributes: [String: Any] = [
-    // Add attributes here
-]
-Helpshift.updateAppAttributes(attributes)
-```
-
-</TabItem>
-
-</Tabs>
-App specific attributes must be one of the following types -
-
-- `device_model` - String
-- `os_version` - String
-- `app_version` - String // Maximum length of 10 characters
-- `sdk_version` - String
-- `country` - String // Full country name or country code, as per ISO-3166
-- `city` - String
-- `user_vip_segment` - String
-- `language` - String // ISO639-1 language code
-- `app_rating` - String
-- `user_paying_segment` - String // Must be one of the following values:
-  - `low_paying`
-  - `medium_paying`
-  - `high_paying`
-  - `non_paying`
-- `user_support_status` - String
-- `user_persona` - String
-- `accepted_t_and_c` - String
-- `user_level` - String
-- `app_status` - String
-- `lifetime_value` - String // String value of Integer
-- `custom_user_fields` - Map<String,String>
-
-This API leverages the existing Helpshift delegates system to notify the app in case of any errors.
-For more details on the error events that can be triggered by this API, please refer the [Delegates](/sdkx_ios/delegates/#user-identity-system-events) page.
-
-If the attributes map contains an unsupported key, an error event will be communicated via the delegate.
-If the attributes map contains supported key, but with unsupported value type, the entry will be ignored.
-
-<Admonition type="info" title="Note">
-
-Custom User Fields (CUF) must reference values that already exist in the Helpshift system. Using unknown or undefined values will result in failure.
-For more details, refer to the [Configure CUFs](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1275-user-hub-configuring-user-fields/) page.
-
-</Admonition>
-
-<Admonition type="info" title="Note">
-
-Attributes update APIs sync attributes with Helpshift servers in batches. There is a chance of attribute updates
-being lost in case the user is logged out from the SDK before the current batch update is synced.
-
-</Admonition>
-
-
-## Login failure reasons
-
-Identity system login can fail for any of the reasons mentioned below. A reason may have associated errors that may help pinpoint the exact cause of the failure. As an example, if the failure is due to an invalid key in identities JWT, the errors dictionary will contain the exact key (or keys) found to be invalid. The value against this key will indicate what failed (value too big, value type not supported, etc).
-
-The constants for these failure reasons are defined in `HelpshiftUserLoginFailureReason.h` header file. The constants for errors are defined in `HelpshiftDelegate.h` header file.
-
-Where applicable, the max permissible limits are defined as follows -
-
-- Key length - Max 255 chars
-- Value length for identity - Max 300 chars
-- Value length for UID identity - Max 750 chars
-- Value length for CUF - Max 255 chars
-- Value length for multiline CUF - Max 100000 chars
-- Value length for user tags - Max 100 chars
-- Collection size - Max 30 entries
+- キーの長さ - 最大1000文字
+- 値の長さ - 最大10,000文字
+- コレクションのサイズ - 最大100エントリー
 
 ### HelpshiftLoginInProgress
 
-Another login request is already in progress
+別のログイン要求がすでに進行中です
 
-Errors - no
+エラー - なし
 
 ### HelpshiftLoginConfigInvalid
 
-Some keys or values in the login config are not valid
+ログイン構成内の一部のキーまたは値が無効です
 
-Errors -
+エラー -
 
-| Key                    | Value                             | Recovery                                                                    |
+| キー                    | 値                             | リカバリー                                                                    |
 | ---------------------- | --------------------------------- | --------------------------------------------------------------------------- |
-| One of the passed keys | HelpshiftKeyLengthLimitExceeded   | Ensure key length is within permissible limit                               |
-| One of the passed keys | HelpshiftValueLengthLimitExceeded | Ensure value length is within permissible limit                             |
-| One of the passed keys | HelpshiftInvalidValueType         | Ensure value is one of the supported types - String, Bool or a numeric type |
+| 渡されたキーのいずれか1つ | HelpshiftKeyLengthLimitExceeded   | キーの長さが許容範囲内であることをご確認ください                               |
+| 渡されたキーのいずれか1つ | HelpshiftValueLengthLimitExceeded | 値の長さが許容範囲内であることをご確認ください                             |
+| 渡されたキーのいずれか1つ | HelpshiftInvalidValueType         | 値が対応する型（文字列、ブール値、数値）のいずれかであることをご確認ください |
 
 ### HelpshiftIdentityTokenInvalid
 
-Identities JWT not in valid format
+アイデンティティJWTが有効な形式ではありません
 
-Errors - no
+エラー - なし
 
 ### HelpshiftIdentitiesDataInvalid
 
-Some of the identities in the JWT payload are not valid
+JWTのペイロードのアイデンティティの一部が有効ではありません
 
-Errors -
+エラー -
 
-| Key                                      | Value                                     | Recovery                                                                                            |
+| キー                                      | 値                                     | リカバリー                                                                                            |
 | ---------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| One of the passed identity keys          | HelpshiftKeyLengthLimitExceeded           | Ensure key length is within permissible limit                                                       |
-| One of the passed identity keys          | HelpshiftValueLengthLimitExceeded         | Ensure value length is within permissible limit                                                     |
-| One of the passed identity keys          | HelpshiftEmptyData                        | Ensure key or value is a valid non-empty value                                                      |
-| One of the passed identity keys          | HelpshiftMetadataCountLimitExceeded       | Ensure total number of entries in metadata dictionary for this identity is within permissible limit |
-| One of the passed identity metadata keys | HelpshiftMetadataKeyLengthLimitExceeded   | Ensure metadata key length is within permissible limit                                              |
-| One of the passed identity metadata keys | HelpshiftMetadataValueLengthLimitExceeded | Ensure metadata value length is within permissible limit                                            |
-| One of the passed identity metadata keys | HelpshiftMetadataEmptyKeyOrValue          | Ensure metadata key or value is a valid non-empty value                                             |
+| 渡されたアイデンティティキーのいずれか1つ          | HelpshiftKeyLengthLimitExceeded           | キーの長さが許容範囲内であることをご確認ください                                                       |
+| 渡されたIDキーのいずれか1つ          | HelpshiftValueLengthLimitExceeded         | 値の長さが許容範囲内であることをご確認ください                                                     |
+| 渡されたIDキーのいずれか1つ          | HelpshiftEmptyData                        | キーまたは値が空でない有効な値であることをご確認ください                                                      |
+| 渡されたIDキーのいずれか1つ          | HelpshiftMetadataCountLimitExceeded       | このアイデンティティのメタデータ辞書のエントリー総数が許容範囲内であることをご確認ください |
+| 渡されたアイデンティティメタデータキーのいずれか1つ | HelpshiftMetadataKeyLengthLimitExceeded   | メタデータキーの長さが許容範囲内であることをご確認ください                                              |
+| 渡されたIDメタデータキーのいずれか1つ | HelpshiftMetadataValueLengthLimitExceeded | メタデータの値の長さが許容範囲内であることをご確認ください                                            |
+| 渡されたIDメタデータキーのいずれか1つ | HelpshiftMetadataEmptyKeyOrValue          | メタデータのキーまたは値が空でない有効な値であることをご確認ください                                             |
 
 ### HelpshiftLoginConfigSizeLimitExceeded
 
-Number of entries in login config is more than the permissible limit
+ログイン構成のエントリーの数が許容上限を超えています
 
-Errors - no
+エラー - なし
 
 ### HelpshiftIdentitiesSizeLimitExceeded
 
-Number of identities in JWT payload is more than the permissible limit
+JWTのペイロードのアイデンティティの数が許容上限を超えています
 
-Errors - no
+エラー - なし
 
 ### HelpshiftIdentityFeatureNotEnabled
 
-Identity feature is not enabled for your domain
+ご利用のドメインでアイデンティティ機能が有効化されていません
 
-Errors - no
+エラー - なし
 
 ### HelpshiftUidOrEmailIsMandatory
 
-JWT payload must contain an identity for either uid or email. Providing both identities is also fine. One exception to this rule is when full privacy is set to true in login config. In this case, if uid is not provided, SDK will generate an anonymous ID for the user.
+JWTのペイロードには、uidまたはemailのいずれかのアイデンティティが含まれている必要があります。両方のIDが含まれていても問題ありません。このルールの1つの例外は、ログイン構成でフルプライバシーがtrueに設定されている場合です。この場合、uidが含まれていなければSDKはユーザーに匿名IDを生成します。
 
-Errors - no
+エラー - なし
 
 ### HelpshiftIatIsMandatory
 
-iat key is missing in the JWT. Issued At Timestamp or “iat“ is a mandatory key in the JWT payload.
+JWTにiatキーがありません。Issued At Timestampまたは"iat"は、JWTのペイロードの必須キーです。
 
-Errors - no
+エラー - なし
 
 ### HelpshiftNetworkError
 
-Login failed due to network error.
+ネットワークエラーによりログインに失敗しました
 
-Errors - no
+エラー - なし
 
 ### HelpshiftUnknownError
 
-Login failed due to some unknown error.
+不明なエラーによりログインに失敗しました
 
-Errors - no
+エラー - なし

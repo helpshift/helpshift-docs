@@ -1,163 +1,140 @@
 ---
 sidebar_position: 110
-title: Release Notes
-description: Read the Release Notes in detail.
+title: リリースノート
+description: 詳細については、リリースノートをご確認ください。
 ---
 
-import { LatestSdkVersion, DownloadButton } from "@site/src/components/forDocs";
+import {
+  LatestSdkVersion,
+  DownloadButton,
+} from "@site/src/components/forDocs";
 
-# Release Notes
+# リリースノート
 
 <LatestSdkVersion>
 
-## 10.5.0
-
-_December 03, 2025_
+## 10.4.0
 
 <DownloadButton
   text="Download SDK"
   link="[% sdkx_ios.sdk_url %]"
-  classes="mb-4"
-/>
+  classes="mb-4"/>
 
-- Introduced Proactive Engagement feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
-  - For integration details, please refer [Proactive Engagement](/sdkx_ios/proactive-engagement)
-  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for these permissions for your application. Please refer [Notifications](/sdkx_ios/notifications) page.
-- Deprecated old [Outbound Support](/sdkx_ios/outbound-support) with introduction of Proactive Engagement.
-- Added support for iOS 26 and iPadOS 26.
-- Stopped technical support for iOS 14 and below. SDK will remain compile-able on these versions, but functionality might be broken.
-- Updated to Xcode 16 for SDK compilation.
-- Existing [pauseDisplayOfInAppNotification](/sdkx_ios/notifications/#pause-in-app) API now supports pausing of Proactive Engagement in-app notifications.
-- Added support to provide [unread message count delegate](/sdkx_ios/delegates/#unreadMessageCount) callback when a message is received even via internal polling. This helps in better tracking of unread messages by the client application.
-  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount:](/sdkx_ios/notifications/#notification-badges)
-- Removed close button from In-App notification for issue messages and they can now be swiped to dismiss.
-- Introduced new APIs to handle push notifications better for the SDK. Please refer [Notifications](/sdkx_ios/notifications) page.
-- Some SDK APIs have been deprecated. For a full list of deprecated APIs and their replacements, refer [SDK X 10.5.0 Migration guide](/sdkx_ios/migration-guide-1050).
-- Some deprecated SDK APIs have been removed. For a full list of removed APIs and their replacements, refer [SDK X 10.5.0 Migration guide](/sdkx_ios/migration-guide-1050).
+_2024年11月27日_
+
+- iOS 18およびiPadOS 18への対応を追加しました。
+- ユーザーIDおよび関連するユーザーデータ収集APIのサポートを追加しました。
+  - ユーザーIDの詳細については、[ユーザーID](/sdkx_ios/identity-users/)ページを参照してください。
+  - ユーザーデータの収集の詳細については、[トラッキング](/sdkx_ios/tracking/#update-global-user-data)ページを参照してください。
+- NSLogの代わりにOSLogフレームワークを使用するようにSDKのロギングを更新しました。
+- SDKからのエラーログは常にコンソールに出力されます。
+- SDKのプライバシーマニフェストに、ユーザーIDと電子メールの宣言が含まれなくなりました。これらのフィールドを使用するアプリは、独自のマニフェストファイルでこれらを宣言する必要があります。
+- SDKのフレームワークにビットコードの痕跡が存在し、App Store Connectにアプリをアップロードする際にエラーが発生してしまうバグを修正しました。
+- デバッグシンボル（dSYM）ファイルはフレームワーク内に含まれます。
+- この追加により、ディスクサイズが大きくなりました。
+- HelpshiftXのバイナリのサイズには影響を与えません。
+  - dSYMファイルはオプションであり、必要がない場合には`HelpshiftX.xcframework/ios-arm64_armv7/dSYMs/`および`HelpshiftX.xcframework/ios-arm64_i386_x86_64-simulator/dSYMs/`から削除することができます。
+- スタックからウェブチャット関連の通知を操作すると、残りの通知が消去されなくなってしまうバグを修正しました。
+- 添付ファイル（画像/動画）のアップロードは、iOS 14以下ではできなくなりました。
 
 </LatestSdkVersion>
 
-## 10.4.1
-
-_January 30, 2025_
-
-- Fixed a rare crash that would happen on closing any SDK screen.
-
-## 10.4.0
-
-_November 27, 2024_
-
-- Added support for iOS 18 and iPadOS 18.
-- Added support for User Hub (User Identity & Profiles) and related user data collection APIs.
-  - For more details on user identities, refer [User Identities](/sdkx_ios/identity-user-hub/) page.
-  - For more details on user data collection, refer [Tracking](/sdkx_ios/tracking/#update-global-user-data) page.
-- Updated SDK logging to use OSLog framework instead of NSLog.
-- Error logs from SDK will always be printed on console.
-- SDK privacy manifest no longer includes user ID and email declarations. Apps using these fields need to declare it in their own manifest files.
-- Fixed a bug where some traces of bitcode were present in SDK framework, causing issues when uploading the app to App Store Connect.
-- Included debug symbols (dsym) file inside the framework.
-  - The disk size has been increased due to this addition.
-  - Does not affect the size of the HelpshiftX binary.
-  - dsym files are optional and can be removed if not needed from these locations: `HelpshiftX.xcframework/ios-arm64_armv7/dSYMs/` and `HelpshiftX.xcframework/ios-arm64_i386_x86_64-simulator/dSYMs/`.
-- Fixed a bug where interacting with any webchat-related notification from the stack failed to clear rest of the notifications.
-- Attachment(Image/Video) upload will be no-op below iOS 14.
-
 ## 10.3.1
 
-_June 13, 2024_
+_2024年6月13日_
 
-** Release Notes **
+**リリースノート**
 
-- Fixed a bug where existing user conversation was lost if new user login happens while chat screen is open.
+- チャット画面が開いているときに新規ユーザーのログインが発生すると、既存のユーザーとの会話が失われてしまうバグを修正しました。
 
 ## 10.3.0
 
-_October 31, 2023_
+_2023年10月31日_
 
-** Release Notes **
+**リリースノート**
 
-- Users can select and send more than one attachment in conversations.
-  - Support for multiple attachments in bot upload step will be added in Q1’24.
-- Added support for iOS 17 and iPadOS 17.
-- Added privacy manifest file to record data collection and required reasons API used by the SDK.
-- Added a new API for fetching SDK X version. For more details, refer [here](/sdkx_ios/support-tools/#getting-the-sdk-version).
-- Added a new API for closing the currently active SDK session. For more details, refer [here](/sdkx_ios/support-tools/#closing-an-open-sdk-session).
-- Deprecated ViewController-based public APIs in favor of newer ViewController-less variants. For more details, refer [Helpshift APIs](/sdkx_ios/support-tools/).
-- Login API now returns a boolean indicating whether login was successful or not. This change is in the existing API to introduce mandatory validations for login parameters and hence this might affect your code compilation. For more details, refer [Users](/sdkx_ios/users/#logged-in-users).
-- Added support for attachments in Smart FAQs.
-- Replaced static constants with extern constants for better compatibility in apps having multiple translation units.
-- Fixed crash on selecting unsupported attachments using file picker.
-- Fixed a bug where `presentFullScreenOniPad` config was not being honored on opening SDK screen via notification click.
-- Removed bitcode support from SDK X framework. SDK X now ships in non-bitcode variant only.
+- ユーザーが、会話の中で複数の添付ファイルを選択して送信できるようになりました。
+- ボットのアップロード手順での複数の添付ファイルのサポートは、2024の第一四半期に追加される予定です。
+- iOS 17およびiPadOS 17のサポートを追加しました。
+- SDKが使用するデータ収集およびRequired Reason APIを記録するプライバシーマニフェストファイルを追加しました。
+- SDK Xのバージョンを取得する新しいAPIを追加しました。詳細については、[こちら](/sdkx_ios/support-tools/#getting-the-sdk-version)を参照してください。
+- 現時点でアクティブなSDKセッションを終了する新しいAPIを追加しました。詳細については、[こちら](/sdkx_ios/support-tools/#closing-an-open-sdk-session)を参照してください。
+- ViewControllerを使用しないバリアントを採用し、ViewControllerベースのパブリックAPIを非推奨にしました。詳細については、「[Helpshift API](/sdkx_ios/support-tools/)」を参照してください。
+- Login APIが、ログインが成功したかどうかを示すブーリアン値を返すようになりました。この変更は、ログインパラメーターに必須となる検証機能を導入するために既存のAPIに加えられたものであり、コードのコンパイルに影響を与える可能性があります。詳細については、「[ユーザー](/sdkx_ios/users/#logged-in-users)」を参照してください。
+- スマートFAQに添付ファイルのサポートを追加しました。
+- 複数の翻訳ユニットを持つアプリでの互換性を高めるため、static定数をextern定数に置き換えました。
+- ファイルピッカーを使用する際に、サポートされていない添付ファイルを選択するとクラッシュが発生する場合があった問題を修正しました。
+- 通知のクリックでSDK画面を開く際に、`presentFullScreenOniPad`設定が反映されないバグを修正しました。
+- SDK Xフレームワークからビットコードのサポートを削除しました。SDK Xは現在、非ビットコードのバリアントでのみ配布されています。
 
 ## 10.2.3
 
-_March 13, 2023_
+_2023年3月13日_
 
-** Release Notes **
+**リリースノート**
 
-- Fix a bug where debug logs were not attached to an issue if it contained special characters.
+- 問題に特殊文字が含まれている場合に、デバッグログが添付されないバグを修正しました。
 
 ## 10.2.1
 
-_November 24, 2022_
+_2022年11月24日_
 
-** Release Notes **
+**リリースノート**
 
-- Fixed an issue with `setLanguage` API where the passed language was not being applied.
+- `setLanguage` APIで、渡された言語が適用されない問題を修正しました。
 
 ## 10.2.0
 
-_October 11, 2022_
+_2022年10月11日_**
 
-** Release Notes **
+リリースノート**
 
-- Added the capability for Outbound Support. You can reach out to your users proactively without they having to raise a ticket first. For more details, refer [Outbound support](/sdkx_ios/outbound-support).
+- アウトバウンドサポートの機能を追加しました。ユーザーがチケットを先に発行しなくても、積極的に連絡を取ることができます。詳細については、[アウトバウンドサポート](/sdkx_ios/outbound-support)をご参照ください。
 
-- Introduced a new API `clearAnonymousUserOnLogin:(BOOL)shouldClear` to support maintaining anonymous user on login. For more details, refer [Anonymous users](/sdkx_ios/users#anonymous-users)
+- 匿名ユーザーのログインの維持をサポートする新しいAPI `clearAnonymousUserOnLogin:(BOOL)shouldClear`を導入しました。詳細については、[匿名ユーザー](/sdkx_ios/users#anonymous-users)をご参照ください。
 
-- `clearAnonymousUserOnLogin()` API will be deprecated.
+- `clearAnonymousUserOnLogin()` APIが非推奨になりました。
 
-- Removed the `Take Photo or Video` option from the attachment flow. You don’t have to ask for camera permission in your app for Helpshift use-cases anymore. This is applicable to iOS 11 and above. On iOS 10 and below, attachment options will not be available.
+- 添付ファイルフローから`Take Photo or Video`オプションを削除しました。Helpshiftのユースケースにおいては、アプリ内でカメラへのアクセス許可を求める必要がなくなりました。これは、iOS 11以上で適用されます。iOS 10以下では、添付ファイルオプションは利用できなくなります。
 
 ## 10.1.1
 
-_May 09, 2022_
+_2022年5月9日_
 
-** Release Notes **
+**リリースノート**
 
-- Added more verbose logging around legacy to SDK X migration scenarios.
+- レガシーSDKからSDK Xへの移行シナリオにおいて、より詳細なロギングを追加しました。
 
 ## 10.1.0
 
-_December 22, 2021_
+_2021年12月22日_
 
-** Release Notes **
+**リリースノート**
 
-- Added support for adding breadcrumbs and debug logs to a new conversation filed by an end-user. For more details, refer our [Tracking](/sdkx_ios/tracking) page.
-- Added support for showing an announcement in Help Center. For more details, refer [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/).
-- Added migration support from legacy SDK to SDK X. For more details on how to migrate, refer our [migration guide](/sdkx_ios/migration-guide).
+- エンドユーザーが提出した新しい会話に、Breadcrumbsとデバッグログを追加できるようにするサポートを追加しました。詳細については、弊社の[トラッキング](/sdkx_ios/tracking)ページをご参照ください。
+- ヘルプセンターにお知らせを表示できるようにするサポートを追加しました。詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/)をご参照ください。
+- レガシーSDKからSDK Xへの移行のサポートを追加しました。移行方法の詳細については、[移行ガイド](/sdkx_ios/migration-guide)をご参照ください
 
 ## 10.0.0
 
-_May 12, 2021_
+_2021年5月12日_
 
-** Release Notes **
+**リリースノート**
 
-- Launched next-generation SDK X v10.0.0 which has lower size foot-print and requires minimal SDK upgrades to adopt new features and bug fixes.
+- フットプリントが小さく、新機能の追加やバグの修正のためのSDKのアップグレードが最小限で済む次世代SDK X v10.0.0を発表しました。
 
-** Getting started guide **
+**スタートガイド**
 
-- To start using SDK X 10.0.0, please refer to the guide [here](/sdkx_ios/getting-started)
+- SDK X 10.0.0の使用を開始するには、[こちら](/sdkx_ios/getting-started)のガイドをご参照ください
 
 ## 1.0.0-beta
 
-_September 25, 2020_
+_2020年9月25日_
 
-** Release Notes **
+**リリースノート**
 
-- Launched next-generation SDK X Beta which has lower size foot-print and does not require SDK upgrades to adopt new features and bug fixes
+- フットプリントが小さく、新機能の追加やバグの修正のためにSDKのアップグレードが必要ない次世代SDK X Betaの提供を開始しました。
 
-** Getting started guide **
+**スタートガイド**
 
-To start using SDK X 1.0.0 beta, please refer to the guide [here](/sdkx_ios/getting-started/).
+SDK X 10.0.0 betaの使用を開始するには、[こちら](/sdkx_ios/getting-started/)のガイドをご参照ください。
