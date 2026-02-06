@@ -119,9 +119,31 @@ public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedE
 
 If your application is not running and it receives a push notification then it will start the application in background (by invoking the push notification receiver registered in java). In this case, UnityEngine might not be initialized and the C# api `HelpshiftSdk.HandlePushNotification` might not be useful.
 
-If you are unable to delegate the push notification payload from the Java receiver class to C# api's then, for such cases, you can use the native Java api `HelpshiftUnity.handlePush(Context context, Intent intent)` to handle push notifications from Helpshift.
+#### Steps to support push notification in background or killed state
 
-In Java implementation of the receiver for push notifications, you can use this api as in the following example.
+If you are unable to delegate the push notification payload from the Java receiver class to C# api's then, for such cases, you can use the native Java api `HelpshiftUnity.handlePush(Context context, Map<String, String> data)` to handle push notifications from Helpshift.
+
+You can use below sample project for integration of push notification in java layer. This project routes Helpshift push notifications directly to the native Helpshift SDK for reliable background and killed-state handling, while forwarding all non-Helpshift notifications to Unity’s default FCM service to avoid conflicts with other SDKs.
+
+
+  1. In your Unity project, navigate to `Assets/Plugins/Android`
+  2. From the unzipped Helpshift Unity SDK, copy [`HelpshiftBackgroundFCM.androidlib`](/sdkx-unity/getting-started-android#getting-sdk) folder to above path.
+
+<Admonition type="info" title="Note">
+
+If your application is integrating multiple SDKs then you need to handle their push notifications handling in this Java layer as well.
+
+</Admonition>
+
+`HelpshiftCustomFCMService` is a custom Firebase Cloud Messaging (FCM) service implemented at the native Android (Java) layer to ensure reliable handling of Helpshift push notifications, especially when the app is in the background or killed state, where Unity and C# APIs may not be initialized.
+
+1. The service receives all incoming FCM messages in `onMessageReceived`.
+2. It checks for origin field in notification payload.
+3. If origin is "helpshift", the notification is handled directly by the native Helpshift SDK using `HelpshiftUnity.handlePush(context, data)`. This guarantees correct processing even when Unity is not running.
+4. When multiple SDKs are integrated, their push notifications should be handled in this Java layer by routing messages to the appropriate SDK based on the payload.
+5. If the notification is from a non-Helpshift source, it forwards the message to Unity’s default FCM handling by calling `super.onMessageReceived(message)`.
+
+In the Java implementation of the push notification receiver, you can use the following API as shown in the example below.
 
 ```java
 public class HelpshiftCustomFCMService extends ListenerService {
@@ -145,6 +167,7 @@ public class HelpshiftCustomFCMService extends ListenerService {
     }
 }
 ```
+
 
 Refer the sample project for [FCM Unity plugin](https://firebase.google.com/docs/cloud-messaging/unity/client) integration with Helpshift SDK [here](https://github.com/helpshift/helpshift-unity-examples/tree/master/Helpshift-Unity-SDKX-Apps).
 
