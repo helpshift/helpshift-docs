@@ -39,6 +39,38 @@ Helpshiftの初期化はすべてバックグラウンドのスレッドで実�
 
 Helpshift SDKの各バージョンのインパクト分析レポートについては、以下でご確認いただけます。
 
+## 10.5.0
+
+<Admonition type="info" title="注意">
+
+macOS 15.7.2、Xcode 26.1.1、iOS 26.1（iPhone 15 Plus）の環境で実施しています。メモリの使用量は、会話内のメッセージ数に応じて増加します。
+
+</Admonition>
+
+### ディスク容量
+
+xcframeworkが占有するディスク容量です。
+
+xcframeworkのサイズは、デバイスが4.6MB、シミュレーターが5.6MBです。合計サイズは10.3MBです。
+
+内訳は以下の通りです。
+
+| アーキテクチャ | デバイスのサイズ（MB） | シミュレーターのサイズ（MB） |
+| ------------ | ---------------- | ------------------- |
+| arm64        | 1.00             | 0.93                |
+| x86_64       | NA               | 1.01                |
+
+iOSアプリが`HelpshiftX.xcframework`と統合された場合、IPAファイルサイズの増加は約`603`KBです。
+
+### RAMの使用量
+
+|                                                                   |                                                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Helpshiftのチャット画面（<code>showConversation:</code>）**      | <code>5.2</code>MBが追加されます（チャット画面上のメッセージの数に依存します）。     |
+| **HelpshiftのFAQ画面（<code>showFAQs:</code>）**              | <code>4.1</code>MBが追加されます。                                                         |
+| **HelpshiftのFAQセクション画面（<code>showFAQSection:</code>）** | <code>2.8</code>MBが追加されます。                                                         |
+| **Helpshiftの単一のFAQ画面（<code>showFAQ:</code>）**         | <code>4.3</code>MBが追加されます。                                                         |
+
 ## 10.4.0
 
 <Admonition type="info" title="注意">

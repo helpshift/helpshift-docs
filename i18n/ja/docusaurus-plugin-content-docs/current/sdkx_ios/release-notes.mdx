@@ -4,40 +4,63 @@ title: リリースノート
 description: 詳細については、リリースノートをご確認ください。
 ---
 
-import {
-  LatestSdkVersion,
-  DownloadButton,
-} from "@site/src/components/forDocs";
+import { LatestSdkVersion, DownloadButton } from "@site/src/components/forDocs";
 
 # リリースノート
 
 <LatestSdkVersion>
 
-## 10.4.0
+## 10.5.0
+
+_2025年12月3日_
 
 <DownloadButton
   text="Download SDK"
   link="[% sdkx_ios.sdk_url %]"
-  classes="mb-4"/>
+  classes="mb-4"
+/>
+
+- プロアクティブエンゲージメント機能を導入しました。これにより、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。
+- 統合の詳細については、[プロアクティブエンゲージメント](/sdkx_ios/proactive-engagement)をご参照ください。
+  - SDKはクライアントアプリケーションに通知の送信許可を求めないことにご注意ください。プロアクティブエンゲージメントでは、アプリケーションにこれらの権限を要求する必要があります。[通知](/sdkx_ios/notifications)ページをご参照ください。
+- プロアクティブエンゲージメントの導入に伴い、従来の[アウトバウンドサポート](/sdkx_ios/outbound-support)は非推奨となりました。
+- iOS 26およびiPadOS 26への対応を追加しました。
+- iOS 14以下のテクニカルサポートを終了しました。SDKはこれらのバージョンでもコンパイル可能ですが、機能が壊れる可能性があります。
+- SDKコンパイル向けにXcode 16に更新しました。
+- 既存の[ pauseDisplayOfInAppNotification ](/sdkx_ios/notifications/#pause-in-app) API は、プロアクティブエンゲージメントのアプリ内通知の一時停止に対応するようになりました。
+- 内部ポーリング経由でも、メッセージ受信時に[未読メッセージ数デリゲート](/sdkx_ios/delegates/#unreadMessageCount)コールバックを提供するサポートを追加しました。これは、クライアントアプリケーションによる未読メッセージの追跡に役立ちます。
+   - 以前は、このコールバックはクライアントアプリが[ requestUnreadMessageCount:](/sdkx_ios/notifications/#notification-badges)を呼び出した場合にのみ呼び出されていました。
+- 問題メッセージのアプリ内通知から閉じるボタンを削除し、スワイプで非表示できるようになりました。
+- SDKでプッシュ通知をより良く扱うための新しいAPIを導入しました。[通知](/sdkx_ios/notifications)ページをご参照ください。
+- いくつかのSDK APIが非推奨となりました。非推奨となったAPIとその代替APIの完全なリストについては、[SDK X 10.5.0 移行ガイド](/sdkx_ios/migration-guide-1050)をご参照ください。
+- いくつかの非推奨SDK APIが削除されました。削除されたAPIとその代替の完全なリストについては、[SDK X 10.5.0 移行ガイド](/sdkx_ios/migration-guide-1050)をご参照ください。
+
+</LatestSdkVersion>
+
+## 10.4.1
+
+_2025年1月30日_
+
+- SDKの画面を閉じると、まれにクラッシュする問題を修正しました。
+
+## 10.4.0
 
 _2024年11月27日_
 
 - iOS 18およびiPadOS 18への対応を追加しました。
-- ユーザーIDおよび関連するユーザーデータ収集APIのサポートを追加しました。
+- ユーザーハブ（ユーザーIDおよびプロファイル）および関連するユーザーデータ収集APIのサポートを追加しました。
   - ユーザーIDの詳細については、[ユーザーID](/sdkx_ios/identity-user-hub/)ページを参照してください。
-  - ユーザーデータの収集の詳細については、[トラッキング](/sdkx_ios/tracking/#update-global-user-data)ページを参照してください。
+  - ユーザーデータの収集の詳細については、[トラッキング](/sdkx_ios/tracking/#update-global-user-data)ページをご参照ください。
 - NSLogの代わりにOSLogフレームワークを使用するようにSDKのロギングを更新しました。
 - SDKからのエラーログは常にコンソールに出力されます。
 - SDKのプライバシーマニフェストに、ユーザーIDと電子メールの宣言が含まれなくなりました。これらのフィールドを使用するアプリは、独自のマニフェストファイルでこれらを宣言する必要があります。
 - SDKのフレームワークにビットコードの痕跡が存在し、App Store Connectにアプリをアップロードする際にエラーが発生してしまうバグを修正しました。
 - デバッグシンボル（dSYM）ファイルはフレームワーク内に含まれます。
-- この追加により、ディスクサイズが大きくなりました。
-- HelpshiftXのバイナリのサイズには影響を与えません。
-  - dSYMファイルはオプションであり、必要がない場合には`HelpshiftX.xcframework/ios-arm64_armv7/dSYMs/`および`HelpshiftX.xcframework/ios-arm64_i386_x86_64-simulator/dSYMs/`から削除することができます。
+  - この追加により、ディスクサイズが大きくなりました。
+  - HelpshiftXのバイナリのサイズには影響を与えません。
+   - dSYMファイルはオプションであり、必要がない場合には`HelpshiftX.xcframework/ios-arm64_armv7/dSYMs/`および`HelpshiftX.xcframework/ios-arm64_i386_x86_64-simulator/dSYMs/`から削除することができます。
 - スタックからウェブチャット関連の通知を操作すると、残りの通知が消去されなくなってしまうバグを修正しました。
 - 添付ファイル（画像/動画）のアップロードは、iOS 14以下ではできなくなりました。
-
-</LatestSdkVersion>
 
 ## 10.3.1
 

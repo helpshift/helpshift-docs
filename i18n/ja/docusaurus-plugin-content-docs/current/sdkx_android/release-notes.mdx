@@ -23,22 +23,56 @@ import {
 
 <LatestSdkVersion>
 
+## 10.5.0
+
+_2025年12月3日_
+
+**リリースノート**
+
+- プロアクティブエンゲージメント機能を導入しました。これにより、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。
+  - 統合の詳細については、[プロアクティブエンゲージメント](/sdkx_android/proactive-engagement)をご参照ください。
+  - SDKはクライアントアプリケーションに通知の投稿許可を求めないことにご注意ください。プロアクティブエンゲージメントでは、[ POST_NOTIFICATION ](https://developer.android.com/develop/ui/views/notifications/notification-permission)の権限をご自身で要求する必要があります。
+- Android 16のサポートを追加しました。
+  - SDKがAPIレベル36（compileSdk 36）でコンパイルされるようになりました。
+   - Android 16のサポートによるSDKの断絶的な変更はありません。
+- **プロアクティブエンゲージメント**の導入に伴い、従来の[アウトバウンドサポート](/sdkx_android/outbound-support/)は非推奨となりました。
+- アプリ内通知を一時停止する新しいAPIを追加しました。これは、プロアクティブエンゲージメント通知のアプリ内通知を一時停止/解除します。詳細はこちらの[shouldPauseInAppNotification ](/sdkx_android/proactive-engagement/#pausing-inapp-notifications)をご参照ください。
+- Android 7以下で報告されたバグに対するテクニカルサポートは終了しますが、SDKは互換性があり、機能に影響はありません。
+- プッシュ通知または内部ポーリング経由でも、メッセージ受信時に[未読メッセージ数デリゲート](/sdkx_android/delegates/#unread-message-count)コールバックを提供するサポートを追加しました。これは、クライアントアプリケーションによる未読メッセージの追跡に役立ちます。
+   - 以前は、このコールバックはクライアントアプリが[ requestUnreadMessageCount:](/sdkx_android/notifications/#showing-notification-count)APIを呼び出した場合にのみ呼び出されていました。
+- SDKで使用されている非推奨のAndroid APIの使用を削除します。
+   - Activity.getWindow().setStatusBarColor()は非推奨ですが、Android 15以下では使用の必要があるため、内部的には変更されていません。
+- SDKでJava 8の一部の機能を採用し始めました。Java 8関連のビルドやランタイムに失敗した場合は、[Androidのこちらのガイド](https://developer.android.com/studio/write/java8-support)をご参照ください。
+   - 現在はLamba式のみを使用しています。
+
+**バグ修正**
+
+- ヘルプセンター画面がアプリケーションのフォアグラウンドイベントを不正に検出していたバグを修正しました。
+- WebViewがデバイス上で利用できないためにアプリケーションがクラッシュする断続的に発生するバグを修正しました。SDKはWebViewが利用できない場合を無視し、ノーオペレーションモードになるようになりました。
+
 ## 10.4.0
+
+_2025年8月15日_
+
+- Android 16は、SDKでの変更無しにサポートされます。
 
 _2024年11月27日_
 
 **リリースノート**
 
-- Helpshift SDKがAndroid 15対応となりました。
-- Helpshift SDKがAPIレベル35でコンパイルできるようになりました。
-- Helpshift SDKがJAVA 8でコンパイルできるようになりました。
-- ユーザーIDや関連するユーザーデータ収集APIのサポートを追加しました。
-- ユーザーIDの詳細については、[ユーザーID](/sdkx_android/identity-user-hub/)ページを参照してください。
-- ユーザーデータの収集の詳細については、[トラッキング](/sdkx_android/tracking/#update-global-user-data)ページをご参照ください。
+- Android 15のサポートを追加しました。
+- Android 15サポートのために修正された**断絶的な変更**：
+   - カメラのカットアウトやソフトナビゲーションバーの外にUIを拡張していた、ウィンドウインセットの問題を修正しました。
+- SDKがAPIレベル35（compileSdk 35）でコンパイルされるようになりました。
+- SDKのアーティファクトがJava 8でコンパイルされるようになりました。
+- `minSDKVersion`が19に更新されました。
+- ユーザーハブ（ユーザーIDおよびプロファイル）および関連するユーザーデータ収集APIのサポートを追加しました。
+  - ユーザーIDの詳細については、[ユーザーID](/sdkx_android/identity-user-hub/)ページを参照してください。
+  - ユーザーデータの収集の詳細については、[トラッキング](/sdkx_android/tracking/#update-global-user-data)ページをご参照ください。
 - Login APIと未読メッセージ数の計測APIが連続して呼び出された場合にメッセージ数が正しく計測されなくなるという特殊ケースのバグを修正しました。
-- SDKからのエラーログは常に記録されます。
-- デバッグログ用のデバッグビルドが必要なくなりました。enableLoggingフラグをtrueに設定するだけでOKです。
-- WebViewが強化されたセキュリティフラグMIXED_CONTENT_NEVER_ALLOWを使用して読み込みを行うようになりました。
+- SDKからのエラーログが常にlogcatに記録されるようになりました。
+- デバッグログ用のデバッグビルドが必要なくなり、`enableLogging`フラグのみを`true`に設定すればよくなります。
+- WebViewが強化されたセキュリティフラグ[MIXED_CONTENT_NEVER_ALLOW](https://developer.android.com/reference/android/webkit/WebSettings#MIXED_CONTENT_NEVER_ALLOW)を使用して読み込みを行うようになりました。
 
 ## 10.3.0
 

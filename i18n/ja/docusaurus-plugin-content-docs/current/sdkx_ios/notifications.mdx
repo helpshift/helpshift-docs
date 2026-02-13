@@ -13,7 +13,6 @@ import {
   Centered,
   Image,
   Intro,
-  SideBySide,
   DownloadButton,
   Steps,
   Step,
@@ -35,26 +34,48 @@ SDKに含まれているすべてのパブリックAPIは、[Helpshift installWi
 
 </Admonition>
 
-## Helpshiftを介したプッシュ通知を構成する {#push-via-helpshift}
+次のような場合に、ユーザーに通知を送ることができます。
 
-ユーザーから提出された問題に返信したタイミングで、ユーザーに通知を送信することができます。iOSで期待されるプッシュ通知の動作に加えて、通知をカスタマイズし、通知の受信時にアプリアイコンに数字が記載されたバッジを表示したり、音声アラートを再生したりすることができます。
+- あなたまたはサポートエージェントが、ユーザーから提出された問題に回答する場合
+- ユーザーをターゲットにした[プロアクティブエンゲージメント](/sdkx_ios/proactive-engagement)通知を送信するとき
 
-アプリでまだプッシュ機能を使用していない場合には、アプリのプッシュ機能を有効にする必要があります。アプリケーションでプッシュ通知を有効にするには、AppDelegateの`application:didFinishLaunchingWithOptions:`メソッドにAPNs登録コードを追加する必要があります。
+プッシュ通知を設定するには、Helpshiftの管理者ダッシュボードとクライアントアプリの両方を設定する必要があります。
+
+## Helpshiftの管理者ダッシュボードでプッシュ通知を設定する {##configure-helpshift-push-admin}
+
+<ConfigurePushNotificationsiOS />
+
+## Helpshift iOS SDKが通知を処理するように構成する {#configure-helpshift-sdk}
+
+<Admonition type="info" title="注意">
+
+プッシュ機能が構成されていない場合、Helpshift SDKはエージェント/ボットにより送信されたすべてのメッセージに対してすぐに使用可能なアプリ内通知を表示します。
+`registerDeviceToken` APIを呼び出すのは、必ず[Helpshiftダッシュボードをプッシュ通知用に構成した後](#configure-helpshift-push-admin)にしてください。Helpshiftダッシュボードを構成せずに`registerDeviceToken` APIを呼び出すと、エンドユーザーに対してアプリ内通知が表示されなくなります。
+
+</Admonition>
+
+### 通知許可のリクエストとアプリのプッシュ登録 {#push-permission}
+
+アプリでまだプッシュ機能を使用していない場合には、アプリのプッシュ機能を有効にする必要があります。アプリケーションでプッシュ通知を有効にするには、AppDelegateの`application:didFinishLaunchingWithOptions:`メソッドに通知許可リクエストおよびプッシュ登録コードを追加する必要があります。
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    ...
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
-                                                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-        ...
+                          completionHandler:^(BOOL granted, NSError *_Nullable error) {
+        if(!granted) {
+            NSLog(@"Notification auth denied");
+        } else {
+            NSLog(@"Notification auth granted");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIApplication.sharedApplication registerForRemoteNotifications];
+            });
+        }
     }];
-    [UIApplication sharedApplication registerForRemoteNotifications];
-    ...
 }
 ```
 
@@ -66,9 +87,14 @@ func application(_ application: UIApplication,
                 didFinishLaunchingWithOptions options: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     let center = UNUserNotificationCenter.current()
     center.delegate = self
-    center.requestAuthorization(options: [.badge, .sound, .alert]) { granted, error in
-        if let error = error {
-            NSLog("Error while requesting notification permissions: \(error.localizedDescription)")
+    center.requestAuthorization(options: [.badge,.alert,.sound]) { granted, error in
+        if granted {
+            print("Notification auth granted")
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        } else {
+            print("Notification auth denied")
         }
     }
 }
@@ -77,16 +103,7 @@ func application(_ application: UIApplication,
 </TabItem>
 </Tabs>
 
-<ConfigurePushNotificationsiOS />
-
-### Helpshift iOS SDKが通知を処理するように構成する {#configure-helpshift-sdk}
-
-<Admonition type="info" title="注意">
-
-プッシュ機能が構成されていない場合、Helpshift SDKはエージェント/ボットにより送信されたすべてのメッセージに対してすぐに使用可能なアプリ内通知を表示します。
-`registerDeviceToken` APIを呼び出すのは、必ず[Helpshiftダッシュボードをプッシュ通知用に構成した後](#configure-helpshift-push-admin)にしてください。Helpshiftダッシュボードを構成せずに`registerDeviceToken` APIを呼び出すと、エンドユーザーに対してアプリ内通知が表示されなくなります。
-
-</Admonition>
+### 登録したプッシュトークンをHelpshiftに渡します。 {#push-pass-to-helpshift}
 
 Helpshift SDKをHelpshiftのプッシュ通知サービスと連携させるには、
 `registerDeviceToken:` API呼び出しをアプリケーションのデリゲートメソッド
@@ -95,7 +112,6 @@ Helpshift SDKをHelpshiftのプッシュ通知サービスと連携させるに�
 アプリのデリゲートファイルでは、以下のようになります。
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
@@ -114,37 +130,39 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 ```
 
 </TabItem>
-
 </Tabs>
 
-#### アプリがUNNotificationフレームワークを使用している場合 {#unnotification-framework}
+### プッシュデリゲートの実装 {#push-delegates}
 
 配信された通知に応答するには、共有されているUNUserNotificationCenterオブジェクトのためのデリゲートを実装する必要があります。デリゲートオブジェクトは、通知センターがアプリに通知情報を配信するために使用するUNUserNotificationCenterDelegateプロトコルに準拠する必要があります。
 
-1. アプリがフォアグラウンドにあるときに通知が届くと、UNUserNotificationCenterDelegateの`userNotificationCenter:willPresentNotification:withCompletionHandler:`が呼び出されます。
-1. アプリがバックグラウンドにあるか、または実行されていない場合には、システムは`userNotificationCenter:willPresentNotification:withCompletionHandler:`メソッドを呼び出しません。そのような場合には、システムは通知そのものに含まれている情報に従ってユーザーにアラートを発します。
-   ユーザーが通知インターフェースからアクションを選択すると、システムはユーザーの選択をアプリに通知します。レスポンスを受け取るためには、デリゲートオブジェクトは`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:`メソッドを実装する必要があります。
+- アプリがフォアグラウンドにあるときに通知が届くと、UNUserNotificationCenterDelegateの`userNotificationCenter:willPresentNotification:withCompletionHandler:`が呼び出されます。
+- アプリがバックグラウンドにあるか、終了時に通知が届いた場合、システムは`userNotificationCenter:willPresentNotification:withCompletionHandler:`メソッドを**呼び出しません**。代わりに、システムは通知そのものに含まれている情報に従ってユーザーにアラートを発します。
+ユーザーが通知インターフェースからアクションを選択すると、システムはユーザーの選択をアプリに通知します。レスポンスを受け取るためには、デリゲートオブジェクトは`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:`メソッドを実装する必要があります。
 
-上記のすべての場合において、通知のオリジンが「Helpshift」であれば通知辞書の「origin」フィールドをチェックし、`handleNotificationWithUserInfoDictionary:isAppLaunch:` APIを呼び出す必要があります。Helpshift SDKは通知を受信した問題を確認し、それらの問題の会話画面を自動的に起動します。isAppLaunchブール値フラグは、ここではアクティブまたはバックグラウンドにあるアプリと、ユーザにより強制終了されたアプリを区別するために使用されます。後者の場合、このフラグはtrueに設定されているはずです。
+どちらの場合も、通知辞書の「origin」フィールドをチェックし、originが「helpshift」であれば、対応するSDK API（後述）を呼び出す必要があります。Helpshift SDKは、ペイロードに応じて透過的に通知を処理します。
 
-使用方法のサンプル
+- ユーザーのサポート会話に対するエージェントの返信に応じて送信された通知の場合、SDKは対応する会話を開きます。
+- プロアクティブエンゲージメント通知の場合、SDKはダッシュボードで設定されたアクションを実行します。
 
-`userNotificationCenter:willPresentNotification:withCompletionHandler:`デリゲートの場合:
+#### アプリがフォアグラウンドのときのプッシュデリゲート {#push-delegates-foreground}
+
+`userNotificationCenter:willPresentNotification:withCompletionHandler:`デリゲートについては、`handleForegroundNotification:withCompletionHandler:` SDK API を呼び出してください。
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center
-    willPresentNotification:(UNNotification *)notification
-    withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-    if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:false];
-        completionHandler(UNNotificationPresentationOptionNone);
+        willPresentNotification:(UNNotification *)notification
+          withCompletionHandler:(void (^)(UNNotificationPresentationOptions)) completionHandler {
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
+        [Helpshift handleForegroundNotification:userInfo withCompletionHandler:completionHandler];
     } else {
-        // Handling for non-helpshift push notifications received when app is in foreground
+        completionHandler(UNNotificationPresentationOptionBanner |
+                          UNNotificationPresentationOptionSound  |
+                          UNNotificationPresentationOptionList);
     }
 }
 ```
@@ -153,101 +171,157 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 <TabItem value="Swift" label="Swift">
 
 ```swift
-func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    if notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false)
-        completionHandler([])
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification,
+    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+) {
+    let userInfo = notification.request.content.userInfo
+    if let origin = userInfo["origin"] as? String, origin == "helpshift" {
+        Helpshift.handleForegroundNotification(userInfo, withCompletionHandler: completionHandler)
     } else {
-        // Handling for non-helpshift push notifications received when app is in foreground
+        completionHandler([.banner, .sound, .list])
     }
 }
 ```
 
 </TabItem>
-
 </Tabs>
 
-`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler`デリゲートの場合:
+#### アプリがバックグラウンドにあるか実行中でないときのプッシュデリゲート {#push-delegates-background}
 
-<Tabs groupId="ios-languages">
+`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler`デリゲートについては、`handleBackgroundNotificationClick:withCompletionHandler:` SDK API を呼び出してください。
 
-<TabItem value="Objective-C" label="Objective-C">
+<Admonition type="warning" title="スレッディングの要件">
 
-```objc
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-didReceiveNotificationResponse:(UNNotificationResponse *)response
-         withCompletionHandler:(void (^)(void))completionHandler {
-    if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
-                                                isAppLaunch:YES];
-    } else {
-        // Handling for non-helpshift push notifications received when app is in background or killed
-    }
-    completionHandler();
-}
-```
 
-</TabItem>
-<TabItem value="Swift" label="Swift">
+`userNotificationCenter(_:didReceive:withCompletionHandler:)`
+が提供する完了ハンドラーは、**メインスレッドで呼び出す必要があります**。
 
-```swift
-func userNotificationCenter(_ center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    if response.notification.request.content.userInfo["origin"] as? String == "helpshift" {
-        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo, isAppLaunch: true)
-    } else {
-        // Handling for non-helpshift push notifications received when app is in background or killed
-    }
-    completionHandler()
-}
-```
-
-</TabItem>
-
-</Tabs>
-
-### バッジの数 {#badge-count}
-
-アプリケーションアイコンでバッジのリセットを処理する必要がある場合は、
-`applicationDidBecomeActive:`デリゲート
-メソッドで以下のように処理します。
-
-```objc
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-}
-```
-
-<Admonition type="info" title="注意">
-
-- すでに本番稼動中のアプリのプッシュ通知をテストする場合は、[こちら](/ios/troubleshooting#test-push-production)をご参照ください。
-- オリジンを確認し、コールバックを受け取ったらすぐに`handleRemoteNotfication`を呼び出す必要があります。SDKはアプリの状態（アクティブ/非アクティブ）を確認し、それに基づいてチャット画面を表示するか、またはアプリ内通知を表示するかを決定します。handleRemoteNotificationの呼び出しが遅れると、SDKが不正確なアプリケーションの状態を取得してしまう可能性があります。
-- アプリのビルドとデプロイにXcode 11を利用している場合には、弊社の[トラブルシューティングガイド](/ios/troubleshooting#xcode11)をご参照ください。
+これをバックグラウンドのスレッドから呼び出すと、
+`NSInternalInconsistencyException`クラッシュが引き起こされる可能性があります。これは、アプリが
+バックグラウンド状態やキル状態から起動された場合に特に顕著です。
 
 </Admonition>
 
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler {
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
+        [Helpshift handleBackgroundNotificationClick:userInfo
+                               withCompletionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler();
+            });
+        }];
+    } else {
+        completionHandler();
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+) {
+    let userInfo = response.notification.request.content.userInfo
+    if let origin = userInfo["origin"] as? String, origin == "helpshift" {
+        Helpshift.handleBackgroundNotificationClick(userInfo) {
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
+    } else {
+        completionHandler()
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### NotificationService拡張機能の設定 {#notification-service}
+
+<Admonition type="info" title="注意">
+
+アプリでNotificationService拡張機能を構成する必要があるのは、プロアクティブエンゲージメント機能を使用している場合だけです。サポート通知については、この設定を省略できます。
+
+</Admonition>
+
+Helpshiftの[プロアクティブエンゲージメント](/sdkx_ios/proactive-engagement)機能を使用している場合、アプリにNotificationService拡張機能を追加する必要があります。この拡張機能により、iOSシステムがシステムトレイに通知を表示する前に、アプリが通知を傍受し、ペイロードを変更できます。このサービス拡張の機能およびアプリでの設定方法の詳細については、[Appleドキュメント](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications)を参照してください。
+
+Helpshiftは、プッシュ通知に表示する画像をダウンロードするためにこの拡張機能を使用します。もしアプリにすでにNotificationService拡張機能があるならば、Helpshiftの通知処理に再利用できます。通知サービスの`didReceiveNotificationRequest:withContentHandler:`メソッドで、対応する Helpshift API を呼び出します。
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) didReceiveNotificationRequest:(UNNotificationRequest *)request
+                    withContentHandler:(void (^)(UNNotificationContent *content))contentHandler {
+    NSString *origin = request.content.userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleBackgroundNotification:request
+                           withContentHandler:contentHandler];
+    } else {
+        contentHandler(request.content);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+override func didReceive(
+    _ request: UNNotificationRequest,
+    withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void
+) {
+    let origin = request.content.userInfo["origin"] as? String
+    if origin == "helpshift" {
+        Helpshift.handleBackgroundNotification(request, withContentHandler: contentHandler)
+    } else {
+        contentHandler(request.content)
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## アプリ内通知 {#in-app-notifications}
 
-アプリ内通知は、Appleのプッシュ通知バナーに似ています。プッシュ通知とは異なり、ユーザーの使用中にアプリ内に表示されます。
-
-これらの通知は、エージェントが顧客の問題に返信したタイミングで送信されます。顧客は、それらのバナーをクリックすることで直接会話画面に移動することができます。
-
-<SideBySide>
+アプリ内通知は、Appleのプッシュ通知バナーに似ています。プッシュ通知とは異なり、ユーザーの使用中にアプリ内に表示されます。これらの通知のUIは次のようになります。
 
 <Image
-  src="/static/books/sdkx_ios/In-app-notification.png"
+  src="/static/books/sdkx_ios/support-inapp.png"
   width="half"
-  alt="In-app-notification.png"
+  alt="Support In-App Notification"
 />
 
-</SideBySide>
-
-## アプリ内通知を構成する {#optional-flags}
-
-Helpshiftの[インストール呼び出し](/sdkx_ios/getting-started#initializing)は、SDKの動作を構成するためのフラグをサポートしています。
-現時点では、`enableInAppNotification`という1つのフラグをサポートしています。
+これらの通知は、以下の場合に送信されます。
+1.エージェントが顧客の問題に返信した時。顧客は、それらのバナーをクリックすることで直接会話画面に移動することができます。
+2.ユーザーがアプリをアクティブに使用している間、アプリ内型のプロアクティブエンゲージメント通知を受け取ります。バナーをクリックすると、管理者ダッシュボードで設定した通知のアクションが実行されます。
 
 ### アプリ内通知の有効化/無効化 {#enable-disable-in-app}
+
+<Admonition type="info" title="注意">
+
+このセクションは、アプリ内サポート通知のみに適用され、プロアクティブエンゲージメント通知には適用されません。
+
+</Admonition>
+
+
+Helpshiftの[インストールコール](/sdkx_ios/getting-started#initializing)で`enableInAppNotification`フラグを使用することで、アプリ内のサポート通知を有効/無効にできます。
 
 <div className="compact ">
 
@@ -259,15 +333,11 @@ Helpshiftの[インストール呼び出し](/sdkx_ios/getting-started#initializ
 
 </div>
 
-Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、
-このフラグを`NO`に設定してください。この
-フラグの規定値は`YES`であり、この場合にはアプリ内通知が有効化されます。<br />
-アプリ内通知の詳細については、[通知セクション](/sdkx_ios/notifications#in-app-notifications)をご参照ください。
+このフラグの既定値は`YES`です。そのため、アプリ内サポート通知は有効化されます。
 
 例:
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
@@ -286,17 +356,15 @@ Helpshift.install(withPlatformId: "YOUR_PLATFORM_ID", domain: "YOUR_DOMAIN", con
 ```
 
 </TabItem>
-
 </Tabs>
 
 ### アプリ内通知の一時停止 {#pause-in-app}
 
-アプリ内通知を有効にしている場合には、`pauseDisplayOfInAppNotification` APIを使用して通知の一時停止や再開を行います。このメソッドに`YES`が渡されると、アプリ内通知が発生しても表示は一時停止されます。`NO`を渡すと、アプリ内通知が表示されるようになります。
+`pauseDisplayOfInAppNotification`APIを使用して通知の一時停止や再開を行います。このメソッドに`YES`が渡されると、アプリ内通知が届いても表示は一時停止されます。`NO`を渡すと、アプリ内通知が表示されるようになります。[アプリ内サポート通知を無効化](#enable-disable-in-app)している場合、このフラグはサポート通知には影響しません。アプリ内のプロアクティブエンゲージメント通知には機能します。
 
 例:
 
 <Tabs groupId="ios-languages">
-
 <TabItem value="Objective-C" label="Objective-C">
 
 ```objc
@@ -313,7 +381,6 @@ Helpshift.pauseDisplayOf(inAppNotification: false) // To resume showing the in-a
 ```
 
 </TabItem>
-
 </Tabs>
 
 ## 通知バッジ {#notification-badges}
@@ -454,3 +521,16 @@ Helpshift.requestUnreadMessageCount(false)
 SDKがアプリに未読の数を通知する仕組みの詳細については、[未読メッセージ数イベント](/sdkx_ios/delegates#unreadMessageCount)をご参照ください。
 
 </Admonition>
+
+### バッジ数のリセット {#reset-badge-count}
+
+アプリケーションアイコンでバッジのリセットを処理する必要がある場合は、
+`applicationDidBecomeActive:`デリゲート
+メソッドで以下のように処理します。
+
+```objc
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+```
