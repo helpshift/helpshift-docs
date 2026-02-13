@@ -49,7 +49,7 @@ async function createConfig() {
     // to replace "en" with "zh-Hans".
     i18n: {
       defaultLocale: "en",
-      locales: ["en"],
+      locales: ["en", "ja"],
     },
     trailingSlash: true,
 
@@ -93,6 +93,7 @@ async function createConfig() {
           removeDefaultStopWordFilter: false,
           searchContextByPaths: getDocsDirectoriesForSearchPaths("./docs"),
           hideSearchBarWithNoSearchContext: true,
+          language: ["en", "ja"],
         },
       ],
     ],

@@ -1,0 +1,295 @@
+---
+sidebar_position: 290
+title: リリースノート
+description: 詳細については、リリースノートをご確認ください
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# リリースノート
+
+<LatestSdkVersion>
+
+## v10.4.0
+
+2025年2月11日
+
+</LatestSdkVersion>
+
+**リリースノート: **
+
+- ユーザーハブ（ユーザーIDおよびプロファイル）および関連するユーザーデータ収集APIのサポートを追加しました。
+  - ユーザーIDの詳細については、Androidの[ユーザーID](/sdkx-unity/identity-user-hub-android/)ページとiOSの[ユーザーID](/sdkx-unity/identity-user-hub-ios/)ページを参照してください。
+  - ユーザーデータの収集の詳細については、Androidの[トラッキング](/sdkx-unity/tracking-android/#update-global-user-data)ページとiOSの[トラッキング](/sdkx-unity/tracking-ios/#update-global-user-data)ページを参照してください。
+
+**iOS**
+
+- iOS 18とiPadOS 18のサポートを追加しました。
+- NSLogの代わりにOSLogフレームワークを使用するようにSDKのロギングを更新しました。
+- SDKからのエラーログは常にコンソールに出力されます。
+- SDKのプライバシーマニフェストに、ユーザーIDと電子メールの宣言が含まれなくなりました。これらのフィールドを使用するアプリは、独自のマニフェストファイルでこれらを宣言する必要があります。
+- SDKのフレームワークにビットコードの痕跡が存在し、App Store Connectにアプリをアップロードする際にエラーが発生してしまうバグを修正しました。
+- Helpshiftフレームワーク用のデバッグシンボル（HelpshiftX.framework.dSYM）をパッケージに含めました。
+- スタックからウェブチャット関連の通知を操作すると、残りの通知が消去されなくなってしまうバグを修正しました。
+- 添付ファイル（画像/動画）のアップロードがiOS 14以下ではサポートされなくなりました。
+
+**Android**
+
+- Android 15のサポートを追加しました。
+- SDKがAPIレベル35（compileSdk 35）でコンパイルされるようになりました。
+- SDKのアーティファクトがJava 8でコンパイルされるようになりました。
+- `minSDKVersion`が19にアップデートされました。詳細については、「[OSサポートポリシー](/sdkx-unity/getting-started-android/#version-requirements)」をご参照ください。
+- ログインAPIと未読メッセージ数APIが短時間に連続して呼び出された場合にメッセージ数が正しくカウントされないというエッジケースのバグを修正しました。
+- SDKからのエラーログが常にlogcatに記録されるようになりました。
+- デバッグログ用のデバッグビルドが必要なくなり、`enableLogging`フラグのみを`true`に設定すればよくなります。
+- WebViewが、強化されたセキュリティフラグ[MIXED_CONTENT_NEVER_ALLOW](https://developer.android.com/reference/android/webkit/WebSettings#MIXED_CONTENT_NEVER_ALLOW)を使用して読み込まれるようになりました。
+- Helpshift.aarファイルの場所が`Assets/Helpshift/Plugins/Android/`に変更されました。古いプラグインを完全に削除してから新しいプラグインをインポートしてください。
+
+## v10.3.1
+
+**リリースノート: **
+
+**iOS**
+
+- SDKの画面を開いた状態でアプリが終了するとクラッシュしてしまう問題を修正しました。
+- チャット画面を開いているときに新規ユーザーがログインすると、既存のユーザーの会話が失われてしまうバグを修正しました。
+
+**Android**
+
+- アプリが既にバックグラウンドで終了しており、その後で「最近使用したアプリ」から起動し、ユーザーがチャット画面にいた場合、アプリがクラッシュしてしまうバグを修正しました。
+
+## v10.3.0
+
+2023年11月27日
+
+**リリースノート: **
+
+**iOS**
+
+- ユーザーが、会話の中で複数の添付ファイルを選択して送信できるようになりました。
+- ボットのアップロード手順での複数の添付ファイルのサポートは、2024の第一四半期に追加される予定です。
+- iOS 17およびiPadOS 17のサポートを追加しました。
+- SDKが使用するデータ収集およびRequired Reason APIを記録するプライバシーマニフェストファイルを追加しました。
+- SDK Xのバージョンを取得する新しいAPIを追加しました。詳細については、[こちら](/sdkx-unity/support-tools-ios/#getting-the-sdk-version)を参照してください。
+- 現時点でアクティブなSDKセッションを終了する新しいAPIを追加しました。詳細については、[こちら](/sdkx-unity/support-tools-ios/#closing-an-open-sdk-session)を参照してください。
+- Login APIが、ログインが成功したかどうかを示すブーリアン値を返すようになりました。この変更は、ログインパラメーターに必須となる検証機能を導入するために既存のAPIに加えられたものであり、コードのコンパイルに影響を与える可能性があります。詳細については、「[ユーザー](/sdkx-unity/users-ios/#logging-in-users)」を参照してください。
+- スマートFAQに添付ファイルのサポートを追加しました。
+- ファイルピッカーを使用する際に、サポートされていない添付ファイルを選択するとクラッシュが発生する場合があった問題を修正しました。
+- 通知のクリックでSDK画面を開く際に、`presentFullScreenOniPad`設定が反映されないバグを修正しました。
+- SDK Xフレームワークからビットコードのサポートを削除しました。SDK Xは現在、非ビットコードのバリアントでのみ配布されています。
+
+**Android**
+
+- Android 14のサポートを追加しました。
+- SDK Xは現在、Android 7（APIレベル24以上）のみをサポートしています。Android 7 Nougat以下のデバイスにアプリをインストールした場合、SDKは動作しません。
+- AndroidXサポートライブラリに移行しました。SDK Xは従来のAndroidサポートライブラリではコンパイルできません。
+- 会話での複数の添付ファイルのサポートを追加しました（ボットのアップロード手順での複数の添付ファイルのサポートは、2024年の第一四半期に追加される予定です）。
+- SDK Xのバージョンを取得するAPIを追加しました。詳細については、[こちらを参照してください](/sdkx-unity/support-tools-android/#getting-the-sdk-version)。
+- アクティブなSDKセッションを終了する新しいAPIを追加しました。詳細については、[こちらを参照してください](/sdkx-unity/support-tools-android/#closing-an-open-sdk-session)。
+- エージェントがメッセージを送信する際の新しいデリゲート`agentMessageReceived`を追加しました。詳細については、[こちらを参照してください](/sdkx-unity/delegates-android/#agent-message-received)。
+- `HelpshiftSdk.Login()` APIが、ログインが成功したかどうかを示すブーリアン値を返すようになりました。この変更は、ログインパラメーターに必須となる検証機能を導入するために既存のAPIに加えられたものであり、コードのコンパイルに影響を与える可能性があります。詳細については、[こちらを参照してください](/sdkx-unity/users-android/#logging-in-users)。
+- スマートFAQに添付ファイルのサポートを追加しました。
+
+## v10.2.3
+
+_2023年3月16日_
+
+**リリースノート**
+
+**iOS**
+
+- 問題に特殊文字が含まれている場合に、デバッグログが添付されないバグを修正しました。
+
+**Android**
+
+アプリが強制終了された状態にあり、最初に通知によりチャット画面が開かれ、その後アプリ内で開かれた場合、チャット画面が空白になってしまうバグを修正しました。
+- 問題に特殊文字が含まれている場合に、デバッグログが添付されないバグを修正しました。
+- チャット画面を開いたときに、チャット通知がキャンセルされないバグを修正しました。
+
+## v10.2.1
+
+_2022年11月25日_
+
+**リリースノート**
+
+**iOS**
+
+- `SetSDKLanguage` APIで、渡された言語が適用されない問題を修正しました。
+
+**Android**
+
+-Androidに関する変更はありません。
+
+## v10.2.0
+
+_2022年11月10日_**
+
+リリースノート**
+
+**iOS**
+
+- iOS SDK Xバージョン10.2.0にアップデートしました。[表示する](/sdkx_ios/release-notes#1020)
+- アウトバウンドサポートの機能を追加しました。ユーザーがチケットを先に発行しなくても、積極的に連絡を取ることができます。詳細については、[こちら](/sdkx-unity/outbound-support-ios)をご参照ください。
+- 匿名ユーザーのログインの維持をサポートする新しいAPI `ClearAnonymousUserOnLogin(Boolean shouldClear)`を導入しました。詳細については、[こちら](/sdkx-unity/users-ios#anonymous-users)をご参照ください。
+- `clearAnonymousUserOnLogin()` APIが非推奨になりました。
+- 添付ファイルフローから`Take Photo or Video`オプションを削除しました。Helpshiftのユースケースにおいては、アプリ内でカメラへのアクセス許可を求める必要がなくなりました。これは、iOS 11以上で適用されます。iOS 10以下では、添付ファイルオプションは利用できなくなります。
+
+**Android**
+
+- Android SDK Xバージョン10.2.0にアップデートしました。[表示する](/sdkx_android/release-notes#1020)
+- アウトバウンドサポートの機能を追加しました。ユーザーがチケットを積極的に発行しなくても、積極的に連絡を取ることができます。詳細については、[こちら](/sdkx-unity/outbound-support-android)をご参照ください。
+- 匿名ユーザーのログインの維持をサポートする新しいAPI `ClearAnonymousUserOnLogin(Boolean shouldClear)`を導入しました。詳細については、[こちら](/sdkx-unity/users-android#anonymous-users)をご参照ください。
+- `clearAnonymousUserOnLogin()` APIが非推奨になりました。
+- チャット画面で添付ファイルをアップロードする際に、一部のデバイスでアプリケーションのクラッシュが発生するバグを修正しました。
+- Android 13のアップデートの一環として、
+`App level language introduced in Android 13`のサポートが導入されました。設定されている場合には、デバイスレベルの言語よりもアプリレベルの言語が優先されます。[詳細はこちら](https://developer.android.com/guide/topics/resources/app-languages)。
+  - SDKは、エンドユーザーがアクセス許可`POST_NOTIFICATIONS`を許可している場合にのみ通知を送信します。[詳細はこちら](https://developer.android.com/develop/ui/views/notifications/notification-permission)。
+  - SDKは通知のアクセス許可を求めず、エンドユーザーがクライアントのアプリから要求されたアクセス許可を許可した場合にのみ通知を表示します。
+
+## v10.1.2
+
+_2022年5月9日_
+
+**リリースノート**
+
+**iOS**
+
+- レガシーSDKからSDK Xへの移行シナリオにおいて、より詳細なロギングを追加しました。
+
+**Android**
+
+- Androidに関する変更はありません。
+
+## v10.1.1
+
+_2022年4月6日_
+
+**リリースノート**
+
+**iOS**
+
+- 以下の問題を引き起こしていた重大なバグを修正しました。
+  - チャット画面を開くと、ローディング画面がユーザーに対して無限に表示される。
+  - カスタムメタデータが提出された問題と共に送信されない。
+- SDK Xバージョン10.0.xを使用していて、10.1.xにアップグレードする場合、またはすでに10.1.0にアップグレードしている場合には、**10.1.1にアップグレードしてください**。
+
+**Android**
+
+- Androidに関する変更はありません。
+
+## v10.1.0
+
+_2022年2月7日_
+
+**リリースノート**
+
+**iOS**
+
+- iOS SDK Xバージョン10.1.0にアップデートしました。[表示する](/sdkx_ios/release-notes#1010)
+
+- エンドユーザーが提出した新しい会話に、Breadcrumbsとデバッグログを追加できるようにするサポートを追加しました。詳細については、弊社の[トラッキング](/sdkx-unity/tracking-ios/)ページをご参照ください。
+
+- ヘルプセンターにお知らせを表示できるようにするサポートを追加しました。詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/)をご参照ください。
+
+- レガシーSDKからSDK Xへの移行のサポートを追加しました。移行方法の詳細については、[移行ガイドをご参照ください](/sdkx-unity/migration-guide-ios)。
+
+**Android**
+
+Android SDK Xバージョン10.1.0にアップデートしました。[表示する](/sdkx_android/release-notes#1010)
+
+- エンドユーザーが提出した新しい会話に、Breadcrumbsとデバッグログを追加できるようにするサポートを追加しました。詳細については、[トラッキング](/sdkx-unity/tracking-android)をご参照ください。
+
+- ヘルプセンターにお知らせを表示できるようにするサポートを追加しました。詳細については、[こちら](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/643-help-center-procedures-prepare-an-announcement/)をご参照ください。
+
+- レガシーSDKからSDK Xへの移行のサポートを追加しました。移行方法の詳細については、[移行ガイド](/sdkx-unity/migration-guide-android)をご参照ください。
+
+## v10.0.3
+
+_2021年11月18日_
+
+**リリースノート**
+
+- HelpshiftExampleScriptをHelpshiftExampleシーンにデフォルトでアタッチします。
+
+## v10.0.2
+
+_2021年10月28日_
+
+**リリースノート**
+
+**iOS**
+
+- iOSに関する変更はありません。
+
+**Android**
+
+- Android 12（APIレベル31）を対象とするアプリに期待されるPendingIntentフラグの要件に準拠しました。
+
+## v10.0.1
+
+_2021年8月31日_
+
+**リリースノート**
+
+**iOS**
+
+- iOSに関する変更はありません。
+
+**Android**
+
+- チャットで添付ファイルを送信する際に、ホワイトリストに登録されている添付ファイルがファイル選択ツールで選択できなくなるバグを修正しました。
+
+## v10.0.0
+
+_2021年6月9日_
+
+**リリースノート**
+
+**iOS**
+
+- フットプリントが小さく、新機能の追加やバグの修正のためのSDKのアップグレードが最小限で済む次世代SDK X Unity v10.0.0を発表しました。
+
+スタートガイド
+
+- SDK X Unity 10.0.0の使用を開始するには、[こちら](/sdkx-unity/getting-started-ios)のガイドをご参照ください
+
+**Android**
+
+- フットプリントが小さく、新機能の追加やバグの修正のためのSDKのアップグレードが最小限で済む次世代SDK X Unity v10.0.0を発表しました。
+
+スタートガイド
+
+- SDK X Unity 10.0.0の使用を開始するには、[こちら](/sdkx-unity/getting-started-android)のガイドをご参照ください
+
+## v1.0.0-beta
+
+**リリースノート**
+
+**iOS**
+
+- フットプリントが小さく、新機能の追加やバグの修正のためのSDKのアップグレードが必要ない次世代SDK X Unity Betaを発表しました。
+
+スタートガイド
+
+- SDK X Unity 1.0.0 Betaの使用を開始するには、[こちら](/sdkx-unity/getting-started-ios)のガイドをご参照ください
+
+**Android**
+
+- フットプリントが小さく、新機能の追加やバグの修正のためのSDKのアップグレードが必要ない次世代SDK X Unity Betaを発表しました。
+
+スタートガイド
+
+- SDK X Unity 1.0.0 Betaの使用を開始するには、[こちら](/sdkx-unity/getting-started-android)のガイドをご参照ください

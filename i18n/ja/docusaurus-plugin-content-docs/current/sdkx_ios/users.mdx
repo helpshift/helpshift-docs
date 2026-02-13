@@ -1,0 +1,464 @@
+---
+sidebar_position: 40
+title: ユーザーの識別と管理
+description: ユーザーの識別と管理について詳しく説明します。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+} from "@site/src/components/forDocs";
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+<Admonition type="warning" title="先に進む前に">
+
+このセクションでは、従来の方式でユーザーを統合する方法について説明します。新しいIDシステムとの統合については、[このページ](/sdkx_ios/identity-user-hub)を参照してください。
+
+より迅速なコンテキストの収集、より簡単なエージェントエクスペリエンス、より強化されたセキュリティおよびスパム対策が必要な場合には、新しいIDシステムの使用をお勧めします。
+
+</Admonition>
+
+# ユーザーの識別と管理 {#users}
+
+## ログインユーザー {#logged-in-users}
+
+#### 概要
+
+ログインユーザーとは、ユーザー名とパスワードを入力した後にのみサポートチームと連絡を取ることができるユーザーのことを指しています。ログインユーザーがいる場合には、エージェントがユーザーにパーソナライズされたサポート体験を提供できるように、Login APIを使用してユーザーの識別子（ユーザーIDおよび/またはメールアドレス）を渡すことを強くお勧めしています。また、Login APIを使用することでユーザーの会話はログイン時にのみ利用可能となります。
+
+<Admonition type="info" title="注意">
+
+ユーザーの会話は、会話を開始するために使用したデバイス上でのみ利用可能となります。デバイスをまたいで会話を利用することはできません。
+
+</Admonition>
+
+#### 識別子として提供されるもの
+
+ユーザーの識別には、`userID`および/または`userEmail`を提供することが可能です。弊社ではユーザーIDの使用を強く推奨しております。ユーザーを識別するためにメールアドレスを使用する場合には、`loginUser:` API内の辞書としてそれを`userEmail`フィールドで渡す必要があります。`userID`と`userEmail`の両方を使用する場合、以下のロジックが適用されます。
+
+- ユーザーを検索する際、`userId`は`userEmail`よりも優先度が高くなっています
+- ユーザーIDが既存のユーザーに一致した場合、そのユーザーのメールアドレスは更新されます（メールアドレスが提供されている場合）
+- メールアドレスが既存のユーザーに一致した場合、以下のロジックが適用されます。
+  - メールアドレスが一致したユーザーにユーザーIDが存在しない場合、そのユーザーIDがそのユーザーに追加されます（ユーザーIDが提供されている場合）
+  - もしもそのユーザーIDがメールアドレスが一致しているユーザーに対して既に存在する場合、新しいユーザーが作成されます（異なるユーザーIDが提供されている場合）
+
+#### 使用方法
+
+ユーザーがアプリへのログインに成功するたびに、Helpshift SDKのLogin APIを呼び出す必要があります。Login APIは、以下のパラメーターを持っています。
+
+<table>
+  <tr>
+    <th>パラメーター</th>
+    <th>必須/オプション</th>
+    <th>SDKの説明</th>
+    <th>重要事項</th>
+  </tr>
+  <tr>
+    <td>userName</td>
+    <td>オプション</td>
+    <td>エージェントがエンドユーザーとやり取りをする際に使用する名前を入力します。ユーザーの名前が分からない場合には空白のままにすることができ、（有効化されている場合には）アイデンティティボットがそのユーザーに名前を尋ねます。値を指定すると、アイデンティティボットはユーザーに再度名前を尋ねなくなります。</td>
+   <td>
+      最大長は255文字です。これよりも長い値は切り捨てられます。
+      <li> userNameの値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+    </td>
+  </tr>
+  <tr>
+    <td>userId</td>
+    <td>メールアドレスが提供されていない場合には必須の識別子となります</td>
+    <td>ユーザー固有の識別子です。ユーザーIDは一意である必要があります。異なるユーザーに同一のユーザーIDを使用させるべきではありません。</td>
+    <td>
+      <ul>
+        <li>先頭および末尾のスペースは許可されません。中間にスペースを入れることは可能です。先頭および末尾にスペースが含まれているユーザーIDを許可すると、結果的に匿名ユーザーが作成されてしまいます。</li>
+        <li>ユーザーIDは常に大文字と小文字を区別します（たとえば、1abcと1ABCは別のIDとなります）。</li>
+        <li>ユーザーのメールアドレスを"userID"として使用しないでください。ユーザーの識別にメールアドレスを利用する場合には、"userEmail"として使用してください。</li>
+        <li>メールアドレスだけでなくユーザーIDも使用する場合には、その後の呼び出しでユーザーIDが存在することを確認してください。複数のプロファイルが同じメールアドレスを使用している場合、メールアドレスを使用するだけではすべてのプロファイルが返されてしまいます。</li>
+         <li> "userId"の値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>userEmail</td>
+    <td>ユーザーIDが提供されていない場合には必須の識別子となります</td>
+    <td>ユーザーのメールアドレスです。ユーザーのメールアドレスが分からない場合には空白のままにすることができ、（有効化されている場合には）アイデンティティボットがそのユーザーにメールアドレスを尋ねます。値を指定すると、アイデンティティボットはユーザーに再度メールアドレスを尋ねなくなります。</td>
+    <td>
+      <ul>
+        <li>メールアドレスの形式は、有効なものである必要があります（"my@email.com"の形式を使用する必要があります）無効なメールアドレスを許可すると、結果的に匿名ユーザーが作成されてしまいます。</li>
+        <li>先頭および末尾のスペースは許可されません。先頭および末尾にスペースが含まれているメールアドレスを許可すると、結果的に匿名ユーザーが作成されてしまいます。</li>
+        <li>メールアドレスでは、大文字と小文字は常に区別されません（たとえば、MY@EMAIL.COMとmy@email.comは同じメールアドレスです）。</li>
+        <li> "userEmail"の値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+      </ul>
+</td>
+  </tr>
+  <tr>
+    <td>userAuthToken</td>
+    <td>オプション</td>
+    <td>SHA256を使用したハッシュベースのメッセージ認証コード（HMAC）を介して生成されたユーザー認証トークンです。第三者がユーザーに代わって問題を提出したり、ユーザーのプロパティを更新したりできないようにする場合には、HMACダイジェストを使用する必要があります。 詳細は<a href="https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/">こちら</a>。</td>
+    <td>
+      <ul>
+        <li>ユーザーが確実に問題を提出できるようにするために、有効なHMACダイジェストを使用する必要があります。詳細は<a href="https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/">こちら</a>。</li>
+        <li> "userAuthToken"の値から空白を取り除くと空の文字列となった場合、このパラメーターを"login"の呼び出しに含めないでください。 </li>
+      </ul>
+</td>
+
+  </tr>
+</table>
+
+`loginUser:` APIを使用する際は、以下の点に注意する必要があります。-
+
+- Helpshiftでログインユーザーを作成するには、`userId`または`userEmail`のいずれかを使用する必要があります。
+- ログインAPIは、渡された`userId`または`userEmail`が有効かどうかを示すブーリアン値を返します。
+- `userId`または`userEmail`は、すべてのアプリユーザーの間でユーザーを一意に識別する必要があります。2人以上の異なるユーザーが重複して使用するべきでは**ありません**。
+- Login APIが異なるユーザー識別子を用いて呼び出された場合には、最初に現在のログインユーザーをログアウトし、次にこのユーザー識別子を用いてログインを行います。
+- アプリのユーザーがログインしたら、すぐにloginの呼び出しを行うのがベストです。
+- `fullPrivacy`をtrueに設定している場合、そのユーザーのLogin APIでメールアドレスを唯一の識別子として使うべきではありません。これを行うと、結果的に匿名ユーザーが作成されてしまいます。
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSMutableDictionary *userData = [[NSMutableDictionary alloc] init];
+
+NSString *userId = generateUserId();
+NSString *userEmail = fetchUserEmail();
+NSString *userName = fetchUserName();
+
+if ([userId length] == 0 && [userEmail length] == 0) {
+    @throw [NSException exceptionWithName:@"InvalidLoginException" reason:@"userId and userEmail both are empty. Invalid login!" userInfo:nil];
+}
+
+if ([userId length] > 0) {
+    [userData setObject:userId forKey:@"userId"];
+}
+
+if ([userEmail length] > 0) {
+    [userData setObject:userEmail forKey:@"userEmail"];
+}
+
+if ([userName length] > 0) {
+    [userData setObject:userName forKey:@"userName"];
+}
+
+BOOL loggedIn = [Helpshift login:userData];
+NSLog(@"Helpshift login status : %@", loggedIn);
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+var userData: [String: Any] = [:]
+
+let userId = generateUserId()
+let userEmail = fetchUserEmail()
+let userName = fetchUserName()
+
+if userId.isEmpty && userEmail.isEmpty {
+    throw NSError(domain: "InvalidLoginException", code: 0, userInfo: [NSLocalizedDescriptionKey: "userId and userEmail both are empty. Invalid login!"])
+}
+
+if !userId.isEmpty {
+    userData["userId"] = userId
+}
+
+if !userEmail.isEmpty {
+    userData["userEmail"] = userEmail
+}
+
+if !userName.isEmpty {
+    userData["userName"] = userName
+}
+
+let loggedIn = Helpshift.login(userData)
+print("Helpshift login status : \(loggedIn)")
+```
+
+</TabItem>
+
+</Tabs>
+
+## ユーザーのログアウト {#logging-out-users}
+
+#### 概要
+
+ユーザーがアプリからログアウトしたら、Helpshift SDKのLogout APIを呼び出し、他のユーザーがこのユーザーの会話を表示できないようにする必要があります。
+
+<Admonition type="info" title="注意">
+
+- Logout APIは、Login APIと組み合わせて使用することが期待されています。
+
+</Admonition>
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+[Helpshift logout];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.logout()
+```
+
+</TabItem>
+
+</Tabs>
+
+## 匿名ユーザー {#anonymous-users}
+
+<Admonition type="info" title="注意">
+
+clearAnonymousUserOnLogin() APIは非推奨です。匿名ユーザーの管理については、新しいAPIが追加されています。
+
+</Admonition>
+
+#### 概要
+
+匿名ユーザーとは、ユーザー名とパスワードなしでアプリにアクセスできるユーザーのことを指します。Login API経由でユーザー識別子（ユーザーIDおよび/またはメールアドレス）が渡されていない場合、Helpshiftはそのユーザーが匿名ユーザーであり、現在ログインしていないものとみなします。
+
+複数のログインユーザー/匿名ユーザーが同じデバイスを使用してサポート会話中に情報のやり取りを行う（理想としてはログインをまたいだ共有を許可したくない）ユースケースの場合には、`clearAnonymousUserOnLogin:` APIを使用する必要があります。
+
+- `shouldClear`が**true**の場合 – 匿名ユーザーは、どのユーザーがログインしても消去されます。一度消去されると、そういったユーザー（およびその会話）は二度と取得できなくなります。
+
+- `shouldClear`が**false**の場合 – 匿名ユーザーのデータは保存され、ログインユーザーがログアウトすると、匿名ユーザーの会話履歴が表示されます。
+
+<Admonition type="info" title="注意">
+
+clearAnonymousUserOnLogin() APIは、ログインユーザーのエクスペリエンスには一切影響を与えません。
+
+</Admonition>
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+[Helpshift clearAnonymousUserOnLogin:clearAnonymousUser];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+Helpshift.clearAnonymousUserOnLogin(clearAnonymousUser)
+```
+
+</TabItem>
+
+</Tabs>
+
+## ユーザーの本人確認 {#verify-identity-of-users}
+
+### アプリ内で本人確認を構成する {#configure-identity-verification}
+
+#### 概要
+
+ユーザーの本人確認は、お客様のアプリからHelpshiftへのすべてのリクエストが正当なエンドユーザーからのものであることを確認するためのセキュリティ施策です。これにより、第三者やハッカーによるユーザーのなりすましを防止することができます。ユーザーの本人確認に関する詳細情報と設定の手順については、[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)をご参照ください。
+ユーザーを確実に認証するためには、初期化の際に`loginUser` APIの`userData`辞書とともにユーザー認証トークンを提供する必要があります。ユーザー認証トークンの生成手順については、[こちら](https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/)をご参照ください。ユーザー認証トークンはHMACダイジェストであり、SHA256を使用したHMACを介して生成されます。
+
+#### HMACダイジェストを送信してユーザーの本人確認をする
+
+Login APIの呼び出しでユーザー認証トークンを送信することができます。 Helpshiftダッシュボード（ドキュメントは[こちら](https://support.helpshift.com/kb/article/what-is-user-identity-verification-and-how-do-i-set-it-up/)）で本人確認が有効になっている場合、Helpshiftは共有秘密鍵を使用して固有のユーザー認証トークンを再計算し、お客様から送信されたユーザー認証トークンと再計算された値を比較します。それらが一致していればユーザーの本人確認がされたことになり、ユーザーは問題を提出することができます。
+
+<Admonition type="info" title="注意">
+
+- ダッシュボードでアプリの秘密鍵が再生成された場合、有効なユーザー認証トークンを生成するために、エンドポイントのコードも確実に更新する必要があります。この後は、古い秘密鍵を使用して生成されたユーザー認証トークンを使用したリクエストが無効になるように、管理者はダッシュボードから古い秘密鍵を削除する必要があります。
+- fullPrivacyフラグをYESに設定している場合、ユーザー認証トークンはユーザーIDに対してのみ生成されます。
+
+</Admonition>
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSMutableDictionary *userData = [[NSMutableDictionary alloc] init];
+
+NSString *userId = generateUserId();
+NSString *userEmail = fetchUserEmail();
+NSString *userName = fetchUserName();
+NSString *userAuthToken = generateUserAuthToken();
+
+if ([userId length] == 0 && [userEmail length] == 0) {
+    @throw [NSException exceptionWithName:@"InvalidLoginException" reason:@"userId and userEmail both are empty. Invalid login!" userInfo:nil];
+}
+
+if ([userId length] > 0) {
+    [userData setObject:userId forKey:@"userId"];
+}
+
+if ([userEmail length] > 0) {
+    [userData setObject:userEmail forKey:@"userEmail"];
+}
+
+if ([userName length] > 0) {
+    [userData setObject:userName forKey:@"userName"];
+}
+
+if ([userAuthToken length] > 0) {
+    [userData setObject:userAuthToken forKey:@"userAuthToken"];
+}
+
+[Helpshift login:userData];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+var userData: [String: Any] = [:]
+
+let userId = generateUserId()
+let userEmail = fetchUserEmail()
+let userName = fetchUserName()
+let userAuthToken = generateUserAuthToken()
+
+if userId.isEmpty && userEmail.isEmpty {
+    throw NSError(domain: "InvalidLoginException", code: 0, userInfo: [NSLocalizedDescriptionKey: "userId and userEmail both are empty. Invalid login!"])
+}
+
+if !userId.isEmpty {
+    userData["userId"] = userId
+}
+
+if !userEmail.isEmpty {
+    userData["userEmail"] = userEmail
+}
+
+if !userName.isEmpty {
+    userData["userName"] = userName
+}
+
+if !userAuthToken.isEmpty {
+    userData["userAuthToken"] = userAuthToken
+}
+
+Helpshift.login(userData)
+```
+
+</TabItem>
+
+</Tabs>
+
+## 本人確認の失敗 {#identity-verification-failure}
+
+#### 概要
+
+本人確認がオンになっている場合、ユーザー認証トークンがない、もしくは無効なユーザー認証トークンを用いた状態でログインリクエストが行われると、本人確認が失敗となります。本人確認に失敗すると、以下のようになります。
+
+- 匿名ユーザー（あなたが識別子を提供していないユーザー）は、常に問題を提出することができます。
+- ログインユーザー（あなたがユーザーIDやメールアドレスなどの識別子を提供しているユーザー）は、認証されていない場合には問題を提出したり会話を確認したりすることができません。未認証のログインユーザーに対しては、フォームまたは対話型UIでエラーが表示されます。
+
+ログインユーザーが認証されると（つまり、有効なユーザー認証トークンが提供されると）、前回の問題を確認したり、新しい課題を作成したりすることができるようになります。認証が完了したログインユーザーのUIは本人確認がオフになっている場合とまったく同じように表示され、動作します。上記のような影響を受けるのは、認証が完了していないユーザーのみです。
+
+#### 失敗デリゲートの使用方法
+
+本人確認に失敗した場合、SDKは以下のデリゲートのいずれかを呼び出し、アプリケーションに失敗を通知します。
+
+<table>
+  <tr>
+    <th>認証失敗の理由</th>
+    <th>呼び出されるタイミング</th>
+    <th>使用するタイミング</th>
+  </tr>
+  <tr>
+    <td>
+      HelpshiftAuthenticationFailureReason
+      <br />
+      AuthTokenNotProvided
+    </td>
+    <td>ユーザー認証トークンが提供されなかったとき</td>
+    <td>
+      SDKの実装時にユーザー認証トークンを送信する予定はないものの、
+将来的に実装する予定がある場合には、この失敗デリゲートを使用してアプリのアップデートを促すような
+独自のアラートをユーザーに対して表示することができます。ユーザー認証トークンを
+使用せずにLogin APIを使用している場合には、ダッシュボードで本人確認を
+有効にするとこれらのユーザーは未認証であるとみなされてしまうため、
+これを使用すると良いかもしれません。このデリゲートの使用については、完全に任意となっております。
+前述の通り、Helpshiftでは
+未認証のユーザーが問題を提出することは
+できません。
+    </td>
+  </tr>
+  <tr>
+    <td>
+      HelpshiftAuthenticationFailureReason
+      <br />
+      InvalidAuthToken
+    </td>
+    <td>ユーザー認証トークンが無効だったとき</td>
+    <td>
+      Login APIを介して提供されるHMACダイジェストが無効な場合、Helpshift
+はユーザーによる問題の提出を阻止します。以下の場合、ユーザー認証トークン
+が無効である可能性があります。
+      <ul>
+        <li>
+          プログラミングにミスがある場合。HMACダイジェストの生成方法については、{" "}
+<a href="https://support.helpshift.com/kb/article/how-do-i-configure-the-endpoint-and-my-app-web-chat-widget-for-user-identity-verification/">
+こちら
+</a>
+をご参照ください。
+        </li>
+        <li>
+          ダッシュボードで秘密鍵を再生成したものの、
+ユーザー認証トークンを更新していなかった場合。
+        </li>
+        <li>第三者がリクエストを試みている場合。</li>
+      </ul>
+      ユーザー認証トークンが無効な場合、前述の通りエンドユーザーは問題を提出できず、
+エラーが表示されます。独自のアラートを表示したり、サーバーから正しい認証トークンを
+再取得したい場合には、
+このデリゲートを使用します。
+    </td>
+  </tr>
+</table>
+
+認証失敗の理由は、列挙型`HelpshiftAuthenticationFailureReason`でラップされています。
+
+例:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (void) authenticationFailedForUserWithReason:(HelpshiftAuthenticationFailureReason)reason {
+    // Handle auth failure
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func authenticationFailedForUser(withReason reason: HelpshiftAuthenticationFailureReason) {
+  // Handle auth failure
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## テストとトラブルシューティング {#identity-verification-testing-troubleshooting}
+
+本人確認が正しくセットアップされているかどうかをテストする手順については、[こちら](https://support.helpshift.com/kb/article/how-do-i-test-that-i-have-user-identity-verification-set-up-correctly)をご参照ください。

@@ -1,0 +1,106 @@
+---
+sidebar_position: 100
+title: FAQにおけるディープリンク
+description: "カスタムURLスキームを使用して、アプリ内でのディープリンクに対応します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# FAQにおけるディープリンク {#ios-deep-links}
+
+<Intro>
+
+カスタムURLスキームを使用して、アプリ内でのディープリンクに対応します
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+カスタムURLスキームを使用して、HelpshiftのFAQからアプリ内の特定のセクションへとユーザーを誘導します。これらのスキームを使用することで、よりシームレスな体験をユーザーに提供できるようになります。たとえば、あなたのiOSアプリ内に会員登録用の画面がある場合、FAQにある「登録」リンクをクリックすることでユーザーを直接その画面へと誘導することができます。
+
+## FAQにカスタムURLスキームを挿入する {#custom-url-in-faqs}
+
+FAQを編集する際に、テキストを選択してから「リンクを作成する」をクリックします。
+
+<Image
+  src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-1.png"
+  width="half"
+  alt="add-deep-link-to-faq-sdkx-1.png"
+/>
+
+ポップアップ表示されたダイアログにカスタムURLを入力し、FAQを保存します。
+
+<Image
+  src="/static/books/sdkx_ios/add-deep-link-to-faq-sdkx-2.png"
+  width="half"
+  alt="add-deep-link-to-faq-sdkx-2.png"
+/>
+
+## iOSアプリでディープリンクを扱う {#handle-deep-link}
+
+ディープリンクとは、ユーザーがカスタムURLをクリックした際にそのURLが何を行うかを開発者が自由に決定できるカスタムリンクURLのことを指します。ディープリンクの使用例には、ユーザーをチャット画面からレビューページへとリダイレクトする必要がある場合や、チャット画面からFAQページまたはFAQセクションへとリダイレクトする必要がある場合のインスタンスなどが挙げられます。
+
+ディープリンクでは、`myscheme://example.com`のようなカスタムURLスキームを設定することができます。
+たとえば、URL`myscheme://FAQID`（FAQIDはFAQの公開IDを指しています）では関連するFAQが会話画面内で開きます。開発者がmyschemeを扱う場合には、対応するFAQ IDを用いて`showSingleFAQ`APIを呼び出す必要があります。
+
+iOSアプリでカスタムURLを扱う場合には、アプリのInfo.plistがFAQで使用されるカスタムURLスキームをサポートしていることを最初にご確認ください。[詳細情報](https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app)
+
+その後は、アプリのデリゲートに`application:openURL:sourceApplication:annotation:`を実装し、必要な処理を実行する必要があります。たとえば、以下のようになります:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+
+    // URL is myapp://discount-scheme/id304
+    if ([url.scheme isEqualToString:@"myapp"]) {
+        if ([url.relativePath isEqualToString:@"/id304"]) {
+            // Handle deep link in app. Do something inside your app.
+            [MyApp doSomething];
+        }
+    }
+
+    return YES;
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+
+    // URL is myapp://discount-scheme/id304
+    if url.scheme == "myapp" {
+        if url.relativePath == "/id304" {
+            // Handle deep link in app. Do something inside your app.
+            MyApp.doSomething()
+        }
+    }
+
+    return true
+}
+```
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,202 @@
+---
+sidebar_position: 30
+title: Helpshift API（iOS）
+description: "Helpshiftでは、お客様の要件に応じてSDKの各機能を個別に使用する方法を提供しています。アプリで公開する機能に基づいて、SDKから特定の画面のみを呼び出すことができます。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Helpshift API（<small>iOS</small>） {#support-tools}
+
+<Intro>
+
+Helpshiftでは、お客様の要件に応じてSDKの各機能を個別に使用する方法を提供しています。
+アプリで公開する機能に基づいて、
+SDKから特定の画面のみを呼び出すことができます。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+## お問い合わせとアプリ内メッセージの統合 {#conversation-view}
+
+<Centered width="major">
+
+![newConversation.png](/static/books/sdkx_ios/Show-Conversation.png "Show-Conversation.png")
+
+</Centered>
+
+API呼び出し`ShowConversation(configMap)`を使用することで、ユーザーが最初にFAQを閲覧することなく直接フィードバックを送信したり、新しい会話を開始したりすることができるようになります。ユーザーが新しい会話を開始すると、このAPI呼び出しは会話画面を表示します。会話は、エージェントによって解決されるか、または拒否されるまで継続されます。
+
+会話画面を構成する場合、`Dictionary<string, object>`で様々な構成オプションを渡すことができます。その他の構成オプションについては、[こちら](/sdkx-unity/sdk-configuration-ios)をご参照ください
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+// open the support chat screen
+help.ShowConversation(configMap);
+```
+
+## FAQの統合 {#faqs-view}
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_faqs.png" width="full" />
+
+</Centered>
+
+API呼び出し`ShowFAQs(configMap)`を使用することで、ユーザーがアプリ内に設けられたヘルプ/サポートセクションを呼び出すことができるようになります。シンプルで直感的なインターフェースにHelpshift SDKのすべての機能がバンドルされているため、これがアプリでヘルプを有効にする場合の最も簡単なアプローチとなります。このAPI呼び出しは、アプリの**ヘルプ**または**サポート**アクションに結び付けることができます。
+
+FAQ画面を構成する場合、`Dictionary<string, object>`で様々な構成オプションを渡すことができます。その他の構成オプションについては、[こちら](/sdkx-unity/sdk-configuration-ios)をご参照ください
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+// open the FAQs screen
+help.ShowFAQs(configMap);
+```
+
+## 特定のFAQセクションの表示 {#faq-section-view}
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_section.png" width="full" />
+
+</Centered>
+
+API呼び出し`ShowFAQSection(sectionId, configMap)`を使用すれば、FAQセクションのpublish-idを用いて特定のFAQセクションを呼び出すことができます
+
+この機能は、アプリ内で特定のFAQセクションを文脈依存ヘルプとして表示させるパーマリンクのようなものとして機能します。たとえば、ユーザーがメールアドレスやFacebook、Twitterを使用してあなたのアプリにログインしなければならない場合、ログイン画面にヘルプアクションを紐づけて、ログイン方法に関する質問が複数記載されている「ログインのヘルプ」という名前のHelpshiftのFAQセクションにリンクさせることができます。
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+string sectionId = "your_section_id";
+
+// open the particular section
+help.ShowFAQSection(sectionId,configMap);
+```
+
+## 特定のFAQの表示 {#faq-view}
+
+<Centered >
+
+<Image src="/static/books/sdkx_ios/show_single_faq.png" width="full" />
+
+</Centered>
+
+API`ShowSingleFAQ(faqId,configMap)`を使用することで、個別のFAQを表示できるようになります。表示するFAQの`publish-id`をこのAPIに渡す必要があります。
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+
+// install call here
+void Awake(){
+    help = HelpshiftSdk.GetInstance();
+    help.Install(appId, domainName, null);
+}
+
+// configuration map
+Dictionary<string, object> configMap = new Dictionary<string, object>
+        {
+            { "tags", new String[] { "foo", "bar" } },
+        };
+
+string faqId = "your_faq_id";
+
+// open the particular FAQ
+help.ShowSingleFAQ(faqId,configMap);
+```
+
+## 開いているSDKセッションを終了する
+
+アクティブなSDKセッションを終了するには、`CloseSession()` APIを使用します。このAPIを呼び出すと開いているSDKの画面が閉じられ、対応する[ライフサイクルデリゲートメソッド](/sdkx-unity/delegates-ios/#session-delegates)が呼び出されます。アクティブなSDKセッションが存在しない場合には、このAPIを呼び出しても何の効果もありません。
+
+```csharp
+HelpshiftSdk.GetInstance().CloseSession();
+```
+
+## SDKのバージョンを取得する
+
+Helpshift SDKの現在のバージョンを取得するには、`SdkVersion()` APIを使用します。
+
+```csharp
+string version = HelpshiftSdk.GetInstance().SdkVersion();
+Debug.Log("Helpshift - SDK Version is :" + version);
+```
+
+## SDKの言語を設定する {#set-language-api}
+
+このAPIと言語の詳細については、[こちら](/sdkx-unity/i18n-ios/)を参照してください。
+
+## User Hub API
+新しいアイデンティティシステムである[ユーザーハブ](/sdkx-unity/identity-user-hub-ios/)では、ユーザーおよびそのデータを管理するための様々なAPIを導入しています。詳細については、リンク先のセクションをご参照ください。

@@ -1,0 +1,263 @@
+---
+sidebar_position: 85
+sidebar_class_name: feature-new
+title: プロアクティブエンゲージメント
+description: "プロアクティブエンゲージメント機能では、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
+# プロアクティブエンゲージメント {#proactive-engagement}
+
+<Intro>
+
+プロアクティブエンゲージメント機能では、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+- この機能はSDK X 10.5.0以降で利用可能です。
+- SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_android/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+- プロアクティブエンゲージメントを開始する前に、Helpshift SDKとプッシュ通知を統合していることを確認してください。統合ガイドについては、[通知](/sdkx_android/notifications/#push-via-helpshift)セクションを参照してください。
+- SDKはクライアントアプリケーションに通知の送信許可を求めないことにご注意ください。プロアクティブエンゲージメントでは、[POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission)の権限をご自身で要求する必要があります。
+
+</Admonition>
+
+
+## プロアクティブエンゲージメント通知の設定
+
+通知を送信するには、以下の手順に従ってください: 
+
+- Helpshiftダッシュボードを開き、**「設定」、「ワークフロー」、「プロアクティブエンゲージメント」の順に移動します**
+- **プッシュ通知**または**アプリ内通知**タイプを使用して、対象のアプリに通知を作成します
+
+<Image
+  src="/static/books/common/proactive-admin-settings.png"
+  width="full"
+  alt="Helpshift admin dashboard settings for Proactive Engagement feature"
+/>
+
+- 利用可能なオプションから望むアクションを選択し、通知内容を入力し、必要に応じてコンテキストを追加します。
+- ここで設定されたインテント/CIF/タグ/初期メッセージなどは、エンドユーザーが通知をクリックして会話を開始する際に使用されます。
+
+<Image
+  src="/static/books/common/proactive-admin-compose.png"
+  width="full"
+  alt="Proactive Engagement notification compose settings on Helpshift admin dashboard"
+/>
+
+- 対象にしたいオーディエンスのフィルタを設定します。以下の条件でオーディエンスを絞り込みできます: 
+- 問題プロパティ
+- [ユーザーハブ統合を使用した](/sdkx_android/identity-user-hub)ユーザープロパティ
+
+<Image
+  src="/static/books/common/proactive-admin-audience.png"
+  width="full"
+  alt="Proactive Engagement notification audience filter on Helpshift admin dashboard"
+/>
+
+- 通知のスケジュールを設定します。通知を送信する前に、設定全体を確認する機会があります。
+
+<Image
+  src="/static/books/common/proactive-admin-schedule.png"
+  width="full"
+  alt="Proactive Engagement notification scheduling on Helpshift admin dashboard"
+/>
+
+## プッシュ通知
+
+<Image
+  src="/static/books/sdkx_android/proactive-push-sdk-android.jpg"
+  width="half"
+  alt="Proactive Engagement push notification on Android"
+/>
+
+- プッシュ型通知はデバイスの通知トレイに表示されます。
+- このタイプの通知は、アクティブでなかったユーザーを再度エンゲージさせたい場合や、興味深い情報でユーザーの注目を集めたい場合に使用します。
+- 通知または通知内のボタンをクリックすると利用可能なさまざまなアクションにより、ディープリンク（クライアントアプリケーションによって設定する必要あり）を介してユーザーをアプリケーションの任意の部分にリダイレクトしたり、「チャットを開始」オプションを介して会話を開始したり、FAQにリダイレクトして迅速なヘルプを提供したりすることができます。
+- アプリがバックグラウンドで実行されていなくても、プッシュ通知は表示されます。
+- 通知内容はリッチテキストに対応しています。ダッシュボードで通知を設定するには、互換性のある/サポートされているHTMLコンテンツを使用し提供していることをご確認ください。
+- システムの制限により、Androidが修正しない限り、通知内のリッチテキストはAndroid 16以降サポートされません。
+
+## アプリ内通知
+
+<Image
+  src="/static/books/sdkx_android/proactive-inapp-sdk-android.jpg"
+  width="half"
+  alt="Proactive Engagement in-app notification on Android"
+/>
+
+- アプリ内通知は、すでにアプリケーションを使用していて、アプリケーションのUIを開いているユーザーの注意を引き、リアルタイムでそのユーザーに警告したりエンゲージさせるために使用されます。
+- ユーザーが現在アプリを使用していない場合、次回アプリが開かれたときにアプリ内通知を表示します。これにより、ユーザーがアプリケーションの画面を開いていなくても、アプリ内通知が失われることはありません。
+- 現在、プッシュ通知に似たクリックアクションの**バナー**型通知をサポートしています。
+- 注意
+- アプリがバックグラウンドにあるときにSDKが複数のアプリ内通知を受信した場合、SDKは受信した最新のアプリ内通知のみを表示し、古いものはすべて破棄します。
+- デフォルトでは、アプリ内通知の有効期限はデバイスへの配信から2日間です。バックグラウンドで受信したアプリ内通知が期限切れになった場合、SDKは期限切れのアプリ内通知を表示しません。
+
+## プッシュ通知をHelpshift SDKにデリゲートする
+
+- Helpshift SDKのメッセージにプッシュ通知がすでに統合されている場合、プロアクティブエンゲージメント通知の処理の統合は簡単です。
+- [プッシュ通知](/sdkx_android/notifications/#push-via-helpshift)統合ページをご参照ください。
+
+## 通知プロパティのデフォルト設定
+
+- プロアクティブ通知で使用したいデフォルト値がある場合、このAPIを使用します。このAPIは、`Helpshift.install()`を呼び出した直後に呼び出すことをお勧めします。
+- このAPIでは以下の設定が可能です。
+- `notificationIconId` : プロアクティブ通知に使用する小さなアイコンの Android リソース ID（整数値）。設定されていない場合、デフォルトでアプリアイコンが使用されます。
+- `largeNotificationIconId` : 大きな通知画像用の Android リソース ID（整数値）。これは、ダッシュボードで通知に画像が設定されていない場合に使用されます。
+- `soundId` : プロアクティブ通知に使用するサウンドの Android リソース ID（整数値）。指定がない場合は、システムのデフォルトサウンドが使用されます。このサウンドは、SDKがプロアクティブエンゲージメント通知用に作成するデフォルトの通知チャネルに関連付けられます。下記をご参照ください。
+
+### プロアクティブエンゲージメント通知用のカスタム通知チャネル
+
+- プロアクティブエンゲージメント通知のために独自の通知チャネル（つまり、事前にクライアントアプリケーションによって作成されるチャネル）を設定したい場合は、このAPIの値を渡すことができます。
+- 値が設定されていない場合、SDKはデフォルトの通知チャネルを作成します。
+- ヘルプセンターや会話につながるプロアクティブエンゲージメント通知には、「プロアクティブサポート」という名前でチャネルが作成されます。
+- ユーザーのエンゲージメントにつながるプロアクティブエンゲージメント通知については、「プロアクティブエンゲージ」という名前でチャネルが作成されます。
+- このAPIを通じて、SDKが使用する独自のチャネルIDを提供できます :
+- `proactiveSupportChannelId`: プロアクティブサポートの場合のチャネルID。
+- `proactiveEngageChannelId`: プロアクティブエンゲージの場合のチャネルID。
+
+
+<div className="compact ">
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| API:       | <code>Helpshift.setProactivePushNotificationDefaults()</code>   |
+| 値:       | <code>マップ<String, Object></code> |
+| 最低限必要なSDKバージョン       | v10.5.0                                |
+| 次の後に呼び出しされるべきです | <code>install()</code>                 |
+
+</div>
+
+
+例:
+
+```java
+public class MainApplication extends Application {
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    // Install call
+    Helpshift.install(this, "<PLATFORM_ID>", "<DOMAIN>", configurations);
+
+    Map<String, Object> defaults = new HashMap<>();
+    defaults.put("notificationIconId", R.drawable.icon);
+    defaults.put("largeNotificationIconId", R.drawable.large_icon);
+    defaults.put("soundId", R.drawable.sound);
+    defaults.put("proactiveSupportChannelId", "Customer Channel name");
+    defaults.put("proactiveEngageChannelId", "Customer Channel name");
+
+    Helpshift.setProactivePushNotificationDefaults(defaults);
+  }
+}
+```
+
+## アプリ内通知の一時停止
+
+- このAPIは、アプリケーションがフォアグラウンドのときに、エンドユーザーへのアプリ内通知の表示を一時停止/解除します。
+- このAPIを使用すると、ユーザーを邪魔すべきでないとわかっている時に、アプリ内通知を一時停止できます。
+例えば、ユーザーがアプリの起動画面である、アプリがまだロード中である、ユーザーがゲームプレイ中である、または決済画面であるなどです。このような場合、Helpshift SDKからアプリ内通知を一時停止し、ユーザーが終了したら同じAPI経由で一時停止を解除できます。
+- 通知が一時停止されているときに受信したアプリ内通知は失われず、一時停止が解除されるとすぐにユーザーに表示されることにご注意ください。
+- SDKはセッションをまたいで値を保持しないため、このAPIはアプリのセッションごとに呼び出す必要があります。アプリ内通知を一時停止/一時停止解除する必要性はリアルタイムであり、クライアントアプリケーション自身が最もよく知っている現在のアプリケーション状態に依存するため、SDKがアプリセッションをまたいで値を保持することはありません。
+デフォルトでは、このAPIを使用してクライアントアプリによって明示的に一時停止されない限り、SDKは常にアプリ内通知を表示します。
+- `shouldPauseInAppNotification`: デフォルトでは`false`に設定されています。
+- `false`: アプリ内通知がある場合、表示を開始します。
+- `true`: アプリ内通知を一時停止します。この期間中、すなわちこの値がtrueの時に受信したアプリ内通知は、後でfalseに設定された時に表示されます。
+
+
+<div className="compact ">
+
+|               |                                        |
+| ------------- | -------------------------------------- |
+| API:       | <code>Helpshift.shouldPauseInAppNotification()</code>   |
+| 値:       | <code>boolean</code> |
+| 最低限必要なSDKバージョン       | v10.5.0                                |
+| 次の後に呼び出しされるべきです | <code>install()</code>                 |
+
+</div>
+
+
+```java
+public class MainActivity extends AppCompatActivity{
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    //... Assuming Helpshift.install() is already called in Application.onCreate()
+
+    // based on state of your app, decide to pause/unpause proactive engagement notifications.
+    Helpshift.shouldPauseInAppNotification(true/false);
+    
+    //...
+  }
+```
+
+## フォールバック構成の使用
+
+- プロアクティブ通知の操作を行う際、アプリ内の現在のユーザーに固有の設定を追加したい場合があります。
+- この構成は、通知を設定する際にダッシュボードから構成が提供されない場合に使用されます。構成データは、showConversation()やshowFAQs()のような他のAPIで期待されるものとまったく同じです。
+- この構成は、同じセッションで提出された次の問題にも使用されます。
+例えば、ユーザーがプロアクティブエンゲージメント通知によって会話を開始し、その会話が同じセッションで解決され、ユーザーが別の会話を開始した場合、この構成は新しい会話に使用されます。
+- 注意: このAPIは、`Helpshift.install() API and before Helpshift.handlePush()`の後に呼び出す必要があります
+- `public interface com.helpshift.proactive.HelpshiftProactiveAPIConfigCollector`を実装し、`Helpshift.setHelpshiftProactiveConfigCollector("<instance of HelpshiftProactiveAPIConfigCollector>")`メソッドを呼び出して構成コレクターを初期化します。
+- showConversation()やshowFAQs()のようなその他のパブリックAPIで追加する場合と同じフォーマットで、ユーザー固有の構成を追加するための`getAPIConfig()`メソッドを実装する必要があります。
+- `HelpshiftProactiveAPIConfigCollector.getAPIConfig()`は、通知クリックアクションを処理し、通知を処理するために使用される構成を評価する前に、SDKによって呼び出されます。
+- 例: 以下のコードは、HelpshiftProactiveAPIConfigCollectorインターフェースを実装する方法と、getAPIConfig()メソッドを使用してユーザー固有の構成を追加する方法を示しています。
+
+
+```java
+public class MainActivity extends AppCompatActivity implements HelpshiftProactiveAPIConfigCollector {
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    //... Assuming Helpshift.install() is already called in Application.onCreate()
+
+    // initialise proactiveConfig collector
+    Helpshift.setHelpshiftProactiveConfigCollector(this);
+
+    //...
+  }
+
+  //...
+
+  @Override
+  public Map<String, Object> getAPIConfig() {
+
+    // config map
+    Map<String, Object> localConfig = new HashMap<>();
+
+    // set tags for tracking
+    localConfig.put("tags", new String[]{"currentUserTag", "currentUserLevel"});
+
+    // set custom issue fields
+    Map<String, Object> cifMap = new HashMap<>();
+    Map<String, String> isPro = new HashMap<>();
+    isPro.put("type", "boolean");
+    isPro.put("value", "true");
+    cifMap.put("is_pro", isPro);
+
+    localConfig.put("cifs", cifMap);
+    // ..etc
+    return localConfig;
+  }
+}
+```
+
+<CustomIssueFieldsKeyDeprecationNotice />
+
+

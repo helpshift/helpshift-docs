@@ -1,0 +1,256 @@
+---
+sidebar_position: 910
+sidebar_class_name: feature-deprecated
+title: アウトバウンドサポート
+description: "アウトバウンドサポートを使用すれば、アプリ内で発生した問題を顧客と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
+
+# アウトバウンドサポート {#outbound-support}
+
+<Intro>
+
+アウトバウンドサポートを使用すれば、アプリ内で発生した問題を顧客と積極的に関わり合いながら解決へと導くことができます。この機能の詳細については、**[こちら](https://support.helpshift.com/hc/faq/1163-outbound-support-create-outbound-support-link)**をご参照ください。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift.install() API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+<Admonition type="warning" title="先に進む前に">
+
+- このページでは、特定のエンドユーザーを対象とした、機能に制限のある非推奨のアウトバウンドサポート機能について説明します。
+- 弊社では、アウトバウンドサポートの強化については**プロアクティブエンゲージメント**の使用をお勧めしております。これにより、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。 
+
+</Admonition>
+
+この機能の使用手順は、以下の通りです。
+
+アウトバウンドサポート用のリンクを生成するには、Helpshiftのダッシュボードで、「**設定**」、「**ワークフロー**」、「**アウトバウンドサポート**」の順に移動します。
+
+![](/static/books/helpshiftx/outbound-support.png)
+
+「**新しいリンク**」ボタンが表示されているはずです。「新しいリンク」ボタンをクリックし、**チャット、ヘルプセンター、シングルFAQ、FAQセクション**などのアクションと、Helpshift SDKにペイロードとして送信する**CIF、タグ、最初のユーザーメッセージ**などのデータを選択します。
+
+<Image src="/static/books/helpshiftx/generate-link-box.png" width="full" />
+
+最後に、URLエンコードされたペイロードのリンクを取得します。既存のプッシュ通知システムを使用して、このリンクを通知ペイロードに埋め込まれたエンドユーザーへと送信します。
+
+YOUR_APP_IDENTIFIERには、アプリを識別する一意の文字列を指定できます。たとえば、myAppやmyAppSupportなど、アプリのディープリンクURLで使用するスキームのようなものを指定します。
+
+<Image src="/static/books/helpshiftx/proactive-link.png" width="full" />
+
+## プッシュ通知のデータをHelpshift SDKにデリゲートする {#delegate-notification-data}
+
+アウトバウンドサポートのデータをHelpshiftに渡すには、以下の手順に従ってください。
+
+1. アプリの既存のプッシュ通知システムを使用して、アウトバウンドサポートを実施するユーザーにプッシュ通知を送信します
+
+2. ユーザーが通知を介してアプリを開いたときに、通知データに含まれているアウトバウンドサポートのリンクを`handleProactiveLink(link)`を呼び出すことによってHelpshift SDKに渡すようにアプリ内でこの通知を処理します。
+
+3. 提供されたリンクからデータを読み取り、アウトバウンドサポートダッシュボードから提供された構成を用いてHelpshiftのサポートを開きます。
+
+例: 以下のコードは、受信したプッシュ通知を処理し、それをデバイスの通知バーに表示する方法を示しています。
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+#import <HelpshiftX/Helpshift.h>
+...
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+    willPresentNotification:(UNNotification *)notification
+    withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+
+      // This is a notification from Helpshift push notification system
+      [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo isAppLaunch:NO withController:self.window.rootViewController];
+
+      completionHandler(UNNotificationPresentationOptionNone);
+    } else {
+
+      // Present Notification Alert
+      completionHandler(UNNotificationPresentationOptionAlert);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+import HelpshiftX
+...
+func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    if notification.request.content.userInfo["origin"] as? String == "helpshift" {
+        Helpshift.handleNotification(withUserInfoDictionary: notification.request.content.userInfo, isAppLaunch: false, with: rootViewController)
+        completionHandler([])
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+        completionHandler( [.alert])
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="danger" title="重要">
+
+- アウトバウンドサポートとHelpshiftの両方の通知を管理する必要があります。例として、Helpshiftのチャットメッセージの通知を受信すると、`[Helpshift handleNotificationWithUserInfoDictionary:]`に続いて`completionHandler(UNNotificationPresentationOptionNone);`を呼び出すことができます。アウトバウンドサポートの通知を受信すると、`completionHandler(UNNotificationPresentationOptionAlert);`を実行することができます。
+
+- これはあくまでも参考のための例です。実際の実装内容は、アプリの通知処理コードに依存します。
+
+</Admonition>
+
+ユーザーが通知をクリックすると、`didReceiveNotificationResponse`デリゲートが呼び出されます。
+プッシュ通知のデータをHelpshift SDKにデリゲートするには、`[Helpshift handleProactiveLink:proactiveLink]`を呼び出します。
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+#import <HelpshiftX/Helpshift.h>
+...
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+    didReceiveNotificationResponse:(UNNotificationResponse *)response
+    withCompletionHandler:(void (^)(void))completionHandler {
+    if([[response.notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
+        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
+                                                isAppLaunch:YES
+                                             withController:self.viewController];
+    } else {
+        NSString* proactiveLink = [response.notification.request.content.userInfo objectForKey:@"helpshift_proactive_link"];
+        if (proactiveLink != nil) {
+
+            // This is your app's push notification system containing a Helpshift proactive link
+            [Helpshift handleProactiveLink:proactiveLink];
+
+        } else {
+            // This is your app's push notification system.
+        }
+    }
+    completionHandler();
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+import HelpshiftX
+...
+func userNotificationCenter(_ center: UNUserNotificationCenter,
+                            didReceive response: UNNotificationResponse,
+                            withCompletionHandler completionHandler: @escaping () -> Void) {
+    if let origin = response.notification.request.content.userInfo["origin"] as? String, origin == "helpshift" {
+        // This is a notification from helpshift push notification system
+        // for messages sent from agent from Helpshift Dashboard
+        Helpshift.handleNotification(withUserInfoDictionary: response.notification.request.content.userInfo,
+                                     isAppLaunch: true,
+                                     withController: self.viewController)
+    } else {
+        if let proactiveLink = response.notification.request.content.userInfo["helpshift_proactive_link"] as? String {
+            // This is your app's push notification system containing a Helpshift proactive link
+            Helpshift.handleProactiveLink(proactiveLink)
+        } else {
+            // This is your app's push notification system.
+        }
+    }
+    completionHandler()
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## 現在のユーザーに固有の構成を渡す {#user-specific-config}
+
+ユーザーが通知をクリックした際に、アプリ内の現在のユーザーに固有の構成を追加したい場合があるかもしれません。
+
+ローカルAPIの構成を設定することにより、Helpshift SDKは（先のステップで述べたように）アウトバウンドサポートのリンクに埋め込まれた構成と、実行時に提供されるローカル構成の両方から構成をマージすることができます。このローカルAPIの構成は、`showConversation:`や`showFAQs:`のようなその他のAPIに期待される構成と全く同じです。
+
+この構成は、現在の問題と、同じセッションで提出された次の問題に使用されます。
+
+<Admonition type="info" title="注意">
+
+このAPIは、[Helpshift Installation API](/sdkx_ios/getting-started#start-using)よりも後、そしてHelpshift.handleProactiveLink()よりも前に呼び出す必要があります。
+
+</Admonition>
+
+AppDelegateクラス内のパブリックインターフェース`HelpshiftProactiveAPIConfigCollectorDelegate`を実装し、`setProactiveAPIConfigCollectorDelegate:`メソッドを呼び出してHelpshift SDKのインストール呼び出しの後に構成コレクターデリゲートを初期化します。
+
+`showConversation:`や`showFAQs:`のようなその他のパブリックAPIで追加する場合と同じフォーマットで、ユーザー固有の構成を追加するための`getAPIConfig`メソッドを実装する必要があります。
+
+この構成と、アウトバウンドサポートのリンクに埋め込まれている構成をマージします。**タグ、CIF**など、アウトバウンドサポートのリンクからの構成データをローカル構成に追加します。コンフリクトが発生した場合には、アウトバウンドサポートの構成が優先されます。
+
+例: 以下のコードは、`HelpshiftProactiveAPIConfigCollectorDelegate`を実装する方法と、`getAPIConfig`メソッドを使用してユーザー固有の構成を追加する方法を示しています。
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+// Set proactiveConfig collector delegate
+[Helpshift.sharedInstance setProactiveAPIConfigCollectorDelegate:self];
+
+// Delegate callback
+- (nonnull NSDictionary *) getAPIConfig {
+    NSDictionary *config = @{ @"tags":tagsArray,
+                              @"cifs": cifDictionary };
+    ..
+    return localConfig;
+}
+```
+
+<CustomIssueFieldsKeyDeprecationNotice />
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+// Set proactiveConfig collector delegate
+Helpshift.sharedInstance.setProactiveAPIConfigCollectorDelegate(self)
+
+// Delegate callback
+func getAPIConfig() -> Dictionary<String, Any> {
+    var config: [String: Any] = [
+        "tags": tagsArray,
+        "cifs": cifDictionary
+    ]
+    ...
+    return config
+}
+```
+
+<CustomIssueFieldsKeyDeprecationNotice />
+
+</TabItem>
+
+</Tabs>

@@ -1,0 +1,168 @@
+---
+sidebar_position: 85
+sidebar_class_name: feature-new
+title: プロアクティブエンゲージメント
+description: "プロアクティブエンゲージメント機能では、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。"
+---
+
+import {
+  Admonition,
+  Intro,
+  TabItem,
+  Tabs,
+  Image
+} from "@site/src/components/forDocs";
+
+<Intro>
+
+プロアクティブエンゲージメント機能では、プレイヤーのモバイルデバイスにプッシュ通知やアプリ内通知を送信して連絡を取ったり、会話を開始したりするなどの様々な方法でエンゲージメントを図れるようになります。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+この機能はSDK X 10.5.0以降で利用可能です。
+
+SDKに含まれているすべてのパブリックAPIは、[Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)を介してSDKを初期化した後に呼び出す必要があります
+
+プロアクティブエンゲージメントを開始する前に、Helpshift SDKとプッシュ通知を統合していることを確認してください。統合ガイドについては、[通知](/sdkx_ios/notifications)ページを参照してください。
+
+</Admonition>
+
+## プロアクティブエンゲージメント通知の設定
+
+通知を送信するには、以下の手順に従ってください: 
+
+- Helpshiftダッシュボードを開き、**「設定」、「ワークフロー」、「プロアクティブエンゲージメント」の順に移動します**
+- **プッシュ通知**または**アプリ内通知**を使用して、対象のアプリに通知を作成します
+
+<Image
+  src="/static/books/common/proactive-admin-settings.png"
+  width="full"
+  alt="Helpshift admin dashboard settings for Proactive Engagement feature"
+/>
+
+- 利用可能なオプションから望むアクションを選択し、通知内容を入力し、必要に応じてコンテキストを追加します。
+   - ここで設定されたインテント/CIF/タグ/初期メッセージなどは、エンドユーザーが通知をクリックして会話を開始する際に使用されます。
+
+<Image
+  src="/static/books/common/proactive-admin-compose.png"
+  width="full"
+  alt="Proactive Engagement notification compose settings on Helpshift admin dashboard"
+/>
+
+- 対象にしたいオーディエンスのフィルタを設定します。以下の条件でオーディエンスを絞り込みできます: 
+    - 問題プロパティ
+  - [ユーザーハブ統合を使用した](/sdkx_ios/identity-user-hub)ユーザープロパティ
+
+<Image
+  src="/static/books/common/proactive-admin-audience.png"
+  width="full"
+  alt="Proactive Engagement notification audience filter on Helpshift admin dashboard"
+/>
+
+- 通知のスケジュールを設定します。通知を送信する前に、設定全体を確認する機会があります。
+
+<Image
+  src="/static/books/common/proactive-admin-schedule.png"
+  width="full"
+  alt="Proactive Engagement notification scheduling on Helpshift admin dashboard"
+/>
+
+### プッシュ通知
+
+<Image
+  src="/static/books/sdkx_ios/proactive-push-sdk-ios.png"
+  width="half"
+  alt="Proactive Engagement push notification on iOS"
+/>
+
+- プッシュ型通知はデバイスの通知センターに表示されます。このタイプの通知は、アクティブでなかったユーザーを再度エンゲージさせたい場合や、興味深いコンテンツでユーザーの注目を集めたい場合に使用します。
+- 通知をクリックすると利用可能なさまざまなアクションにより、ディープリンク（クライアントアプリケーションによって設定する必要あり）を介してユーザーをアプリケーションの任意の部分にリダイレクトしたり、「チャットを開始」オプションを介して会話を開始したり、FAQにリダイレクトして迅速なヘルプを提供したりすることができます。
+- アプリがバックグラウンドで実行されていなくても、プッシュ通知は表示されます。
+
+<Admonition type="info" title="注意">
+
+- iOSのプッシュ通知ではボタンをサポートしていません。
+- 通知内容はリッチテキストに対応していません。
+
+</Admonition>
+
+### アプリ内通知
+
+<Image
+  src="/static/books/sdkx_ios/proactive-inapp-sdk-ios.png"
+  width="half"
+  alt="Proactive Engagement in-app notification on iOS"
+/>
+
+- アプリ内通知は、すでにアプリケーションを使用していて、アプリケーションのUIを開いているユーザーの注意を引き、リアルタイムでそのユーザーに警告を発したり、エンゲージさせるために使用されます。
+- ユーザーがアプリケーションのUIを開いていない場合、通知はデバイスの通知トレイに表示され、ユーザーにエンゲージを促します。
+- ユーザーが通知をクリックすると、アプリが開き、実際に設定されたアプリ内通知が表示されます。これにより、ユーザーのエンゲージメントの確率が高まり、私たちの目標をより達成しやすくなります。
+- 現在、プッシュ通知に似たクリックアクションのバナー型通知をサポートしています。
+- アプリがバックグラウンドにあるときにSDKが複数のアプリ内通知を受信した場合、システムはそれらのすべてを表示します。通知をクリックすると、アプリが開き、SDKはクリックされた通知に対応するアプリ内通知を表示します。その他の通知はそのまま通知センターに残ります。
+- デフォルトでは、アプリ内通知の有効期限はデバイスへの配信から2日間です。ユーザーがすでに期限切れの通知をクリックした場合、クリックしても何もアクションは実行されません。
+
+### アプリ内通知の一時停止
+
+アプリ内サポート通知を一時停止する既存の API - [pauseDisplayOfInAppNotification](/sdkx_ios/notifications/#pause-in-app) - は、プロアクティブエンゲージメント通知にも影響します。このAPIは、アプリケーションがフォアグラウンドのときに、エンドユーザーへのアプリ内通知の表示を一時停止/解除します。
+
+このAPIを使用すると、ユーザーを邪魔すべきでないとわかっている時に、アプリ内通知を一時停止できます。例えば、ユーザーがアプリの起動画面である、アプリがまだロード中である、ユーザーがゲームプレイ中である、または決済画面であるなどです。このような場合、Helpshift SDKからアプリ内通知を一時停止し、ユーザーが終了したら同じAPI経由で一時停止を解除できます。
+
+通知が一時停止されているときに受信したアプリ内通知は失われず、一時停止が解除されるとすぐにユーザーに表示されます。
+
+SDKはセッションをまたいで値を保持しないため、このAPIはアプリのセッションごとに呼び出す必要があります。アプリ内通知を一時停止/一時停止解除する必要性はリアルタイムであり、クライアントアプリケーション自身が最もよく知っている現在のアプリケーション状態に依存するため、SDKがアプリセッションをまたいで値を保持することはありません。
+
+デフォルトでは、このAPIを使用してクライアントアプリによって明示的に一時停止されない限り、SDKは常にアプリ内通知を表示します。
+
+### フォールバック構成の使用
+
+プロアクティブ通知の操作を行う際、アプリ内の現在のユーザーに固有の設定を追加したい場合があります。この構成は、通知を設定する際にダッシュボードから構成が提供されない場合に使用されます。構成データは、`showConversationWithConfig:`や`showFAQsWithConfig:`のような他のAPIで期待されるものとまったく同じです。
+
+この構成は、同じセッションで提出された次の問題にも使用されます。例えば、ユーザーがプロアクティブエンゲージメント通知によって会話を開始し、その会話が同じセッションで解決され、ユーザーが別の会話を開始した場合、この構成は新しい会話に使用されます。
+
+パブリックプロトコル`HelpshiftProactiveAPIConfigCollectorDelegate`を実装し、`setProactiveAPIConfigCollectorDelegate:`メソッドを呼び出して構成コレクターを初期化します。`showConversationWithConfig:`や`showFAQsWithConfig:`のようなその他のパブリックAPIで追加する場合と同じフォーマットで、ユーザー固有の構成を追加するためのメソッド`getAPIConfig`を実装する必要があります。`getAPIConfig`は、通知クリックアクションを処理し、通知を処理するために使用される構成を評価する前に、SDKによって呼び出されます。
+
+例: 以下のコードは、`HelpshiftProactiveAPIConfigCollectorDelegate`プロトコルを実装する方法と、`getAPIConfig`メソッドを使用してユーザー固有の構成を追加する方法を示しています。
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+// Set proactiveConfig collector delegate
+[Helpshift.sharedInstance setProactiveAPIConfigCollectorDelegate:self];
+// Delegate callback
+- (nonnull NSDictionary *) getAPIConfig {
+    NSDictionary *config = @{ @"tags": tagsArray,
+                              @"cifs": cifDictionary };
+    ...
+    return config;
+}
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+// Set proactiveConfig collector delegate
+Helpshift.sharedInstance.setProactiveAPIConfigCollectorDelegate(self)
+// Delegate callback
+func getAPIConfig() -> Dictionary<String, Any> {
+    var config: [String: Any] = [
+        "tags": tagsArray,
+        "cifs": cifDictionary
+    ]
+    ...
+    return config
+}
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="caution" title="注意">
+
+- このAPIは、`install`APIよりも後、そして`handleBackgroundNotificationClick:withCompletionHandler:`よりも前に呼び出す必要があります。
+- <b>"customIssueFields"</b>キーの使用は非推奨になりました。カスタム問題フィールドを渡す方法として、<b>"cifs"</b>キーの使用を強く推奨します。
+
+</Admonition>

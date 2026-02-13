@@ -1,0 +1,131 @@
+---
+sidebar_position: 150
+title: トラブルシューティング
+description: SDKに関するよくある問題と、その解決策について詳しく説明します。
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# トラブルシューティング {#troubleshoot}
+
+## デバッグログの共有 {#share-debug-logs}
+
+v10.2.0では、Helpshift SDKはアプリがデバッグモードで実行されている場合にメールを介して内部ログを共有することができます。
+これにより、デバイスから直接ログを送信することでより速くログを収集できるようになります。
+
+SDKのデバッグログの共有は、以下の手順で行うことができます。
+
+- 以下の条件を満たした場合に、デバイスの通知バーに通知を送信します。
+
+  1.  アプリケーションがデバッグモードでビルドされている場合。
+  2.  `enableLogging`フラグが`true`に設定されている場合。構成については、[こちら](/sdkx_android/sdk-configuration#enable-logging)をご参照ください。
+
+- 通知のタイトルは`Helpshift Debugger`です。
+- SDKは、初期化が完了するとすぐにこの通知を送信します。初期化の手順については、[こちら](/sdkx_android/getting-started#initializing)をご参照ください。
+- SDKで直面している問題を再現します。
+- この通知をクリックすると、ログを共有するためのアプリの選択メニューが開きます。
+- 特定のアプリの中からメールアプリを選択します。
+- メールアプリでは、デフォルトで`bugs@helpshift.com`が受信者として設定されています。
+- 内容を変更せずに、メールを送信します。
+- 問題がアプリのクラッシュに関連している場合には、以下の手順に従ってください。
+  1.  アプリをもう一度起動します。
+  2.  通知バーに同じ通知が再度表示されるはずです。
+  3.  通知をクリックして、ログを共有します。
+
+<Admonition type="info" title="注意">
+
+アプリがリリース/本番モードの場合、ログの収集や保存は実行されません。
+
+</Admonition>
+
+## SDKの統合 {#integration-issues}
+
+### AndroidX（バージョン10.3.0以上）に移行しました
+
+Helpshift SDK Xは、`10.3.0`からAndroidXへと完全に移行しました。クライアントアプリがレガシーライブラリを使用している場合、SDK Xはコンパイルを実行しません。
+
+### AndroidXサポートライブラリの使用（バージョン10.2.X以下） {#steps-to-build-with-android-x}
+
+Helpshift SDK Xでは、レガシー版のAndroidサポートライブラリを使用しています。アプリケーションでAndroidXライブラリを使用する場合には、以下の手順に従ってHelpshift SDKとAndroidXの互換性を確保してください。
+
+1. プロジェクトのtargetSdkVersionを28以上に設定します。
+2. gradle.propertiesファイルに以下の行を追加します。
+
+```groovy
+android.useAndroidX=true
+android.enableJetifier=true
+```
+
+Jetifierは、サポートライブラリに依存するライブラリを同等のAndroidXパッケージに依存するように移行するためのツールです。
+
+[こちら](https://developer.android.com/studio/command-line/jetifier)で言及されているスタンドアロンのJetifierツールを使用する場合には、以下の手順に従ってください。
+
+Jetifierをインストールするには、[このzipファイルをダウンロード](https://dl.google.com/dl/android/studio/jetifier-zips/1.0.0-beta10/jetifier-standalone.zip)し、解凍します。
+ご利用のデバイスに**Javaのバージョン1.8がインストールされている**必要があります。
+
+ライブラリを処理するには、現在のライブラリへのパスと、ツールで作成した出力ファイルへのパスを渡します
+
+例: 
+
+`./jetifier-standalone -i <source-library> -o <output-library>`
+
+## 既知の問題 {#known-issues}
+
+### 無効な言語コードによるCORSエラー {#cors-error}
+
+チャット画面を読み込むことができず、コンソールやAndroidのLogcatでこのエラーが表示される場合には、
+
+```text
+Access to XMLHttpRequest at 'https://api.helpshift.com/websdk/……' from origin
+'https://…...webchat.helpshift.com' has been blocked by CORS policy: Request
+header field accept-language is not allowed by Access-Control-Allow-Headers in
+preflight response. -- From line 0 of https://……...webchat.helpshift.com/latest/
+android/html/index.html?v=3.32.1&parent=https%3A%2F%2Flocalhost
+```
+
+これはHelpshift SDKに渡された無効な言語コードが原因となっている可能性があります。この問題を解決するには、`Helpshift.setLanguage(String language)` APIを使用して有効な言語コードをHelpshift SDKに渡します。
+有効な言語コードの値に含めることができる文字は、`0-9, A-Z, a-z, space or *,-.;=.`のみです。
+
+詳細については、[こちら](/sdkx_android/i18n/#supported-languages)をご参照ください。
+
+### プッシュ通知を取得できない {#push-notification-issue}
+
+Helpshiftからプッシュ通知を取得できない場合には、[通知](/sdkx_android/notifications#push-via-helpshift)に記載されている開発者向けドキュメントの内容に即した適切な手順に従っているかどうかをご確認ください。
+
+それでも通知を取得できない場合には、以下をご確認ください。
+
+- FirebaseコンソールからCloud Messaging API（レガシー）を有効にし、[通知](/sdkx_android/notifications#push-via-helpshift)に記載されているように、ダッシュボードでサーバーキーを入力してください。
+
+<Image src="/static/books/helpshiftx/gcm-key-example.png" width="full" />
+
+### 通知バーに通知が表示されない
+
+Android 13では、アプリが通知を送信できるようにエンドユーザーが許可を与える必要があります。
+
+お客様のアプリがAndroid 13（APIレベル33）をターゲットにしている場合、これが通知が機能しない原因になっている可能性があります。
+
+アプリが通知を送信できるようにするには、通知の許可を要求する必要があります。詳細については、[Androidドキュメンテーション](https://developer.android.com/develop/ui/views/notifications/notification-permission)をご参照ください。
+
+Helpshift SDKが通知の許可を要求することはありません。これに関しては、アプリケーションに依存しています。
+
+## その他
+
+### デバイスのブラウザーがサポートしていない添付ファイルの処理
+
+* ユーザーが会話の中で添付ファイルをクリックすると、SDKはデフォルトでブラウザーで添付ファイルを開こうとします。これは、CDNのURLから直接開こうとすることが原因です。
+* ブラウザーがファイルを開けない場合には、デバイス上のファイルをダウンロードします。
+* ユーザーがダウンロードしたファイルを開こうとする際にファイルをアプリで開くオプションを提供することにより、そういったファイルを開いたり消費したりする処理をアプリに追加することができます。
+* ユーザーによるシステム全体でのファイルを開く操作の処理については、[こちら](https://developer.android.com/guide/components/intents-filters)のインテントフィルターを参照してください。

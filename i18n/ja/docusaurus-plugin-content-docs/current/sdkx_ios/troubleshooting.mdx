@@ -1,0 +1,54 @@
+---
+sidebar_position: 150
+title: トラブルシューティング
+description: SDKに関するよくある問題と、その解決策について詳しく説明します。
+---
+
+import {
+  Admonition,
+} from "@site/src/components/forDocs";
+
+import UserClickOnActionDelegateIssue from "@site/docs/_partials/_troubleShootingUserClickOnActionDelegate.mdx";
+
+# トラブルシューティング {#troubleshoot}
+
+## 既知の問題 {#known-issues}
+
+### 添付ファイルフローのための写真ライブラリのアクセス許可 {#photos-library-permission}
+
+アプリでアクセス許可**NSPhotoLibraryUsageDescription**が宣言されていない場合、アプリがリジェクトされてしまう可能性があります。これを修正するには、以下のキーと説明を追加する必要があります。
+
+**NSPhotoLibraryUsageDescription**キーをアプリケーションのInfo.plistファイルに追加する
+
+**NSPhotoLibraryUsageDescriptionの説明テキスト**は、次の通りです。「このアプリは、ヘルプやサポートを目的として、添付ファイルとして送信する画像をユーザーが手動で選択できるようにするために、写真ライブラリにアクセスする必要があります。」
+
+### 添付ファイルフローのためのカメラのアクセス許可 {#camera-permission-for-attachments}
+
+<Admonition type="info" title="注意">
+
+この問題はSDK X 10.2.0で解決されました。以下の説明は、SDK X 10.2.0以下のバージョンに適用されます。
+
+</Admonition>
+
+SDK Xの会話の添付ファイル機能では、添付ファイルメニューが開きます。これはSafariのネイティブメニューであり、現時点で3つのオプションがありますが、そのうちの一つが「写真またはビデオを撮る」です。このオプションを使用するには、アプリのXcodeプロジェクトのInfo.plistファイルでカメラのアクセス許可を宣言する必要があります。宣言せずにユーザーがこのオプションを選択してしまうと、アプリがクラッシュする可能性があります。現時点では、このオプションを非表示にすることはできません。このオプションを無効にする機能については、今後ロードマップに追加される予定です。
+
+このクラッシュを回避するには、XcodeプロジェクトのInfo.plistファイルに以下のキーを追加する必要があります。
+
+- NSPhotoLibraryUsageDescription
+
+- NSCameraUsageDescription
+
+ユーザーに添付ファイルの送信を要求しないユースケースの場合には、管理者ダッシュボードのアプリの設定ページでユーザーの添付ファイルの構成を無効にする必要があります。これにより会話で添付ファイルアイコンが完全に非表示となるため、上記のアクセス許可をInfo.plistファイルに追加する必要がなくなります。ユーザー側の添付ファイルの構成を無効にすると同時に、エージェント側の添付ファイルの要求機能も使用しないようにしてください。
+
+<Admonition type="info" title="注意">
+
+添付ファイル機能: 次の機能により、ユーザーは会話の中で添付ファイルを送信することができます — 返信ボックスの添付ファイルアイコンと、エージェントによる添付ファイルの要求メッセージ。
+
+</Admonition>
+
+<UserClickOnActionDelegateIssue />
+
+### iOS 18におけるプッシュ通知関連の問題
+
+- iOS 18.0では、アプリ内通知のアニメーション表示に不具合が見られるようです。この問題は、iOS 18.1で修正されています。
+- iOS 18を使用しているユーザーに対しては、一部のプッシュ通知が届かない場合があります。

@@ -1,0 +1,253 @@
+---
+sidebar_position: 60
+title: 通知（iOS）
+description: "プッシュ通知とアプリ内通知を構成します。"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+import ConfigurePushNotificationsiOS from "@site/i18n/ja/docusaurus-plugin-content-docs/current/_partials/_configurePushNotificationsiOS.mdx";
+
+# 通知（<small>iOS</small>） {#notifications}
+
+<Intro>
+
+プッシュ通知とアプリ内通知を構成します。
+
+</Intro>
+
+<Admonition type="info" title="注意">
+
+SDKに含まれているすべてのパブリックAPIは、[HelpshiftSdk.install() API](/sdkx-unity/getting-started-ios#initializing)を介してSDKを初期化した後に呼び出す必要があります
+
+</Admonition>
+
+<Admonition type="info" title="注意">
+
+プッシュ通知をセットアップする簡単な方法は、`HsUnityAppController.mm`ファイルに含まれている関連コードのコメントアウトを解除することです。クラス`HsUnityAppController`は`AppDelegateListener`を実装し、プッシュ通知を開始するために必要な関連するデリゲートメソッドを提供します。
+
+</Admonition>
+
+## Helpshiftを介したプッシュ通知を構成する {#push-via-helpshift}
+
+ユーザーから提出された問題に返信したタイミングで、ユーザーに通知を送信することができます。iOSで期待されるプッシュ通知の動作に加えて、通知をカスタマイズし、通知の受信時にアプリアイコンに数字が記載されたバッジを表示したり、音声アラートを再生したりすることができます。
+
+アプリでまだプッシュ機能を使用していない場合には、アプリのプッシュ機能を有効にする必要があります。アプリケーションでプッシュ通知を有効にするには、AppDelegateの`application:didFinishLaunchingWithOptions:`メソッドにAPNs登録コードを追加する必要があります。
+
+```objc
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    ...
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge     UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
+                                                                     completionHandler:^(BOOL granted, NSError *_Nullable error) {
+                            ...
+                        }];
+    [UIApplication sharedApplication registerForRemoteNotifications];
+    ...
+}
+```
+
+<ConfigurePushNotificationsiOS />
+
+### Helpshift iOS SDKが通知を処理するように構成する {#configure-helpshift-sdk}
+
+<Admonition type="info" title="注意">
+
+プッシュ機能が構成されていない場合、Helpshift SDKはエージェント/ボットにより送信されたすべてのメッセージに対してすぐに使用可能なアプリ内通知を表示します。
+`registerDeviceToken` APIを呼び出すのは、必ず[Helpshiftダッシュボードをプッシュ通知用に構成した後](#configure-helpshift-push-admin)にしてください。Helpshiftダッシュボードを構成せずに`registerDeviceToken` APIを呼び出すと、エンドユーザーに対してアプリ内通知が表示されなくなります。
+
+</Admonition>
+
+Helpshift SDKをHelpshiftのプッシュ通知サービスと連携させるには、
+`registerDeviceToken:` API呼び出しをアプリケーションのデリゲートメソッド
+`application:didRegisterForRemoteNotificationsWithDeviceToken:`の内部で呼び出す必要があります。
+
+アプリのデリゲートファイルでは、以下のようになります。
+
+```objc
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [Helpshift registerDeviceToken:deviceToken];
+}
+```
+
+配信された通知に応答するには、共有されているUNUserNotificationCenterオブジェクトのためのデリゲートを実装する必要があります。デリゲートオブジェクトは、通知センターがアプリに通知情報を配信するために使用するUNUserNotificationCenterDelegateプロトコルに準拠する必要があります。
+
+1. アプリがフォアグラウンドにあるときに通知が届くと、UNUserNotificationCenterDelegateの`willPresentNotification:`が呼び出されます。
+1. アプリがバックグラウンドにあるか、または実行されていない場合には、システムは`userNotificationCenter:willPresentNotification:withCompletionHandler:`メソッドを呼び出しません。そのような場合には、システムは通知そのものに含まれている情報に従ってユーザーにアラートを発します。
+   ユーザーが通知インターフェースからアクションを選択すると、システムはユーザーの選択をアプリに通知します。レスポンスを受け取るためには、デリゲートオブジェクトは`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:`メソッドを実装する必要があります。
+
+上記のすべての場合において、通知のオリジンが「Helpshift」であれば通知辞書の「origin」フィールドをチェックし、`handleNotificationWithUserInfoDictionary:isAppLaunch:` APIを呼び出す必要があります。Helpshift SDKは通知を受信した問題を確認し、それらの問題の会話画面を自動的に起動します。isAppLaunchブール型フラグは、ここではアクティブまたはバックグラウンドにあるアプリと、ユーザにより強制終了されたアプリを区別するために使用されます。後者の場合、このフラグはtrueに設定されているはずです。
+
+使用方法のサンプル
+
+`userNotificationCenter:willPresentNotification:withCompletionHandler:`デリゲートの場合:
+
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+  willPresentNotification:(UNNotification *)notification
+  withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+  if([[notification.request.content.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+    [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
+                                                isAppLaunch:false];
+    completionHandler(UNNotificationPresentationOptionNone);
+  } else {
+    // Handle foreground notifications other than Helpshift ones.
+  }
+}
+```
+
+`userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:`デリゲートの場合:
+
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler {
+    if([response.notification.request.content.userInfo[@"origin"] isEqualToString:@"helpshift"]) {
+        [Helpshift handleNotificationWithUserInfoDictionary:response.notification.request.content.userInfo
+                                                isAppLaunch:YES];
+    } else {
+        // Handle push notifications other than Helpshift ones.
+    }
+    completionHandler();
+}
+```
+
+### バッジの数 {#badge-count}
+
+アプリケーションアイコンでバッジのリセットを処理する必要がある場合は、`applicationDidBecomeActive:`デリゲートメソッドで以下のように処理します。
+
+```objc
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+```
+
+<Admonition type="info" title="注意">
+
+すでに稼働中のアプリのプッシュ通知をテストするには、[こちら](/ios/troubleshooting#test-push-production)を参照してください。
+
+</Admonition>
+
+## アプリ内通知 {#in-app-notifications}
+
+アプリ内通知は、Appleのプッシュ通知バナーに似ています。プッシュ通知とは異なり、ユーザーの使用中にアプリ内に表示されます。
+
+これらの通知は、エージェントが顧客の問題に返信したタイミングで送信されます。顧客は、それらのバナーをクリックすることで直接会話画面に移動することができます。
+
+<SideBySide>
+
+<Image
+  src="/static/books/sdkx_ios/In-app-notification.png"
+  width="half"
+  alt="In-app-notification.png"
+/>
+
+</SideBySide>
+
+## アプリ内通知を構成する {#optional-flags}
+
+Helpshiftの[インストール呼び出し](/sdkx_ios/getting-started#initializing)は、SDKの動作を構成するためのフラグをサポートしています。
+現時点では、`enableInAppNotification`という1つのフラグをサポートしています。
+
+### アプリ内通知の有効化/無効化 {#enable-disable-in-app}
+
+<div className="compact ">
+
+|         |                                      |
+| ------- | ------------------------------------ |
+| フラグ    | enableInAppNotification              |
+| 値  | <code>true</code>/<code>false</code> |
+| デフォルト | <code>true</code>                    |
+
+</div>
+
+Helpshift SDKが提供するアプリ内通知サポートが不要な場合には、
+このフラグを`false`に設定してください。この
+フラグの規定値は`true`であり、この場合にはアプリ内通知が有効化されます。<br />
+アプリ内通知の詳細については、[通知セクション](/sdkx_ios/notifications#in-app-notifications)をご参照ください。
+
+例:
+
+```csharp
+using Helpshift;
+
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.GetInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.ENABLE_INAPP_NOTIFICATION, true);
+help.Install(appId, domainName, configMap);
+```
+
+### アプリ内通知の一時停止 {#pause-in-app}
+
+アプリ内通知を有効にしている場合には、`PauseDisplayOfInAppNotification()` APIを使用して通知の一時停止や再開を行います。このメソッドに`true`が渡されると、アプリ内通知が発生しても表示は一時停止されます。`false`を渡すと、アプリ内通知が表示されるようになります。
+
+例:
+
+```csharp
+using Helpshift;
+
+// Install call
+private HelpshiftSdk help;
+this.help = HelpshiftSdk.GetInstance();
+Dictionary<string, object> configMap = new Dictionary<string, object>();
+configMap.Add(HelpshiftSdk.ENABLE_INAPP_NOTIFICATION, true);
+help.Install(appId, domainName, configMap);
+
+// To temporarily pause in-app notifications
+help.PauseDisplayOfInAppNotification(true);
+
+// To resume showing the in-app notifications
+help.PauseDisplayOfInAppNotification(false);
+```
+
+## ユーザーに返信が送信された際の通知数の表示 {#showing-notification-count}
+
+サーバーから未読メッセージの数を取得するには、`Helpshift.RequestUnreadMessageCount(shouldFetchFromServer)` APIを呼び出します。このAPIは、未読メッセージの数をデリゲート経由で返します。
+`shouldFetchFromServer`の値に基づき、`shouldFetchFromServer`が`false`の場合にはローカルに保存されている数が返され、`shouldFetchFromServer`が`true`の場合にはサーバーからリモートで取得します。このカウント機能の使用例には、未読メッセージを示すバッジの数の更新が挙げられます。このメソッドを呼び出す前に、`Helpshift.SetHelpshiftEventsListener(eventsListener)` APIを呼び出してHelpshiftイベントのリスナーを設定する必要があることにご注意ください。
+
+```csharp
+// Requesting unread count
+private void RequestUnreadCount()
+{
+    Helpshift.RequestUnreadMessageCount(true);
+}
+```
+
+このAPIを呼び出すと、`IHelpshiftEventsListener`を実装するイベントリスナーで未読の数を受け取ります。
+以下は実装例です
+
+```csharp
+public class HSEventsListener : IHelpshiftEventsListener
+{
+    // ...
+    public void HandleHelpshiftEvent(string eventName, Dictionary<string, object> eventData)
+    {
+      if(eventName.Equals(HelpshiftEvent.RECEIVED_UNREAD_MESSAGE_COUNT))
+      {
+        Debug.Log("Unread count: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT]);
+        Debug.Log("Is Unread count from cache: " + eventData[HelpshiftEvent.DATA_MESSAGE_COUNT_FROM_CACHE]);
+
+        // Do something with the unread count here, for example, update the badge count.
+      }
+    }
+    //...
+}
+```
+
+- 通知の数は、SDKのキャッシュとHelpshiftのサーバーからこのAPIを介して取得されます（上記の例では`fromCache`の値で示されています）。しかしながら、Helpshiftサーバーから取得する場合の通知数についてはレートが制限されており、タイムアウトのリセット後またはユーザーがチャット画面を閉じた後（いずれかの早い方）にAPIに対する次の呼び出しが行われた場合にのみ値が返されます。タイムアウトのリセット時間は、アクティブな問題の場合は1分、そして非アクティブな問題の場合には5分に設定されています。

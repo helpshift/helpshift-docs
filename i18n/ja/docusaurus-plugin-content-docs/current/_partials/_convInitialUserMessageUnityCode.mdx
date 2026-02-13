@@ -1,0 +1,21 @@
+例:
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
+      help.ShowConversation(configMap);
+    }
+}
+```
