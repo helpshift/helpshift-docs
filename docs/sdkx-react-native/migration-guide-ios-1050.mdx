@@ -1,0 +1,66 @@
+---
+sidebar_position: 145
+title: Migration Guide - SDK X 10.5.0
+description: "This migration guide will walk you through the steps you need to take in order to migrate from SDK X 10.4.1 and below to SDK X 10.5.0 and above"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  LatestSdkVersion,
+  Centered,
+  Image,
+  Intro,
+  SideBySide,
+  DownloadButton,
+  Steps,
+  Step,
+} from "@site/src/components/forDocs";
+
+# Migration Guide - SDK X 10.5.0 {#migration-guide}
+
+<Intro>
+
+SDK X 10.5.0 is a major release on iOS and includes some breaking changes as we have removed some deprecated APIs.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+Refer to the [Release Notes](/sdkx-react-native/release-notes-react-native) for a full list of changes in this version.
+
+</Admonition>
+
+## iOS Migration - SDK X 10.5.0 {#ios-migration-10-5-0}
+
+We have updated the Helpshift iOS SDK to version 10.5.0. This update involves several API removals and deprecations in the native layer that are reflected in the React Native plugin.
+
+### SDK Termination on iOS 14 and below {#ios-14-termination}
+
+Helpshift SDK X 10.5.0 will now officially support only iOS 15 and above. We have stopped technical support for iOS 14 and below. The SDK will remain compile-able on these versions, but functionality might be broken.
+
+### API Deprecations {#api-deprecations}
+
+The following APIs have been deprecated and will be removed in a future release:
+
+- **Notification Handling APIs**: The old way of passing notification data to the SDK using `handlePush` is being replaced by more robust native delegates and specialized handlers on iOS.
+  - Deprecated API: `handlePush`
+  - Replacement: Use the new improved notification handling pattern. Refer to the [Notifications iOS](/sdkx-react-native/notifications-ios) page for details on how to use `handleIOSForegroundNotification`, `handleIOSNotificationClick`, and `handleIOSSilentNotification`.
+- **Outbound Support**: The entire Outbound Support feature is deprecated in favor of the new Proactive Engagement feature.
+  - Deprecated API: `handleProactiveLink`
+  - Replacement: Use Proactive Engagement via the Helpshift Dashboard. Refer to the [Proactive Engagement](/sdkx-react-native/proactive-engagement) page.
+
+### New Native Delegates for Push Notifications {#new-push-delegates}
+
+For better control over notifications and to support Proactive Engagement, we have introduced new native delegate methods that should be implemented in your `AppDelegate`. These are essential for the new React Native notification handlers to function correctly.
+
+Refer to the [Notifications iOS](/sdkx-react-native/notifications-ios#push-delegates) documentation for implementation details.
+
+### Proactive Engagement Integration {#proactive-engagement-integration}
+
+To adopt the new Proactive Engagement feature:
+- Use the new `setProactiveConfig` API if you wish to provide fallback configurations.
+- Ensure you have a Notification Service Extension if you want to support rich push notifications (images).
+- Refer to the [Proactive Engagement](/sdkx-react-native/proactive-engagement) guide for a complete overview.

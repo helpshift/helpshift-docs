@@ -37,11 +37,13 @@ If you want to configure the notifications for Android, please refer [here](/sdk
 
 ## Configure push notifications via Helpshift {#push-via-helpshift}
 
-Helpshift enables you to send notifications to your users. This is
+- Helpshift enables you to send notifications to your users. This is
 particularly useful when you have multiple users on multiple platforms,
 like iOS and Android. Notifications are useful to tell your users when
 you reply to an issue that they submitted. When the app is backgrounded,
 the notification that is sent from Helpshift appears as a notification.
+
+- You send a [Proactive Engagement](/sdkx-react-native/proactive-engagement) notification targeting the user
 
 <ConfigurePushNotificationsiOS />
 
@@ -59,7 +61,10 @@ Example :
 
 ```javascript
 import {
-  handleProactiveLink,
+  closeSDKSession,
+  handleIOSForegroundNotification,
+  handleIOSNotificationClick,
+  handleIOSSilentNotification,
   handlePush,
   registerPushToken,
 } from "helpshift-plugin-sdkx-react-native";
@@ -68,7 +73,14 @@ import {
   Notifications,
   Registered,
   RegistrationError,
+  NotificationBackgroundFetchResult
 } from "react-native-notifications";
+
+const NotificationBackgroundFetchValue = {
+  newData: NotificationBackgroundFetchResult.NEW_DATA,
+  noData: NotificationBackgroundFetchResult.NO_DATA,
+  failed: NotificationBackgroundFetchResult.FAILED
+};
 ```
 
 #### For Register notifications
@@ -86,21 +98,41 @@ Notifications.events().registerRemoteNotificationsRegistered(
 
 #### For handle notification received in foreground
 
+<Admonition type="warning" title="Note">
+
+For foreground notifications (specifically the `list` option) to work correctly on iOS 14+, you may need to apply a patch to the `react-native-notifications` package. Please refer to the [Troubleshooting](/sdkx-react-native/troubleshooting#foreground-notifications-ios) page for details.
+
+</Admonition>
+
 ```javascript
 Notifications.events().registerNotificationReceivedForeground(
-  (notification: Notification, completion) => {
+  async (notification: Notification, completion) => {
     const notificationData = notification.payload;
-
-    const doesNotificationDataHaveOrigin =
-      notificationData.hasOwnProperty("origin") &&
-      notificationData?.origin == "helpshift";
+    const doesNotificationDataHaveOrigin = notificationData?.origin === "helpshift";
 
     if (doesNotificationDataHaveOrigin) {
-      // Handle Helpshift notification here.
-      handlePush(notificationData, false);
-      completion({ alert: false, sound: false, badge: false });
+      // return value -> {alert: boolean,sound: boolean, badge: boolean,list: boolean;}
+      const options = await handleIOSForegroundNotification(notificationData);
+      completion(options);
     } else {
-      completion({ alert: true, sound: true, badge: false });
+      completion({ alert: true, sound: true, badge: false, list: false });
+    }
+  }
+);
+```
+
+#### For handle notification received in background
+
+```javascript
+Notifications.events().registerNotificationReceivedBackground(
+  async (notification, completion) => {
+    const notificationData = notification.payload;
+    const doesNotificationDataHaveOrigin = notificationData?.origin === "helpshift";
+    if (doesNotificationDataHaveOrigin) {
+      const value = await handleIOSSilentNotification(notificationData);
+      completion(NotificationBackgroundFetchValue[value]);
+    } else {
+      completion(NotificationBackgroundFetchResult.NEW_DATA);
     }
   }
 );
@@ -112,14 +144,13 @@ Notifications.events().registerNotificationReceivedForeground(
 Notifications.events().registerNotificationOpened(
   (notification: Notification, completion: () => void) => {
     const notificationData = notification.payload;
+    const doesNotificationDataHaveOrigin = notificationData?.origin === "helpshift";
+    const doesNotificationDataHaveCloseSession = !!notificationData?.close_session;
 
-    const doesNotificationDataHaveOrigin =
-      notificationData.hasOwnProperty("origin") &&
-      notificationData?.origin == "helpshift";
-
-    if (doesNotificationDataHaveOrigin) {
-      // Handle Helpshift notification here.
-      handlePush(notificationData);
+    if (doesNotificationDataHaveCloseSession) {
+      closeSDKSession();
+    } else if (doesNotificationDataHaveOrigin) {
+      handleIOSNotificationClick(notificationData);
     } else {
       console.log("registerNotificationOpened: customer-app notification");
     }
@@ -134,12 +165,12 @@ Notifications.events().registerNotificationOpened(
 Notifications.getInitialNotification()
   .then((notification) => {
     if (!notification) return;
+
     const notificationData = notification.payload;
-    const doesNotificationDataHaveOrigin =
-      notificationData.hasOwnProperty("origin") &&
-      notificationData?.origin == "helpshift";
+    const doesNotificationDataHaveOrigin = notificationData?.origin === "helpshift";
+
     if (doesNotificationDataHaveOrigin) {
-      handlePush(notificationData, true);
+      handleIOSNotificationClick(notificationData);
     } else {
       console.log("getInitialNotification: customer-app notification");
     }
@@ -148,6 +179,31 @@ Notifications.getInitialNotification()
 ```
 
 On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
+
+### Configure NotificationService extension {#notification-service}
+
+<Admonition type="info" title="Note">
+
+Your app only needs to configure the NotificationService extension if you are using Proactive Engagement feature. For support notifications, you can skip this configuration.
+
+</Admonition>
+
+If you are using Helpshift's [Proactive Engagement](/sdkx-unity/proactive-engagement-ios) feature, you will need to add a NotificationService extension to your app. This extension lets the app intercept the notification and modify it's payload before iOS system posts the notification in system tray. For more details on what this service extension does and how to configure it in your app, you can refer the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
+
+Helpshift uses this extension to download images to display in the push notification. If your app already has a NotificationService extension, you can re-use it for handling Helpshift notifications. In the `didReceiveNotificationRequest:withContentHandler:` method of your notification service, call the corresponding Helpshift API -
+
+```objc
+- (void) didReceiveNotificationRequest:(UNNotificationRequest *)request
+                    withContentHandler:(void (^)(UNNotificationContent *content))contentHandler {
+    NSString *origin = request.content.userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleBackgroundNotification:request
+                             withContentHandler:contentHandler];
+    } else {
+        contentHandler(request.content);
+    }
+}
+```
 
 ## In-app notifications {#in-app-notifications}
 
