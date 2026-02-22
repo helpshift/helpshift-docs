@@ -1,0 +1,12 @@
+If you are facing any issues related to loading or event updates from `Chat` or `Helpcenter` screens then there might be an issue with obfuscation of Helpshift SDK related code.
+Make sure the following proguard rule is followed to skip obfuscation of the mentioned files:
+
+```java
+-keepclassmembers class com.helpshift.faq.HelpcenterToNativeBridge {
+   public *;
+}
+
+-keepclassmembers class com.helpshift.chat.HSChatToNativeBridge {
+   public *;
+}
+```
