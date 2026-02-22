@@ -43,7 +43,7 @@ like iOS and Android. Notifications are useful to tell your users when
 you reply to an issue that they submitted. When the app is backgrounded,
 the notification that is sent from Helpshift appears as a notification.
 
-- You send a [Proactive Engagement](/sdkx-react-native/proactive-engagement) notification targeting the user
+- Trigger a [Proactive Engagement](/sdkx-react-native/proactive-engagement) notification for the targeted user.
 
 <ConfigurePushNotificationsiOS />
 
@@ -54,6 +54,14 @@ After you have configured the push notifications in the Helpshift console, you w
 In the examples below, we are using [react-native-notifications](https://www.npmjs.com/package/react-native-notifications) package for push notifications. You can use any package of your choice.
 
 To setup notifications using react-native-notifications, please follow [this guide](https://wix.github.io/react-native-notifications/docs/getting-started)
+
+<Admonition type="info" title="Note">
+
+Alternatively, you can choose to integrate notifications natively. For detailed steps on native integration, please refer to the [Native iOS Notifications](/sdkx_ios/notifications/) guide.
+
+If you choose the native integration approach, please ensure that the Helpshift [`install`](/sdkx_ios/getting-started/#initializing/) call is also made from the native code.
+
+</Admonition>
 
 Example :
 
@@ -100,7 +108,7 @@ Notifications.events().registerRemoteNotificationsRegistered(
 
 <Admonition type="warning" title="Note">
 
-For foreground notifications (specifically the `list` option) to work correctly on iOS 14+, you may need to apply a patch to the `react-native-notifications` package. Please refer to the [Troubleshooting](/sdkx-react-native/troubleshooting#foreground-notifications-ios) page for details.
+For foreground notifications (specifically the `list` option) to work correctly on iOS 14+, you need to apply a patch to the `react-native-notifications` package. Please refer to the [Troubleshooting](/sdkx-react-native/troubleshooting#foreground-notifications-ios) page for details.
 
 </Admonition>
 
@@ -188,7 +196,7 @@ Your app only needs to configure the NotificationService extension if you are us
 
 </Admonition>
 
-If you are using Helpshift's [Proactive Engagement](/sdkx-unity/proactive-engagement-ios) feature, you will need to add a NotificationService extension to your app. This extension lets the app intercept the notification and modify it's payload before iOS system posts the notification in system tray. For more details on what this service extension does and how to configure it in your app, you can refer the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
+If you are using Helpshift's [Proactive Engagement](/sdkx-react-native/proactive-engagement) feature, you will need to add a NotificationService extension to your app. This extension lets the app intercept the notification and modify it's payload before iOS system posts the notification in system tray. For more details on what this service extension does and how to configure it in your app, you can refer the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
 
 Helpshift uses this extension to download images to display in the push notification. If your app already has a NotificationService extension, you can re-use it for handling Helpshift notifications. In the `didReceiveNotificationRequest:withContentHandler:` method of your notification service, call the corresponding Helpshift API -
 
