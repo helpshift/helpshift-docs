@@ -1,0 +1,278 @@
+---
+sidebar_position: 85
+sidebar_class_name: feature-new
+title: Proactive Engagement
+description: "Proactive Engagement lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations."
+---
+
+import {
+  Admonition,
+  Intro,
+  TabItem,
+  Tabs,
+  Image,
+  Centered
+} from "@site/src/components/forDocs";
+
+<Intro>
+
+Proactive Engagement lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
+
+</Intro>
+
+<Admonition type="info" title="Note">
+
+This feature is available from SDK X 10.5.0 onwards.
+
+All the public APIs in the SDK should be called after initializing the SDK via [Helpshift install API](/sdkx-react-native/getting-started#initializing)
+
+Before starting with Proactive Engagement, please ensure you have integrated push notifications with Helpshift SDK. Please refer [Notifications Android](/sdkx-react-native/notifications-android) and [Notifications iOS](/sdkx-react-native/notifications-ios) page for integration guide.
+
+</Admonition>
+
+## Configuring Proactive Engagement notifications
+
+To publish a notification follow these steps:
+
+- Open the Helpshift Dashboard and navigate to **Settings > Workflows > Proactive Engagement**
+- Create a notification for the app you want with either **Push** or **In-App** notification
+
+<Image
+  src="/static/books/common/proactive-admin-settings.png"
+  width="full"
+  alt="Helpshift admin dashboard settings for Proactive Engagement feature"
+/>
+
+- Select the desired action from available options, fill up the notification content and add context as per your needs.
+    - Intents/CIFs/tags/initial message etc configured here will be used when the end user starts a conversation by clicking on the notification.
+
+<Image
+  src="/static/books/common/proactive-admin-compose.png"
+  width="full"
+  alt="Proactive Engagement notification compose settings on Helpshift admin dashboard"
+/>
+
+- Configure the audience filter that you want to target. You can filter the audience based on:
+    - Issue properties
+    - User properties [using User Hub integration](/sdkx-react-native/identity-user-hub)
+
+<Image
+  src="/static/books/common/proactive-admin-audience.png"
+  width="full"
+  alt="Proactive Engagement notification audience filter on Helpshift admin dashboard"
+/>
+
+- Schedule the notification. You will get a chance to review the full configuration before publishing the notification.
+
+<Image
+  src="/static/books/common/proactive-admin-schedule.png"
+  width="full"
+  alt="Proactive Engagement notification scheduling on Helpshift admin dashboard"
+/>
+
+## Push notifications
+
+<Tabs groupId="sdk-platforms">
+<TabItem value="android" label="Android">
+
+<Image
+  src="/static/books/sdkx_android/proactive-push-sdk-android.jpg"
+  width="half"
+  alt="Proactive Engagement push notification on Android"
+/>
+
+- Push type notifications will be shown in the Notification tray of the device.
+- Use this type of notification when you want to re-engage the user who has not been active or grab attention of users with some interesting information.
+- With the various actions available on click of the notification or the buttons in the notification, you can redirect the user to any part of your application via deeplinks (need to be setup by the client application) or start a conversation via “Start Chat“ option or redirect them to an FAQ for quick help.
+- Push notifications will show up even if the app is not running in background.
+- Rich text is supported in the content of the notification. Make sure you provide compatible/supported HTML content used for setting up the notification on Dashboard.
+  - Due to system limitations, rich text in notifications is not supported from Android 16 unless Android fixes it.
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+<Image
+  src="/static/books/sdkx_ios/proactive-push-sdk-ios.png"
+  width="half"
+  alt="Proactive Engagement push notification on iOS"
+/>
+
+- Push-type notifications will be shown in the Notification Center of the device. Use this type of notification when you want to re-engage the user who has not been active or grab attention of users with some interesting content.
+- With the various actions available on click of the notification, you can redirect the user to any part of your application via deeplinks (need to be setup by the client application) or start a conversation via “Start Chat“ option or redirect them to an FAQ for quick help.
+- Push notifications will show up even if the app is not running in the background.
+
+<Admonition type="info" title="Note">
+
+- Buttons in Push notification is not supported for iOS
+- Rich text is not supported in the content of the notification
+
+</Admonition>
+
+<Admonition type="info" title="iOS: Notification Service Extension Requirement">
+
+To support **Proactive Engagement push notifications** with rich content on iOS
+(for example, image-based notifications),
+your app must include a **Notification Service Extension (NSE)**.
+
+If your app already has a Notification Service Extension, you can reuse it.
+Otherwise, follow the setup instructions on the
+[Notifications iOS](/sdkx-react-native/notifications-ios/#notification-service) page.
+
+</Admonition>
+
+</TabItem>
+</Tabs>
+
+## In-App Notifications
+
+<Tabs groupId="sdk-platforms">
+<TabItem value="android" label="Android">
+
+<Image
+  src="/static/books/sdkx_android/proactive-inapp-sdk-android.jpg"
+  width="half"
+  alt="Proactive Engagement in-app notification on Android"
+/>
+
+- InApp notifications are used to grab attention of the user who is already using your application, is on the application UI and you want to alert/engage them.
+- If the user is not currently using the app, we show the in-app notification when the application is opened next time. This way an in-app notification is not lost even if user is not on the application screen.
+- We currently support **Banner** type notifications with click actions similar to Push notifications.
+- Note:
+  - If the SDK receives multiple in-app notifications when the app was in background then the SDK will show only the latest received in-app notification and discard all the older ones.
+  - By default, In-App notifications expire in 2 days from the time of delivery to the device. If in-app received in background expires, then SDK will not show the expired in-app notification.
+
+</TabItem>
+<TabItem value="ios" label="iOS">
+
+<Image
+  src="/static/books/sdkx_ios/proactive-inapp-sdk-ios.png"
+  width="half"
+  alt="Proactive Engagement in-app notification on iOS"
+/>
+
+- In-App notifications are used to grab attention of the user who is already using your application, is on the application UI and you want to alert or engage with him in real time.
+- If the user is not on the application UI then the notification is shown in the notification tray of the device to engage the user. 
+- When the user clicks on the notification we open the app and then present the actual configured in-app notification. This increases the probability of user engagement and helps us achieve our goal better.
+- We currently support Banner type notifications with click actions similar to Push notifications.
+- If the SDK receives multiple in-app notifications when the app was in background then the system will display all of them. On clicking the notification, we will open the app and the SDK will show in-app notification corresponding to the clicked notification. Other notifications remain as is in the notification center.
+- By default, In-App notifications expire in 2 days from the time of delivery to the device. If user clicks on a notification that has already expired then on click no action will be taken.
+
+</TabItem>
+</Tabs>
+
+## Pausing In-App Notifications {#pausing-in-app-notifications}
+
+- This API will pause/unpause the showing of in-app notifications to the end user when the application is in the foreground.
+- You can use this API to pause in-app notifications when you know that the user should not be disturbed. For example:
+  - The user is on the app startup screen or the app is still loading.
+  - The user is in active gameplay.
+  - The user is on a payment or checkout screen.
+- In-app notifications received while they are paused are not lost; they are shown to the user as soon as the notifications are unpaused.
+- This API needs to be called in every app session because the SDK does not persist its value across sessions. The state of your app (e.g., whether the user is in gameplay) is best known to your application in real-time.
+- By default, the SDK will always show in-app notifications (`pauseDisplayOfInAppNotification` is effectively `false`) unless explicitly paused.
+- **Values**:
+  - `true`: Pauses in-app notifications.
+  - `false`: Resumes showing in-app notifications (default behavior).
+
+<div className="compact ">
+
+| Key | Details |
+| --- | --- |
+| **API** | `pauseDisplayOfInAppNotification(shouldPause: boolean)` |
+| **Values** | `true` (Pauses), `false` (Resumes) |
+| **Min SDK** | v10.5.0 |
+| **Call Timing** | After `install()` |
+
+</div>
+
+Example:
+
+```javascript
+import { pauseDisplayOfInAppNotification } from "helpshift-plugin-sdkx-react-native";
+
+// To temporarily pause in-app notifications (e.g., during gameplay)
+pauseDisplayOfInAppNotification(true);
+
+// To resume showing the in-app notifications
+pauseDisplayOfInAppNotification(false);
+```
+
+
+## Setting defaults for notification properties (Android) {#notification-defaults}
+
+If you need to set some defaults to be used in proactive notifications on Android, you can use the `setAndroidProactivePushNotificationDefaults` API. We recommend calling this API right after the `install()` call.
+
+The following configurations are available via this API:
+
+- `notificationIconId`: Notification icon file name without extension, for the small icon to be used for proactive notifications. If not configured, the app icon will be used by default.
+- `largeNotificationIconId`: Large notification icon file name without extension. This will be used when an image is not configured in the notification on the Helpshift Dashboard.
+- `soundId`: Sound resource name without extension, for the sound to be used for proactive notifications. If not provided, the system default sound will be used. Note that this sound will be associated with the default notification channel that the SDK creates for Proactive Engagement notifications.
+- `proactiveSupportChannelId`: Custom channel ID for Proactive support cases (notifications leading to Helpcenter or Conversations).
+- `proactiveEngageChannelId`: Custom channel ID for Proactive Engage cases (notifications leading to user engagement).
+
+<div className="compact ">
+
+| Key | Details |
+| --- | --- |
+| **API** | `setAndroidProactivePushNotificationDefaults(config: object)` |
+| **Platform** | Android only |
+| **Min SDK** | v10.5.0 |
+| **Call Timing** | Right after `install()` |
+
+</div>
+
+Example:
+
+```javascript
+import {
+  install,
+  setAndroidProactivePushNotificationDefaults
+} from 'helpshift-plugin-sdkx-react-native';
+
+// ... install call ...
+
+const proactiveDefaults = {
+  notificationIconId: "ic_notification",
+  largeNotificationIconId: "ic_large_notification",
+  soundId: "notification_sound",
+  proactiveSupportChannelId: "my_support_channel",
+  proactiveEngageChannelId: "my_engage_channel"
+};
+
+setAndroidProactivePushNotificationDefaults(proactiveDefaults);
+```
+
+### Custom notification channels for Proactive Engagement notifications {#custom-channels}
+
+If you want to use your own notification channels (created by your application beforehand) for Proactive Engagement notifications, you can provide the channel IDs via the API above.
+
+If the values are not set, the SDK creates default notification channels automatically:
+- **Proactive Support**: For notifications leading to Helpcenter or Conversations. Default name: "Proactive Support".
+- **Proactive Engage**: For notifications leading to user engagement. Default name: "Proactive Engage".
+
+For more details on these configuration options and custom notification channels, please refer to the [Android Notification Defaults](/sdkx-react-native/notifications-android/#notification-defaults) section.
+
+## Passing configuration specific to the current user {#user-specific-config}
+
+- You may want to add configuration specific to the current user in your app when they interact with proactive notifications.
+- This configuration is used when no configuration is provided from the Helpshift Dashboard during notification creation. The configuration data format is the same as what you would use in other APIs like `showConversation` or `showFAQs`.
+- The configuration provided here will also be used for the next issue filed in the same session. For example, if a user starts a conversation via a proactive notification and that conversation is resolved, any subsequent conversation started in the same session will use this fallback configuration.
+- **Important**: You must call this API after the `install` call and before the user interacts with (clicks) the notification.
+
+To set this configuration, use the `setProactiveConfig` API.
+
+```javascript
+import { setProactiveConfig } from "helpshift-plugin-sdkx-react-native";
+
+const proactiveConfig = {
+  initialUserMessage: "Hi there!",
+  fullPrivacy: true,
+  tags: ["vip", "payment", "renewal"],
+  cifs: {
+    is_pro: { type: "boolean", value: true },
+    stock_level: { type: "number", value: "1505" },
+  },
+};
+
+setProactiveConfig(proactiveConfig);
+```

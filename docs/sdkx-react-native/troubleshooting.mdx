@@ -1,0 +1,220 @@
+---
+sidebar_position: 150
+title: Troubleshooting
+description: "Workarounds and fixes for common issues."
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Intro,
+} from "@site/src/components/forDocs";
+
+import ProguardRuleChatHelpcenter from "@site/docs/_partials/_androidProguardRules_ChatHelpcenter.mdx";
+import ProguardRuleContentProvider from "@site/docs/_partials/_androidProguardRules_ContentProvider.mdx";
+
+
+# Troubleshooting {#troubleshooting}
+
+<Intro>
+
+This page documents workarounds and fixes for common issues encountered while integrating the Helpshift React Native SDK.
+
+</Intro>
+
+## Android SDK Integration
+
+### Proguard rules
+
+<ProguardRuleChatHelpcenter />
+
+<ProguardRuleContentProvider />
+
+## Foreground Notification Handling (iOS) {#foreground-notifications-ios}
+
+The [react-native-notifications](https://github.com/wix/react-native-notifications) package (widely used for push notifications) does not currently support the `UNNotificationPresentationOptionList` option for foreground notifications on iOS 14 and above. This option is required if you want Helpshift notifications to appear in the notification list while the app is in the foreground.
+
+If you are using `react-native-notifications` and need this support, you can apply the following patch.
+
+### Patching `react-native-notifications` {#patching-notifications}
+
+We recommend using [patch-package](https://www.npmjs.com/package/patch-package) to maintain this fix in your project.
+
+#### 1. Install `patch-package`
+
+If you haven't already, install `patch-package` as a dev dependency:
+
+```bash
+npm install patch-package --save-dev
+```
+
+#### 2. Apply changes to `node_modules`
+
+Apply the following changes to the corresponding files in your `node_modules/react-native-notifications` directory.
+
+**File: `node_modules/react-native-notifications/lib/src/interfaces/NotificationCompletion.ts`** (and its compiled `.d.ts` version)
+
+Add the `list` property:
+
+```typescript
+export interface NotificationCompletion {
+  badge?: boolean;
+  alert?: boolean;
+  sound?: boolean;
+  list?: boolean; // Add this line
+}
+```
+
+**File: `node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.m`**
+
+Update the `UNNotificationPresentationOptions` conversion logic:
+
+```objectivec
++ (UNNotificationPresentationOptions)UNNotificationPresentationOptions:(id)json
+{
+    UNNotificationPresentationOptions options = UNNotificationPresentationOptionNone;
+    // ... existing badge, alert, sound logic ...
+    
+    if ([RCTConvert BOOL:json[@"list"]]) {
+        if (@available(iOS 14.0, *)) {
+            options = options | UNNotificationPresentationOptionList;
+        }
+    }
+    
+    return options;
+}
+```
+
+#### 3. Generate the patch
+
+Run the following command to create a patch file in your project:
+
+```bash
+npx patch-package react-native-notifications
+```
+
+This will create a `patches/react-native-notifications+<version>.patch` file in your project root.
+
+### Full Patch Diff {#full-patch-diff}
+
+For reference, here is the full diff for the patch:
+
+```diff
+diff --git a/node_modules/react-native-notifications/lib/dist/interfaces/NotificationCompletion.d.ts b/node_modules/react-native-notifications/lib/dist/interfaces/NotificationCompletion.d.ts
+index dab2953..30bf1c5 100644
+--- a/node_modules/react-native-notifications/lib/dist/interfaces/NotificationCompletion.d.ts
++++ b/node_modules/react-native-notifications/lib/dist/interfaces/NotificationCompletion.d.ts
+@@ -2,6 +2,8 @@ export interface NotificationCompletion {
+     badge?: boolean;
+     alert?: boolean;
+     sound?: boolean;
++    list?: boolean;
++
+ }
+ export declare enum NotificationBackgroundFetchResult {
+     NEW_DATA = "newData",
+diff --git a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.m b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.m
+index 375046f..73baaed 100644
+--- a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.m
++++ b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.m
+@@ -139,6 +139,11 @@ + (UNNotificationPresentationOptions)UNNotificationPresentationOptions:(id)json
+     if ([RCTConvert BOOL:json[@"sound"]]) {
+         options = options | UNNotificationPresentationOptionSound;
+     }
++    if ([RCTConvert BOOL:json[@"list"]]) {
++        if (@available(iOS 14.0, *)) {
++        options = options | UNNotificationPresentationOptionList;
++        }
++    }
+     
+     return options;
+ }
+diff --git a/node_modules/react-native-notifications/lib/src/interfaces/NotificationCompletion.ts b/node_modules/react-native-notifications/lib/src/interfaces/NotificationCompletion.ts
+index 17df69d..edb97e2 100644
+--- a/node_modules/react-native-notifications/lib/src/interfaces/NotificationCompletion.ts
++++ b/node_modules/react-native-notifications/lib/src/interfaces/NotificationCompletion.ts
+@@ -2,6 +2,7 @@ export interface NotificationCompletion {
+   badge?: boolean;
+   alert?: boolean;
+   sound?: boolean;
++  list?: boolean;
+ }
+ 
+ export enum NotificationBackgroundFetchResult {
+```
+
+## React Native New Architecture Build Issues (RN < 0.76) {#new-architecture-fallback-patch}
+
+React Native 0.76 and above correctly handle this plugin with New Architecture enabled. However, for projects using **React Native versions below 0.76**, New Architecture codegen may fail because the plugin declares `codegenConfig`.
+
+If you are using RN < 0.76 with New Architecture enabled and encounter build stability issues, you should apply a patch to remove `codegenConfig` from the plugin's `package.json`. This forces the plugin to be treated as a legacy NativeModule, which restores build stability while keeping runtime behavior unchanged.
+
+### Applying the Fallback Patch
+
+<Admonition type="caution" title="Important">
+The following patch has been sanity tested. Please re-verify all Helpshift features in your application after applying it.
+</Admonition>
+
+#### 1. Apply changes to `node_modules`
+
+Apply the following change to `node_modules/helpshift-plugin-sdkx-react-native/package.json`:
+
+**File: `node_modules/helpshift-plugin-sdkx-react-native/package.json`**
+
+Remove the `codegenConfig` block:
+
+```json
+{
+  ...
+  "dependencies": { ... },
+- "codegenConfig": {
+-   "name": "RNHelpshiftPluginSdkxReactNativeSpec",
+-   "type": "modules",
+-   "jsSrcsDir": "src",
+-   "outputDir": {
+-     "ios": "ios/generated",
+-     "android": "android/generated"
+-   },
+-   "android": {
+-     "javaPackageName": "com.helpshift.react"
+-   }
+- }
+}
+```
+
+#### 2. Generate the patch
+
+Run the following command to create the patch file:
+
+```bash
+npx patch-package helpshift-plugin-sdkx-react-native
+```
+
+### Full Fallback Patch Diff
+
+```diff
+diff --git a/node_modules/helpshift-plugin-sdkx-react-native/package.json b/node_modules/helpshift-plugin-sdkx-react-native/package.json
+index 8e1b31c..e41bad4 100644
+--- a/node_modules/helpshift-plugin-sdkx-react-native/package.json
++++ b/node_modules/helpshift-plugin-sdkx-react-native/package.json
+@@ -124,17 +124,5 @@
+         }
+       ]
+     ]
+-  },
+-  "codegenConfig": {
+-    "name": "RNHelpshiftPluginSdkxReactNativeSpec",
+-    "type": "modules",
+-    "jsSrcsDir": "src",
+-    "outputDir": {
+-      "ios": "ios/generated",
+-      "android": "android/generated"
+-    },
+-    "android": {
+-      "javaPackageName": "com.helpshift.react"
+-    }
+   }
+ }
+```

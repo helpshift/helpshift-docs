@@ -21,6 +21,40 @@ import {
 
 # Release Notes
 
+## 10.5.0
+
+Feb 23rd, 2026
+
+** Release Notes: **
+
+- Introduced [**Proactive Engagement**](/sdkx-react-native/proactive-engagement) feature which lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
+  - For integration details, please refer [Proactive Engagement](/sdkx-react-native/proactive-engagement)
+  - Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for these permissions for your application. Please refer [Notifications](/sdkx-react-native/notifications-ios) for iOS and [POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission) for android.
+  - iOS: Use the new notification handling APIs to correctly handle push notifications of Proactive Engagement on iOS. Refer [Notifications](/sdkx-react-native/notifications-ios) page.
+
+**iOS**
+
+- Deprecated old [Outbound Support](/sdkx-react-native/outbound-support/) with introduction of Proactive Engagement.
+- Added support for iOS 26 and iPadOS 26.
+- Stopped technical support for iOS 14 and below. SDK will remain compile-able on these versions, but functionality might be broken.
+- Existing [pauseDisplayOfInAppNotification](/sdkx-react-native/notifications-ios/#pause-in-app) API now supports pausing of Proactive Engagement in-app notifications.
+- Added support to provide [unread message count delegate](/sdkx-react-native/delegates/#unreadMessageCount) callback when a message is received even via internal polling. This helps in better tracking of unread messages by the client application.
+  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount:](/sdkx-react-native/notifications-ios/#showing-notification-count)
+- Removed close button from In-App notification for issue messages and they can now be swiped to dismiss.
+- Introduced new APIs (`handleIOSForegroundNotification`, `handleIOSNotificationClick`, `handleIOSSilentNotification`) to handle push notifications better for the SDK. Please refer [Notifications](/sdkx-react-native/notifications-ios) page.
+- Some SDK APIs have been deprecated. For a full list of deprecated APIs and their replacements, refer [SDK X 10.5.0 Migration guide](/sdkx-react-native/migration-guide-ios-1050).
+- Some deprecated SDK APIs have been removed. For a full list of removed APIs and their replacements, refer [SDK X 10.5.0 Migration guide](/sdkx-react-native/migration-guide-ios-1050).
+
+**Android**
+- Added support for Android 16.
+- SDK now compiles with API level 36, i.e compileSdk 36.
+- Deprecated old [Outbound Support](/sdkx-react-native/outbound-support) with introduction of [Proactive Engagement](/sdkx-react-native/proactive-engagement).
+- Added new API to pause in-app notifications. This will pause/unpause in-app notifications for Proactive Engagement notifications. Please refer [PauseDisplayOfInAppNotification](/sdkx-react-native/proactive-engagement/#pausing-in-app-notifications) here for details.
+- Added support to provide [unread message count delegate](/sdkx-react-native/delegates/#unreadMessageCount) callback when a message is received even via push notifications or internal polling. This would help in better tracking of unread messages by the client application.
+  - Previously this callback was only invoked in response to client app call for [requestUnreadMessageCount](/sdkx-react-native/notifications-android/#showing-notification-count) API.
+- End of technical support for bugs reported on Android 7 and below, although SDK will be compatible and no functionality is affected.
+- We have started adopting some Java 8 features in the SDK. If you run into any Java 8 related build or runtime failures then please refer to [this guide from Android](https://developer.android.com/studio/write/java8-support)
+  - We currently use Lambda Expressions only.
 
 ## 10.4.0
 

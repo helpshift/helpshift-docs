@@ -7,6 +7,13 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "23 FEB 2026",
+    title: "SDK X React-Native 10.5.0 released",
+    info: `SDK X React-Native 10.5.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx-react-native",
+    linkTitle: "SDK X React-Native 10.5.0",
+  },
+  {
     date: "03 Dec 2025",
     title: "SDK X Android 10.5.0 released",
     info: `SDK X Android 10.5.0 is now released! Upgrade to get the latest features`,
