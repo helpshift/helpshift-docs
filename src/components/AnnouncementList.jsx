@@ -7,6 +7,11 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "3rd March 2026",
+    title: "User Hub is Now Live for All",
+    info: `Our SDK now supports passing live user context to unlock personalisation & drive deeper engagement.`,
+  },
+  {
     date: "23 FEB 2026",
     title: "SDK X React-Native 10.5.0 released",
     info: `SDK X React-Native 10.5.0 is now released! Upgrade to get the latest features`,
