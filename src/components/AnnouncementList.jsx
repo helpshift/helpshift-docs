@@ -7,11 +7,25 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "05 Mar 2026",
+    title: "SDK X Cocos2d-X 10.5.0 released",
+    info: `SDK X Cocos2d-X 10.5.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx-cocos2dx",
+    linkTitle: "SDK X Cocos2d-X 10.5.0",
+  },
+  {
     date: "23 FEB 2026",
     title: "SDK X React-Native 10.5.0 released",
     info: `SDK X React-Native 10.5.0 is now released! Upgrade to get the latest features`,
     link: "/sdkx-react-native",
     linkTitle: "SDK X React-Native 10.5.0",
+  },
+  {
+    date: "06 Feb 2026",
+    title: "SDK X Unity 10.5.0 released",
+    info: `SDK X Unity 10.5.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx-unity",
+    linkTitle: "SDK X Unity 10.5.0",
   },
   {
     date: "03 Dec 2025",
