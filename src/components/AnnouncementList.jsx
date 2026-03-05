@@ -7,16 +7,30 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
-    date: "3rd March 2026",
+    date: "05 Mar 2026",
+    title: "SDK X Cocos2d-X 10.5.0 released",
+    info: `SDK X Cocos2d-X 10.5.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx-cocos2dx",
+    linkTitle: "SDK X Cocos2d-X 10.5.0",
+  },
+  {
+    date: "03 Mar 2026",
     title: "User Hub is Now Live for All",
     info: `Our SDK now supports passing live user context to unlock personalisation & drive deeper engagement.`,
   },
   {
-    date: "23 FEB 2026",
+    date: "23 Feb 2026",
     title: "SDK X React-Native 10.5.0 released",
     info: `SDK X React-Native 10.5.0 is now released! Upgrade to get the latest features`,
     link: "/sdkx-react-native",
     linkTitle: "SDK X React-Native 10.5.0",
+  },
+  {
+    date: "06 Feb 2026",
+    title: "SDK X Unity 10.5.0 released",
+    info: `SDK X Unity 10.5.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx-unity",
+    linkTitle: "SDK X Unity 10.5.0",
   },
   {
     date: "03 Dec 2025",
@@ -68,7 +82,7 @@ const announcements = [
     linkTitle: "SDK X iOS 10.4.0",
   },
   {
-    date: "4 March 2024",
+    date: "4 Mar 2024",
     title: "SDK X React-Native 10.3.1 released",
     info: `SDK X React-Native 10.3.1 is now released for iOS and Android! Upgrade to get the latest features`,
     link: "/sdkx-react-native",
