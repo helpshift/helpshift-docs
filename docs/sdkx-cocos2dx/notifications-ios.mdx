@@ -131,38 +131,6 @@ For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHan
 }
 ```
 
-#### Push delegate when app is in background or not running {#push-delegates-background}
-
-For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate, invoke the `handleBackgroundNotificationClick:withCompletionHandler:` SDK API -
-
-```objc
-- (void) userNotificationCenter:(UNUserNotificationCenter *)center
- didReceiveNotificationResponse:(UNNotificationResponse *)response
-          withCompletionHandler:(void (^)(void))completionHandler {
-    NSDictionary *userInfo = response.notification.request.content.userInfo;
-    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
-        [Helpshift handleBackgroundNotificationClick:userInfo withCompletionHandler:completionHandler];
-    } else {
-        completionHandler();
-    }
-    completionHandler();
-}
-```
-
-For the `didReceiveRemoteNotification:` delegate -
-
-```objc
-#import <HelpshiftX/Helpshift.h>
-...
-- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [Helpshift handleNotificationWithUserInfoDictionary:notification.request.content.userInfo
-                                                isAppLaunch:NO
-                                             withController:self.window.rootViewController];
-    }
-}
-```
-
 ## In-app notifications {#in-app-notifications}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
