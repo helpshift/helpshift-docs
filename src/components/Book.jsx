@@ -15,7 +15,7 @@ export default function Book({ book }) {
     <li className="col-span-6">
       <Link
         to={link}
-        className="md:w-11/12 hover:no-underline text-slate-700 dark:text-gray-100 hover:text-sky-700 text-base font-normal rounded-lg flex hover:shadow transition-shadow justify-start flex-grow duration-150 h-full bg-white dark:bg-gray-800 gap-1"
+        className="md:w-11/12 hover:no-underline text-slate-700 dark:text-gray-100 hover:text-sky-700 text-base font-normal rounded-lg flex shadow-xl hover:shadow-2xl transition-shadow justify-start flex-grow duration-150 h-full bg-white dark:bg-gray-800 gap-1"
       >
         <div className="basis-16 md:basis-20">
           <img

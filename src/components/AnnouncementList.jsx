@@ -136,13 +136,13 @@ export default function AnnouncementList() {
 
   return (
     <section
-      className="overflow-y-auto lg:pb-8 dark:bg-none dark:border dark:border-gray-700 dark:border-solid bg-white/40 dark:bg-white/0 backdrop-blur-sm px-4 rounded-xl"
+      className="overflow-y-auto lg:pb-8 dark:bg-none dark:border dark:border-gray-700 dark:border-solid bg-[#070E42] dark:bg-white/0 backdrop-blur-sm px-4 rounded-xl"
       style={{
         maxHeight: "90vh",
       }}
     >
       <div className="flex justify-between mt-4 mb-4 lg:mt-6 items-center">
-        <h2 className="text-lg md:text-2xl mb-0">Announcements</h2>
+        <h2 className="text-lg md:text-2xl mb-0 text-white">Announcements</h2>
         <button
           onClick={_handleExpandedClick}
           className="py-2 px-4 rounded-md text-xs bg-transparent text-gray-800 dark:text-gray-100 border border-solid border-gray-700 dark:border-gray-600 shadow cursor-pointer lg:hidden"
