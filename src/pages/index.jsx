@@ -26,7 +26,7 @@ export default function Homepage() {
             <AnnouncementList />
           </div>
           <div className="grid grid-cols-12 gap-4 md:gap-8 mx-4 md:mx-6 xl:mx-20">
-            <div className="col-span-12 lg:col-span-9 dark:border dark:border-gray-700 dark:border-solid p-4 lg:p-6 lg:pl-8 rounded-xl bg-white/60 backdrop-blur-sm dark:bg-white/0">
+            <div className="col-span-12 lg:col-span-9 dark:border dark:border-gray-700 dark:border-solid p-4 lg:p-6 lg:pl-8 rounded-xl bg-[#F9F9F9] backdrop-blur-sm dark:bg-white/0">
               <BookGroupsList />
             </div>
             <div className="hidden lg:block col-span-3">
