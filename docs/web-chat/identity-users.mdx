@@ -19,6 +19,8 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import CUFDateTypeNotice from "@site/docs/_partials/_cuf_date_valuetype.mdx";
+
 # User Hub {#user-hub}
 
 The new Identity System provides many advantages, with minimal efforts (as outlined below) over the legacy method, in the form of faster context collection,
@@ -236,24 +238,28 @@ interface GlobalUserData {
      last_name?: "string",
      full_name?: "string",
      display_name?: "string",
-     last_country?: "string",
+     last_country?: "string", // Full country name or country code, as per ISO-3166
      last_city?: "string",
-     age?: "string",
-     lifetime_value?: "string",
+     age?: "string", // String value of Integer; 0 < age < 150
+     lifetime_value?: "string", // String value of Integer
      user_persona?: "string",
      user_vip_segment?: "string",
-     user_support_status?: "string"
-     last_active_date?: "string" // epoch time in ms/seconds
-     accepted_t_and_c?: "string" // true/false converted to string
-     preferred_language?:"string"
+     user_support_status?: "string",
+     last_active_date?: "string", // UNIX epoch time in seconds
+     accepted_t_and_c?: "string", // true/false converted to string
+     preferred_language?:"string", // ISO639-1 language code
 
      // Non-primitives
-     new_tags?: Array<string>
-     tags_to_remove?: Array<string>
-     reset_tags?: Array<string>
-     custom_user_fields?: CustomUserFields
+     new_tags?: Array<string>,
+     tags_to_remove?: Array<string>,
+     reset_tags?: Array<string>,
+     custom_user_fields?: CustomUserFields // Values of type Date should be in UNIX epoch time in seconds.
 }
 ```
+
+<Admonition type="info" title="Important">
+<CUFDateTypeNotice />
+</Admonition>
 
 Example:
 ```js
@@ -286,26 +292,34 @@ interface CustomUserFields {
 
 interface AppUserData {
      // Note that all primitive values must be coerced to string
-      app_version: "string",
+      app_version: "string", // Maximum length of 10 characters
       user_vip_segment: "string",
       sdk_version: "string",
-      language:"string",
+      language:"string", // ISO639-1 language code
       app_rating: "string",
-      user_paying_segment: "string",
-      country: "string"
-      user_support_status: "string"
-      user_persona: "boolean string"
-      accepted_t_and_c: "string"
+      user_paying_segment: "string", // Must be one of the following values:
+           - `low_paying`
+           - `medium_paying`
+           - `high_paying`
+           - `non_paying`
+      country: "string", // Full country name or country code, as per ISO-3166
+      user_support_status: "string",
+      user_persona: "boolean string",
+      accepted_t_and_c: "string", // true/false converted to string
       user_level: "string",
       app_status: "string",
       city: "string",
-      lifetime_value: "string",
+      lifetime_value: "string", // String value of Integer
 
 
       // Non-primitives
-      custom_user_fields?: CustomUserFields
+      custom_user_fields?: CustomUserFields // Values of type Date should be in UNIX epoch time in seconds.
 }
 ```
+
+<Admonition type="info" title="Important">
+<CUFDateTypeNotice />
+</Admonition>
 
 Example:
 ```js
