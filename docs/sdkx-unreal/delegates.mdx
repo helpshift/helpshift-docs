@@ -27,6 +27,15 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Intro>
 
+<Admonition type="info" title="Note">
+
+- All the public APIs in the SDK should be called after initializing the SDK via [Init](/sdkx-unreal/getting-started/#initializing)
+- Events invoked before binding `BindEventDelegate` cannot be received again.
+- All events are triggered on Application's main thread for Anroid and iOS. This may be different from the game's main thread. 
+
+</Admonition>
+
+
 ## Helpshift Delegate implementation {#delegate-implementation}
 
 Bind the event delegate by using `BindEventDelegate()`
@@ -44,13 +53,6 @@ You can listen to the events fired by Helpshift. All the events are defined in `
 ![](/static/books/unreal/delegate_events.png)
 
 </Centered>
-
-<Admonition type="info" title="Note">
-
-Events invoked before binding `BindEventDelegate` cannot be received again.
-
-</Admonition>
-
 
 ## Events {#helpshift-events}
 
