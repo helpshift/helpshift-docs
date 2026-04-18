@@ -27,6 +27,13 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Intro>
 
+<Admonition type="info" title="Note">
+
+- All the public APIs in the SDK should be called after initializing the SDK via [install API](/sdkx-react-native/getting-started/#initializing)
+- Events invoked before setting `helpshiftEmitter.addListener()` cannot be received again
+- All events are invoked on the Application's main thread.
+
+</Admonition>
 
 <Admonition type="warning" title="Architecture Update SDKX 10.4.0">
 1. With SDK X 10.4.0 and above, Helpshift has introduced a new implementation approach for delegate events in React Native's new architecture. Please refer to the respective sections below to implement according to your app's architecture (Old or New).<br />

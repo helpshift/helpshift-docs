@@ -2,7 +2,7 @@
 sidebar_position: 85
 sidebar_class_name: feature-new
 title: Proactive Engagement
-description: "Proactive Engagement lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations."
+description: "Proactive  Engagement lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations."
 ---
 
 import {
@@ -10,8 +10,7 @@ import {
   Intro,
   TabItem,
   Tabs,
-  Image,
-  Centered
+  Image
 } from "@site/src/components/forDocs";
 
 import AndroidiOSProactiveNotifBehaviourTable from "@site/docs/_partials/_androidAndiOSProactiveNotifBehaviourTable.mdx";
@@ -25,9 +24,8 @@ Proactive Engagement lets you reach out to your players by sending Push/In app N
 <Admonition type="info" title="Note">
 
 - This feature is available from SDK X 10.5.0 onwards.
-- All the public APIs in the SDK should be called after initializing the SDK via [Helpshift install API](/sdkx-cocos2dx/getting-started#initialize)
-- Before starting with Proactive Engagement, please ensure you have integrated push notifications with Helpshift SDK. Please refer [Notifications Android](/sdkx-cocos2dx/notifications-android) and [Notifications iOS](/sdkx-cocos2dx/notifications-ios) page for integration guide.
-- Please note that the SDK does not ask for posting notifications permission for client application. For Proactive Engagement, you need to ask for the [POST_NOTIFICATION](https://developer.android.com/develop/ui/views/notifications/notification-permission) permission yourself.
+- All the public APIs in the SDK should be called after initializing the SDK via [Init API](/sdkx-unreal/getting-started#initializing)
+- Before starting with Proactive Engagement, please ensure you have integrated push notifications with Helpshift SDK. Please refer [iOS Notifications](/sdkx-unreal/notifications-ios) and [Android Notifications](/sdkx-unreal/notifications-android) pages for integration guides.
 
 </Admonition>
 
@@ -55,7 +53,7 @@ To publish a notification follow these steps:
 
 - Configure the audience filter that you want to target. You can filter the audience based on:
     - Issue properties
-    - User properties [using User Hub integration](/sdkx-cocos2dx/identity-user-hub)
+    - User properties [using User Hub integration](/sdkx-unreal/identity-user-hub)
 
 <Image
   src="/static/books/common/proactive-admin-audience.png"
@@ -117,7 +115,7 @@ your app must include a **Notification Service Extension (NSE)**.
 
 If your app already has a Notification Service Extension, you can reuse it.
 Otherwise, follow the setup instructions on the
-[Notifications iOS](/sdkx-cocos2dx/notifications-ios/#notification-service) page.
+[Notifications iOS](/sdkx-unreal/notifications-ios/#notification-service) page.
 
 </Admonition>
 
@@ -165,7 +163,6 @@ Otherwise, follow the setup instructions on the
 
 <AndroidiOSProactiveNotifBehaviourTable />
 
-
 ## Pausing In-App Notifications {#pausing-in-app-notifications}
 
 - This API will pause/unpause the showing of in-app notifications to the end user when the application is in the foreground.
@@ -175,7 +172,7 @@ Otherwise, follow the setup instructions on the
   - The user is on a payment or checkout screen.
 - In-app notifications received while they are paused are not lost; they are shown to the user as soon as the notifications are unpaused.
 - This API needs to be called in every app session because the SDK does not persist its value across sessions. The state of your app (e.g., whether the user is in gameplay) is best known to your application in real-time.
-- By default, the SDK will always show in-app notifications (`pauseDisplayOfInAppNotification` is effectively `false`) unless explicitly paused.
+- By default, the SDK will always show in-app notifications (`PauseDisplayOfInAppNotification()` is effectively `false`) unless explicitly paused.
 - **Values**:
   - `true`: Pauses in-app notifications.
   - `false`: Resumes showing in-app notifications (default behavior).
@@ -184,29 +181,23 @@ Otherwise, follow the setup instructions on the
 
 | Key | Details |
 | --- | --- |
-| **API** | `pauseDisplayOfInAppNotification(shouldPause: bool)` |
+| **API** | `PauseDisplayOfInAppNotification(bool)` |
 | **Values** | `true` (Pauses), `false` (Resumes) |
 | **Min SDK** | v10.5.0 |
-| **Note** | After calling `HelpshiftCocos2dx::install()` |
 
 </div>
 
 Example:
 
-```cpp
-#import "HelpshiftCocos2dx.h"
+<Centered width="full">
 
-// To temporarily pause in-app notifications (e.g., during gameplay)
-HelpshiftCocos2dx::pauseDisplayOfInAppNotification(true);
+![](/static/books/unreal/pause_display_of_in_app_notification.png)
 
-// To resume showing the in-app notifications
-HelpshiftCocos2dx::pauseDisplayOfInAppNotification(false);
-```
-
+</Centered>
 
 ## Setting defaults for notification properties (Android) {#notification-defaults}
 
-If you need to set some defaults to be used in proactive notifications on Android, you can use the `setAndroidProactivePushNotificationDefaults` API. We recommend calling this API right after the `install()` call.
+If you need to set some defaults to be used in proactive notifications on Android, you can use the `SetProactivePushNotificationDefaultsAndroid` API. We recommend calling this API right after the `Init()` call.
 
 The following configurations are available via this API:
 
@@ -220,116 +211,34 @@ The following configurations are available via this API:
 
 | Key | Details |
 | --- | --- |
-| **API** | `setAndroidProactivePushNotificationDefaults(config: object)` |
+| **API** | `SetProactivePushNotificationDefaultsAndroid(const TMap<FString, FHelpshiftConfigParameter>& config)` |
 | **Platform** | Android only |
 | **Min SDK** | v10.5.0 |
-| **Note** | After calling `HelpshiftCocos2dx::install()` |
+| **Note** | After calling `Init()` |
 
 </div>
 
-Example:
+### Custom notification channels {#custom-channels}
 
-```java
-import com.helpshift.HelpshiftCocosBridge;
-
-public class MyActivity extends Cocos2dxActivity {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Install call
-        HelpshiftCocosBridge.install(...);
-
-        HashMap<String, Object> proactiveDefaults = new HashMap<>();
-        proactiveDefaults.put("notificationIconId", "<icon-image-file-name>");
-        proactiveDefaults.put("largeNotificationIconId", "<large-icon-image-file-name>");
-        proactiveDefaults.put("soundId", "<sound-file-name>");
-        proactiveDefaults.put("proactiveSupportChannelId", "Customer Channel name");
-        proactiveDefaults.put("proactiveEngageChannelId", "Customer Channel name");
-
-        HelpshiftCocosBridge.setProactivePushNotificationDefaults(proactiveDefaults);
-    }
-}
-```
-
-
-### Custom notification channels for Proactive Engagement notifications {#custom-channels}
-
-If you want to use your own notification channels (created by your application beforehand) for Proactive Engagement notifications, you can provide the channel IDs via the API above.
+For Android, if you want to use your own notification channels (created by your application beforehand) for Proactive Engagement notifications, you can provide the channel IDs via the API above.
 
 If the values are not set, the SDK creates default notification channels automatically:
 - **Proactive Support**: For notifications leading to Helpcenter or Conversations. Default name: "Proactive Support".
 - **Proactive Engage**: For notifications leading to user engagement. Default name: "Proactive Engage".
 
-For more details on these configuration options and custom notification channels, please refer to the [Android Notification Defaults](/sdkx-cocos2dx/notifications-android/#notification-defaults) section.
+For more details on these configuration options and custom notification channels, please refer to the [Android Notification Defaults](/sdkx-unreal/notifications-android/#notification-defaults) section.
 
-## Passing configuration specific to the current user {#user-specific-config}
+## Passing Fallback Configuration
 
-
-You may want to add configuration specific to the current user in your app when they click on the notification.
-
-Setting local API config enables the Helpshift SDK to merge configuration from both, the config embedded in the outbound support link (as mentioned in previous steps) and the local config provided at runtime. This local API config is exactly same as we would expect in other APIs like `showConversation()` or `showFAQs()`.
-
-We will use this configuration for current issue as well as next issue filed in same session.
+- You may want to add configuration specific to the current user in your app when interacting with proactive notifications.
+- This configuration is used when no configuration is provided from the Dashboard when configuring the notification. This configuration data is exactly same as we would expect in other APIs like `ShowConversation()` or `ShowFAQs()`.
+- We will also use this configuration for the next issue filed in the same session.
+For example, if the user starts a conversation via proactive engagement notification and the conversation gets resolved in the same session and the user starts another conversation then this configuration will be used for the new conversation.
 
 <Admonition type="info" title="Note">
 
-You need to call this API after [install API](/sdkx-cocos2dx/getting-started/#initialize) and before `HelpshiftCocosBridge.handlePushNotification()`
+You need to call this API after `Init()` and before handling the push via the respective SDK X APIs.
 
 </Admonition>
 
-You will have to create the method `getAPIConfig()` where you can add any user specific config in the same format as you add in other public APIs like `showConversation()` or `showFAQs()`.
-
-We will merge this config and the config embedded in the outbound support link. We will append data of config from outbound support link to local config like **Tags, CIFs**, etc. In case of conflicts, outbound support config will get the precedence.
-
-For example, following code shows how to set proactive config collector using `setHelpshiftProactiveConfigCollector` delegate and how to add user specific configurations using `getAPIConfig()` method -
-
-```cpp
-cocos2d::ValueMap createValueMap(const std::string& type, Value value) {
-    cocos2d::ValueMap valueMap;
-    valueMap["type"] = cocos2d::Value(type);
-    valueMap["value"] = cocos2d::Value(std::move(value));
-    return valueMap;
-}
-
-cocos2d::ValueMap getCifs() {
-    cocos2d::ValueMap cifMap;
-
-    cifMap["joining_date"] = createValueMap("date", Value("1684747527945"));
-    cifMap["stock_level"] = createValueMap("number", Value("1500"));
-    cifMap["employee_name"] = createValueMap("singleline", Value("Captain Marvel"));
-
-    return cifMap;
-}
-
-cocos2d::ValueMap getAPIConfig() {
-    cocos2d::ValueMap configMap;
-
-    //set tags for tracking
-    ValueVector tags;
-    tags.push_back(Value("vip"));
-    tags.push_back(Value("payment"));
-    tags.push_back(Value("renewal"));
-    configMap["tags"] = tags;
-
-    //set custom issue fields
-    configMap["cifs"] = getCifs();
-
-    return configMap;
-}
-
-// init method of your UI
-bool HelloWorld::init()
-{
-    //////////////////////////////
-    // 1. super init first
-    if ( !Scene::init() )
-    {
-        return false;
-    }
-    ...
-    ...
-    HelpshiftCocos2dx::setHelpshiftProactiveConfigCollector(getAPIConfig);
-}
-```
+// TODO - Add code snippets for this section.
