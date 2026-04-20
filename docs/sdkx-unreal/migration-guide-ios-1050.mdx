@@ -1,0 +1,104 @@
+---
+sidebar_position: 145
+title: Migration Guide - SDK X 10.5.0
+description: "This migration guide will walk you through the steps you need to take in order to migrate from SDK X 10.4.1 and below to SDK X 10.5.0 and above"
+---
+
+import {
+  Admonition,
+  CodeBlock,
+  Tabs,
+  TabItem,
+  Intro,
+} from "@site/src/components/forDocs";
+
+<Intro>
+
+This migration guide will walk you through the steps you need to take in order to migrate from SDK X 10.4.x and below to SDK X 10.5.0 and above.
+
+</Intro>
+
+# Intro
+
+With SDK X 10.5.0, we have made changes to some public APIs. If you are upgrading from SDK X 10.4.x or below, this page documents the changes you will need to make in your app after upgrading to SDK X 10.5.0. If you are integrating SDK X 10.5.0 or above from scratch, please refer [Getting Started](/sdkx-unreal/getting-started) page instead.
+
+## Deprecated APIs {#deprecated-apis}
+
+The existing push notification handling API - `HandlePushIos()` - has been deprecated. Push handling should now be done in the iOS layer.
+
+For notifications received when the app is in foreground, replace usage of deprecated API in `HandlePushIos()` with [`handleForegroundNotification:withCompletionHandler:`](/sdkx-unreal/notifications-ios/#push-delegates-foreground) -
+
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    NSString *origin = userInfo[@"origin"];
+
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleForegroundNotification:userInfo
+                          withCompletionHandler:completionHandler];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in foreground
+    }
+}
+```
+
+For notifications received when the app is launched from a push, replace usage of deprecated API in `HandlePushIos()` with [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx-unreal/notifications-ios/#push-delegates-background) -
+
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler
+{
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    NSString *origin = userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleBackgroundNotificationClick:userInfo
+                               withCompletionHandler:completionHandler];
+    } else {
+        // Handling for non-helpshift push notifications received when app is in background or killed
+    }
+}
+```
+
+## New APIs {#new-apis}
+
+SDK X 10.5.0 introduces following new APIs for handling push notifications. For full details on how to configure push notifications in your app, please refer the [Notifications](/sdkx-unreal/notifications-ios) page.
+
+#### Unreal API for registering push token with Helpshift
+
+**API Signature** - `HelpshiftLibrary::RegisterPushTokenIos(const TArray<uint8>& Token)`
+
+**Purpose** -
+
+- Register the given push token with Helpshift. 
+- This is an Unreal API and should be called from Unreal layer, ideally in response to `FCoreDelegates::ApplicationRegisteredForRemoteNotificationsDelegate` Unreal delegate. 
+- Note that the existing `RegisterPushToken(const FString& Token)` API is still available and should be used for registering push tokens on Android.
+
+**Example usage** -
+
+```c++
+void UHelpshiftDemoGameInstance::OnStart()
+{
+    Super::OnStart();
+
+#if PLATFORM_IOS
+    // Listen for push token received delegate.
+    FCoreDelegates::ApplicationRegisteredForRemoteNotificationsDelegate.AddLambda([](const TArray<uint8>& Token) {
+        UHelpshiftLibrary::RegisterPushTokenIos(Token);
+    });
+
+    // Register for remote push notifications. This internally calls the system
+    // API that presents push permission prompt to the user.
+    FIOSPlatformMisc::RegisterForRemoteNotifications();
+#endif
+}
+```
+
+#### API for handling notifications in NotificationService extension
+
+**API signature** - `handleBackgroundNotification:withContentHandler:`
+
+**Purpose** - Handle notification received by app's NotificationService extension. Meant to be called from `didReceive:withContentHandler:` notification service method. Check [this section](/sdkx-unreal/notifications-ios/#notification-service) for usage.

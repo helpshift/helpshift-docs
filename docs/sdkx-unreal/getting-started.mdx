@@ -19,6 +19,8 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
+import UserHubGettingStarted from "@site/docs/_partials/_userhubGettingstartedContent.mdx";
+
 # Getting Started {#getting-started}
 
 <Intro>
@@ -36,7 +38,7 @@ Guide to integrating the Unreal Engine plugin for the Helpshift SDK X.
   - SDK X is functional only above API Level 24 i.e Android OS 7 Nougat and above.
   - The `minSDKVersion` in code is kept as API Level 19 to allow importing the SDK and compiling in apps that allow installation till API Level 19 i.e Android 4.4 KitKat.
   - If your app is installed on a device below API level 24 (i.e below Android OS 7 Nougat) then you can choose to have a different medium for providing support. For example, Email, Web etc.
-- Supported iOS versions: iOS 14 and above
+- Supported iOS versions: iOS 15 and above
 - For details regarding Helpshift SDK's support policy, please refer to [this article](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1217-sdk-x-os-technical-support-policy/).
 
 <Admonition type="info" title="Note">
@@ -84,7 +86,7 @@ Helpshift SDK _.zip_ folder includes:
 
 <Image src="/static/books/unreal/plugin_section.png" width="full" />
 
-## Initializing Helpshift in your app {#initializing}
+## Initializing Helpshift in your app (Blueprint) {#initializing}
 
 1. First, create an app on the Helpshift Dashboard
 
@@ -120,13 +122,32 @@ Call the `Init` function before any other interaction with the Helpshift SDK (pr
 
 \_\_<Image src="/static/books/unreal/init_call.png"  width="full" />
 
-The `Init` call takes a map of the additional parameters. All of the parameters are optional, which means you can pass an empty map. The meaning of different keys and their possible values for Android can be found [here](/sdkx-unreal/sdk-configuration)
+The `Init` call takes a map of the additional parameters. All of the parameters are optional, which means you can pass an empty map. The meaning of different keys and their possible values can be found [here](/sdkx-unreal/sdk-configuration)
+
+## Initializing Helpshift in your app (Code) {#initializing-code}
+
+You can also initialize the SDK from code instead of blueprints. For that, you can use `InitWithCredentials` API -
+
+```c++
+TMap<FString, FHelpshiftConfigParameter> Parameters;
+Parameters.Add(TEXT("enableLogging"),
+               UHelpshiftConfigParameterFunctions::Conv_boolToHelpshiftConfigParameter(true));
+// Add more config parameters
+
+UHelpshiftLibrary::InitWithCredentials("Your Platform ID",
+                                       "Your Domain",
+                                       Parameters);
+```
+
+For iOS, if you want to support push notifications as described in the [Notifications page](/sdkx-unreal/notifications-ios), you **must** call `InitWithCredentials` from `application:didFinishLaunchingWithOptions` method in your AppDelegate.
+
+It is safe to call `Init`/`InitWithCredentials` multiple times in the app, so you can keep the blueprint call in the EventConstruct and also call it from AppDelegate for iOS. The SDK will ignore the subsequent calls after the first successful initialization.
 
 <Admonition type="danger" title="Important">
 
 _Android OS version Support_
 
-Calling `Init` below android SDK version 24 will not work. All the APIs will be non operable.
+Calling `Init`/`InitWithCredentials` below android SDK version 24 will not work. All the APIs will be non operable.
 
 </Admonition>
 
@@ -139,3 +160,9 @@ Helpshift is now integrated in your app. You should now use the support APIs for
 Since the Helpshift plugin is meant for mobile devices only, you should put all Helpshift calls inside conditional checks to make sure they are only called when running on a device.
 
 </Admonition>
+
+### User Identity and Profile Management
+
+<UserHubGettingStarted />
+
+Refer [User Hub documentation](/sdkx-unreal/identity-user-hub/#user-hub-implementation-flow-diagram) for SDK integration details.

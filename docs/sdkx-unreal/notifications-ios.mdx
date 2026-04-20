@@ -6,22 +6,14 @@ description: "Configure Push and In-app notifications."
 
 import {
   Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
   Centered,
   Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
+  Intro
 } from "@site/src/components/forDocs";
 
 import ConfigurePushNotificationsiOS from "@site/docs/_partials/_configurePushNotificationsiOS.mdx";
 
-# Notifications <small>iOS</small> {#notifications}
+# Notifications iOS {#notifications}
 
 <Intro>
 
@@ -36,32 +28,22 @@ If you want to configure the notifications for Android - please refer [here](/sd
 </Admonition>
 
 <Admonition type="info" title="Note">
-  We have changed the notification flow starting from SDK version 10.3.0. Please review the
+  We have changed the notification flow starting from SDK version 10.5.0. Please review the
   updated documentation below for details on the new notification process.
 </Admonition>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+Notifications can be sent to your users when:
 
-Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
+- You reply to an issue submitted by them.
+- You send a [Proactive Engagement](/sdkx-unreal/proactive-engagement) notification targeting the user
 
-If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code on app launch.
+Setting push notifications involves configuring both the Helpshift admin dashboard as well as the client app.
 
-```objc
-#if PLATFORM_IOS
-UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = self;
-    [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert)
-                                                                    completionHandler:^(BOOL granted, NSError *_Nullable error) {
-        ...
-    }];
-    [UIApplication sharedApplication registerForRemoteNotifications];
-    ...
-#endif
-```
+## Configure push notifications in the Helpshift admin dashboard {#configure-helpshift-push-admin}
 
 <ConfigurePushNotificationsiOS />
 
-### Configure the Helpshift Unreal SDK to handle notifications {#configure-helpshift-unreal-sdk}
+## Configure the Helpshift Unreal SDK to handle notifications {#configure-helpshift-unreal-sdk}
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project, too. First of all, you should enable the Use Push Notifications toggle in the Project Settings:
 
@@ -71,98 +53,128 @@ After you have configured the push notifications in the Helpshift console, you w
 
 </Centered>
 
+You also need to call [`InitWithCredentials` API](/sdkx-unreal/getting-started/#initializing-code) from code to initialize the SDK for the push notifications to work. If you call `Init` API from blueprints, the push notifications will not work even if you have configured the Helpshift dashboard for push notifications.
+
 <Admonition type="info" title="Note">
 
 When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
-You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `registerDeviceToken` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
+You should call `registerDeviceToken` API only after you have [configured the Helpshift dashboard](#configure-helpshift-push-admin) for push notifications. Calling the `RegisterPushTokenIos()` API without configuring the Helpshift dashboard will stop showing out-of-the-box "in-app notifications" for the end users.
 
 </Admonition>
 
-For Helpshift SDK to work with the Helpshift push notification service
-you will need to invoke the `registerDeviceToken:` api call inside the application delegate method
-`application:didRegisterForRemoteNotificationsWithDeviceToken:`
+### Request notification permission and register your app for push {#push-permission}
 
-```objc
+To request notification permissions and register your app for push notifications, invoke the `FIOSPlatformMisc::RegisterForRemoteNotifications()` Unreal method. This method handles requesting the user's permission to receive push notifications and registers the app for remote notifications. You should call this method at an appropriate point in your app's lifecycle, such as your GameInstance's `OnStart()` method.
+
+```cpp
+void UHelpshiftDemoGameInstance::OnStart()
+{
+    Super::OnStart();
+
 #if PLATFORM_IOS
-#import <HelpshiftX_Static/HelpshiftX.h>
-- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    [Helpshift registerDeviceToken:deviceToken];
-}
+    // Register for remote push notifications. This internally calls the system
+    // API that presents push permission prompt to the user.
+    FIOSPlatformMisc::RegisterForRemoteNotifications();
 #endif
+}
 ```
 
-### Handling Push Notification {#handling-push-notification}
+### Pass registered push token to Helpshift {#push-pass-to-helpshift}
 
-Add the below notification listeners on app launch. Preferably after Helpshift [Init](/sdkx-unreal/getting-started/#initializing)
+To pass the registered push token to Helpshift, you will need to invoke the `RegisterPushTokenIos()` API call inside `FCoreDelegates::ApplicationRegisteredForRemoteNotificationsDelegate` Unreal delegate.
+
+```cpp
+void UHelpshiftDemoGameInstance::OnStart()
+{
+    Super::OnStart();
+
+#if PLATFORM_IOS
+    // Listen for push token received delegate.
+    FCoreDelegates::ApplicationRegisteredForRemoteNotificationsDelegate.AddLambda([](const TArray<uint8>& Token) {
+        UHelpshiftLibrary::RegisterPushTokenIos(Token);
+    });
+
+    // Register for remote push notifications. This internally calls the system
+    // API that presents push permission prompt to the user.
+    FIOSPlatformMisc::RegisterForRemoteNotifications();
+#endif
+}
+```
+
+### Implement push delegates {#push-delegates}
+
+To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
+
+- If a notification arrives while your app is in the foreground, UNUserNotificationCenterDelegate's `userNotificationCenter:willPresentNotification:withCompletionHandler:` is called.
+- If a notification arrives while your app is in background or terminated, the system **does not** call the `userNotificationCenter:willPresentNotification:withCompletionHandler:` method. Instead, the system alerts the user according to the information in the notification itself.
+- When the user selects an action from the notification interface, the system notifies your app of the user's choice. To receive responses, your delegate object must implement the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:` method.
+
+In both cases, you should check the "origin" field of the notification dictionary and call the corresponding SDK APIs (mentioned below) if the origin is "helpshift". The Helpshift SDK will handle the notification transparently depending on it's payload:
+
+Example usage:
+- For notifications sent in response to agent replies on user's support conversations, the SDK will open the corresponding conversation.
+- For proactive engagement notifications, the SDK will perform the dashboard configured action.
+
+#### Push delegate when app is in foreground {#push-delegates-foreground}
+
+For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` delegate, invoke the `handleForegroundNotification:withCompletionHandler:` SDK API -
 
 ```objc
-#include "HelpshiftSDK.h"
-
-#if PLATFORM_IOS
-#import <HelpshiftX_Static/HelpshiftX.h>
-#include "IOS/IOSAppDelegate.h"
-#include "Misc/CoreDelegates.h"
-#endif
-
-#if PLATFORM_IOS
-NSDictionary* ConvertFStringToNSDictionary(const FString& Json)
-{
-    // Convert FString to NSString
-    NSString* JsonString = [NSString stringWithUTF8String:TCHAR_TO_UTF8(*Json)];
-
-    // Convert NSString to NSData
-    NSData* jsonData = [JsonString dataUsingEncoding:NSUTF8StringEncoding];
-
-    // Deserialize NSData to NSDictionary
-    return [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
-}
-
-
-void HandleNotification(NSDictionary *payload,bool isAppLaunch) {
-
-    // Check if the "origin" key exists in the dictionary
-    if ([payload objectForKey:@"origin"] != nil) {
-        NSString *originValue = [payload objectForKey:@"origin"];
-
-        // Now you can use the originValue as needed
-        if ([originValue isEqualToString:@"helpshift"]) {
-            // Handle the case when origin is "helpshift"
-            [Helpshift handleNotificationWithUserInfoDictionary:payload isAppLaunch:isAppLaunch];
-        } else {
-            // Handle other cases
-        }
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+        willPresentNotification:(UNNotification *)notification
+          withCompletionHandler:(void (^)(UNNotificationPresentationOptions)) completionHandler {
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
+        [Helpshift handleForegroundNotification:userInfo withCompletionHandler:completionHandler];
     } else {
-        // app notifications
+        completionHandler(UNNotificationPresentationOptionBanner |
+                          UNNotificationPresentationOptionSound  |
+                          UNNotificationPresentationOptionList);
     }
 }
+```
 
-UHelpshiftSettings* Settings = FHelpshiftSDKModule::Get().GetSettings();
+#### Push delegate when app is in background or not running {#push-delegates-background}
 
-if (!Settings->UsePushNotifications) {
-    UE_LOG(LogTemp, Error, TEXT("Use Push Notifications is not enabled in the Project Settings. Will not register the token."));
-    return;
-}
-// Handle notification for foreground & background state
-FCoreDelegates::ApplicationReceivedRemoteNotificationDelegate.AddStatic([](FString Json, int State) {
+For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate, invoke the `handleBackgroundNotificationClick:withCompletionHandler:` SDK API -
 
-    NSDictionary* JsonDict = ConvertFStringToNSDictionary(Json);
-
-    bool IsAppLaunch = (State == 3) ? false : true;
-
-    if (JsonDict) {
-        HandleNotification(JsonDict,IsAppLaunch);
+```objc
+- (void) userNotificationCenter:(UNUserNotificationCenter *)center
+ didReceiveNotificationResponse:(UNNotificationResponse *)response
+          withCompletionHandler:(void (^)(void))completionHandler {
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    if([@"helpshift" isEqualToString:userInfo[@"origin"]]) {
+        [Helpshift handleBackgroundNotificationClick:userInfo withCompletionHandler:completionHandler];
+    } else {
+        completionHandler();
     }
-});
-
-// Handle notification for killed state
-NSDictionary *LocalLaunchOptions = [IOSAppDelegate GetDelegate].launchOptions;
-
-if (LocalLaunchOptions) {
-    NSDictionary *Payload = LocalLaunchOptions[@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-    HandleNotification(Payload,true);
+    completionHandler();
 }
+```
 
-#endif
+### Configure NotificationService extension {#notification-service}
+
+<Admonition type="info" title="Note">
+
+Your app only needs to configure the NotificationService extension if you are using Proactive Engagement feature. For support notifications, you can skip this configuration.
+
+</Admonition>
+
+If you are using Helpshift's [Proactive Engagement](/sdkx-unreal/proactive-engagement) feature, you will need to add a NotificationService extension to your app. This extension lets the app intercept the notification and modify it's payload before iOS system posts the notification in system tray. For more details on what this service extension does and how to configure it in your app, you can refer the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
+
+Helpshift uses this extension to download images to display in the push notification. If your app already has a NotificationService extension, you can re-use it for handling Helpshift notifications. In the `didReceiveNotificationRequest:withContentHandler:` method of your notification service, call the corresponding Helpshift API -
+
+```objc
+- (void) didReceiveNotificationRequest:(UNNotificationRequest *)request
+                    withContentHandler:(void (^)(UNNotificationContent *content))contentHandler {
+    NSString *origin = request.content.userInfo[@"origin"];
+    if([@"helpshift" isEqualToString:origin]) {
+        [Helpshift handleBackgroundNotification:request
+                           withContentHandler:contentHandler];
+    } else {
+        contentHandler(request.content);
+    }
+}
 ```
 
 ## In-app notifications {#in-app-notifications}
@@ -171,15 +183,11 @@ In-app notifications, unlike push notifications, appear within your app when it 
 
 These notifications are sent when an agent replies to a customer's issue. Your customers can click on these banners to go straight into the conversation screen.
 
-<SideBySide>
-
 <Image
-  src="/static/books/sdkx_ios/In-app-notification.png"
+  src="/static/books/sdkx_ios/support-inapp.png"
   width="half"
-  alt="In-app-notification.png"
+  alt="Support In-App Notification"
 />
-
-</SideBySide>
 
 ### Configuring In-app notifications {#optional-flags}
 
