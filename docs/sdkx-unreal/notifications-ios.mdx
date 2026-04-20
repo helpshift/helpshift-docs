@@ -53,6 +53,8 @@ After you have configured the push notifications in the Helpshift console, you w
 
 </Centered>
 
+You also need to call [`InitWithCredentials` API](/sdkx-unreal/getting-started/#initializing-code) from code to initialize the SDK for the push notifications to work. If you call `Init` API from blueprints, the push notifications will not work even if you have configured the Helpshift dashboard for push notifications.
+
 <Admonition type="info" title="Note">
 
 When push is not configured, Helpshift SDK shows out-of-the-box "in-app notifications" for every message sent by Agents/Bots.
@@ -62,8 +64,7 @@ You should call `registerDeviceToken` API only after you have [configured the He
 
 ### Request notification permission and register your app for push {#push-permission}
 
-For Helpshift SDK to work with the Helpshift push notification service
-you will need to invoke the `FIOSPlatformMisc::RegisterForRemoteNotifications()` Unreal method. This method handles requesting the user's permission to receive push notifications and registers the app for remote notifications. You should call this method at an appropriate point in your app's lifecycle, such as your GameInstance's `OnStart()` method.
+To request notification permissions and register your app for push notifications, invoke the `FIOSPlatformMisc::RegisterForRemoteNotifications()` Unreal method. This method handles requesting the user's permission to receive push notifications and registers the app for remote notifications. You should call this method at an appropriate point in your app's lifecycle, such as your GameInstance's `OnStart()` method.
 
 ```cpp
 void UHelpshiftDemoGameInstance::OnStart()
@@ -80,7 +81,7 @@ void UHelpshiftDemoGameInstance::OnStart()
 
 ### Pass registered push token to Helpshift {#push-pass-to-helpshift}
 
-For Helpshift SDK to work with the Helpshift push notification service, you will need to invoke the `RegisterPushTokenIos()` API call inside `FCoreDelegates::ApplicationRegisteredForRemoteNotificationsDelegate` Unreal delegate.
+To pass the registered push token to Helpshift, you will need to invoke the `RegisterPushTokenIos()` API call inside `FCoreDelegates::ApplicationRegisteredForRemoteNotificationsDelegate` Unreal delegate.
 
 ```cpp
 void UHelpshiftDemoGameInstance::OnStart()

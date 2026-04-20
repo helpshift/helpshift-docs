@@ -241,4 +241,31 @@ You need to call this API after `Init()` and before handling the push via the re
 
 </Admonition>
 
-// TODO - Add code snippets for this section.
+```c++
+TMap<FString, FHelpshiftConfigParameter> LocalParameters;
+
+// Add local config parameters directly to LocalParameters map
+LocalParameters.Add(
+    TEXT("conversationPrefillText"),
+    UHelpshiftConfigParameterFunctions::Conv_StringToHelpshiftConfigParameter(TEXT("Local proactive"))
+);
+
+// Add local tags to an array
+TArray<FString> LocalTags;
+LocalTags.Add(TEXT("priority_high"));
+LocalTags.Add(TEXT("escalate"));
+
+// Add local custom issue fields to a map
+TMap<FString, FHelpshiftCustomIssueFieldParameter> LocalCustomIssueFields;
+LocalCustomIssueFields.Add(
+    TEXT("isPro"),
+    UHelpshiftCustomIssueFieldParameterFunctions::NewCheckboxParameter(true);
+);
+
+// Call SetProactiveLocalConfig API to set fallback configuration for proactive notifications
+UHelpshiftLibrary::SetProactiveLocalConfig(
+    LocalParameters,
+    LocalTags,
+    LocalCustomIssueFields
+);
+```
