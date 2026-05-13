@@ -7,6 +7,13 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "13 May 2026",
+    title: "Windows PC Widget - Unity 1.1.0 released",
+    info: `Windows PC Widget - Unity 1.1.0 is now released! Upgrade to get the latest features`,
+    link: "/pc-widget-unity",
+    linkTitle: "Windows PC Widget - Unity 1.1.0",
+  },
+  {
     date: "20 April 2026",
     title: "SDK X Unreal Engine 10.5.0 released",
     info: `SDK X Unreal Engine 10.5.0 is now released! Upgrade to get the latest features`,
