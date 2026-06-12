@@ -16,7 +16,7 @@
  * @created 10 Jan, 2023
  */
 
-const visit = require("unist-util-visit");
+const { visit } = require("unist-util-visit");
 
 const plugin = ({ data }) => {
   const transformer = async (ast) => {
