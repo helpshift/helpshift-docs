@@ -5,19 +5,19 @@ description: "Helpshift provides several config options which can be used to cus
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
@@ -30,9 +30,11 @@ Helpshift provides several config options which can be used to customize behavio
 
 </Intro>
 
-## Install time configurations {#install-config}
+<a id="install-config"></a>
+## Install time configurations
 
-## enableAutomaticThemeSwitching {#enableAutomaticThemeSwitching}
+<a id="enableAutomaticThemeSwitching"></a>
+## enableAutomaticThemeSwitching
 
 Upon setting this option to true, Helpshift SDK will switch between default light and dark themes based on the OS Appearance setting.
 
@@ -90,7 +92,8 @@ Example:
 
 </Admonition>
 
-### enableInAppNotification {#enableInAppNotification}
+<a id="enableInAppNotification"></a>
+### enableInAppNotification
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
 
@@ -149,7 +152,8 @@ Example:
 
 </Tabs>
 
-### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+<a id="enableDefaultFallbackLanguage"></a>
+### enableDefaultFallbackLanguage
 
 This option enables or disables fallback to default language that is English for FAQs.
 
@@ -212,7 +216,8 @@ This configuration does not apply to the QuickSearch Bot suggested FAQs.
 
 </Admonition>
 
-### enableLogging {#enableLogging}
+<a id="enableLogging"></a>
+### enableLogging
 
 Upon setting enableLogging to true, Helpshift SDK logs will be generated in the console. This will be useful for debugging the SDK during integration.
 
@@ -272,7 +277,8 @@ Example :
 
 </Tabs>
 
-### disableErrorReporting {#disableErrorReporting}
+<a id="disableErrorReporting"></a>
+### disableErrorReporting
 
 Disables reporting of Helpshift SDK’s internal error logs. The Helpshift SDK will collect internal error logs and report them to our systems to ensure that we become aware of runtime crashes and we have enough information to fix them.
 
@@ -338,9 +344,11 @@ Applicable to version 3.3.0 and above.
 
 </Admonition>
 
-## API options {#api-options}
+<a id="api-options"></a>
+## API options
 
-### enableContactUs {#enable-contact-us}
+<a id="enable-contact-us"></a>
+### enableContactUs
 
 The `enableContactUs` flag controls the visibility of `Contact Us` button -
 
@@ -406,7 +414,8 @@ Example:
 
 This flag has no effect for the `ShowConversation` API call, since there is no `Contact Us` button in the conversation screen.
 
-### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
+<a id="gotoConversationAfterContactUs"></a>
+### gotoConversationAfterContactUs
 
 <Admonition type="info" title="Note">
 
@@ -481,7 +490,8 @@ For `ShowFAQs`, `ShowFAQSection` and `ShowSingleFAQ`, setting `gotoConversationA
 
 </Tabs>
 
-### requireEmail {#requireEmail}
+<a id="requireEmail"></a>
+### requireEmail
 
 <Admonition type="info" title="Note">
 
@@ -547,7 +557,8 @@ Once `requireEmail` flag is set, the SDK will use that value for all new convers
 
 </Admonition>
 
-### hideNameAndEmail {#hideNameAndEmail}
+<a id="hideNameAndEmail"></a>
+### hideNameAndEmail
 
 <Admonition type="info" title="Note">
 
@@ -617,7 +628,8 @@ Once `hideNameAndEmail` flag is set, the SDK will use that value for all new con
 
 </Admonition>
 
-### conversationPrefillText {#conversationPrefillText}
+<a id="conversationPrefillText"></a>
+### conversationPrefillText
 
 The `conversationPrefillText` API option will prefill a new conversation description, with the supplied string.
 This is useful where you might want your users to send you diagnostic information in the conversation description, for example if the app hits an exception, etc.
@@ -679,7 +691,8 @@ The `conversationPrefillText` option takes effect only for the **ShowConversatio
 
 </Admonition>
 
-### enableFullPrivacy {#enableFullPrivacy}
+<a id="enableFullPrivacy"></a>
+### enableFullPrivacy
 
 In scenarios where the user attaches objectionable content in the screenshots, it becomes a huge [`COPPA`](http://www.coppa.org/) concern. The enableFullPrivacy flag will help solve this problem.
 
@@ -750,7 +763,8 @@ HelpshiftApi.HelpshiftSupport.ShowFAQs(uiViewController, config);
 
 </Admonition>
 
-### showSearchOnNewConversation {#showSearchOnNewConversation}
+<a id="showSearchOnNewConversation"></a>
+### showSearchOnNewConversation
 
 <Admonition type="info" title="Note">
 
@@ -818,7 +832,8 @@ The `showSearchOnNewConversation` option takes effect only for the **showConvers
 
 </Admonition>
 
-### showConversationResolutionQuestion {#showConversationResolutionQuestion}
+<a id="showConversationResolutionQuestion"></a>
+### showConversationResolutionQuestion
 
 <Admonition type="info" title="Note">
 
@@ -893,7 +908,8 @@ HelpshiftApi.HelpshiftSupport.ShowConversation(uiViewController, configMap);
 
 </Tabs>
 
-### customContactUsFlows {#customContactUsFlows}
+<a id="customContactUsFlows"></a>
+### customContactUsFlows
 
 <div className="compact ">
 
@@ -1059,7 +1075,8 @@ HelpshiftApi.HelpshiftSupport.showFAQs (uiViewController, faqFlow);
 
 With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
 
-### showConversationInfoScreen {#showConversationInfoScreen}
+<a id="showConversationInfoScreen"></a>
+### showConversationInfoScreen
 
 <Admonition type="info" title="Note">
 
@@ -1123,7 +1140,8 @@ The Conversation ID (Issue ID) will only be visible when a conversation is actua
 
 </Admonition>
 
-### enableTypingIndicator {#enableTypingIndicator}
+<a id="enableTypingIndicator"></a>
+### enableTypingIndicator
 
 <Admonition type="info" title="Note">
 
@@ -1208,7 +1226,8 @@ The typing indicator will be visible to end users who file new issues using v2.4
 
 </Admonition>
 
-## IssueDescriptionMinimumCharacterLength {#issue-description-minimum-length}
+<a id="issue-description-minimum-length"></a>
+## IssueDescriptionMinimumCharacterLength
 
 To control the minimum number of characters that the users need to type before they can start a conversation, use this option and set it to an appropriate integer value.
 This option works both in Conversational issue-filing and Form-based issue-filing experience.
@@ -1226,7 +1245,8 @@ This option is not an SDK API config but rather a **key in the HelpshiftLocaliza
 
 </Centered>
 
-## Configuration Summary {#config-summary}
+<a id="config-summary"></a>
+## Configuration Summary
 
 | Configuration / API                    | [showFAQs](/xamarin/support-tools-ios#faqs-view) | [showFAQSection](/xamarin/support-tools-ios#faq-section-view) | [showSingleFAQ](/xamarin/support-tools-ios#faq-question-view) | [showConversation](/xamarin/support-tools-ios#conversation-view) |
 | -------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- |

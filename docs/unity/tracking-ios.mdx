@@ -22,7 +22,8 @@ import {
 
 <LegacyEolAdmonition />
 
-# Tracking <small>iOS</small> {#tracking}
+<a id="tracking"></a>
+# Tracking <small>iOS</small>
 
 <Intro>
 
@@ -31,7 +32,8 @@ Attach custom metadata to every conversation started via the SDK.
 
 </Intro>
 
-## Name and email {#name-and-email}
+<a id="name-and-email"></a>
+## Name and email
 
 You can set the name and email for the user, using
 `setNameAndEmail`. For example:
@@ -62,7 +64,8 @@ Also, please note that this API will not work with the [Conversational Experienc
 
 </Admonition>
 
-## User Identifier {#user-id}
+<a id="user-id"></a>
+## User Identifier
 
 If you have an identification for your users, you can specify
 that as well using `login`. For example:
@@ -94,7 +97,8 @@ Also, please note that there will no impact on older SDK versions and that they 
 
 </Admonition>
 
-## Multi Login {#multi-login}
+<a id="multi-login"></a>
+## Multi Login
 
 <Admonition type="info" title="Note">
 
@@ -102,7 +106,8 @@ Details on User management are available [here](/unity/users-ios#user-identifica
 
 </Admonition>
 
-## App usage {#app-usage}
+<a id="app-usage"></a>
+## App usage
 
 Breadcrumbs will help you track events or user actions and when user
 starts a new conversation, these breadcrumbs can be seen along with the conversation in
@@ -129,7 +134,8 @@ There are 2 ways in which this metadata can be attached to reported issues.
 
 1. In all the API calls which launch the Help section, you can add a metadata dictionary in the config dictionary parameter using the `HSCUSTOMMETADATAKEY` key. This metadata will be sent along with the next reported issue. When the user exits out of the Help section this metadata will be dropped in favor of the metadata sent in the next Helpshift API call.
 
-### Attaching tags with metadata {#metadatatags}
+<a id="metadatatags"></a>
+### Attaching tags with metadata
 
 
 <Admonition type="info" title="Note">
@@ -191,13 +197,15 @@ Examples :
 </Admonition>
  -->
 
-## Attaching metadata to reported issues {#metadata}
+<a id="metadata"></a>
+## Attaching metadata to reported issues
 
 You can attach additional metadata to every new conversation started by the app user. This metadata can range from user-name, email etc to game scores, current game levels and any other data relevant to creating a suitable context to each new conversation.
 
 In all the API calls that accept a config dictionary, you can add a metadata dictionary in the config dictionary parameter using the `HSCUSTOMMETADATAKEY` key. This metadata will be sent along with the next reported issue. When the user exits out of the Help section this metadata will be dropped in favor of the metadata sent in the next Helpshift API call.
 
-### Attaching tags with metadata {#metadatatags}
+<a id="metadatatags"></a>
+### Attaching tags with metadata
 
 <Admonition type="info" title="Note">
 
@@ -240,7 +248,8 @@ Any modified metadata (updated during an active conversation) will only be sent 
 
 </Admonition>
 
-## Check if an active Conversation exists. {#isConversationActive}
+<a id="isConversationActive"></a>
+## Check if an active Conversation exists.
 
 <Admonition type="info" title="Note">
 
@@ -270,7 +279,8 @@ public void didCheckIfConversationActive(string isActive) {
 }
 ```
 
-## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+<a id="custom-issue-fields"></a>
+## Attaching Custom Issue Fields to conversations
 
 <Admonition type="info" title="Note">
 
@@ -317,7 +327,8 @@ configD.Add (Helpshift.HSCUSTOMISSUEFIELDKEY, customIssueFields);
 help.showFAQs(configD);
 ```
 
-## Debug logs {#debug-logs}
+<a id="debug-logs"></a>
+## Debug logs
 
 If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can instantiate and use the **HelpshiftLog** class and its methods which will provide varying degress of logging.
 For example, if you want to attach debug level logs please add the following code

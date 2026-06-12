@@ -22,7 +22,8 @@ import {
 
 <LegacyEolAdmonition />
 
-# Helpshift APIs {#support-tools}
+<a id="support-tools"></a>
+# Helpshift APIs
 
 <Intro>
 
@@ -34,7 +35,8 @@ There are 6 different ways in which the Helpshift SDK can be presented in your a
 
 </Intro>
 
-## Integrating Contact Us & In App Messaging {#conversation-view}
+<a id="conversation-view"></a>
+## Integrating Contact Us & In App Messaging
 
 Example: `Support.showConversation(MyActivity.this);` where MyActivity.this is the Activity you're calling Helpshift from
 
@@ -61,7 +63,8 @@ Applicable to SDK version 3.10.0 and above.
 
 </Admonition>
 
-## Integrating FAQs {#faqs-view}
+<a id="faqs-view"></a>
+## Integrating FAQs
 
 Example: `Support.showFAQs(MyActivity.this);` where MyActivity.this is the Activity you're calling Helpshift from
 
@@ -78,7 +81,8 @@ _You can wire this API call to a **"Help"** or **"Support"** action in your app.
 
 Check out [SDK Configuration](/android/sdk-configuration/) for more.
 
-### FAQ Filtering by tags {#faq-filtering}
+<a id="faq-filtering"></a>
+### FAQ Filtering by tags
 
 Starting v3.11.0 onwards, we have introduced FAQ filtering capability by tags. With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
 Typical cases why you would want to use FAQ filtering are :
@@ -174,7 +178,8 @@ Example :
 
 </Tabs>
 
-## Showing a Particular FAQ Section {#faq-section-view}
+<a id="faq-section-view"></a>
+## Showing a Particular FAQ Section
 
 Example: `Support.showFAQSection(MyActivity.this, "11");` where MyActivity.this is the Activity you're calling Helpshift from and "11" is the FAQ section `publish-id`
 
@@ -190,7 +195,8 @@ This feature works like a permalink for displaying specific FAQ sections as cont
 
 Check out [SDK Configuration](/android/sdk-configuration/) for more.
 
-## Showing a Particular FAQ Question {#faq-question-view}
+<a id="faq-question-view"></a>
+## Showing a Particular FAQ Question
 
 Example: `Support.showSingleFAQ(MyActivity.this, "51");` where MyActivity.this is the Activity you're calling Helpshift from and "51" is the FAQ publish-id
 
@@ -204,7 +210,8 @@ You can use the API call `Support.showSingleFAQ(Activity a, String questionPubli
 
 Check out [SDK Configuration](/android/sdk-configuration/) for more.
 
-## Guided Issue Filing {#dynamic-forms}
+<a id="dynamic-forms"></a>
+## Guided Issue Filing
 
 <Admonition type="info" title="Note">
 
@@ -296,7 +303,8 @@ Each dynamic form needs :
 1. **Title**: This will be the title displayed on the action bar
 2. **flows**: An List of supported Flow objects as discussed above.
 
-## Embeddable Support Fragments {#embeddable-fragments}
+<a id="embeddable-fragments"></a>
+## Embeddable Support Fragments
 
 <Admonition type="info" title="Note">
 
@@ -405,7 +413,8 @@ fragments.
 
 </Admonition>
 
-### Handling onBackPressed with Helpshift's Embeddable Fragments {#embeddable-fragments-handle-backstack}
+<a id="embeddable-fragments-handle-backstack"></a>
+### Handling onBackPressed with Helpshift's Embeddable Fragments
 
 There is an issue with Android where `onBackPressed` doesn't behave as
 expected when used with nested fragments. Use the following guidelines for
@@ -448,7 +457,8 @@ For Example:
     }
 ```
 
-### Handling language change with Helpshift's embeddable fragments {#embeddable-fragments-handle-language}
+<a id="embeddable-fragments-handle-language"></a>
+### Handling language change with Helpshift's embeddable fragments
 
 If you are using Helpshift SDK's [setSDKLanguage](/android/i18n/#language-change-programatically) API on devices with Android API level 25 and above, then use the following guidelines to update the Helpshift SDK's locale:
 
@@ -476,7 +486,8 @@ This language handling is required because of the following changes in the Andro
 - From **Android API level 17**, `Context.createConfigurationContext()` API is introduced to create custom configuration context object.
 - From **Android API level 25**, `Resources.updateConfiguration()` API is deprecated and it is recommended to use `Context.createConfigurationContext()` which will create a new context instead of updating the old context object. [Reference](https://developer.android.com/reference/android/content/res/Resources.html#updateConfiguration(android.content.res.Configuration, android.util.DisplayMetrics))
 
-### Enabling hardware acceleration in Manifest {#embeddable-fragments-hardware-acceleration}
+<a id="embeddable-fragments-hardware-acceleration"></a>
+### Enabling hardware acceleration in Manifest
 
 There are some known [issues](/android/troubleshooting#ui-issues) in rendering the FAQ fragment views if hardware acceleration is explicitly disabled for the application (the system enables it by default) due to known WebView issues on Android 5.1. Thus, Helpshift recommends you to enable hardware acceleration in your app. However, if you want to disable hardware acceleration in your app, you can enable it only for the activity in which you plan to attach the SDK's fragments. For example, in your AndroidManifest.xml:
 

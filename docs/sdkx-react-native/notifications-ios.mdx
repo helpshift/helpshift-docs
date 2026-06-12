@@ -21,7 +21,8 @@ import {
 
 import ConfigurePushNotificationsiOS from "@site/docs/_partials/_configurePushNotificationsiOS.mdx";
 
-# Notifications <small>iOS</small> {#notifications}
+<a id="notifications"></a>
+# Notifications <small>iOS</small>
 
 <Intro>
 
@@ -35,7 +36,8 @@ If you want to configure the notifications for Android, please refer [here](/sdk
 
 </Admonition>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+<a id="push-via-helpshift"></a>
+## Configure push notifications via Helpshift
 
 - Helpshift enables you to send notifications to your users. This is
 particularly useful when you have multiple users on multiple platforms,
@@ -47,7 +49,8 @@ the notification that is sent from Helpshift appears as a notification.
 
 <ConfigurePushNotificationsiOS />
 
-### Configure the Helpshift React Native Plugin SDK to handle notifications {#configure-helpshift-react-native-sdk}
+<a id="configure-helpshift-react-native-sdk"></a>
+### Configure the Helpshift React Native Plugin SDK to handle notifications
 
 After you have configured the push notifications in the Helpshift console, you will need to add additional setup in the project.
 
@@ -188,7 +191,8 @@ Notifications.getInitialNotification()
 
 On iOS, Helpshift push notifications are handled by the SDK itself, and no additional setup is required.
 
-### Configure NotificationService extension {#notification-service}
+<a id="notification-service"></a>
+### Configure NotificationService extension
 
 <Admonition type="info" title="Note">
 
@@ -213,7 +217,8 @@ Helpshift uses this extension to download images to display in the push notifica
 }
 ```
 
-## In-app notifications {#in-app-notifications}
+<a id="in-app-notifications"></a>
+## In-app notifications
 
 In-app notifications, unlike push notifications, appear within your app when it is in use by the user.
 
@@ -229,12 +234,14 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 </SideBySide>
 
-### Configuring In-app notifications {#optional-flags}
+<a id="optional-flags"></a>
+### Configuring In-app notifications
 
 The Helpshift [install](/sdkx-react-native/getting-started/) call supports flags for configuring SDK behavior.
 Currently, we support one flag i.e `enableInAppNotification`.
 
-### Enabling/Disabling In-app notifications {#enable-disable-in-app}
+<a id="enable-disable-in-app"></a>
+### Enabling/Disabling In-app notifications
 
 <div className="compact ">
 
@@ -250,7 +257,8 @@ If you do not want the in-app notifications to support provided by the
 Helpshift SDK, please set this flag to `false`. The default value of this
 flag is `true` i.e in-app notifications will be enabled.<br />
 
-### Pausing In-app notifications {#pause-in-app}
+<a id="pause-in-app"></a>
+### Pausing In-app notifications
 
 If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotification` to pause/resume the notifications. When `true` is passed to this method, display of in-app notifications is paused even if they arrive. When you pass `false`, the in-app notifications start displaying.
 
@@ -263,7 +271,8 @@ pauseDisplayOfInAppNotification(true); // To temporarily pause in-app notificati
 pauseDisplayOfInAppNotification(false); // To resume showing the in-app notifications
 ```
 
-## Showing notification count when replies are sent to the user {#showing-notification-count}
+<a id="showing-notification-count"></a>
+## Showing notification count when replies are sent to the user
 
 To fetch unread messages count from the server you can call `requestUnreadMessageCount` API. This API will return unread messages count via observer.
 Based on the parameter, if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`.

@@ -22,7 +22,8 @@ import {
 
 <LegacyEolAdmonition />
 
-# Helpshift Delegates {#delegates}
+<a id="delegates"></a>
+# Helpshift Delegates
 
 <Intro>
 
@@ -40,7 +41,8 @@ Call the `HelpshiftSdk.registerDelegates` API to start listening to the Helpshif
 helpshift.registerDelegates();
 ```
 
-## Helpshift Session delegates {#session-delegates}
+<a id="session-delegates"></a>
+## Helpshift Session delegates
 
 ### Session begin
 
@@ -66,9 +68,11 @@ public void helpshiftSessionEnded() {
 }
 ```
 
-## Helpshift Conversation Delegates {#conversation-delegates}
+<a id="conversation-delegates"></a>
+## Helpshift Conversation Delegates
 
-### New conversation delegate {#delegate-new-conversation-started}
+<a id="delegate-new-conversation-started"></a>
+### New conversation delegate
 
 **newConversationStarted**
 
@@ -88,7 +92,8 @@ For example:
     }
 ```
 
-### Conversation ended delegate {#delegate-conversation-ended}
+<a id="delegate-conversation-ended"></a>
+### Conversation ended delegate
 
 This delegate receives a callback when an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved in the Dashboard, rejected, timed out or archived.
 
@@ -98,7 +103,8 @@ public void conversationEnded() {
 }
 ```
 
-### New message delegate {#delegate-user-replied-to-conversation}
+<a id="delegate-user-replied-to-conversation"></a>
+### New message delegate
 
 **userRepliedToConversation**
 
@@ -127,7 +133,8 @@ All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also
 
 </Admonition>
 
-### Customer satisfaction survey delegate {#csat-completed}
+<a id="csat-completed"></a>
+### Customer satisfaction survey delegate
 
 **userCompletedCustomerSatisfactionSurvey**
 
@@ -141,7 +148,8 @@ For example:
     }
 ```
 
-### New message received count delegate {#newmessage-recieved}
+<a id="newmessage-recieved"></a>
+### New message received count delegate
 
 This delegate is the response to the `requestUnreadMessagesCount` method. It provides the number of unread messages in the current conversation. If `isRemote` set to `true` the unread message count is retrieved from server else unread message count for locally stored messages is returned.
 
@@ -153,7 +161,8 @@ Example usage:
     }
 ```
 
-### Conversation active delegate {#didCheckIfConversationActive}
+<a id="didCheckIfConversationActive"></a>
+### Conversation active delegate
 
 This delegate responds to the `checkIfConversationActive` to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
 
@@ -169,7 +178,8 @@ Example usage:
 	}
 ```
 
-### Display attachment delegate {#display-attachment}
+<a id="display-attachment"></a>
+### Display attachment delegate
 
 Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
 
@@ -207,7 +217,8 @@ For example :
     }
 ```
 
-### Authentication failure delegate {#authetication-failure}
+<a id="authetication-failure"></a>
+### Authentication failure delegate
 
 If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
 
@@ -272,7 +283,8 @@ If identity verification fails, the SDK will invoke one of the following delegat
     }
 ```
 
-### User click on action delegate {#user-click-action}
+<a id="user-click-action"></a>
+### User click on action delegate
 
 This delegate method is called when user clicks on an action in Action Card bot.
 `HelpshiftUserAction` holds the deserialzed data for the action type and data.

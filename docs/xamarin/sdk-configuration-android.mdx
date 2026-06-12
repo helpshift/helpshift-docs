@@ -5,19 +5,19 @@ description: "Helpshift provides several config options which can be used to cus
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
@@ -30,9 +30,11 @@ Helpshift provides several config options which can be used to customize behavio
 
 </Intro>
 
-## Install Options {#install-options}
+<a id="install-options"></a>
+## Install Options
 
-### notificationIcon {#notificationIcon}
+<a id="notificationIcon"></a>
+### notificationIcon
 
 By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `Install` call.
 
@@ -84,7 +86,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### largeNotificationIcon {#largeNotificationIcon}
+<a id="largeNotificationIcon"></a>
+### largeNotificationIcon
 
 By default the application icon is used as the notification icon.
 If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
@@ -137,7 +140,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### enableInAppNotification {#enableInAppNotification}
+<a id="enableInAppNotification"></a>
+### enableInAppNotification
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `"no"`. The default value of this flag is `"yes"` i.e., in app notification will be enabled.
 
@@ -189,7 +193,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### notificationSound {#notificationSound}
+<a id="notificationSound"></a>
+### notificationSound
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -245,7 +250,8 @@ Example:
 
 </Tabs>
 
-### Notification channels {#notificationChannels}
+<a id="notificationChannels"></a>
+### Notification channels
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the following resources in your `<application project>/Resources/values/strings.xml` file:
 
@@ -299,7 +305,8 @@ Available from SDK version 2.5.0 and above
 
 </Tabs>
 
-### enableDefaultFallbackLanguage {#enableDefaultFallbackLanguage}
+<a id="enableDefaultFallbackLanguage"></a>
+### enableDefaultFallbackLanguage
 
 <div className="compact ">
 
@@ -357,7 +364,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### Using Custom Fonts {#usingCustomFonts}
+<a id="usingCustomFonts"></a>
+### Using Custom Fonts
 
 **Step 1:** Add the font file to your `Assets` folder.
 
@@ -417,7 +425,8 @@ Available from Xamarin SDK version 2.0.0 and above
 
 <Image src="/static/books/android/font-in-use.png" width="quarter" centered />
 
-### screenOrientation {#screenOrientation}
+<a id="screenOrientation"></a>
+### screenOrientation
 
 <div className="compact ">
 
@@ -482,7 +491,8 @@ Due to a [bug](https://issuetracker.google.com/issues/68454482) in Android OS 8.
 
 </Admonition>
 
-### enableLogging {#enableLogging}
+<a id="enableLogging"></a>
+### enableLogging
 
 <div className="compact ">
 
@@ -534,7 +544,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### disableErrorReporting {#disableErrorReporting}
+<a id="disableErrorReporting"></a>
+### disableErrorReporting
 
 <div className="compact ">
 
@@ -586,9 +597,11 @@ Applicable to version 3.3.0 and above.
 
 </Admonition>
 
-## API Options {#api-options}
+<a id="api-options"></a>
+## API Options
 
-### enableContactUs {#enableContactUs}
+<a id="enableContactUs"></a>
+### enableContactUs
 
 <div className="compact ">
 
@@ -638,7 +651,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### gotoConversationAfterContactUs {#gotoConversationAfterContactUs}
+<a id="gotoConversationAfterContactUs"></a>
+### gotoConversationAfterContactUs
 
 <Admonition type="info" title="Note">
 
@@ -699,7 +713,8 @@ For `ShowFAQs`, `ShowFAQSection` and `ShowSingleFAQ` APIs, setting `gotoConversa
 
 </Admonition>
 
-### requireEmail {#requireEmail}
+<a id="requireEmail"></a>
+### requireEmail
 
 <Admonition type="info" title="Note">
 
@@ -759,7 +774,8 @@ Once `requireEmail` flag is set, the SDK will use that value for all new convers
 
 </Admonition>
 
-### hideNameAndEmail {#hideNameAndEmail}
+<a id="hideNameAndEmail"></a>
+### hideNameAndEmail
 
 <Admonition type="info" title="Note">
 
@@ -815,7 +831,8 @@ Applicable to version 3.0.0 and above.
 
 If the [`requireEmail`](#requireEmail) flag is set to `"yes"` and email is not available to the SDK, then `hideNameAndEmail` flag will be ignored.
 
-#### Interaction with Helpshift settings on agent dashboard {#hideNameEmailAdmin}
+<a id="hideNameEmailAdmin"></a>
+#### Interaction with Helpshift settings on agent dashboard
 
 If "New Issue Forwarding" is ON then this flag will be ignored when name and email are not available to the SDK. You can use the `SetNameAndEmail` API, to supply the SDK with name and email in this case.
 
@@ -827,7 +844,8 @@ Once `hideNameAndEmail` flag is set, the SDK will use that value for all new con
 
 </Admonition>
 
-### conversationPrefillText {#conversationPrefillText}
+<a id="conversationPrefillText"></a>
+### conversationPrefillText
 
 <div className=" compact">
 
@@ -880,7 +898,8 @@ The `conversationPrefillText` option takes effect only for the `ShowConversation
 
 </Admonition>
 
-### enableFullPrivacy {#enableFullPrivacy}
+<a id="enableFullPrivacy"></a>
+### enableFullPrivacy
 
 <div className="compact ">
 
@@ -947,7 +966,8 @@ Applicable to version 3.0.0 and above.
 
 </Admonition>
 
-### showSearchOnNewConversation {#showSearchOnNewConversation}
+<a id="showSearchOnNewConversation"></a>
+### showSearchOnNewConversation
 
 <Admonition type="info" title="Note">
 
@@ -1001,7 +1021,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### showConversationResolutionQuestion {#showConversationResolutionQuestion}
+<a id="showConversationResolutionQuestion"></a>
+### showConversationResolutionQuestion
 
 #### For v3.0+
 
@@ -1064,7 +1085,8 @@ Applicable to version 3.0.0 and above.
 
 </Tabs>
 
-### customContactUsFlows {#customContactUsFlows}
+<a id="customContactUsFlows"></a>
+### customContactUsFlows
 
 <div className="compact ">
 
@@ -1238,7 +1260,8 @@ Applicable to version 3.0.0 and above.
 
 With this configuration, the Contact Us buttons in `singleFAQFlow` View will redirect to Guided Issue Filing with `showConversationFlow1` and `showConversationFlow2`.
 
-### showConversationInfoScreen {#showConversationInfoScreen}
+<a id="showConversationInfoScreen"></a>
+### showConversationInfoScreen
 
 <div className="compact ">
 
@@ -1296,7 +1319,8 @@ The Conversation ID (Issue ID) will only be visible when a conversation is actua
 
 </Admonition>
 
-### enableTypingIndicator {#enableTypingIndicator}
+<a id="enableTypingIndicator"></a>
+### enableTypingIndicator
 
 <div className="compact ">
 
@@ -1369,7 +1393,8 @@ The typing indicator will only be enabled for all the new issues filed using SDK
 
 </Admonition>
 
-## Minimum issue description length {#minimum-issue-desc-length}
+<a id="minimum-issue-desc-length"></a>
+## Minimum issue description length
 
 You can set the minimum length requirement of text for the user while filing the new issue using the integer resource `hs__issue_description_min_chars`. Its default value is set to 1 for all languages and it can be configured per language. If the number of characters is less than the defined minimum length requirement then an error is displayed to the user.
 
@@ -1395,7 +1420,8 @@ and the following integer resource in `integers.xml` of `values` resource direct
 <integer name="hs__issue_description_min_chars">10</integer>
 ```
 
-## Configuration Summary {#config-summary}
+<a id="config-summary"></a>
+## Configuration Summary
 
 | Configuration / API                    | [showFAQs](/xamarin/support-tools-android#faqs-view) | [showFAQSection](/xamarin/support-tools-android#faq-section-view) | [showSingleFAQ](/xamarin/support-tools-android#faq-question-view) | [showConversation](/xamarin/support-tools-android#conversation-view) |
 | -------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -1406,7 +1432,8 @@ and the following integer resource in `integers.xml` of `values` resource direct
 | **showConversationInfoScreen**         | Supported                                            | Supported                                                         | Supported                                                         | Supported                                                            |
 | **enableTypingIndicator**              | Supported                                            | Supported                                                         | Supported                                                         | Supported                                                            |
 
-## Flexible permissions adaptive to Android M and older versions {#app-permissions}
+<a id="app-permissions"></a>
+## Flexible permissions adaptive to Android M and older versions
 
 Starting from Android 6.0 (API level 23), users grant permissions to apps while the app is running, not when they install the app. The storage permissions can be removed from AndroidManifest.xml in case you do not want to use them. You can remove the `WRITE_EXTERNAL_STORAGE` permission with the following line in your final AndroidManifest.xml file:
 

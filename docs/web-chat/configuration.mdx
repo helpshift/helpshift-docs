@@ -29,11 +29,13 @@ import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearIniti
 
 </Intro>
 
-## Widget Configuration {#widget-config}
+<a id="widget-config"></a>
+## Widget Configuration
 
 Helpshift allows you to configure the Web Chat widget by passing configuration options in the `helpshiftConfig` object.
 
-### Widget Options {#widget-options}
+<a id="widget-options"></a>
+### Widget Options
 
 To configure the widget's behavior, you'll need to add `widgetOptions` to the Embed Code. All of the widget specific options go here.
 
@@ -56,7 +58,8 @@ To configure the widget's behavior, you'll need to add `widgetOptions` to the Em
 })();
 ```
 
-#### Enable Fullscreen View for Pop-ups {#enable-full-screen}
+<a id="enable-full-screen"></a>
+#### Enable Fullscreen View for Pop-ups
 
 If you want to open the widget in full screen mode on a non-mobile device, you can pass through the `fullScreen` option in `widgetOptions`.
 
@@ -73,7 +76,8 @@ On mobile devices and on low resolution tablets and desktops, the widget will op
 
 </Admonition>
 
-#### Show/Hide Launcher {#show-launcher}
+<a id="show-launcher"></a>
+#### Show/Hide Launcher
 
 You can hide the default launcher and use your own launcher. You can control opening and closing of the conversation window using the `open` and `close` APIs. Add the following option in `widgetOptions` to hide the default launcher.
 
@@ -84,7 +88,8 @@ helpshiftConfig.widgetOptions = {
 };
 ```
 
-#### Widget Position {#widget-position}
+<a id="widget-position"></a>
+#### Widget Position
 
 To set the widget's position, provide the `position` option in `widgetOptions`. Values allowed for `position` are:
 
@@ -102,7 +107,8 @@ helpshiftConfig.widgetOptions = {
 };
 ```
 
-#### Widget z-index {#widget-z-index}
+<a id="widget-z-index"></a>
+#### Widget z-index
 
 By default, Web Chat assigns a large `z-index` value to its widget (the launcher and conversation window). If you want to use a custom value of `z-index` for Web Chat, you can do so by setting the `zIndex` option in `widgetOptions`. You can only use a **number** with this option.
 
@@ -113,11 +119,13 @@ helpshiftConfig.widgetOptions = {
 };
 ```
 
-## Theming {#theming}
+<a id="theming"></a>
+## Theming
 
 You can configure the Web Chat's greeting and color scheme directly from the Helpshift Dashboard. For more details, refer to [For Support Admins: Configure the User Experience](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/900-web-chat-understand-the-appearance-of-web-chat-ui-elements-sdk-x/) in our Knowledge Base.
 
-## Bots {#bots}
+<a id="bots"></a>
+## Bots
 
 Bots can be enabled in Web Chat to automatically provide help and gather information from users to help your Agents resolve Issues faster. Helpshift has 3 default Bots:
 
@@ -127,7 +135,8 @@ Bots can be enabled in Web Chat to automatically provide help and gather informa
 
 For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/681-bot-procedures-create-and-configure-a-custom-bot-or-feedback-bot/) in our Knowledge Base.
 
-## Full Privacy {#full-privacy}
+<a id="full-privacy"></a>
+## Full Privacy
 
 In the `helpshiftConfig` object at the time of initialization, setting the `fullPrivacy` option to `true` ensures [COPPA](http://www.coppa.org/) compliance by:
 
@@ -150,7 +159,8 @@ window.helpshiftConfig = {
 };
 ```
 
-## Initiating chat {#initiate-chat}
+<a id="initiate-chat"></a>
+## Initiating chat
 
 Developers can start a new chat when the previous issue is resolved, without needing any user action like clicking the `New Conversation` button or going through the post resolution flow like feedback bot for the previously resolved issue.
 
@@ -166,7 +176,8 @@ Helpshift("updateHelpshiftConfig");
 
 To open the widget, [Open Widget API](https://developers.helpshift.com/web-chat/api/#open-widget) can be used.
 
-## Initial user message {#initial-user-message}
+<a id="initial-user-message"></a>
+## Initial user message
 
 <InitialUserMessageDescription />
 
@@ -178,7 +189,8 @@ window.helpshiftConfig.initialUserMessage = "Some initial user message";
 Helpshift("updateHelpshiftConfig");
 ```
 
-## Clear initial user message {#clearing-initial-user-message}
+<a id="clearing-initial-user-message"></a>
+## Clear initial user message
 
 <ClearInitialUserMessageDescription />
 
@@ -195,7 +207,8 @@ window.helpshiftConfig.subsequentIssuesInSameSessionConfig = {
 Helpshift("updateHelpshiftConfig")
 ```
 
-## Conversation prefill text {#conversation-prefill-text}
+<a id="conversation-prefill-text"></a>
+## Conversation prefill text
 
 <ConversationPrefillTextDescription />
 

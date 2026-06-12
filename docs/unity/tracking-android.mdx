@@ -5,24 +5,25 @@ description: "Track events and user actions when the user starts a new conversat
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
 
-# Tracking <small>Android</small> {#tracking}
+<a id="tracking"></a>
+# Tracking <small>Android</small>
 
 <Intro>
 
@@ -31,7 +32,8 @@ Attach custom metadata to every conversation started via the SDK.
 
 </Intro>
 
-## Session delegates {#session-delegates}
+<a id="session-delegates"></a>
+## Session delegates
 
 You can track the helpshift session end, using `registerDelegates` api call. For example:
 
@@ -47,7 +49,8 @@ To get the helpshift session end event, you should implement the helpshiftSessio
     }
 ```
 
-## Name and email {#name-and-email}
+<a id="name-and-email"></a>
+## Name and email
 
 <Admonition type="info" title="Note">
 
@@ -57,7 +60,8 @@ To get the helpshift session end event, you should implement the helpshiftSessio
 
 </Admonition>
 
-## User Identifier {#user-id}
+<a id="user-id"></a>
+## User Identifier
 
 <Admonition type="info" title="Note">
 
@@ -67,7 +71,8 @@ To get the helpshift session end event, you should implement the helpshiftSessio
 
 </Admonition>
 
-## Multi Login {#multi-login}
+<a id="multi-login"></a>
+## Multi Login
 
 <Admonition type="info" title="Note">
 
@@ -75,7 +80,8 @@ Details on User management are available [here](/unity/users-android#user-identi
 
 </Admonition>
 
-## App usage {#app-usage}
+<a id="app-usage"></a>
+## App usage
 
 Breadcrumbs will help you track events or user actions and when user
 starts a new conversation, these breadcrumbs can be seen along with the conversation in
@@ -92,7 +98,8 @@ Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs 
 helpshift.clearBreadCrumbs();
 ```
 
-## Attaching metadata to reported issues {#metadata}
+<a id="metadata"></a>
+## Attaching metadata to reported issues
 
 You can attach additional metadata to every new conversation started by the app user via two
 simple mechanisms provided by the SDK. This metadata can range from
@@ -115,7 +122,8 @@ There are 2 ways in which this metadata can be attached to reported issues.
 
 </Admonition>
 
-### Attaching tags with metadata {#metadatatags}
+<a id="metadatatags"></a>
+### Attaching tags with metadata
 
 <Admonition type="info" title="Note">
 
@@ -181,7 +189,8 @@ Examples :
         help.showDynamicForm("This is a dynamic form", new Dictionary<string, object>[] {faqSection});
 ```
 
-## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+<a id="custom-issue-fields"></a>
+## Attaching Custom Issue Fields to conversations
 
 <Admonition type="info" title="Note">
 
@@ -226,7 +235,8 @@ Possible datatypes to be passed into the config are:
     help.showFAQs(configD);
 ```
 
-## Debug logs {#debug-logs}
+<a id="debug-logs"></a>
+## Debug logs
 
 If you want to add debug logs at specific places within your application which will help you debug issues filed by the user, you can instantiate and use the **HelpshiftLog** class and its methods which will provide varying degress of logging.
 For example, if you want to attach debug level logs please add the following code
@@ -236,7 +246,8 @@ this.logger = new HelpshiftLog();
 logger.d(<debug-tag>, <debug-message>);
 ```
 
-## Check if an active Conversation exists. {#isConversationActive}
+<a id="isConversationActive"></a>
+## Check if an active Conversation exists.
 
 <Admonition type="info" title="Note">
 

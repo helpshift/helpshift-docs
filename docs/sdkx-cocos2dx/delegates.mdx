@@ -6,7 +6,8 @@ description: "The Helpshift SDK provides delegate callbacks to help app develope
 
 import { Admonition, Intro } from "@site/src/components/forDocs";
 
-# Helpshift Delegates {#delegates}
+<a id="delegates"></a>
+# Helpshift Delegates
 
 <Intro>
 
@@ -22,7 +23,8 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Admonition>
 
-## Helpshift Events Listener/Delegates implementation {#helpshift-delegates-implementation}
+<a id="helpshift-delegates-implementation"></a>
+## Helpshift Events Listener/Delegates implementation
 
 You can set `HelpshiftEventsListener` by calling the `HelpshiftCocos2dx::setHelpshiftEventsListener()` method.
 
@@ -68,7 +70,8 @@ bool HelloWorld::init()
 }
 ```
 
-## Helpshift Events {#helpshift-events}
+<a id="helpshift-events"></a>
+## Helpshift Events
 
 You can find list of all Helpshift Events in `HelpshiftEvent.h` file.
 
@@ -78,7 +81,8 @@ To use Helpshift Events, include `HelpshiftEvent.h` in your UI file.
 #include "HelpshiftEvent.h"
 ```
 
-### Conversation Status Event {#conversation-status}
+<a id="conversation-status"></a>
+### Conversation Status Event
 
 This event contains information about the current ongoing conversation.
 
@@ -98,7 +102,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Widget Toggle Event {#widget-toggle-event}
+<a id="widget-toggle-event"></a>
+### Widget Toggle Event
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key.
 
@@ -115,7 +120,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### User Click On Action Event {#user-click-on-action}
+<a id="user-click-on-action"></a>
+### User Click On Action Event
 
 This event is triggered when the user clicks on the link or call action of an action card message.
 
@@ -158,7 +164,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Conversation Start Event {#conversation-start-event}
+<a id="conversation-start-event"></a>
+### Conversation Start Event
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
 
@@ -175,7 +182,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Message Add Event {#message-add-event}
+<a id="message-add-event"></a>
+### Message Add Event
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
 
@@ -197,7 +205,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Agent Message Received Event {#agent-message-received}
+<a id="agent-message-received"></a>
+### Agent Message Received Event
 
 This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
 
@@ -251,7 +260,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### CSAT Submit Event {#csat-submit-event}
+<a id="csat-submit-event"></a>
+### CSAT Submit Event
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
 
@@ -270,7 +280,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Conversation End Event {#conversation-end-event}
+<a id="conversation-end-event"></a>
+### Conversation End Event
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -285,7 +296,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Conversation Rejected Event {#conversation-rejected-event}
+<a id="conversation-rejected-event"></a>
+### Conversation Rejected Event
 
 This event is triggered when an agent rejects the conversation.
 
@@ -300,7 +312,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Conversation Resolved Event {#conversation-resolved-event}
+<a id="conversation-resolved-event"></a>
+### Conversation Resolved Event
 
 This event is triggered when an agent resolves the conversation.
 
@@ -315,7 +328,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Conversation Reopened Event {#conversation-reopened-event}
+<a id="conversation-reopened-event"></a>
+### Conversation Reopened Event
 
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
@@ -330,7 +344,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### User Authentication Failed Event {#user-authentication-failed-event}
+<a id="user-authentication-failed-event"></a>
+### User Authentication Failed Event
 
 If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `HelpshiftCocos2dx::login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-cocos2dx/users).
 
@@ -347,7 +362,8 @@ void handleAuthFailureEvent(HSAuthenticationFailureReason reason) {
 }
 ```
 
-### Helpshift session delegates {#session-delegates}
+<a id="session-delegates"></a>
+### Helpshift session delegates
 
 #### Helpshift Session Started
 
@@ -379,7 +395,8 @@ void handleHelpshiftEvent(const char *eventName, cocos2d::ValueMap &eventData) {
 }
 ```
 
-### Unread Message Count {#unread-message-count}
+<a id="unread-message-count"></a>
+### Unread Message Count
 
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(final boolean shouldFetchFromServer)`.
 

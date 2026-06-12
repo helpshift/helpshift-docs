@@ -33,7 +33,8 @@ Helpshift provides several config options which can be used to customize the beh
 
 ## Install call configurations
 
-### Enable Logging {#enableLogging}
+<a id="enableLogging"></a>
+### Enable Logging
 
 Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Android logcat/ Xcode console. Turning on logging can help developers resolve common integration issues.
 
@@ -65,7 +66,8 @@ let installConfig = {
 install(<appId>, <domain>, installConfig);
 ```
 
-### Enable In-App Notifications {#enable-in-app-notifications}
+<a id="enable-in-app-notifications"></a>
+### Enable In-App Notifications
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set `enableInAppNotification` flag to `false`.
 
@@ -95,7 +97,8 @@ let installConfig = {
 install(<appId>, <domain>, <installConfig>);
 ```
 
-## Full privacy {#fullprivacy}
+<a id="fullprivacy"></a>
+## Full privacy
 
 In the `config` dictionary of the `showConversation` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
 
@@ -124,7 +127,8 @@ let config = {
 showConversation(config);
 ```
 
-## Enable Contact Us {#enableContactUs}
+<a id="enableContactUs"></a>
+## Enable Contact Us
 
 Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on the admin dashboard.
 
@@ -151,7 +155,8 @@ showFAQsWithConfig({
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
 - Provide country-based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
 
-## Initiate new conversation on chat screen load {#initiate-chat}
+<a id="initiate-chat"></a>
+## Initiate new conversation on chat screen load
 
 In `config` map of `showConversation(config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
 
@@ -166,7 +171,8 @@ let config = {
 showConversation(config);
 ```
 
-## Conversation prefill text {#conversation-prefill-text}
+<a id="conversation-prefill-text"></a>
+## Conversation prefill text
 
 <ConversationPrefillTextDescription />
 
@@ -189,7 +195,8 @@ let config = {
 showConversation(config);
 ```
 
-## Conversation Initial User Message {#conversation-initial-user-message}
+<a id="conversation-initial-user-message"></a>
+## Conversation Initial User Message
 
 <ConversationInitialUserMessage />
 
@@ -213,7 +220,8 @@ showConversation(config);
 ```
 
 
-## Clearing Initial User Message {#clearing-initial-user-message}
+<a id="clearing-initial-user-message"></a>
+## Clearing Initial User Message
 
 <ClearInitialUserMessageDescription />
 
@@ -245,7 +253,8 @@ handleProactiveLink(notificationData.helpshift_proactive_link, config);
 
 ## Android Specific Configurations
 
-### Notification Icon {#notificationIcon}
+<a id="notificationIcon"></a>
+### Notification Icon
 
 By default, the application icon is used as the notification icon. You can customize the notification icon in the `install` call.
 
@@ -271,7 +280,8 @@ let installConfig = {
 install(<appId>, <domain>, installConfig);
 ```
 
-### Large Notification Icon {#largeNotificationIcon}
+<a id="largeNotificationIcon"></a>
+### Large Notification Icon
 
 By default, the application icon is used as the notification icon.
 If you want to specify the large notification icon also to show up in the notification tray, you can specify that in the `install` call.
@@ -297,7 +307,8 @@ let installConfig = {
 install(<appId>, <domain>, installConfig);
 ```
 
-### Notification Sound {#notificationSound}
+<a id="notificationSound"></a>
+### Notification Sound
 
 <Admonition type="info" title="Note">
 
@@ -330,7 +341,8 @@ let installConfig = {
 install(<appId>, <domain>, installConfig);
 ```
 
-### Notification Channels {#notificationChannels}
+<a id="notificationChannels"></a>
+### Notification Channels
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name for the default channel, you can do so by using the config in the install call.
 
@@ -356,7 +368,8 @@ install(<appId>, <domain>, installConfig);
 
 ## iOS Specific Configurations
 
-### presentFullScreenOniPad {#presentFullScreenOniPad}
+<a id="presentFullScreenOniPad"></a>
+### presentFullScreenOniPad
 
 The `presentFullScreenOniPad` will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config does not affect iPhones.
 
@@ -378,7 +391,8 @@ let installConfig = {
 install(<appId>, <domain>, installConfig);
 ```
 
-### inAppNotificationAppearance {#inAppNotificationAppearance}
+<a id="inAppNotificationAppearance"></a>
+### inAppNotificationAppearance
 
 The `inAppNotificationAppearance` represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this map
 
@@ -401,10 +415,12 @@ let installConfig = {
 install(<appId>, <domain>, installConfig);
 ```
 
-## UI Configurations {#uiConfig}
+<a id="uiConfig"></a>
+## UI Configurations
 
 This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-react-native/design/).
 
-## Tracking {#tracking}
+<a id="tracking"></a>
+## Tracking
 
 This config represents the tracking of user actions. For more information check [tracking](/sdkx-react-native/tracking).

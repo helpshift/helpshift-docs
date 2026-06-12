@@ -5,11 +5,11 @@ description: "This migration guide will walk you through the steps you need to t
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  Intro,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    Intro,
 } from "@site/src/components/forDocs";
 
 <Intro>
@@ -22,7 +22,8 @@ This migration guide will walk you through the steps you need to take in order t
 
 With SDK X 10.5.0, we have made changes to some public APIs. If you are upgrading from SDK X 10.4.x or below, this page documents the changes you will need to make in your app after upgrading to SDK X 10.5.0. If you are integrating SDK X 10.5.0 or above from scratch, please refer [Getting Started](/sdkx_ios/getting-started) page instead.
 
-## Deprecated APIs {#deprecated-apis}
+<a id="deprecated-apis"></a>
+## Deprecated APIs
 
 
 The existing push notification handling API - `handleNotification:withUserInfoDictionary:isAppLaunch:` - has been marked as deprecated. You should replace it's usage with one of the new APIs - based on the calling context.
@@ -193,7 +194,8 @@ func userNotificationCenter(
 </TabItem>
 </Tabs>
 
-## Removed APIs {#removed-apis}
+<a id="removed-apis"></a>
+## Removed APIs
 
 Following APIs that were deprecated in older versions of the SDK have now been removed altogether. The replacement APIs are mentioned alongside. If you are using any of the removed APIs in your app, you will get compilation errors. So it is essential to migrate to the replacement APIs in this case.
 
@@ -207,7 +209,8 @@ Following APIs that were deprecated in older versions of the SDK have now been r
 | `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | [`handleForegroundNotification:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-foreground) - When notification is received in foreground     |
 | `handleNotificationWithUserInfoDictionary:isAppLaunch:withController:` | [`handleBackgroundNotificationClick:withCompletionHandler:`](/sdkx_ios/notifications/#push-delegates-background) - When notification is clicked in background |
 
-## New APIs {#new-apis}
+<a id="new-apis"></a>
+## New APIs
 
 SDK X 10.5.0 introduces following new APIs for handling push notifications. For full details on how to configure push notifications in your app, please refer the [Notifications](/sdkx_ios/notifications) page.
 

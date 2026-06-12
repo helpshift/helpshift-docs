@@ -5,12 +5,13 @@ description: "The Helpshift SDK provides delegate callbacks to help app develope
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Intro,
+    Admonition,
+    CodeBlock,
+    Intro,
 } from "@site/src/components/forDocs";
 
-# Helpshift Delegates {#delegates}
+<a id="delegates"></a>
+# Helpshift Delegates
 
 <Intro>{frontMatter.description}</Intro>
 
@@ -21,7 +22,8 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Helpshift Events Listener/Delegates implementation {#helpshift-delegates-implementation}
+<a id="helpshift-delegates-implementation"></a>
+## Helpshift Events Listener/Delegates implementation
 
 You can set `HelpshiftEventsListener` by calling the `Helpshift.SetHelpshiftEventsListener()` method.
 
@@ -48,9 +50,11 @@ public class HelpshiftEventsListener : IHelpshiftEventsListener
 }
 ```
 
-## Helpshift Events {#helpshift-events}
+<a id="helpshift-events"></a>
+## Helpshift Events
 
-### Conversation Status Event {#conversation-status-event}
+<a id="conversation-status-event"></a>
+### Conversation Status Event
 
 This event contains information about the ongoing conversation.
 
@@ -73,7 +77,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Widget Toggle Event {#widget-toggle-event}
+<a id="widget-toggle-event"></a>
+### Widget Toggle Event
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key.
 
@@ -93,7 +98,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Conversation Start Event {#conversation-start-event}
+<a id="conversation-start-event"></a>
+### Conversation Start Event
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
 
@@ -113,7 +119,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Message Add Event {#message-add-event}
+<a id="message-add-event"></a>
+### Message Add Event
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
 
@@ -141,7 +148,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### CSAT Submit Event {#csat-submit-event}
+<a id="csat-submit-event"></a>
+### CSAT Submit Event
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
 
@@ -164,7 +172,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Conversation End Event {#conversation-end-event}
+<a id="conversation-end-event"></a>
+### Conversation End Event
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -183,7 +192,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Conversation Rejected Event {#conversation-rejected-event}
+<a id="conversation-rejected-event"></a>
+### Conversation Rejected Event
 
 This event is triggered when an agent rejects the conversation.
 
@@ -202,7 +212,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Conversation Resolved Event {#conversation-resolved-event}
+<a id="conversation-resolved-event"></a>
+### Conversation Resolved Event
 
 This event is triggered when an agent resolves the conversation.
 
@@ -221,7 +232,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Conversation Reopened Event {#conversation-reopened-event}
+<a id="conversation-reopened-event"></a>
+### Conversation Reopened Event
 
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
@@ -240,7 +252,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### User Authentication Failed Event {#user-authentication-failed-event}
+<a id="user-authentication-failed-event"></a>
+### User Authentication Failed Event
 
 If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `Helpshift.Login()`, then you will receive this event with reason string. Check [here for more info](/sdkx-xamarin/users).
 
@@ -257,9 +270,11 @@ public void OnUserAuthenticationFailure(HelpshiftUserAuthFailureReason authFailu
 }
 ```
 
-### Helpshift session delegates {#session-delegates}
+<a id="session-delegates"></a>
+### Helpshift session delegates
 
-#### Helpshift Session Started {#helpshift-session-started-delegate}
+<a id="helpshift-session-started-delegate"></a>
+#### Helpshift Session Started
 
 If you want to keep track of when Helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
 
@@ -278,7 +293,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-#### Helpshift Session Ended {#helpshift-sesstion-ended-delegate}
+<a id="helpshift-sesstion-ended-delegate"></a>
+#### Helpshift Session Ended
 
 If you want to keep track of when Helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
@@ -297,7 +313,8 @@ public void OnEventOccurred(string eventName, IDictionary<string, object> data)
 }
 ```
 
-### Unread Message Count {#unread-message-count}
+<a id="unread-message-count"></a>
+### Unread Message Count
 
 If you want a count of all new messages received in an existing conversation, you can call this API `RequestUnreadMessageCount(bool shouldFetchFromServer)`.
 

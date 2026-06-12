@@ -5,24 +5,25 @@ description: "The Helpshift SDK provides delegate callbacks to help app develope
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
 
-# Helpshift Delegates {#delegates}
+<a id="delegates"></a>
+# Helpshift Delegates
 
 <Intro>
 
@@ -50,7 +51,8 @@ If you want to keep track of when helpshift session starts in your app, you can 
 
 If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
-## New conversation delegate {#delegate-new-conversation-started}
+<a id="delegate-new-conversation-started"></a>
+## New conversation delegate
 
 **newConversationStarted**
 
@@ -70,7 +72,8 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 
 </Admonition>
 
-### Conversation ended delegate {#delegate-conversation-ended}
+<a id="delegate-conversation-ended"></a>
+### Conversation ended delegate
 
 This delegate receives a callback when an ongoing Conversation has ended. This delegate is called whenever the ongoing Conversation is resolved in the Dashboard, rejected, timed out or archived.
 
@@ -80,7 +83,8 @@ public void conversationEnded() {
 }
 ```
 
-## New message delegate {#delegate-user-replied-to-conversation}
+<a id="delegate-user-replied-to-conversation"></a>
+## New message delegate
 
 **userRepliedToConversation**
 
@@ -109,7 +113,8 @@ All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also
 
 </Admonition>
 
-## Customer satisfaction survey delegate {#csat-completed}
+<a id="csat-completed"></a>
+## Customer satisfaction survey delegate
 
 **userCompletedCustomerSatisfactionSurvey**
 
@@ -123,7 +128,8 @@ For example:
     }
 ```
 
-## New message received count delegate {#newmessage-recieved}
+<a id="newmessage-recieved"></a>
+## New message received count delegate
 
 This delegate is the response to the `requestUnreadMessagesCount` method. It provides the number of unread messages in the current conversation. If `isRemote` set to `true` the unread message count is retrieved from server else unread message count for locally stored messages is returned.
 
@@ -135,7 +141,8 @@ Example usage:
     }
 ```
 
-## Conversation active delegate {#didCheckIfConversationActive}
+<a id="didCheckIfConversationActive"></a>
+## Conversation active delegate
 
 This delegate responds to the `checkIfConversationActive` to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
 
@@ -151,7 +158,8 @@ Example usage:
 	}
 ```
 
-## Display attachment delegate {#display-attachment}
+<a id="display-attachment"></a>
+## Display attachment delegate
 
 Agents can attach a wide variety of files when replying to users. This delegate is called when the user taps on downloaded attachment file to view it. If the app chooses to display the attachment file itself, you can implement this delegate.
 If the app does not wish to handle the attachment, and this delegate is not implemented , in this case, the SDK will display the attachment using Quicklook Framework.
@@ -171,7 +179,8 @@ Example usage:
     }
 ```
 
-## User click on Action delegate {#action-card}
+<a id="action-card"></a>
+## User click on Action delegate
 
 This delegate method is called when user clicks on an action in Action Card bot.
 HelpshiftUserAction holds the deserialzed data for the action type and data.

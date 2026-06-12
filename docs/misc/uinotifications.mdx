@@ -19,7 +19,8 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Notifications {#notifications}
+<a id="notifications"></a>
+# Notifications
 
 <Intro>
 
@@ -27,7 +28,8 @@ Configure Push and In-app notifications if your app does not use UserNotificatio
 
 </Intro>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+<a id="push-via-helpshift"></a>
+## Configure push notifications via Helpshift
 
 Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
 
@@ -48,7 +50,8 @@ If your app does not already use push, you will need to enable push for your app
 }
 ```
 
-### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
+<a id="configure-helpshift-push-admin"></a>
+### Configure Helpshift's push notification service in the Helpshift admin interface
 
 You can configure this in 4 simple steps:
 
@@ -94,7 +97,8 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
   alt="passwordexpiry.png"
 />
 
-### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
+<a id="configure-helpshift-sdk"></a>
+### Configure the Helpshift iOS SDK to handle notifications
 
 For Helpshift SDK to work with the Helpshift push notification service you will need to invoke the `registerDeviceToken:` API call inside the application delegate method `application:didRegisterForRemoteNotificationsWithDeviceToken:`. In your app delegate file it will look something like this:
 
@@ -229,7 +233,8 @@ method:
 
 </Admonition>
 
-## In-app notifications {#in-app-notifications}
+<a id="in-app-notifications"></a>
+## In-app notifications
 
 <Admonition type="info" title="Note">
 
@@ -257,12 +262,14 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 </SideBySide>
 
-## Configuring In-app notifications {#optional-flags}
+<a id="optional-flags"></a>
+## Configuring In-app notifications
 
 The Helpshift [install call](/ios/getting-started#initializing) supports flags for configuring SDK behaviour.
 Currently we support one flag i.e `enableInAppNotification`.
 
-### Enabling/Disabling In-app notifications {#enable-disable-in-app}
+<a id="enable-disable-in-app"></a>
+### Enabling/Disabling In-app notifications
 
 <div className="compact ">
 
@@ -286,11 +293,13 @@ Example:
                               appID:@"<APP_ID>"
                         withOptions:@{@"enableInAppNotification":@"NO"}];
 
-### Pausing In-app notifications {#pause-in-app}
+<a id="pause-in-app"></a>
+### Pausing In-app notifications
 
 If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotification:` to pause/resume the notifications. When `YES` is passed to this method display of in-app notifications is paused even if they arrive. When you pass a `NO`, the in-app notifications start displaying.
 
-### Handling local In-app notifications {#local-notifications}
+<a id="local-notifications"></a>
+### Handling local In-app notifications
 
 To enable the support for local notifications, developers need to call the `handleLocalNotification:withController:` API in the `application:didReceiveLocalNotification:` delegate handler.
 
@@ -324,7 +333,8 @@ If the local notification is one added by the Helpshift SDK, the "origin" field 
 
 </Tabs>
 
-## Notification badges {#notification-badges}
+<a id="notification-badges"></a>
+## Notification badges
 
 If you want to show your user notifications for replies you send to the issues they posted, you can use notification counts provided by Helpshift SDK that gives you the total number of unread messages and display it as a badge. You can get notification counts asynchronously by implementing the `HelpshiftSupportDelegate` in your respective `.h` and `.m` files. Notifications are typically displayed as badges inside your app where a user invokes the help section. These badges can be displayed anywhere in your app's interface to tell the user that they have unread replies/messages from you. For example to display a badge on a view (lets say its called yourView which can set its textLabel) while you are polling for notifications using:
 
@@ -391,6 +401,7 @@ or
 
 </Admonition>
 
-## Troubleshooting {#troubleshooting}
+<a id="troubleshooting"></a>
+## Troubleshooting
 
 If you are having issues with getting notifications to work, head over to the [Troubleshooting](/ios/troubleshooting#push-notifications-troubleshoot) section for further information.

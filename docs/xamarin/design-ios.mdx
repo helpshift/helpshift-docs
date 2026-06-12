@@ -22,7 +22,8 @@ import {
 
 <LegacyEolAdmonition />
 
-# Skinning & Customization {#design}
+<a id="design"></a>
+# Skinning & Customization
 
 <Intro>
 
@@ -40,15 +41,18 @@ For example: If the app uses UIAppearance to change the colour of Navigation Bar
 
 </Admonition>
 
-## Introduction {#intro}
+<a id="intro"></a>
+## Introduction
 
 Head over to [Theming and Skinning](#skinning) if you want to customize your SDK integration's typeface, colors or background images. It is done via simple key-value pairs in a plist file.
 
 If you want to change strings used in the SDK's UI or want to translate them as per device language, see [String Customization](/xamarin/string-customization-ios).
 
-## Theming and Skinning {#skinning}
+<a id="skinning"></a>
+## Theming and Skinning
 
-### Default Skinning Configurations {#default-skins}
+<a id="default-skins"></a>
+### Default Skinning Configurations
 
 Helpshift comes with four default skinning configurations -
 
@@ -57,18 +61,21 @@ Helpshift comes with four default skinning configurations -
 - **Light High Contrast** - `HSThemes/HelpshiftConfigHighContrast.plist`
 - **Dark High Contrast** - `HSThemes/HelpshiftConfigDarkHighContrast.plist`
 
-### Customized Skinning Configurations {#custom-skinning}
+<a id="custom-skinning"></a>
+### Customized Skinning Configurations
 
 Helpshift SDK allows following ways to customize the theme:
 
 1. [Runtime Theme Changes](#runtime-themeing)
 2. [Compile time Theme Changes](#compile-time-theming)
 
-### Runtime Theme Changes {#runtime-theming}
+<a id="runtime-theming"></a>
+### Runtime Theme Changes
 
 If your app allows users to change theme at runtime (for eg using a Theme Change menu or Dark Mode switch), Please use the following APIs
 
-#### If your app wants to change both light and dark themes at runtime, use the following API: {#runtime-light-dark}
+<a id="runtime-light-dark"></a>
+#### If your app wants to change both light and dark themes at runtime, use the following API:
 
 `SetThemes(string lightThemeFileName, string darkThemeFileName)`
 
@@ -99,7 +106,8 @@ HelpshiftCore.SetThemes("HelpshiftCustomLightConfig", "HelpshiftCustomDarkConfig
 
 </Admonition>
 
-#### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API: {#runtime-common}
+<a id="runtime-common"></a>
+#### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API:
 
 `SetTheme (string themeFileName)`
 
@@ -124,11 +132,13 @@ HelpshiftCore.SetTheme("HelpshiftCustomConfig");
 
 </Admonition>
 
-### Compile time Theme Changes {#compile-time-theming}
+<a id="compile-time-theming"></a>
+### Compile time Theme Changes
 
 If your app does not change theme on runtime, Please read the below documentation:
 
-#### If your app supports Dark Appearance in iOS 13 {#compile-time-light-dark}
+<a id="compile-time-light-dark"></a>
+#### If your app supports Dark Appearance in iOS 13
 
 Helpshift SDK bundles themes for light and dark mode out of the box but leaves the decision to enable dark mode switching to the application developers. You can enable automatic switching of Helpshift SDK theme using [enableAutomaticThemeSwitching](/xamarin/sdk-configuration-ios#enableAutomaticThemeSwitching) flag.
 
@@ -142,7 +152,8 @@ If you want to customize the skinning attributes of the Helpshift SDK, there are
 Helpshift SDK will first look for the `HelpshiftCustomConfig.plist` file in the Application's main bundle.
 If it fails to find such a file, it will look for the `HelpshiftConfig.plist` file in the Helpshift SDK's bundle.
 
-#### If your app does not support Dark Appearance in iOS 13 {#compile-time-common}
+<a id="compile-time-common"></a>
+#### If your app does not support Dark Appearance in iOS 13
 
 Helpshift SDK by default uses HelpshiftConfig.plist file for skinning the SDK. You can change the plist values for theme elements that you want to customize in `HelpshiftConfig.plist`. For details, refer to the [Guide](#attributes-global)
 
@@ -156,7 +167,8 @@ If it fails to find such a file, it will look for the `HelpshiftConfig.plist` fi
 
 We'll now walk through each group of customizations -
 
-### Global Attributes {#attributes-global}
+<a id="attributes-global"></a>
+### Global Attributes
 
 To skin your app, make sure you set values for attributes in appropritate plist file.
 
@@ -216,11 +228,13 @@ Association of "Global Attributes" to UI elements -
 
 <Image src="/static/books/ios/Overview-3.png" width="full" />
 
-### Header background and layering {#ios-ui-layering}
+<a id="ios-ui-layering"></a>
+### Header background and layering
 
 Background for section headers is transparent, hence it inherits from Background color in Global Attributes -
 
-#### Support UI Overview {#ios-support-ui}
+<a id="ios-support-ui"></a>
+#### Support UI Overview
 
 <Image
   src="/static/books/ios/isometric3.png"
@@ -228,7 +242,8 @@ Background for section headers is transparent, hence it inherits from Background
   alt="isometric3.png"
 />
 
-### Navigation Bar {#attributes-navigation-bar}
+<a id="attributes-navigation-bar"></a>
+### Navigation Bar
 
 <div className="text-sm  compact">
 
@@ -251,7 +266,8 @@ Background for section headers is transparent, hence it inherits from Background
   alt="Navigation bar group"
 />
 
-### Search Bar {#attributes-search-bar}
+<a id="attributes-search-bar"></a>
+### Search Bar
 
 <div className="text-sm  compact">
 
@@ -280,7 +296,8 @@ Starting from iOS 11, search bar is part of the navigation bar. So this attribut
 
 </Admonition>
 
-### FAQ and Chat {#attributes-footers}
+<a id="attributes-footers"></a>
+### FAQ and Chat
 
 <div className="text-sm  compact">
 
@@ -319,7 +336,8 @@ Starting from iOS 11, search bar is part of the navigation bar. So this attribut
 
 <Image src="/static/books/ios/loading-past-messages.png" width="full" />
 
-### Message Retry Badge {#attributes-message-retry-badge}
+<a id="attributes-message-retry-badge"></a>
+### Message Retry Badge
 
 A retry badge is shown on messages in conversation screen, that fail to reach customers.
 
@@ -332,7 +350,8 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-### Conversation Resolution {#conversation-resolution}
+<a id="conversation-resolution"></a>
+### Conversation Resolution
 
 <Image src="/static/books/ios/skinning.resolution.png" width="full" />
 
@@ -348,7 +367,8 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-### Jump Button {#jump-button}
+<a id="jump-button"></a>
+### Jump Button
 
 <Image src="/static/books/ios/jump-button.png" width="full" />
 
@@ -360,7 +380,8 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-## Using Custom Fonts {#custom-fonts}
+<a id="custom-fonts"></a>
+## Using Custom Fonts
 
 **Step 1:** Add the font to your project. Edit your app's plist file `<App-name-Info.plist>` and add a key `"Fonts provided by application"` to it. Under the key, list out file names of all the fonts you want to use in your app and in support. If you've already listed such fonts, skip this step.
 
@@ -390,10 +411,12 @@ Starting 1.6.0, if you need to apply font name and bold font name to Single FAQ 
 
 <Image src="/static/books/ios/in-use.png" width="quarter" centered />
 
-## Orientation support {#orientation-support}
+<a id="orientation-support"></a>
+## Orientation support
 
 The iOS SDK will follow the orientation, that the application supports in plist file.
 
-## Troubleshooting {#troubleshooting}
+<a id="troubleshooting"></a>
+## Troubleshooting
 
 If you are having issues with skinning the SDK, head over to the [Troubleshooting](/xamarin/troubleshooting-ios#skinning) section for further information.

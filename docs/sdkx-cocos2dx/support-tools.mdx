@@ -9,7 +9,8 @@ import {
   Intro
 } from "@site/src/components/forDocs";
 
-# Helpshift APIs {#support-tools}
+<a id="support-tools"></a>
+# Helpshift APIs
 
 <Intro>
 
@@ -23,7 +24,8 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Integrating Contact Us & In App Messaging {#conversation-view}
+<a id="conversation-view"></a>
+## Integrating Contact Us & In App Messaging
 
 You can use the API call `HelpshiftCocos2dx::showConversation(configMap)` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
 To configure SDK, you can pass various config options in a `cocos2d::ValueMap`. Checkout more config options [here](/sdkx-cocos2dx/sdk-configuration).
@@ -47,7 +49,8 @@ cocos2d::ValueMap chatConfig = getConfig();
 HelpshiftCocos2dx::showConversation(chatConfig);
 ```
 
-## Integrating FAQs {#faqs-view}
+<a id="faqs-view"></a>
+## Integrating FAQs
 
 You can use the API call `HelpshiftCocos2dx::showFAQs(configMap)` to provide a way for the user to invoke the purpose-built help/support section in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. You can wire this API call to a **"Help"** or **"Support"** action in your app.
 
@@ -66,7 +69,8 @@ cocos2d::ValueMap faqConfig = getConfig();
 HelpshiftCocos2dx::showFAQs(faqConfig);
 ```
 
-## Showing a Particular FAQ Section {#faq-section-view}
+<a id="faq-section-view"></a>
+## Showing a Particular FAQ Section
 
 You can use the API call `HelpshiftCocos2dx::showFAQSection(sectionId, configMap)` to invoke a particular section of your FAQs with its FAQ section id. Checkout more config options [here](/sdkx-cocos2dx/sdk-configuration/).
 
@@ -91,7 +95,8 @@ cocos2d::ValueMap faqConfig = getConfig();
 HelpshiftCocos2dx::showFAQSection(sectionId, faqConfig);
 ```
 
-## Showing a Particular FAQ {#faq-view}
+<a id="faq-view"></a>
+## Showing a Particular FAQ
 
 You can use the API `HelpshiftCocos2dx::showSingleFAQ(publishId, faqConfig)` to show a single FAQ. You will need to pass the `publish-id` of the FAQ to be shown to this API. Checkout more config options [here](/sdkx-cocos2dx/sdk-configuration).
 
@@ -112,11 +117,13 @@ cocos2d::ValueMap faqConfig = getConfig();
 HelpshiftCocos2dx::showSingleFAQ(publishId, faqConfig);
 ```
 
-### Set SDK language {#set-language}
+<a id="set-language"></a>
+### Set SDK language
 
 For more info about this API and languages you can refer [here](/sdkx-cocos2dx/i18n).
 
-## Getting SDK Version {#get-sdk-version}
+<a id="get-sdk-version"></a>
+## Getting SDK Version
 
 You can use `sdkVersion` API to get the current version of Helpshift SDK X Cocos plugin.
 
@@ -131,7 +138,8 @@ This API is available from 10.3.0 version
   const char* version = HelpshiftCocos2dx::sdkVersion();
 ```
 
-## Closing a Helpshift Session {#close-session}
+<a id="close-session"></a>
+## Closing a Helpshift Session
 
 You can use `HelpshiftCocos2dx::closeSession` API to close an active SDK session. If no SDK session is active, calling this API will have no effect.
 

@@ -48,7 +48,8 @@ The usage of configurations are shown in the image is given below
 
 </Centered>
 
-### Enable Logging {#enableLogging}
+<a id="enableLogging"></a>
+### Enable Logging
 
 Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in the Android logcat/ Xcode console. Turning on logging can help developers resolve common integration issues.
 
@@ -68,7 +69,8 @@ Upon setting enableLogging to `true`, Helpshift SDK logs will be generated in th
 
 </Admonition>
 
-### Enable In-App Notifications {#enable-in-app-notifications}
+<a id="enable-in-app-notifications"></a>
+### Enable In-App Notifications
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
 
@@ -88,7 +90,8 @@ The default value of this flag is `true` i.e., the in-app notification will be e
 
 </div>
 
-## FAQ Filtering by tags {#faq-filtering}
+<a id="faq-filtering"></a>
+## FAQ Filtering by tags
 
 We have FAQ filtering capability by tags.
 With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
@@ -146,7 +149,8 @@ You can have only one tag filter config which will be respected on showFAQs, sho
 
 </Admonition>
 
-## Full privacy {#fullprivacy}
+<a id="fullprivacy"></a>
+## Full privacy
 
 In the `config` dictionary of `ShowConversation` API at the time of calling this API, setting the `fullPrivacy` option to `true` ensures COPPA compliance by:
 
@@ -171,7 +175,8 @@ In the `config` dictionary of `ShowConversation` API at the time of calling this
 Moreover, in scenarios where the user attaches objectionable content, it becomes a huge COPPA compliance concern. This option helps to solve this problem.
 This config is common for both iOS and Android.
 
-## Enable Contact Us {#enableContactUs}
+<a id="enableContactUs"></a>
+## Enable Contact Us
 
 Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
 
@@ -190,7 +195,8 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
 - Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones.
 
-## Conversation prefill text {#conversation-prefill-text}
+<a id="conversation-prefill-text"></a>
+## Conversation prefill text
 
 <ConversationPrefillTextDescription />
 
@@ -204,7 +210,8 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 
 </div>
 
-## Conversation Initial User Message {#conversation-initial-user-message}
+<a id="conversation-initial-user-message"></a>
+## Conversation Initial User Message
 
 <ConversationInitialUserMessage />
 
@@ -218,7 +225,8 @@ Controls the visibility of the Helpshift Contact Us button when a user is viewin
 
 </div>
 
-## Clearing Initial User Message {#clearing-initial-user-message}
+<a id="clearing-initial-user-message"></a>
+## Clearing Initial User Message
 
 <ClearInitialUserMessageDescription />
 
@@ -241,7 +249,8 @@ Similarly, for outbound support you can pass the config like this :
 
 ## Android Specific Configurations
 
-### Notification Icon {#notificationIcon}
+<a id="notificationIcon"></a>
+### Notification Icon
 
 By default the application icon is used as the notification icon. You can customize the notification icon in the `Init` call.
 
@@ -258,7 +267,8 @@ You do not need to specify the file extension for the icon image. If your icon i
 
 </div>
 
-### Large Notification Icon {#largeNotificationIcon}
+<a id="largeNotificationIcon"></a>
+### Large Notification Icon
 
 By default the application icon is used as the notification icon.
 If you want to specify the large notification icon also to show up in the notification tray, you can specify that in the `Init` call.
@@ -276,7 +286,8 @@ You do not need to specify the file extension for the icon image. If your large 
 
 </div>
 
-### Notification Sound {#notificationSound}
+<a id="notificationSound"></a>
+### Notification Sound
 
 <Admonition type="info" title="Note">
 
@@ -301,7 +312,8 @@ You do not need to specify the file extension for the sound file. If your sound 
 
 </div>
 
-### Notification Channels {#notificationChannels}
+<a id="notificationChannels"></a>
+### Notification Channels
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name for the default channel, you can do so by using the config in the init call.
 
@@ -315,7 +327,8 @@ Starting from Android Oreo, Helpshift notifications will create a default channe
 
 </div>
 
-### Screen Orientation {#screen-orientation}
+<a id="screen-orientation"></a>
+### Screen Orientation
 
 The screen orientation of Helpshift SDK screens can be fixed by setting the `HelpshiftConfigScreenOrientationKey` to constants available - `HelpshiftConfigScreenOrientationLandscape or HelpshiftConfigScreenOrientationPortrait`.
 
@@ -331,7 +344,8 @@ The screen orientation of Helpshift SDK screens can be fixed by setting the `Hel
 
 ## iOS Specific Configurations
 
-### presentFullScreenOniPad {#presentFullScreenOniPad}
+<a id="presentFullScreenOniPad"></a>
+### presentFullScreenOniPad
 
 The `HelpshiftConfigPresentFullScreenOniPadKey` will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
 
@@ -343,7 +357,8 @@ The default value is NO, presents support views as `UIModalPresentationFormSheet
 | Values  | true / false                              |
 | Default | false                                     |
 
-### inAppNotificationAppearance {#inAppNotificationAppearance}
+<a id="inAppNotificationAppearance"></a>
+### inAppNotificationAppearance
 
 The `HelpshiftConfigInAppNotificationAppearanceKey` represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this map
 
@@ -353,10 +368,12 @@ The `HelpshiftConfigInAppNotificationAppearanceKey` represents the appearance of
 | Sub-Options: | HelpshiftConfigInAppNotificationBannerBackgroundColorKey / HelpshiftConfigInAppNotificationTextColorKey |
 | Values:      | String representing hex color. Eg - "FFFEEF"                                                            |
 
-## UI Configurations {#uiConfig}
+<a id="uiConfig"></a>
+## UI Configurations
 
 This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unreal/design/).
 
-## Tracking {#tracking}
+<a id="tracking"></a>
+## Tracking
 
 This config represents the tracking user actions. For more information check [tracking](/sdkx-unreal/tracking).

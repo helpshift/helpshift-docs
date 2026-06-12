@@ -22,11 +22,14 @@ import {
 
 <LegacyEolAdmonition />
 
-# Troubleshooting {#troubleshoot}
+<a id="troubleshoot"></a>
+# Troubleshooting
 
-## SDK integration {#integration-issues}
+<a id="integration-issues"></a>
+## SDK integration
 
-### 7.9.0 SDK Update {#7}
+<a id="7"></a>
+### 7.9.0 SDK Update
 
 We found a bug for the following scenario - for SDK 7.9.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
 
@@ -35,11 +38,13 @@ We found a bug for the following scenario - for SDK 7.9.0, when New Issue Automa
 - If you are planning to integrate or are in the process of integrating SDK 7.9.0, we recommend integrating with 7.9.1 instead.
 - If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [7.9.1 SDK](/ios/release-notes#7.9.1).
 
-### Using Xcode 11 {#xcode11}
+<a id="xcode11"></a>
+### Using Xcode 11
 
 If you are migrating to Xcode 11 for building and deploying your app, please note that Helpshift SDKs < `7.6.3` will not be able to support Apple Push notifications. This is due to the change in the NSData class's `description` property. The Helpshift SDK uses this property in the device token that is passed by the App in the `[HelpshiftCore registerDeviceToken:]` API. Please wait for version `7.6.3` which is slated to release on the 10th of October, 2019. More details are available [in the Apple forum thread](https://forums.developer.apple.com/thread/119111).
 
-### Crash while force unwrapping optional values in swift {#nil-crash-swift}
+<a id="nil-crash-swift"></a>
+### Crash while force unwrapping optional values in swift
 
 If your app crashes with following stack trace when you call an Helpshift SDK API with an Optional param which is nil, you can add nullability annotation to that API in .h file to allow nil values.
 
@@ -63,14 +68,16 @@ should be changed to
 
 Due to the way Cocoapods handles version updates, if you have your own **custom localized strings**, note that, on the next SDK release they will be overwritten. Make sure you backup your translations, so you can migrate the values back into the new string files. One way of doing that might be to add these customizations in the version control system. That way when you upgrade Helpshift, you can see the `diff` of the changes that you made and reinstate them as you require.
 
-### Unable to run Helpshift Integration Assistant {#integration-assistant-settings}
+<a id="integration-assistant-settings"></a>
+### Unable to run Helpshift Integration Assistant
 
 To run Helpshift Integration Assistant, you need to update your Security and Privacy Settings.
 To do so, goto `System Preferences -> Security and Privacy Settings -> General` and select `Anywhere` under `Allow apps downloaded from`:
 
 ![privacy settings.png](/static/books/ios/privacy.png)
 
-### hs_setContentInsetAdjustmentBehaviorToAutomaticWithParent crash {#setContentInsetAdjustmentBehaviorToAutomaticWithParent}
+<a id="setContentInsetAdjustmentBehaviorToAutomaticWithParent"></a>
+### hs_setContentInsetAdjustmentBehaviorToAutomaticWithParent crash
 
 If you are seeing app crash just after launching Helpshift Support screens, please add -ObjC flag to the Other Linker Flags under Build Settings section.
 
@@ -79,7 +86,8 @@ If you are seeing app crash just after launching Helpshift Support screens, plea
 reason: '-[UITableView hs_setContentInsetAdjustmentBehaviorToAutomaticWithParent:]: unrecognized selector sent to instance 0x7fafe8837c00'
 ```
 
-### CFBundleShortVersionString crash {#CFBundleShortVersionString}
+<a id="CFBundleShortVersionString"></a>
+### CFBundleShortVersionString crash
 
 If you are seeing app crashes just after launching the app, please make sure to set the **CFBundleShortVersionString** (Bundle versions string, short) in the **<YOUR_APP\>-Info.plist** file of your XCode project.
 
@@ -91,7 +99,8 @@ reason: *** setObjectForKey: object cannot be nil (key: av)
 libc++abi.dylib: terminating with uncaught exception of type NSException
 ```
 
-### Incorrect iOS initialization code crash {#initialization-crash}
+<a id="initialization-crash"></a>
+### Incorrect iOS initialization code crash
 
 If just after launching the app, you get a crash that has `readLocalConfig` in it's call stack, then make sure that you're using the correct Helpshift initialization code for iOS.
 When testing again, after using the correct initialization code, delete the app from your device or simulator and do a fresh install.
@@ -121,7 +130,8 @@ When testing again, after using the correct initialization code, delete the app 
 libc++abi.dylib: terminating with uncaught exception of type NSException
 ```
 
-### Orientation Fix {#orientation-fix}
+<a id="orientation-fix"></a>
+### Orientation Fix
 
 To account for the changes in iOS 6 and above with autorotation and interface orientations, we suggest a few precautionary measures to avoid issues with the Helpshift SDK.
 
@@ -156,22 +166,26 @@ You can also allow portrait mode by changing your app's Info.plist file.
 It again depends upon your application how you implement these
 requirements.
 
-### Missing chat bubbles in conversation screen {#missing-chat-bubbles}
+<a id="missing-chat-bubbles"></a>
+### Missing chat bubbles in conversation screen
 
 If you encounter a conversation screen, where the chat bubbles are missing, or camera icon is missing, then make sure to correctly import the png files from the HSResources folder into your project.
 ![](/static/books/ios/no-chat-bubbles.png)
 
 <Image src="/static/books/ios/import-hs-resources.png" width="full" />
 
-### Strings missing in the SDK UI {#strings-missing-in-sdk}
+<a id="strings-missing-in-sdk"></a>
+### Strings missing in the SDK UI
 
 If you cannot see strings in the SDK UI, make sure to correctly add localizable string files to your project. The files are to be found in `HSLocalization` folder. For more info, refer our [Going International](/ios/i18n/) guide.
 
 ![](/static/books/ios/no-strings-found.jpg)
 
-## Notifications {#notifications-troubleshoot}
+<a id="notifications-troubleshoot"></a>
+## Notifications
 
-### Push Notifications {#push-notifications-troubleshoot}
+<a id="push-notifications-troubleshoot"></a>
+### Push Notifications
 
 To setup push notifications, check out the [Notifications](/ios/notifications/) doc.
 
@@ -193,7 +207,8 @@ Please make sure to set the _"CFBundleDisplayName"_ key, in your application's _
 
 Helpshift SDK uses the value of this key as the title of the notification. If this key isn't set then the notification by default shows "Support" as the title.
 
-### Testing push notifications for an App already in Production {#test-push-production}
+<a id="test-push-production"></a>
+### Testing push notifications for an App already in Production
 
 There may be a need to test push notifications for an app that is already in production. This needs to be done safely without causing a disruption of Push Notifications in the production app. The solution here is to register a new app on our dashboard and have your in-development iOS app point to this new app on Helpshift. To configure push for this dashboard app, navigate to 'Push notifications settings' on the dashboard and turn it on. You will also need to provide a certificate.
 
@@ -201,7 +216,8 @@ If you are using the new Universal Push Notification system, upload the same cer
 
 If you have not moved to Universal Push Notification system, upload a development mode certificate and make sure you have selected the 'Development mode' radio button.
 
-## Theming and skinning {#skinning}
+<a id="skinning"></a>
+## Theming and skinning
 
 Things to check if skinning is not working as expected:
 
@@ -218,7 +234,8 @@ If it is printing `null` etc. then the `HelpshiftConfig.plist` file is not corre
 - If you're using `UIAppearance` for a particular UI element, then you will not need to configure that UI element in `HelpshiftConfig.plist`, as Helpshift takes on UIAppearance values automatically.
 - When using custom fonts make sure that you're using the exact font name. For more info check [here](/ios/design#custom-fonts).
 
-## Miscellaneous {#misc}
+<a id="misc"></a>
+## Miscellaneous
 
 ### App crashing on foreground during `getAcceptLangHeaderValue:` or `completeEventsDataForEventDTOs:`
 
@@ -229,16 +246,19 @@ If you are using iOS SDK version 7.4.0 or below and are seeing crashes during ap
     -[HsBaseNetwork getAcceptLangHeaderValue] + 48`
 ```
 
-## Known issues {#known-issues}
+<a id="known-issues"></a>
+## Known issues
 
-### UILabel allocation in iOS 7 {#memory-allocation-ios7}
+<a id="memory-allocation-ios7"></a>
+### UILabel allocation in iOS 7
 
 Apple has a bug with the UILabel component which causes it's allocation to be persisted in the
 stack. We've minimized the effect as much as possible and reported the
 issue to Apple.
 For more details on the root issue, please [refer here](http://stackoverflow.com/questions/19568083/uilabel-allocation-persistent-and-taking-up-8mb-of-memory)
 
-### For Crittercism users {#crittercism-users}
+<a id="crittercism-users"></a>
+### For Crittercism users
 
 If you're using Crittercism for crash analytics and facing issues related to FAQ's content not loading, do not use the following API to initialize Crittercism.
 
@@ -255,7 +275,8 @@ As described [here](http://stackoverflow.com/a/19283645) use,
  disableInstrumentation:(BOOL)disableInstrumentation;
 ```
 
-### iPad iOS 7 Attaching a Screenshot {#attach-screenshot}
+<a id="attach-screenshot"></a>
+### iPad iOS 7 Attaching a Screenshot
 
 A bug exists in `iOS 7.0.3` on the iPad caused by tapping `'Ok,Attach'` in
 the screenshot request (_this happens only for the first time after app install_).
@@ -298,7 +319,8 @@ CALayer position contains NaN: [nan nan]
 26   UIKit   UIApplicationMain + 1136
 ```
 
-### Hidden status bar on orientation change in iOS 8 {#Hidden-status-bar}
+<a id="Hidden-status-bar"></a>
+### Hidden status bar on orientation change in iOS 8
 
 On iOS 8, Helpshift SDK's navigation bar covers status bar after a change of orientation. To fix this, implement following method in the viewController that makes use of Helpshift API.
 
@@ -310,7 +332,8 @@ On iOS 8, Helpshift SDK's navigation bar covers status bar after a change of ori
 }
 ```
 
-### Images not loading in FAQs and Conversations for iOS 9 {#ios9-issue}
+<a id="ios9-issue"></a>
+### Images not loading in FAQs and Conversations for iOS 9
 
 **Root Cause : ** Apple has changed its policies regarding TLS versions and only accepts connections which support TLSv1.2 SSL. Some of our backend servers do not currently work well with this restriction due to which the network calls fail and images do not load.
 
@@ -326,7 +349,8 @@ On iOS 8, Helpshift SDK's navigation bar covers status bar after a change of ori
     </dict>
 ```
 
-### Crashes due to error reporting {#error-reporting-crash}
+<a id="error-reporting-crash"></a>
+### Crashes due to error reporting
 
 If you are experiencing crashes or reduced instances being reported in your crash reporting tool, it is likely because of Helpshift Error reporting tool can’t forward the error/crash details to your crash reporting tool. We have experienced this with HockeyApp, SplunkMint and several crash reporting tools which use PlCrashReporter platform.
 You can disable our crash reporting using the flag **disableErrorLogging**.
@@ -339,7 +363,8 @@ NSDictionary *installConfig = @{@"disableErrorLogging" : @"yes"};
 [Helpshift installForApiKey:@"apikey" domainName:@"domain_name" appID:@"app_id" withOptions:installConfig];
 ```
 
-### Crashes due to missing data in App's Info.plist {#error-reporting-crash}
+<a id="error-reporting-crash"></a>
+### Crashes due to missing data in App's Info.plist
 
 Helpshift SDK adds some meta data (like app's version number, name etc.) along with the conversations that users start. The SDK reads this info from the app's Info.plist file. Some of these fields are mandatory and may cause a crash if left emtpy. Please ensure that the following values are always populated in your Info.plist:
 
@@ -347,7 +372,8 @@ Helpshift SDK adds some meta data (like app's version number, name etc.) along w
 - Bundle name
 - Bundle identifier
 
-### Xcode12.3 integration build error : Building for iOS, but the embedded framework ‘Helpshift.framework’ was built for iOS + iOS Simulator. {#Xcode12}
+<a id="Xcode12"></a>
+### Xcode12.3 integration build error : Building for iOS, but the embedded framework ‘Helpshift.framework’ was built for iOS + iOS Simulator.
 
 **Workaround : ** Under Build Settings - Navigate to Validate Workspace - Toggle setting back to Yes/No but not to Yes (Error).
 
@@ -360,7 +386,8 @@ Due to a bug in Xcode 12.3, this setting is visible in Xcode but isn’t actuall
 
 <Image src="/static/books/ios/validate_workspace_flag.png" width="full" />
 
-### Known Issues List {#known-issues-list}
+<a id="known-issues-list"></a>
+### Known Issues List
 
 <table>
   <tr>
