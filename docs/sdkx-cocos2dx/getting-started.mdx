@@ -5,12 +5,12 @@ description: "Cocos2d-x plugin for Helpshift SDK X helps you utilize Helpshift f
 ---
 
 import {
-  Admonition,
-  Tabs,
-  TabItem,
-  Image,
-  Intro,
-  DownloadButton,
+    Admonition,
+    Tabs,
+    TabItem,
+    Image,
+    Intro,
+    DownloadButton,
 } from "@site/src/components/forDocs";
 
 import UserHubGettingStarted from "@site/docs/_partials/_userhubGettingstartedContent.mdx";
@@ -132,25 +132,27 @@ dependencies {
 
 <TabItem value="Using CMake" label="Using CMake">
 
-    # Add Helpshift files to CMakeLists.txt, under the Android dependency
-    if(ANDROID)
-      list(APPEND GAME_SOURCE
-           <other dependency files>
-           Classes/HelpshiftCocos2dx.cpp
-           Classes/HelpshiftUtil.cpp
-           Classes/HelpshiftLog.cpp
-           )
-      list(APPEND GAME_HEADER
-          <other dependency files>
-          Classes/HelpshiftCocos2dx.h
-          Classes/HelpshiftUtil.h
-          Classes/HelpshiftLog.h
-          Classes/HelpshiftEvent.h
-          Classes/UserLoginFailureReason.h
-          )
-    endif()
+```cmake
+# Add Helpshift files to CMakeLists.txt, under the Android dependency
+if(ANDROID)
+  list(APPEND GAME_SOURCE
+       <other dependency files>
+       Classes/HelpshiftCocos2dx.cpp
+       Classes/HelpshiftUtil.cpp
+       Classes/HelpshiftLog.cpp
+       )
 
-</TabItem>
+  list(APPEND GAME_HEADER
+      <other dependency files>
+      Classes/HelpshiftCocos2dx.h
+      Classes/HelpshiftUtil.h
+      Classes/HelpshiftLog.h
+      Classes/HelpshiftEvent.h
+      Classes/UserLoginFailureReason.h
+      )
+endif()
+```
+</TabItem> 
 <TabItem value="Using ndk-build" label="Using ndk-build">
 
     # Add Helpshift files to makefile (Android.mk), under the LOCAL_SRC_FILES rule

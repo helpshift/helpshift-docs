@@ -5,18 +5,18 @@ description: "Configure Push notifications."
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
 } from "@site/src/components/forDocs";
 
 <a id="notifications"></a>
@@ -92,7 +92,7 @@ For more information, [click here](https://firebase.google.com/docs/cloud-messag
 <a id="push-notifications"></a>
 ### Push notifications
 
-#### Configure FCM push notification plugins {#}
+#### Configure FCM push notification plugins
 
 **Before you begin**
 
@@ -100,7 +100,7 @@ For more information, [click here](https://firebase.google.com/docs/cloud-messag
 
 If you have already integrated push notifications, Use the **HelpshiftSdk.RegisterPushToken(string deviceToken)** API to register the device token with the Helpshift SDK. Helpshift can now start sending push notifications to your app.
 
-Once this is done, you can use the **HelpshiftSdk.HandlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send the payload received in the notification.
+Once this is done, you can use the **HelpshiftSdk.HandlePushNotification(Dictionary&lt;string, object&gt; pushNotificationData)** API to send the payload received in the notification.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift`, the notification is a Helpshift notification.
 
@@ -182,7 +182,7 @@ Note: The latest FCM plugin for Unity uses androidx libraries. For updating the 
 <a id="other-plugins"></a>
 #### Configure Other push notification plugins
 
-If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.RegisterPushToken(string deviceToken)** API to register the device token and **HelpshiftSdk.HandlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send the payload received in the notification.
+If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.RegisterPushToken(string deviceToken)** API to register the device token and **HelpshiftSdk.HandlePushNotification(Dictionary&lt;string, object&gt; pushNotificationData)** API to send the payload received in the notification.
 
 The following is an example to register device token:
 
@@ -194,7 +194,7 @@ void registrationSucceededEvent( string registrationId )
 }
 ```
 
-Once this is done, you can use the **HelpshiftSdk.GetInstance().HandlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send payload which you receive in the **notificationReceivedEvent** callback in your plugin.
+Once this is done, you can use the **HelpshiftSdk.GetInstance().HandlePushNotification(Dictionary&lt;string, object&gt; pushNotificationData)** API to send payload which you receive in the **notificationReceivedEvent** callback in your plugin.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift"`, the notification is a Helpshift notification.
 
