@@ -258,29 +258,30 @@ flows:
 
     For Example,
 
-        import com.helpshift.support.flows.Flow;
-        ...
+      ```text
+      import com.helpshift.support.flows.Flow;
+      ...
 
-        public class CustomFlow implements Flow {
-          private final int labelResId;
-          private final Activity activity;
+      public class CustomFlow implements Flow {
+        private final int labelResId;
+        private final Activity activity;
 
-          public CustomFlow(int labelResId, Activity activity) {
-            this.labelResId = labelResId;
-            this.activity = activity;
-          }
+        public CustomFlow(int labelResId, Activity activity) {
+          this.labelResId = labelResId;
+          this.activity = activity;
+        }
 
-          @Override
-          public int getLabelResId() {
+        @Override
+        public int getLabelResId() {
           return labelResId;
-          }
+        }
 
-          @Override
-          public void performAction() {
+        @Override
+        public void performAction() {
           Intent settingsActivity = new Intent(activity, UserSettingActivity.class);
           activity.startActivity(settingsActivity);
-          }
         }
+      }
 
 Each flow needs a display text. This will be the text that will be displayed in the list item. It has to be localized String resource . Some flows also expect a 'config' Map. This will be the config that is passed to the subsequent Helpshift Support API. For example any config you wish apply to the conversation screen needs to be passed to the ConversationFlow(int titleStringResId, Map config)API. This is also where you will add your custom HSTags. These APIs do not add any custom meta data by default. You need to add your custom meta data including HSTags at your own.
 

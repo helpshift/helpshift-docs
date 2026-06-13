@@ -5,19 +5,19 @@ description: "Track events and user actions when the user starts a new conversat
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
@@ -265,6 +265,7 @@ Developers can still use the `setMetadataBlock:` API to pass tags.
 Assume you have your own custom logging mechanism for apps that returns a URL (which takes you to your relevant log viewer), and you would want that URL to be sent with each new conversation the user initiates.
 Say you have a button "Send Feedback" in your application whose touch event is linked to a method sendFeedback: where you want to call Helpshift `showConversation:` or any other support session.Then you can implement something like:
 
+    ```text
     - (IBAction) sendFeedback:(id) sender {
 
         // Manage your UI for posting logs and retrieving URLs
@@ -274,12 +275,13 @@ Say you have a button "Send Feedback" in your application whose touch event is l
 
         // Set metadata with URL
         [HelpshiftSupport setMetadataBlock:^(void){
-            return [NSDictionary dictionaryWithObjectsAndKeys: URL, @"logURL",nil];
+            return [NSDictionary dictionaryWithObjectsAndKeys: URL, @"logURL", nil];
         }];
 
         // Call Helpshift showConversation
         [HelpshiftSupport showConversation:self];
     }
+    ```
 
 Please make sure that the metadata is already present before presenting any support session.
 

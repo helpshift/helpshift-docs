@@ -5,19 +5,19 @@ description: "Cocos2d-x plugin for Helpshift SDK helps you utilize Helpshift fro
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
@@ -102,18 +102,20 @@ Copy the helpshift-plugin-cocos2dx folder to the root directory of your project.
 
 3.  Add dependency to Helpshift SDK in your app/build.gradle file.
 
-        repositories {
-            //your other repositories
-            flatDir { dirs 'libs' }
-        }
+    ```gradle
+    repositories {
+        // your other repositories
+        flatDir { dirs 'libs' }
+    }
 
-        dependencies {
-            // your other dependencies
-            implementation 'com.android.support:design:28.0.0'
-            implementation 'com.android.support:recyclerview-v7:28.0.0'
-            implementation 'com.android.support:cardview-v7:28.0.0'
-            implementation(name: 'Helpshift', ext:'aar')
-        }
+    dependencies {
+        // your other dependencies
+        implementation 'com.android.support:design:28.0.0'
+        implementation 'com.android.support:recyclerview-v7:28.0.0'
+        implementation 'com.android.support:cardview-v7:28.0.0'
+        implementation(name: 'Helpshift', ext: 'aar')
+    }
+    ```
 
 4.  Link Helpshift files in your project as source depending on your build system.
 
@@ -121,20 +123,23 @@ Copy the helpshift-plugin-cocos2dx folder to the root directory of your project.
 
 <TabItem value="Using CMake" label="Using CMake">
 
+    ```cmake
     # Add Helpshift files to CMakeLists.txt, under the Android dependency
     if(ANDROID)
-      list(APPEND GAME_SOURCE
-           <other dependency files>
-           Classes/HelpshiftCocos2dx.cpp
-           Classes/HelpshiftCocos2dxUser.cpp
-           Classes/HelpshiftUtil.cpp
-           )
-      list(APPEND GAME_HEADER
-          <other dependency files>
-          Classes/HelpshiftCocos2dx.h
-          Classes/HelpshiftCocos2dxUser.h
-          Classes/HelpshiftUtil.h
-          )
+    list(APPEND GAME_SOURCE
+        <other dependency files>
+        Classes/HelpshiftCocos2dx.cpp
+        Classes/HelpshiftCocos2dxUser.cpp
+        Classes/HelpshiftUtil.cpp
+    )
+
+    list(APPEND GAME_HEADER
+        <other dependency files>
+        Classes/HelpshiftCocos2dx.h
+        Classes/HelpshiftCocos2dxUser.h
+        Classes/HelpshiftUtil.h
+    )
+    ```
 
 </TabItem>
 <TabItem value="Using ndk-build" label="Using ndk-build">

@@ -5,19 +5,19 @@ description: "The Helpshift SDK v4.x is a major update and we have moved all Hel
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
@@ -44,34 +44,39 @@ take care of the following changes -
     - `helpshiftSessionBegan()` method of the delegate is renamed to `sessionBegan()`
     - `helpshiftSessionEnded()` method of the delegate is renamed to `sessionEnded()`
 
-1.  Changes in `HSAlertToRateAppListener`
+1. Changes in `HSAlertToRateAppListener`
 
     - `HSAlertToRateAppListener` has been renamed to `AlertToRateAppListener`
     - `Helpshift.HS_RATE_ALERT` enum has been replaced with integer. Now you have to use the final integers from the `RateAlert` class.
 
     For example,
 
-        AlertToRateAppListener actionListener = new AlertToRateAppListener() {
-            @Override
-            public void onAction(int action) {
-                String msg = "";
-                switch (action) {
-                    case Support.RateAlert.CLOSE:
-                        msg = "CLOSE";
-                        break;
-                    case Support.RateAlert.FEEDBACK:
-                        msg = "FEEDBACK";
-                        break;
-                    case Support.RateAlert.SUCCESS:
-                        msg = "SUCCESS";
-                        break;
-                    case Support.RateAlert.FAIL:
-                        msg = "FAIL";
+    ```text
+    AlertToRateAppListener actionListener = new AlertToRateAppListener() {
+        @Override
+        public void onAction(int action) {
+            String msg = "";
+            switch (action) {
+                case Support.RateAlert.CLOSE:
+                    msg = "CLOSE";
                     break;
-                }
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+                case Support.RateAlert.FEEDBACK:
+                    msg = "FEEDBACK";
+                    break;
+
+                case Support.RateAlert.SUCCESS:
+                    msg = "SUCCESS";
+                    break;
+
+                case Support.RateAlert.FAIL:
+                    msg = "FAIL";
+                    break;
             }
+
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         }
+    };
 
 1.  Now the `ENABLE_CONTACT_US` enum has been replaced with integer. Now you have to use the final integer from the `EnableContactUs` class.
 
@@ -81,20 +86,26 @@ take care of the following changes -
         config.put("enableContactUs", Helpshift.EnableContactUs.ALWAYS);
         Helpshift.showFAQs(MyActivity.this, config);
 
-1.  Changes in `HSCallable`
+1. Changes in `HSCallable`
 
     - `HSCallable` has been renamed to `Callable`
 
     For example,
 
-        Support.setMetadataCallback(new Callable() {
-          public HashMap call() {
-          k.put("userType", preferences.getString("customMetaId_userType", ""));
-          k.put("timestamp", ts.format(new Date()));
-          String[] tags = preferences.getString("customTags", "").split(",");
-          k.put(Support.TagsKey, tags);
-          return k;
-        }
+    ```text
+    Support.setMetadataCallback(new Callable() {
+    public HashMap call() {
+        HashMap k = new HashMap();
+
+        k.put("userType", preferences.getString("customMetaId_userType", ""));
+        k.put("timestamp", ts.format(new Date()));
+
+        String[] tags = preferences.getString("customTags", "").split(",");
+        k.put(Support.TagsKey, tags);
+
+        return k;
+    }
+    });
 
 <a id="api-changes"></a>
 ## List of API changes
