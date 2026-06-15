@@ -254,7 +254,7 @@ Please refer to [onApplicationQuit](/unity/support-tools-android#application-qui
 
 This issue can happen if the `${applicationId}` string is not replaced in `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` file.
 
-Confirm that `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` does not contain any "${applicationId}" string.
+Confirm that `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` does not contain any `${applicationId}` string.
 This placeholder is automatically replaced with the application bundle identifier if the build system used is gradle or if you are using Helpshift configurator for setting up the Helpshift SDK configuration. You can find the documentation [here](/unity/getting-started-android#adding-package-name)
 
 <a id="commandInvocationFailure-noResourceFound"></a>
@@ -339,9 +339,11 @@ Please refer to [Add Helpshift to your project](/unity/getting-started-android#a
 
 ### Class resolved by unexpected DEX:
 
-    Class resolved by unexpected DEX: Lcom/helpshift/activities/MainActivity;(0x428396f8):0x6fa2e000 ref [Landroid/support/v7/app/AppCompatActivity;]
-    Landroid/support/v7/app/AppCompatActivity;(0x428396f8):0x60dae000
-    W/dalvikvm(32199): (Lcom/helpshift/activities/MainActivity; had used a different Landroid/support/v7/app/AppCompatActivity; during pre-verification)
+```text
+Class resolved by unexpected DEX: Lcom/helpshift/activities/MainActivity;(0x428396f8):0x6fa2e000 ref [Landroid/support/v7/app/AppCompatActivity;]
+Landroid/support/v7/app/AppCompatActivity;(0x428396f8):0x60dae000
+W/dalvikvm(32199): (Lcom/helpshift/activities/MainActivity; had used a different Landroid/support/v7/app/AppCompatActivity; during pre-verification)
+```
 
 This issues happens when the code for a class is included in primary dex as well as the secondary dex included by Helpshift SDK.
 For example, appcompat library is packaged with Helpshift as well as some other plugin.
@@ -350,7 +352,7 @@ If other plugins already use android support libraries, please use the [Helpshif
 
 Make sure to include only one instance of any library to reslove the issue.
 
-### Rejecting re-init on previously-failed class java.lang.Class<com.example.ExampleActivity\>
+### Rejecting re-init on previously-failed class java.lang.Class&lt;com.example.ExampleActivity&gt;
 
 This issue happens when a referenced class from the "ExampleActivity" class has not been found when system was loading the "ExampleActivity" class.
 For example :
