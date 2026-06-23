@@ -18,30 +18,59 @@
 
 const { visit } = require("unist-util-visit");
 
+/**
+ * Given a string that may contain one/more "[% variable.path %]" template
+ * strings, replaces each one with its resolved value from `data`. Used for
+ * both plain text node values and JSX attribute values, since the
+ * substitution logic itself is identical in both cases.
+ *
+ * @param {string} value - the raw string to substitute templates within
+ * @param {object} data - the variables object to resolve "variable.path" against
+ * @returns {string} the string with all resolvable templates replaced
+ */
+const substituteTemplateStrings = (value, data) => {
+  // Checks if the text node has one/more template strings
+  const matches = value.match(/\[%(.*)%\]/m);
+
+  matches.forEach((match) => {
+    // Get rid of the template string to obtain the variable name
+    const _variable = match.replace(/(\[|\]|%)/gm, "").trim();
+
+    // This allows us to access nested variables using dot operator
+    // https://stackoverflow.com/a/43849204
+    const resolvedValue = _variable
+      .split(".")
+      .reduce((p, c) => (p && p[c]) || null, data);
+
+    if (resolvedValue) {
+      // Replace the variable with the actual value
+      value = value.replaceAll(match, resolvedValue);
+    } else {
+      // We don't want to crash here because it's possible that the value
+      // is in a code block for demonstration purposes
+      console.log(`DID NOT FIND ${resolvedValue}`);
+    }
+  });
+
+  return value;
+};
+
 const plugin = ({ data }) => {
   const transformer = async (ast) => {
     visit(ast, (node) => {
       if (node && node.value && node.value.includes("[%")) {
-        // Checks if the text node has one/more template strings
-        const matches = node.value.match(/\[%(.*)%\]/m);
+        node.value = substituteTemplateStrings(node.value, data);
+      }
 
-        matches.forEach((match) => {
-          // Get rid of the template string to obtain the variable name
-          const _variable = match.replace(/(\[|\]|%)/gm, "").trim();
-
-          // This allows us to access nested variables using dot operator
-          // https://stackoverflow.com/a/43849204
-          const value = _variable
-            .split(".")
-            .reduce((p, c) => (p && p[c]) || null, data);
-
-          if (value) {
-            // Replace the variable with the actual value
-            node.value = node.value.replaceAll(match, value);
-          } else {
-            // We don't want to crash here because it's possible that the value
-            // is in a code block for demonstration purposes
-            console.log(`DID NOT FIND ${value}`);
+      //handle MDX JSX attributes
+      if (
+        (node.type === "mdxJsxFlowElement" ||
+          node.type === "mdxJsxTextElement") &&
+        node.attributes
+      ) {
+        node.attributes.forEach((attr) => {
+          if (typeof attr.value === "string" && attr.value.includes("[%")) {
+            attr.value = substituteTemplateStrings(attr.value, data);
           }
         });
       }
