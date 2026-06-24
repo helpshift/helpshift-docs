@@ -5,19 +5,19 @@ description: "Configure Push notifications and In-app notifications"
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
 <LegacyEolAdmonition />
@@ -133,7 +133,7 @@ If you want to use the Helpshift push notification handling, please register you
 The Helpshift SDK overrides the `UnityAppController` class to listen to the application delegates for Push notifications and calls the appropriate Helpshift APIs.
 If you already have a `UnityAppController` child class, please make sure it inherits from the `HsUnityAppController` class.
 
-### Manual support {#}
+### Manual support
 
 <Admonition type="info" title="Note">
 
@@ -372,7 +372,7 @@ public void didReceiveUnreadMessagesCount(string count) {
 
 <Admonition type="info" title="Note">
 
-** Delegates and Notification Count **
+**Delegates and Notification Count**
 
 - If you now call the method `HelpshiftSdk.requestUnreadMessagesCount(true);` it will
   return a notification count from server in the `didReceiveUnreadMessagesCount(string count)` delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.
