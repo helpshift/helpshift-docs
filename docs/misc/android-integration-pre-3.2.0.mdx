@@ -163,6 +163,7 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
 
 - In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
 
+        ```text
         <path id="helpshift-classpath">
           <fileset dir="<path/to/Helpshift-SDK/libs>">
             <include name="Helpshift.jar"/>
@@ -172,6 +173,7 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
           <classpath refid="helpshift-classpath"/>
           <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
         </java>
+        ```
 
 - If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
 
@@ -237,7 +239,7 @@ to install the libraries necessary, from your local Android SDK installation. To
 (ABS). On release of the official [Google Action Bar](http://developer.android.com/guide/topics/ui/actionbar.html) we have depricated the use of ABS developed by
 [Jake Wharton](https://github.com/JakeWharton/ActionBarSherlock)**
 
-** Google Action Bar is dependant on the new [v7 appcompat library](http://developer.android.com/tools/support-library/features.html#v7-appcompat)**
+**Google Action Bar is dependant on the new [v7 appcompat library](http://developer.android.com/tools/support-library/features.html#v7-appcompat)**
 
 **If you are not ready to switch, you can download and use
 [Android SDK v2.7.1](https://d3e51fp79zp4el.cloudfront.net/library/android/v2.7/helpshift-android-sdk-2.7.1.zip)
