@@ -319,12 +319,14 @@ If you are having issues with Helpshift integration, head over to the [Troublesh
 
 - In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
 
-        <path id="helpshift-classpath">
-          <fileset dir="<path/to/Helpshift-SDK/libs>">
-            <include name="Helpshift.jar"/>
-          </fileset>
-        </path>
-        <java classname="com.helpshift.HSPostCompileCheck" failonerror="true">
-          <classpath refid="helpshift-classpath"/>
-          <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
-        </java>
+    ```text
+      <path id="helpshift-classpath">
+        <fileset dir="<path/to/Helpshift-SDK/libs>">
+          <include name="Helpshift.jar"/>
+        </fileset>
+      </path>
+      <java classname="com.helpshift.HSPostCompileCheck" failonerror="true">
+        <classpath refid="helpshift-classpath"/>
+        <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
+      </java>
+    ```
