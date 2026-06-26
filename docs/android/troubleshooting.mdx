@@ -20,13 +20,11 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<a id="troubleshoot"></a>
-# Troubleshooting
+# Troubleshooting {/* #troubleshoot */}
 
 <LegacyEolAdmonition />
 
-<a id="integration-issues"></a>
-## SDK Integration
+## SDK Integration {/* #integration-issues */}
 
 ### UI issue with Androidx libraries
 
@@ -58,8 +56,7 @@ Core.install(this, "apiKey",
                    config.build());
 ```
 
-<a id="7"></a>
-### 7.9.0 SDK Update
+### 7.9.0 SDK Update {/* #7 */}
 
 We found a bug for the following scenario - for SDK 7.9.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
 
@@ -158,8 +155,7 @@ If you get a crash with the following error, check the android support library v
 
 Helpshift SDK uses the "android.support.design.widget.TextInputEditText" class. Since this class was introduced in android support library v23.2.0, you would need to add dependencies for android support libraries equal to or higher than v23.2.0.
 
-<a id="push-notifications"></a>
-## Push notifications
+## Push notifications {/* #push-notifications */}
 
 In case the app is not receiving push notifications, you can look at the following sections.
 
@@ -172,8 +168,7 @@ In order to receive push notifications from Helpshift, please note that that the
 
 <Image src="/static/books/android/ip-whitelisting.gif" width="full" />
 
-<a id="multi-process-apps"></a>
-## Multi-process apps
+## Multi-process apps {/* #multi-process-apps */}
 
 In a multi-process Android app, the Application.onCreate() is called for every process. As the Helpshift SDK is initialized inside the Application.onCreate() method of the app, multi-process apps will lead to multiple instances of the SDK being initialized, which can lead to unexpected behavior. We recommend that the Helpshift SDK be initialized in the main process only. This can be done by checking the process name in which Application.onCreate() is called. You can refer to the example below for this:
 
@@ -201,8 +196,7 @@ Application.onCreate() {
 }
 ```
 
-<a id="miscellaneous"></a>
-## Miscellaneous
+## Miscellaneous {/* #miscellaneous */}
 
 ### Helpshift Logs with low priority DEBUG
 
@@ -222,8 +216,7 @@ You can safely ignore the Helpshift SDK debug logs (log priority "DEBUG" / "Log.
 
 This is just a warning, and this has been handled by the helpshift SDK. You can safely ignore it. These will not cause any issues with the proper functioning of the SDK.
 
-<a id="ui-issues"></a>
-## UI Issues
+## UI Issues {/* #ui-issues */}
 
 ### Cannot scroll FAQ list, cannot switch FAQ tabs, keyboard input not working when creating a new conversation etc.
 
@@ -236,8 +229,7 @@ These UI issues are caused when hardware acceleration is turned off for Helpshif
         android:theme="@style/Helpshift.Theme.Activity"/>
 ```
 
-<a id="known-issues"></a>
-## Known Issues
+## Known Issues {/* #known-issues */}
 
 <table>
   <tr>

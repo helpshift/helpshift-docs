@@ -35,13 +35,11 @@ Notifications can be sent to your users when:
 
 Setting push notifications involves configuring both the Helpshift admin dashboard as well as the client app.
 
-<a id="#configure-helpshift-push-admin"></a>
-## Configure push notifications in the Helpshift admin dashboard
+## Configure push notifications in the Helpshift admin dashboard {/* ##configure-helpshift-push-admin */}
 
 <ConfigurePushNotificationsiOS />
 
-<a id="configure-helpshift-sdk"></a>
-## Configure the Helpshift iOS SDK to handle notifications
+## Configure the Helpshift iOS SDK to handle notifications {/* #configure-helpshift-sdk */}
 
 <Admonition type="info" title="Note">
 
@@ -50,8 +48,7 @@ You should call `registerDeviceToken` API only after you have [configured the He
 
 </Admonition>
 
-<a id="push-permission"></a>
-### Request notification permission and register your app for push
+### Request notification permission and register your app for push {/* #push-permission */}
 
 If your app does not already use push, you will need to enable push for your app. To enable push notification in your application you need to add APNS registration code to your AppDelegate's `application:didFinishLaunchingWithOptions:` method:
 
@@ -69,8 +66,7 @@ If your app does not already use push, you will need to enable push for your app
 }
 ```
 
-<a id="push-pass-to-helpshift"></a>
-### Pass registered push token to Helpshift
+### Pass registered push token to Helpshift {/* #push-pass-to-helpshift */}
 
 For Helpshift SDK to work with the Helpshift push notification service, you will need to invoke the `registerDeviceToken:` API call inside the application delegate method `application:didRegisterForRemoteNotificationsWithDeviceToken:`
 
@@ -84,8 +80,7 @@ In your `AppController.mm` file it will look something like this:
 }
 ```
 
-<a id="push-delegates"></a>
-### Implement push delegates
+### Implement push delegates {/* #push-delegates */}
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
 
@@ -99,8 +94,7 @@ Example usage:
 - For notifications sent in response to agent replies on user's support conversations, the SDK will open the corresponding conversation.
 - For proactive engagement notifications, the SDK will perform the dashboard configured action.
 
-<a id="push-delegates-foreground"></a>
-#### Push delegate when app is in foreground
+#### Push delegate when app is in foreground {/* #push-delegates-foreground */}
 
 For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` delegate, invoke the `handleForegroundNotification:withCompletionHandler:` SDK API -
 
@@ -119,8 +113,7 @@ For the `userNotificationCenter:willPresentNotification:withCompletionHandler:` 
 }
 ```
 
-<a id="push-delegates-background"></a>
-#### Push delegate when app is in background or not running
+#### Push delegate when app is in background or not running {/* #push-delegates-background */}
 
 For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler` delegate, invoke the `handleBackgroundNotificationClick:withCompletionHandler:` SDK API -
 
@@ -138,8 +131,7 @@ For the `userNotificationCenter:didReceiveNotificationResponse:withCompletionHan
 }
 ```
 
-<a id="notification-service"></a>
-### Configure NotificationService extension
+### Configure NotificationService extension {/* #notification-service */}
 
 <Admonition type="info" title="Note">
 
@@ -164,8 +156,7 @@ Helpshift uses this extension to download images to display in the push notifica
 }
 ```
 
-<a id="in-app-notifications"></a>
-## In-app notifications
+## In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
 
@@ -177,14 +168,12 @@ These notifications are sent when an agent replies to a customer's issue. Your c
   alt="Support In-App Notification"
 />
 
-<a id="optional-flags"></a>
-## Configuring In-app notifications
+## Configuring In-app notifications {/* #optional-flags */}
 
 The Helpshift [install call](/sdkx-cocos2dx/getting-started#initializing) supports flags for configuring SDK behaviour.
 Currently we support one flag i.e `enableInAppNotification`.
 
-<a id="enable-disable-in-app"></a>
-### Enabling/Disabling In-app notifications
+### Enabling/Disabling In-app notifications {/* #enable-disable-in-app */}
 
 <div className="compact ">
 
@@ -218,8 +207,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 }
 ```
 
-<a id="pause-in-app"></a>
-### Pausing In-app notifications
+### Pausing In-app notifications {/* #pause-in-app */}
 
 Use the API `pauseDisplayOfInAppNotification` to pause/resume the notifications. When `YES` is passed to this method, display of in-app notifications is paused even if they arrive. When you pass `NO`, the in-app notifications start displaying. Note that if you have [disabled support in-app notifications](#enable-disable-in-app), this flag will have no effect for support notifications. It will still work for proactive engagement in-app notifications.
 
@@ -230,8 +218,7 @@ HelpshiftCocos2dx::pauseDisplayOfInAppNotification(true); // To temporarily paus
 HelpshiftCocos2dx::pauseDisplayOfInAppNotification(false); // To resume showing the in-app notifications
 ```
 
-<a id="notification-badges"></a>
-## Notification badges
+## Notification badges {/* #notification-badges */}
 
 If you want to show your user notifications for replies you send to the
 issues they posted, you can use notification counts provided by
@@ -280,8 +267,7 @@ Refer [Unread Message Count Event](/sdkx-cocos2dx/delegates#unread-message-count
 
 </Admonition>
 
-<a id="reset-badge-count"></a>
-### Reset badge count
+### Reset badge count {/* #reset-badge-count */}
 If you need to handle badge reset in the application icon, you can do
 something like below in the `applicationDidBecomeActive:` delegate
 method:

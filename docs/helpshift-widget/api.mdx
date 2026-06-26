@@ -25,8 +25,7 @@ import {
 
 </Intro>
 
-<a id="open-widget"></a>
-## Open Widget
+## Open Widget {/* #open-widget */}
 
 If you want to open the Helpshift Widget window at any time (apart from an explicit user click on widget launcher button), you can do it by calling the following API. This could be useful for triggering proactive help.
 
@@ -34,8 +33,7 @@ If you want to open the Helpshift Widget window at any time (apart from an expli
 HelpshiftWidget("open");
 ```
 
-<a id="close-widget"></a>
-## Close Widget
+## Close Widget {/* #close-widget */}
 
 Similarly, for closing the widget window at any time, you can call the following API.
 
@@ -43,8 +41,7 @@ Similarly, for closing the widget window at any time, you can call the following
 HelpshiftWidget("close");
 ```
 
-<a id="hide-widget"></a>
-## Hide Widget
+## Hide Widget {/* #hide-widget */}
 
 You can hide the Helpshift Widget (both the launcher and the widget window), by calling the following API.
 
@@ -58,8 +55,7 @@ You may want to use this API when you do not want to show the widget on specific
 
 </Admonition>
 
-<a id="show-widget"></a>
-## Show Widget
+## Show Widget {/* #show-widget */}
 
 You can have Helpshift Widget (both the launcher and the widget window) re-appear after it was previously hidden (via the hide API) by calling the following API.
 
@@ -80,8 +76,7 @@ This API will restore the visibility of Helpshift Widget after it was previously
   width="full"
 />{" "}
 
-<a id="update-helpshift-widget-config"></a>
-## Update Helpshift Widget Config
+## Update Helpshift Widget Config {/* #update-helpshift-widget-config */}
 
 If you want to update the `helpshiftWidgetConfig` object after your web page has loaded, you can do it by calling the following API
 
@@ -127,13 +122,11 @@ Make sure you do not overwrite the `helpshiftWidgetConfig` object when trying to
 
 </Admonition>
 
-<a id="events"></a>
-## Events
+## Events {/* #events */}
 
 The Helpshift Widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
 
-<a id="new-unread-messages-event"></a>
-### New Unread Messages Event
+### New Unread Messages Event {/* #new-unread-messages-event */}
 
 This event gets fired when there are new unread message for the user. To listen to this event, add the following code after the embed code.
 
@@ -169,8 +162,7 @@ HelpshiftWidget(
 );
 ```
 
-<a id="user-changed-event"></a>
-### User Changed Event
+### User Changed Event {/* #user-changed-event */}
 
 This event gets fired when the user reopens Helpshift Widget by clicking on the email link, if we detect that the user's identifier
 has changed from when the original user started the conversation to when this user clicked the email link.
@@ -219,8 +211,7 @@ login/logout (depending on what their original state was.)
 
 </Admonition>
 
-<a id="widget-toggle-event"></a>
-### Widget Toggle Event
+### Widget Toggle Event {/* #widget-toggle-event */}
 
 This event is triggered when the user minimizes or maximizes the Helpshift Widget window. The event data object has a boolean property ‘visible’ which indicates the visibility of the main chat window. For your reference, see the below example:
 
@@ -240,8 +231,7 @@ HelpshiftWidget("addEventListener", "widgetToggle", widgetToggleEventHandler);
 HelpshiftWidget("removeEventListener", "widgetToggle", widgetToggleEventHandler);
 ```
 
-<a id="conversation-start-event"></a>
-### Conversation Start Event
+### Conversation Start Event {/* #conversation-start-event */}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a property, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
@@ -269,8 +259,7 @@ HelpshiftWidget(
 );
 ```
 
-<a id="message-add-event"></a>
-### Message Add Event
+### Message Add Event {/* #message-add-event */}
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` properties, which indicates the type and body of the message added by the user. For your reference, see the below example.
 
@@ -293,8 +282,7 @@ HelpshiftWidget("addEventListener", "messageAdd", messageAddEventHandler);
 HelpshiftWidget("removeEventListener", "messageAdd", messageAddEventHandler);
 ```
 
-<a id="csat-submit-event"></a>
-### CSAT Submit Event
+### CSAT Submit Event {/* #csat-submit-event */}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` properties, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
@@ -315,8 +303,7 @@ HelpshiftWidget("addEventListener", "csatSubmit", csatSubmitEventHandler);
 HelpshiftWidget("removeEventListener", "csatSubmit", csatSubmitEventHandler);
 ```
 
-<a id="conversation-end-event"></a>
-### Conversation End Event
+### Conversation End Event {/* #conversation-end-event */}
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -346,8 +333,7 @@ The `conversationEnd` event is triggered along with the `conversationResolved` a
 
 </Admonition>
 
-<a id="conversation-rejected-event"></a>
-### Conversation Rejected Event
+### Conversation Rejected Event {/* #conversation-rejected-event */}
 
 This event is triggered when an agent rejects the conversation.
 
@@ -375,8 +361,7 @@ HelpshiftWidget(
 );
 ```
 
-<a id="conversation-resolved-event"></a>
-### Conversation Resolved Event
+### Conversation Resolved Event {/* #conversation-resolved-event */}
 
 This event is triggered when an agent resolves the conversation.
 
@@ -404,8 +389,7 @@ HelpshiftWidget(
 );
 ```
 
-<a id="conversation-reopened-event"></a>
-### Conversation Reopened Event
+### Conversation Reopened Event {/* #conversation-reopened-event */}
 
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 

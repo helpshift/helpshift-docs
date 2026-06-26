@@ -20,8 +20,7 @@ import {
     LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<a id="delegates"></a>
-# Helpshift Delegates
+# Helpshift Delegates {/* #delegates */}
 
 <LegacyEolAdmonition />
 
@@ -31,8 +30,7 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Intro>
 
-<a id="helpshift-delegates-implementation"></a>
-## Helpshift Delegates implementation
+## Helpshift Delegates implementation {/* #helpshift-delegates-implementation */}
 
 You have to define a class which implements Helpshift Delegates, and then
 pass this to Helpshift using the `HelpshiftSupport.SetDelegate(ISupportDelegate delegateInstance)` method.
@@ -119,8 +117,7 @@ or Conversation API so that they can callback your delegate methods.
 
 To know more about delegate methods, see [Helpshift Session delegates](#session-delegates).
 
-<a id="session-delegates"></a>
-## Helpshift Session delegates
+## Helpshift Session delegates {/* #session-delegates */}
 
 ### Session begin
 
@@ -134,8 +131,7 @@ If you want to keep track of when helpshift session starts in your app, you can 
 
 If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
-<a id="delegate-new-conversation-started"></a>
-## New conversation delegate
+## New conversation delegate {/* #delegate-new-conversation-started */}
 
 **NewConversationStarted**
 
@@ -153,8 +149,7 @@ As soon as an end user opens the conversation screen, they see a greeting messag
 
 This delegate callback can be implemented to check if a Conversation is active when queried via [HelpshiftApi.HelpshiftSupport.CheckIfConversationActive()](/xamarin/tracking-ios#check-if-conversation-active)
 
-<a id="delegate-user-replied-to-conversation"></a>
-## New message delegate
+## New message delegate {/* #delegate-user-replied-to-conversation */}
 
 **UserRepliedToConversation**
 
@@ -173,22 +168,19 @@ All the replies from end users to Bot (QuickSearch Bot, Identity Bot) are also c
 
 </Admonition>
 
-<a id="delegate-conversation-ended"></a>
-## Conversation ended delegate
+## Conversation ended delegate {/* #delegate-conversation-ended */}
 
 **ConversationEnded**
 
 This delegate is called whenever the ongoing Conversation is resolved, rejected from the Dashboard, timed out or archived.
 
-<a id="csat-completed"></a>
-## Customer satisfaction survey delegate
+## Customer satisfaction survey delegate {/* #csat-completed */}
 
 **UserCompletedCustomerSatisfactionSurvey**
 
 If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
 
-<a id="handle-tap-on-attachment"></a>
-## Handle attachment file delegate
+## Handle attachment file delegate {/* #handle-tap-on-attachment */}
 
 **HandleTapOnAttachmentFile**
 
@@ -202,22 +194,19 @@ After the end user taps on a downloaded attachment, helpshift tries to call the 
 
 If the delegate is not implemented or the delegate returns false, SDK tries to preview it using QLPreviewController.
 
-<a id="notif-count"></a>
-## Did Receive Notification Count Delegate
+## Did Receive Notification Count Delegate {/* #notif-count */}
 
 **DidReceiveNotification**
 
 If you want to keep a count of all new messages received in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift receives a new message in an existing conversation. You can also use this delegate to keep your badge counts updated.
 
-<a id="unread-messages-count"></a>
-## Did Receive Unread Messages Count
+## Did Receive Unread Messages Count {/* #unread-messages-count */}
 
 **DidReceiveUnreadMessagesCount**
 
 This delegate can be implemented to get the count of unread messages queried via [HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(bool)](/xamarin/notifications-ios#showing-notification-count)
 
-<a id="action-card-delegate"></a>
-## Action card delegate
+## Action card delegate {/* #action-card-delegate */}
 
 This delegate method is called when user clicks on action card button. The `HelpshiftActionType actionType` parameter can be one of:
 

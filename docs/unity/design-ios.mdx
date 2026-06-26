@@ -20,8 +20,7 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<a id="design"></a>
-# Skinning & Customization
+# Skinning & Customization {/* #design */}
 
 <LegacyEolAdmonition />
 
@@ -41,18 +40,15 @@ For example: If the app uses UIAppearance to change the colour of Navigation Bar
 
 </Admonition>
 
-<a id="intro"></a>
-## Introduction
+## Introduction {/* #intro */}
 
 Head over to [Theming and Skinning](#skinning) if you want to customize your SDK integration's typeface, colors or background images. It is done via simple key-value pairs in a plist file.
 
 If you want to change strings used in the SDK's UI or want to translate them as per device language, see [String Customization](/unity/string-customization-ios/.
 
-<a id="skinning"></a>
-## Theming and Skinning
+## Theming and Skinning {/* #skinning */}
 
-<a id="default-skins"></a>
-### Default Skinning Configurations
+### Default Skinning Configurations {/* #default-skins */}
 
 Helpshift comes with four default skinning configurations -
 
@@ -61,21 +57,18 @@ Helpshift comes with four default skinning configurations -
 - **Light High Contrast** - `HSThemes/HelpshiftConfigHighContrast.plist`
 - **Dark High Contrast** - `HSThemes/HelpshiftConfigDarkHighContrast.plist`
 
-<a id="custom-skinning"></a>
-### Customized Skinning Configurations
+### Customized Skinning Configurations {/* #custom-skinning */}
 
 Helpshift SDK allows following ways to customize the theme:
 
 1. [Runtime Theme Changes](#runtime-themeing)
 2. [Compile time Theme Changes](#compile-time-theming)
 
-<a id="runtime-theming"></a>
-### Runtime Theme Changes
+### Runtime Theme Changes {/* #runtime-theming */}
 
 If your app allows users to change theme at runtime (for eg using a Theme Change menu or Dark Mode switch), Please use the following APIs
 
-<a id="runtime-light-dark"></a>
-#### If your app wants to change both light and dark themes at runtime, use the following API:
+#### If your app wants to change both light and dark themes at runtime, use the following API: {/* #runtime-light-dark */}
 
 `HelpshiftSdk.setThemes(lightThemeFileName, darkThemeFileName)`
 
@@ -109,8 +102,7 @@ support.setThemes("HelpshiftCustomLightConfig", "HelpshiftCustomDarkConfig");
 
 </Admonition>
 
-<a id="runtime-common"></a>
-#### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API:
+#### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API: {/* #runtime-common */}
 
 `HelpshiftSdk.setTheme(themeFileName)`
 
@@ -138,13 +130,11 @@ support.setTheme("HelpshiftCustomConfig");
 
 </Admonition>
 
-<a id="compile-time-theming"></a>
-### Compile time Theme Changes
+### Compile time Theme Changes {/* #compile-time-theming */}
 
 If your app does not change theme on runtime, Please read the below documentation:
 
-<a id="compile-time-light-dark"></a>
-#### If your app supports Dark Appearance in iOS 13
+#### If your app supports Dark Appearance in iOS 13 {/* #compile-time-light-dark */}
 
 Helpshift SDK bundles themes for light and dark mode out of the box but leaves the decision to enable dark mode switching to the application developers. You can enable automatic switching of Helpshift SDK theme using [enableAutomaticThemeSwitching](/unity/sdk-configuration-ios#enableAutomaticThemeSwitching) flag.
 
@@ -159,8 +149,7 @@ If you want to customize the skinning attributes of the Helpshift SDK, there are
 Helpshift SDK will first look for the `HelpshiftCustomConfig.plist` file in the Application's main bundle.
 If it fails to find such a file, it will look for the `HelpshiftConfig.plist` file in the Helpshift SDK's bundle.
 
-<a id="compile-time-common"></a>
-#### If your app does not support Dark Appearance in iOS 13
+#### If your app does not support Dark Appearance in iOS 13 {/* #compile-time-common */}
 
 Helpshift SDK by default uses HelpshiftConfig.plist file for skinning the SDK. You can change the plist values for theme elements that you want to customize in `HelpshiftConfig.plist`. For details, refer to the [Guide](#attributes-global)
 
@@ -175,8 +164,7 @@ If it fails to find such a file, it will look for the `HelpshiftConfig.plist` fi
 
 We'll now walk through each group of customizations -
 
-<a id="attributes-global"></a>
-### Global Attributes
+### Global Attributes {/* #attributes-global */}
 
 These attributes control the looks of in-app support over many screens.
 
@@ -216,13 +204,11 @@ Association of "Global Attributes" to UI elements -
 
 <Image src="/static/books/ios/Overview-3.png" width="full" />
 
-<a id="ios-ui-layering"></a>
-### Header background and layering
+### Header background and layering {/* #ios-ui-layering */}
 
 Background for section headers is transparent, hence it inherits from Background color in Global Attributes -
 
-<a id="ios-support-ui"></a>
-#### Support UI Overview
+#### Support UI Overview {/* #ios-support-ui */}
 
 <Image
   src="/static/books/ios/isometric3.png"
@@ -230,8 +216,7 @@ Background for section headers is transparent, hence it inherits from Background
   alt="isometric3.png"
 />
 
-<a id="attributes-navigation-bar"></a>
-### Navigation Bar
+### Navigation Bar {/* #attributes-navigation-bar */}
 
 <div className="text-sm  compact">
 
@@ -254,8 +239,7 @@ Background for section headers is transparent, hence it inherits from Background
   alt="Navigation bar group"
 />
 
-<a id="attributes-search-bar"></a>
-### Search Bar
+### Search Bar {/* #attributes-search-bar */}
 
 <div className="text-sm  compact">
 
@@ -283,8 +267,7 @@ Starting from iOS 11, search bar is part of the navigation bar. So this attribut
 
 </Admonition>
 
-<a id="attributes-footers"></a>
-### FAQ and Chat
+### FAQ and Chat {/* #attributes-footers */}
 
 <div className="text-sm  compact">
 
@@ -319,8 +302,7 @@ Starting from iOS 11, search bar is part of the navigation bar. So this attribut
 
 <Image src="/static/books/ios/FAQ-and-Answer-Bot.png" width="full" />
 
-<a id="attributes-message-retry-badge"></a>
-### Message Retry Badge
+### Message Retry Badge {/* #attributes-message-retry-badge */}
 
 A retry badge is shown on messages in conversation screen, that fail to reach customers.
 
@@ -333,8 +315,7 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-<a id="conversation-resolution"></a>
-### Conversation Resolution
+### Conversation Resolution {/* #conversation-resolution */}
 
 <Image src="/static/books/ios/skinning.resolution.png" width="full" />
 
@@ -350,8 +331,7 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-<a id="custom-fonts"></a>
-## Using Custom Fonts
+## Using Custom Fonts {/* #custom-fonts */}
 
 **Step 1:** Add the font to your project. Edit your app's plist file `<App-name-Info.plist>` and add a key `"Fonts provided by application"` to it. Under the key, list out file names of all the fonts you want to use in your app and in support. If you've already listed such fonts, skip this step.
 
@@ -381,12 +361,10 @@ Starting 5.10.0, if you need to apply font name and bold font name to Single FAQ
 
 <Image src="/static/books/ios/in-use.png" width="quarter" centered />
 
-<a id="orientation-support"></a>
-## Orientation support
+## Orientation support {/* #orientation-support */}
 
 The iOS SDK will follow the orientation, that the application supports in plist file.
 
-<a id="troubleshooting"></a>
-## Troubleshooting
+## Troubleshooting {/* #troubleshooting */}
 
 If you are having issues with skinning the SDK, head over to the [Troubleshooting](/ios/troubleshooting#skinning) section for further information.

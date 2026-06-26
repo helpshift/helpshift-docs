@@ -19,8 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-<a id="notifications"></a>
-# Notifications <small>Android</small>
+# Notifications <small>Android</small> {/* #notifications */}
 
 <Intro>
 
@@ -36,8 +35,7 @@ Configure Push notifications.
 
 </Admonition>
 
-<a id="push-via-helpshift"></a>
-## Configure push notifications via Helpshift
+## Configure push notifications via Helpshift {/* #push-via-helpshift */}
 
 <Image
   src="/static/books/sdkx_android/app_notification.png"
@@ -52,8 +50,7 @@ you reply to an issue that they submitted.
 
 To know more about the FCM Push, refer:- [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)
 
-<a id="gcm-prerequisites"></a>
-### Prerequisites
+### Prerequisites {/* #gcm-prerequisites */}
 
 Implement FCM push notifications in your app.
 
@@ -62,8 +59,7 @@ For FCM, refer to the
 
 You can use any Firebase plugin from React Native Plugin. For eg - [React Native Firebase](https://rnfirebase.io/messaging/usage)
 
-<a id="configure-helpshift-push-admin"></a>
-### Configure Helpshift Agent Dashboard
+### Configure Helpshift Agent Dashboard {/* #configure-helpshift-push-admin */}
 
 To enable the Helpshift system to send push notifications to your users
 you will have to add an **Android** as a platform in your app _(if you have not added one already)_. And then click on the _push notifications_ option.
@@ -85,11 +81,9 @@ For more information, [click here](https://firebase.google.com/docs/cloud-messag
 
 <Image src="/static/books/android/fcm_console.png" width="full" />
 
-<a id="configure-helpshift-react-sdk"></a>
-## Configure the Helpshift React Native Plugin SDK to handle notifications
+## Configure the Helpshift React Native Plugin SDK to handle notifications {/* #configure-helpshift-react-sdk */}
 
-<a id="push-notifications"></a>
-### Push notifications
+### Push notifications {/* #push-notifications */}
 
 #### Configure FCM push notification plugins
 
@@ -140,8 +134,7 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 });
 ```
 
-<a id="in-app-notifications"></a>
-## In-app notifications
+## In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html). Unlike push notifications, they appear only when your app is running.
 
@@ -159,8 +152,7 @@ If the FCM device token is registered for push notifications, then in-app notifi
 
 </Admonition>
 
-<a id="showing-notification-count"></a>
-## Showing notification count when replies are sent to the user
+## Showing notification count when replies are sent to the user {/* #showing-notification-count */}
 
 To fetch the unread messages count from the server you can call `requestUnreadMessageCount(bool FetchFromServer);` API. This API will return the unread messages count via delegate.
 Based on the value of `FetchFromServer`, the locally stored count will be returned if `FetchFromServer` is `false` else from the server by fetching remotely when `FetchFromServer` is `true`. An example use of this count is to update the badge count to indicate unread messages. Please note that before calling this method, you need to set the listener for Helpshift events by calling the HelpshiftEventListner.

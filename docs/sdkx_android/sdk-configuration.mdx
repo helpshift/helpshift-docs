@@ -37,8 +37,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-<a id="enable-logging"></a>
-## Enable Logging
+## Enable Logging {/* #enable-logging */}
 
 Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Android logcat. These logs can be useful for debugging the SDK during integration. Turning on logging can help the developer resolve common integration issues.
 
@@ -83,8 +82,7 @@ Example:
     }
 ```
 
-<a id="faq-filtering"></a>
-## FAQ Filtering by tags
+## FAQ Filtering by tags {/* #faq-filtering */}
 
 We have FAQ filtering capability by tags.
 With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
@@ -150,8 +148,7 @@ You can have only one tag filter config which will be respected on showFAQs, sho
 
 </Admonition>
 
-<a id="enableContactUs"></a>
-## Enable Contact Us
+## Enable Contact Us {/* #enableContactUs */}
 
 Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
 
@@ -193,8 +190,7 @@ config.put("enableContactUs", value);
 Helpshift.showFAQs(MyActivity.this, config);
 ```
 
-<a id="fullprivacy"></a>
-## Full privacy
+## Full privacy {/* #fullprivacy */}
 
 Full privacy option helps ensure [COPPA](http://www.coppa.org/) compliance by:
 
@@ -227,8 +223,7 @@ Helpshift.showConversation(MainActivity.this, config);
 
 In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to YES. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
 
-<a id="enable-in-app-notifications"></a>
-## Enable In-App Notifications
+## Enable In-App Notifications {/* #enable-in-app-notifications */}
 
 If you do not want the in-app notification for conversation messages support provided by the Helpshift SDK, you can set the flag to `false`.
 
@@ -266,8 +261,7 @@ public class MainApplication extends Application {
 }
 ```
 
-<a id="initiate-chat"></a>
-## Initiate new conversation on chat screen load
+## Initiate new conversation on chat screen load {/* #initiate-chat */}
 
 In `config` map of `Helpshift.showConversation(this, config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the New Conversation button or going through the post resolution flows like feedback bots of the previous issue.
 
@@ -280,8 +274,7 @@ config.put("initiateChatOnLoad", true);
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
-<a id="conversation-prefill-text"></a>
-## Conversation prefill text
+## Conversation prefill text {/* #conversation-prefill-text */}
 
 <ConversationPrefillTextDescription />
 
@@ -294,8 +287,7 @@ config.put("conversationPrefillText", "INSERT YOUR PREFILL TEXT");
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
-<a id="conversation-initial-user-message"></a>
-## Conversation Initial User Message
+## Conversation Initial User Message {/* #conversation-initial-user-message */}
 
 <ConversationInitialUserMessage />
 
@@ -308,8 +300,7 @@ config.put("initialUserMessage", "INSERT YOUR INITIAL USER MESSAGE");
 Helpshift.showConversation(MainActivity.this, config);
 ```
 
-<a id="clearing-initial-user-message"></a>
-## Clearing Initial User Message
+## Clearing Initial User Message {/* #clearing-initial-user-message */}
 
 <ClearInitialUserMessageDescription />
 
@@ -369,8 +360,7 @@ public class MainActivity extends AppCompatActivity implements HelpshiftProactiv
 }
 ```
 
-<a id="screen-orientation"></a>
-## Screen Orientation
+## Screen Orientation {/* #screen-orientation */}
 
 The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
 For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
@@ -403,8 +393,7 @@ public class MainApplication extends Application {
 }
 ```
 
-<a id="notificationIcon"></a>
-## Notification Icon
+## Notification Icon {/* #notificationIcon */}
 
 By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `install` call.
 
@@ -426,8 +415,7 @@ public class MainApplication extends Application {
 }
 ```
 
-<a id="largeNotificationIcon"></a>
-## Large Notification Icon
+## Large Notification Icon {/* #largeNotificationIcon */}
 
 By default the application icon is used as the notification icon.
 If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
@@ -449,8 +437,7 @@ public class MainApplication extends Application {  @Override
 }
 ```
 
-<a id="notificationSound"></a>
-## Notification Sound
+## Notification Sound {/* #notificationSound */}
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -472,8 +459,7 @@ public class MainApplication extends Application {
 }
 ```
 
-<a id="notificationChannels"></a>
-## Notification channels
+## Notification channels {/* #notificationChannels */}
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
 
@@ -495,12 +481,10 @@ public class MainApplication extends Application {
 }
 ```
 
-<a id="theming"></a>
-## Theming the SDK
+## Theming the SDK {/* #theming */}
 
 Please check the [design](/sdkx_android/design/) page to apply your styles and theming to SDK.
 
-<a id="tracking"></a>
-## Tracking
+## Tracking {/* #tracking */}
 
 This config represents tracking the user actions. For more information check [tracking](/sdkx_android/tracking).

@@ -4,8 +4,7 @@ title: User Hub Bulk APIs
 description: "Use the Bulk APIs available to import your end users' data into Helpshift, and export current end user data from Helpshift."
 ---
 
-<a id="introduction"></a>
-### Introduction
+### Introduction {/* #introduction */}
 
  The User Hub Bulk APIs can be used to import your end users' data into Helpshift, and export current end user data from Helpshift.<br />
  See [POSTMAN Collection](https://documenter.getpostman.com/view/14405739/2sAYkKGwzQ) for details on the API endpoints. Use the **Create Bulk Action** Task API to create bulk
@@ -40,16 +39,14 @@ As a file, using the multipart/form-data content type. The file must be in JSONL
    {"identities":[{"uid":"uid-3"}],"last_country":"Sri Lanka","last_city":"Colombo"}
    ```
 
-<a id="usage"></a>
-### Usage
+### Usage {/* #usage */}
 
 1. Use the **Create Bulk Action** Task API to upload data into Helpshift, or request data export from Helpshift. In either case, the expected request format for each task type is listed below.
    The API response will contain a `Task ID`.
 2. Using the Task ID, poll the **Get Task Status API** until the status is `completed`. The values of `errors` and results can be used to determine if the task completed successfully, or with errors.
 3. Use the **Get Task Results** and **Get Task Errors APIs** to retrieve data, or any errors.
 
-<a id="request-payloads"></a>
-## Request Payloads
+## Request Payloads {/* #request-payloads */}
 
 
 ### Create Core Profiles

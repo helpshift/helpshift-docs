@@ -20,16 +20,13 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<a id="troubleshoot"></a>
-# Troubleshooting
+# Troubleshooting {/* #troubleshoot */}
 
 <LegacyEolAdmonition />
 
-<a id="integration-issues"></a>
-## SDK integration
+## SDK integration {/* #integration-issues */}
 
-<a id="unity2020-android-lib-issue"></a>
-### Unity 2020.+ support for Android library / Crash when attaching a file in Conversation
+### Unity 2020.+ support for Android library / Crash when attaching a file in Conversation {/* #unity2020-android-lib-issue */}
 
 Unity 2020 and higher versions needs `.androidlib` extension for a directory that is meant to be built as an android library.
 
@@ -43,8 +40,7 @@ This might be the reason for a crash when attaching files in a conversation.
 
 This is a temporary workaround and will be fixed in a future release.
 
-<a id="5"></a>
-### 5.5.0 SDK Update
+### 5.5.0 SDK Update {/* #5 */}
 
 We found a bug for the following scenario - for SDK 5.5.0, when New Issue Automations(NIAs) are used to assign to a Custom Bot and if the first step in the bot is a Get Info from User step with Options, the Options don’t show up to the end user till they go back and come to the conversation screen again.
 
@@ -53,8 +49,7 @@ We found a bug for the following scenario - for SDK 5.5.0, when New Issue Automa
 - If you are planning to integrate or are in the process of integrating SDK 5.5.0, we recommend integrating with 5.5.1 instead.
 - If you have already released any of your apps with the affected SDKs and your New Issue Automation triggers options bot, we recommend that you upgrade to [5.5.1 SDK](/unity/release-notes-unity#v551).
 
-<a id="android-studio-gradle-fix"></a>
-### Build issues with exporting as Gradle project/Android studio
+### Build issues with exporting as Gradle project/Android studio {/* #android-studio-gradle-fix */}
 
 <Admonition type="info" title="Note">
 
@@ -87,8 +82,7 @@ dependencies {
 - Delete the folders for android support libraries (example appcompat-26.0.2, design-26.0.2, support-v4-26.0.2, recyclerview-26.0.2, cardview-26.0.2, support-vector-drawable-26.0.2 etc) if they exists in the exported android studio project. You will get these libraries via the changes in step 1.
 - If there are other plugins using android support libraries then make sure that deleting the above folders do not affect them. You can add `build.gradle` file in their respective project folders and add dependencies, as required, similar to Helpshift's (as mentioned above) to resolve dependency of the plugin.
 
-<a id="fix-inbuilt-gradle-build"></a>
-### Fix build issues using in-built Gradle build system in Unity 5.5+
+### Fix build issues using in-built Gradle build system in Unity 5.5+ {/* #fix-inbuilt-gradle-build */}
 
 <Admonition type="info" title="Note">
 
@@ -137,8 +131,7 @@ Starting from Support Library v4 v24.2.0, the library has been split into severa
 
 </Admonition>
 
-<a id="proguard-rules-set"></a>
-### ProGuard rules needed by Helpshift
+### ProGuard rules needed by Helpshift {/* #proguard-rules-set */}
 
 Helpshift Unity plugin uses its own dex file to load its code. Beacuse of this the classes used/referred inside the secondary dex cannot be proguarded or obfuscated/minimized.
 If you are using proguard in your build and also minimizing/obfuscating code then the following rules are needed by Helpshift plugin to work properly:
@@ -149,8 +142,7 @@ If you are using proguard in your build and also minimizing/obfuscating code the
     -keep class android.support.** { *; }
 ```
 
-<a id="steps-to-build-with-android-x"></a>
-### Using AndroidX support libraries
+### Using AndroidX support libraries {/* #steps-to-build-with-android-x */}
 
 Helpshift Unity SDK uses legacy android support libraries.
 If you want to use AndroidX libraries in your application please follow these steps to make Helpshift SDK compatible with AndroidX:
@@ -196,8 +188,7 @@ compile 'androidx.recyclerview:recyclerview:1.0.0'
 
 After all these changes, run a clean build of your app and verify all the UI screens work as expected.
 
-<a id="gcm-api26-crash"></a>
-### GCM notifications crash the application on and above Android Oreo
+### GCM notifications crash the application on and above Android Oreo {/* #gcm-api26-crash */}
 
 <Admonition type="info" title="Note">
 
@@ -214,8 +205,7 @@ We recommend to move the manual FCM integration as described [here](/unity/notif
     com.helpshift.supportCampaigns.gcm.HSGcmIntentService (has extras) }: app is in background uid UidRecord{74a5fc3 u0a136 RCVR idle change:idle|uncached procs:1 seq(0,0,0)}
 ```
 
-<a id="android-21-errors"></a>
-### Compilation errors with plugin versions starting 3.7.1
+### Compilation errors with plugin versions starting 3.7.1 {/* #android-21-errors */}
 
 If you see compilation errors like below, please refer to this section
 
@@ -249,16 +239,14 @@ This issue happens when the app is exited by calling Application.Quit().
 This does not give the SDK a callback to release its resources like a thread attached to AndroidJNI.
 Please refer to [onApplicationQuit](/unity/support-tools-android#application-quit) API for details.
 
-<a id="commandInvocationFailure-manifest"></a>
-### CommandInvocationFailure: Failed to re-package resources / Build error: Unable to merge manifests
+### CommandInvocationFailure: Failed to re-package resources / Build error: Unable to merge manifests {/* #commandInvocationFailure-manifest */}
 
 This issue can happen if the `${applicationId}` string is not replaced in `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` file.
 
 Confirm that `Assets/Plugins/Android/helpshift-plugin-wrapper/AndroidManifest.xml` does not contain any `${applicationId}` string.
 This placeholder is automatically replaced with the application bundle identifier if the build system used is gradle or if you are using Helpshift configurator for setting up the Helpshift SDK configuration. You can find the documentation [here](/unity/getting-started-android#adding-package-name)
 
-<a id="commandInvocationFailure-noResourceFound"></a>
-### CommandInvocationFailure: Gradle build failed / Error: No resource found that matches the given name
+### CommandInvocationFailure: Gradle build failed / Error: No resource found that matches the given name {/* #commandInvocationFailure-noResourceFound */}
 
 <Admonition type="info" title="Note">
 
@@ -276,13 +264,11 @@ To run a clean import of the Helpshift SDK package:
 4. Delete the `helpshift` folder and `hs__data` file from `Assets > Plugin > Android > assets` folder.
 5. After this, import the Helpshift Unity package using the `Assets > Import package > Custom package` menu options.
 
-<a id="duplicate-plugin-ios"></a>
-### Issue with duplicate plugin Helpshift.framework when integrating iOS
+### Issue with duplicate plugin Helpshift.framework when integrating iOS {/* #duplicate-plugin-ios */}
 
 If you are also integrating for iOS, deselect `iOS/Bitcode` folder while importing the unitypackage. If your game uses bitcode on iOS, keep `Bitcode` selected and deselect `iOS/Helpshift.framework` instead. Refer [here](/unity/getting-started-ios#adding-to-project).
 
-<a id="ui-issues"></a>
-## UI Issues
+## UI Issues {/* #ui-issues */}
 
 ### Cannot scroll FAQ list, cannot switch FAQ tabs, keyboard input not working when creating a new conversation etc.
 
@@ -295,8 +281,7 @@ These UI issues are caused when hardware acceleration is turned off for Helpshif
         android:theme="@style/Helpshift.Theme.Activity"/>
 ```
 
-<a id="notification-issues"></a>
-## Notification issues
+## Notification issues {/* #notification-issues */}
 
 ### Incorrect notification-icon property
 
@@ -304,8 +289,7 @@ If you see the push notification not being generated for Android, one of the fir
 
 If you have set the `notificationIcon` but the icon file is not accessible to the Helpshift SDK, the SDK will not generate notifications.
 
-<a id="dex-issues"></a>
-## Integration issues with secondary dex
+## Integration issues with secondary dex {/* #dex-issues */}
 
 <Admonition type="info" title="Note">
 
@@ -403,8 +387,7 @@ Some devices may show the following logs while loading the secondary dex from He
 
 The method call to load a secondary dex is via reflection and the signature has changed over different OS versions. The log indicates the methods that it has looked for and failed before finding the correct method. You can safely ignore these logs.
 
-<a id="resource-not-found-error"></a>
-### Resource ID #0x0android.content.res.Resources$NotFoundException
+### Resource ID #0x0android.content.res.Resources$NotFoundException {/* #resource-not-found-error */}
 
     10:31:38.830 I/Unity (25705): Error in : showFAQsUnity. Exception : android.content.res.Resources$NotFoundException: Resource ID #0x0android.content.res.Resources$NotFoundException: Resource ID #0x0
     Line 14985: 09-09 10:31:38.830 I/Unity (25705): at android.content.res.Resources.getValue(Resources.java:1351)
@@ -422,8 +405,7 @@ This kind of error happens when:
 1. No parameters are passed into `HelpshiftSdk.install()` API and the configuration was not done via the GUI editor.
 1. Unity IDE's build issue. You can try a clean build of your application and reinstalling it on the device.
 
-<a id="dex-64k-issue"></a>
-### The number of method references in a .dex file cannot exceed 64K
+### The number of method references in a .dex file cannot exceed 64K {/* #dex-64k-issue */}
 
 This issue happens when the total method count in the application exceeds 64k, a limit imposed by android.
 
@@ -456,8 +438,7 @@ There are two ways to resolve this issue, given below:
 
 This is a speculative fix by examining the android build processes. You would have to test this out by running on various devices.
 
-<a id="fcm-background-notifications"></a>
-### FCM push notifications do not work when app is in background/killed state
+### FCM push notifications do not work when app is in background/killed state {/* #fcm-background-notifications */}
 
 Unity engine does not run when the app is in background, hence any communication from the native java layer to C# delegates is not possible.
 For push notifications to work in background you would have to integrate the code in java layer by overriding the service that handles push notifications in FCM plugin.
@@ -470,8 +451,7 @@ This is a custom java layer integration based on internal FCM plugin apis. This 
 
 </Admonition>
 
-<a id="known-issues"></a>
-## Known issues
+## Known issues {/* #known-issues */}
 
 <table>
   <tr>

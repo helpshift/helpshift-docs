@@ -34,13 +34,11 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-<a id="common-config"></a>
-## Common configurations
+## Common configurations {/* #common-config */}
 
 Common configurations apply to both iOS and Android platforms.
 
-<a id="enableLogging"></a>
-### Enable Logging
+### Enable Logging {/* #enableLogging */}
 
 Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Visual Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
 
@@ -107,8 +105,7 @@ namespace App
 
 </Tabs>
 
-<a id="enable-contact-us"></a>
-### Enable Contact Us
+### Enable Contact Us {/* #enable-contact-us */}
 
 Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
 
@@ -177,8 +174,7 @@ Helpshift.ShowFAQs(this, config);
 
 </Tabs>
 
-<a id="enableFullPrivacy"></a>
-### Full privacy
+### Full privacy {/* #enableFullPrivacy */}
 
 Full privacy option helps ensure [COPPA](http://www.coppa.org/) compliance by:
 
@@ -211,8 +207,7 @@ Helpshift.ShowConversation(this, config);
 
 In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to `true`. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
 
-<a id="enable-in-app-notification"></a>
-### Enable In-App Notifications
+### Enable In-App Notifications {/* #enable-in-app-notification */}
 
 If you do not want the in-app notifications support provided by the Helpshift SDK, set this flag to `false`.
 
@@ -283,8 +278,7 @@ namespace App
 
 </Tabs>
 
-<a id="initiate-chat-on-load"></a>
-### Initiate new conversation on chat screen load
+### Initiate new conversation on chat screen load {/* #initiate-chat-on-load */}
 
 In config dictionary of `ShowConversation()`, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the **New Conversation** button or going through the post resolution flows like feedback bots of the previous issue.
 
@@ -305,22 +299,19 @@ config.Add("initiateChatOnLoad", true);
 Helpshift.ShowConversation(this, config);
 ```
 
-<a id="conversation-prefill-text"></a>
-### Conversation prefill text
+### Conversation prefill text {/* #conversation-prefill-text */}
 
 <ConversationPrefillTextDescription />
 
 <ConversationPrefillTextCode />
 
-<a id="conversation-initial-user-message"></a>
-### Conversation Initial User Message
+### Conversation Initial User Message {/* #conversation-initial-user-message */}
 
 <ConversationInitialUserMessage />
 
 <ConversationInitialUserMessageCode />
 
-<a id="clearing-initial-user-message"></a>
-### Clearing Initial User Message
+### Clearing Initial User Message {/* #clearing-initial-user-message */}
 
 <ClearInitialUserMessageDescription />
 
@@ -339,8 +330,7 @@ Helpshift.ShowConversation(this, config);
 
 ## iOS Specific Configurations
 
-<a id="in-app-notification-appearance"></a>
-### In-App Notificaton Appearance
+### In-App Notificaton Appearance {/* #in-app-notification-appearance */}
 
 This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary.
 
@@ -369,8 +359,7 @@ Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", config);
 ```
 
 
-<a id="present-full-screen-on-ipad"></a>
-### Full Screen on iPad
+### Full Screen on iPad {/* #present-full-screen-on-ipad */}
 
 The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
 
@@ -395,8 +384,7 @@ Helpshift.ShowConversation(this, config);
 
 ## Android specific configurations
 
-<a id="screen-orientation"></a>
-### Screen Orientation
+### Screen Orientation {/* #screen-orientation */}
 
 The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the `Android.Content.PM.ScreenOrientation` class.
 
@@ -436,8 +424,7 @@ namespace App
 }
 ```
 
-<a id="notification-icon"></a>
-### Notification Icon
+### Notification Icon {/* #notification-icon */}
 
 By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `Install()` call.
 
@@ -463,8 +450,7 @@ namespace App
 }
 ```
 
-<a id="large-notification-icon"></a>
-### Large Notification Icon
+### Large Notification Icon {/* #large-notification-icon */}
 
 By default the application icon is used as the notification icon. If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `Install()` call.
 
@@ -490,8 +476,7 @@ namespace App
 }
 ```
 
-<a id="notification-sound"></a>
-### Notification Sound
+### Notification Sound {/* #notification-sound */}
 
 By default the default device notification sound is used for Helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -517,8 +502,7 @@ namespace App
 }
 ```
 
-<a id="notification-channels"></a>
-### Notification channels
+### Notification channels {/* #notification-channels */}
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `Install()` call.
 
@@ -544,12 +528,10 @@ namespace App
 }
 ```
 
-<a id="theming"></a>
-## Theming the SDK
+## Theming the SDK {/* #theming */}
 
 Please check [design](/sdkx-xamarin/design) page to apply your styles and theming to the SDK.
 
-<a id="tracking"></a>
-## Tracking
+## Tracking {/* #tracking */}
 
 This config represents the tracking of user actions. For more information, please check [tracking](/sdkx-xamarin/tracking).

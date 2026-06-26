@@ -29,8 +29,7 @@ import ClearInitialUserMessageDescription from "@site/docs/_partials/_clearIniti
 
 </Intro>
 
-<a id="widget-type"></a>
-## Widget Type
+## Widget Type {/* #widget-type */}
 
 The `widgetType` config value controls whether both Helpcenter and Web Chat or only Helpcenter or only Web Chat should be loaded in Helpshift Widget.
 
@@ -53,13 +52,11 @@ The `widgetType` configuration will not work with [updateHelpshiftWidgetConfig](
 
 </Admonition>
 
-<a id="widget-config"></a>
-## Widget Configuration
+## Widget Configuration {/* #widget-config */}
 
 Helpshift allows you to configure the widget by passing configuration options in the `helpshiftWidgetConfig` object.
 
-<a id="widget-options"></a>
-### Widget Options
+### Widget Options {/* #widget-options */}
 
 To configure the widget's behavior, you'll need to add `widgetOptions` to the Embed Code. All of the widget specific options go here.
 
@@ -86,8 +83,7 @@ To configure the widget's behavior, you'll need to add `widgetOptions` to the Em
 })();
 ```
 
-<a id="enable-full-screen"></a>
-#### Enable Fullscreen View for Pop-ups
+#### Enable Fullscreen View for Pop-ups {/* #enable-full-screen */}
 
 If you want to open the widget in full screen mode on a non-mobile device, you can pass through the `fullScreen` option in `widgetOptions`.
 
@@ -104,8 +100,7 @@ On mobile devices and on low resolution tablets and desktops, the widget will op
 
 </Admonition>
 
-<a id="show-launcher"></a>
-#### Show/Hide Launcher
+#### Show/Hide Launcher {/* #show-launcher */}
 
 You can hide the default widget launcher and use your own launcher. You can control opening and closing of the widget window using the `open` and `close` APIs. Add the following option in `widgetOptions` to hide the default widget launcher.
 
@@ -116,8 +111,7 @@ helpshiftWidgetConfig.widgetOptions = {
 };
 ```
 
-<a id="widget-position"></a>
-#### Widget Position
+#### Widget Position {/* #widget-position */}
 
 To set the widget's position, provide the `position` option in `widgetOptions`. Values allowed for `position` are:
 
@@ -135,8 +129,7 @@ helpshiftWidgetConfig.widgetOptions = {
 };
 ```
 
-<a id="widget-z-index"></a>
-#### Widget z-index
+#### Widget z-index {/* #widget-z-index */}
 
 By default, Helpshift Widget assigns a large `z-index` value to its widget (the widget launcher button and the widget window). If you want to use a custom value of `z-index` for Helpshift Widget, you can do so by setting the `zIndex` option in `widgetOptions`. You can only use a **number** with this option.
 
@@ -147,14 +140,12 @@ helpshiftWidgetConfig.widgetOptions = {
 };
 ```
 
-<a id="theming"></a>
-## Theming
+## Theming {/* #theming */}
 
 You can configure the color scheme for Helpcenter and Web Chat directly from the Helpshift Dashboard. For more details, refer to For [Support Admins: Configure the User Experience of Helpcenter](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/1169-help-center-procedure-configure-look-and-feel-settings-for-sdk-x-help-center-2-0-web-support-portals-and-web-chat-v2/)
 and [For Support Admins: Configure the User Experience of Web Chat](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/900-web-chat-understand-the-appearance-of-web-chat-ui-elements-sdk-x/) in our Knowledge Base.
 
-<a id="bots"></a>
-## Bots
+## Bots {/* #bots */}
 
 Bots can be enabled in Web Chat to automatically provide help and gather information from users to help your Agents resolve Issues faster. Helpshift has 3 default Bots:
 
@@ -164,8 +155,7 @@ Bots can be enabled in Web Chat to automatically provide help and gather informa
 
 For more details, refer to [Set Up Your Web Chat Bots](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/681-bot-procedures-create-and-configure-a-custom-bot-or-feedback-bot/) in our Knowledge Base.
 
-<a id="full-privacy"></a>
-## Full Privacy
+## Full Privacy {/* #full-privacy */}
 
 In the `helpshiftWidgetConfig` object at the time of initialization, setting the `fullPrivacy` option to `true` ensures [COPPA](http://www.coppa.org/) compliance by:
 
@@ -193,8 +183,7 @@ window.helpshiftWidgetConfig = {
 };
 ```
 
-<a id="initiate-chat"></a>
-## Initiating chat
+## Initiating chat {/* #initiate-chat */}
 
 Developers can start a new chat when the previous issue is resolved, without needing any user action like clicking the `New Conversation` button or going through the post resolution flow like feedback bot for the previously resolved issue.
 
@@ -210,8 +199,7 @@ Helpshift("updateHelpshiftWidgetConfig");
 
 To open the widget, [Open Widget API](https://developers.helpshift.com/web-chat/api/#open-widget) can be used.
 
-<a id="initial-user-message"></a>
-## Initial user message
+## Initial user message {/* #initial-user-message */}
 
 <InitialUserMessageDescription />
 
@@ -223,8 +211,7 @@ window.helpshiftWidgetConfig.initialUserMessage = "Some initial user message";
 Helpshift("updateHelpshiftWidgetConfig");
 ```
 
-<a id="conversation-prefill-text"></a>
-## Conversation prefill text
+## Conversation prefill text {/* #conversation-prefill-text */}
 
 <ConversationPrefillTextDescription />
 
@@ -237,8 +224,7 @@ Helpshift("updateHelpshiftWidgetConfig");
 
 To open the widget, [Open Widget API](https://developers.helpshift.com/web-chat/api/#open-widget) can be used.
 
-<a id="faq-section-view"></a>
-## Showing a Particular FAQ Section
+## Showing a Particular FAQ Section {/* #faq-section-view */}
 
 You can use this configuration to show FAQs from a particular FAQ section.
 
@@ -252,8 +238,7 @@ You can use this configuration to show FAQs from a particular FAQ section.
 window.helpshiftWidgetConfig.sectionId = "333";
 Helpshift("updateHelpshiftWidgetConfig");
 ```
-<a id="faq-question-view"></a>
-## Showing a Particular FAQ
+## Showing a Particular FAQ {/* #faq-question-view */}
 
 You can use this configuration to show a single FAQ.
 
@@ -273,8 +258,7 @@ FAQ ID takes precedence over Section ID. So if both are given, FAQ will be shown
 window.helpshiftWidgetConfig.faqId = "645";
 Helpshift("updateHelpshiftWidgetConfig");
 ```
-<a id="faq-filtering"></a>
-## FAQ Filtering by tags
+## FAQ Filtering by tags {/* #faq-filtering */}
 
 We have FAQ filtering capability by tags.
 With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.

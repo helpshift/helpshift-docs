@@ -31,8 +31,7 @@ This migration guide will walk you through the steps you need to take in order t
 
 </Intro>
 
-<a id="steps-to-migrate"></a>
-## Steps to migrate to SDK X
+## Steps to migrate to SDK X {/* #steps-to-migrate */}
 
 <Steps title="Migrate from legacy SDK to SDK X">
   <Step
@@ -56,8 +55,7 @@ This migration guide will walk you through the steps you need to take in order t
   />
 </Steps>
 
-<a id="unsupported-features"></a>
-## Unsupported features
+## Unsupported features {/* #unsupported-features */}
 
 We recommend to hold off on SDK X migration if you are currently using the following APIs/features -
 
@@ -70,8 +68,7 @@ We recommend to hold off on SDK X migration if you are currently using the follo
 
 These features are yet to be developed, and we may add them to our 2022 roadmap. You can reach out to support@helpshift.com to raise any query for the above.
 
-<a id="support-sdk-versions"></a>
-## Supported SDK Versions
+## Supported SDK Versions {/* #support-sdk-versions */}
 
 A successful migration indicates maintaining user’s data and chat history when they move from an SDK version to another. We support migration of legacy SDK from version 7+ to SDK X 10.1.+
 
@@ -83,8 +80,7 @@ We don’t support the migration from SDK version < 6. If you move to SDK X from
 
 </Admonition>
 
-<a id="update-gradle-import"></a>
-## Migrate SDK Gradle Import to SDK X Library
+## Migrate SDK Gradle Import to SDK X Library {/* #update-gradle-import */}
 
 Change the Gradle import statement for Helpshift SDK as following:
 
@@ -111,8 +107,7 @@ For example:
 
 </Admonition>
 
-<a id="update-install-call"></a>
-## Update "install" call
+## Update "install" call {/* #update-install-call */}
 
 Update the `install` call as the following.
 
@@ -129,8 +124,7 @@ try {
 
 Please refer to [SDK X Getting Started](/sdkx_android/getting-started#initializing) guide for more information.
 
-<a id="install-config"></a>
-## "install" call Configurations
+## "install" call Configurations {/* #install-config */}
 
 SDK X’s `install` API takes in a Map as the configuration for initialization. `InstallConfig` class has been removed and needs to be replaced by a `Map`.
 
@@ -157,8 +151,7 @@ All deprecated configurations have been removed and are not supported anymore.
 
 For more information on configurations, please refer to this document — [SDK Configuration - Helpshift SDK X for Android](/sdkx_android/sdk-configuration/)
 
-<a id="sdk-apis"></a>
-## Conversation and FAQ APIs
+## Conversation and FAQ APIs {/* #sdk-apis */}
 
 Update the public APIs for conversation and FAQs as following.
 
@@ -174,8 +167,7 @@ Update the public APIs for conversation and FAQs as following.
 
 For more information on public APIs in SDK X, please refer to this document — [Helpshift APIs - Helpshift SDK X for Android](/sdkx_android/support-tools/).
 
-<a id="sdk-api-config"></a>
-## Conversation and FAQ API Configuration
+## Conversation and FAQ API Configuration {/* #sdk-api-config */}
 
 Update the configuration passed in conversation and FAQ APIs as following.
 
@@ -195,11 +187,9 @@ Following deprecated configurations have been removed from the SDK:
 - [enableTypingIndicator](/android/sdk-configuration#enableTypingIndicator)
 - [showConversationResolutionQuestion](/android/sdk-configuration#showConversationResolutionQuestion)
 
-<a id="user-management"></a>
-## User Management
+## User Management {/* #user-management */}
 
-<a id="login"></a>
-### Login
+### Login {/* #login */}
 
 Replace the legacy SDK `login` code:
 
@@ -224,8 +214,7 @@ userData.put("userAuthToken", "generated-user-authentication-token");
 Helpshift.login(userData);
 ```
 
-<a id="logout"></a>
-### Logout
+### Logout {/* #logout */}
 
 Replace the legacy SDK `logout` code:
 
@@ -239,8 +228,7 @@ SDK X `logout` :
 Helpshift.logout()
 ```
 
-<a id="clear-anon-user"></a>
-### Clear anonymous user
+### Clear anonymous user {/* #clear-anon-user */}
 
 Replace legacy SDK `clearAnonymousUser` code:
 
@@ -254,8 +242,7 @@ SDK X API :
 Helpshift.clearAnonymousUserOnLogin();
 ```
 
-<a id="auth-fail-listener"></a>
-### User auth failure listener
+### User auth failure listener {/* #auth-fail-listener */}
 
 Replace authentication failure listener delegate with `HelpshiftEventListener` in SDK X:
 
@@ -309,8 +296,7 @@ We recommend that on migration to SDK X, you should log the active user in again
 
 </Admonition>
 
-<a id="design-customize-support"></a>
-## Design and Customization Support
+## Design and Customization Support {/* #design-customize-support */}
 
 Design and Customization of SDK X has completely moved to Helpshift Dashboard.
 
@@ -324,15 +310,13 @@ Theming and customization is yet to be supported in SDK X and we will add it in 
 
 </Admonition>
 
-<a id="string-customize"></a>
-## String Customization
+## String Customization {/* #string-customize */}
 
 String customization is yet to be supported. It will be moved to Helpshift Dashboard.
 
 Remove all Helpshift SDK related string customizations done in your app as it will no longer reflect in SDK X.
 
-<a id="notification"></a>
-## Notifications
+## Notifications {/* #notification */}
 
 Replace the following APIs from Legacy SDK to SDK X APIs for notification handling.
 
@@ -384,8 +368,7 @@ We recommend that you set the SDK language again on upgrading your app with SDK 
 
 For more information on internationalization, please refer to this document — [Going International - Helpshift SDK X for Android](/sdkx_android/i18n/)
 
-<a id="tracking"></a>
-## Tracking
+## Tracking {/* #tracking */}
 
 ### Breadcrumb
 
@@ -518,8 +501,7 @@ Map<String, String> joiningDate = new HashMap<>();
 
 Please refer to this document for further details - [CIF - Helpshift SDK X Android](/sdkx_android/tracking#set-custom-issue-fields)
 
-<a id="delegates"></a>
-## Helpshift Delegates
+## Helpshift Delegates {/* #delegates */}
 
 The events reported in Legacy SDKs `Delegate` class will now be reported in `HelpshiftEventListener` callback interface of SDK X.
 All the events are now reported in `onEventOccurred` method of this listener class with defined constants for expected values. You will need to update your code based on these events from the old `Delegate` class.
@@ -532,8 +514,7 @@ Following events are not supported anymore from the legacy SDK:
 
 - `displayAttachmentFile`
 
-<a id="review-feedback"></a>
-## Review and Feedback
+## Review and Feedback {/* #review-feedback */}
 
 App Review by an agent is supported in SDK X. You can learn more about this feature [here](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/782-in-app-support-what-is-the-send-review-request-function-how-do-i-use-it/)
 
@@ -543,13 +524,11 @@ Following have been deprecated in SDK X:
 - [Manual App Rating request ](/android/reviews-and-feedback#app-rating-api)
 - [Automatic Reviews request](/android/reviews-and-feedback#configure-review-request)
 
-<a id="deep-links"></a>
-## Deep Links
+## Deep Links {/* #deep-links */}
 
 Deep links are supported in SDK X, similar to Legacy SDK — [Deep Linking - Helpshift SDK X for Android](/sdkx_android/deep-linking/)
 
-<a id="troubleshooting-migration"></a>
-## Troubleshooting
+## Troubleshooting {/* #troubleshooting-migration */}
 
 ### Compilation errors due to Helpshift SDK
 
@@ -569,7 +548,6 @@ Check if you have correctly migrated to use the new API for handling push notifi
 
 Check that you have registered the listener `Helpshift.setHelpshiftEventListener()` correctly and have migrated your event handling code from `Support.setDelegate()`
 
-<a id="contact-us"></a>
-## Contact Us
+## Contact Us {/* #contact-us */}
 
 If you face any issues with respect to migrating from legacy SDK to SDK X, please contact us on support@helpshift.com

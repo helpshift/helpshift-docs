@@ -20,8 +20,7 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<a id="delegates"></a>
-# Helpshift Delegates
+# Helpshift Delegates {/* #delegates */}
 
 <LegacyEolAdmonition />
 
@@ -33,18 +32,15 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 All delegate callbacks will be registered and called with function pointers with matching signatures.
 
-<a id="session-delegates"></a>
-## Helpshift Session delegates
+## Helpshift Session delegates {/* #session-delegates */}
 
-<a id="delegate-session-began"></a>
-### Session begin
+### Session begin {/* #delegate-session-began */}
 
 **helpshiftSessionBegan**
 
 If you want to keep track of when helpshift session starts in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session starts.
 
-<a id="delegate-session-ended"></a>
-### Session end
+### Session end {/* #delegate-session-ended */}
 
 **helpshiftSessionEnded**
 
@@ -65,11 +61,9 @@ For example:
     HelpshiftCocos2dx::registerSessionDelegates(hsSessionBegun, hsSessionEnded);
 ```
 
-<a id="conversation-delegates"></a>
-## Conversation delegates
+## Conversation delegates {/* #conversation-delegates */}
 
-<a id="delegate-new-conversation-started"></a>
-### New Conversation Started
+### New Conversation Started {/* #delegate-new-conversation-started */}
 
 **newConversationStarted**
 
@@ -81,8 +75,7 @@ As soon as an end user opens the conversation screen, they will see a greeting m
 
 </Admonition>
 
-<a id="delegate-user-replied-to-conversation"></a>
-### New message delegate
+### New message delegate {/* #delegate-user-replied-to-conversation */}
 
 **userRepliedToConversation**
 
@@ -101,23 +94,20 @@ All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also
 
 </Admonition>
 
-<a id="csat-completed"></a>
-### Customer satisfaction survey delegate
+### Customer satisfaction survey delegate {/* #csat-completed */}
 
 **userCompletedCustomerSatisfactionSurvey**
 
 If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
 
-<a id="newmessage-recieved"></a>
-### New message received count delegate
+### New message received count delegate {/* #newmessage-recieved */}
 
 **didReceiveNotification**
 
 If you want to keep a count of all new messages recieved in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift recieves a new message in an existing conversation.
 You can also use this delegate to keep your badge counts updated.
 
-<a id="delegate-conversation-ended"></a>
-### Conversation Ended
+### Conversation Ended {/* #delegate-conversation-ended */}
 
 **conversationEnded**
 
@@ -155,8 +145,7 @@ For example:
                                                      conversationEnded);
 ```
 
-<a id="display-attachment"></a>
-## Display attachment delegate
+## Display attachment delegate {/* #display-attachment */}
 
 Agents can attach a wide variety of files when replying to users. Following types of file formats are currently supported:
 
@@ -202,8 +191,7 @@ After the attachment is downloaded, Helpshift checks for any app which can open 
     }
 ```
 
-<a id="authetication-failure"></a>
-### Authentication failure delegate
+### Authentication failure delegate {/* #authetication-failure */}
 
 If identity verification fails, the SDK will invoke one of the following delegates to notify the application of the failure:
 
@@ -267,8 +255,7 @@ If identity verification fails, the SDK will invoke one of the following delegat
     HelpshiftCocos2dx::registerAuthenticationFailureDelegate(authenticationFailure);
 ```
 
-<a id="user-click-action"></a>
-### User click on action delegate
+### User click on action delegate {/* #user-click-action */}
 
 This delegate method is called when the user clicks on the action in Action Card bot.
 

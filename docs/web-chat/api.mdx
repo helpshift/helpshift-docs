@@ -25,8 +25,7 @@ import {
 
 </Intro>
 
-<a id="open-widget"></a>
-## Open Widget
+## Open Widget {/* #open-widget */}
 
 If you want to open the conversation window at any time (apart from an explicit user click on launcher button), you can do it by calling the following API. This could be useful for triggering proactive help.
 
@@ -34,8 +33,7 @@ If you want to open the conversation window at any time (apart from an explicit 
 Helpshift("open");
 ```
 
-<a id="close-widget"></a>
-## Close Widget
+## Close Widget {/* #close-widget */}
 
 Similarly, for closing the conversation window at any time, you can call the following API.
 
@@ -43,8 +41,7 @@ Similarly, for closing the conversation window at any time, you can call the fol
 Helpshift("close");
 ```
 
-<a id="hide-widget"></a>
-## Hide Widget
+## Hide Widget {/* #hide-widget */}
 
 You can hide Web Chat completely (both the launcher and the widget) by calling the following API.
 
@@ -58,8 +55,7 @@ You may want to use this API when you do not want to show the widget on specific
 
 </Admonition>
 
-<a id="show-widget"></a>
-## Show Widget
+## Show Widget {/* #show-widget */}
 
 You can have Web Chat (both the launcher and the widget) re-appear after it was previously hidden (via the hide API) by calling the following API.
 
@@ -80,8 +76,7 @@ This API will restore the visibility of Web Chat after it was previously hidden.
   width="full"
 />
 
-<a id="update-helpshift-config"></a>
-## Update Helpshift Config
+## Update Helpshift Config {/* #update-helpshift-config */}
 
 If you want to update the `helpshiftConfig` object after your web page has loaded, you can do it by calling the following API
 
@@ -127,8 +122,7 @@ Make sure you do not overwrite the `helpshiftConfig` object when trying to updat
 
 </Admonition>
 
-<a id="set-initial-user-message"></a>
-## Set Initial User Message
+## Set Initial User Message {/* #set-initial-user-message */}
 
 If you want to set the initial user message through an API rather than making the end user type it, you can use the following API.
 
@@ -143,20 +137,17 @@ You should call this API before a conversation starts. In other words, it works 
 
 </Admonition>
 
-<a id="user-hub-apis"></a>
-## User Hub APIs
+## User Hub APIs {/* #user-hub-apis */}
 
 Our new Identity system - [User Hub](/web-chat/identity-users), introduces various
 APIs for managing users and their data. Refer to the linked section for details.
 
 
-<a id="events"></a>
-## Events
+## Events {/* #events */}
 
 The Helpshift Widget fires the following events across different scenarios. You can use the `addEventListener` and `removeEventListener` APIs to manage the events.
 
-<a id="new-unread-messages-event"></a>
-### New Unread Messages Event
+### New Unread Messages Event {/* #new-unread-messages-event */}
 
 This event gets fired when there are new unread message for the user. To listen to this event, add the following code after the embed code.
 
@@ -191,8 +182,7 @@ Helpshift(
 );
 ```
 
-<a id="user-changed-event"></a>
-### User Changed Event
+### User Changed Event {/* #user-changed-event */}
 
 This event gets fired when the user reopens Web Chat by clicking on the email link, if we detect that the user's identifier
 has changed from when the original user started the conversation to when this user clicked the email link.
@@ -240,8 +230,7 @@ login/logout (depending on what their original state was.)
 
 </Admonition>
 
-<a id="widget-toggle-event"></a>
-### Widget Toggle Event
+### Widget Toggle Event {/* #widget-toggle-event */}
 
 This event is triggered when the user minimizes or maximizes the Web Chat main window. The event data object has a boolean property ‘visible’ which indicates the visibility of the main chat window. For your reference, see the below example:
 
@@ -260,8 +249,7 @@ Helpshift("addEventListener", "widgetToggle", widgetToggleEventHandler);
 Helpshift("removeEventListener", "widgetToggle", widgetToggleEventHandler);
 ```
 
-<a id="conversation-start-event"></a>
-### Conversation Start Event
+### Conversation Start Event {/* #conversation-start-event */}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a property, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
@@ -288,8 +276,7 @@ Helpshift(
 );
 ```
 
-<a id="message-add-event"></a>
-### Message Add Event
+### Message Add Event {/* #message-add-event */}
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` properties, which indicates the type and body of the message added by the user. For your reference, see the below example.
 
@@ -311,8 +298,7 @@ Helpshift("addEventListener", "messageAdd", messageAddEventHandler);
 Helpshift("removeEventListener", "messageAdd", messageAddEventHandler);
 ```
 
-<a id="csat-submit-event"></a>
-### CSAT Submit Event
+### CSAT Submit Event {/* #csat-submit-event */}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` properties, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
@@ -332,8 +318,7 @@ Helpshift("addEventListener", "csatSubmit", csatSubmitEventHandler);
 Helpshift("removeEventListener", "csatSubmit", csatSubmitEventHandler);
 ```
 
-<a id="conversation-end-event"></a>
-### Conversation End Event
+### Conversation End Event {/* #conversation-end-event */}
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -364,8 +349,7 @@ The `conversationEnd` event is triggered along with the `conversationResolved` a
 
 </Admonition>
 
-<a id="conversation-rejected-event"></a>
-### Conversation Rejected Event
+### Conversation Rejected Event {/* #conversation-rejected-event */}
 
 This event is triggered when an agent rejects the conversation.
 
@@ -392,8 +376,7 @@ Helpshift(
 );
 ```
 
-<a id="conversation-resolved-event"></a>
-### Conversation Resolved Event
+### Conversation Resolved Event {/* #conversation-resolved-event */}
 
 This event is triggered when an agent resolves the conversation.
 
@@ -420,8 +403,7 @@ Helpshift(
 );
 ```
 
-<a id="conversation-reopened-event"></a>
-### Conversation Reopened Event
+### Conversation Reopened Event {/* #conversation-reopened-event */}
 
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
@@ -448,8 +430,7 @@ Helpshift(
 );
 ```
 
-<a id="agent-message-received-event"></a>
-### Agent Message Received event
+### Agent Message Received event {/* #agent-message-received-event */}
 
 This event is triggered whenever an agent message is _read_ by the end-user. This event does not trigger for bot messages.
 
@@ -507,8 +488,7 @@ Helpshift(
 );
 ```
 
-<a id="user-click-on-action-event"></a>
-### User click on Action event
+### User click on Action event {/* #user-click-on-action-event */}
 
 This event is triggered whenever the end-user clicks on a link in an action card.
 
@@ -547,15 +527,13 @@ Helpshift(
 );
 ```
 
-<a id="on-login-request"></a>
-### On Login Request Event
+### On Login Request Event {/* #on-login-request */}
 
 The `onLoginRequest` event is used to request you to login your end-user. This event is intended
 to work with the new Identity system - [User Hub](/web-chat/identity-users).
 You can refer to the linked section for details.
 
-<a id="on-webchat-runtime-error"></a>
-### On Web Chat Runtime Error
+### On Web Chat Runtime Error {/* #on-webchat-runtime-error */}
 
 <Admonition type="danger" title="Note">
 

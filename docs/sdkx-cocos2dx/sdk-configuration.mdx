@@ -30,13 +30,11 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-<a id="common-config"></a>
-## Common configurations
+## Common configurations {/* #common-config */}
 
 Common configurations apply to both iOS and Android platforms.
 
-<a id="enable-logging"></a>
-### Enable Logging
+### Enable Logging {/* #enable-logging */}
 
 Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Xcode/Android Studio console. These logs can be useful for debugging the SDK during integration. Turning on logging can help developers resolve common integration issues. The verbosity of the logs will change depending on whether the app is compiled for Debug or Release mode. We log more information in debug mode than in release mode.
 
@@ -104,8 +102,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 </TabItem>
 </Tabs>
 
-<a id="faq-filtering"></a>
-## FAQ Filtering by tags
+## FAQ Filtering by tags {/* #faq-filtering */}
 
 We have FAQ filtering capability by tags.
 With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose this capability for FAQ filtering and showing a focused FAQ list to the right audience.
@@ -175,8 +172,7 @@ You can have only one tag filter config which will be respected on showFAQs, sho
 
 </Admonition>
 
-<a id="enable-contact-us"></a>
-### Enable Contact Us
+### Enable Contact Us {/* #enable-contact-us */}
 
 Controls the visibility of the Helpshift Contact Us button when a user is viewing FAQs. You can customize this option to make it easier or more difficult to contact support. If specified, this configuration takes precedence over the value of **Enable Contact Us** set on admin dashboard.
 
@@ -206,8 +202,7 @@ HelpshiftCocos2dx::showFAQs(faqConfig);
 - Provide tier-based support by setting enableContactUs to `ALWAYS` for paid users and `AFTER_VIEWING_FAQS` for unpaid ones.
 - Provide country based support by setting enableContactUs to `ALWAYS` for local users and `AFTER_VIEWING_FAQS` for foreign ones. Example Code:
 
-<a id="enableFullPrivacy"></a>
-### Full privacy
+### Full privacy {/* #enableFullPrivacy */}
 
 Full privacy option helps ensure [COPPA](http://www.coppa.org/) compliance by:
 
@@ -239,8 +234,7 @@ HelpshiftCocos2dx::showConversation(chatConfig);
 
 In your registration process, ask your user for their age. If the user's age is 13 or younger, set `fullPrivacy` to YES. This way, you comply with COPPA for your under-age users, but collect valuable user and device data for your other users.
 
-<a id="enable-in-app-notifications"></a>
-### Enable In-App Notifications
+### Enable In-App Notifications {/* #enable-in-app-notifications */}
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`.
 
@@ -312,8 +306,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 </TabItem>
 </Tabs>
 
-<a id="initiate-chat-on-load"></a>
-### Initiate new conversation on chat screen load
+### Initiate new conversation on chat screen load {/* #initiate-chat-on-load */}
 
 In `config` map of `HelpshiftCocos2dx::showConversation(config);` API, setting the `initiateChatOnLoad` option to `true` will start a new conversation if the previous issue is resolved, without the end user clicking the **New Conversation** button or going through the post resolution flows like feedback bots of the previous issue.
 
@@ -333,8 +326,7 @@ chatConfig["initiateChatOnLoad"] = true;
 HelpshiftCocos2dx::showConversation(chatConfig);
 ```
 
-<a id="conversation-prefill-text"></a>
-### Conversation prefill text
+### Conversation prefill text {/* #conversation-prefill-text */}
 
 <ConversationPrefillTextDescription />
 
@@ -348,8 +340,7 @@ configMap["conversationPrefillText"] = Value("INSERT YOUR PREFILL TEXT");
 HelpshiftCocos2dx::showConversation(configMap);
 ```
 
-<a id="conversation-initial-user-message"></a>
-## Conversation Initial User Message
+## Conversation Initial User Message {/* #conversation-initial-user-message */}
 
 <ConversationInitialUserMessage />
 
@@ -363,8 +354,7 @@ configMap["initialUserMessage"] = Value("INSERT YOUR INITIAL USER MESSAGE");
 HelpshiftCocos2dx::showConversation(configMap);
 ```
 
-<a id="clearing-initial-user-message"></a>
-## Clearing Initial User Message
+## Clearing Initial User Message {/* #clearing-initial-user-message */}
 
 <ClearInitialUserMessageDescription />
 
@@ -423,8 +413,7 @@ bool HelloWorld::init()
 
 ## Android specific configurations
 
-<a id="screen-orientation"></a>
-### Screen Orientation
+### Screen Orientation {/* #screen-orientation */}
 
 The screen orientation of Helpshift SDK screens can be fixed by setting the `screenOrientation` to constants available in the [ActivityInfo](https://developer.android.com/reference/android/content/pm/ActivityInfo.html) class.
 For example, you may want to fix the orientation to `ActivityInfo.SCREEN_ORIENTATION_PORTRAIT` for mobile users and `ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE` for tablet users.
@@ -464,8 +453,7 @@ public class MyActivity extends Cocos2dxActivity {
 }
 ```
 
-<a id="notification-icon"></a>
-### Notification Icon
+### Notification Icon {/* #notification-icon */}
 
 By default the application icon is used as the notification icon. You can customize the notification icon using the `config` in the `install` call.
 
@@ -494,8 +482,7 @@ public class MyActivity extends Cocos2dxActivity {
 }
 ```
 
-<a id="large-notification-icon"></a>
-### Large Notification Icon
+### Large Notification Icon {/* #large-notification-icon */}
 
 By default the application icon is used as the notification icon.
 If you want to specify the large notification icon also to show up in the notification tray, you can specify that using the `config` in the `install` call.
@@ -525,8 +512,7 @@ public class MyActivity extends Cocos2dxActivity {
 }
 ```
 
-<a id="notification-sound"></a>
-### Notification Sound
+### Notification Sound {/* #notification-sound */}
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -555,8 +541,7 @@ public class MyActivity extends Cocos2dxActivity {
 }
 ```
 
-<a id="notification-channels"></a>
-### Notification channels
+### Notification channels {/* #notification-channels */}
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
 
@@ -587,8 +572,7 @@ public class MyActivity extends Cocos2dxActivity {
 
 ## iOS Specific Configurations
 
-<a id="in-app-notification-appearance"></a>
-### In-App Notificaton Appearance
+### In-App Notificaton Appearance {/* #in-app-notification-appearance */}
 
 This config represents the appearance of the in-app notification in the SDK. When the agent/bot sends a message and the user is using the app, an in-app banner is shown and the appearance of that banner can be customized using this dictionary.
 
@@ -622,8 +606,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 }
 ```
 
-<a id="present-full-screen-on-ipad"></a>
-### Full Screen on iPad
+### Full Screen on iPad {/* #present-full-screen-on-ipad */}
 
 The `presentFullScreenOniPad` flag will determine whether to present support views in `UIModalPresentationFullScreen` or `UIModalPresentationFormSheet` modal presentation style on iPad. This config has no effect on iPhones.
 
@@ -645,13 +628,11 @@ config["presentFullScreenOniPad"] = true;
 HelpshiftCocos2dx::showConversation(config);
 ```
 
-<a id="theming"></a>
-## Theming the SDK
+## Theming the SDK {/* #theming */}
 
 Please check the [design](/sdkx-cocos2dx/design/) page to apply your styles and theming to SDK.
 
-<a id="tracking"></a>
-## Tracking
+## Tracking {/* #tracking */}
 
 <!---
 Change tracking link to sdkx-cocos
