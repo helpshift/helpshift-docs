@@ -5,24 +5,24 @@ description: "The Helpshift SDK provides delegate callbacks to help app develope
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Helpshift Delegates {/* #delegates */}
 
-# Helpshift Delegates {#delegates}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -30,7 +30,7 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Intro>
 
-## Helpshift Delegates implementation {#helpshift-delegates-implementation}
+## Helpshift Delegates implementation {/* #helpshift-delegates-implementation */}
 
 You have to define a class which implements Helpshift Delegates and then
 pass this to Helpshift using `HelpshiftSupport.SetDelegate(ISupportDelegate delegateInstance)` method.
@@ -119,7 +119,7 @@ Class Usage:
     HelpshiftApi.HelpshiftSupport.SetDelegate(delegateObject);
 ```
 
-## Helpshift Session delegates {#session-delegates}
+## Helpshift Session delegates {/* #session-delegates */}
 
 ### Session begin
 
@@ -133,7 +133,7 @@ If you want to keep track of when helpshift session starts in your app, you can 
 
 If you want to keep track of when helpshift session ends in your app, you can implement this delegate callback. The delegate will get fired every time the Helpshift session ends.
 
-## Conversation delegates {#conversation-delegates}
+## Conversation delegates {/* #conversation-delegates */}
 
 ### New Conversation Started
 
@@ -159,7 +159,7 @@ This delegate callback can be implemented to check if an ongoing Conversation ha
 
 This delegate callback can be implemented to check if a Conversation is active when queried via [HelpshiftApi.HelpshiftSupport.CheckIfConversationActive()](/xamarin/tracking-android#checkifconversationactive)
 
-## New message delegate {#delegate-user-replied-to-conversation}
+## New message delegate {/* #delegate-user-replied-to-conversation */}
 
 **UserRepliedToConversation**
 
@@ -178,13 +178,13 @@ All replies from end users to your Bots (QuickSearch Bot, Identity Bot) are also
 
 </Admonition>
 
-## Customer satisfaction survey delegate {#csat-completed}
+## Customer satisfaction survey delegate {/* #csat-completed */}
 
 **UserCompletedCustomerSatisfactionSurvey**
 
 If you want to keep track of when your app user completes the customer satisfaction survey for a conversation, you can implement this delegate. This delegates will get called every time a user completes the customer satisfaction survey. The delegate method will receive the rating and the feedback in it's arguments.
 
-## Display attachment delegate {#display-attachment}
+## Display attachment delegate {/* #display-attachment */}
 
 **DisplayAttachmentFile**
 
@@ -213,20 +213,20 @@ After the attachment is downloaded, Helpshift checks for any app which can open 
     }
 ```
 
-## New message received count delegate {#newmessage-recieved}
+## New message received count delegate {/* #newmessage-recieved */}
 
 **DidReceiveNotification**
 
 If you want to keep a count of all new messages received in an existing conversation, you can implement this delegate. This delegate will get called with the current unread count every time when helpshift receives a new message in an existing conversation.
 You can also use this delegate to keep your badge counts updated.
 
-## Unread Messages Count Delegate {#unread-messages-count}
+## Unread Messages Count Delegate {/* #unread-messages-count */}
 
 **DidReceiveUnreadMessagesCount**
 
 This delegate can be implemented to get the count of unread messages queried via [HelpshiftApi.HelpshiftSupport.RequestUnreadMessagesCount(bool)](/xamarin/notifications-android#showing-notification-count)
 
-## User click on action delegate {#user-click-action}
+## User click on action delegate {/* #user-click-action */}
 
 **UserDidClickOnActionWithTypeAndData**
 

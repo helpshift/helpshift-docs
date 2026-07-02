@@ -20,9 +20,9 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Getting Started {/* #getting-started */}
 
-# Getting Started {#getting-started}
+<LegacyEolAdmonition />
 
 <Steps title="New to Helpshift? Try out sample projects in 3 clicks">
   <Step
@@ -55,9 +55,9 @@ Android app right away -
 
 </Intro>
 
-## Integration Guide {#integration-guide}
+## Integration Guide {/* #integration-guide */}
 
-### Version Requirements {#version-requirements}
+### Version Requirements {/* #version-requirements */}
 
 | Helpshift SDK Version | minSDKVersion | compileSDKVersion | buildToolsVersion |
 | --------------------- | ------------- | ----------------- | ----------------- |
@@ -81,9 +81,9 @@ For example, update your `AndroidManifest.xml` as follows:
 
 </Admonition>
 
-### Download the SDK {#download-sdk}
+### Download the SDK {/* #download-sdk */}
 
-### Gradle based projects {#gradle-support}
+### Gradle based projects {/* #gradle-support */}
 
 Add the following dependencies to your `build.gradle` file inside the depencencies section.
 
@@ -106,7 +106,7 @@ Move on to [Initializing Helpshift in your App](#initializing).
 
 ---
 
-### IntelliJ/Eclipse based projects {#intellij-eclipse}
+### IntelliJ/Eclipse based projects {/* #intellij-eclipse */}
 
 If your Android project is based on IntelliJ or Eclipse, <a href="[% android.sdk_url %]">download the latest version</a> of the Android SDK.
 
@@ -118,16 +118,16 @@ format.
 
 ---
 
-### Maven based projects {#maven-support}
+### Maven based projects {/* #maven-support */}
 
 If your Android project is based on Maven, [follow the steps here](/misc/maven-integration/).
 
-## Start using Helpshift {#start-using}
+## Start using Helpshift {/* #start-using */}
 
 Helpshift is now integrated in your app and ready to provide customer
 support and collect meaningful data about your users.
 
-### Initialize Helpshift in your App {#initializing}
+### Initialize Helpshift in your App {/* #initializing */}
 
 Helpshift uniquely identifies each registered App with a combination of 3 tokens:
 
@@ -207,7 +207,7 @@ Initialize Helpshift by calling the `com.helpshift.Core`'s `install` method by d
 
 <Admonition type="danger" title="Important">
 
-** Placing the install call **
+**Placing the install call**
 
 You should not place the install call anywhere other than `Application.onCreate`
 Placing it elsewhere might cause unexpected runtime problems.
@@ -216,11 +216,11 @@ Placing it elsewhere might cause unexpected runtime problems.
 
 From v7.4.0 & above, calling any API before the install call would throw an unchecked HelpshiftInitializationException in debug mode.
 
-** InstallException **
+**InstallException**
 
 From v4.6.0 & above, the Helpshift install call will throw InstallException in case the validation of the SDK keys fail.
 
-** Multi-process apps **
+**Multi-process apps**
 
 If your app is a multi-process app, please visit the troubleshooting guide [here](/android/troubleshooting#multi-process-apps) to integrate the Helpshift SDK with your app.
 
@@ -246,11 +246,11 @@ With the transition to TLSv1.2 on Sep 20,2021, connections to a Helpshift SDK vi
 
 The Helpshift Android SDK requires `WRITE_EXTERNAL_PERMISSION`. For SDK v6.2.0 and above this permission is optional, and you can choose to not include this permission in your app’s manifest file. The behaviour of the SDK based on whether this permission is mentioned in your manifest file is detailed [here](/android/sdk-configuration#app-permissions).
 
-## Troubleshooting {#troubleshooting}
+## Troubleshooting {/* #troubleshooting */}
 
 If you are having issues with Helpshift integration, head over to the [Troubleshooting](/android/troubleshooting#integration-issues) section for further information.
 
-## Additional Configuration {#additional-config}
+## Additional Configuration {/* #additional-config */}
 
 - If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
 
@@ -308,12 +308,14 @@ If you are having issues with Helpshift integration, head over to the [Troublesh
 
 - In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
 
-        <path id="helpshift-classpath">
-          <fileset dir="<path/to/Helpshift-SDK/libs>">
-            <include name="Helpshift.jar"/>
-          </fileset>
-        </path>
-        <java classname="com.helpshift.HSPostCompileCheck" failonerror="true">
-          <classpath refid="helpshift-classpath"/>
-          <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
-        </java>
+    ```text
+      <path id="helpshift-classpath">
+        <fileset dir="<path/to/Helpshift-SDK/libs>">
+          <include name="Helpshift.jar"/>
+        </fileset>
+      </path>
+      <java classname="com.helpshift.HSPostCompileCheck" failonerror="true">
+        <classpath refid="helpshift-classpath"/>
+        <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
+      </java>
+    ```

@@ -22,7 +22,7 @@ import {
 
 import CUFDateTypeNotice from "@site/docs/_partials/_cuf_date_valuetype.mdx";
 
-# User Hub {#user-hub}
+# User Hub {/* #user-hub */}
 
 The new Identity System provides many advantages, with minimal efforts (as outlined below) over the legacy method, in the form of faster context collection,
 easier agent experience, and enhanced security and spam protection.
@@ -32,7 +32,7 @@ easier agent experience, and enhanced security and spam protection.
 1. Ensure that the Identity System is enabled for your domain (reach out to Helpshift Customer Success if you wish to enable this)
 2. Ensure that you have an endpoint set up for obtaining user JWTs on-demand
 
-## Logging in your end-users {#login-user}
+## Logging in your end-users {/* #login-user */}
 
 In order to use the new Identity system, you need to implement the following steps:
 1. Specify the `authenticateWith` parameter in `helpshiftConfig` prior to loading Web Chat
@@ -81,7 +81,7 @@ Helpshift("addEventListener", "onLoginRequest", async ({userId, userEmail}) => {
 });
 ```
 
-### Full privacy scenarios {#full-privacy-scenarios}
+### Full privacy scenarios {/* #full-privacy-scenarios */}
 
 The following rules apply depending on the value of the `full_privacy_enabled` flag:
 * If full privacy flag is false, one of `userId` or `userEmail` is mandatory, unless you are logging in an anonymous user.
@@ -89,14 +89,14 @@ The following rules apply depending on the value of the `full_privacy_enabled` f
 * If `userId` is absent and `full_privacy_enabled` is true - Web Chat will generate an anonymous ID and use this ID to identify the user.
 * Full privacy is assumed to be false if no value is specified, or if the passed value is invalid.
 
-### Best practices to follow for Login API {#login-best-practices}
+### Best practices to follow for Login API {/* #login-best-practices */}
 
 * When you have more information to associate with current logged in user, use the `addUserIdentities` API.
 * The `userId` or `userEmail` should uniquely identify the user across all users of your app. It should NOT be duplicated for two or more different users.
 * If you are setting full_privacy_enabled to true, you shouldn't use email as the only identifier in the login API for that user. This will result in the creation of an anonymous user.
 * For logging in a new user, first use the logout API, update the `userId` and `userEmail` in `helpshiftConfig`, and call `updateHelpshiftConfig`, to retrigger a new login request.
 
-### Identity token format {#identity-token-format}
+### Identity token format {/* #identity-token-format */}
 
 The identity token must be a **JWT signed using the shared secret** from your app settings in the dashboard.
 When decoded, it must adhere to the following format:
@@ -136,7 +136,7 @@ If this happens, we replace the chat with a full screen session expired message.
 
 </Admonition>
 
-## With anonymous users {#with-anon-users}
+## With anonymous users {/* #with-anon-users */}
 
 We recommend logging in your end-user into Helpshift as early as possible, since it helps
 streamline the entire support experience.
@@ -158,7 +158,7 @@ window.helpshiftConfig = {
 /////////////////////////////////
 ```
 
-## Retroactively logging your end-user in {#retroactively-login-user}
+## Retroactively logging your end-user in {/* #retroactively-login-user */}
 In certain cases, your end-user may be anonymous for a short while before you log them in. In such cases, you will have to
 update `helpshiftConfig` and call the `Helpshift("updateHelpshiftConfig")` API to trigger a new login.
 
@@ -199,7 +199,7 @@ Helpshift("updateHelpshiftConfig")
 // ^ This will trigger the onLoginRequest event.
 ```
 
-## Adding more user identities {#add-user-identities}
+## Adding more user identities {/* #add-user-identities */}
 
 Note that although the API is named `identities`, if you wish to send multiple identities, they must be a part of the JWT's payload itself.
 Essentially, the API expects a single string JWT and NOT an array of JWTs.
@@ -223,7 +223,7 @@ useEffect-like callbacks or frequently-firing events, since rate-limiting restri
 
 For a list of errors that can occur when using this API, refer [ADD_USER_IDENTITY_FAILED](#add-user-identity-failed).
 
-## Updating global user data {#update-global-user-data}
+## Updating global user data {/* #update-global-user-data */}
 
 You can update your user's global data using this API.
 
@@ -281,7 +281,7 @@ Global user data is also referred to as **core attributes**.
 
 For a list of errors that can occur when using this API, refer [UPDATE_GLOBAL_USER_DATA_FAILED](#update-global-user-data-failed).
 
-## Updating app user data {#update-app-user-data}
+## Updating app user data {/* #update-app-user-data */}
 
 You can update your user's app or website-specific data using this API.
 
@@ -347,7 +347,7 @@ App user data is also referred to as **app attributes**.
 
 For a list of errors that can occur when using this API, refer [UPDATE_APP_USER_DATA_FAILED](#update-app-user-data-failed).
 
-## Logging out your end-users {#logout-end-users}
+## Logging out your end-users {/* #logout-end-users */}
 To log out your end-users, you can use the logout API.
 
 
@@ -375,7 +375,7 @@ optimizations.
 
 </Admonition>
 
-### Send the identity_token in SSR requests {#send-identity-token-in-ssr}
+### Send the identity_token in SSR requests {/* #send-identity-token-in-ssr */}
 If your application uses SSR, you can send the `identity_token` as part of your page load,
 injecting it in the `onLoginRequest` callback directly.
 
@@ -394,12 +394,12 @@ would become necessary.
 
 </Admonition>
 
-### Caching the identity_token {#caching-id-token}
+### Caching the identity_token {/* #caching-id-token */}
 We highly discourage caching the `identity_token` on the client-side since it increases the potential
 attack surface for XSS. However, you may choose to cache it on the server-side, provided that the cache
 is invalidated before 24 hours elapse.
 
-## Troubleshooting and tips {#troubleshooting-and-tips}
+## Troubleshooting and tips {/* #troubleshooting-and-tips */}
 
 Login failure can be detected by listening to the [`onWebChatRuntimeError` event](/web-chat/api/#on-webchat-runtime-error).
 The possible reasons for login failure are cited in the [`LOGIN_FAILED` runtime errors](#login-failed).
@@ -423,12 +423,12 @@ limits will also be reported to you as documented in the [API failure reasons](#
 * Value length for user tags - Max 100 chars
 * Collection size - Max 30 entries
 
-## API failure reasons {#api-failure-reasons}
+## API failure reasons {/* #api-failure-reasons */}
 
 You can subscribe to the [onWebChatRuntimeError](/web-chat/api/#on-webchat-runtime-error) event
 to handle these errors programmatically. The following errors are emitted for the User Identity APIs:
 
-### LOGIN_FAILED {#login-failed}
+### LOGIN_FAILED {/* #login-failed */}
 Occurs when the user login fails.
 The following reason and details combinations are possible in this scenario:
 
@@ -546,7 +546,7 @@ interface InvalidPayloadDetails {
 
 </table>
 
-### ADD_USER_IDENTITY_FAILED {#add-user-identity-failed}
+### ADD_USER_IDENTITY_FAILED {/* #add-user-identity-failed */}
 
 This error can occur when you attempt to update the a user identity with the new Identity System.
 Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
@@ -591,7 +591,7 @@ Client-side validation. Fired when you attempt to call this API, but `authentica
 
 </table>
 
-### UPDATE_GLOBAL_USER_DATA_FAILED {#update-global-user-data-failed}
+### UPDATE_GLOBAL_USER_DATA_FAILED {/* #update-global-user-data-failed */}
 This error can occur when you attempt to update global user data with the new Identity System.
 Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
 
@@ -644,7 +644,7 @@ Client-side validation. Fired when you attempt to call this API, but `authentica
 </tr>
 </table>
 
-### UPDATE_APP_USER_DATA_FAILED {#update-app-user-data-failed}
+### UPDATE_APP_USER_DATA_FAILED {/* #update-app-user-data-failed */}
 This error can occur when you attempt to update the _app_ user data with the new Identity System.
 Also see [IDENTITY_PROFILE_UPDATE_FAILED](#identity-profile-update-failed).
 
@@ -698,7 +698,7 @@ Client-side validation. Fired when you attempt to call this API, but `authentica
 
 </table>
 
-### IDENTITY_PROFILE_UPDATE_FAILED {#identity-profile-update-failed}
+### IDENTITY_PROFILE_UPDATE_FAILED {/* #identity-profile-update-failed */}
 
 Web Chat batches your user data updates and syncs them periodically.
 As a result of this, if a validation failure occurs on the server-side, this error will

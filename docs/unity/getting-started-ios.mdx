@@ -5,24 +5,24 @@ description: "You're 3 steps away from adding great in-app support to your Unity
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Getting Started <small>iOS</small> {/* #getting-started */}
 
-# Getting Started <small>iOS</small> {#getting-started}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -32,14 +32,14 @@ You're 3 steps away from adding great in-app support to your Unity game.
 
 Guide to integrating the Unity plugin for the Helpshift SDK which you can call from your C# and Javascript game scripts.
 
-## Requirements {#version-requirements}
+## Requirements {/* #version-requirements */}
 
 - Unity 2018.1.0 and above.
 - Xcode 12.0 and above.
 - Supported iOS versions:
   - iOS 15, 14, 13, 12, 11, and 10
 
-## Download Helpshift Unity SDK for iOS {#getting-sdk}
+## Download Helpshift Unity SDK for iOS {/* #getting-sdk */}
 
 <DownloadButton
   text="Download SDK"
@@ -65,7 +65,7 @@ We recommend you to upgrade to the latest SDK as mentioned above. However, if yo
 
 </Admonition>
 
-## Add Helpshift to your Unity project {#adding-to-project}
+## Add Helpshift to your Unity project {/* #adding-to-project */}
 
 <Admonition type="info" title="Note">
 
@@ -103,9 +103,9 @@ If you are using Xcode 12.3 or above to build your project, please make sure you
 
 </Admonition>
 
-## Initializing Helpshift in your app {#initializing}
+## Initializing Helpshift in your app {/* #initializing */}
 
-### Helpshift's namespace {#namespace}
+### Helpshift's namespace {/* #namespace */}
 
 To use Helpshift's APIs, please import the Helpshift's namespace for iOS like below
 
@@ -129,7 +129,7 @@ To get the `API Key`, `Domain Name` and the `App ID`, navigate to `Settings`>`SD
 
 Select your App from the dropdown and copy the three tokens to be passed when initializing Helpshift.
 
-#### Install Helpshift via CSharp {#csharp-install}
+#### Install Helpshift via CSharp {/* #csharp-install */}
 
 You can use the CSharp API for installing the Helpshift SDK.
 
@@ -153,7 +153,7 @@ You can use the CSharp API for installing the Helpshift SDK.
     }
 ```
 
-#### Install Helpshift via ObjC {#objc-install}
+#### Install Helpshift via ObjC {/* #objc-install */}
 
 If you intend to initialize the SDK from Xcode using Objective C, You can specify Api Key, Domain Name, App ID and other install configurations in the Objective-C code. To do this you need to override `application:didFinishLaunchingWithOptions` in `HsUnityAppcontroller` as shown below.
 
@@ -181,7 +181,7 @@ In order to receive callbacks from Helpshift, you must pass a valid game object 
 
 </Admonition>
 
-## Required UIApplicationDelegate functions {#required-UIApplicationDelegate}
+## Required UIApplicationDelegate functions {/* #required-UIApplicationDelegate */}
 
 For its internal functioning, Helpshift needs to override below mentioned functions of `UIApplicationDelegate` protocol. The class `HsUnityAppController` overrides these functions as required. These methods are called by external iOS services and expect the application to call **completionHandler()**. By default, **UnityAppController** class does not implement these functions. If you require any of these functions or other features of your app, you must override these functions, comment out or remove default **completionHandler()** call and provide your own implementation as per your requirements.
 
@@ -219,7 +219,7 @@ For its internal functioning, Helpshift needs to override below mentioned functi
     }
 ```
 
-## Start using Helpshift {#start-using}
+## Start using Helpshift {/* #start-using */}
 
 Helpshift is now integrated in your app. You should now use the support APIs to [present FAQ](/unity/support-tools-ios#faqs-view) or [conversation screens](/unity/support-tools-ios#conversation-view) inside your app.
 

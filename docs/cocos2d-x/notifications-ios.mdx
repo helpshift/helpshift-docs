@@ -5,24 +5,24 @@ description: "Configure Push and In-App notifications."
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Notifications <small>iOS</small> {/* #notifications */}
 
-# Notifications <small>iOS</small> {#notifications}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -30,7 +30,7 @@ Configure Push and In-App notifications.
 
 </Intro>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+## Configure push notifications via Helpshift {/* #push-via-helpshift */}
 
 Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
 
@@ -72,7 +72,7 @@ If your app does not already use push, you will need to enable push for your app
 
 </Tabs>
 
-### Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
+### Configure Helpshift's push notification service in the Helpshift admin interface {/* #configure-helpshift-push-admin */}
 
 You can configure this in 4 simple steps:
 
@@ -118,7 +118,7 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
   alt="passwordexpiry.png"
 />
 
-### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
+### Configure the Helpshift iOS SDK to handle notifications {/* #configure-helpshift-sdk */}
 
 <Admonition type="info" title="Note">
 
@@ -276,7 +276,7 @@ method:
 
 </Tabs>
 
-## In-app notifications {#in-app-notifications}
+## In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
 
@@ -298,13 +298,13 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 </SideBySide>
 
-## Configuring In-app notifications {#optional-flags}
+## Configuring In-app notifications {/* #optional-flags */}
 
 The Helpshift [install call](/cocos2d-x/getting-started-ios#initializing) supports flags for configuring the SDK's behaviour.
 Currently we support one flag i.e `enableInAppNotification` or you can
 use macro `HS_ENABLE_IN_APP_NOTIFICATION` in `HelpshiftCocos2dx.h` file.
 
-### Enabling/Disabling In-app notifications {#enable-disable-in-app}
+### Enabling/Disabling In-app notifications {/* #enable-disable-in-app */}
 
 <div className="compact ">
 
@@ -353,7 +353,7 @@ Example:
 
 </Tabs>
 
-### Pausing In-app notifications {#pause-in-app}
+### Pausing In-app notifications {/* #pause-in-app */}
 
 If you have enabled in-app notifications, use the API `pauseDisplayOfInAppNotification` to pause/resume the notifications. When `true` is passed to this method display of in-app notifications is paused even if they arrive. When you pass a `false`, in-app notifications start displaying.
 
@@ -363,7 +363,7 @@ Example:
     HelpshiftCocos2dx::pauseDisplayOfInAppNotification(true);
 ```
 
-## Showing notification count when replies are sent to the user {#showing-notification-count}
+## Showing notification count when replies are sent to the user {/* #showing-notification-count */}
 
 This API takes a function pointer as an argument and calls that function with the count of unread messages as its parameter. The first parameter (isRemote) passed to the API requestUnreadMessagesCount will decide if the count is to be fetched remotely.
 
@@ -376,7 +376,7 @@ This API takes a function pointer as an argument and calls that function with th
 
 <Admonition type="info" title="Note">
 
-** Delegates and Notification Count **
+**Delegates and Notification Count**
 
 - If you now call the method `HelpshiftCocos2dx::requestUnreadMessagesCount(true, didReceiveUnreadMessagesCount);` it will
   return a notification count from server in the `didReceiveUnreadMessagesCount(int count)` delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

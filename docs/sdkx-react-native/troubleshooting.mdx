@@ -16,7 +16,7 @@ import ProguardRuleChatHelpcenter from "@site/docs/_partials/_androidProguardRul
 import ProguardRuleContentProvider from "@site/docs/_partials/_androidProguardRules_ContentProvider.mdx";
 
 
-# Troubleshooting {#troubleshooting}
+# Troubleshooting {/* #troubleshooting */}
 
 <Intro>
 
@@ -32,13 +32,13 @@ This page documents workarounds and fixes for common issues encountered while in
 
 <ProguardRuleContentProvider />
 
-## Foreground Notification Handling (iOS) {#foreground-notifications-ios}
+## Foreground Notification Handling (iOS) {/* #foreground-notifications-ios */}
 
 The [react-native-notifications](https://github.com/wix/react-native-notifications) package (widely used for push notifications) does not currently support the `UNNotificationPresentationOptionList` option for foreground notifications on iOS 14 and above. This option is required if you want Helpshift notifications to appear in the notification list while the app is in the foreground.
 
 If you are using `react-native-notifications` and need this support, you can apply the following patch.
 
-### Patching `react-native-notifications` {#patching-notifications}
+### Patching `react-native-notifications` {/* #patching-notifications */}
 
 We recommend using [patch-package](https://www.npmjs.com/package/patch-package) to maintain this fix in your project.
 
@@ -97,7 +97,7 @@ npx patch-package react-native-notifications
 
 This will create a `patches/react-native-notifications+<version>.patch` file in your project root.
 
-### Full Patch Diff {#full-patch-diff}
+### Full Patch Diff {/* #full-patch-diff */}
 
 For reference, here is the full diff for the patch:
 
@@ -145,7 +145,7 @@ index 17df69d..edb97e2 100644
  export enum NotificationBackgroundFetchResult {
 ```
 
-## React Native New Architecture Build Issues (RN < 0.76) {#new-architecture-fallback-patch}
+## React Native New Architecture Build Issues (RN < 0.76) {/* #new-architecture-fallback-patch */}
 
 React Native 0.76 and above correctly handle this plugin with New Architecture enabled. However, for projects using **React Native versions below 0.76**, New Architecture codegen may fail because the plugin declares `codegenConfig`.
 

@@ -20,9 +20,9 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Skinning & Customization {/* #design */}
 
-# Skinning & Customization {#design}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -32,7 +32,7 @@ Customize the Helpshift SDK to completely match the look and feel of your app.
 
 <Admonition type="info" title="Note">
 
-** Using UIAppearance **
+**Using UIAppearance**
 
 UIAppearance customisations are applied to Helpshift SDK by default. However if there is a conflicting property, then the value in HelpshiftConfig.plist will take precedence.
 
@@ -40,15 +40,15 @@ For example: If the app uses UIAppearance to change the colour of Navigation Bar
 
 </Admonition>
 
-## Introduction {#intro}
+## Introduction {/* #intro */}
 
 Head over to [Theming and Skinning](#skinning) if you want to customize your SDK integration's typeface, colors or background images. It is done via simple key-value pairs in a plist file.
 
 If you want to change strings used in the SDK's UI or want to translate them as per device language, see [String Customization](/cocos2d-x/string-customization-ios).
 
-## Theming and Skinning {#skinning}
+## Theming and Skinning {/* #skinning */}
 
-### Default Skinning Configurations {#default-skins}
+### Default Skinning Configurations {/* #default-skins */}
 
 Helpshift comes with four default skinning configurations -
 
@@ -57,18 +57,18 @@ Helpshift comes with four default skinning configurations -
 - **Light High Contrast** - `HSThemes/HelpshiftConfigHighContrast.plist`
 - **Dark High Contrast** - `HSThemes/HelpshiftConfigDarkHighContrast.plist`
 
-### Customized Skinning Configurations {#custom-skinning}
+### Customized Skinning Configurations {/* #custom-skinning */}
 
 Helpshift SDK allows following ways to customize the theme:
 
 1. [Runtime Theme Changes](#runtime-themeing)
 2. [Compile time Theme Changes](#compile-time-theming)
 
-### Runtime Theme Changes {#runtime-theming}
+### Runtime Theme Changes {/* #runtime-theming */}
 
 If your app allows users to change theme at runtime (for eg using a Theme Change menu or Dark Mode switch), Please use the following APIs
 
-#### If your app wants to change both light and dark themes at runtime, use the following API: {#runtime-light-dark}
+#### If your app wants to change both light and dark themes at runtime, use the following API: {/* #runtime-light-dark */}
 
 `static void setThemes(const char *lightThemeFileName, const char *darkThemeFileName);`
 
@@ -100,7 +100,7 @@ HelpshiftCocos2dx::setThemes("HelpshiftCustomLightConfig", "HelpshiftCustomDarkC
 
 </Admonition>
 
-#### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API: {#runtime-common}
+#### If your app does not support Dark Appearance and uses same theme irrespective of the OS Appearance, use the following API: {/* #runtime-common */}
 
 `static void setTheme(const char *themeFileName);`
 
@@ -126,11 +126,11 @@ HelpshiftCocos2dx::setTheme("HelpshiftCustomConfig");
 
 </Admonition>
 
-### Compile time Theme Changes {#compile-time-theming}
+### Compile time Theme Changes {/* #compile-time-theming */}
 
 If your app does not change theme on runtime, Please read the below documentation:
 
-#### If your app supports Dark Appearance in iOS 13 {#compile-time-light-dark}
+#### If your app supports Dark Appearance in iOS 13 {/* #compile-time-light-dark */}
 
 Helpshift SDK bundles themes for light and dark mode out of the box but leaves the decision to enable dark mode switching to the application developers. You can enable automatic switching of Helpshift SDK theme using [enableAutomaticThemeSwitching](/cocos2d-x/sdk-configuration-ios#enableAutomaticThemeSwitching) flag.
 
@@ -146,7 +146,7 @@ If you want to customize the skinning attributes of the Helpshift SDK, there are
 Helpshift SDK will first look for the `HelpshiftCustomConfig.plist` file in the Application's main bundle.
 If it fails to find such a file, it will look for the `HelpshiftConfig.plist` file in the Helpshift SDK's bundle.
 
-#### If your app does not support Dark Appearance in iOS 13 {#compile-time-common}
+#### If your app does not support Dark Appearance in iOS 13 {/* #compile-time-common */}
 
 Helpshift SDK by default uses HelpshiftConfig.plist file for skinning the SDK. You can change the plist values for theme elements that you want to customize in `HelpshiftConfig.plist`. For details, refer to the [Guide](#attributes-global)
 
@@ -161,7 +161,7 @@ If it fails to find such a file, it will look for the `HelpshiftConfig.plist` fi
 
 We'll now walk through each group of customizations -
 
-### Global Attributes {#attributes-global}
+### Global Attributes {/* #attributes-global */}
 
 These attributes control the looks of in-app support over many screens.
 
@@ -201,11 +201,11 @@ Association of "Global Attributes" to UI elements -
 
 <Image src="/static/books/ios/Overview-3.png" width="full" />
 
-### Header background and layering {#ios-ui-layering}
+### Header background and layering {/* #ios-ui-layering */}
 
 Background for section headers is transparent, hence it inherits from Background color in Global Attributes -
 
-#### Support UI Overview {#ios-support-ui}
+#### Support UI Overview {/* #ios-support-ui */}
 
 <Image
   src="/static/books/ios/isometric3.png"
@@ -213,7 +213,7 @@ Background for section headers is transparent, hence it inherits from Background
   alt="isometric3.png"
 />
 
-### Navigation Bar {#attributes-navigation-bar}
+### Navigation Bar {/* #attributes-navigation-bar */}
 
 <div className="text-sm  compact">
 
@@ -236,7 +236,7 @@ Background for section headers is transparent, hence it inherits from Background
   alt="Navigation bar group"
 />
 
-### Search Bar {#attributes-search-bar}
+### Search Bar {/* #attributes-search-bar */}
 
 <div className="text-sm  compact">
 
@@ -265,7 +265,7 @@ Starting from iOS 11, search bar is part of the navigation bar. So this attribut
 
 </Admonition>
 
-### FAQ and Chat {#attributes-footers}
+### FAQ and Chat {/* #attributes-footers */}
 
 <div className="text-sm  compact">
 
@@ -304,7 +304,7 @@ Starting from iOS 11, search bar is part of the navigation bar. So this attribut
 
 <Image src="/static/books/ios/loading-past-messages.png" width="full" />
 
-### Message Retry Badge {#attributes-message-retry-badge}
+### Message Retry Badge {/* #attributes-message-retry-badge */}
 
 A retry badge is shown on messages in conversation screen, that fail to reach customers.
 
@@ -317,7 +317,7 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-### Conversation Resolution {#conversation-resolution}
+### Conversation Resolution {/* #conversation-resolution */}
 
 <Image src="/static/books/ios/skinning.resolution.png" width="full" />
 
@@ -333,7 +333,7 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-### Jump Button {#jump-button}
+### Jump Button {/* #jump-button */}
 
 <Image src="/static/books/ios/jump-button.png" width="full" />
 
@@ -345,7 +345,7 @@ A retry badge is shown on messages in conversation screen, that fail to reach cu
 
 </div>
 
-## Using Custom Fonts {#custom-fonts}
+## Using Custom Fonts {/* #custom-fonts */}
 
 **Step 1:** Add the font to your project. Edit your app's plist file `<App-name-Info.plist>` and add a key `"Fonts provided by application"` to it. Under the key, list out file names of all the fonts you want to use in your app and in support. If you've already listed such fonts, skip this step.
 
@@ -375,10 +375,10 @@ Starting 1.6.0, if you need to apply font name and bold font name to Single FAQ 
 
 <Image src="/static/books/ios/in-use.png" width="quarter" centered />
 
-## Orientation support {#orientation-support}
+## Orientation support {/* #orientation-support */}
 
 The iOS SDK will follow the orientation, that the application supports in plist file.
 
-## Troubleshooting {#troubleshooting}
+## Troubleshooting {/* #troubleshooting */}
 
 If you are having issues with skinning the SDK, head over to the [Troubleshooting](/ios/troubleshooting#skinning) section for further information.

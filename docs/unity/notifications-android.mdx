@@ -5,24 +5,24 @@ description: "Configure Push and In-app notifications."
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Notifications <small>Android</small> {/* #notifications */}
 
-# Notifications <small>Android</small> {#notifications}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -30,7 +30,7 @@ Configure Push and In-app notifications.
 
 </Intro>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+## Configure push notifications via Helpshift {/* #push-via-helpshift */}
 
 ![urbanAirshipNotif.png](/static/books/android/urbanairshipnotif.png "urbanAirshipNotif.png")
 
@@ -42,7 +42,7 @@ the notification that is sent from Helpshift appears as a notification.
 
 To know more about the FCM Push, refer:- [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/)
 
-### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
+### Configure Helpshift Agent Dashboard {/* #configure-helpshift-push-admin */}
 
 To enable the Helpshift system to send push notifications to your users
 you will have to add your FCM Key and Bundle Name via the helpshift
@@ -66,11 +66,11 @@ The API key can be found at your Google API Console.
   alt="FCM Console.png"
 />
 
-## Configure the Helpshift Unity SDK to handle notifications {#configure-helpshift-unity-sdk}
+## Configure the Helpshift Unity SDK to handle notifications {/* #configure-helpshift-unity-sdk */}
 
-### Push notifications {#push-notifications}
+### Push notifications {/* #push-notifications */}
 
-#### Configure FCM push notification plugins {#}
+#### Configure FCM push notification plugins
 
 <Admonition type="info" title="Note">
 
@@ -86,7 +86,7 @@ The API key can be found at your Google API Console.
 
 If you have already integrated push notifications, Use the **HelpshiftSdk.registerDeviceToken(string deviceToken)** API to register the device token with the Helpshift SDK. Helpshift can now start sending push notifications to your app.
 
-Once this is done, you can use the **HelpshiftSdk.handlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send the payload received in the notification.
+Once this is done, you can use the **HelpshiftSdk.handlePushNotification(Dictionary&lt;string, object&gt; pushNotificationData)** API to send the payload received in the notification.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift`, the notification is a Helpshift notification.
 
@@ -146,9 +146,9 @@ public class HelpshiftCustomFCMService extends ListenerService {
 
 Refer the sample project for [FCM Unity plugin](https://firebase.google.com/docs/cloud-messaging/unity/client) integration with Helpshift SDK [here](https://github.com/helpshift/helpshift-unity-examples/tree/master/Helpshift-Unity-5.x-Apps).
 
-#### Configure Other push notification plugins {#other-plugins}
+#### Configure Other push notification plugins {/* #other-plugins */}
 
-If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.registerDeviceToken(string deviceToken)** API to register the device token and **HelpshiftSdk.handlePushNotification(Dictionary<string, object> pushNotificationData)** API to send the payload received in the notification.
+If you are using any third party plugin for push notifications. you can use **HelpshiftSdk.registerDeviceToken(string deviceToken)** API to register the device token and **HelpshiftSdk.handlePushNotification(Dictionary&lt;string, object&gt; pushNotificationData)** API to send the payload received in the notification.
 
 The following is an example to register device token:
 
@@ -160,11 +160,11 @@ void registrationSucceededEvent( string registrationId )
 }
 ```
 
-Once this is done, you can use the **HelpshiftSdk.handlePushNotification(Dictionary<string, object\> pushNotificationData)** API to send payload which you receive in the **notificationReceivedEvent** callback in your plugin.
+Once this is done, you can use the **HelpshiftSdk.handlePushNotification(Dictionary&lt;string, object&gt; pushNotificationData)** API to send payload which you receive in the **notificationReceivedEvent** callback in your plugin.
 
 To check whether this notification is being sent from the Helpshift's push notification service, please check the `origin` field of the notification. If it is `"helpshift"`, the notification is a Helpshift notification.
 
-### In-app notifications {#in-app-notifications}
+### In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
 
@@ -178,7 +178,7 @@ If the FCM device token is registered for push notifications, then in-app notifi
 
 </Admonition>
 
-#### Configuring in-app notifications {#in-app}
+#### Configuring in-app notifications {/* #in-app */}
 
 If you do not want the in-app notifications support provided by the
 Helpshift SDK, please set this flag to "no". The default value of this
@@ -210,7 +210,7 @@ Example:
     help.install("<YOUR_API_KEY>", "<YOUR_HELPSHIFT_DOMAIN>", "<YOUR_APP_ID>", configMap);
 ```
 
-## Showing notification count when replies are sent to the user {#showing-notification-count}
+## Showing notification count when replies are sent to the user {/* #showing-notification-count */}
 
 ### Via Helpshift API
 

@@ -5,24 +5,24 @@ description: "Learn about Skinning the Helpshift SDK to match the look-n-feel of
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Skinning & Customization {/* #design */}
 
-# Skinning & Customization {#design}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -30,14 +30,14 @@ Learn about Skinning the Helpshift SDK to match the look-n-feel of your app. Cus
 
 </Intro>
 
-## Introduction {#intro}
+## Introduction {/* #intro */}
 
 If you want to customize Helpshift SDK theme as per your app's theme,
 see [Theming and Skinning](#skinning)
 
 If you want to change strings used in the SDK's UI or want to translate them as per device language, see [String Customization](/xamarin/string-customization-android#string-customization).
 
-## Theming and Skinning {#skinning}
+## Theming and Skinning {/* #skinning */}
 
 You can refer to the following
 [HSThemeApp](https://github.com/helpshift/helpshift-android-sdk-examples/tree/master/HSThemeApp) (sample project) which implements theme
@@ -68,18 +68,20 @@ For example:
 You can give the Material look and feel of your app to Helpshift SDK by
 customizing very few attributes as follows:
 
-    <style name="MyCustomHelpshiftTheme" parent="Helpshift.Theme.Light.DarkActionBar">
-        <item name="colorAccent">@color/your_custom_color</item>
-        <item name="colorPrimary">@color/your_custom_color</item>
-        <item name="colorPrimaryDark">@color/your_custom_color</item>
-    </style>
+```text    
+<style name="MyCustomHelpshiftTheme" parent="Helpshift.Theme.Light.DarkActionBar">
+    <item name="colorAccent">@color/your_custom_color</item>
+    <item name="colorPrimary">@color/your_custom_color</item>
+    <item name="colorPrimaryDark">@color/your_custom_color</item>
+</style>
 
-    <style name="Helpshift.Theme.Base" parent="MyCustomHelpshiftTheme"/>
+<style name="Helpshift.Theme.Base" parent="MyCustomHelpshiftTheme"/>
+```
 
 You can customize Android's
 [styleable attributes](http://developer.android.com/reference/android/R.attr.html) along with Helpshift's styleable attributes.
 
-### Helpshift styleable attributes {#styleable-attributes}
+### Helpshift styleable attributes {/* #styleable-attributes */}
 
 | Field                                             | Summary                                                                                                                    |
 | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -120,7 +122,7 @@ You can customize Android's
 | hs\_\_attachScreenshotActionButtonIcon            | Icon for button used to attach an image on the conversation screen.                                                        |
 | hs\_\_faqTextColorLink                            | Color of links in FAQ content                                                                                              |
 
-### Styleable attributes in action {#styleable-illustrations}
+### Styleable attributes in action {/* #styleable-illustrations */}
 
 The following illustrates use of these styleable attributes over Helpshift SDK's UI:
 
@@ -148,7 +150,7 @@ The following illustrates use of these styleable attributes over Helpshift SDK's
 
 <Image src="/static/books/android/dc-tablet.png" width="full" />
 
-### Helpshift dimensions {#dimensions}
+### Helpshift dimensions {/* #dimensions */}
 
 You can use the following dimension to change certain aspect of the SDK. These dimensions are independent of the theme set for the SDK.
 
@@ -163,7 +165,7 @@ For example:
 | `hs_support_recyclerview_item_vertical_padding` | Top and bottom padding of each item in the Recyclerview Item. Any value less than 16 is ignored and will have no effect. This affects the Recyclerview Item used for FAQ list, FAQ sections list and search results | 16dp          |
 | `hs__chatBubbleMargin`                          | Left and right margin on the message chat bubbles in conversation screen                                                                                                                                            | 16dp          |
 
-## Changing theme at runtime {#change-theme-runtime}
+## Changing theme at runtime {/* #change-theme-runtime */}
 
 From SDK version 3.2.0 onwards, SDK provides the ability to set a theme for all Helpshift SDK screens at runtime. This theme needs to inherit one of the Helpshift themes. To set the theme, you need to pass a theme resource name as the parameter. For example:
 
@@ -177,7 +179,7 @@ You can reset an existing theme to the default theme declared for the Helpshift 
     HelpshiftCore.SetTheme(null);
 ```
 
-## Dark Mode support {#dark-mode-support}
+## Dark Mode support {/* #dark-mode-support */}
 
 From SDK version 3.2.0 onwards, SDK supports [dark mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) theming. To enable the dark mode switching feature, you need to create a theme by inheriting one of the `Helpshift.Theme.DayNight` themes in your app:
 
@@ -202,7 +204,7 @@ You can customize the dark mode theme just like you would customize any other He
 
 To enable or disable dark mode switching at runtime programatically, use the Android API referred [here](https://developer.android.com/reference/androidx/appcompat/app/AppCompatDelegate.html#setDefaultNightMode).
 
-## Orientation support {#orientation-support}
+## Orientation support {/* #orientation-support */}
 
 By default, the Android SDK will obey the orientation of the device.
 If the device rotates to landscape mode, the SDK will update its UI to landscape orientation.

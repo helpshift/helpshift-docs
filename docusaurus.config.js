@@ -16,7 +16,9 @@ const getDocsDirectoriesForSearchPaths = (rootPath) =>
     .map((dir) => dir.name);
 
 const PRODUCTION_URL = "https://developers.helpshift.com";
-const envIsProduction = process.env.VERCEL_ENV === "production";
+const envIsProduction =
+  process.env.NODE_ENV === "production" ||
+  process.env.VERCEL_ENV === "production";
 const envIsPreview = process.env.VERCEL_ENV === "preview";
 
 const getDeployUrl = () => {
@@ -53,6 +55,65 @@ async function createConfig() {
     },
     trailingSlash: true,
 
+    headTags: [
+      {
+        tagName: "meta",
+        attributes: {
+          name: "robots",
+          content: envIsProduction ? "index,follow" : "noindex,nofollow",
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          property: "og:image",
+          content: `${deployUrl}/img/social/site-share-thumb.png`,
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          property: "og:url",
+          content: deployUrl,
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          name: "twitter:site",
+          content: "@HelpshiftEng",
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          name: "twitter:domain",
+          content: deployUrl,
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          name: "twitter:image",
+          content: `${deployUrl}/img/social/tw-share-thumb.png`,
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          name: "twitter:image:width",
+          content: "800",
+        },
+      },
+      {
+        tagName: "meta",
+        attributes: {
+          name: "twitter:image:height",
+          content: "400",
+        },
+      },
+    ],
+
     presets: [
       [
         "classic",
@@ -73,12 +134,13 @@ async function createConfig() {
             ignorePatterns: ["/tags/**"],
             filename: "sitemap.xml",
           },
-          gtag: envIsProduction
-            ? {
-                trackingID: process.env.GTM,
-                anonymizeIP: true,
-              }
-            : undefined,
+          gtag:
+            envIsProduction && process.env.GTM
+              ? {
+                  trackingID: process.env.GTM,
+                  anonymizeIP: true,
+                }
+              : undefined,
         },
       ],
     ],
@@ -97,70 +159,27 @@ async function createConfig() {
       ],
     ],
 
-    themeConfig:
-      /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-      ({
-        ...navbar,
-        docs: {
-          sidebar: {
-            hideable: true,
-          },
+    themeConfig: {
+      ...navbar,
+
+      docs: {
+        sidebar: {
+          hideable: true,
         },
-        footer: {
-          style: "light",
-          links: footerLinks,
-          copyright: `Copyright © ${new Date().getFullYear()}, Helpshift Inc.`,
-        },
-        prism: {
-          theme: lightCodeTheme,
-          darkTheme: darkCodeTheme,
-          additionalLanguages: ["swift", "java", "csharp", "groovy", "kotlin"],
-        },
-        metadata: [
-          {
-            name: "robots",
-            content: envIsProduction ? "index,follow" : "noindex,nofollow",
-          },
-          {
-            name: "og:image",
-            content: `${deployUrl}/img/social/site-share-thumb.png`,
-          },
-          {
-            name: "og:url",
-            content: deployUrl,
-          },
-          {
-            name: "twitter:site",
-            content: "@HelpshiftEng",
-          },
-          {
-            name: "twitter:domain",
-            content: deployUrl,
-          },
-          {
-            name: "twitter:image",
-            content: `${deployUrl}/img/social/tw-share-thumb.png`,
-          },
-          {
-            name: "twitter:image:width",
-            content: "800",
-          },
-          {
-            name: "twitter:image:height",
-            content: "400",
-          },
-        ],
-        zoom: {
-          selector: ".markdown img",
-          background: {
-            light: "rgb(50, 50, 50)",
-            dark: "rgb(50, 50, 50)",
-          },
-          config: {
-            margin: 20,
-          },
-        },
-      }),
+      },
+
+      footer: {
+        style: "light",
+        links: footerLinks,
+        copyright: `Copyright © ${new Date().getFullYear()}, Helpshift Inc.`,
+      },
+
+      prism: {
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+        additionalLanguages: ["swift", "java", "csharp", "groovy", "kotlin"],
+      },
+    },
     plugins: [
       async function tailwindPlugin() {
         return {
@@ -173,7 +192,20 @@ async function createConfig() {
           },
         };
       },
-      require.resolve("docusaurus-plugin-image-zoom"),
+
+      [
+        require.resolve("docusaurus-plugin-image-zoom"),
+        {
+          selector: ".markdown img",
+          background: {
+            light: "rgb(50, 50, 50)",
+            dark: "rgb(50, 50, 50)",
+          },
+          config: {
+            margin: 20,
+          },
+        },
+      ],
     ],
     customFields: {
       hsPid: process.env.HS_PID,

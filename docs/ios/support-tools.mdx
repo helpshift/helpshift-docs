@@ -5,24 +5,24 @@ description: "Helpshift provides a way to use each functional element of the SDK
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Helpshift APIs {/* #support-tools */}
 
-# Helpshift APIs {#support-tools}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -34,7 +34,7 @@ There are 7 different ways in which the Helpshift SDK can be presented in your a
 
 </Intro>
 
-## showConversation {#conversation-view}
+## showConversation {/* #conversation-view */}
 
 You can use the API call `showConversation:withOptions:` to allow a user to directly send feedback or start a new conversation without having to first view FAQs. Once, a user starts a new conversation, this API call will show the conversation screen. The conversation will continue until it is resolved or rejected by the agent.
 
@@ -74,7 +74,7 @@ Example Code
 
 Supports these [API Options](/ios/sdk-configuration/).
 
-## showFAQs {#faqs-view}
+## showFAQs {/* #faqs-view */}
 
 You can use the API call `showFAQs:withOptions:` to show FAQs in your app. This is the easiest approach to enable help in your app as it bundles all the capabilities of the Helpshift SDK in a simple and intuitive interface. Users can browse FAQs, search for an FAQ, and file issues with Support.
 
@@ -116,7 +116,7 @@ To use deep linking in your app using Helpshift FAQs, check [here](/ios/deep-lin
 
 </Admonition>
 
-### FAQ Filtering by tags {#faq-filtering}
+### FAQ Filtering by tags {/* #faq-filtering */}
 
 Starting v4.14.0 onwards, we have introduced FAQ filtering capability by tags.
 With the goal of helping the end user see focused & related content e.g. basis the user demographic or device profiles, developers can now choose the new capability for FAQ filtering and showing a focused FAQ list to the right audience.
@@ -184,7 +184,7 @@ As of v4.14.0 you can have only one tag filter config which will be respected on
 
 </Admonition>
 
-## showFAQSection {#faq-section-view}
+## showFAQSection {/* #faq-section-view */}
 
 You can use the API call `showFAQSection:withController:withOptions:` to show faqs from a particular FAQ section. This feature works like a permalink for displaying specific FAQ sections as context sensitive help in your app. For example, if your app requires the user to log in using email, facebook and twitter, you could wire a help action on the login screen that can link to the Helpshift FAQ section called "Login help" which has several questions related to login methods.
 
@@ -229,7 +229,7 @@ English translation will be used for non-localized FAQs.
 
 </Admonition>
 
-## showSingleFAQ {#faq-question-view}
+## showSingleFAQ {/* #faq-question-view */}
 
 You can use the API call `showSingleFAQ:withController:withOptions:` to show a single faq question.
 
@@ -274,7 +274,7 @@ English translation will be used for non-localized FAQs
 
 </Admonition>
 
-## Guided Issue Filing {#dynamic-forms}
+## Guided Issue Filing {/* #dynamic-forms */}
 
 <Admonition type="info" title="Note">
 
@@ -434,7 +434,7 @@ Then the wrapper "Billing" flow needs to be created using
 
 Now this Billing flow can be passed along with other flows (Gameplay, Loading etc.). When the user taps Billing, then instead of launching Helpshift's contact us screen, user will be taken to the next dynamic form that lists two options: Issues with Payment and Refund. Tapping on either of these will take the user to contact us screen.
 
-## Add FAQs to Spotlight search {#helpshiftFAQSpotlightSearch}
+## Add FAQs to Spotlight search {/* #helpshiftFAQSpotlightSearch */}
 
 <Admonition type="info" title="Note">
 
@@ -487,7 +487,7 @@ Example :
     }
 ```
 
-## Embeddable Messaging Experience {#embed-messaging}
+## Embeddable Messaging Experience {/* #embed-messaging */}
 
 <Admonition type="info" title="Note">
 
@@ -578,7 +578,7 @@ You must disable automatic push handling in SDK via the disableAutomaticPushHand
 
 In-app notification banners will not be shown inside of your application, but you will continue to get the didReceiveInAppNotificationWithMessageCount: delegate method of HelpshiftSupportDelegate whenever a reply is received for the active conversation.
 
-## displayAttachmentFileAtLocation {#displayAttachmentFileAttachmentAtLocation}
+## displayAttachmentFileAtLocation {/* #displayAttachmentFileAttachmentAtLocation */}
 
 <Admonition type="info" title="Note">
 
@@ -607,7 +607,7 @@ Please note that the app needs to include the [Quick Look Framework](https://dev
 
 Besides providing the ability to preview all the supported documents type, Quick Look also provides a sharing/printing widget and full screen viewing.
 
-## Enable Testing Mode {#enable-testing-mode}
+## Enable Testing Mode {/* #enable-testing-mode */}
 
 <Admonition type="info" title="Note">
 
@@ -628,7 +628,7 @@ Example :
     #endif
 ```
 
-## Close Helpshift Session {#closeHelpshiftSupportSession}
+## Close Helpshift Session {/* #closeHelpshiftSupportSession */}
 
 This API can be used to close an active Helpshift session and return to the app. Any open Helpshift screen will be dismissed and control will return to the original UIViewController that launched the Helpshift screen.
 The completion handler will be called after the Helpshift session is closed. If the session is already closed, the completion handler will be called immediately.
@@ -658,11 +658,11 @@ Example Code
 
 </div>
 
-## Extra APIs {#extra-apis}
+## Extra APIs {/* #extra-apis */}
 
 This section lists down the extra APIs which need to be implemented in order for the Helpshift SDK to function correctly, if the developer has not enabled the `-ObjC` flag in the `Other Linker Flags` section.
 
-### Handle events for background {#handle-events-for-background}
+### Handle events for background {/* #handle-events-for-background */}
 
 The Helpshift SDK uses background session calls for sending app data to the server. In order for this to work correctly, the app developer needs to listen to the `application:handlleEventsForBackgroundURLSession:completionHandler:` and call the below Helpshift API
 
@@ -682,6 +682,6 @@ For example,
 
 This function will return a `BOOL` to indicate if the Helpshift SDK has handled the event.
 
-## Multi Scene Support for iOS 13 and iPadOS {#multi-scene}
+## Multi Scene Support for iOS 13 and iPadOS {/* #multi-scene */}
 
 If you want to support multiple scenes in your app using the new [UISceneDelegate](https://developer.apple.com/documentation/uikit/uiscenedelegate?language=objc) API introduced by iOS 13 and iPadOS, please note that the Helpshift SDK does not support having multiple sessions opened in different scenes. If you want to open a Helpshift UI session in a Scene, make sure you use the [closeHelpshiftSupportSession](#closeHelpshiftSupportSession) to close the previous Helpshift session if any.

@@ -25,7 +25,7 @@ This is an integration guide for Helpshift SDK version 2.8.0 to 3.1.1
 
 </Admonition>
 
-# Getting Started {#getting-started}
+# Getting Started {/* #getting-started */}
 
 <Intro>
 
@@ -33,7 +33,7 @@ You're 3 steps away from adding great in-app support to your Android App.
 
 </Intro>
 
-## Integration Video {#integration-video}
+## Integration Video {/* #integration-video */}
 
 <iframe
   src="//fast.wistia.net/embed/iframe/sg67fcbj6s"
@@ -51,7 +51,7 @@ You're 3 steps away from adding great in-app support to your Android App.
   height="360"
 ></iframe>
 
-## Get the latest stable Helpshift SDK for Android {#getting-sdk}
+## Get the latest stable Helpshift SDK for Android {/* #getting-sdk */}
 
 <DownloadButton
   text="Download SDK"
@@ -62,7 +62,7 @@ You're 3 steps away from adding great in-app support to your Android App.
 The zip file contains the Helpshift SDK in the Android Library Project
 format.
 
-## Adding the latest stable release of the SDK to your project {#add-to-project}
+## Adding the latest stable release of the SDK to your project {/* #add-to-project */}
 
 <Admonition type="info" title="Note">
 
@@ -152,12 +152,13 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
      alt="Properties dialog to add library references"
    />
 
-### Additional Configuration {#additional-config}
+### Additional Configuration {/* #additional-config */}
 
 - The Helpshift SDK can inherit theme styles from your existing Action Bar theme files via. the `helpshift.res.parent` variable. For more on this, refer to [Design](/android/design/)
 
 - In your `build.xml` file, insert the following between the `<target name="-post-compile">` tags. This will check the Helpshift xml files for the requisite resources and warn you if any of those resources are missing. If the "-post-compile" target is missing, wrap the below code snippet with `<target name="-post-compile">...</target>` tags.
 
+        ```text
         <path id="helpshift-classpath">
           <fileset dir="<path/to/Helpshift-SDK/libs>">
             <include name="Helpshift.jar"/>
@@ -167,6 +168,7 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
           <classpath refid="helpshift-classpath"/>
           <arg value="<YOUR_APPLICATION_NAMESPACE>"/>
         </java>
+        ```
 
 - If you are using Proguard, you will need to add the following to your project's `proguard-project.txt` file.
 
@@ -185,7 +187,7 @@ The Helpshift SDK depends on [v7 appcompat library](http://developer.android.com
     [Proguard Documentation](http://developer.android.com/tools/help/proguard.html)
 ```
 
-## Maven support {#maven-support}
+## Maven support {/* #maven-support */}
 
 To use Helpshift SDK via. Maven add the following dependency to your
 `<dependencies>` tag:
@@ -222,7 +224,7 @@ to install the libraries necessary, from your local Android SDK installation. To
     </dependency>
 ```
 
-## ActionBarSherlock Compatibility {#action-bar-sherlock}
+## ActionBarSherlock Compatibility {/* #action-bar-sherlock */}
 
 <Admonition type="info" title="Note">
 
@@ -230,7 +232,7 @@ to install the libraries necessary, from your local Android SDK installation. To
 (ABS). On release of the official [Google Action Bar](http://developer.android.com/guide/topics/ui/actionbar.html) we have depricated the use of ABS developed by
 [Jake Wharton](https://github.com/JakeWharton/ActionBarSherlock)**
 
-** Google Action Bar is dependant on the new [v7 appcompat library](http://developer.android.com/tools/support-library/features.html#v7-appcompat)**
+**Google Action Bar is dependant on the new [v7 appcompat library](http://developer.android.com/tools/support-library/features.html#v7-appcompat)**
 
 **If you are not ready to switch, you can download and use
 [Android SDK v2.7.1](https://d3e51fp79zp4el.cloudfront.net/library/android/v2.7/helpshift-android-sdk-2.7.1.zip)

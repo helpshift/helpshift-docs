@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Helpshift Delegates {#delegates}
+# Helpshift Delegates {/* #delegates */}
 
 <Intro>
 
@@ -35,7 +35,7 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 
 </Admonition>
 
-## Helpshift Events Listener/Delegate implementation {#event-listener}
+## Helpshift Events Listener/Delegate implementation {/* #event-listener */}
 
 You can set `IHelpshiftEventsListener` implementation by calling the `HelpshiftSdk.GetInstance().SetHelpshiftEventsListener()` method.
 
@@ -80,9 +80,9 @@ void Start(){
 }
 ```
 
-## Events {#helpshift-events}
+## Events {/* #helpshift-events */}
 
-### Helpshift session started event {#session-delegates}
+### Helpshift session started event {/* #session-delegates */}
 
 This event gets fired when the Helpshift session starts
 
@@ -104,7 +104,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Helpshift session ended event {#session-delegates}
+### Helpshift session ended event {/* #session-delegates */}
 
 This event gets fired when the Helpshift session ends.
 
@@ -126,7 +126,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Unread Message Count Event {#unreadMessageCount}
+### Unread Message Count Event {/* #unreadMessageCount */}
 
 This event gets fired when you call `Helpshift.RequestUnreadMessageCount(shouldFetchFromServer)` API to request unread messages count.
 
@@ -157,7 +157,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Conversation Status Event {#conversation-status}
+### Conversation Status Event {/* #conversation-status */}
 
 This event contains information about the current ongoing conversation.
 
@@ -193,7 +193,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Widget Toggle Event {#widget-toggle-event}
+### Widget Toggle Event {/* #widget-toggle-event */}
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
 
@@ -219,7 +219,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### User Click On Action Event {#user-click-on-action}
+### User Click On Action Event {/* #user-click-on-action */}
 
 This event is triggered when the user clicks on the link or call action of an action card message.
 
@@ -270,7 +270,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Conversation Start Event {#conversation-start-event}
+### Conversation Start Event {/* #conversation-start-event */}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
@@ -296,7 +296,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Message Add Event {#message-add-event}
+### Message Add Event {/* #message-add-event */}
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user. For your reference, see the below example.
 
@@ -327,7 +327,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Agent Message Received Event {#agent-message-received}
+### Agent Message Received Event {/* #agent-message-received */}
 
 This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
 
@@ -340,7 +340,7 @@ This event is triggered when the user receives any message from an agent in a co
   | HelpshiftEvent.DATA_MESSAGE_TYPE | String | Message Type of the message |
   | HelpshiftEvent.DATA_MESSAGE_BODY | String | The actual message sent by the agent or empty |
   | HelpshiftEvent.DATA_CREATED_TIME | Long | Unix epoch timestamp in ms |
-  | HelpshiftEvent.DATA_ATTACHMENTS | Dictionary<String, Object>> | Attachments, if they are present |
+  | HelpshiftEvent.DATA_ATTACHMENTS | Dictionary&lt;String, Object&gt; | Attachments, if they are present |
   | HelpshiftEvent.DATA_URL | String | URL of the attachment |
   | HelpshiftEvent.DATA_CONTENT_TYPE | String | MIME type of the attachment |
   | HelpshiftEvent.DATA_FILE_NAME | String | File name of the attachment |
@@ -407,7 +407,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### CSAT Submit Event {#csat-submit-event}
+### CSAT Submit Event {/* #csat-submit-event */}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
@@ -438,7 +438,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Conversation End Event {#conversation-end-event}
+### Conversation End Event {/* #conversation-end-event */}
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -460,7 +460,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Conversation Rejected Event {#conversation-rejected-event}
+### Conversation Rejected Event {/* #conversation-rejected-event */}
 
 This event is triggered when an agent rejects the conversation.
 
@@ -482,7 +482,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Conversation Resolved Event {#conversation-resolved-event}
+### Conversation Resolved Event {/* #conversation-resolved-event */}
 
 This event is triggered when an agent resolves the conversation.
 
@@ -504,7 +504,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### Conversation Reopened Event {#conversation-reopened-event}
+### Conversation Reopened Event {/* #conversation-reopened-event */}
 
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
@@ -526,7 +526,7 @@ public class HSEventsListener : IHelpshiftEventsListener
 }
 ```
 
-### User Authentication Failed Event {#user-authentication-failed-event}
+### User Authentication Failed Event {/* #user-authentication-failed-event */}
 
 If you have `user authentication feature` enabled on the Dashboard and if you pass an invalid token in the `HelpshiftSdk.GetInstance().Login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-unity/users-android)
 

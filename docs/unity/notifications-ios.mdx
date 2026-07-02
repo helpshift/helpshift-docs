@@ -5,24 +5,24 @@ description: "Configure Push notifications and In-app notifications"
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Notifications <small>iOS</small> {/* #notifications */}
 
-# Notifications <small>iOS</small> {#notifications}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -30,7 +30,7 @@ Configure Push notifications and In-app notifications
 
 </Intro>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+## Configure push notifications via Helpshift {/* #push-via-helpshift */}
 
 Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
 
@@ -72,7 +72,7 @@ If your app does not already use push, you will need to enable push for your app
 
 </Tabs>
 
-## Configure Helpshift's push notification service in the Helpshift admin interface {#configure-helpshift-push-admin}
+## Configure Helpshift's push notification service in the Helpshift admin interface {/* #configure-helpshift-push-admin */}
 
 You can configure this in 4 simple steps:
 
@@ -118,9 +118,9 @@ Your Push Certificate has an expiry date, as indicated in the below screenshot. 
   alt="passwordexpiry.png"
 />
 
-## Configure the Helpshift Unity SDK to handle notifications {#configure-helpshift-unity-sdk}
+## Configure the Helpshift Unity SDK to handle notifications {/* #configure-helpshift-unity-sdk */}
 
-### In built support {#inbuilt-push-support}
+### In built support {/* #inbuilt-push-support */}
 
 Helpshift Unity plugin comes with built-in support for Push notifications.
 
@@ -128,7 +128,7 @@ If you want to use the Helpshift push notification handling, please register you
 The Helpshift SDK overrides the `UnityAppController` class to listen to the application delegates for Push notifications and calls the appropriate Helpshift APIs.
 If you already have a `UnityAppController` child class, please make sure it inherits from the `HsUnityAppController` class.
 
-### Manual support {#}
+### Manual support
 
 <Admonition type="info" title="Note">
 
@@ -287,7 +287,7 @@ method:
 
 </Tabs>
 
-## In-app notifications {#in-app-notifications}
+## In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
 
@@ -309,7 +309,7 @@ These notifications are sent when an agent replies to a customer's issue. Your c
 
 </SideBySide>
 
-## Configuring In-app notifications {#configure-in-app}
+## Configuring In-app notifications {/* #configure-in-app */}
 
 If you do not want the in-app notifications support provided by the
 Helpshift SDK, please set this flag to "no". The default value of this
@@ -337,7 +337,7 @@ Example:
     help.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>", configMap);
 ```
 
-## Showing notification count when replies are sent to the user {#showing-notification-count}
+## Showing notification count when replies are sent to the user {/* #showing-notification-count */}
 
 ### Via Helpshift API
 
@@ -364,7 +364,7 @@ public void didReceiveUnreadMessagesCount(string count) {
 
 <Admonition type="info" title="Note">
 
-** Delegates and Notification Count **
+**Delegates and Notification Count**
 
 - If you now call the method `HelpshiftSdk.requestUnreadMessagesCount(true);` it will
   return a notification count from server in the `didReceiveUnreadMessagesCount(string count)` delegate method. The notification count here can be fetched either from the cache or from the Helpshift servers, the count from Helpshift’s servers is rate limited and it returns the value only if a subsequent call is made to the API, after the reset timeout or when the user just closes the chat screen (whichever is earlier). For an active issue, the reset timeout is 1 minute and 5 minutes for inactive issues.

@@ -21,7 +21,7 @@ import {
 
 import CustomIssueFieldsKeyDeprecationNotice from "@site/docs/_partials/_customIssueFieldsKeyDeprecationNotice.mdx";
 
-# Tracking {#tracking}
+# Tracking {/* #tracking */}
 
 <Intro>
 
@@ -30,7 +30,7 @@ Attach custom metadata to every conversation started via the SDK.
 
 </Intro>
 
-## Adding Tags to Conversations {#adding-tags}
+## Adding Tags to Conversations {/* #adding-tags */}
 
 You can attach tags while reporting an issue by passing them to the `tags` parameter at the time of calling `showConversation` function. You can pass an **array of strings** which will get added as `tags` when the issue is created.
 
@@ -54,7 +54,7 @@ Similarly, you can pass this configuration to other APIs (ie. `showConversation`
 
 </Admonition>
 
-## Set Custom Metadata {#set-custom-metadata}
+## Set Custom Metadata {/* #set-custom-metadata */}
 
 If you want to set Custom Metadata at the time of Issue creation, follow the steps.
 
@@ -93,7 +93,7 @@ const customMetadata = { usertype:'paid', level:'7', score: '1505' } };
 showFAQSectionWithConfig(config);
 ```
 
-## Set Custom Issue Fields {#set-custom-issue-fields}
+## Set Custom Issue Fields {/* #set-custom-issue-fields */}
 
 If you want to set Custom Issue Fields at the time of Issue creation, follow the steps.
 
@@ -145,7 +145,7 @@ On Custom Issue Fields keys & compatibility
 
 </Admonition>
 
-## Breadcrumbs {#breadcrumbs}
+## Breadcrumbs {/* #breadcrumbs */}
 
 Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs can use `leaveBreadCrumb` API and pass a string to it. For example -
 
@@ -171,12 +171,12 @@ In the **Breadcrumbs** and **Debug logs** APIs, the passing of formatted strings
 
 <p className="m-0">For example:</p>
 
-- "{\"key\":\"value\"}" - ** JSON String, This is NOT supported **
-- "key - value" - ** Simple string, This is supported **
+- `{\"key\":\"value\"}` - **JSON String, This is NOT supported**
+- "key - value" - **Simple string, This is supported**
 
 </Admonition>
 
-## Debug Logs {#debug-logs}
+## Debug Logs {/* #debug-logs */}
 
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. So, `HelpshiftLog` class and its methods provide varying degrees of logging - Verbose, Debug, Info, Warning, and Error. For example, if you want to attach debug level log -
 
@@ -204,7 +204,7 @@ Debug logs are collected within the set debug logs limit. The limit is set under
 ## Tracking user-specific metadata
 
 ### Update global user data
-This API is meant to be used along with the new [User Identity system](/sdkx-react-native//identity-user-hub). Use this API to [update global attributes](/sdkx-react-native/identity-user-hub/#update-global-user-data) associated with the logged in user.
+This API is meant to be used along with the new [User Identity system](/sdkx-react-native/identity-user-hub). Use this API to [update global attributes](/sdkx-react-native/identity-user-hub/#update-global-user-data) associated with the logged in user.
 ```javascript
 
 updateMasterAttributes({"<master attribute key>":"<master attribute value>" });

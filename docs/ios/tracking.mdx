@@ -5,24 +5,24 @@ description: "Track events and user actions when the user starts a new conversat
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Tabs,
-  TabItem,
-  LatestSdkVersion,
-  Centered,
-  Image,
-  Intro,
-  SideBySide,
-  DownloadButton,
-  Steps,
-  Step,
-  LegacyEolAdmonition,
+    Admonition,
+    CodeBlock,
+    Tabs,
+    TabItem,
+    LatestSdkVersion,
+    Centered,
+    Image,
+    Intro,
+    SideBySide,
+    DownloadButton,
+    Steps,
+    Step,
+    LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Tracking {/* #tracking */}
 
-# Tracking {#tracking}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -31,7 +31,7 @@ Attach custom metadata to every conversation started via the SDK.
 
 </Intro>
 
-## Name and email {#name-and-email}
+## Name and email {/* #name-and-email */}
 
 <Admonition type="info" title="Note">
 
@@ -43,7 +43,7 @@ It is expected that you will pass the user's name, email or, user identifier usi
 
 Also, please note that this API will not work with the [Conversational Experience](https://support.helpshift.com/kb/article/what-is-conversational-issue-filing-and-how-do-i-set-it-up). However, there will no impact on older SDK versions. They will keep on working as usual.
 
-## User Identifier {#user-id}
+## User Identifier {/* #user-id */}
 
 <Admonition type="info" title="Note">
 
@@ -55,11 +55,11 @@ It is expected that you will pass the user's name, email or, user identifier usi
 
 Also, please note that there will no impact on older SDK versions, and they will keep on working as usual.
 
-## Multi Login {#multi-login}
+## Multi Login {/* #multi-login */}
 
 Details on user management are available [here](/ios/users/).
 
-## App usage {#app-usage}
+## App usage {/* #app-usage */}
 
 Breadcrumbs will help you track events or user actions and when user starts a new conversation, these breadcrumbs can be seen along with the conversation in the admin site. To leave breadcrumbs can use `leaveBreadCrumb:`
 
@@ -70,7 +70,7 @@ Breadcrumbs will help you track events or user actions and when user starts a ne
 Breadcrumbs will be collected within the set breadcrumb limit. This is set in the **SDK Configurations** section for app settings in the agent dashboard.
 Breadcrumbs are collected in a FIFO queue. If you want to clear the breadcrumbs queue, please use the `clearBreadCrumbs` API call.
 
-## Attaching metadata to conversations {#metadata}
+## Attaching metadata to conversations {/* #metadata */}
 
 You can attach additional metadata to every new conversation started by
 the app user via a very simple mechanism provided by the SDK. This
@@ -85,7 +85,7 @@ game levels and any other data relevant to creating a suitable context to each n
 
 </Admonition>
 
-### Adding metadata with API options {#metadata-api-options}
+### Adding metadata with API options {/* #metadata-api-options */}
 
 <Admonition type="info" title="Note">
 
@@ -133,7 +133,7 @@ NSDictionary *metaData = @{@"usertype": @"paid", @"level":@"7", @"score":@"12345
 
 </Tabs>
 
-### Adding metadata using setMetadataBlock API {#metadata-block}
+### Adding metadata using setMetadataBlock API {/* #metadata-block */}
 
 <Admonition type="info" title="Note">
 
@@ -180,7 +180,7 @@ Please make sure that the objects and keys are NSStrings only. `HelpshiftSupport
 
 </Admonition>
 
-### Attaching tags with metadata {#metadatatags}
+### Attaching tags with metadata {/* #metadatatags */}
 
 <Admonition type="info" title="Note">
 
@@ -250,11 +250,12 @@ Developers can still use the `setMetadataBlock:` API to pass tags.
 
 </Tabs>
 
-### Example of using a custom logging mechanism with metadata {#example-logs}
+### Example of using a custom logging mechanism with metadata {/* #example-logs */}
 
 Assume you have your own custom logging mechanism for apps that returns a URL (which takes you to your relevant log viewer), and you would want that URL to be sent with each new conversation the user initiates.
 Say you have a button "Send Feedback" in your application whose touch event is linked to a method sendFeedback: where you want to call Helpshift `showConversation:` or any other support session.Then you can implement something like:
 
+    ```text
     - (IBAction) sendFeedback:(id) sender {
 
         // Manage your UI for posting logs and retrieving URLs
@@ -264,16 +265,17 @@ Say you have a button "Send Feedback" in your application whose touch event is l
 
         // Set metadata with URL
         [HelpshiftSupport setMetadataBlock:^(void){
-            return [NSDictionary dictionaryWithObjectsAndKeys: URL, @"logURL",nil];
+            return [NSDictionary dictionaryWithObjectsAndKeys: URL, @"logURL", nil];
         }];
 
         // Call Helpshift showConversation
         [HelpshiftSupport showConversation:self];
     }
+    ```
 
 Please make sure that the metadata is already present before presenting any support session.
 
-## Attaching Custom Issue Fields to conversations {#custom-issue-fields}
+## Attaching Custom Issue Fields to conversations {/* #custom-issue-fields */}
 
 <Admonition type="info" title="Note">
 
@@ -344,7 +346,7 @@ NSDictionary *config = @{@"customIssueFields" : customIssueFieldsDict};
 
 </Tabs>
 
-## Debug logs {#debug-logs}
+## Debug logs {/* #debug-logs */}
 
 <Admonition type="info" title="Note">
 
@@ -381,7 +383,7 @@ or,
 
 When an issue is filed by the user, these debug logs will be submitted as metadata.
 
-## Issue Archival {#issue-archival}
+## Issue Archival {/* #issue-archival */}
 
 From version 5.7.0, Helpshift SDK includes support for archiving issues.
 Issues in Resolved or Rejected state for more than 12 months will be automatically archived.
@@ -390,7 +392,7 @@ Archived issues will be accessible to agents through the dashboard for future re
 
 ![issueArchival.png](/static/books/ios/issuearchival.png "issueArchival.png")
 
-## Check if there is an active Conversation {#check-if-conversation-active}
+## Check if there is an active Conversation {/* #check-if-conversation-active */}
 
 This API determines if there is currently an ongoing Conversation in the SDK. You can use `[HelpsiftSupport checkIfConversationActive]` and implement HelpshiftSupportDelegate method as shown below to get a boolean value that indicates whether there is an active Conversation open for the user. A Conversation is considered inactive when a user cannot respond with new messages on it.
 
@@ -408,7 +410,7 @@ You can implement something like the following in the didCheckIfConversationActi
 }
 ```
 
-## Check if an active Conversation has ended {#check-if-conversation-ended}
+## Check if an active Conversation has ended {/* #check-if-conversation-ended */}
 
 If you want to keep track of when your users end an ongoing conversation, you can implement this delegate callback. This delegate is called whenever the ongoing conversation is resolved, rejected from the Dashboard, timed out or archived.
 

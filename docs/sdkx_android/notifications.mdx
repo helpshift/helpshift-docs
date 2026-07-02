@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Notifications {#notifications}
+# Notifications {/* #notifications */}
 
 <Intro>
 
@@ -34,7 +34,7 @@ Configure Push notifications
 
 </Admonition>
 
-## Push notifications via Helpshift {#push-via-helpshift}
+## Push notifications via Helpshift {/* #push-via-helpshift */}
 
 <Image
   src="/static/books/sdkx_android/app_notification.png"
@@ -44,14 +44,14 @@ Configure Push notifications
 
 Helpshift allows you to send Push notifications when an agent replies to a conversation.
 
-### Prerequisites {#gcm-prerequisites}
+### Prerequisites {/* #gcm-prerequisites */}
 
 Implement FCM push in your app.
 
 For FCM, refer to the
 [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) documentation.
 
-### Configure Helpshift Agent Dashboard {#configure-helpshift-push-admin}
+### Configure Helpshift Agent Dashboard {/* #configure-helpshift-push-admin */}
 
 To enable the Helpshift system to send push notifications to your users
 you will have to add an **Android** as a platform in your app _(if you have not added already)_.
@@ -77,7 +77,7 @@ For more information, [click here](https://firebase.google.com/docs/cloud-messag
 
 <br />
 
-### Configure SDK {#configure-sdkx-android}
+### Configure SDK {/* #configure-sdkx-android */}
 
 1. Send the device registration id to Helpshift via the `Helpshift.registerDeviceToken` API
 
@@ -106,7 +106,7 @@ For more information, [click here](https://firebase.google.com/docs/cloud-messag
         }
 ```
 
-## In-app notifications {#in-app-notifications}
+## In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to notifications in the [notification drawer](http://developer.android.com/guide/topics/ui/notifiers/notifications.html) . Unlike push notifications, they appear only when you app is running.
 
@@ -124,7 +124,7 @@ If the FCM device token is registered for push notifications, then in-app notifi
 
 </Admonition>
 
-## Customizing notification icons {#notification-icon}
+## Customizing notification icons {/* #notification-icon */}
 
 By default the application icon is used as the notification icon. You can customize the notification icons using the config in the `install` call.
 
@@ -148,7 +148,7 @@ By default the application icon is used as the notification icon. You can custom
     }
 ```
 
-## Customizing notification sound {#notificationSound}
+## Customizing notification sound {/* #notificationSound */}
 
 By default the default device notification sound is used for helpshift notifications. You can customize the notification sound using the config in the install call.
 
@@ -173,7 +173,7 @@ For example:
     }
 ```
 
-## Customizing notification channels {#notificationChannels}
+## Customizing notification channels {/* #notificationChannels */}
 
 Starting from Android Oreo, Helpshift notifications will create a default channel named `In-app Support`. If you want to customize the name and description for the default channel, you can do so by using the `config` in the `install` call.
 
@@ -198,7 +198,7 @@ Example:
     }
 ```
 
-## Configuring in-app notifications {#in-app}
+## Configuring in-app notifications {/* #in-app */}
 
 If you do not want the in-app notification support provided by the Helpshift SDK, you can set the flag to `false`. The default value of this flag is `true` i.e., in app notification will be enabled.
 
@@ -227,7 +227,7 @@ Example:
     }
 ```
 
-## Showing notification count when replies are sent to the user {#showing-notification-count}
+## Showing notification count when replies are sent to the user {/* #showing-notification-count */}
 
 To fetch unread messages count from the server you can call `requestUnreadMessageCount(boolean shouldFetchFromServer)` API. This API will return unread messages count via delegate.
 Based on the value of `shouldFetchFromServer`, the locally stored count will be returned if `shouldFetchFromServer` is `false` else from the server by fetching remotely when `shouldFetchFromServer` is `true`.

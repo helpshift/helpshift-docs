@@ -10,7 +10,7 @@ import {
   Intro,
 } from "@site/src/components/forDocs";
 
-# Tracking {#tracking}
+# Tracking {/* #tracking */}
 
 <Intro>{frontMatter.description}</Intro>
 
@@ -21,7 +21,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Adding Tags to Conversations {#adding-tags}
+## Adding Tags to Conversations {/* #adding-tags */}
 
 You can attach tags while reporting an issue by passing them to the `config` dictionary at the time of calling `Helpshift.ShowConversation(this, config)`. You can pass an **array of strings** with a key `tags` which will get added as Tags when the issue is created.
 
@@ -42,7 +42,7 @@ Helpshift.ShowConversation(this, config);
 
 </Admonition>
 
-## Adding Custom Metadata to Conversations {#adding-custom-metadata}
+## Adding Custom Metadata to Conversations {/* #adding-custom-metadata */}
 
 You can attach additional metadata to every new conversation started by the app user. This metadata can include properties like username, email, game scores, current game levels, and any other data needed to provide relevant context for each new conversation. You can attach custom metadata by passing it to the `config` dictionary at the time of calling any of the SDK X APIs (`ShowConversation`, `ShowFAQs`, `ShowSingleFAQ`, `ShowFAQSection`).
 
@@ -74,7 +74,7 @@ Helpshift.ShowConversation(this, config);
 
 </Admonition>
 
-## Attaching Custom Issue Fields to conversations {#set-custom-issue-fields}
+## Attaching Custom Issue Fields to conversations {/* #set-custom-issue-fields */}
 
 You can attach Custom Issue Fields to every new conversation started by the user. A Custom Issue Field should have a key, a datatype, and a value. The Helpshift SDK allows the addition of Custom Issue Fields by using the `cifs` key in API config dictionary.
 
@@ -140,7 +140,7 @@ Possible datatypes to be passed into the config are:
 
 </Admonition>
 
-## Breadcrumbs {#breadcrumbs}
+## Breadcrumbs {/* #breadcrumbs */}
 
 Breadcrumbs can be used to track events or end-user actions. It helps you to add debugging information regarding end-user actions, which will be passed along with every new conversation on Helpshift’s Agent Dashboard. To leave breadcrumbs, use `LeaveBreadCrumb` API —
 
@@ -161,12 +161,12 @@ Helpshift.ClearBreadCrumbs();
 <Admonition type="info" title="Note">
 
 - In the `LeaveBreadcrumb` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
-  - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
-  - `"key - value"` - ** Simple string, This is supported **
+  - `"{\"key\":\"value\"}"` - **JSON String, This is NOT supported**
+  - `"key - value"` - **Simple string, This is supported**
 
 </Admonition>
 
-## Debug Logs {#debug-logs}
+## Debug Logs {/* #debug-logs */}
 
 You may wish to pass additional debug logs with every new conversation filed by an end-user on Helpshift’s Agent Dashboard. This can be achieved by using `HelpshiftLogger`.
 
@@ -181,7 +181,7 @@ Debug logs are collected within the set debug logs limit. The limit is set under
 <Admonition type="info" title="Note">
 
 - In the `HelpshiftLogger` API, passing of formatted strings is NOT supported. It is recommended to pass data only in a simple String format. For example:
-  - `"{\"key\":\"value\"}"` - ** JSON String, This is NOT supported **
-  - `"key - value"` - ** Simple string, This is supported **
+  - `"{\"key\":\"value\"}"` - **JSON String, This is NOT supported**
+  - `"key - value"` - **Simple string, This is supported**
 
 </Admonition>

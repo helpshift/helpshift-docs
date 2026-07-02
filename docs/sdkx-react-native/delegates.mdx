@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Helpshift Delegates {#delegates}
+# Helpshift Delegates {/* #delegates */}
 
 <Intro>
 
@@ -40,7 +40,7 @@ The Helpshift SDK provides delegate callbacks to help app developers track a use
 2. Additionally, with SDK X 10.4.0 and above, `eventData` no longer needs to be parsed on Android. It is provided as an object and can be consumed directly.
 </Admonition>
 
-## Helpshift Delegate implementation {#delegate-implementation}
+## Helpshift Delegate implementation {/* #delegate-implementation */}
 
 ### Old Architecture
 
@@ -104,9 +104,9 @@ const handleUserAuthFailed = React.useCallback((payload: HelpshiftEventData) => 
 
 </Admonition>
 
-## Events {#helpshift-events}
+## Events {/* #helpshift-events */}
 
-### Helpshift session started event {#session-delegates}
+### Helpshift session started event {/* #session-delegates */}
 
 This event gets fired when the Helpshift session starts
 
@@ -135,7 +135,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Helpshift session ended event {#session-delegates}
+### Helpshift session ended event {/* #session-delegates */}
 
 This event gets fired when the Helpshift session ends.
 
@@ -165,7 +165,7 @@ const handleEvent = React.useCallback((data) => {
 </Tabs>
 
 
-### Unread Message Count Event {#unreadMessageCount}
+### Unread Message Count Event {/* #unreadMessageCount */}
 
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(shouldFetchFromServer: boolean)`. The count of the number of messages will be conveyed to your app via this event.
 
@@ -197,7 +197,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Conversation Status Event {#conversation-status}
+### Conversation Status Event {/* #conversation-status */}
 
 This event contains information about the current ongoing conversation.
 
@@ -229,7 +229,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Widget Toggle Event {#widget-toggle-event}
+### Widget Toggle Event {/* #widget-toggle-event */}
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key. For your reference, see the below example:
 
@@ -258,7 +258,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### User Click On Action Event {#user-click-on-action}
+### User Click On Action Event {/* #user-click-on-action */}
 
 This event is triggered when the user clicks on the link or call action of an action card message.
 
@@ -315,7 +315,7 @@ const handleEvent = React.useCallback((data) => {
 </Tabs>
 
 
-### Conversation Start Event {#conversation-start-event}
+### Conversation Start Event {/* #conversation-start-event */}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation. For your reference, see the below example.
 
@@ -344,7 +344,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Message Add Event {#message-add-event}
+### Message Add Event {/* #message-add-event */}
 
 This event is triggered when the user adds a message to a conversation. It might be a text message, a response via bot input, or an attachment. The event data object has the `type` and `body` keys, which indicate the type and body of the message added by the user. For your reference, see the below example.
 
@@ -375,7 +375,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Agent Message Received Event {#agent-message-received}
+### Agent Message Received Event {/* #agent-message-received */}
 
 This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
 
@@ -509,7 +509,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### CSAT Submit Event {#csat-submit-event}
+### CSAT Submit Event {/* #csat-submit-event */}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form. For your reference, see the below example.
 
@@ -538,7 +538,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Conversation End Event {#conversation-end-event}
+### Conversation End Event {/* #conversation-end-event */}
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -567,7 +567,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Conversation Rejected Event {#conversation-rejected-event}
+### Conversation Rejected Event {/* #conversation-rejected-event */}
 
 This event is triggered when an agent rejects the conversation.
 
@@ -596,7 +596,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Conversation Resolved Event {#conversation-resolved-event}
+### Conversation Resolved Event {/* #conversation-resolved-event */}
 
 <Tabs>
 <TabItem value="old" label="Old Architecture" default>
@@ -622,7 +622,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### Conversation Reopened Event {#conversation-reopened-event}
+### Conversation Reopened Event {/* #conversation-reopened-event */}
 
 When the resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
@@ -651,7 +651,7 @@ const handleEvent = React.useCallback((data) => {
 </TabItem>
 </Tabs>
 
-### User Authentication Failed Event {#user-authentication-failed-event}
+### User Authentication Failed Event {/* #user-authentication-failed-event */}
 
 If you have `User Authentication` enabled on the Dashboard and if you pass an invalid token in the `login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx-react-native/users/#overview-4)
 

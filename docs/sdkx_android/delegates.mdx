@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Helpshift Delegates {#delegates}
+# Helpshift Delegates {/* #delegates */}
 
 <Intro>
 
@@ -33,7 +33,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Helpshift Events Listener/Delegates implementation {#helpshift-delegates-implementation}
+## Helpshift Events Listener/Delegates implementation {/* #helpshift-delegates-implementation */}
 
 You can set `HelpshiftEventsListener` by calling the `Helpshift.setHelpshiftEventsListener()` method.
 
@@ -95,9 +95,9 @@ MyEventListener listener = new MyEventListener();
 Helpshift.setHelpshiftEventsListener(listener);
 ```
 
-## Helpshift Events {#helpshift-events}
+## Helpshift Events {/* #helpshift-events */}
 
-### Conversation Status Event {#conversation-status}
+### Conversation Status Event {/* #conversation-status */}
 
 This event contains information about the current ongoing conversation.
 
@@ -119,7 +119,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Widget Toggle Event {#widget-toggle-event}
+### Widget Toggle Event {/* #widget-toggle-event */}
 
 This event is triggered when the user opens or exits the chat screen. This event is triggered with a boolean value of `"visible"` key.
 
@@ -138,7 +138,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### User Click On Action Event {#user-click-on-action}
+### User Click On Action Event {/* #user-click-on-action */}
 
 This event is triggered when the user clicks on the link or call action of an action card message.
 
@@ -190,7 +190,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }});
 ```
 
-### Conversation Start Event {#conversation-start-event}
+### Conversation Start Event {/* #conversation-start-event */}
 
 This event triggers when the user sends the first message in a conversation. The event data object has a key, `message`, which includes the message string the end-user sent to start the conversation.
 
@@ -209,7 +209,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Message Add Event {#message-add-event}
+### Message Add Event {/* #message-add-event */}
 
 This event is triggered when the user adds a message in a conversation. It might be a text message, response via bot input, or an attachment. The event data object has `type` and `body` keys, which indicates the type and body of the message added by the user.
 
@@ -235,24 +235,24 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Agent Message Received Event {#agent-message-received}
+### Agent Message Received Event {/* #agent-message-received */}
 
 This event is triggered when the user receives any message from an agent in a conversation. This delegate is not triggered for bot messages or messages sent via automations.
 
 - Event name : `HelpshiftEvent.AGENT_MESSAGE_RECEIVED`
 - Event data:
 
-  | Key                              | Type                | Value                                         |
-  | -------------------------------- | ------------------- | --------------------------------------------- |
-  | HelpshiftEvent.DATA_PUBLISH_ID   | String              | Conversation ID of the ongoing issue          |
-  | HelpshiftEvent.DATA_MESSAGE_TYPE | String              | Message Type of the message                   |
-  | HelpshiftEvent.DATA_MESSAGE_BODY | String              | The actual message sent by the agent or empty |
-  | HelpshiftEvent.DATA_CREATED_TIME | Long                | Unix epoch timestamp in ms                    |
-  | HelpshiftEvent.DATA_ATTACHMENTS  | Map<String, Object> | Attachments, if they are present              |
-  | HelpshiftEvent.DATA_URL          | String              | URL of the attachment                         |
-  | HelpshiftEvent.DATA_CONTENT_TYPE | String              | MIME type of the attachment                   |
-  | HelpshiftEvent.DATA_FILE_NAME    | String              | File name of the attachment                   |
-  | HelpshiftEvent.DATA_SIZE         | Integer             | Size of the attachment in bytes               |
+  | Key                              | Type                      | Value                                         |
+  | -------------------------------- | -------------------       | --------------------------------------------- |
+  | HelpshiftEvent.DATA_PUBLISH_ID   | String                    | Conversation ID of the ongoing issue          |
+  | HelpshiftEvent.DATA_MESSAGE_TYPE | String                    | Message Type of the message                   |
+  | HelpshiftEvent.DATA_MESSAGE_BODY | String                    | The actual message sent by the agent or empty |
+  | HelpshiftEvent.DATA_CREATED_TIME | Long                      | Unix epoch timestamp in ms                    |
+  | HelpshiftEvent.DATA_ATTACHMENTS  | Map&lt;String, Object&gt; | Attachments, if they are present              |
+  | HelpshiftEvent.DATA_URL          | String                    | URL of the attachment                         |
+  | HelpshiftEvent.DATA_CONTENT_TYPE | String                    | MIME type of the attachment                   |
+  | HelpshiftEvent.DATA_FILE_NAME    | String                    | File name of the attachment                   |
+  | HelpshiftEvent.DATA_SIZE         | Integer                   | Size of the attachment in bytes               |
 
 <Admonition type="info" title="Note">
 
@@ -318,7 +318,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
   }});
 ```
 
-### CSAT Submit Event {#csat-submit-event}
+### CSAT Submit Event {/* #csat-submit-event */}
 
 This event is triggered when the user submits a CSAT rating after the conversation ends. The event data object has `rating` and `additionalFeedback` keys, which indicates the (star) rating and the additional comments provided by the user with the CSAT form.
 
@@ -340,7 +340,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Conversation End Event {#conversation-end-event}
+### Conversation End Event {/* #conversation-end-event */}
 
 This event is triggered when the conversation ends (resolved or rejected) and it cannot be reopened.
 
@@ -358,7 +358,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Conversation Rejected Event {#conversation-rejected-event}
+### Conversation Rejected Event {/* #conversation-rejected-event */}
 
 This event is triggered when an agent rejects the conversation.
 
@@ -376,7 +376,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Conversation Resolved Event {#conversation-resolved-event}
+### Conversation Resolved Event {/* #conversation-resolved-event */}
 
 This event is triggered when an agent resolves the conversation.
 
@@ -394,7 +394,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Conversation Reopened Event {#conversation-reopened-event}
+### Conversation Reopened Event {/* #conversation-reopened-event */}
 
 When resolution question is enabled, the users are asked if they're satisfied with the resolution. If the user rejects it and sends a new message, then the conversation is reopened and the Conversation Reopened event is triggered.
 
@@ -412,7 +412,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### User Authentication Failed Event {#user-authentication-failed-event}
+### User Authentication Failed Event {/* #user-authentication-failed-event */}
 
 If you have `User Authentication` feature enabled on the Dashboard and if you pass an invalid token in the `Helpshift.login(userDataMap)`, then you will receive this event with reason string. Check [here for more info](/sdkx_android/users).
 
@@ -433,7 +433,7 @@ Reason type:
     });
 ```
 
-### Helpshift session delegates {#session-delegates}
+### Helpshift session delegates {/* #session-delegates */}
 
 #### Helpshift Session Started
 
@@ -471,7 +471,7 @@ Helpshift.setHelpshiftEventsListener(new HelpshiftEventsListener() {
 });
 ```
 
-### Unread Message Count {#unread-message-count}
+### Unread Message Count {/* #unread-message-count */}
 
 If you want a count of all new messages received in an existing conversation, you can call this API `requestUnreadMessageCount(final boolean shouldFetchFromServer)`.
 

@@ -19,9 +19,9 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Theming and Skinning Older SDKs {#skinning}
+# Theming and Skinning Older SDKs {/* #skinning */}
 
-## Theming - 3.7.x and above {#theming-3}
+## Theming - 3.7.x and above {/* #theming-3 */}
 
 You can refer to the following sample app which implements theme inheritance -
 
@@ -73,7 +73,7 @@ Helpshift's ActionBar icon colors to match your app's colors, you can follow the
     <style name="Helpshift.Theme.Base" parent="MyCustomHelpshiftTheme" />
 ```
 
-### Customizing Themes {#customizing-themes}
+### Customizing Themes {/* #customizing-themes */}
 
 - `hs__actionButtonIconColor` - used to indicate ActionBar icon's color
 - `hs__contentSeparatorColor` - used to indicate seperator line color of FAQ list
@@ -219,7 +219,7 @@ For theming of Helpshift SDK v3.2.0 and below refer
 
 </Admonition>
 
-## Theming - 2.8.x and above {#theming-2}
+## Theming - 2.8.x and above {/* #theming-2 */}
 
 You can refer to the following sample app which implements theme inheritance -
 
@@ -258,7 +258,7 @@ To set the Helpshift SDK to inherit from your app theme styles -
    `helpshift.res.parent` variable to the path to you project `res/`
    folder containing the parent theme.
 
-### Additionally for 3.2.0 and above {#additional-3}
+### Additionally for 3.2.0 and above {/* #additional-3 */}
 
 - Inside helpshift-android-sdk/res/values/hs\_\_colors.xml change the following colors to match your app's theme colors
 
@@ -298,7 +298,7 @@ To set the Helpshift SDK to inherit from your app theme styles -
     **Please make sure the paths to the libs are relative paths.**
 ```
 
-### Skinning overview - 2.7.x and below {#skinning-overview}
+### Skinning overview - 2.7.x and below {/* #skinning-overview */}
 
 The Helpshift 2.7.x SDK for Android comes with two default themes. Viz.
 
@@ -321,13 +321,14 @@ which are common to both themes. Example:- paddings, fonts and font
 sizes etc. To apply a theme to any activity, simply change the
 android:theme value for that activity in `AndroidManifest.xml`.
 
-### Theme structure - 2.7.x and below {#theme-structure}
+### Theme structure - 2.7.x and below {/* #theme-structure */}
 
 - `hs_resources.xml` - This file declares the reference attributes which
   are used to refer different styles depending on the theme applied. It
   also contains theme specific colors used in the `HSThemeLight` and
   `HSThemeDark`. Example:-
 
+      ```text
       <attr name="hs_activityHeaderStyleRef" format="reference"/>
       ...etc
       <!-- Light theme colors -->
@@ -336,6 +337,7 @@ android:theme value for that activity in `AndroidManifest.xml`.
       <!-- Dark theme colors -->
       <color name="hs_dark_header_background_color">#222222</color>
       ...etc
+      ```
 
 - `hs_theme_light.xml` - This file contains a theme style named
   HSThemeLight which extends android themes styles. The HSThemeLight style
@@ -345,6 +347,7 @@ android:theme value for that activity in `AndroidManifest.xml`.
   attribute refers to the `@style/hs_lightActivityHeaderStyle` style which
   is defined in the same file as follows.
 
+      ```text
       <style name="HSThemeLight" parent="@android:style/Theme.Light.NoTitleBar">
         <!-- Attributes -->
         <item name="hs_activityHeaderStyleRef">@style/hs_lightActivityHeaderStyle</item>
@@ -354,6 +357,7 @@ android:theme value for that activity in `AndroidManifest.xml`.
         <item name="android:background">@color/hs_light_header_background_color</item>
         <item name="android:textColor">@color/hs_light_header_font_color</item>
       </style>
+      ```
 
 - `hs_theme_dark.xml` - Similarly, this file contains the style for
   HSThemeDark which contains the same attribute declared in
@@ -362,7 +366,8 @@ android:theme value for that activity in `AndroidManifest.xml`.
   `@style/hs_darkActivityHeaderStyle` style which is defined in the same
   file as follows.
 
-      <style name="HSThemeDark" parent="@android:style/Theme.Black.NoTitleBar">
+     ```text
+     <style name="HSThemeDark" parent="@android:style/Theme.Black.NoTitleBar">
         <!-- Attributes -->
         <item name="hs_activityHeaderStyleRef">@style/hs_darkActivityHeaderStyle</item>
         ...etc
@@ -371,8 +376,9 @@ android:theme value for that activity in `AndroidManifest.xml`.
         <item name="android:background">@color/hs_dark_header_background_color</item>
         <item name="android:textColor">@color/hs_dark_header_font_color</item>
       </style>
+      ```
 
-### Customizing Themes - 2.7.x and below {#customizing-themes}
+### Customizing Themes - 2.7.x and below {/* #customizing-themes */}
 
 Themes can customized in two ways.
 
@@ -401,7 +407,7 @@ Themes can customized in two ways.
     <Image src="/static/books/android/custom-theme-switch.jpg"  width="full" alt="custom-theme-switch.jpg" />
 ```
 
-### List of style references - 2.7.x and below {#style-ref-list}
+### List of style references - 2.7.x and below {/* #style-ref-list */}
 
 You can inspect the style references in Eclipse by opening a layout
 file, double-cliking on the UI element and checking the

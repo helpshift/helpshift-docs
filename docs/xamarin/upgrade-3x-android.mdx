@@ -20,9 +20,9 @@ import {
   LegacyEolAdmonition,
 } from "@site/src/components/forDocs";
 
-<LegacyEolAdmonition />
+# Upgrading from 2.6.0 to 3.0.0 {/* #upgrade-to-3 */}
 
-# Upgrading from 2.6.0 to 3.0.0 {#upgrade-to-3}
+<LegacyEolAdmonition />
 
 <Intro>
 
@@ -30,24 +30,24 @@ The Helpshift SDK v3.0.0 is a major update, and we have deprecated some APIs. If
 
 </Intro>
 
-## List of deprecated APIs {#deprecated-api}
+## List of deprecated APIs {/* #deprecated-api */}
 
-| Deprecated API                                                                                                  | New API                                                                                                         |
-| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| HelpshiftCore.Install(string apiKey, string domainName, string appId, Dictionary<string, object> installConfig) | HelpshiftCore.Install(string apiKey, string domainName, string appId, HelpshiftInstallConfig config)            |
-| HelpshiftSupport.ShowFAQs(Object uiParent, Dictionary<string, object> apiConfig)                                | HelpshiftSupport.ShowFAQs(Object uiParent, HelpshiftAPIConfig config)                                           |
-| HelpshiftSupport.ShowFAQSection(string sectionId, Object uiParent, Dictionary<string, object> apiConfig)        | HelpshiftSupport.ShowFAQSection(string sectionId, Object uiParent, HelpshiftAPIConfig config)                   |
-| HelpshiftSupport.ShowConversation(Object uiParent, Dictionary<string, object> apiConfig)                        | HelpshiftSupport.ShowConversation(Object uiParent, HelpshiftAPIConfig config)                                   |
-| HelpshiftSupport.ShowSingleFAQ(string faqId, Object uiParent, Dictionary<string, object> apiConfig)             | HelpshiftSupport.ShowSingleFAQ(string faqId, Object uiParent, HelpshiftAPIConfig config)                        |
-| HelpshiftSupport.GetNotificationCount(bool isAsync)                                                             | HelpshiftSupport.RequestUnreadMessagesCount(bool isRemote)                                                      |
-| HelpshiftSupport.SetSDKLanguage(string locale)                                                                  | HelpshiftCore.SetLanguage(string languageCode)                                                                  |
-| HelpshiftSupport.ShowDynamicForm(Object uiParent, string title, Dictionary<string, object>[] flows)             | HelpshiftSupport.ShowDynamicForm(Object uiParent, string title, `IList<Flow>` flows, HelpshiftAPIConfig config) |
-| HelpshiftSupport.SetMetaData(Dictionary<string, object> metaData)                                               | HelpshiftSupport.SetMetadata(HelpshiftSupportMetadata metadata)                                                 |
-| HelpshiftSupport.IsConversationActive()                                                                         | HelpshiftSupport.CheckIfConversationActive()                                                                    |
-| HelpshiftCampaigns.ShowInbox(Object uiParent, Dictionary<string, string> apiConfig)                             | HelpshiftCampaigns.ShowInbox(Object uiParent, HelpshiftAPIConfig config)                                        |
-| HelpshiftCore#SetNameAndEmail(string name, string email)                                                        | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
-| HelpshiftSupport#SetUserIdentifier(string userIdentifier)                                                       | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
-| HelpshiftCore#Login(String userId, String name, String email)                                                   | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
+| Deprecated API                                                                                                              | New API                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------             | --------------------------------------------------------------------------------------------------------------- |
+| HelpshiftCore.Install(string apiKey, string domainName, string appId, Dictionary&lt;string, object&gt; installConfig)       | HelpshiftCore.Install(string apiKey, string domainName, string appId, HelpshiftInstallConfig config)            |
+| HelpshiftSupport.ShowFAQs(Object uiParent, Dictionary&lt;string, object&gt; apiConfig)                                      | HelpshiftSupport.ShowFAQs(Object uiParent, HelpshiftAPIConfig config)                                           |
+| HelpshiftSupport.ShowFAQSection(string sectionId, Object uiParent, Dictionary&lt;string, object&gt; apiConfig)              | HelpshiftSupport.ShowFAQSection(string sectionId, Object uiParent, HelpshiftAPIConfig config)                   |
+| HelpshiftSupport.ShowConversation(Object uiParent, Dictionary&lt;string, object&gt; apiConfig)                              | HelpshiftSupport.ShowConversation(Object uiParent, HelpshiftAPIConfig config)                                   |
+| HelpshiftSupport.ShowSingleFAQ(string faqId, Object uiParent, Dictionary&lt;string, object&gt; apiConfig)                   | HelpshiftSupport.ShowSingleFAQ(string faqId, Object uiParent, HelpshiftAPIConfig config)                        |
+| HelpshiftSupport.GetNotificationCount(bool isAsync)                                                                         | HelpshiftSupport.RequestUnreadMessagesCount(bool isRemote)                                                      |
+| HelpshiftSupport.SetSDKLanguage(string locale)                                                                              | HelpshiftCore.SetLanguage(string languageCode)                                                                  |
+| HelpshiftSupport.ShowDynamicForm(Object uiParent, string title, Dictionary&lt;string, object&gt;[] flows)                   | HelpshiftSupport.ShowDynamicForm(Object uiParent, string title, `IList<Flow>` flows, HelpshiftAPIConfig config) |
+| HelpshiftSupport.SetMetaData(Dictionary&lt;string, object&gt; metaData)                                                     | HelpshiftSupport.SetMetadata(HelpshiftSupportMetadata metadata)                                                 |
+| HelpshiftSupport.IsConversationActive()                                                                                     | HelpshiftSupport.CheckIfConversationActive()                                                                    |
+| HelpshiftCampaigns.ShowInbox(Object uiParent, Dictionary&lt;string, object&gt; apiConfig)                                   | HelpshiftCampaigns.ShowInbox(Object uiParent, HelpshiftAPIConfig config)                                        |
+| HelpshiftCore#SetNameAndEmail(string name, string email)                                                                    | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
+| HelpshiftSupport#SetUserIdentifier(string userIdentifier)                                                                   | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
+| HelpshiftCore#Login(String userId, String name, String email)                                                               | HelpshiftCore#Login(HelpshiftUser user)                                                                         |
 
 <Admonition type="info" title="Note">
 
@@ -57,7 +57,7 @@ The Helpshift SDK v3.0.0 is a major update, and we have deprecated some APIs. If
 
 </Admonition>
 
-## List of removed APIs {#removed-api}
+## List of removed APIs {/* #removed-api */}
 
 | Removed API                                                                                                                | New API                                                                           |
 | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |

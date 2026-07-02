@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Custom Email Templates {#overview}
+# Custom Email Templates {/* #overview */}
 
 <Intro>
 
@@ -27,7 +27,7 @@ Follow this guide for writing your very own custom email template for Helpshift.
 
 </Intro>
 
-## Enabling Custom Template {#enabling}
+## Enabling Custom Template {/* #enabling */}
 
 Goto the email support channel that you want to enable custom email
 templates for, and turn ON the custom templates toggle -
@@ -37,7 +37,7 @@ templates for, and turn ON the custom templates toggle -
   width="full"
 />
 
-## Editing your custom template {#editing}
+## Editing your custom template {/* #editing */}
 
 All the email notifications to your customers are formatted in both HTML
 and plain text, each available in their separate tabs &mdash;
@@ -78,14 +78,14 @@ missing placeholders that are mandatory. More about them later.
 
 </div>
 
-## Dynamic Content in Templates {#dynamic-content}
+## Dynamic Content in Templates {/* #dynamic-content */}
 
 Most of the content of the emails sent to your customers is generated
 dynamically. This dynamic content comes via placeholders provided by
 Helpshift to your email templates.
 
 Both HTML and plain text templates consist of these placeholders.
-Some of them, like the `{{ delimeter }}` placeholder are required, while
+Some of them, like the `{{ delimiter }}` placeholder are required, while
 `{{ latest_message }}` is optional. These placeholders adhere to the
 [Moustache](https://mustache.github.io/mustache.5.html) spec.
 
@@ -97,7 +97,7 @@ menu &mdash;
   width="full"
 />
 
-### List of Available Placeholders {#placeholder-list}
+### List of Available Placeholders {/* #placeholder-list */}
 
 Here's a list of available placeholders to use in your templates &mdash;
 
@@ -105,14 +105,14 @@ Here's a list of available placeholders to use in your templates &mdash;
 
 |                                         |                                                                                                                                                                                                                             |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <code>{{ delimiter }}</code>            | This is the _### Do not reply below ..._ line at beginning of the email. It is used to separate old content from new. When a customer replies, the content above the delimiter is considered as the message.                |
-| <code>{{ messages }}</code>             | This is a list of last 10 messages of the issue.                                                                                                                                                                            |
-| <code>{{ support_channel_name }}</code> | Brings the name of your email support channel. This is useful for making email footers where you might want to add a signature, say "-- Happy Apps Support"                                                                 |
-| <code>{{ latest_message }}</code>       | Brings the last message in the issue as plain text. This is useful for making preview lines in customer's mailbox. Learn more about preview text [here](https://litmus.com/blog/the-ultimate-guide-to-preview-text-support) |
+| `{{ delimiter }}`                       | This is the _### Do not reply below ..._ line at beginning of the email. It is used to separate old content from new. When a customer replies, the content above the delimiter is considered as the message.                |
+| `{{ messages }}`             | This is a list of last 10 messages of the issue.                                                                                                                                                                            |
+| `{{ support_channel_name }}` | Brings the name of your email support channel. This is useful for making email footers where you might want to add a signature, say "-- Happy Apps Support"                                                                 |
+| `{ latest_message }}`       | Brings the last message in the issue as plain text. This is useful for making preview lines in customer's mailbox. Learn more about preview text [here](https://litmus.com/blog/the-ultimate-guide-to-preview-text-support) |
 
 </div>
 
-## Messages Block {#messages}
+## Messages Block {/* #messages */}
 
 The last 10 messages of the issue are available under the `{{ messages }}`
 block.
@@ -144,12 +144,12 @@ It's written as follows:
 | author      | Nickname of agent or support channel name (when agent privacy is ON). This is optional.                                                                                                                                         |
 | date        | Date of the message. This is optional.                                                                                                                                                                                          |
 | time        | Timestamp of the message. This is optional.                                                                                                                                                                                     |
-| body        | This is the message body. Make sure you always enclose body in <code>{{{</code> and <code>}}}</code> to unescape the rich content.                                                                                              |
+| body        | This is the message body. Make sure you always enclose body in `{{{` and `}}}` to unescape the rich content.                                                                                             |
 | attachments | Attachments in the message. <code>list</code> contains a list of attachment data - <code>name</code>, <code>url</code> and <code>object_type</code> (indicates content type, e.g. Image). <code>object_type</code> is optional. |
 
 </div>
 
-## Final note {#final-note}
+## Final note {/* #final-note */}
 
 Use the placeholders described above in your HTML and text templates as
 you seem fit into your design.

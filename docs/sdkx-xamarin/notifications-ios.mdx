@@ -5,15 +5,15 @@ description: "Learn more about configuring push and in-app notifications in your
 ---
 
 import {
-  Admonition,
-  CodeBlock,
-  Image,
-  Intro,
+    Admonition,
+    CodeBlock,
+    Image,
+    Intro,
 } from "@site/src/components/forDocs";
 
 import ConfigurePushNotificationsiOS from "@site/docs/_partials/_configurePushNotificationsiOS.mdx";
 
-# Notifications {#notifications}
+# Notifications {/* #notifications */}
 
 <Intro>{frontMatter.description}</Intro>
 
@@ -24,7 +24,7 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
-## Configure push notifications via Helpshift {#push-via-helpshift}
+## Configure push notifications via Helpshift {/* #push-via-helpshift */}
 
 Notifications can be sent to your users when you reply to an issue submitted by them. In addition to the expected Push Notification behavior on iOS, you can customize your notifications to display a numbered badge on your App icon or play a sound alert when a notification is received.
 
@@ -46,7 +46,7 @@ public override bool FinishedLaunching(UIApplication application, NSDictionary l
 
 <ConfigurePushNotificationsiOS />
 
-### Configure the Helpshift iOS SDK to handle notifications {#configure-helpshift-sdk}
+### Configure the Helpshift iOS SDK to handle notifications {/* #configure-helpshift-sdk */}
 
 <Admonition type="info" title="Note">
 
@@ -66,7 +66,7 @@ public override void RegisteredForRemoteNotifications(UIApplication application,
 }
 ```
 
-#### If your app uses UNNotification framework {#unnotification-framework}
+#### If your app uses UNNotification framework {/* #unnotification-framework */}
 
 To respond to the delivery of notifications, you must implement a delegate for the shared UNUserNotificationCenter object. Your delegate object must conform to the UNUserNotificationCenterDelegate protocol, which the notification center uses to deliver notification information to your app:
 
@@ -114,7 +114,7 @@ public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNo
 }
 ```
 
-## In-app notifications {#in-app-notifications}
+## In-app notifications {/* #in-app-notifications */}
 
 In-app notifications are similar to Apple's push notification banners. Unlike push notifications, they appear within your app when it is in use by the user.
 
@@ -126,11 +126,11 @@ These notifications are sent when an agent replies to a customer's issue. Your c
   alt="In-app-notification.png"
 />
 
-## Configuring In-app notifications {#optional-flags}
+## Configuring In-app notifications {/* #optional-flags */}
 
 The Helpshift [install call](/sdkx-xamarin/getting-started#initialize) supports flags for configuring SDK behaviour. Currently we support one flag i.e `enableInAppNotification`.
 
-### Enabling/Disabling In-app notifications {#enable-disable-in-app}
+### Enabling/Disabling In-app notifications {/* #enable-disable-in-app */}
 
 <div className="compact ">
 
@@ -153,7 +153,7 @@ installConfig.Add("enableInAppNotification", false);
 Helpshift.Install("YOUR_APP_ID", "YOUR_DOMAIN_NAME", installConfig);
 ```
 
-### Pausing In-app notifications {#pause-in-app}
+### Pausing In-app notifications {/* #pause-in-app */}
 
 If you have enabled in-app notifications, use the API `PauseDisplayOfInAppNotification(bool)` to pause/resume the notifications. When `true` is passed to this method, display of in-app notifications is paused even if they arrive. When you pass `false`, the in-app notifications start displaying.
 
@@ -164,7 +164,7 @@ Helpshift.PauseDisplayOfInAppNotification(true); // To temporarily pause in-app 
 Helpshift.PauseDisplayOfInAppNotification(false); // To resume showing the in-app notifications
 ```
 
-## Notification badges {#notification-badges}
+## Notification badges {/* #notification-badges */}
 
 If you want to show your user notifications for replies you send to the issues they posted, you can use notification counts provided by Helpshift SDK that gives you the total number of unread messages and display it as a badge.
 You can get notification counts asynchronously by implementing the `IHelpshiftEventsListener` and listening for `HelpshiftEventNameReceivedUnreadMessageCount` event in the interface's `OnEventOccurred(string, IDictionary<string, object>)` method.

@@ -19,7 +19,7 @@ import {
   Step,
 } from "@site/src/components/forDocs";
 
-# Users {#users}
+# Users {/* #users */}
 
 <Intro>
 
@@ -27,13 +27,13 @@ Track and manage users on Helpshift PC Widget - Unity.
 
 </Intro>
 
-## How to identify and manage users {#identify-and-manage-users}
+## How to identify and manage users {/* #identify-and-manage-users */}
 
-### Logged in users {#logged-in-users}
+### Logged in users {/* #logged-in-users */}
 
 #### Overview
 
-If your Unity app has logged-in users, we strongly recommend including user identifiers (`UserId` and/or `UserEmail`) in the config object during [initialization](pc-widget-unity/helpshift-apis/#helpshiftinitialize). Doing so enables Helpshift Agents to offer a personalized support experience to your users, regardless of the device they are using. Passing the user identifiers to Helpshift PC Widget also ensures that a user's conversations are available only to them when they log in.
+If your Unity app has logged-in users, we strongly recommend including user identifiers (`UserId` and/or `UserEmail`) in the config object during [initialization](/pc-widget-unity/helpshift-apis/#helpshiftinitialize). Doing so enables Helpshift Agents to offer a personalized support experience to your users, regardless of the device they are using. Passing the user identifiers to Helpshift PC Widget also ensures that a user's conversations are available only to them when they log in.
 
 #### What to provide as user identifiers
 
@@ -85,11 +85,11 @@ var config = new HelpshiftConfig
 Helpshift.Initialize(Application.streamingAssetsPath, config);
 ```
 
-### Logging the users out {#logging-the-users-out}
+### Logging the users out {/* #logging-the-users-out */}
 
 Once a user logs out from your unity app, you should set the `UserId` and `UserEmail` to empty string in config and sending the user identifiers with the `HelpshiftConfig` object to ensure that other users can't view this user's conversations. After you log a user out, only the conversations started by anonymous users using that specific browser will be visible.
 
-### Anonymous Users {#anonymous-users}
+### Anonymous Users {/* #anonymous-users */}
 
 #### Overview
 
@@ -124,9 +124,9 @@ The `ClearAnonymousUserOnLogin` functionality does not impact the logged-in user
 
 </Admonition>
 
-## Verifying the identity of users {#verifying-the-identity-of-users}
+## Verifying the identity of users {/* #verifying-the-identity-of-users */}
 
-### Configuring Identity Verification in your app {#configuring-identity-verification}
+### Configuring Identity Verification in your app {/* #configuring-identity-verification */}
 
 #### Overview
 
@@ -164,7 +164,7 @@ var config = new HelpshiftConfig
 Helpshift.Initialize(Application.streamingAssetsPath, config);
 ```
 
-### Identity Verification failure {#identity-verification-failure}
+### Identity Verification failure {/* #identity-verification-failure */}
 
 #### Overview
 
@@ -176,6 +176,6 @@ When making a request to Helpshift with no `UserAuthToken` or an invalid `UserAu
   - Smart form submissions will fail in Helpcenter inside Helpshift Widget.
 - If the logged-in users are verified (i.e. a valid `UserAuthToken` is provided), they are able to see their previous conversations and create new Issues. The UI for verified logged-in users looks and works exactly the same as it would if Identity Verification were turned off. Only unverified users are impacted as described above.
 
-### Testing & Troubleshooting {#testing-and-troubleshooting}
+### Testing & Troubleshooting {/* #testing-and-troubleshooting */}
 
 [How do I test that I have User Identity Verification set up correctly?](https://support.helpshift.com/hc/en/13-helpshift-technical-support/faq/881-user-identity-verification-how-do-i-test-that-i-have-user-identity-verification-set-up-correctly/)
