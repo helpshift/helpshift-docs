@@ -1,4 +1,7 @@
 If you are facing any issues related to loading or event updates from `Chat` or `Helpcenter` screens then there might be an issue with obfuscation of Helpshift SDK related code.
+
+Sometimes R8 compiler merges HSLogger class with other static classes leading to ANR issues. Add rule to keep class HSLogger but can obfucate it.
+
 Make sure the following proguard rule is followed to skip obfuscation of the mentioned files:
 
 ```java
@@ -9,4 +12,6 @@ Make sure the following proguard rule is followed to skip obfuscation of the men
 -keepclassmembers class com.helpshift.chat.HSChatToNativeBridge {
    public *;
 }
+
+-keep, allowobfuscation class com.helpshift.log.HSLogger { *; }
 ```
