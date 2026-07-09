@@ -1,0 +1,64 @@
+import {
+  Admonition,
+  Intro,
+  TabItem,
+  Tabs,
+  Image,
+} from "@site/src/components/forDocs";
+
+### Disable push notification for in-app
+
+By default, in-app push notifications are sent directly to the device's notification tray. However, you can configure the SDKX to display messages exclusively as in-app notifications while the user is actively using the app.
+Users do not have to interact with the notification tray to see in-app messages.
+
+#### Implementation Steps
+
+1. Enable background remote notifications in Xcode:
+
+> **_Xcode → Capabilities → Background Modes → Remote Notifications_**
+
+<Image width="full !p-0" src="/static/books/sdkx_ios/background-modes.png" />
+
+3. Implement background handler in `AppDelegate`.
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+```objc
+- (void)application:(UIApplication *)application
+	didReceiveRemoteNotification:(NSDictionary *)userInfo
+	fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+	NSDictionary *custom = userInfo[@"custom"];
+	if (!custom) {
+		completionHandler(UIBackgroundFetchResultNoData);
+		return;
+	}
+
+}
+
+````
+</TabItem>
+<TabItem value="Swift" label="Swift">
+```swift
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable : Any]
+    ) async -> UIBackgroundFetchResult {
+        let origin = userInfo["origin"] as? String
+        if origin == "helpshift" {
+            return await Helpshift.handleSilentBackgroundNotification(userInfo)
+        }
+        return .noData
+    }
+````
+
+</TabItem>
+</Tabs>
+
+<Admonition type="warning" title="Note">
+
+- Call the `completionHandler` as quickly as possible after finishing work to allow the system to manage background time.
+- Background delivery is not guaranteed: silent notifications are best-effort and may be delayed or dropped when the system is low on resources or the app has been force-quit.
+- If the app is terminated by the system, silent pushes may not wake it; rely on visible notifications or server-side escalation for critical alerts.
+- You cannot reach or re-engage **inactive users** with this feature.
+
+</Admonition>
