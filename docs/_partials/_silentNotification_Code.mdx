@@ -1,0 +1,37 @@
+import { Admonition, TabItem, Tabs } from "@site/src/components/forDocs";
+
+3. Implement background handler in `AppDelegate`.
+
+<Tabs groupId="ios-languages">
+<TabItem value="Objective-C" label="Objective-C">
+```objc
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    NSString *origin = userInfo[@"origin"];
+    
+    if ([origin isKindOfClass:[NSString class]] && [origin isEqualToString:@"helpshift"]) {
+        // Call the Helpshift background handler and pass the completion block
+        [Helpshift handleSilentBackgroundNotification:userInfo withCompletionHandler:completionHandler];
+    }
+}
+
+````
+</TabItem>
+<TabItem value="Swift" label="Swift">
+```swift
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable : Any]
+    ) async -> UIBackgroundFetchResult {
+        let origin = userInfo["origin"] as? String
+        if origin == "helpshift" {
+            return await Helpshift.handleSilentBackgroundNotification(userInfo)
+        }
+        return .noData
+    }
+````
+
+</TabItem>
+</Tabs>

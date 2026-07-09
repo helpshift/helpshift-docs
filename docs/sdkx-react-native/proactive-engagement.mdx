@@ -16,6 +16,8 @@ import {
 
 import AndroidiOSProactiveNotifBehaviourTable from "@site/docs/_partials/_androidAndiOSProactiveNotifBehaviourTable.mdx";
 import AndroidInAppSample from "@site/docs/_partials/_proactiveAnd_inappSamples.mdx";
+import SilentNotifications from "@site/docs/_partials/_silentNotification_iOS.mdx";
+import SilentNotificationCode from "@site/docs/_partials/_silentNotification_Code.mdx";
 
 <Intro>
 
@@ -280,18 +282,7 @@ const proactiveConfig = {
 setProactiveConfig(proactiveConfig);
 ```
 
-### Disable push notification for in-app
-
-By default, in-app push notifications are sent directly to the device's notification tray. However, you can configure the SDKX to display messages exclusively as in-app notifications while the user is actively using the app.
-Users do not have to interact with the notification tray to see in-app messages.
-
-#### Implementation Steps
-
-1. Enable background remote notifications in Xcode:
-
-> **_Xcode → Capabilities → Background Modes → Remote Notifications_**
-
-<Image width="full !p-0" src="/static/books/sdkx_ios/background-modes.png" />
+<SilentNotifications />
 
 3. Implement background handler in `AppDelegate`.
 
@@ -332,11 +323,3 @@ Notifications.events().registerNotificationReceivedBackground(
   },
 );
 ```
-
-<Admonition type="warning" title="Note">
-
-- Background delivery is not guaranteed: silent notifications are best-effort and may be delayed or dropped when the system is low on resources or the app has been force-quit.
-- If the app is terminated by the system, silent pushes may not wake it; rely on visible notifications or server-side escalation for critical alerts.
-- You cannot reach or re-engage **inactive users** with this feature.
-
-</Admonition>

@@ -1,15 +1,14 @@
-import {
-  Admonition,
-  Intro,
-  TabItem,
-  Tabs,
-  Image,
-} from "@site/src/components/forDocs";
+import {  Image } from "@site/src/components/forDocs";
+import AndroidInAppSample from "@site/docs/_partials/_proactiveAnd_inappSamples.mdx";
+ 
+## Handling Silent notification for in-app
 
-### Disable push notification for in-app
+By default, in-app notifications are sent directly to the device's notification tray as fallback push notifications.
+However, you can configure the SDK to display notification exclusively as in-app notification while the user is actively using the app.
 
-By default, in-app push notifications are sent directly to the device's notification tray. However, you can configure the SDKX to display messages exclusively as in-app notifications while the user is actively using the app.
-Users do not have to interact with the notification tray to see in-app messages.
+- If the app is terminated by the system, silent pushes may not wake it.
+- Background delivery is not guaranteed: silent notifications are best-effort and may be delayed or dropped when the system is low on resources or the app has been force-quit.
+- When silent notifications are enabled and fallback push is disabled, you can't use this feature to reach or re-engage inactive users. Because in-app notifications only appear when the app is in the foreground.
 
 #### Implementation Steps
 
@@ -18,47 +17,3 @@ Users do not have to interact with the notification tray to see in-app messages.
 > **_Xcode → Capabilities → Background Modes → Remote Notifications_**
 
 <Image width="full !p-0" src="/static/books/sdkx_ios/background-modes.png" />
-
-3. Implement background handler in `AppDelegate`.
-
-<Tabs groupId="ios-languages">
-<TabItem value="Objective-C" label="Objective-C">
-```objc
-- (void)application:(UIApplication *)application
-	didReceiveRemoteNotification:(NSDictionary *)userInfo
-	fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	NSDictionary *custom = userInfo[@"custom"];
-	if (!custom) {
-		completionHandler(UIBackgroundFetchResultNoData);
-		return;
-	}
-
-}
-
-````
-</TabItem>
-<TabItem value="Swift" label="Swift">
-```swift
-    func application(
-        _ application: UIApplication,
-        didReceiveRemoteNotification userInfo: [AnyHashable : Any]
-    ) async -> UIBackgroundFetchResult {
-        let origin = userInfo["origin"] as? String
-        if origin == "helpshift" {
-            return await Helpshift.handleSilentBackgroundNotification(userInfo)
-        }
-        return .noData
-    }
-````
-
-</TabItem>
-</Tabs>
-
-<Admonition type="warning" title="Note">
-
-- Call the `completionHandler` as quickly as possible after finishing work to allow the system to manage background time.
-- Background delivery is not guaranteed: silent notifications are best-effort and may be delayed or dropped when the system is low on resources or the app has been force-quit.
-- If the app is terminated by the system, silent pushes may not wake it; rely on visible notifications or server-side escalation for critical alerts.
-- You cannot reach or re-engage **inactive users** with this feature.
-
-</Admonition>
