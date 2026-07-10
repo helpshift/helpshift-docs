@@ -6,7 +6,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import htmlElementWidths from "../../constants/htmlElementWidths";
 
-export default function Image({ width, src, centered, alt }) {
+export default function Image({ width, src, centered, alt, className = "" }) {
   const widthClassToApply =
     width && htmlElementWidths[width]
       ? htmlElementWidths[width]
@@ -15,7 +15,9 @@ export default function Image({ width, src, centered, alt }) {
   return (
     <img
       src={src}
-      className={`${widthClassToApply} ${centered ? "block mx-auto" : ""} `}
+      className={`${widthClassToApply} ${className} ${
+        centered ? "block mx-auto" : ""
+      } `}
       alt={alt}
     />
   );
@@ -26,4 +28,5 @@ Image.propTypes = {
   src: PropTypes.string.isRequired,
   centered: PropTypes.bool,
   alt: PropTypes.string,
+  className: PropTypes.string,
 };
