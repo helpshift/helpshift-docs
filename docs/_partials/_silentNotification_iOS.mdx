@@ -1,14 +1,13 @@
 import {  Image } from "@site/src/components/forDocs";
-import AndroidInAppSample from "@site/docs/_partials/_proactiveAnd_inappSamples.mdx";
  
-## Handling Silent notification for in-app
+## Handling Silent Notification for In-App Proactive Engagement Notifications
 
-By default, in-app notifications are sent directly to the device's notification tray as fallback push notifications.
-However, you can configure the SDK to display notification exclusively as in-app notification while the user is actively using the app.
+By default, In-App notifications are sent directly to the device's notification tray, as fallback push notifications, if your application is in background/killed state.
+However, you can configure the SDK to display notification exclusively as In-App notification and show up only when the user is actively using the app.
 
 - If the app is terminated by the system, silent pushes may not wake it.
 - Background delivery is not guaranteed: silent notifications are best-effort and may be delayed or dropped when the system is low on resources or the app has been force-quit.
-- When silent notifications are enabled and fallback push is disabled, you can't use this feature to reach or re-engage inactive users. Because in-app notifications only appear when the app is in the foreground.
+- When silent notifications are enabled/handled in your app but fallback push is disabled, you can't use this feature to reach or re-engage inactive users. In-App notifications are displayed only when the app is in the foreground.
 
 #### Implementation Steps
 
