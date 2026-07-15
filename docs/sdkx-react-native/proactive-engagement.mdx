@@ -11,11 +11,11 @@ import {
   TabItem,
   Tabs,
   Image,
-  Centered
+  Centered,
 } from "@site/src/components/forDocs";
 
 import AndroidiOSProactiveNotifBehaviourTable from "@site/docs/_partials/_androidAndiOSProactiveNotifBehaviourTable.mdx";
-import AndroidInAppSample from "@site/docs/_partials/_proactiveAnd_inappSamples.mdx";
+import InAppSample from "@site/docs/_partials/_proactiveAnd_inappSamples.mdx";
 import SilentNotifications from "@site/docs/_partials/_silentNotification_iOS.mdx";
 import SilentNotificationCode from "@site/docs/_partials/_silentNotification_Code.mdx";
 
@@ -49,7 +49,7 @@ To publish a notification follow these steps:
 />
 
 - Select the desired action from available options, fill up the notification content and add context as per your needs.
-    - Intents/CIFs/tags/initial message etc configured here will be used when the end user starts a conversation by clicking on the notification.
+  - Intents/CIFs/tags/initial message etc configured here will be used when the end user starts a conversation by clicking on the notification.
 
 <Image
   src="/static/books/common/proactive-admin-compose.png"
@@ -58,8 +58,8 @@ To publish a notification follow these steps:
 />
 
 - Configure the audience filter that you want to target. You can filter the audience based on:
-    - Issue properties
-    - User properties [using User Hub integration](/sdkx-react-native/identity-user-hub)
+  - Issue properties
+  - User properties [using User Hub integration](/sdkx-react-native/identity-user-hub)
 
 <Image
   src="/static/books/common/proactive-admin-audience.png"
@@ -133,7 +133,7 @@ Otherwise, follow the setup instructions on the
 <Tabs groupId="sdk-platforms">
 <TabItem value="android" label="Android">
 
-<AndroidInAppSample />
+<InAppSample platform="android" />
 
 - InApp notifications are used to grab attention of the user who is already using your application, is on the application UI and you want to alert/engage them.
 - If the user is not currently using the app, we show the in-app notification when the application is opened next time. This way an in-app notification is not lost even if user is not on the application screen.
@@ -145,14 +145,10 @@ Otherwise, follow the setup instructions on the
 </TabItem>
 <TabItem value="ios" label="iOS">
 
-<Image
-  src="/static/books/sdkx_ios/proactive-inapp-sdk-ios.png"
-  width="half"
-  alt="Proactive Engagement in-app notification on iOS"
-/>
+<InAppSample platform="ios" />
 
 - In-App notifications are used to grab attention of the user who is already using your application, is on the application UI and you want to alert or engage with him in real time.
-- If the user is not on the application UI then the notification is shown in the notification tray of the device to engage the user. 
+- If the user is not on the application UI then the notification is shown in the notification tray of the device to engage the user.
 - When the user clicks on the notification we open the app and then present the actual configured in-app notification. This increases the probability of user engagement and helps us achieve our goal better.
 - We currently support Banner type notifications with click actions similar to Push notifications.
 - If the SDK receives multiple in-app notifications when the app was in background then the system will display all of them. On clicking the notification, we will open the app and the SDK will show in-app notification corresponding to the clicked notification. Other notifications remain as is in the notification center.
@@ -181,12 +177,12 @@ Otherwise, follow the setup instructions on the
 
 <div className="compact ">
 
-| Key | Details |
-| --- | --- |
-| **API** | `pauseDisplayOfInAppNotification(shouldPause: boolean)` |
-| **Values** | `true` (Pauses), `false` (Resumes) |
-| **Min SDK** | v10.5.0 |
-| **Call Timing** | After `install()` |
+| Key             | Details                                                 |
+| --------------- | ------------------------------------------------------- |
+| **API**         | `pauseDisplayOfInAppNotification(shouldPause: boolean)` |
+| **Values**      | `true` (Pauses), `false` (Resumes)                      |
+| **Min SDK**     | v10.5.0                                                 |
+| **Call Timing** | After `install()`                                       |
 
 </div>
 
@@ -202,7 +198,6 @@ pauseDisplayOfInAppNotification(true);
 pauseDisplayOfInAppNotification(false);
 ```
 
-
 ## Setting defaults for notification properties (Android) {/* #notification-defaults */}
 
 If you need to set some defaults to be used in proactive notifications on Android, you can use the `setAndroidProactivePushNotificationDefaults` API. We recommend calling this API right after the `install()` call.
@@ -217,12 +212,12 @@ The following configurations are available via this API:
 
 <div className="compact ">
 
-| Key | Details |
-| --- | --- |
-| **API** | `setAndroidProactivePushNotificationDefaults(config: object)` |
-| **Platform** | Android only |
-| **Min SDK** | v10.5.0 |
-| **Call Timing** | Right after `install()` |
+| Key             | Details                                                       |
+| --------------- | ------------------------------------------------------------- |
+| **API**         | `setAndroidProactivePushNotificationDefaults(config: object)` |
+| **Platform**    | Android only                                                  |
+| **Min SDK**     | v10.5.0                                                       |
+| **Call Timing** | Right after `install()`                                       |
 
 </div>
 
@@ -231,8 +226,8 @@ Example:
 ```javascript
 import {
   install,
-  setAndroidProactivePushNotificationDefaults
-} from 'helpshift-plugin-sdkx-react-native';
+  setAndroidProactivePushNotificationDefaults,
+} from "helpshift-plugin-sdkx-react-native";
 
 // ... install call ...
 
@@ -241,7 +236,7 @@ const proactiveDefaults = {
   largeNotificationIconId: "ic_large_notification",
   soundId: "notification_sound",
   proactiveSupportChannelId: "my_support_channel",
-  proactiveEngageChannelId: "my_engage_channel"
+  proactiveEngageChannelId: "my_engage_channel",
 };
 
 setAndroidProactivePushNotificationDefaults(proactiveDefaults);
@@ -252,6 +247,7 @@ setAndroidProactivePushNotificationDefaults(proactiveDefaults);
 If you want to use your own notification channels (created by your application beforehand) for Proactive Engagement notifications, you can provide the channel IDs via the API above.
 
 If the values are not set, the SDK creates default notification channels automatically:
+
 - **Proactive Support**: For notifications leading to Helpcenter or Conversations. Default name: "Proactive Support".
 - **Proactive Engage**: For notifications leading to user engagement. Default name: "Proactive Engage".
 

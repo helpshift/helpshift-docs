@@ -1,21 +1,62 @@
-import { Image, Admonition } from "@site/src/components/forDocs";
+import { Image } from "@site/src/components/forDocs";
 
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-    gap: "16px",
-  }}>
-    <div style={{ textAlign: "center" }}>
-      <Image width="full" src="/static/books/sdkx_android/customerDemo_Banner.gif" />
-      <p style={{ marginTop: "-18px", fontStyle: "italic" }} > Banner </p>
-    </div>
-    <div style={{ textAlign: "center" }}>
-      <Image width="full" src="/static/books/sdkx_android/customerDemo_Card.gif" />
-      <p style={{ marginTop: "-18px", fontStyle: "italic" }} > Card </p>
-    </div>
-    <div style={{ textAlign: "center" }}>
-      <Image width="full" src="/static/books/sdkx_android/customerDemo_Modal.gif" />
-      <p style={{ marginTop: "-18px", fontStyle: "italic" }} > Modal </p>
-    </div>
+{(() => {
+const androidData = [
+{
+src: "/static/books/sdkx_android/customerDemo_Banner.gif",
+title: "Banner",
+},
+{
+src: "/static/books/sdkx_android/customerDemo_Card.gif",
+title: "Card",
+},
+{
+src: "/static/books/sdkx_android/customerDemo_Modal.gif",
+title: "Modal",
+},
+];
+
+const iosData = [
+{
+src: "/static/books/sdkx_ios/customerDemo_Banner.gif",
+title: "Banner",
+},
+{
+src: "/static/books/sdkx_ios/customerDemo_Card.gif",
+title: "Card",
+},
+{
+src: "/static/books/sdkx_ios/customerDemo_Modal.gif",
+title: "Modal",
+},
+];
+
+const currentItems =
+props.platform === "android" ? androidData :
+props.platform === "ios" ? iosData :
+null;
+
+// Fallback check: Return null if platform is unsupported
+if (!currentItems) return null;
+
+return (
+
+<div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-3">
+  {currentItems.map((item) => {
+    return (
+      <div key={item.src} className="text-center">
+        {/* Directly targeting any child images to reset native Docusaurus padding styles */}
+        <div
+          style={{ display: "contents" }}
+          className="[&>img]:!p-0 [&>img]:!m-0"
+        >
+          <Image width="full !p-0" src={item.src} />
+        </div>
+        <p className="italic text-sm">{item.title}</p>
+      </div>
+    );
+  })}
 </div>
+
+);
+})()}
