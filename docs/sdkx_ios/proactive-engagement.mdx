@@ -2,7 +2,7 @@
 sidebar_position: 85
 sidebar_class_name: feature-new
 title: Proactive Engagement
-description: "Proactive  Engagement lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations."
+description: "Proactive Engagement lets you reach out to your players by sending Push/In-App Messages on their mobile devices and engage in various ways including starting conversations."
 ---
 
 import {
@@ -10,7 +10,7 @@ import {
   Intro,
   TabItem,
   Tabs,
-  Image
+  Image,
 } from "@site/src/components/forDocs";
 
 import ProactiveNotifBehaviourTable from "@site/docs/_partials/_iOSProactiveNotifBehaviourTable.mdx";
@@ -18,13 +18,13 @@ import InAppSample from "@site/docs/_partials/_proactiveAnd_inappSamples.mdx";
 
 <Intro>
 
-Proactive Engagement lets you reach out to your players by sending Push/In app Notifications on their mobile devices and engage in various ways including starting conversations.
+Proactive Engagement lets you reach out to your players by sending Push/In-App Messages on their mobile devices and engage in various ways including starting conversations.
 
 </Intro>
 
 <Admonition type="info" title="Note">
 
-This feature is available from SDK X 10.5.0 onwards.
+The Proactive Engagement is available from SDK X 10.5.0 onwards.
 
 All the public APIs in the SDK should be called after initializing the SDK via [Helpshift installWithPlatformId API](/sdkx_ios/getting-started#start-using)
 
@@ -32,12 +32,12 @@ Before starting with Proactive Engagement, please ensure you have integrated pus
 
 </Admonition>
 
-## Configuring Proactive Engagement notifications
+## Configuring Proactive Engagement {/* #configuring-proactive-engagement-notifications */}
 
-To publish a notification follow these steps:
+To publish a message follow these steps:
 
 - Open the Helpshift Dashboard and navigate to **Settings > Workflows > Proactive Engagement**
-- Create a notification for the app you want with either **Push** or **In-App** notification
+- Create an Engagement campaign for the app you want with either **Push** or **In-App** message
 
 <Image
   src="/static/books/common/proactive-admin-settings.png"
@@ -46,33 +46,33 @@ To publish a notification follow these steps:
 />
 
 - Select the desired action from available options, fill up the notification content and add context as per your needs.
-    - Intents/CIFs/tags/initial message etc configured here will be used when the end user starts a conversation by clicking on the notification.
+  - Intents/CIFs/tags/initial message etc configured here will be used when the end user starts a conversation by clicking on the notification.
 
 <Image
   src="/static/books/common/proactive-admin-compose.png"
   width="full"
-  alt="Proactive Engagement notification compose settings on Helpshift admin dashboard"
+  alt="Proactive Engagement campaign compose settings on Helpshift admin dashboard"
 />
 
 - Configure the audience filter that you want to target. You can filter the audience based on:
-    - Issue properties
-    - User properties [using User Hub integration](/sdkx_ios/identity-user-hub)
+  - Issue properties
+  - User properties [using User Hub integration](/sdkx_ios/identity-user-hub)
 
 <Image
   src="/static/books/common/proactive-admin-audience.png"
   width="full"
-  alt="Proactive Engagement notification audience filter on Helpshift admin dashboard"
+  alt="Proactive Engagement campaign audience filter on Helpshift admin dashboard"
 />
 
-- Schedule the notification. You will get a chance to review the full configuration before publishing the notification.
+- Schedule the notification. You will get a chance to review the full configuration before publishing the campaign.
 
 <Image
   src="/static/books/common/proactive-admin-schedule.png"
   width="full"
-  alt="Proactive Engagement notification scheduling on Helpshift admin dashboard"
+  alt="Proactive Engagement campaign scheduling on Helpshift admin dashboard"
 />
 
-### Push notifications
+### Push Message {/* #push-notifications */}
 
 <Image
   src="/static/books/sdkx_ios/proactive-push-sdk-ios.png"
@@ -80,9 +80,9 @@ To publish a notification follow these steps:
   alt="Proactive Engagement push notification on iOS"
 />
 
-- Push-type notifications will be shown in the Notification Center of the device. Use this type of notification when you want to re-engage the user who has not been active or grab attention of users with some interesting content.
-- With the various actions available on click of the notification, you can redirect the user to any part of your application via deeplinks (need to be setup by the client application) or start a conversation via “Start Chat“ option or redirect them to an FAQ for quick help.
-- Push notifications will show up even if the app is not running in the background.
+- Push-type messages will be shown in the Notification Center of the device. Use this type of message when you want to re-engage the user who has not been active or grab attention of users with some interesting content.
+- With the various actions available on click of the message, you can redirect the user to any part of your application via deeplinks (need to be setup by the client application) or start a conversation via “Start Chat“ option or redirect them to an FAQ for quick help.
+- Push messages will show up even if the app is not running in the background.
 
 <Admonition type="info" title="Note">
 
@@ -93,8 +93,8 @@ To publish a notification follow these steps:
 
 <Admonition type="info" title="iOS: Notification Service Extension Requirement">
 
-To support **Proactive Engagement push notifications** with rich content on iOS
-(for example, image-based notifications),
+To support **Proactive Engagement push messages** with rich content on iOS
+(for example, image-based messages),
 your app must include a **Notification Service Extension (NSE)**.
 
 If your app already has a Notification Service Extension, you can reuse it.
@@ -103,40 +103,40 @@ Otherwise, follow the setup instructions on the
 
 </Admonition>
 
-### In-App Notifications
+### In-App Message {/* #in-app-notifications */}
 
 <InAppSample platform="ios" />
 
-- In-App notifications are used to grab attention of the user who is already using your application, is on the application UI and you want to alert or engage with him in real time.
-- If the user is not on the application UI then the notification is shown in the notification tray of the device to engage the user. 
-- When the user clicks on the notification we open the app and then present the actual configured in-app notification. This increases the probability of user engagement and helps us achieve our goal better.
-- We currently support Banner type notifications with click actions similar to Push notifications.
-- If the SDK receives multiple in-app notifications when the app was in background then the system will display all of them. On clicking the notification, we will open the app and the SDK will show in-app notification corresponding to the clicked notification. Other notifications remain as is in the notification center.
-- By default, In-App notifications expire in 2 days from the time of delivery to the device. If user clicks on a notification that has already expired then on click no action will be taken.
+- In-App messages are used to grab attention of the user who is already using your application, is on the application UI and you want to alert or engage with him in real time.
+- If the user is not on the application UI then the message is shown in the notification tray of the device to engage the user.
+- When the user clicks on the message we open the app and then present the actual configured in-app message. This increases the probability of user engagement and helps us achieve our goal better.
+- We currently support Banner type messages with click actions similar to Push messages.
+- If the SDK receives multiple in-app messages when the app was in background then the system will display all of them. On clicking the message, we will open the app and the SDK will show in-app message corresponding to the clicked message. Other messages remain as is in the notification center.
+- By default, In-App messages expire in 2 days from the time of delivery to the device. If user clicks on a message that has already expired then on click no action will be taken.
 
 ## Behaviour in different configurations
 
 <ProactiveNotifBehaviourTable />
 
-### Pausing In-App Notifications
+### Pausing In-App Message {/* #pausing-in-app-notifications */}
 
-Existing API to pause in-app support notifications - [pauseDisplayOfInAppNotification](/sdkx_ios/notifications/#pause-in-app) - affects Proactive Engagement notifications as well. This API will pause/unpause the showing of in-app notifications to the end user when application is in foreground.
+Existing API to pause in-app support messages - [pauseDisplayOfInAppNotification](/sdkx_ios/notifications/#pause-in-app) - affects Proactive Engagement messages as well. This API will pause/unpause the showing of in-app messages to the end user when application is in foreground.
 
-You can use this API to pause in-app notification when you know that the user should not be disturbed. For example, the user is on app startup screen, the app is still loading, user is in game play or on a payment screen etc. In such cases you can pause the in-app notifications from Helpshift SDK and once the user is done you can unpause it via the same API.
+You can use this API to pause in-app messages when you know that the user should not be disturbed. For example, the user is on app startup screen, the app is still loading, user is in game play or on a payment screen etc. In such cases you can pause the in-app messages from Helpshift SDK and once the user is done you can unpause it via the same API.
 
-In-App notifications received when the notifications were paused are not lost, they are shown to the user as soon as the notifications are unpaused again.
+In-App messages received when the messages were paused are not lost, they are shown to the user as soon as the messages are unpaused again.
 
-This API needs to be called in every app session since SDK will not persist its value across sessions. The need to pause/unpause in-app notification is real time and depends on the current application state best known to the client application itself, hence the SDK does not persist the value across app sessions.
+This API needs to be called in every app session since SDK will not persist its value across sessions. The need to pause/unpause in-app messages is real time and depends on the current application state best known to the client application itself, hence the SDK does not persist the value across app sessions.
 
-By default, the SDK will always show the In-App notifications unless explicitly paused by the client app by using this API.
+By default, the SDK will always show the In-App messages unless explicitly paused by the client app by using this API.
 
 ### Passing Fallback Configuration
 
-You may want to add configuration specific to the current user in your app when interacting with proactive notifications. This configuration is used when no configuration is provided from the Dashboard when configuring the notification. The configuration data is exactly same as we would expect in other APIs like `showConversationWithConfig:` or `showFAQsWithConfig:`.
+You may want to add configuration specific to the current user in your app when interacting with proactive messages. This configuration is used when no configuration is provided from the Dashboard when configuring the message. The configuration data is exactly same as we would expect in other APIs like `showConversationWithConfig:` or `showFAQsWithConfig:`.
 
-We will also use this configuration for the next issue filed in the same session. For example, if the user starts a conversation via proactive engagement notification and the conversation gets resolved in the same session and the user starts another conversation then this configuration will be used for the new conversation.
+We will also use this configuration for the next issue filed in the same session. For example, if the user starts a conversation via proactive engagement message and the conversation gets resolved in the same session and the user starts another conversation then this configuration will be used for the new conversation.
 
-Implement public protocol `HelpshiftProactiveAPIConfigCollectorDelegate` and call `setProactiveAPIConfigCollectorDelegate:` method to initialize the config collector. You will have to implement the method `getAPIConfig` where you can add any user specific config in the same format as you add in other public APIs like `showConversationWithConfig:` or `showFAQsWithConfig:`. `getAPIConfig` is invoked by the SDK before handling the notification click action and evaluating the configuration to be used for handling the notification.
+Implement public protocol `HelpshiftProactiveAPIConfigCollectorDelegate` and call `setProactiveAPIConfigCollectorDelegate:` method to initialize the config collector. You will have to implement the method `getAPIConfig` where you can add any user specific config in the same format as you add in other public APIs like `showConversationWithConfig:` or `showFAQsWithConfig:`. `getAPIConfig` is invoked by the SDK before handling the message click action and evaluating the configuration to be used for handling the message.
 
 For example, following code shows how to implement `HelpshiftProactiveAPIConfigCollectorDelegate` protocol and how to add user specific configurations using `getAPIConfig` method -
 
