@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import PropTypes from "prop-types";
+// The legacy ESLint resolver does not understand this package's exports map.
+// eslint-disable-next-line import/no-unresolved
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function Root({ children }) {
   const {
@@ -47,7 +50,12 @@ export default function Root({ children }) {
     })();
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <SpeedInsights />
+    </>
+  );
 }
 
 Root.propTypes = {
