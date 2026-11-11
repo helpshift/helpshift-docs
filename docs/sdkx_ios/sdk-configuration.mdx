@@ -552,6 +552,98 @@ Helpshift.showConversation(with: self, config: config)
 
 Please check [design](/sdkx_ios/design) page to apply your styles and theming to the SDK.
 
+## Customizing SDK loading screen UI {/* #loading-screen */}
+
+When the SDK opens the conversation screen or the Help Center, it shows a loading screen. The same screen is shown when an error occurs while opening these screens. Use `loadingConfig` to set the background, status icons, and actions on this screen.
+
+<Centered>
+
+<Image src="/static/books/sdkx_ios/loading-screen.jpg" width="full" />
+
+</Centered>
+
+`loadingConfig` is a dictionary that you pass inside the config dictionary of the `showConversation`, `showFAQs`, `showFAQSection`, and `showSingleFAQ` APIs.
+
+The `loadingConfig` dictionary contains the following keys:
+
+- `portraitImageSrc` : source of the background image for portrait orientation.
+- `landscapeImageSrc` : source of the background image for landscape orientation.
+- `gradientColors` : array of background color hex codes drawn as a gradient.
+- `iconColor` : hex color applied to status icons, such as the network and error icons.
+- `actionColor` : hex color applied to the close button, the retry button, and the loading spinner.
+- `imageOverlayColor` : hex color drawn over the background image.
+- `imageBlurRadius` : blur radius applied to the background image. Valid values are from `0.0` to `100.0`.
+
+|               |                                                                                                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Option:       | <code>loadingConfig</code>                                                                                                                                                            |
+| Sub-Options:  | <code>portraitImageSrc</code> / <code>landscapeImageSrc</code> / <code>gradientColors</code> / <code>iconColor</code> / <code>actionColor</code> / <code>imageOverlayColor</code> / <code>imageBlurRadius</code> |
+| Default:      | <code>nil</code>                                                                                                                                                                      |
+| Min SDK       | v10.6.0                                                                                                                                                                               |
+| Supported by: | <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>                                                                         |
+
+Example:
+
+<Tabs groupId="ios-languages">
+
+<TabItem value="Objective-C" label="Objective-C">
+
+```objc
+NSDictionary *config = @{ @"loadingConfig": @{
+                            @"portraitImageSrc": @"loading_background",
+                            @"landscapeImageSrc": @"loading_background_landscape",
+                            @"gradientColors": @[@"#1A1A1A", @"#333333"],
+                            @"iconColor": @"#FFFFFF",
+                            @"actionColor": @"#FF5722",
+                            @"imageOverlayColor": @"#80000000",
+                            @"imageBlurRadius": @10.0
+                            }
+                        };
+
+[Helpshift showConversationWithConfig:config];
+```
+
+</TabItem>
+<TabItem value="Swift" label="Swift">
+
+```swift
+let config: [String: Any] = ["loadingConfig": [
+    "portraitImageSrc": "loading_background",
+    "landscapeImageSrc": "loading_background_landscape",
+    "gradientColors": ["#1A1A1A", "#333333"],
+    "iconColor": "#FFFFFF",
+    "actionColor": "#FF5722",
+    "imageOverlayColor": "#80000000",
+    "imageBlurRadius": 10.0
+]]
+Helpshift.showConversation(withConfig: config)
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Image sources
+
+For both `portraitImageSrc` and `landscapeImageSrc`, you can pass:
+
+- An Asset Catalog image name. For example, `loading_background`.
+- A bundled image file name. Supported formats are `.png`, `.jpg`, `.jpeg`, and `.heic`.
+- A local file path. For example, `/path/to/loading_background.png`.
+- A local file URL string. For example, `file:///path/to/loading_background.png`.
+- A `UIImage` object. The SDK saves it as a cached local file.
+
+<Admonition type="info" title="Note">
+
+- A background image is used ahead of `gradientColors`.
+- When the image is missing or the SDK cannot render it, the SDK uses `gradientColors`.
+- When gradient colors are missing or cannot be shown, the SDK uses the default grey background.
+- When you set an image for only one orientation, the SDK uses that image for both portrait and landscape.
+- When an image path refers to a file that is missing or has been deleted, the SDK uses the gradient if you passed one. Otherwise it uses the default grey background.
+- Remote `http` and `https` image URLs are unsupported.
+
+</Admonition>
+
 ## Tracking {/* #tracking */}
 
 This config represents the tracking of user actions. For more information, please check [tracking](/sdkx_ios/tracking).
