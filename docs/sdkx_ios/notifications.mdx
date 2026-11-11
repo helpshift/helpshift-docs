@@ -39,6 +39,8 @@ Notifications can be sent to your users when:
 - You or your support agents reply to an issue submitted by them
 - You send a [Proactive Engagement](/sdkx_ios/proactive-engagement) notification targeting the user
 
+On SDK 10.6.0 and above, replies from agents and bots can be shown as [rich support push notifications](#rich-support-push).
+
 Setting push notifications involves configuring both the Helpshift admin dashboard as well as the client app.
 
 ## Configure push notifications in the Helpshift admin dashboard {/* ##configure-helpshift-push-admin */}
@@ -254,13 +256,18 @@ func userNotificationCenter(
 
 <Admonition type="info" title="Note">
 
-Your app only needs to configure the NotificationService extension if you are using Proactive Engagement feature. For support notifications, you can skip this configuration.
+Configure the Notification Service extension if you use either of the following:
+
+- [Proactive Engagement](/sdkx_ios/proactive-engagement) push messages that include an image
+- [Rich support push notifications](#rich-support-push) on SDK 10.6.0 and above
+
+For plain support notifications on SDK 10.5.0 and earlier, you can skip this configuration.
 
 </Admonition>
 
-If you are using Helpshift's [Proactive Engagement](/sdkx_ios/proactive-engagement) feature, you will need to add a NotificationService extension to your app. This extension lets the app intercept the notification and modify it's payload before iOS system posts the notification in system tray. For more details on what this service extension does and how to configure it in your app, you can refer the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
+The Notification Service extension lets the app intercept a notification and modify its payload before iOS posts the notification. For more details, refer to the [Apple documentation](https://developer.apple.com/documentation/usernotifications/modifying-content-in-newly-delivered-notifications).
 
-Helpshift uses this extension to download images to display in the push notification. If your app already has a NotificationService extension, you can re-use it for handling Helpshift notifications. In the `didReceiveNotificationRequest:withContentHandler:` method of your notification service, call the corresponding Helpshift API -
+Helpshift uses this extension to download images for Proactive Engagement notifications, and to download the sender avatar and image preview for rich support notifications. If your app already has a Notification Service extension, you can reuse it for Helpshift notifications. In the `didReceiveNotificationRequest:withContentHandler:` method of your notification service, call the corresponding Helpshift API -
 
 <Tabs groupId="ios-languages">
 <TabItem value="Objective-C" label="Objective-C">
@@ -297,6 +304,67 @@ override func didReceive(
 
 </TabItem>
 </Tabs>
+
+## Rich support push notifications {/* #rich-support-push */}
+
+Rich support push notifications show the sender's name and avatar with the agent's message, and can preview an image attachment. They are available on SDK 10.6.0 and above.
+
+<Admonition type="info" title="Note">
+
+The sender avatar requires iOS 15 or later. The image preview is available on the iOS versions supported by the SDK.
+
+On SDK 10.5.0 and earlier, support notifications show the title and message body only.
+
+</Admonition>
+
+Push setup is unchanged. Both the [.p8 key and the .p12 certificate](#configure-helpshift-push-admin) methods support this feature. You do not upload a new push key or certificate.
+
+Rich content is downloaded by the [Notification Service extension](#notification-service). Add that extension before you test sender avatars or image previews.
+
+### Personalise the sender on the dashboard {/* #rich-support-push-dashboard */}
+
+The name and avatar on the notification come from **Personalise Conversation Experience** on the In-app SDK configuration page.
+
+1. Go to Settings, then navigate to the **App Settings** section and choose the app you want to configure.
+2. On the App settings page, click **Configure** next to In-app SDK.
+3. On the In-app SDK configuration page, open the **Support Experience** tab.
+4. Turn on **Personalise Conversation Experience**.
+5. Set the **Default Nickname**. This name is used when a personal agent or bot name is not available.
+6. Turn on **Show avatars** and set the avatars for **Agents**, **Bots**, and **App**. You can also show the agent's personal avatar and the bot's avatar when they are available.
+7. Click **Save & Publish**.
+
+### Configure Communication Notifications {/* #rich-support-push-app */}
+
+Sender name and avatar use Apple's Communication Notifications. Add the following on the host app target. Keep these changes off the Notification Service extension target.
+
+1. In the host app's `Info.plist`, add `INSendMessageIntent` to `NSUserActivityTypes`. If `NSUserActivityTypes` is already present, add `INSendMessageIntent` to the existing array.
+
+   ```xml
+   <key>NSUserActivityTypes</key>
+   <array>
+       <string>INSendMessageIntent</string>
+   </array>
+   ```
+
+2. In Xcode, select the host app target, open **Signing & Capabilities**, and add the **Communication Notifications** capability. This adds the `com.apple.developer.usernotifications.communication` entitlement.
+
+<Admonition type="info" title="Note">
+
+On iOS versions below 15, or when the Communication Notifications capability or the `NSUserActivityTypes` entry is missing, the notification uses your app icon. The message text and any image preview are still shown.
+
+</Admonition>
+
+### What the notification shows {/* #rich-support-push-behaviour */}
+
+- iOS posts a separate notification for each support message. Messages for the same issue are grouped in Notification Center.
+- The notification shows the sender's name and avatar. If the sender details are missing, or the avatar cannot be downloaded, iOS shows your app icon and the notification is still delivered.
+- An image attachment is previewed in the notification. Supported formats include `.jpg`, `.jpeg`, `.png`, `.gif`, and `.heic`. When a message includes more than one image, the notification previews one image. Images larger than 10 MB are left out of the preview.
+- A file that is not an image is left out of the preview. The notification shows the message text. When the message contains only attachments, the text is one of: "sent a photo", "sent n photos", "sent a file", or "sent n files".
+- When an issue is resolved, the notification uses the localized resolved-issue text.
+- Static text in the notification, including the "Support" prefix and the attachment descriptions above, follows the device language.
+- Tapping a Helpshift support notification, or opening the conversation screen, removes every delivered Helpshift support notification from Notification Center. [Proactive Engagement](/sdkx_ios/proactive-engagement) notifications remain.
+- Proactive Engagement push notifications are unchanged. They can show an image preview and do not show a sender avatar.
+- While the conversation screen is open, a rich support notification is not shown. Foreground, background, and not-running delivery otherwise uses the [push delegate methods](#push-delegates) on this page.
 
 ## In-app notifications {/* #in-app-notifications */}
 
