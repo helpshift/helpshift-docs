@@ -37,6 +37,112 @@ All the public APIs in the SDK should be called after initializing the SDK via [
 
 </Admonition>
 
+
+## Customize Loading Screen {/* #customize-loading-screen */}
+
+When the Chat or Help Center screen is opened, the SDK shows a loading screen until the content is ready, and an error screen (with a retry option) if the content fails to load. By default these screens use the SDK's default background and colors, which may not match the theme of your app.
+
+Using the `loadingConfig` option you can customize the loading and error screens so that the transition from your app to the Chat or Help Center screen is visually consistent. You can customize:
+
+- The background, using a background image (separately for portrait and landscape) or a gradient of colors.
+- The overlay color and blur applied over the background image.
+- The color of the status icon shown on the error screen (for example, the no-internet or error icon).
+- The color of the action elements, i.e. the close (cross) button, the retry button and the loading spinner.
+
+<Admonition type="info" title="Note">
+
+The look of the Chat and Help Center screens themselves is controlled via Brand & Customization on the Helpshift Dashboard. `loadingConfig` only applies to the SDK's loading and error screens shown while opening these screens.
+
+</Admonition>
+
+<div className="compact ">
+
+|              |                                                                                                               |
+| ------------ | ------------------------------------------------------------------------------------------------------------- |
+| Option       | <code>loadingConfig</code>                                                                                    |
+| Values       | <code>Map&lt;String, Object&gt;</code>                                                                        |
+| Default      | <code>null</code>                                                                                                 |
+| Min SDK      | v10.6.0                                                                                                       |
+| Supported by | <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code> |
+
+</div>
+
+#### Supported keys
+
+The `loadingConfig` map accepts the following keys. All keys are optional.
+
+| Key                            | Type                                                                       | Description                                                                                                                                    |
+| ------------------------------ | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| <code>portraitImageSrc</code>  | Refer [image sources](#loading-screen-image-sources)         | Background image used when the screen is opened in portrait orientation.                                                                       |
+| <code>landscapeImageSrc</code> | Refer [image sources](#loading-screen-image-sources)         | Background image used when the screen is opened in landscape orientation.                                                                      |
+| <code>gradientColors</code>    | <code>List&lt;String&gt;</code>                              | List of hex color codes applied as gradient background. Used when no background image is passed or the image cannot be loaded. |
+| <code>iconColor</code>         | <code>String</code>                                          | Hex color code applied to the status icon on the error screen (eg., the no-internet or error icon).                                    |
+| <code>actionColor</code>       | <code>String</code>                                          | Hex color code applied to the close (cross) button, the retry button and the loading spinner.                                                  |
+| <code>imageOverlayColor</code> | <code>String</code>                                          | Hex color code (with alpha) of the overlay drawn over the background image. Only applied when a background image is shown.                     |
+| <code>imageBlurRadius</code>   | <code>Float</code>                                           | Blur radius applied to the background image. Only applied when a background image is shown.                                                    |
+
+Colors can be passed in the `#RRGGBB` or `#AARRGGBB` format.
+
+#### Supported image sources {/* #loading-screen-image-sources */}
+
+`portraitImageSrc` and `landscapeImageSrc` accept any of the following:
+
+| Source                | Type                                   | Example                                                                                                       |
+| --------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Drawable resource ID  | <code>int</code>                       | <code>R.drawable.loading_background</code>                                                                    |
+| Drawable resource URI | <code>String</code>                    | <code>"android.resource://&lt;package_name&gt;/drawable/loading_background"</code>                            |
+| Bitmap object         | <code>Bitmap</code>                    | <code>BitmapFactory.decodeResource(getResources(), R.drawable.loading_background)</code>                      |
+| Asset URI             | <code>Uri</code>                       | <code>"file:///android_asset/loading_background.png"</code>                                                   |
+| File path (Absolute)  | <code>String</code>                    | <code>"/data/user/0/&lt;package_name&gt;/files/loading_background.png"</code>                                 |
+| File object           | <code>File</code>                      | <code>new File(context.getFilesDir(), "loading_background.png")</code>                                        |
+
+#### Background fallback order
+
+The SDK picks the loading and error screen background in the following order:
+
+1. **Background image** for the orientation in which the screen was opened (`portraitImageSrc` or `landscapeImageSrc`). If only one of the two is passed, it is used for both orientations.
+2. **Gradient colors** (`gradientColors`), if no image is passed or the image cannot be loaded (for example, the file was deleted or the reference is invalid).
+3. **Default SDK background**, if neither a valid image nor valid gradient colors are available.
+
+Background images take priority over `gradientColors`. `imageOverlayColor` and `imageBlurRadius` are only applied when a background image is shown.
+
+<Admonition type="info" title="Note">
+
+- The loading and error screen configuration is supported from SDK X version 10.6.0 onwards.
+
+</Admonition>
+
+#### Integration steps
+
+1. Create a `loadingConfig` map with the keys you want to customize.
+2. Add it to the API config map against the key `loadingConfig`.
+3. Pass the config map to `showConversation`, `showFAQs`, `showFAQSection` or `showSingleFAQ`.
+
+Example:
+
+```java
+Map<String, Object> loadingConfig = new HashMap<>();
+loadingConfig.put("portraitImageSrc", R.drawable.loading_bg_portrait);
+loadingConfig.put("landscapeImageSrc", R.drawable.loading_bg_landscape);
+loadingConfig.put("gradientColors", Arrays.asList("#1A1A1A", "#333333"));
+loadingConfig.put("iconColor", "#FFFFFF");
+loadingConfig.put("actionColor", "#FF5722");
+loadingConfig.put("imageOverlayColor", "#80000000");
+loadingConfig.put("imageBlurRadius", 10.0f);
+
+Map<String, Object> config = new HashMap<>();
+// .. other configs
+config.put("loadingConfig", loadingConfig);
+
+// Chat
+Helpshift.showConversation(MainActivity.this, config);
+
+// Help Center
+Helpshift.showFAQs(MainActivity.this, config);
+Helpshift.showFAQSection(MainActivity.this, "<SECTION_PUBLISH_ID>", config);
+Helpshift.showSingleFAQ(MainActivity.this, "<FAQ_PUBLISH_ID>", config);
+```
+
 ## Enable Logging {/* #enable-logging */}
 
 Upon setting `enableLogging` to `true`, Helpshift SDK logs will be generated in the Android logcat. These logs can be useful for debugging the SDK during integration. Turning on logging can help the developer resolve common integration issues.
