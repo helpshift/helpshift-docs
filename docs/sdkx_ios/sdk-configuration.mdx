@@ -571,13 +571,12 @@ The `loadingConfig` dictionary contains the following keys:
 - `gradientColors` : array of background color hex codes drawn as a gradient.
 - `iconColor` : hex color applied to status icons, such as the network and error icons.
 - `actionColor` : hex color applied to the close button, the retry button, and the loading spinner.
-- `imageOverlayColor` : hex color drawn over the background image.
 - `imageBlurRadius` : blur radius applied to the background image. Valid values are from `0.0` to `100.0`.
 
 |               |                                                                                                                                                                                       |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Option:       | <code>loadingConfig</code>                                                                                                                                                            |
-| Sub-Options:  | <code>portraitImageSrc</code> / <code>landscapeImageSrc</code> / <code>gradientColors</code> / <code>iconColor</code> / <code>actionColor</code> / <code>imageOverlayColor</code> / <code>imageBlurRadius</code> |
+| Sub-Options:  | <code>portraitImageSrc</code> / <code>landscapeImageSrc</code> / <code>gradientColors</code> / <code>iconColor</code> / <code>actionColor</code> / <code>imageBlurRadius</code> |
 | Default:      | <code>nil</code>                                                                                                                                                                      |
 | Min SDK       | v10.6.0                                                                                                                                                                               |
 | Supported by: | <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>                                                                         |
@@ -595,7 +594,6 @@ NSDictionary *config = @{ @"loadingConfig": @{
                             @"gradientColors": @[@"#1A1A1A", @"#333333"],
                             @"iconColor": @"#FFFFFF",
                             @"actionColor": @"#FF5722",
-                            @"imageOverlayColor": @"#80000000",
                             @"imageBlurRadius": @10.0
                             }
                         };
@@ -613,7 +611,6 @@ let config: [String: Any] = ["loadingConfig": [
     "gradientColors": ["#1A1A1A", "#333333"],
     "iconColor": "#FFFFFF",
     "actionColor": "#FF5722",
-    "imageOverlayColor": "#80000000",
     "imageBlurRadius": 10.0
 ]]
 Helpshift.showConversation(withConfig: config)
