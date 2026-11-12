@@ -45,7 +45,7 @@ When the Chat or Help Center screen is opened, the SDK shows a loading screen un
 Using the `loadingConfig` option you can customize the loading and error screens so that the transition from your app to the Chat or Help Center screen is visually consistent. You can customize:
 
 - The background, using a background image (separately for portrait and landscape) or a gradient of colors.
-- The overlay color and blur applied over the background image.
+- The blur radius applied over the background image.
 - The color of the status icon shown on the error screen (for example, the no-internet or error icon).
 - The color of the action elements, i.e. the close (cross) button, the retry button and the loading spinner.
 
@@ -61,7 +61,7 @@ The look of the Chat and Help Center screens themselves is controlled via Brand 
 | ------------ | ------------------------------------------------------------------------------------------------------------- |
 | Option       | <code>loadingConfig</code>                                                                                    |
 | Values       | <code>Map&lt;String, Object&gt;</code>                                                                        |
-| Default      | <code>null</code>                                                                                                 |
+| Default      | <code>null</code>                                                                                             |
 | Min SDK      | v10.6.0                                                                                                       |
 | Supported by | <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code> |
 
@@ -75,10 +75,9 @@ The `loadingConfig` map accepts the following keys. All keys are optional.
 | ------------------------------ | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | <code>portraitImageSrc</code>  | Refer [image sources](#loading-screen-image-sources)         | Background image used when the screen is opened in portrait orientation.                                                                       |
 | <code>landscapeImageSrc</code> | Refer [image sources](#loading-screen-image-sources)         | Background image used when the screen is opened in landscape orientation.                                                                      |
-| <code>gradientColors</code>    | <code>List&lt;String&gt;</code>                              | List of hex color codes applied as gradient background. Used when no background image is passed or the image cannot be loaded. |
-| <code>iconColor</code>         | <code>String</code>                                          | Hex color code applied to the status icon on the error screen (eg., the no-internet or error icon).                                    |
+| <code>gradientColors</code>    | <code>List&lt;String&gt;</code>                              | List of hex color codes applied as gradient background. Used when no background image is passed or the image cannot be loaded.                 |
+| <code>iconColor</code>         | <code>String</code>                                          | Hex color code applied to the status icon on the error screen (eg., the no-internet or error icon).                                            |
 | <code>actionColor</code>       | <code>String</code>                                          | Hex color code applied to the close (cross) button, the retry button and the loading spinner.                                                  |
-| <code>imageOverlayColor</code> | <code>String</code>                                          | Hex color code (with alpha) of the overlay drawn over the background image. Only applied when a background image is shown.                     |
 | <code>imageBlurRadius</code>   | <code>Float</code>                                           | Blur radius applied to the background image. Only applied when a background image is shown.                                                    |
 
 Colors can be passed in the `#RRGGBB` or `#AARRGGBB` format.
@@ -104,7 +103,7 @@ The SDK picks the loading and error screen background in the following order:
 2. **Gradient colors** (`gradientColors`), if no image is passed or the image cannot be loaded (for example, the file was deleted or the reference is invalid).
 3. **Default SDK background**, if neither a valid image nor valid gradient colors are available.
 
-Background images take priority over `gradientColors`. `imageOverlayColor` and `imageBlurRadius` are only applied when a background image is shown.
+Background images take priority over `gradientColors`. `imageBlurRadius` are only applied when a background image is shown.
 
 <Admonition type="info" title="Note">
 
@@ -127,7 +126,6 @@ loadingConfig.put("landscapeImageSrc", R.drawable.loading_bg_landscape);
 loadingConfig.put("gradientColors", Arrays.asList("#1A1A1A", "#333333"));
 loadingConfig.put("iconColor", "#FFFFFF");
 loadingConfig.put("actionColor", "#FF5722");
-loadingConfig.put("imageOverlayColor", "#80000000");
 loadingConfig.put("imageBlurRadius", 10.0f);
 
 Map<String, Object> config = new HashMap<>();
