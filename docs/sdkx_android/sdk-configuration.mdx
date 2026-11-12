@@ -539,16 +539,18 @@ Colors can be passed in the `#RRGGBB` or `#AARRGGBB` format.
 
 #### Supported image sources {/* #loading-screen-image-sources */}
 
-`portraitImageSrc` and `landscapeImageSrc` accept any of the following:
+On Android, background images for `portraitImageSrc` and `landscapeImageSrc` can be provided using any of the following:
 
-| Source                | Type                                   | Example                                                                                                       |
-| --------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Drawable resource ID  | <code>int</code>                       | <code>R.drawable.loading_background</code>                                                                    |
-| Drawable resource URI | <code>String</code>                    | <code>"android.resource://&lt;package_name&gt;/drawable/loading_background"</code>                            |
-| Bitmap object         | <code>Bitmap</code>                    | <code>BitmapFactory.decodeResource(getResources(), R.drawable.loading_background)</code>                      |
-| Asset URI             | <code>Uri</code>                       | <code>"file:///android_asset/loading_background.png"</code>                                                   |
-| File path (Absolute)  | <code>String</code>                    | <code>"/data/user/0/&lt;package_name&gt;/files/loading_background.png"</code>                                 |
-| File object           | <code>File</code>                      | <code>new File(context.getFilesDir(), "loading_background.png")</code>                                        |
+- **Resource ID** : drawable resource ID for an image in the `drawable` folder, compiled into the APK. For example, `R.drawable.loading_background`.
+- **Resource URI** : string containing the drawable resource URI path. For example, <code>android.resource://&lt;package_name&gt;/drawable/loading_background</code>.
+- **Asset URI** : URI for a media file in the `assets` folder, compiled into the APK. For example, `Uri.parse("asset:///loading_background.png")`.
+- **Asset URI path** : asset URI as a string. For example, `file:///android_asset/loading_background.png` or `asset:///loading_background.png`.
+- **File path** : an absolute file path string. For example, `/path/to/loading_background.png`.
+- **File** : reference to the image file. For example, `new File(context.getFilesDir(), "loading_background.png")`.
+- **Uri** : reference to the image URI.
+- **Bitmap** : the bitmap object of the image.
+
+
 
 #### Background fallback order
 
@@ -563,6 +565,8 @@ Background images take priority over `gradientColors`. `imageBlurRadius` are onl
 <Admonition type="info" title="Note">
 
 - The loading and error screen configuration is supported from SDK X version 10.6.0 onwards.
+- Remote `http` and `https` image URLs are unsupported.
+- For a `content` URI, the client app must already have read access to that URI.
 
 </Admonition>
 
