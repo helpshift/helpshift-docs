@@ -148,15 +148,11 @@ The name and avatar on the notification come from **Personalise Conversation Exp
 
 ### What the notification shows {/* #rich-support-push-behaviour */}
 
-- Android shows a single notification per issue. Each new message from an agent or bot updates that notification, which keeps the earlier messages of the conversation until the user opens the chat. Notifications for different issues are shown separately.
+- Android shows a single notification per issue. Each new message from an agent or bot updates that notification, which keeps the earlier messages of the conversation until the user opens the chat.
 - The notification shows the sender's name and avatar.
 - An image attachment is previewed in the notification. Supported formats are `.jpg`, `.jpeg`, `.png`, `.gif`, and `.heic`. When a message includes more than one image, any one image is previewed.
-- For attachments that are not previewed, the notification shows a description such as "Sent a photo" or "Sent a file".
-- When an issue is resolved, the notification shows the localized resolved-issue text.
-- Static text in the notification including the attachment descriptions above, is localized.
-- Tapping a notification opens the conversation screen and removes that notification. Once the conversation screen is opened, from a notification or from any other source such as `Helpshift.showConversation` or a Proactive Engagement notification, support notifications are removed from the notification tray.
-- Support notifications are also removed on user change.
-- While the conversation screen is open, rich support notifications are not shown.
+- Rich notifications support localization for all static text, including attachment descriptions and resolved-issue messages.
+- Tapping a notification opens the conversation screen and removes that notification. Once the conversation screen is opened from a notification or from any other source such as `Helpshift.showConversation` or a Proactive Engagement notification, support notifications are removed from the notification tray.
 - If the push token is not registered with Helpshift, the SDK falls back to fetching messages in the background and shows a plain support notification.
 - Rich support notification messages increment the unread message count. To display the unread message count in your app, use the `requestUnreadMessageCount` API. For details, refer to [Showing notification count](#showing-notification-count) when replies are sent to the user.
 - [Proactive Engagement](/sdkx_android/proactive-engagement) push notifications are not affected by this feature.
