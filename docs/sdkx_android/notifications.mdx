@@ -43,12 +43,6 @@ Configure Push notifications
 />
 
 Helpshift allows you to send Push notifications when an agent replies to a conversation.
-<Admonition type="info" title="Note">
-
-- Starting with version 10.6.0, we introduced Rich Notifications. These notifications display the agent's name and avatar, the latest reply (even if it's long), and previews of media attachments added by the agent. They also include earlier messages from the conversation, allowing players to catch up on the context before opening the chat.
-
-</Admonition>
-
 
 ### Prerequisites {/* #gcm-prerequisites */}
 
@@ -121,6 +115,14 @@ Rich support push notifications give users the context of the conversation direc
 - Show unread messages from the conversation, so that users can catch up before opening the chat.
 - Preview an image attachment sent by the agent, and describe file attachments.
 - Group all messages of an issue into a single notification.
+
+<Admonition type="info" title="Note">
+
+- Rich notifications are supported from SDK 10.6.0.
+- On SDK versions below 10.6.0, the SDK shows a plain text notification.
+- The SDK can display rich notifications from 10.6.0. The Helpshift backend will not send the new rich notification payload with this SDK release. When the backend is ready, apps on SDK 10.6.0 and above will show rich notifications automatically, with no further SDK update.
+
+</Admonition>
 
 
 ### Prerequisites {/* #rich-support-push-prerequisites */}
