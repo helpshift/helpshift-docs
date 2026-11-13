@@ -106,58 +106,6 @@ For more information, [click here](https://firebase.google.com/docs/cloud-messag
         }
 ```
 
-## Rich support push notifications {/* #rich-support-push */}
-
-Rich support push notifications give users the context of the conversation directly in the notification. They are available on SDK `10.6.0` and above. A rich support notification can:
-
-- Show the sender's name and avatar with each message.
-- Show the agent's full message, even if it is long.
-- Show unread messages from the conversation, so that users can catch up before opening the chat.
-- Preview an image attachment sent by the agent, and describe file attachments.
-- Group all messages of an issue into a single notification.
-
-<Admonition type="info" title="Note">
-
-- Rich notifications are supported from SDK 10.6.0.
-- On SDK versions below 10.6.0, the SDK shows a plain text notification.
-- The SDK can display rich notifications from 10.6.0. The Helpshift backend will not send the new rich notification payload with this SDK release. When the backend is ready, apps on SDK 10.6.0 and above will show rich notifications automatically, with no further SDK update.
-
-</Admonition>
-
-
-### Prerequisites {/* #rich-support-push-prerequisites */}
-
-- Set up [push notifications via Helpshift](#push-via-helpshift). Rich support notifications use the same FCM setup, so no additional push configuration is needed.
-- On Android 13 (API level 33) and above, your app must request the [POST_NOTIFICATIONS](https://developer.android.com/develop/ui/views/notifications/notification-permission) permission. The SDK does not request this permission on behalf of your app.
-
-### Personalise the sender on the dashboard {/* #rich-support-push-dashboard */}
-
-The name and avatar on the notification come from **Personalise Conversation Experience** on the In-app SDK configuration page.
-
-1. Go to Settings, then navigate to the **App Settings** section and choose the app you want to configure.
-2. On the App settings page, click **Configure** next to In-app SDK.
-3. On the In-app SDK configuration page, open the **Support Experience** tab.
-4. Turn on **Personalise Conversation Experience**.
-5. Set the **Default Nickname**. This name is used when a personal agent or bot name is not available.
-6. Turn on **Show avatars** and set the avatars for **Agents**, **Bots**, and **App**. You can also show the agent's personal avatar and the bot's avatar when they are available.
-7. Click **Save & Publish**.
-
-<Image
-  src="/static/books/helpshiftx/rich-push-configuration.png"
-  width="full"
-  alt="Personalise Conversation Experience settings on the In-app SDK configuration page"
-/>
-
-### What the notification shows {/* #rich-support-push-behaviour */}
-
-- Android shows a single notification per issue. Each new message from an agent or bot updates that notification, which keeps the earlier messages of the conversation until the user opens the chat.
-- The notification shows the sender's name and avatar.
-- An image attachment is previewed in the notification. Supported formats are `.jpg`, `.jpeg`, `.png`, `.gif`, and `.heic`. When a message includes more than one image, any one image is previewed.
-- Rich notifications support localization for all static text, including attachment descriptions and resolved-issue messages.
-- Tapping a notification opens the conversation screen and removes that notification. Once the conversation screen is opened from a notification or from any other source such as `Helpshift.showConversation` or a Proactive Engagement notification, support notifications are removed from the notification tray.
-- If the push token is not registered with Helpshift, the SDK falls back to fetching messages in the background and shows a plain support notification.
-- Rich support notification messages increment the unread message count. To display the unread message count in your app, use the `requestUnreadMessageCount` API. For details, refer to [Showing notification count](#showing-notification-count) when replies are sent to the user.
-- [Proactive Engagement](/sdkx_android/proactive-engagement) push notifications are not affected by this feature.
 
 ## In-app notifications {/* #in-app-notifications */}
 
