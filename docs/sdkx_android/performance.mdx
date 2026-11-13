@@ -27,6 +27,38 @@ The following numbers are representative of a skeletal sample app
 integrated with the Helpshift SDK.
 
 </Intro>
+## v10.6.0
+
+### SDK payload in your app {/* #payload-size */}
+
+The Helpshift SDK X will add `320 Kb` to your application's release APK.
+This analysis was done with Android Gradle Plugin `v8.1.0` and Gradle `v8.1`.
+The `320 Kb` size includes total impact with all the resources and code.
+
+### Method count {/* #methods-count */}
+
+The Helpshift SDK X will add 2,324 methods to your dex:
+
+| Package           | Method Count |
+| ----------------- | -----------: |
+| **com.helpshift** |      `2,324` |
+
+### Memory usage {/* #memory-usage */}
+
+| Helpshift API launch                   | Java heap memory (in approx.MB) | Total memory usage(in approx MB) |
+| -------------------------------------- | ------------------------------- | -------------------------------: |
+| showFAQs                               | `7.44`                          |                        `120-128` |
+| showFAQSection                         | `7.71`                          |                        `116-122` |
+| showSingleFAQ                          | `6.14`                          |                        `101-109` |
+| showConversation (conversational mode) | `8.69`                          |                        `148-153` |
+
+This memory impact will also depend on the device OS and memory configurations on which your app is running.
+
+<Admonition type="info" title="Note">
+
+Tested with a demo app on Google Pixel 6 running Android 17.
+
+</Admonition>
 
 ## v10.5.0
 
