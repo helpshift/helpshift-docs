@@ -7,6 +7,20 @@ import Announcement from "./Announcement";
 
 const announcements = [
   {
+    date: "23 Nov 2026",
+    title: "SDK X Android 10.6.0 released",
+    info: `SDK X Android 10.6.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx_android",
+    linkTitle: "SDK X Android 10.6.0",
+  },
+  {
+    date: "23 Nov 2026",
+    title: "SDK X iOS 10.6.0 released",
+    info: `SDK X iOS 10.6.0 is now released! Upgrade to get the latest features`,
+    link: "/sdkx_ios",
+    linkTitle: "SDK X iOS 10.6.0",
+  },
+  {
     date: "13 May 2026",
     title: "Windows PC Widget - Unity 1.1.0 released",
     info: `Windows PC Widget - Unity 1.1.0 is now released! Upgrade to get the latest features`,
