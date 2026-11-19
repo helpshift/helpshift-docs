@@ -381,6 +381,83 @@ public class MyGameControl : MonoBehaviour
 
 This config represents the theming of Helpshift SDK. For more information check [design](/sdkx-unity/design-ios/).
 
+## Customizing SDK loading screen UI {/* #loading-screen */}
+
+When the SDK opens the conversation screen or the Help Center, it shows a loading screen. The same screen is shown when an error occurs while opening these screens. Use `loadingConfig` to set the background, status icons, and actions on this screen.
+
+{/* TODO: Add Unity iOS loading screen image */}
+
+`loadingConfig` is a dictionary that you pass inside the config dictionary of the `showConversation`, `showFAQs`, `showFAQSection`, and `showSingleFAQ` APIs.
+
+The `loadingConfig` dictionary contains the following keys:
+
+- `portraitImageSrc` : source of the background image for portrait orientation.
+- `landscapeImageSrc` : source of the background image for landscape orientation.
+- `gradientColors` : array of background color hex codes drawn as a gradient.
+- `iconColor` : hex color applied to status icons, such as the network and error icons.
+- `actionColor` : hex color applied to the close button, the retry button, and the loading spinner.
+- `imageBlurRadius` : blur radius applied to the background image. Valid values are from `0.0` to `100.0`.
+
+|               |                                                                                                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Option:       | <code>loadingConfig</code>                                                                                                                                                            |
+| Sub-Options:  | <code>portraitImageSrc</code> / <code>landscapeImageSrc</code> / <code>gradientColors</code> / <code>iconColor</code> / <code>actionColor</code> / <code>imageBlurRadius</code>       |
+| Default:      | <code>null</code>                                                                                                                                                                     |
+| Min SDK       | v10.6.0                                                                                                                                                                               |
+| Supported by: | <code>showConversation</code>, <code>showFAQs</code>, <code>showFAQSection</code>, <code>showSingleFAQ</code>                                                                         |
+
+Example:
+
+```csharp
+using Helpshift;
+// other imports
+
+public class MyGameControl : MonoBehaviour
+{
+    private HelpshiftSdk help;
+    void Awake() {
+      this.help = HelpshiftSdk.GetInstance();
+      help.Install(appId, domainName);
+    }
+
+    void OpenHelpshift() {
+      Dictionary<string, object> loadingConfig = new Dictionary<string, object>
+      {
+          { "portraitImageSrc", Application.streamingAssetsPath + "/loading_background.png" },
+          { "landscapeImageSrc", Application.streamingAssetsPath + "/loading_background_landscape.png" },
+          { "gradientColors", new string[] { "#1A1A1A", "#333333" } },
+          { "iconColor", "#FFFFFF" },
+          { "actionColor", "#FF5722" },
+          { "imageBlurRadius", 10.0f }
+      };
+
+      Dictionary<string, object> configMap = new Dictionary<string, object>();
+      configMap.Add("loadingConfig", loadingConfig);
+      help.ShowConversation(configMap);
+    }
+}
+```
+
+#### Image sources
+
+For both `portraitImageSrc` and `landscapeImageSrc`, you can pass a string with one of the following:
+
+- An Asset Catalog image name. For example, `loading_background`.
+- A bundled image file name. Supported formats are `.png`, `.jpg`, `.jpeg`, and `.heic`.
+- A local file path. For example, `Application.streamingAssetsPath + "/loading_background.png"` for an image placed in `Assets/StreamingAssets`.
+- A local file URL string. For example, `file:///path/to/loading_background.png`.
+
+<Admonition type="info" title="Note">
+
+- A background image is used ahead of `gradientColors`.
+- When the image is missing or the SDK cannot render it, the SDK uses `gradientColors`.
+- When gradient colors are missing or cannot be shown, the SDK uses the default grey background.
+- When you set an image for only one orientation, the SDK uses that image for both portrait and landscape.
+- When an image path refers to a file that is missing or has been deleted, the SDK uses the gradient if you passed one. Otherwise it uses the default grey background.
+- Remote `http` and `https` image URLs are unsupported.
+
+</Admonition>
+
 ## Tracking {/* #tracking */}
 
 This config represents the tracking user actions. For more information check [tracking](/sdkx-unity/tracking-ios).
