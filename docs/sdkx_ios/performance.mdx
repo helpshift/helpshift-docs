@@ -39,6 +39,38 @@ Since all the Helpshift initialization takes place on a background thread, the H
 
 You can find impact analysis reports for every version of the Helpshift SDK below.
 
+## 10.6.0
+
+<Admonition type="info" title="Note">
+
+Performed on macOS 27.2, with Xcode 27.2 and iOS 27.2 (iPhone 15 Plus). Memory usage will increase with number of messages in a conversation.
+
+</Admonition>
+
+### Disk space
+
+This is the amount of disk space the xcframework takes up.
+
+The size of the xcframework is 4.8 MB for device and 5.9 MB for the simulator. Total size is 10.7 MB.
+
+The breakage is as follows:
+
+| Architecture | Size (MB) Device | Size (MB) Simulator |
+| ------------ | ---------------- | ------------------- |
+| arm64        | 1.05             | 0.98                |
+| x86_64       | NA               | 1.06                |
+
+When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the size of IPA file is around `628` KB.
+
+### Ram usage
+
+|                                                                   |                                                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>5.5</code> MB (Depends on number of messages on the chat screen).     |
+| **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>4.2</code> MB.                                                         |
+| **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>2.5</code> MB.                                                         |
+| **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>4.3</code> MB.                                                         |
+
 ## 10.5.0
 
 <Admonition type="info" title="Note">
@@ -66,7 +98,7 @@ When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>5.2</code> MB ( Depends on number of messages on the chat screen).     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>5.2</code> MB (Depends on number of messages on the chat screen).     |
 | **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>4.1</code> MB.                                                         |
 | **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>2.8</code> MB.                                                         |
 | **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>4.3</code> MB.                                                         |
@@ -98,7 +130,7 @@ When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>4.1</code> MB ( Depends on number of messages on the chat screen).     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>4.1</code> MB (Depends on number of messages on the chat screen).     |
 | **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>3.6</code> MB.                                                         |
 | **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>3.5</code> MB.                                                         |
 | **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>3.3</code> MB.                                                         |
@@ -130,7 +162,7 @@ When an iOS app is integrated with `HelpshiftX.xcframework`, the increase in the
 
 |                                                                   |                                                                                   |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>3.7</code> MB ( Depends on number of messages on the chat screen).     |
+| **Helpshift's Chat screen (<code>showConversation:</code>)**      | adds <code>3.7</code> MB (Depends on number of messages on the chat screen).     |
 | **Helpshift's FAQs screen (<code>showFAQs:</code>)**              | adds <code>2.8</code> MB.                                                         |
 | **Helpshift's FAQ section screen (<code>showFAQSection:</code>)** | adds <code>4.1</code> MB.                                                         |
 | **Helpshift's single FAQ screen (<code>showFAQ:</code>)**         | adds <code>2.3</code> MB.                                                         |
