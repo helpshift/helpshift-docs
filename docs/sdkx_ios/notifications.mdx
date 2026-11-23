@@ -367,7 +367,7 @@ On iOS versions below 15, or when the Communication Notifications capability or 
 - An image attachment is previewed in the notification. Supported formats include `.jpg`, `.jpeg`, `.png`, `.gif`, and `.heic`. When a message includes more than one image, the notification previews one image. Images larger than 10 MB are left out of the preview.
 - A file that is not an image is left out of the preview. The notification shows the message text. When the message contains only attachments, the text is one of: "sent a photo", "sent n photos", "sent a file", or "sent n files".
 - When an issue is resolved, the notification uses the localized resolved-issue text.
-- Static text in the notification, including the "Support" prefix and the attachment descriptions above, follows the device language.
+- Notification text follows the SDK set language, then device language, then falls back to English.
 - Tapping a Helpshift support notification, or opening the conversation screen, removes every delivered Helpshift support notification from Notification Center. [Proactive Engagement](/sdkx_ios/proactive-engagement) notifications remain.
 - Proactive Engagement push notifications are unchanged. They can show an image preview and do not show a sender avatar.
 - While the conversation screen is open, a rich support notification is not shown. Foreground, background, and not-running delivery otherwise uses the [push delegate methods](#push-delegates) on this page.
