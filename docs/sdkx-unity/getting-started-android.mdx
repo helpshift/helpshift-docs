@@ -63,8 +63,8 @@ Helpshift SDK _.zip_ folder includes:
 
 |                                              |                                                                                                                 |
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| helpshiftX-plugin-unity-v10.5.0.unitypackage | Unity package of Helpshift SDK X                                                                                |
-| unity-jar-resolver (v1.2.186.0)              | Resolves Android Helpshift package support lib dependencies.                                                    |
+| helpshiftX-plugin-unity-v10.6.0.unitypackage | Unity package of Helpshift SDK X                                                                                |
+| unity-jar-resolver (v1.2.188.0)              | Resolves Android Helpshift package support lib dependencies.                                                    |
 | iOS/dSYM/HelpshiftX.framework.dSYM           | Debugging symbol file for HelpshiftX framework, used for symbolication of crash reports and debugging in Xcode. |
 | HelpshiftBackgroundFCM.androidlib            | Sample Android library to support push notifications in background or killed state.                             |
 
@@ -107,7 +107,7 @@ You can find the _Unity Jar Resolver_ releases here: https://github.com/googlesa
 - Import the **Unity Jar Resolver** plugin into your Unity project
 
   1. In the Open Unity project, navigate to **Assets** drop-down menu and select the **Import Package** > **Custom Package**
-  2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.186.unitypackage` file to import the Unity Jar resolver.
+  2. From the unzipped Helpshift SDK, select `unity-jar-resolver/external-dependency-manager-1.2.188.unitypackage` file to import the Unity Jar resolver.
   3. In the _Import Unity Package_ window, click **Import**
 
 - If the Unity Jar resolver wants to enable Android Auto-resolution, click the _Enable_ button, to resolve all the dependencies automatically on changing any dependency file. You can enable or disable the settings using _Assets_ > _Play Services Resolver_ > _Android Resolver_ > _Settings_
@@ -128,7 +128,18 @@ Update **dependencies** section of the `mainTemplate.gradle` or `build.gradle` f
 
 <Tabs groupId="android-dependencies-example">
 
-<TabItem value=">= 10.3.0" label="10.3.X">
+<TabItem value=">= 10.6.0" label=">= 10.6.0">
+
+```groovy
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation(name: 'Helpshift', ext:'aar')
+        implementation 'androidx.appcompat:appcompat:1.1.0'
+    }
+```
+
+</TabItem>
+<TabItem value=">= 10.3.0" label="10.5.X to 10.3.0">
 
 ```groovy
     dependencies {
